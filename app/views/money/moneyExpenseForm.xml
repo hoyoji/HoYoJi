@@ -1,0 +1,5 @@
+<Alloy>
+	<View class="container" title="支出" saveableContainer="true">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="新增支出"/>
+	</View>
+</Alloy>

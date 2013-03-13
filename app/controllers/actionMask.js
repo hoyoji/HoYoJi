@@ -1,0 +1,1 @@
+$.attrs = arguments[0] || {};

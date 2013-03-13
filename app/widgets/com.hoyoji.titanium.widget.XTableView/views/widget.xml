@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" backgroundColor="white" height="Ti.UI.FILL" width="Ti.UI.FILL">
+		<TableView id="table" height="Ti.UI.FILL" width="Ti.UI.FILL" borderWidth="1" borderColor="red">
+        </TableView>
+	</View>
+</Alloy>

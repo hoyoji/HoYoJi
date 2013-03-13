@@ -1,0 +1,12 @@
+<Alloy>
+	<Window class="container" navBarHidden="true" backgroundColor="white">
+		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar"/>
+		<ScrollableView id="scrollableView" currentPage="2" showPagingControl="false" top="5">
+			<Require src="message/messageAll">
+			<Require src="money/moneyAll">
+			<Require src="home/home">
+			<Require src="friend/friendAll">
+			<Require src="project/projectAll">
+		</ScrollableView>
+	</Window>
+</Alloy>

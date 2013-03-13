@@ -1,0 +1,8 @@
+<Alloy>
+	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="47" backgroundColor="#00000000" zIndex="1">
+		<View width="Ti.UI.FILL" height="Ti.UI.SIZE" backgroundColor="white" top="0" zIndex="1">
+			<Label id="hightlight" class="hightlight" backgroundColor="cyan" top="0" width="20%" height="5"></Label>
+		</View>
+		<View id="tabs" class="tabs" width="Ti.UI.FILL" height="42" top="5" layout="horizontal" backgroundColor="black" zIndex="0"></View>
+	</View>
+</Alloy>

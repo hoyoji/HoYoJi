@@ -1,0 +1,37 @@
+<Alloy>
+		<View class="keyboard" zIndex="900" opacity= "0.5" layout="vertical">
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Label id="label" width="20%">金额</Label>
+				<TextField id="number" width="80%" value="0"></TextField>
+			</View>
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Button id="button" class="num" onClick="numPress" title="7" />
+				<Button id="button" class="num" onClick="numPress" title="8" />
+				<Button id="button" class="num" onClick="numPress" title="9" />
+				<Button id="button" onClick="operation" title="÷" />
+				<Button id="button" onClick="clear" title="C" />
+			</View>
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Button id="button" class="num" onClick="numPress" title="4" />
+				<Button id="button" class="num" onClick="numPress" title="5" />
+				<Button id="button" class="num" onClick="numPress" title="6" />
+				<Button id="button" onClick="operation" title="×" />
+				<Button id="button" onClick="backspace" title="←" />
+			</View>
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Button id="button" class="num" onClick="numPress" title="1" />
+				<Button id="button" class="num" onClick="numPress" title="2" />
+				<Button id="button" class="num" onClick="numPress" title="3" />
+				<Button id="button" onClick="operation" title="-" />
+				<Button id="button" onClick="close" title="关闭" />
+			</View>
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Button id="button" onClick="decimal" title="." />
+				<Button id="button" class="num" onClick="numPress" title="0" />
+				<Button id="button" onClick="operation" title="=" />
+				<Button id="button" onClick="operation" title="+" />
+				<Button id="button" onClick="submitValue" title="确定" />
+			</View>
+			
+		</View>
+</Alloy>

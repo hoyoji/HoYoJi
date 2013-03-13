@@ -1,0 +1,5 @@
+<Alloy>
+	<View class="container" title="账务" backgroundColor="green">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="账务"/>
+	</View>
+</Alloy>

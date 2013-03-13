@@ -1,0 +1,7 @@
+<Alloy>
+     <View height="42">
+     <Label id="error" top="42"/>
+     <Label id="label" left="0" width="40%" height="Ti.UI.FILL"/>
+     <TextField id="field" right="0" height="Ti.UI.FILL" width="60%" borderRadius="0" backgroundColor="white"/>
+	</View>
+</Alloy>

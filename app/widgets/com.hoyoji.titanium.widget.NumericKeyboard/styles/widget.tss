@@ -1,0 +1,20 @@
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 18,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+}
+"Button":{
+	width:"20%"
+}
+".keyboard":{
+	position:"fixed",
+	bottom:"0px",
+	left:"0",
+	zIndex:"999999",
+	height:"auto",
+	display:"block"
+}

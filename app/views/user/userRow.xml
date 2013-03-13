@@ -1,0 +1,5 @@
+<Alloy>
+	<View class="container" openForm="user/registerForm">
+		<Label text="{userName}" top="0" height="42"/>
+	</View>
+</Alloy>

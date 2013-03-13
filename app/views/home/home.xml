@@ -1,0 +1,10 @@
+<Alloy>
+	<View class="container" title="主页">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"/>
+		
+		
+        <View height="42" borderWidth="1" borderColor="black" bottom="0">
+        	<Button onClick="openMoneyAddNew">记一笔</Button> 
+       	</View>
+	</View>
+</Alloy>

@@ -1,0 +1,9 @@
+<Alloy>
+		<View class="title-bar" top="0" borderColor="black" borderWidth="1" width="Ti.UI.FILL" height="42" top="0">
+			<Label id="msg" width="Ti.UI.FILL" height="42" top="-42" zIndex="100" color="white" backgroundColor="#40000000" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+			<Button id="tableNavButton" left="5" top="3" height="36" visible="false">上一级</Button>
+			<Label id="title" color="black"></Label>
+			<Label id="childTableTitle" color="black" visible="false"></Label>
+			<Button id="menuButton" right="5" top="3" height="36">菜单</Button>
+		</View>
+</Alloy>

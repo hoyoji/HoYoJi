@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" title="消息" backgroundColor="pink">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="消息"/>
+		<Button>click</Button>
+	</View>
+</Alloy>

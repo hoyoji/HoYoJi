@@ -1,0 +1,48 @@
+var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
+
+_.extend(Alloy.Globals, require("utils").Utils);
+
+Alloy.Globals.extendsBaseUIController = require("BaseUIController").extends;
+
+Alloy.Globals.extendsBaseAutoUpdateController = require("BaseAutoUpdateController").extends;
+
+Alloy.Globals.extendsBaseViewController = require("BaseViewController").extends;
+
+Alloy.Globals.extendsBaseRowController = require("BaseRowController").extends;
+
+Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
+
+Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends;
+
+Alloy.Globals.XModel = require("XModel").XModel;
+
+Alloy.Globals.XCollection = require("XCollection").XCollection;
+
+Alloy.Globals.initStore = function() {
+    for (var c in Alloy.Collections) {
+        if (c === "instance") continue;
+        Alloy.Collections[c] = null;
+        delete Alloy.Collections[c];
+        Alloy.Collections.instance(c);
+    }
+    for (var m in Alloy.Models) {
+        if (m === "instance") continue;
+        Alloy.Models[m] = null;
+        delete Alloy.Models[m];
+        Alloy.Models.instance(m);
+    }
+};
+
+Alloy.Collections.instance("User");
+
+Alloy.Collections.instance("Project");
+
+Alloy.Collections.Project.on("all", function(eName) {
+    console.info("Alloy.Collections.Project event : " + eName);
+});
+
+Alloy.Collections.User.on("all", function(eName) {
+    console.info("Alloy.Collections.User event : " + eName);
+});
+
+Alloy.createController("index");
