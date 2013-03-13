@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.ContextMenu/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.ContextMenu/" + s.substring(index + 1);
-    return path;
+    return path.indexOf("/") !== 0 ? "/" + path : path;
 }
 
 function Controller() {
@@ -108,6 +108,10 @@ function Controller() {
             $.widget.hide();
         });
         $.menuWrapper.animate(animation);
+        if ($.firstScrollableView) {
+            $.firstScrollableView.setScrollingEnabled(!0);
+            $.firstScrollableView = null;
+        }
     };
     exports.open = function(menuSections, menuHeader, menuFooter) {
         $.widget.show();

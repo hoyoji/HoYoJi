@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s.substring(index + 1);
-    return path;
+    return path.indexOf("/") !== 0 ? "/" + path : path;
 }
 
 function Controller() {
@@ -51,7 +51,7 @@ function Controller() {
     Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
     $.$attrs.hintText && ($.field.hintText = $.$attrs.hintText);
     $.$attrs.passwordMask === "true" && $.field.setPasswordMask(!0);
-    $.field.setAutocapitalization(!1);
+    $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
     _.extend($, exports);
 }
 

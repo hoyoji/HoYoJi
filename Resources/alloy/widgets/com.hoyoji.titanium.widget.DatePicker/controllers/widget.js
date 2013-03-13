@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.DatePicker/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.DatePicker/" + s.substring(index + 1);
-    return path;
+    return path.indexOf("/") !== 0 ? "/" + path : path;
 }
 
 function Controller() {
@@ -83,6 +83,10 @@ function Controller() {
         });
     };
     $.sub.addEventListener("click", buttonClick);
+    if (Ti.Platform.Android.API_LEVEL > 0.8) {
+        $.datePicker.setUseSpinner(!0);
+        $.timePicker.setUseSpinner(!0);
+    }
     $.widget.hide();
     _.extend($, exports);
 }

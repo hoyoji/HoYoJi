@@ -27,6 +27,7 @@
                         }) ];
                     } else menuFooter = [ $.createContextMenuItem(title, $.close) ];
                     $.contextMenu.open(Alloy.Globals.MenuSections, menuHeader, menuFooter);
+                    e.firstScrollableView && ($.contextMenu.firstScrollableView = e.firstScrollableView);
                 }
             },
             closeContextMenu: function() {
