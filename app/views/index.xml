@@ -2,12 +2,8 @@
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
 		<View layout="vertical" top="0">
 		<Require src="user/login" />
-		<!-- <TableView id="tableUsers">
-			<SearchBar id="search" hintText="Please search!"/>
-        	<TableViewRow>
-            	<Require src="user/userRow"/>
-            </TableViewRow>
-        </TableView> -->
+		
+		
         </View>
      </Window>
 </Alloy>

@@ -20,7 +20,45 @@
     exports.Utils.openWindow = function(windowName, options) {
         Alloy.createController("window").openWin(windowName, options);
     };
-    exports.Utils.patchScrollableViewOnAndroid = function(scView) {};
+    exports.Utils.patchScrollableViewOnAndroid = function(scView) {
+        scView.getViews().map(function(view) {
+            view.addEventListener("longpress", function(e) {
+                if (!e.firstScrollableView) {
+                    e.firstScrollableView = scView;
+                    scView.setScrollingEnabled(!1);
+                }
+                scView.fireEvent("longpress", e);
+            });
+            view.addEventListener("becamedirty", function(e) {
+                scView.fireEvent("becamedirty", e);
+            });
+            view.addEventListener("becameclean", function(e) {
+                scView.fireEvent("becameclean", e);
+            });
+            view.addEventListener("closewin", function(e) {
+                scView.fireEvent("closewin", e);
+            });
+            view.addEventListener("opencontextmenu", function(e) {
+                if (!e.firstScrollableView) {
+                    e.firstScrollableView = scView;
+                    scView.setScrollingEnabled(!1);
+                }
+                scView.fireEvent("opencontextmenu", e);
+            });
+            view.addEventListener("save", function(e) {
+                scView.fireEvent("save", e);
+            });
+            view.addEventListener("registerwindowevent", function(e) {
+                scView.fireEvent("registerwindowevent", e);
+            });
+            view.addEventListener("registersaveablecallback", function(e) {
+                scView.fireEvent("registersaveablecallback", e);
+            });
+            view.addEventListener("registerdirtycallback", function(e) {
+                scView.fireEvent("registerdirtycallback", e);
+            });
+        });
+    };
     String.prototype.contains = function(it) {
         return this.indexOf(it) != -1;
     };
