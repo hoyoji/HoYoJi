@@ -17,6 +17,10 @@ exports.definition = {
             }
         },
         hasMany: {
+            moneyExpenseCategories: {
+                type: "MoneyExpenseCategory",
+                attribute: "project"
+            },
             subProjects: {
                 type: "Project",
                 attribute: "parentProject"

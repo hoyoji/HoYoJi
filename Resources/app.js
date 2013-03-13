@@ -37,12 +37,6 @@ Alloy.Collections.instance("User");
 
 Alloy.Collections.instance("Project");
 
-Alloy.Collections.Project.on("all", function(eName) {
-    console.info("Alloy.Collections.Project event : " + eName);
-});
-
-Alloy.Collections.User.on("all", function(eName) {
-    console.info("Alloy.Collections.User event : " + eName);
-});
+Alloy.Collections.instance("MoneyExpenseCategory");
 
 Alloy.createController("index");

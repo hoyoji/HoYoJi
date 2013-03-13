@@ -17,35 +17,35 @@ function Controller() {
         editModeTitle: "修改项目"
     });
     $.__views.titleBar.setParent($.__views.projectForm);
-    $.__views.__alloyId27 = Ti.UI.createTableViewRow({
-        id: "__alloyId27"
+    $.__views.__alloyId33 = Ti.UI.createTableViewRow({
+        id: "__alloyId33"
     });
-    var __alloyId28 = [];
-    __alloyId28.push($.__views.__alloyId27);
-    $.__views.__alloyId29 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    var __alloyId34 = [];
+    __alloyId34.push($.__views.__alloyId33);
+    $.__views.__alloyId35 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级项目",
         hintText: "请选择上级项目",
         bindModel: "$.$model",
         bindAttribute: "parentProject",
         bindAttributeIsModel: "name",
         bindModelSelector: "project/projectAll",
-        id: "__alloyId29"
+        id: "__alloyId35"
     });
-    $.__views.__alloyId29.setParent($.__views.__alloyId27);
-    $.__views.__alloyId30 = Ti.UI.createTableViewRow({
-        id: "__alloyId30"
+    $.__views.__alloyId35.setParent($.__views.__alloyId33);
+    $.__views.__alloyId36 = Ti.UI.createTableViewRow({
+        id: "__alloyId36"
     });
-    __alloyId28.push($.__views.__alloyId30);
-    $.__views.__alloyId31 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    __alloyId34.push($.__views.__alloyId36);
+    $.__views.__alloyId37 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "项目名称",
         hintText: "请输入项目名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId31"
+        id: "__alloyId37"
     });
-    $.__views.__alloyId31.setParent($.__views.__alloyId30);
+    $.__views.__alloyId37.setParent($.__views.__alloyId36);
     $.__views.table = Ti.UI.createTableView({
-        data: __alloyId28,
+        data: __alloyId34,
         id: "table",
         bottom: "0",
         top: "42"

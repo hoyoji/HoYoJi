@@ -80,14 +80,27 @@
         };
         $.$view.addEventListener("singletap", function(e) {
             if ($.saveableMode === "read") return;
-            $.$attrs.bindAttributeIsModel ? $.$attrs.bindModelSelector && Alloy.Globals.openWindow($.$attrs.bindModelSelector, {
-                selectorCallback: function(model) {
-                    $.setValue(model);
-                    $.field.fireEvent("change");
+            if ($.$attrs.bindAttributeIsModel) {
+                if ($.$attrs.bindModelSelector) {
+                    var attributes = {
+                        selectorCallback: function(model) {
+                            $.setValue(model);
+                            $.field.fireEvent("change");
+                        }
+                    };
+                    if ($.$attrs.bindModelSelectorParams) {
+                        var params = $.$attrs.bindModelSelectorParams.split(",");
+                        for (var i = 0; i < params.length; i++) {
+                            var param = params[i].split(":");
+                            attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
+                        }
+                    }
+                    Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
                 }
-            }) : $.field.focus();
+            } else $.field.focus();
         });
         $.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
+            $.$attrs.bindModel = model;
             $.$attrs.bindAttributeIsModel = bindAttributeIsModel;
             $.$attrs.bindModelSelector = bindModelSelector;
             console.info(" init autoupdateController ============= " + attribute + model.xGet(attribute));

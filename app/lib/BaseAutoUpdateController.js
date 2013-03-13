@@ -112,11 +112,20 @@
 				if($.$attrs.bindAttributeIsModel) {
 					// open bindModelSelector
 					if($.$attrs.bindModelSelector) {
-						Alloy.Globals.openWindow($.$attrs.bindModelSelector, 
-							{ selectorCallback : function(model){ 
+						var attributes = { selectorCallback : function(model){ 
 								$.setValue(model); 
 								$.field.fireEvent("change");
-							}});
+							}};
+						if($.$attrs.bindModelSelectorParams){
+							var params = $.$attrs.bindModelSelectorParams.split(",");
+							for(var i=0; i<params.length;i++){
+								var param = params[i].split(":");
+								attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
+							}
+						}
+						
+						
+						Alloy.Globals.openWindow($.$attrs.bindModelSelector,attributes);
 					}
 				} else {
 					$.field.focus();
@@ -124,6 +133,7 @@
 			});
 			
 			$.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
+				$.$attrs.bindModel = model;
 				$.$attrs.bindAttributeIsModel = bindAttributeIsModel;
 				$.$attrs.bindModelSelector = bindModelSelector;
 				

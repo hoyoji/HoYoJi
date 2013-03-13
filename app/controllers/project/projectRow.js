@@ -8,5 +8,8 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增子项目", function() {
 		Alloy.Globals.openWindow("project/projectForm", {$model : "Project", saveableMode : "add", data : { parentProject : $.$model}});
 	}));
+	menuSection.add($.createContextMenuItem("支出分类", function() {
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {selectedProject : $.$model});
+	}));	
 	return menuSection;
 }

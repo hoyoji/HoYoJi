@@ -14,6 +14,7 @@ exports.definition = {
 			parentProject : { type : "Project", attribute : "subProjects" }
 		},
 		hasMany : {
+			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
 			subProjects : { type : "Project", attribute : "parentProject" }
 		},
 		rowView : "project/projectRow",

@@ -89,10 +89,11 @@ Alloy.Globals.initStore = function(){
 // Creating all the collection singletons, they will be use as store
 Alloy.Collections.instance("User");
 Alloy.Collections.instance("Project");
+Alloy.Collections.instance("MoneyExpenseCategory");
 
-Alloy.Collections.Project.on("all", function(eName){
-	console.info("Alloy.Collections.Project event : " + eName);
-});
-Alloy.Collections.User.on("all", function(eName){
-	console.info("Alloy.Collections.User event : " + eName);
-});
+// Alloy.Collections.Project.on("all", function(eName){
+	// console.info("Alloy.Collections.Project event : " + eName);
+// });
+// Alloy.Collections.User.on("all", function(eName){
+	// console.info("Alloy.Collections.User event : " + eName);
+// });
