@@ -2,6 +2,8 @@
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
 		<View layout="vertical" top="0">
 		<Require src="user/login" />
+		
+		
         </View>
      </Window>
 </Alloy>
