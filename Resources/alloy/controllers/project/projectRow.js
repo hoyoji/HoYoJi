@@ -15,15 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.projectRow.add($.__views.content);
-    $.__views.__alloyId67 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId64 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId67"
+        id: "__alloyId64"
     });
-    $.__views.__alloyId67.setParent($.__views.content);
+    $.__views.__alloyId64.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);

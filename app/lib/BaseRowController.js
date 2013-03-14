@@ -1,8 +1,8 @@
 ( function() {
 		exports.extends = function($, attrs) {
-			var errorLabel;
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			
+			var errorLabel;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 				
 			var getChildCollections = function() {
@@ -96,11 +96,13 @@
 
 			var isRemoving = false;
 			function removeRow(row) {
+				console.info("removing row ...........");
 				if (row === $.$model) {
 					isRemoving = true;
 					var animation = Titanium.UI.createAnimation();
 
 					if ($.$model.id) {
+						console.info("removing row ...........");
 						// animation.duration = 200;
 						// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 						// animation.left = "20%"
@@ -118,6 +120,7 @@
 							$.$view.animate(animation);
 						// });
 					} else {
+						console.info("destroy row ...........");
 						animation.duration = 800;
 						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
 						// animation.backgroundColor = "black";
@@ -136,7 +139,7 @@
 			}
 
 			function shakeMe() {
-				Alloy.Globals.alloyAnimation.shake($.$view, 200);
+				//Alloy.Globals.alloyAnimation.shake($.$view, 200);
 			}
 
 			$.$model.on("change", shakeMe);

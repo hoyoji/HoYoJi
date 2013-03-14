@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.ScrollableViewTabBar/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.ScrollableViewTabBar/" + s.substring(index + 1);
-    return path;
+    return path.indexOf("/") !== 0 ? "/" + path : path;
 }
 
 function Controller() {

@@ -1,10 +1,12 @@
 (function() {
     exports.extends = function($, attrs) {
         function removeRow(row) {
+            console.info("removing row ...........");
             if (row === $.$model) {
                 isRemoving = !0;
                 var animation = Titanium.UI.createAnimation();
                 if ($.$model.id) {
+                    console.info("removing row ...........");
                     animation.duration = 500;
                     animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
                     animation.left = "-100%";
@@ -16,6 +18,7 @@
                     });
                     $.$view.animate(animation);
                 } else {
+                    console.info("destroy row ...........");
                     animation.duration = 800;
                     animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
                     animation.opacity = "0.5";
@@ -31,12 +34,9 @@
                 $.$view.animate(animation);
             }
         }
-        function shakeMe() {
-            Alloy.Globals.alloyAnimation.shake($.$view, 200);
-        }
-        var errorLabel;
+        function shakeMe() {}
         Alloy.Globals.extendsBaseViewController($, attrs);
-        var hasChild = $.$attrs.hasChild || $.$view.hasChild, getChildCollections = function() {
+        var errorLabel, hasChild = $.$attrs.hasChild || $.$view.hasChild, getChildCollections = function() {
             return hasChild ? [ $.$model.xGet(hasChild) ] : [];
         }, getChildTitle = function() {
             var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
