@@ -2,23 +2,23 @@ function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
     var $ = this, exports = {}, __defers = {};
-    $.__views.friendAll = Ti.UI.createView({
-        title: "好友",
+    $.__views.friendCategoryAll = Ti.UI.createView({
         backgroundColor: "cyan",
-        id: "friendAll"
+        title: "好友分类",
+        id: "friendCategoryAll"
     });
-    $.addTopLevelView($.__views.friendAll);
+    $.addTopLevelView($.__views.friendCategoryAll);
     $.__views.titleBar = Alloy.createWidget("com.hoyoji.titanium.widget.TitleBar", "widget", {
         id: "titleBar",
-        title: "好友"
+        title: "好友分类"
     });
-    $.__views.titleBar.setParent($.__views.friendAll);
+    $.__views.titleBar.setParent($.__views.friendCategoryAll);
     $.__views.projectsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
         id: "projectsTable",
         bottom: "42",
         top: "42"
     });
-    $.__views.projectsTable.setParent($.__views.friendAll);
+    $.__views.projectsTable.setParent($.__views.friendCategoryAll);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);

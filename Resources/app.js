@@ -39,4 +39,6 @@ Alloy.Collections.instance("Project");
 
 Alloy.Collections.instance("MoneyExpenseCategory");
 
+Alloy.Collections.instance("FriendCategory");
+
 Alloy.createController("index");
