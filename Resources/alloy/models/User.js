@@ -14,6 +14,10 @@ exports.definition = {
             projects: {
                 type: "Project",
                 attribute: "ownerUser"
+            },
+            friendCategories: {
+                type: "FriendCategory",
+                attribute: "ownerUser"
             }
         },
         belongsTo: {

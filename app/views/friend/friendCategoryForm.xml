@@ -1,0 +1,21 @@
+<Alloy>
+	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+				 addModeTitle="新增好友分类" readModeTitle="好友分类资料" editModeTitle="修改好友分类"/>
+			  <TableView id="table" class="table-edit" bottom="0" top="42">
+                <TableViewRow class="table-edit-row">
+                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级好友分类" hintText="请选择上级好友分类" 
+                		bindModel="$.$model"
+                		bindAttribute="parentFriendCategory"
+                		bindAttributeIsModel="name"
+                		bindModelSelector="friend/friendCategoryAll"
+                		/>
+                </TableViewRow>
+                <TableViewRow class="table-edit-row">
+                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友分类名称" hintText="请输入好友分类名称" 
+                		bindModel="$.$model"
+                		bindAttribute="name"/>
+                </TableViewRow>
+           </TableView>
+	</View>
+</Alloy>
