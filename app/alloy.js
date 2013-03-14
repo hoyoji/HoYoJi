@@ -90,6 +90,7 @@ Alloy.Globals.initStore = function(){
 Alloy.Collections.instance("User");
 Alloy.Collections.instance("Project");
 Alloy.Collections.instance("MoneyExpenseCategory");
+Alloy.Collections.instance("MoneyIncomeCategory");
 
 // Alloy.Collections.Project.on("all", function(eName){
 	// console.info("Alloy.Collections.Project event : " + eName);

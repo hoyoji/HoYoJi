@@ -11,5 +11,8 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("支出分类", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {selectedProject : $.$model});
 	}));	
+	menuSection.add($.createContextMenuItem("收入分类", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeCategoryAll", {selectedProject : $.$model});
+	}));
 	return menuSection;
 }

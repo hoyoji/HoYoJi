@@ -21,6 +21,10 @@ exports.definition = {
                 type: "MoneyExpenseCategory",
                 attribute: "project"
             },
+            moneyIncomeCategories: {
+                type: "MoneyIncomeCategory",
+                attribute: "project"
+            },
             subProjects: {
                 type: "Project",
                 attribute: "parentProject"

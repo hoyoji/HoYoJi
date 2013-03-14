@@ -15,15 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.projectRow.add($.__views.content);
-    $.__views.__alloyId38 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId44 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId38"
+        id: "__alloyId44"
     });
-    $.__views.__alloyId38.setParent($.__views.content);
+    $.__views.__alloyId44.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
@@ -45,6 +45,11 @@ function Controller() {
         }));
         menuSection.add($.createContextMenuItem("支出分类", function() {
             Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
+                selectedProject: $.$model
+            });
+        }));
+        menuSection.add($.createContextMenuItem("收入分类", function() {
+            Alloy.Globals.openWindow("money/moneyIncomeCategoryAll", {
                 selectedProject: $.$model
             });
         }));
