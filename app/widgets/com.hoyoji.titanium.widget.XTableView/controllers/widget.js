@@ -2,6 +2,13 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var collections = [];
 
+$.table.addEventListener("scroll",function(e){
+		console.info("........... " + e.contentOffset.y);
+	if(e.contentOffset.y <= 0){
+		e.cancelBubbles = true;
+	}
+});
+
 $.$view.addEventListener("click", function(e) {
 	if (e.deleterow === true) {
 		e.cancelBubble = true;

@@ -19,8 +19,7 @@
             $.field.setValue(value || "");
         };
         $.setEditable = function(editable) {
-            editable === !1 ? $.field.setHintText("") : $.field.setHintText($.$attrs.hintText);
-            $.field.setEditable(editable);
+            $.$attrs.bindAttributeIsModel ? $.field.setEnabled(!1) : $.field.setEnabled(editable);
         };
         $.setSaveableMode = function(saveableMode) {
             $.saveableMode = saveableMode || "edit";
@@ -58,7 +57,6 @@
                 $.setEditable(!0);
                 $.$view.show();
             }
-            $.$attrs.bindAttributeIsModel && $.field.setEditable(!1);
         };
         var showErrorMsg = function(msg) {
             $.error.setText(msg);
@@ -78,6 +76,11 @@
                 $.error.animate(animation);
             }
         };
+        $.field.addEventListener("focus", function(e) {
+            $.$view.fireEvent("singletap", {
+                bubbles: !0
+            });
+        });
         $.$view.addEventListener("singletap", function(e) {
             if ($.saveableMode === "read") return;
             if ($.$attrs.bindAttributeIsModel) {
@@ -97,7 +100,14 @@
                     }
                     Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
                 }
-            } else $.field.focus();
+            } else {
+                $.field.focus();
+                $.field.fireEvent("textfieldfocused", {
+                    bubbles: !0,
+                    source: $.field,
+                    inputType: $.$attrs.inputType
+                });
+            }
         });
         $.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
             $.$attrs.bindModel = model;
@@ -136,7 +146,6 @@
         $.$attrs.editable && $.setEditable($.$attrs.editable);
         $.$attrs.value && $.setValue($.$attrs.value);
         $.$attrs.labelText && $.label.setText($.$attrs.labelText);
-        $.setSaveableMode($.saveableMode);
         if ($.$attrs.bindAttribute) {
             var model = $.$attrs.bindModel;
             if (model && typeof model == "string") {

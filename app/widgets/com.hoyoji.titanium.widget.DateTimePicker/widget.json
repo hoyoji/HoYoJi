@@ -1,6 +1,6 @@
 {
-	"id": "com.hoyoji.titanium.widget.DatePicker",
-	"name": "com.hoyoji.titanium.widget.DatePicker",
+	"id": "com.hoyoji.titanium.widget.DateTimePicker",
+	"name": "com.hoyoji.titanium.widget.DateTimePicker",
 	"description" : "",
 	"author": "",
 	"version": "1.0",

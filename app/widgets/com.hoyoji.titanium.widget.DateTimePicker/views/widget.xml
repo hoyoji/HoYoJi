@@ -1,0 +1,11 @@
+<Alloy>
+	<View height="260" width="Ti.UI.FILL" top="100%" zIndex="900">
+		<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
+		<Button top="0" id="submitButton" height="44" width="Ti.UI.FILL">选择</Button>
+		<Picker top="44" id="datePicker" platform="ios" selectionIndicator="true" format24="false" type="Ti.UI.PICKER_TYPE_DATE_AND_TIME" />
+
+		<!-- <View height="Ti.UI.SIZE" layout="horizontal" platform="android">
+		<Picker id="timePicker" platform="android"  useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_TIME" />
+		</View> -->
+	</View>
+</Alloy>

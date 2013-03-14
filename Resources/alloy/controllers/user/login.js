@@ -27,7 +27,8 @@ function Controller() {
     $.__views.userName = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         id: "userName",
         labelText: "用户名",
-        hintText: "请输入用户名"
+        hintText: "请输入用户名",
+        keyboardType: Ti.UI.KEYBOARD_ASCII
     });
     $.__views.userName.setParent($.__views.login);
     $.__views.password = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
@@ -37,30 +38,84 @@ function Controller() {
         passwordMask: "true"
     });
     $.__views.password.setParent($.__views.login);
-    $.__views.__alloyId39 = Ti.UI.createView({
+<<<<<<< HEAD
+    $.__views.__alloyId57 = Ti.UI.createView({
         layout: "horizontal",
         height: Ti.UI.SIZE,
-        id: "__alloyId39"
+        id: "__alloyId57"
     });
-    $.__views.login.add($.__views.__alloyId39);
-    $.__views.__alloyId40 = Ti.UI.createButton({
+    $.__views.login.add($.__views.__alloyId57);
+    $.__views.__alloyId58 = Ti.UI.createButton({
         title: "登入",
         width: "50%",
-        id: "__alloyId40"
+        id: "__alloyId58"
     });
-    $.__views.__alloyId39.add($.__views.__alloyId40);
-    doLogin ? $.__views.__alloyId40.addEventListener("click", doLogin) : __defers["$.__views.__alloyId40!click!doLogin"] = !0;
-    $.__views.__alloyId41 = Ti.UI.createButton({
+    $.__views.__alloyId57.add($.__views.__alloyId58);
+    doLogin ? $.__views.__alloyId58.addEventListener("click", doLogin) : __defers["$.__views.__alloyId58!click!doLogin"] = !0;
+    $.__views.__alloyId59 = Ti.UI.createButton({
         title: "注册",
         width: "50%",
-        id: "__alloyId41"
+        id: "__alloyId59"
     });
-    $.__views.__alloyId39.add($.__views.__alloyId41);
-    openRegister ? $.__views.__alloyId41.addEventListener("click", openRegister) : __defers["$.__views.__alloyId41!click!openRegister"] = !0;
+    $.__views.__alloyId57.add($.__views.__alloyId59);
+    openRegister ? $.__views.__alloyId59.addEventListener("click", openRegister) : __defers["$.__views.__alloyId59!click!openRegister"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
-    __defers["$.__views.__alloyId40!click!doLogin"] && $.__views.__alloyId40.addEventListener("click", doLogin);
-    __defers["$.__views.__alloyId41!click!openRegister"] && $.__views.__alloyId41.addEventListener("click", openRegister);
+    __defers["$.__views.__alloyId58!click!doLogin"] && $.__views.__alloyId58.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId59!click!openRegister"] && $.__views.__alloyId59.addEventListener("click", openRegister);
+=======
+<<<<<<< HEAD
+    $.__views.__alloyId45 = Ti.UI.createView({
+        layout: "horizontal",
+        height: Ti.UI.SIZE,
+        id: "__alloyId45"
+    });
+    $.__views.login.add($.__views.__alloyId45);
+    $.__views.__alloyId46 = Ti.UI.createButton({
+        title: "登入",
+        width: "50%",
+        id: "__alloyId46"
+    });
+    $.__views.__alloyId45.add($.__views.__alloyId46);
+    doLogin ? $.__views.__alloyId46.addEventListener("click", doLogin) : __defers["$.__views.__alloyId46!click!doLogin"] = !0;
+    $.__views.__alloyId47 = Ti.UI.createButton({
+        title: "注册",
+        width: "50%",
+        id: "__alloyId47"
+    });
+    $.__views.__alloyId45.add($.__views.__alloyId47);
+    openRegister ? $.__views.__alloyId47.addEventListener("click", openRegister) : __defers["$.__views.__alloyId47!click!openRegister"] = !0;
+    exports.destroy = function() {};
+    _.extend($, $.__views);
+    __defers["$.__views.__alloyId46!click!doLogin"] && $.__views.__alloyId46.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId47!click!openRegister"] && $.__views.__alloyId47.addEventListener("click", openRegister);
+=======
+    $.__views.__alloyId44 = Ti.UI.createView({
+        layout: "horizontal",
+        height: Ti.UI.SIZE,
+        id: "__alloyId44"
+    });
+    $.__views.login.add($.__views.__alloyId44);
+    $.__views.__alloyId45 = Ti.UI.createButton({
+        title: "登入",
+        width: "50%",
+        id: "__alloyId45"
+    });
+    $.__views.__alloyId44.add($.__views.__alloyId45);
+    doLogin ? $.__views.__alloyId45.addEventListener("click", doLogin) : __defers["$.__views.__alloyId45!click!doLogin"] = !0;
+    $.__views.__alloyId46 = Ti.UI.createButton({
+        title: "注册",
+        width: "50%",
+        id: "__alloyId46"
+    });
+    $.__views.__alloyId44.add($.__views.__alloyId46);
+    openRegister ? $.__views.__alloyId46.addEventListener("click", openRegister) : __defers["$.__views.__alloyId46!click!openRegister"] = !0;
+    exports.destroy = function() {};
+    _.extend($, $.__views);
+    __defers["$.__views.__alloyId45!click!doLogin"] && $.__views.__alloyId45.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId46!click!openRegister"] && $.__views.__alloyId46.addEventListener("click", openRegister);
+>>>>>>> f26637615d92b5ad2345da662d510d9dc4427f16
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
     _.extend($, exports);
 }
 

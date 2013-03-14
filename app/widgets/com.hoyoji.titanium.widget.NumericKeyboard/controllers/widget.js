@@ -1,46 +1,31 @@
-var activeTextField;
+var activeTextField, oldValue=0;
 
-exports.bindTextField = function(textField) {
-	textField.addEventListener("focus", function() {
-		var animation = Titanium.UI.createAnimation();
-		animation.top = "0%"
-		animation.duration = 1000;
-		animation.zIndex = "900";
-		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		
-		if ($.widget.visible === "false") {
-			$.widget.animate(animation);
-			$.widget.show();
-		} else {
-			$.widget.show();
-		}
-
-		activeTextField = textField;
-		$.number.setValue(activeTextField.getValue());
-	});
-	textField.addEventListener("blur", function() {
-		var animation = Titanium.UI.createAnimation();
-		animation.top = "100%"
-		animation.duration = 1000;
-		animation.zIndex = "900";
-		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		
-		if (activeTextField.visible === "true") {
-			// $.widget.hide();
-		} else {
-			$.widget.animate(animation);
-			$.widget.hide();
-		}
-		$.number.setValue(activeTextField.getValue());
-	});
-
-	$.widget.hide();
-	activeTextField = textField;
-	$.number.setValue(activeTextField.getValue());
+exports.close = function() {
+	if (!activeTextField)
+		return;
+	activeTextField = null;
+	var animation = Titanium.UI.createAnimation();
+	animation.top = "100%"
+	animation.duration = 300;
+	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	$.widget.animate(animation);
 }
 
-$.widget.hide();
-
+exports.open = function(textField) {
+	if (!activeTextField) {
+		$.number.focus();
+		$.number.blur(); // to hide the soft keyboard
+	
+		var animation = Titanium.UI.createAnimation();
+		animation.top = $.parent.getSize().height - 176;
+		animation.duration = 300;
+		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		$.widget.animate(animation);
+	}
+	activeTextField = textField;
+	oldValue = activeTextField.getValue();
+	$.number.setValue(activeTextField.getValue());
+}
 var accum = 0;
 var flagNewNum = false;
 var pendingOp = "";
@@ -61,6 +46,7 @@ function numPress(e) {
 			activeTextField.setValue(thisNum);
 		}
 	}
+	activeTextField.fireEvent("change");
 }
 
 //+-*/操作
@@ -94,6 +80,7 @@ function operation(e) {
 		accum = parseFloat(accum).toFixed(2) / 1;
 		$.number.setValue(accum + "");
 		activeTextField.setValue(accum + "");
+		activeTextField.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
 }
@@ -111,6 +98,7 @@ function decimal() {
 	}
 	$.number.setValue(curReadOut);
 	activeTextField.setValue(curReadOut);
+		activeTextField.fireEvent("change");
 }
 
 //退格键
@@ -118,12 +106,18 @@ function backspace() {
 	var readout = $.number.getValue();
 	var len = readout.length;
 	if (len > 1) {
-		var rout = readout.substr(0, len - 1);
-		$.number.setValue(rout);
-		activeTextField.setValue(rout);
+		if (parseFloat(readout) < 0 && len === 2) {
+			$.number.setValue("0");
+			activeTextField.setValue("0");
+		} else {
+			var rout = readout.substr(0, len - 1);
+			$.number.setValue(rout);
+			activeTextField.setValue(rout);
+		}
 	} else {
 		$.number.setValue("0");
 		activeTextField.setValue("0");
+		activeTextField.fireEvent("change");
 	}
 }
 
@@ -138,11 +132,13 @@ function clear(e) {
 
 //关闭
 function close() {
-	$.widget.hide();
+	activeTextField.setValue(oldValue);
+	exports.close();
 }
 
 //提交
 function submitValue() {
-	$.widget.hide();
+	oldValue = $.number.getValue();
+	exports.close();
 }
 
