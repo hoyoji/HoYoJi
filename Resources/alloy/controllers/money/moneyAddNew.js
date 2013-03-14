@@ -11,43 +11,23 @@ function Controller() {
         id: "tabBar"
     });
     $.__views.tabBar.setParent($.__views.moneyAddNew);
-<<<<<<< HEAD
-    var __alloyId42 = [];
-    $.__views.__alloyId43 = Alloy.createController("money/moneyExpenseForm", {
+    var __alloyId47 = [];
+    $.__views.__alloyId48 = Alloy.createController("money/moneyExpenseForm", {
         saveableMode: "add",
-        id: "__alloyId43"
+        id: "__alloyId48"
     });
-    __alloyId42.push($.__views.__alloyId43.getViewEx({
+    __alloyId47.push($.__views.__alloyId48.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId44 = Alloy.createController("money/moneyIncomeForm", {
+    $.__views.__alloyId49 = Alloy.createController("money/moneyIncomeForm", {
         saveableMode: "add",
-        id: "__alloyId44"
+        id: "__alloyId49"
     });
-    __alloyId42.push($.__views.__alloyId44.getViewEx({
-        recurse: !0
-    }));
-    $.__views.scrollableView = Ti.UI.createScrollableView({
-        views: __alloyId42,
-=======
-    var __alloyId29 = [];
-    $.__views.__alloyId30 = Alloy.createController("money/moneyExpenseForm", {
-        saveableMode: "add",
-        id: "__alloyId30"
-    });
-    __alloyId29.push($.__views.__alloyId30.getViewEx({
-        recurse: !0
-    }));
-    $.__views.__alloyId31 = Alloy.createController("money/moneyIncomeForm", {
-        saveableMode: "add",
-        id: "__alloyId31"
-    });
-    __alloyId29.push($.__views.__alloyId31.getViewEx({
+    __alloyId47.push($.__views.__alloyId49.getViewEx({
         recurse: !0
     }));
     $.__views.scrollableView = Ti.UI.createScrollableView({
-        views: __alloyId29,
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+        views: __alloyId47,
         id: "scrollableView",
         showPagingControl: "false",
         top: "5"

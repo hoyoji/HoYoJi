@@ -5,9 +5,10 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL",
-			age : "INTEGER",
-			birthday : "TEXT"
+			activeProjectId : "TEXT NOT NULL"
+			// ,
+			// age : "INTEGER",
+			// birthday : "TEXT"
 		},
 		defaults : {
 			userName : ""
@@ -33,7 +34,7 @@ exports.definition = {
 			validators : {
 				userName : function(xValidateComplete) {
 					if(!this.isNew()){
-						if(this.get("userName") !== this.previous("userName")){
+						if(this.hasChanged("userName")){
 							xValidateComplete({ msg : "用户名不能被修改" });
 						} 
 					}

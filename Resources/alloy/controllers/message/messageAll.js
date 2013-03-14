@@ -13,19 +13,11 @@ function Controller() {
         title: "消息"
     });
     $.__views.titleBar.setParent($.__views.messageAll);
-<<<<<<< HEAD
-    $.__views.__alloyId41 = Ti.UI.createButton({
+    $.__views.__alloyId46 = Ti.UI.createButton({
         title: "click",
-        id: "__alloyId41"
+        id: "__alloyId46"
     });
-    $.__views.messageAll.add($.__views.__alloyId41);
-=======
-    $.__views.__alloyId28 = Ti.UI.createButton({
-        title: "click",
-        id: "__alloyId28"
-    });
-    $.__views.messageAll.add($.__views.__alloyId28);
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    $.__views.messageAll.add($.__views.__alloyId46);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);

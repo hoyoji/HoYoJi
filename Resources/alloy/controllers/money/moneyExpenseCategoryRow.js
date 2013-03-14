@@ -15,25 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.moneyExpenseCategoryRow.add($.__views.content);
-<<<<<<< HEAD
-    $.__views.__alloyId50 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
-=======
-    $.__views.__alloyId37 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    $.__views.__alloyId55 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-<<<<<<< HEAD
-        id: "__alloyId50"
+        id: "__alloyId55"
     });
-    $.__views.__alloyId50.setParent($.__views.content);
-=======
-        id: "__alloyId37"
-    });
-    $.__views.__alloyId37.setParent($.__views.content);
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    $.__views.__alloyId55.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);

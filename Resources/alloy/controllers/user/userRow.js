@@ -8,33 +8,13 @@ function Controller() {
         id: "userRow"
     });
     $.addTopLevelView($.__views.userRow);
-<<<<<<< HEAD
-    $.__views.__alloyId71 = Ti.UI.createLabel({
+    $.__views.__alloyId78 = Ti.UI.createLabel({
         text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
         top: "0",
         height: "42",
-        id: "__alloyId71"
+        id: "__alloyId78"
     });
-    $.__views.userRow.add($.__views.__alloyId71);
-=======
-<<<<<<< HEAD
-    $.__views.__alloyId55 = Ti.UI.createLabel({
-        text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
-        top: "0",
-        height: "42",
-        id: "__alloyId55"
-    });
-    $.__views.userRow.add($.__views.__alloyId55);
-=======
-    $.__views.__alloyId54 = Ti.UI.createLabel({
-        text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
-        top: "0",
-        height: "42",
-        id: "__alloyId54"
-    });
-    $.__views.userRow.add($.__views.__alloyId54);
->>>>>>> f26637615d92b5ad2345da662d510d9dc4427f16
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    $.__views.userRow.add($.__views.__alloyId78);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);

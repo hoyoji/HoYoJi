@@ -98,9 +98,11 @@
 					$.error.animate(animation);
 				}
 			}
-			$.field.addEventListener("focus", function(e){
-				$.$view.fireEvent("singletap", {bubbles : true});
-			});
+			if(OS_IOS){
+				$.field.addEventListener("focus", function(e){
+					$.$view.fireEvent("singletap", {bubbles : true});
+				});
+			}
 			$.$view.addEventListener("singletap", function(e) {
 				if ($.saveableMode === "read") {
 					return;

@@ -1,6 +1,6 @@
 <Alloy>
 	<Window id="window" class="container" left="100%" width="100%" height="100%" zIndex="101">
 		<Widget id="numericKeyboard" src="com.hoyoji.titanium.widget.NumericKeyboard" />
-		<Widget id="dateTimePicker" src="com.hoyoji.titanium.widget.DateTimePicker" />
+		<!-- <Widget id="dateTimePicker" src="com.hoyoji.titanium.widget.DateTimePicker" /> -->
 	</Window>
 </Alloy>
