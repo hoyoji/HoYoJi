@@ -1,6 +1,6 @@
 <Alloy>
-	<View class="container" title="好友" backgroundColor="blue">
+	<View class="container" title="好友" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友"/>
-		<Button onClick="openFriendAll">open projectAll</Button>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" bottom="42" top="42"/>
 	</View>
 </Alloy>

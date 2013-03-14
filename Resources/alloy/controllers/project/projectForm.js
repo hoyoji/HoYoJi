@@ -17,18 +17,37 @@ function Controller() {
         editModeTitle: "修改项目"
     });
     $.__views.titleBar.setParent($.__views.projectForm);
+<<<<<<< HEAD
     $.__views.__alloyId51 = Ti.UI.createTableViewRow({
         id: "__alloyId51"
     });
     var __alloyId52 = [];
     __alloyId52.push($.__views.__alloyId51);
     $.__views.__alloyId53 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+<<<<<<< HEAD
+    $.__views.__alloyId39 = Ti.UI.createTableViewRow({
+        id: "__alloyId39"
+    });
+    var __alloyId40 = [];
+    __alloyId40.push($.__views.__alloyId39);
+    $.__views.__alloyId41 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+    $.__views.__alloyId38 = Ti.UI.createTableViewRow({
+        id: "__alloyId38"
+    });
+    var __alloyId39 = [];
+    __alloyId39.push($.__views.__alloyId38);
+    $.__views.__alloyId40 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> f26637615d92b5ad2345da662d510d9dc4427f16
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         labelText: "上级项目",
         hintText: "请选择上级项目",
         bindModel: "$.$model",
         bindAttribute: "parentProject",
         bindAttributeIsModel: "name",
         bindModelSelector: "project/projectAll",
+<<<<<<< HEAD
         id: "__alloyId53"
     });
     $.__views.__alloyId53.setParent($.__views.__alloyId51);
@@ -37,15 +56,52 @@ function Controller() {
     });
     __alloyId52.push($.__views.__alloyId54);
     $.__views.__alloyId55 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+<<<<<<< HEAD
+        id: "__alloyId41"
+    });
+    $.__views.__alloyId41.setParent($.__views.__alloyId39);
+    $.__views.__alloyId42 = Ti.UI.createTableViewRow({
+        id: "__alloyId42"
+    });
+    __alloyId40.push($.__views.__alloyId42);
+    $.__views.__alloyId43 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+        id: "__alloyId40"
+    });
+    $.__views.__alloyId40.setParent($.__views.__alloyId38);
+    $.__views.__alloyId41 = Ti.UI.createTableViewRow({
+        id: "__alloyId41"
+    });
+    __alloyId39.push($.__views.__alloyId41);
+    $.__views.__alloyId42 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> f26637615d92b5ad2345da662d510d9dc4427f16
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         labelText: "项目名称",
         hintText: "请输入项目名称",
         bindModel: "$.$model",
         bindAttribute: "name",
+<<<<<<< HEAD
         id: "__alloyId55"
     });
     $.__views.__alloyId55.setParent($.__views.__alloyId54);
     $.__views.table = Ti.UI.createTableView({
         data: __alloyId52,
+=======
+<<<<<<< HEAD
+        id: "__alloyId43"
+    });
+    $.__views.__alloyId43.setParent($.__views.__alloyId42);
+    $.__views.table = Ti.UI.createTableView({
+        data: __alloyId40,
+=======
+        id: "__alloyId42"
+    });
+    $.__views.__alloyId42.setParent($.__views.__alloyId41);
+    $.__views.table = Ti.UI.createTableView({
+        data: __alloyId39,
+>>>>>>> f26637615d92b5ad2345da662d510d9dc4427f16
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         id: "table",
         bottom: "0",
         top: "42"

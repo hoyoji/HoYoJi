@@ -16,11 +16,19 @@ exports.definition = {
             projects: {
                 type: "Project",
                 attribute: "ownerUser"
+            },
+            friendCategories: {
+                type: "FriendCategory",
+                attribute: "ownerUser"
             }
         },
         belongsTo: {
             activeProject: {
                 type: "Project",
+                attribute: null
+            },
+            defaultFriendCategory: {
+                type: "FriendCategory",
                 attribute: null
             }
         },

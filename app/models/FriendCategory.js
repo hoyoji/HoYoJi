@@ -4,23 +4,21 @@ exports.definition = {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-			parentProjectId : "TEXT"
+			parentFriendCategoryId : "TEXT"
 		},
 		// defaults : {
 			// name : "",
 		// },
 		belongsTo : {
-			ownerUser : { type : "User", attribute : "projects" },
-			parentProject : { type : "Project", attribute : "subProjects" }
+			ownerUser : { type : "User", attribute : "friendCategories" },
+			parentFriendCategory : { type : "FriendCategory", attribute : "subFriendCategories" }
 		},
 		hasMany : {
-			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
-			moneyIncomeCategories : { type : "MoneyIncomeCategory", attribute : "project"},
-			subProjects : { type : "Project", attribute : "parentProject" }
+			subFriendCategories : { type : "FriendCategory", attribute : "parentFriendCategory" }
 		},
-		rowView : "project/projectRow",
+		rowView : "friend/friendCategoryRow",
 		adapter : {
-			collection_name : "Project",
+			collection_name : "FriendCategory",
 			idAttribute : "id",
 			type : "sql",
 			db_name : "hoyoji"

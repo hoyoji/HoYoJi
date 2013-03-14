@@ -4,35 +4,27 @@ exports.definition = {
             id: "TEXT NOT NULL PRIMARY KEY",
             name: "TEXT NOT NULL",
             ownerUserId: "TEXT NOT NULL",
-            parentProjectId: "TEXT"
+            parentFriendCategoryId: "TEXT"
         },
         belongsTo: {
             ownerUser: {
                 type: "User",
-                attribute: "projects"
+                attribute: "friendCategories"
             },
-            parentProject: {
-                type: "Project",
-                attribute: "subProjects"
+            parentFriendCategory: {
+                type: "FriendCategory",
+                attribute: "subFriendCategories"
             }
         },
         hasMany: {
-            moneyExpenseCategories: {
-                type: "MoneyExpenseCategory",
-                attribute: "project"
-            },
-            moneyIncomeCategories: {
-                type: "MoneyIncomeCategory",
-                attribute: "project"
-            },
-            subProjects: {
-                type: "Project",
-                attribute: "parentProject"
+            subFriendCategories: {
+                type: "FriendCategory",
+                attribute: "parentFriendCategory"
             }
         },
-        rowView: "project/projectRow",
+        rowView: "friend/friendCategoryRow",
         adapter: {
-            collection_name: "Project",
+            collection_name: "FriendCategory",
             idAttribute: "id",
             type: "sql",
             db_name: "hoyoji"
@@ -52,9 +44,9 @@ exports.definition = {
 
 var Alloy = require("alloy"), _ = require("alloy/underscore")._, model, collection;
 
-model = Alloy.M("Project", exports.definition, []);
+model = Alloy.M("FriendCategory", exports.definition, []);
 
-collection = Alloy.C("Project", exports.definition, model);
+collection = Alloy.C("FriendCategory", exports.definition, model);
 
 exports.Model = model;
 

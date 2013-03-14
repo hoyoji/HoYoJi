@@ -1,18 +1,11 @@
 <Alloy>
-	<View layout="vertical" height="Ti.UI.SIZE" exitOnClose="true" backgroundColor="white" zIndex="900" opacity="0.5">
-		<View height="Ti.UI.SIZE" layout="horizontal"  left="20%">
-			<Picker id="datePicker"  selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE"></Picker>
-		</View>
-		<View height="Ti.UI.SIZE" layout="horizontal" left="20%">
-			<Picker id="timePicker"  selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_TIME"></Picker>
-			<Button id="sub" bottom="0" height="165" width="90">确认</Button>
-		</View>
+	<View height="260" width="Ti.UI.FILL" top="100%" zIndex="900">
+		<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
+		<Button top="0" id="submitButton" height="44" width="Ti.UI.FILL">选择</Button>
+		<Picker top="44" id="datePicker" platform="ios" selectionIndicator="true" format24="false" type="Ti.UI.PICKER_TYPE_DATE_AND_TIME" />
+
+		<!-- <View height="Ti.UI.SIZE" layout="horizontal" platform="android">
+		<Picker id="timePicker" platform="android"  useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_TIME" />
+		</View> -->
 	</View>
-	<!-- <View layout="vertical" height="Ti.UI.SIZE" exitOnClose="true" backgroundColor="white" zIndex="900" opacity="0.5">
-		<View height="Ti.UI.SIZE" layout="horizontal">
-			<Picker id="datePicker"  selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE"></Picker>
-			<Picker id="timePicker"  selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_TIME"></Picker>
-		</View>
-		<Button id="sub" right="30">确认</Button>
-	</View> -->
 </Alloy>

@@ -17,12 +17,21 @@ function Controller() {
         editModeTitle: "修改支出分类"
     });
     $.__views.titleBar.setParent($.__views.moneyExpenseCategoryForm);
+<<<<<<< HEAD
     $.__views.__alloyId45 = Ti.UI.createTableViewRow({
         id: "__alloyId45"
     });
     var __alloyId46 = [];
     __alloyId46.push($.__views.__alloyId45);
     $.__views.__alloyId47 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+    $.__views.__alloyId32 = Ti.UI.createTableViewRow({
+        id: "__alloyId32"
+    });
+    var __alloyId33 = [];
+    __alloyId33.push($.__views.__alloyId32);
+    $.__views.__alloyId34 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         labelText: "上级分类",
         hintText: "请选择上级分类",
         bindModel: "$.$model",
@@ -30,6 +39,7 @@ function Controller() {
         bindAttributeIsModel: "name",
         bindModelSelector: "money/moneyExpenseCategoryAll",
         bindModelSelectorParams: "selectedProject:project",
+<<<<<<< HEAD
         id: "__alloyId47"
     });
     $.__views.__alloyId47.setParent($.__views.__alloyId45);
@@ -38,15 +48,33 @@ function Controller() {
     });
     __alloyId46.push($.__views.__alloyId48);
     $.__views.__alloyId49 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+        id: "__alloyId34"
+    });
+    $.__views.__alloyId34.setParent($.__views.__alloyId32);
+    $.__views.__alloyId35 = Ti.UI.createTableViewRow({
+        id: "__alloyId35"
+    });
+    __alloyId33.push($.__views.__alloyId35);
+    $.__views.__alloyId36 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         labelText: "分类名称",
         hintText: "请输入分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
+<<<<<<< HEAD
         id: "__alloyId49"
     });
     $.__views.__alloyId49.setParent($.__views.__alloyId48);
     $.__views.table = Ti.UI.createTableView({
         data: __alloyId46,
+=======
+        id: "__alloyId36"
+    });
+    $.__views.__alloyId36.setParent($.__views.__alloyId35);
+    $.__views.table = Ti.UI.createTableView({
+        data: __alloyId33,
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         id: "table",
         bottom: "0",
         top: "42"

@@ -16,11 +16,16 @@ function Controller() {
         title: "主页"
     });
     $.__views.titleBar.setParent($.__views.home);
+<<<<<<< HEAD
     $.__views.__alloyId39 = Ti.UI.createView({
+=======
+    $.__views.__alloyId26 = Ti.UI.createView({
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
         height: "42",
         borderWidth: "1",
         borderColor: "black",
         bottom: "0",
+<<<<<<< HEAD
         id: "__alloyId39"
     });
     $.__views.home.add($.__views.__alloyId39);
@@ -34,6 +39,21 @@ function Controller() {
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
     __defers["$.__views.__alloyId40!click!openMoneyAddNew"] && $.__views.__alloyId40.addEventListener("click", openMoneyAddNew);
+=======
+        id: "__alloyId26"
+    });
+    $.__views.home.add($.__views.__alloyId26);
+    $.__views.__alloyId27 = Ti.UI.createButton({
+        title: "记一笔",
+        id: "__alloyId27"
+    });
+    $.__views.__alloyId26.add($.__views.__alloyId27);
+    openMoneyAddNew ? $.__views.__alloyId27.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId27!click!openMoneyAddNew"] = !0;
+    exports.destroy = function() {};
+    _.extend($, $.__views);
+    Alloy.Globals.extendsBaseViewController($, arguments[0]);
+    __defers["$.__views.__alloyId27!click!openMoneyAddNew"] && $.__views.__alloyId27.addEventListener("click", openMoneyAddNew);
+>>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
     _.extend($, exports);
 }
 
