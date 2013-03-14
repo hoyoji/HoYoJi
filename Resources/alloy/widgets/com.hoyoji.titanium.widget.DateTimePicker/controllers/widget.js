@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.DateTimePicker/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.DateTimePicker/" + s.substring(index + 1);
-    return path;
+    return path.indexOf("/") !== 0 ? "/" + path : path;
 }
 
 function Controller() {
@@ -35,14 +35,6 @@ function Controller() {
         width: Ti.UI.FILL
     });
     $.__views.widget.add($.__views.submitButton);
-    $.__views.datePicker = Ti.UI.createPicker({
-        top: "44",
-        id: "datePicker",
-        selectionIndicator: "true",
-        format24: "false",
-        type: Ti.UI.PICKER_TYPE_DATE_AND_TIME
-    });
-    $.__views.widget.add($.__views.datePicker);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var activeTextField;

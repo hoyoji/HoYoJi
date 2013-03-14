@@ -64,6 +64,12 @@
                 var saveCB = e.onSaveCB || e.saveModelCB;
                 $.$view.addEventListener("save", function(e) {
                     e.cancelBubble = !0;
+                    var hiddenTextField = Ti.UI.createTextField({
+                        visible: !1
+                    });
+                    $.$view.add(hiddenTextField);
+                    hiddenTextField.focus();
+                    hiddenTextField.blur();
                     $.saveStart(e);
                     setTimeout(function() {
                         saveCB(function() {

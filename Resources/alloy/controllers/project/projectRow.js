@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function Controller() {
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
@@ -16,15 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.projectRow.add($.__views.content);
-    $.__views.__alloyId56 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId67 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId56"
+        id: "__alloyId67"
     });
-    $.__views.__alloyId56.setParent($.__views.content);
+    $.__views.__alloyId67.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
@@ -49,6 +48,11 @@ function Controller() {
                 selectedProject: $.$model
             });
         }));
+        menuSection.add($.createContextMenuItem("收入分类", function() {
+            Alloy.Globals.openWindow("money/moneyIncomeCategoryAll", {
+                selectedProject: $.$model
+            });
+        }));
         return menuSection;
     };
     _.extend($, exports);
@@ -57,6 +61,3 @@ function Controller() {
 var Alloy = require("alloy"), Backbone = Alloy.Backbone, _ = Alloy._, $model;
 
 module.exports = Controller;
-=======
-Failed to acquire lock for git repository.
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011

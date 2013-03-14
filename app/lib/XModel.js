@@ -137,14 +137,14 @@
 						}
 					}
 					// 检查数据类型
-					if (field.contains("REAL")) {
-						if(_.isNaN(Number(fieldValue)) || !_.isNumber(fieldValue)){
+					if (field.contains("REAL") && fieldValue) {
+						if(_.isNaN(Number(fieldValue))){
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "请输入数字"};
 							continue;
 						}
 					}
-					if (field.contains("INTEGER")) {						
+					if (field.contains("INTEGER") && fieldValue) {						
 						if(_.isNaN(Number(fieldValue)) || fieldValue.contains(".")){
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "请输入整数 "};

@@ -19,16 +19,16 @@
                 		bindModel="$.$model"
                 		bindAttribute="password2"/>
                 </TableViewRow>
-                <TableViewRow class="table-row-edit">
+                <!-- <TableViewRow class="table-row-edit">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="年龄" hintText="请输入年龄" inputType="NumericKeyboard"
                 		bindModel="$.$model"
                 		bindAttribute="age"/>
-                </TableViewRow>
-                <TableViewRow class="table-row-edit">
+                </TableViewRow> -->
+                <!-- <TableViewRow class="table-row-edit">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="生日" hintText="请输入生日" inputType="DateTimePicker"
                 		bindModel="$.$model"
                 		bindAttribute="birthday"/>
-                </TableViewRow>                            
+                </TableViewRow>              -->               
            </TableView>
 	</View>
 </Alloy>

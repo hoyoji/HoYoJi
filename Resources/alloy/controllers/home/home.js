@@ -16,44 +16,24 @@ function Controller() {
         title: "主页"
     });
     $.__views.titleBar.setParent($.__views.home);
-<<<<<<< HEAD
-    $.__views.__alloyId39 = Ti.UI.createView({
-=======
-    $.__views.__alloyId26 = Ti.UI.createView({
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    $.__views.__alloyId44 = Ti.UI.createView({
         height: "42",
         borderWidth: "1",
         borderColor: "black",
         bottom: "0",
-<<<<<<< HEAD
-        id: "__alloyId39"
+        id: "__alloyId44"
     });
-    $.__views.home.add($.__views.__alloyId39);
-    $.__views.__alloyId40 = Ti.UI.createButton({
+    $.__views.home.add($.__views.__alloyId44);
+    $.__views.__alloyId45 = Ti.UI.createButton({
         title: "记一笔",
-        id: "__alloyId40"
+        id: "__alloyId45"
     });
-    $.__views.__alloyId39.add($.__views.__alloyId40);
-    openMoneyAddNew ? $.__views.__alloyId40.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId40!click!openMoneyAddNew"] = !0;
+    $.__views.__alloyId44.add($.__views.__alloyId45);
+    openMoneyAddNew ? $.__views.__alloyId45.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId45!click!openMoneyAddNew"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    __defers["$.__views.__alloyId40!click!openMoneyAddNew"] && $.__views.__alloyId40.addEventListener("click", openMoneyAddNew);
-=======
-        id: "__alloyId26"
-    });
-    $.__views.home.add($.__views.__alloyId26);
-    $.__views.__alloyId27 = Ti.UI.createButton({
-        title: "记一笔",
-        id: "__alloyId27"
-    });
-    $.__views.__alloyId26.add($.__views.__alloyId27);
-    openMoneyAddNew ? $.__views.__alloyId27.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId27!click!openMoneyAddNew"] = !0;
-    exports.destroy = function() {};
-    _.extend($, $.__views);
-    Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    __defers["$.__views.__alloyId27!click!openMoneyAddNew"] && $.__views.__alloyId27.addEventListener("click", openMoneyAddNew);
->>>>>>> a7e8848ee2b98cf8085c58364fafbea05b131011
+    __defers["$.__views.__alloyId45!click!openMoneyAddNew"] && $.__views.__alloyId45.addEventListener("click", openMoneyAddNew);
     _.extend($, exports);
 }
 
