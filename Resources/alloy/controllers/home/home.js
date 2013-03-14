@@ -16,24 +16,24 @@ function Controller() {
         title: "主页"
     });
     $.__views.titleBar.setParent($.__views.home);
-    $.__views.__alloyId21 = Ti.UI.createView({
+    $.__views.__alloyId39 = Ti.UI.createView({
         height: "42",
         borderWidth: "1",
         borderColor: "black",
         bottom: "0",
-        id: "__alloyId21"
+        id: "__alloyId39"
     });
-    $.__views.home.add($.__views.__alloyId21);
-    $.__views.__alloyId22 = Ti.UI.createButton({
+    $.__views.home.add($.__views.__alloyId39);
+    $.__views.__alloyId40 = Ti.UI.createButton({
         title: "记一笔",
-        id: "__alloyId22"
+        id: "__alloyId40"
     });
-    $.__views.__alloyId21.add($.__views.__alloyId22);
-    openMoneyAddNew ? $.__views.__alloyId22.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId22!click!openMoneyAddNew"] = !0;
+    $.__views.__alloyId39.add($.__views.__alloyId40);
+    openMoneyAddNew ? $.__views.__alloyId40.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId40!click!openMoneyAddNew"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    __defers["$.__views.__alloyId22!click!openMoneyAddNew"] && $.__views.__alloyId22.addEventListener("click", openMoneyAddNew);
+    __defers["$.__views.__alloyId40!click!openMoneyAddNew"] && $.__views.__alloyId40.addEventListener("click", openMoneyAddNew);
     _.extend($, exports);
 }
 

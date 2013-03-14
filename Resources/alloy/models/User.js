@@ -5,7 +5,9 @@ exports.definition = {
             userName: "TEXT UNIQUE NOT NULL",
             nickName: "TEXT",
             password: "TEXT NOT NULL",
-            activeProjectId: "TEXT NOT NULL"
+            activeProjectId: "TEXT NOT NULL",
+            age: "INTEGER",
+            birthday: "TEXT"
         },
         defaults: {
             userName: ""

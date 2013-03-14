@@ -27,13 +27,11 @@
 			}
 
 			$.setEditable = function(editable) {
-				if (editable === false) {
-					$.field.setHintText("");
+				if($.$attrs.bindAttributeIsModel) {
+					$.field.setEnabled(false);
 				} else {
-					$.field.setHintText($.$attrs.hintText);
+					$.field.setEnabled(editable);
 				}
-				$.field.setEditable(editable);
-				// $.field.setEnabled(editable);
 			}
 
 			$.setSaveableMode = function(saveableMode) {
@@ -79,10 +77,6 @@
 							$.$view.show();
 					}
 				}
-				if($.$attrs.bindAttributeIsModel) {
-					$.field.setEditable(false);
-					// $.field.setEnabled(false);
-				}
 			}
 			var showErrorMsg = function(msg) {
 				$.error.setText(msg);
@@ -104,7 +98,9 @@
 					$.error.animate(animation);
 				}
 			}
-			
+			$.field.addEventListener("focus", function(e){
+				$.$view.fireEvent("singletap", {bubbles : true});
+			});
 			$.$view.addEventListener("singletap", function(e) {
 				if ($.saveableMode === "read") {
 					return;
@@ -123,12 +119,11 @@
 								attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
 							}
 						}
-						
-						
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector,attributes);
 					}
 				} else {
 					$.field.focus();
+					$.field.fireEvent("textfieldfocused", {bubbles : true, source : $.field, inputType : $.$attrs.inputType});
 				}
 			});
 			
@@ -206,7 +201,7 @@
 				$.label.setText($.$attrs.labelText);
 			}
 
-			$.setSaveableMode($.saveableMode);
+			// $.setSaveableMode($.saveableMode);
 
 			if ($.$attrs.bindAttribute) {
 				var model = $.$attrs.bindModel;

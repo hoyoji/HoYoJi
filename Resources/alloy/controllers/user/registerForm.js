@@ -17,48 +17,75 @@ function Controller() {
         editModeTitle: "修改用户"
     });
     $.__views.titleBar.setParent($.__views.registerForm);
-    $.__views.__alloyId42 = Ti.UI.createTableViewRow({
-        id: "__alloyId42"
+    $.__views.__alloyId60 = Ti.UI.createTableViewRow({
+        id: "__alloyId60"
     });
-    var __alloyId43 = [];
-    __alloyId43.push($.__views.__alloyId42);
-    $.__views.__alloyId44 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    var __alloyId61 = [];
+    __alloyId61.push($.__views.__alloyId60);
+    $.__views.__alloyId62 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "用户名",
         hintText: "请输入用户名",
+        keyboardType: Ti.UI.KEYBOARD_ASCII,
         editModeEditability: "noneditable",
         bindModel: "$.$model",
         bindAttribute: "userName",
-        id: "__alloyId44"
+        id: "__alloyId62"
     });
-    $.__views.__alloyId44.setParent($.__views.__alloyId42);
-    $.__views.__alloyId45 = Ti.UI.createTableViewRow({
-        id: "__alloyId45"
+    $.__views.__alloyId62.setParent($.__views.__alloyId60);
+    $.__views.__alloyId63 = Ti.UI.createTableViewRow({
+        id: "__alloyId63"
     });
-    __alloyId43.push($.__views.__alloyId45);
-    $.__views.__alloyId46 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    __alloyId61.push($.__views.__alloyId63);
+    $.__views.__alloyId64 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "密码",
         hintText: "请输入密码",
         passwordMask: "true",
         bindModel: "$.$model",
         bindAttribute: "password",
-        id: "__alloyId46"
+        id: "__alloyId64"
     });
-    $.__views.__alloyId46.setParent($.__views.__alloyId45);
-    $.__views.__alloyId47 = Ti.UI.createTableViewRow({
-        id: "__alloyId47"
+    $.__views.__alloyId64.setParent($.__views.__alloyId63);
+    $.__views.__alloyId65 = Ti.UI.createTableViewRow({
+        id: "__alloyId65"
     });
-    __alloyId43.push($.__views.__alloyId47);
-    $.__views.__alloyId48 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    __alloyId61.push($.__views.__alloyId65);
+    $.__views.__alloyId66 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "确认密码",
         hintText: "请再次输入密码",
         passwordMask: "true",
         bindModel: "$.$model",
         bindAttribute: "password2",
-        id: "__alloyId48"
+        id: "__alloyId66"
     });
-    $.__views.__alloyId48.setParent($.__views.__alloyId47);
+    $.__views.__alloyId66.setParent($.__views.__alloyId65);
+    $.__views.__alloyId67 = Ti.UI.createTableViewRow({
+        id: "__alloyId67"
+    });
+    __alloyId61.push($.__views.__alloyId67);
+    $.__views.__alloyId68 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+        labelText: "年龄",
+        hintText: "请输入年龄",
+        inputType: "NumericKeyboard",
+        bindModel: "$.$model",
+        bindAttribute: "age",
+        id: "__alloyId68"
+    });
+    $.__views.__alloyId68.setParent($.__views.__alloyId67);
+    $.__views.__alloyId69 = Ti.UI.createTableViewRow({
+        id: "__alloyId69"
+    });
+    __alloyId61.push($.__views.__alloyId69);
+    $.__views.__alloyId70 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+        labelText: "生日",
+        hintText: "请输入生日",
+        inputType: "DateTimePicker",
+        bindModel: "$.$model",
+        bindAttribute: "birthday",
+        id: "__alloyId70"
+    });
+    $.__views.__alloyId70.setParent($.__views.__alloyId69);
     $.__views.table = Ti.UI.createTableView({
-        data: __alloyId43,
+        data: __alloyId61,
         id: "table",
         bottom: "0",
         top: "42"

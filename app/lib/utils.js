@@ -67,17 +67,14 @@
 					view.addEventListener("registerwindowevent", function(e) {
 						scView.fireEvent("registerwindowevent", e);
 					});
-					// view.addEventListener("saveablemodechange", function(e) {
-					// scView.fireEvent("saveablemodechange", e);
-					// });
-					// view.addEventListener("autoupdate", function(e) {
-					// scView.fireEvent("autoupdate", e);
-					// });
 					view.addEventListener("registersaveablecallback", function(e) {
 						scView.fireEvent("registersaveablecallback", e);
 					});
 					view.addEventListener("registerdirtycallback", function(e) {
 						scView.fireEvent("registerdirtycallback", e);
+					});
+					view.addEventListener("textfieldfocused", function(e) {
+						scView.fireEvent("textfieldfocused", e);
 					});
 				})
 			}

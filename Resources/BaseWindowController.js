@@ -27,7 +27,6 @@
                         }) ];
                     } else menuFooter = [ $.createContextMenuItem(title, $.close) ];
                     $.contextMenu.open(Alloy.Globals.MenuSections, menuHeader, menuFooter);
-                    e.firstScrollableView && ($.contextMenu.firstScrollableView = e.firstScrollableView);
                 }
             },
             closeContextMenu: function() {
@@ -60,6 +59,18 @@
             e.windowCallback && $.$view.addEventListener(e.windowEvent, function(cbE) {
                 e.windowCallback(cbE, $);
             });
+        });
+        $.$view.addEventListener("textfieldfocused", function(e) {
+            if (e.inputType === "NumericKeyboard") {
+                $.dateTimePicker && $.dateTimePicker.close();
+                $.numericKeyboard && $.numericKeyboard.open(e.source);
+            } else if (e.inputType === "DateTimePicker") {
+                $.numericKeyboard && $.numericKeyboard.close();
+                $.dateTimePicker && $.dateTimePicker.open(e.source);
+            } else {
+                $.numericKeyboard && $.numericKeyboard.close();
+                $.dateTimePicker && $.dateTimePicker.close();
+            }
         });
         $.$view.addEventListener("closewin", function(e) {
             $.close();

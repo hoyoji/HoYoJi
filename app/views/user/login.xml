@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" saveableContainer="true" layout="vertical" height="Ti.UI.SIZE" borderColor="black" borderWidth="1">
-		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名">
-		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true">
+		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII"/>
+		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"/>
 		<!-- <TextField top="84" height="42" id="date1" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<TextField top="126" height="42" id="date2" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<TextField top="168" height="42" id="date3" borderWidth="1" width="Ti.UI.FILL"></TextField>

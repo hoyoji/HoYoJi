@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s.substring(index + 1);
-    return path.indexOf("/") !== 0 ? "/" + path : path;
+    return path;
 }
 
 function Controller() {
@@ -51,7 +51,14 @@ function Controller() {
     Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
     $.$attrs.hintText && ($.field.hintText = $.$attrs.hintText);
     $.$attrs.passwordMask === "true" && $.field.setPasswordMask(!0);
-    $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
+    $.$attrs.keyboardType && $.field.setKeyboardType($.$attrs.keyboardType);
+    $.field.setAutocapitalization(!1);
+    $.setEditable = function(editable) {
+        editable === !1 ? $.field.setHintText("") : $.field.setHintText($.$attrs.hintText);
+        if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard" || $.$attrs.inputType === "DateTimePicker") editable = !1;
+        $.field.setEditable(editable);
+    };
+    $.setSaveableMode($.saveableMode);
     _.extend($, exports);
 }
 

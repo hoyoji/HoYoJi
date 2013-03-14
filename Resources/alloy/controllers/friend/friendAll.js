@@ -16,16 +16,16 @@ function Controller() {
         title: "好友"
     });
     $.__views.titleBar.setParent($.__views.friendAll);
-    $.__views.__alloyId20 = Ti.UI.createButton({
+    $.__views.__alloyId38 = Ti.UI.createButton({
         title: "open projectAll",
-        id: "__alloyId20"
+        id: "__alloyId38"
     });
-    $.__views.friendAll.add($.__views.__alloyId20);
-    openFriendAll ? $.__views.__alloyId20.addEventListener("click", openFriendAll) : __defers["$.__views.__alloyId20!click!openFriendAll"] = !0;
+    $.__views.friendAll.add($.__views.__alloyId38);
+    openFriendAll ? $.__views.__alloyId38.addEventListener("click", openFriendAll) : __defers["$.__views.__alloyId38!click!openFriendAll"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    __defers["$.__views.__alloyId20!click!openFriendAll"] && $.__views.__alloyId20.addEventListener("click", openFriendAll);
+    __defers["$.__views.__alloyId38!click!openFriendAll"] && $.__views.__alloyId38.addEventListener("click", openFriendAll);
     _.extend($, exports);
 }
 

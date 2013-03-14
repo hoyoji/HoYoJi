@@ -27,7 +27,8 @@ function Controller() {
     $.__views.userName = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         id: "userName",
         labelText: "用户名",
-        hintText: "请输入用户名"
+        hintText: "请输入用户名",
+        keyboardType: Ti.UI.KEYBOARD_ASCII
     });
     $.__views.userName.setParent($.__views.login);
     $.__views.password = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
@@ -37,30 +38,30 @@ function Controller() {
         passwordMask: "true"
     });
     $.__views.password.setParent($.__views.login);
-    $.__views.__alloyId39 = Ti.UI.createView({
+    $.__views.__alloyId57 = Ti.UI.createView({
         layout: "horizontal",
         height: Ti.UI.SIZE,
-        id: "__alloyId39"
+        id: "__alloyId57"
     });
-    $.__views.login.add($.__views.__alloyId39);
-    $.__views.__alloyId40 = Ti.UI.createButton({
+    $.__views.login.add($.__views.__alloyId57);
+    $.__views.__alloyId58 = Ti.UI.createButton({
         title: "登入",
         width: "50%",
-        id: "__alloyId40"
+        id: "__alloyId58"
     });
-    $.__views.__alloyId39.add($.__views.__alloyId40);
-    doLogin ? $.__views.__alloyId40.addEventListener("click", doLogin) : __defers["$.__views.__alloyId40!click!doLogin"] = !0;
-    $.__views.__alloyId41 = Ti.UI.createButton({
+    $.__views.__alloyId57.add($.__views.__alloyId58);
+    doLogin ? $.__views.__alloyId58.addEventListener("click", doLogin) : __defers["$.__views.__alloyId58!click!doLogin"] = !0;
+    $.__views.__alloyId59 = Ti.UI.createButton({
         title: "注册",
         width: "50%",
-        id: "__alloyId41"
+        id: "__alloyId59"
     });
-    $.__views.__alloyId39.add($.__views.__alloyId41);
-    openRegister ? $.__views.__alloyId41.addEventListener("click", openRegister) : __defers["$.__views.__alloyId41!click!openRegister"] = !0;
+    $.__views.__alloyId57.add($.__views.__alloyId59);
+    openRegister ? $.__views.__alloyId59.addEventListener("click", openRegister) : __defers["$.__views.__alloyId59!click!openRegister"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
-    __defers["$.__views.__alloyId40!click!doLogin"] && $.__views.__alloyId40.addEventListener("click", doLogin);
-    __defers["$.__views.__alloyId41!click!openRegister"] && $.__views.__alloyId41.addEventListener("click", openRegister);
+    __defers["$.__views.__alloyId58!click!doLogin"] && $.__views.__alloyId58.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId59!click!openRegister"] && $.__views.__alloyId59.addEventListener("click", openRegister);
     _.extend($, exports);
 }
 
