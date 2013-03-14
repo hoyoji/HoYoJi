@@ -27,22 +27,13 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
-    $.makeContextMenu = function() {
+    $.makeContextMenu = function(e, isSelectMode) {
         var menuSection = Ti.UI.createTableViewSection({
             headerTitle: "项目操作"
         });
         menuSection.add($.createContextMenuItem("删除项目", function() {
             $.deleteModel();
-        }));
-        menuSection.add($.createContextMenuItem("新增子项目", function() {
-            Alloy.Globals.openWindow("project/projectForm", {
-                $model: "Project",
-                saveableMode: "add",
-                data: {
-                    parentProject: $.$model
-                }
-            });
-        }));
+        }, isSelectMode));
         menuSection.add($.createContextMenuItem("支出分类", function() {
             Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
                 selectedProject: $.$model

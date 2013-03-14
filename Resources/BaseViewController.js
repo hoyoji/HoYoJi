@@ -34,23 +34,36 @@
                 $.__savingCount--;
                 e.sourceController.saveErrorCB && e.sourceController.saveErrorCB();
             },
-            createContextMenuItem: function(title, callback) {
+            createContextMenuItem: function(title, callback, disabled) {
                 var row = Ti.UI.createTableViewRow({
                     title: title,
                     height: Alloy.CFG.UI.DefaultRowHeight
                 });
-                row.addEventListener("click", callback);
+                disabled ? row.setColor("gray") : row.addEventListener("click", callback);
                 return row;
             }
         });
         $.$view.addEventListener("opencontextmenu", function(e) {
-            $.makeContextMenu && Alloy.Globals.MenuSections.push($.makeContextMenu());
+            if ($.makeContextMenu) {
+                var sourceModel;
+                e.sourceModel && (sourceModel = Alloy.Collections[e.sourceModel.type].get(e.sourceModel.id));
+                Alloy.Globals.MenuSections.push($.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel));
+            }
         });
         $.$view.addEventListener("longpress", function(e) {
             e.cancelBubble = !0;
             Alloy.Globals.MenuSections = [];
+            var sourceModel;
+            if ($.$model) {
+                console.info("longpress " + $.$model.get("name"));
+                sourceModel = {
+                    type: $.$model.config.adapter.collection_name,
+                    id: $.$model.xGet("id")
+                };
+            }
             $.$view.fireEvent("opencontextmenu", {
-                bubbles: !0
+                bubbles: !0,
+                sourceModel: sourceModel
             });
         });
         if ($.scrollableView) {
@@ -64,12 +77,14 @@
                 var saveCB = e.onSaveCB || e.saveModelCB;
                 $.$view.addEventListener("save", function(e) {
                     e.cancelBubble = !0;
-                    var hiddenTextField = Ti.UI.createTextField({
-                        visible: !1
-                    });
-                    $.$view.add(hiddenTextField);
-                    hiddenTextField.focus();
-                    hiddenTextField.blur();
+                    if (!$.__hiddenTextField) {
+                        $.__hiddenTextField = Ti.UI.createTextField({
+                            visible: !1
+                        });
+                        $.$view.add($.__hiddenTextField);
+                    }
+                    $.__hiddenTextField.focus();
+                    $.__hiddenTextField.blur();
                     $.saveStart(e);
                     setTimeout(function() {
                         saveCB(function() {

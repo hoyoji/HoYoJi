@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.AutoUpdatableTextField/" + s.substring(index + 1);
-    return path.indexOf("/") !== 0 ? "/" + path : path;
+    return path;
 }
 
 function Controller() {
@@ -52,12 +52,11 @@ function Controller() {
     $.$attrs.hintText && ($.field.hintText = $.$attrs.hintText);
     $.$attrs.passwordMask === "true" && $.field.setPasswordMask(!0);
     $.$attrs.keyboardType && $.field.setKeyboardType($.$attrs.keyboardType);
-    $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
+    $.field.setAutocapitalization(!1);
     $.setEditable = function(editable) {
         editable === !1 ? $.field.setHintText("") : $.field.setHintText($.$attrs.hintText);
         if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard" || $.$attrs.inputType === "DateTimePicker") editable = !1;
         $.field.setEditable(editable);
-        editable === !1 ? $.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS : $.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
     };
     $.setSaveableMode($.saveableMode);
     _.extend($, exports);
