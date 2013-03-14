@@ -24,6 +24,10 @@ exports.definition = {
             activeProject: {
                 type: "Project",
                 attribute: null
+            },
+            defaultFriendCategory: {
+                type: "FriendCategory",
+                attribute: null
             }
         },
         rowView: "user/userRow",

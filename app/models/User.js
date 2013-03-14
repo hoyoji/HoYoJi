@@ -15,7 +15,8 @@ exports.definition = {
 	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" }
 		},
 		belongsTo : {
-			activeProject : {type : "Project", attribute : null}
+			activeProject : {type : "Project", attribute : null},
+			defaultFriendCategory : {type : "FriendCategory", attribute : null}
 		},
 		rowView : "user/userRow",
 		adapter : {

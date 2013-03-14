@@ -8,7 +8,7 @@
                 		bindModel="$.$model"
                 		bindAttribute="parentFriendCategory"
                 		bindAttributeIsModel="name"
-                		bindModelSelector="friend/friendCategoryAll"
+                		bindModelSelector="friend/friendAll"
                 		/>
                 </TableViewRow>
                 <TableViewRow class="table-edit-row">

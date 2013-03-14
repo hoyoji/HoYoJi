@@ -28,7 +28,7 @@ function Controller() {
         bindModel: "$.$model",
         bindAttribute: "parentFriendCategory",
         bindAttributeIsModel: "name",
-        bindModelSelector: "friend/friendCategoryAll",
+        bindModelSelector: "friend/friendAll",
         id: "__alloyId22"
     });
     $.__views.__alloyId22.setParent($.__views.__alloyId20);
