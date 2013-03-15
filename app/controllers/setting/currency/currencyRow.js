@@ -6,16 +6,26 @@ $.makeContextMenu = function() {
 		$.deleteModel();
 	}));
 	menuSection.add($.createContextMenuItem("设为本币", function() {
-		var oldActiveCurrency = Alloy.Models.User.xGet("activeCurrency");
-		var selectActiveCurrency = $.$model;
-		if(selectActiveCurrency !== oldActiveCurrency)
-		{
-			Alloy.Models.User.xSet("activeCurrency",selectActiveCurrency);
+		if($.$model !== Alloy.Models.User.xGet("activeCurrency")) {
+			Alloy.Models.User.xSet("activeCurrency",$.$model);
+			Alloy.Models.User.save({activeCurrencyId : $.$model.xGet("id")},{wait : true, patch : true});
 		}
 	}));
 	return menuSection;
 }
 
-// Alloy.Models.User.on("change : activeCurrency",function(){
-// 	
-// });
+function setActiveCurrency(){
+	if(Alloy.Models.User.xGet("activeCurrency") === $.$model){
+		$.check.show();
+	} else {
+		$.check.hide();
+	}
+}
+
+Alloy.Models.User.on("sync", setActiveCurrency);
+$.onWindowCloseDo(function(){
+	Alloy.Models.User.off("sync", setActiveCurrency);	
+});
+
+setActiveCurrency();
+

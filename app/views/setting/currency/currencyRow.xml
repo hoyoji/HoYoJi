@@ -5,6 +5,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "name" 
 			/>
+			<Label id="check" visible="false" color="black" right="0">√</Label>
 		</View>
 	</View>
 </Alloy>
