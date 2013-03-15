@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" title="账户设置" backgroundColor="cyan">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="账户设置"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyAccountsTable" bottom="42" top="42"/>
+	</View>
+</Alloy>

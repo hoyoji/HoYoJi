@@ -1,7 +1,6 @@
 ( function() {
 		exports.extends = function($, attrs) {
 			Alloy.Globals.extendsBaseViewController($, attrs);
-			
 			var errorLabel, childrenCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 			var isCollapsible = $.$attrs.collapsible === "true" || $.$view.collapsible === "true";
