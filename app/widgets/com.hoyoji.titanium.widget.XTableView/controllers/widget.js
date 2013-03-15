@@ -2,20 +2,11 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var collections = [], collapsibleSections = {};
 
-$.table.addEventListener("scroll", function(e) {
-	console.info("........... " + e.contentOffset.y);
-	if (e.contentOffset.y <= 0) {
-		e.cancelBubbles = true;
-	}
-});
-
 $.$view.addEventListener("click", function(e) {
-		console.info("XTable get click event .... ");
 		e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		$.table.deleteRow(e.index);
 	} else if (e.expandSection === true) {
-		console.info("XTable get expanding section .... ");
 		exports.expandSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
 		exports.collapseSection(e.index, e.sectionRowId);
@@ -30,7 +21,7 @@ function addRow(rowModel, collection) {
 	var row = Ti.UI.createTableViewRow();
 	rowViewController.setParent(row);
 	
-	if(rowViewController.$attrs.collapsible === "true" || rowViewController.$view.collapsible === "true"){
+	if(rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail){
 		// var collapsibleSection = Ti.UI.createTableViewSection();
 		// collapsibleSection.addEventListener("click", function(e){
 			// console.info("collapsibleSection got click event ");
@@ -47,17 +38,13 @@ exports.expandSection = function(rowIndex, sectionRowId){
 	var index = rowIndex;
 	var sectionRows = collapsibleSections[sectionRowId].rows;
 	var parentController = collapsibleSections[sectionRowId].parentRowController;
-	var collections = parentController.getChildCollections();
-	console.info("expanding section .... ");
+	var collections = parentController.getDetailCollections();
 	for(var i = 0; i < collections.length; i++){
-		console.info("expanding section .... populating collection .... ");
 		for(var j=0; j < collections[i].length; j++){
-		console.info("expanding section .... populating collection .... adding row ");
 			var rowModel = collections[i].at(j);
 			var rowViewController = Alloy.createController(rowModel.config.rowView, {
 				$model : rowModel,
-				$collection : collections[i],
-				collapsible : false
+				$collection : collections[i]
 			});
 			var row = Ti.UI.createTableViewRow();
 			rowViewController.setParent(row);
@@ -111,14 +98,12 @@ exports.close = function() {
 		$.parent.remove($.$view);
 	});
 	$.$view.animate(animation);
-	// $.$view.setTop("100%");
 }
 
 exports.open = function(top) {
 	if (top === undefined)
 		top = 42;
 	function animate() {
-		// $.$view.removeEventListener("postlayout", animate);
 		var animation = Titanium.UI.createAnimation();
 		animation.top = top;
 		animation.duration = 500;
@@ -127,7 +112,6 @@ exports.open = function(top) {
 		$.$view.animate(animation);
 	}
 
-	//$.$view.addEventListener("postlayout", animate);
 	$.$view.setTop("99%")
 	animate();
 }
