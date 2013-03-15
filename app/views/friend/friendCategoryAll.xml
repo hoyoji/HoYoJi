@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" title="好友分类" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友分类"/>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="projectsTable" bottom="42" top="42"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" bottom="42" top="42"/>
 	</View>
 </Alloy>

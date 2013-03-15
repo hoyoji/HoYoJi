@@ -12,39 +12,39 @@ function Controller() {
         id: "tabBar"
     });
     $.__views.tabBar.setParent($.__views.mainWindow);
-    var __alloyId14 = [];
-    $.__views.__alloyId15 = Alloy.createController("message/messageAll", {
-        id: "__alloyId15"
+    var __alloyId32 = [];
+    $.__views.__alloyId33 = Alloy.createController("message/messageAll", {
+        id: "__alloyId33"
     });
-    __alloyId14.push($.__views.__alloyId15.getViewEx({
+    __alloyId32.push($.__views.__alloyId33.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId16 = Alloy.createController("money/moneyAll", {
-        id: "__alloyId16"
+    $.__views.__alloyId34 = Alloy.createController("money/moneyAll", {
+        id: "__alloyId34"
     });
-    __alloyId14.push($.__views.__alloyId16.getViewEx({
+    __alloyId32.push($.__views.__alloyId34.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId17 = Alloy.createController("home/home", {
-        id: "__alloyId17"
+    $.__views.__alloyId35 = Alloy.createController("home/home", {
+        id: "__alloyId35"
     });
-    __alloyId14.push($.__views.__alloyId17.getViewEx({
+    __alloyId32.push($.__views.__alloyId35.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId18 = Alloy.createController("friend/friendAll", {
-        id: "__alloyId18"
+    $.__views.__alloyId36 = Alloy.createController("friend/friendAll", {
+        id: "__alloyId36"
     });
-    __alloyId14.push($.__views.__alloyId18.getViewEx({
+    __alloyId32.push($.__views.__alloyId36.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId19 = Alloy.createController("project/projectAll", {
-        id: "__alloyId19"
+    $.__views.__alloyId37 = Alloy.createController("project/projectAll", {
+        id: "__alloyId37"
     });
-    __alloyId14.push($.__views.__alloyId19.getViewEx({
+    __alloyId32.push($.__views.__alloyId37.getViewEx({
         recurse: !0
     }));
     $.__views.scrollableView = Ti.UI.createScrollableView({
-        views: __alloyId14,
+        views: __alloyId32,
         id: "scrollableView",
         currentPage: "2",
         showPagingControl: "false",

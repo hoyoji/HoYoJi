@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.projectsTable);
+$.titleBar.bindXTable($.friendCategoriesTable);
 
 var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null});
-$.projectsTable.addCollection(collection);
+$.friendCategoriesTable.addCollection(collection);

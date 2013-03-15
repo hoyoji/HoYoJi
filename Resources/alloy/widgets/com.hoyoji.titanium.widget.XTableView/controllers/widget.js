@@ -27,13 +27,18 @@ function Controller() {
         height: Ti.UI.FILL,
         width: Ti.UI.FILL,
         borderWidth: "1",
-        borderColor: "red"
+        borderColor: "red",
+        allowSelection: "false"
     });
     $.__views.widget.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseUIController($, arguments[0]);
     var collections = [];
+    $.table.addEventListener("scroll", function(e) {
+        console.info("........... " + e.contentOffset.y);
+        e.contentOffset.y <= 0 && (e.cancelBubbles = !0);
+    });
     $.$view.addEventListener("click", function(e) {
         if (e.deleterow === !0) {
             e.cancelBubble = !0;

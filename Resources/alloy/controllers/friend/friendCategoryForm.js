@@ -17,35 +17,35 @@ function Controller() {
         editModeTitle: "修改好友分类"
     });
     $.__views.titleBar.setParent($.__views.friendCategoryForm);
-    $.__views.__alloyId20 = Ti.UI.createTableViewRow({
-        id: "__alloyId20"
+    $.__views.__alloyId38 = Ti.UI.createTableViewRow({
+        id: "__alloyId38"
     });
-    var __alloyId21 = [];
-    __alloyId21.push($.__views.__alloyId20);
-    $.__views.__alloyId22 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    var __alloyId39 = [];
+    __alloyId39.push($.__views.__alloyId38);
+    $.__views.__alloyId40 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级好友分类",
         hintText: "请选择上级好友分类",
         bindModel: "$.$model",
         bindAttribute: "parentFriendCategory",
         bindAttributeIsModel: "name",
-        bindModelSelector: "friend/friendCategoryAll",
-        id: "__alloyId22"
+        bindModelSelector: "friend/friendAll",
+        id: "__alloyId40"
     });
-    $.__views.__alloyId22.setParent($.__views.__alloyId20);
-    $.__views.__alloyId23 = Ti.UI.createTableViewRow({
-        id: "__alloyId23"
+    $.__views.__alloyId40.setParent($.__views.__alloyId38);
+    $.__views.__alloyId41 = Ti.UI.createTableViewRow({
+        id: "__alloyId41"
     });
-    __alloyId21.push($.__views.__alloyId23);
-    $.__views.__alloyId24 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    __alloyId39.push($.__views.__alloyId41);
+    $.__views.__alloyId42 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "好友分类名称",
         hintText: "请输入好友分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId24"
+        id: "__alloyId42"
     });
-    $.__views.__alloyId24.setParent($.__views.__alloyId23);
+    $.__views.__alloyId42.setParent($.__views.__alloyId41);
     $.__views.table = Ti.UI.createTableView({
-        data: __alloyId21,
+        data: __alloyId39,
         id: "table",
         bottom: "0",
         top: "42"

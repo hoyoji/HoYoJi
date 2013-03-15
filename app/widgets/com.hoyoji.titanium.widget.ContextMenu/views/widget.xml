@@ -2,7 +2,7 @@
 	<View class="container" backgroundColor='#00000000' visible="false" zIndex="10000" width="Ti.UI.FILL" height="Ti.UI.FILL" >
 		<TextField id="hiddenText" visible="false"></TextField>
 		<View id="menuWrapper" backgroundColor='#80000000' left="100%" width="50%">
-			<TableView id="header" top="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0" backgroundColor="white"></TableView>
+			<TableView id="header" top="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0" backgroundColor="white" allowSelection="false" />
 			<View top="84" bottom="42" width="Ti.UI.FILL">
 				<TableView id="table" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0" backgroundColor="white"></TableView>
 			</View>

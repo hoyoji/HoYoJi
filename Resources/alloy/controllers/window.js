@@ -11,6 +11,10 @@ function Controller() {
         zIndex: "101"
     });
     $.addTopLevelView($.__views.window);
+    $.__views.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", "widget", {
+        id: "numericKeyboard"
+    });
+    $.__views.numericKeyboard.setParent($.__views.window);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseWindowController($, arguments[0]);

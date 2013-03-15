@@ -23,14 +23,15 @@ function Controller() {
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
     var selectedProject = $.$attrs.selectedProject;
-    $.makeContextMenu = function() {
+    $.makeContextMenu = function(e, isSelectMode, souceModel) {
         var menuSection = Ti.UI.createTableViewSection();
         menuSection.add($.createContextMenuItem("新增支出分类", function() {
             Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {
                 $model: "MoneyExpenseCategory",
                 saveableMode: "add",
                 data: {
-                    project: selectedProject
+                    project: selectedProject,
+                    parentExpenseCategory: sourceModel
                 }
             });
         }));

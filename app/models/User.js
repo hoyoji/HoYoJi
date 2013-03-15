@@ -7,6 +7,9 @@ exports.definition = {
 			password : "TEXT NOT NULL",
 			activeProjectId : "TEXT NOT NULL",
 			activeCurrencyId : "TEXT NOT NULL"
+			// ,
+			// age : "INTEGER",
+			// birthday : "TEXT"
 		},
 		defaults : {
 			userName : ""
@@ -21,6 +24,7 @@ exports.definition = {
 			activeProject : {type : "Project", attribute : null},
 			activeCurrency : {type : "Currency", attribute : null},
 			activeAccount : {type : "MoneyAccount", attribute : null}
+			defaultFriendCategory : {type : "FriendCategory", attribute : null}
 		},
 		rowView : "user/userRow",
 		adapter : {
@@ -35,7 +39,7 @@ exports.definition = {
 			validators : {
 				userName : function(xValidateComplete) {
 					if(!this.isNew()){
-						if(this.get("userName") !== this.previous("userName")){
+						if(this.hasChanged("userName")){
 							xValidateComplete({ msg : "用户名不能被修改" });
 						} 
 					}

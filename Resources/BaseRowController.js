@@ -1,10 +1,12 @@
 (function() {
     exports.extends = function($, attrs) {
         function removeRow(row) {
+            console.info("removing row ...........");
             if (row === $.$model) {
                 isRemoving = !0;
                 var animation = Titanium.UI.createAnimation();
                 if ($.$model.id) {
+                    console.info("removing row ...........");
                     animation.duration = 500;
                     animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
                     animation.left = "-100%";
@@ -16,6 +18,7 @@
                     });
                     $.$view.animate(animation);
                 } else {
+                    console.info("destroy row ...........");
                     animation.duration = 800;
                     animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
                     animation.opacity = "0.5";
@@ -31,11 +34,9 @@
                 $.$view.animate(animation);
             }
         }
-        function shakeMe() {
-            Alloy.Globals.alloyAnimation.shake($.$view, 200);
-        }
-        var errorLabel;
+        function shakeMe() {}
         Alloy.Globals.extendsBaseViewController($, attrs);
+<<<<<<< HEAD
         var openChildButton = Ti.UI.createButton({
             title: ">",
             height: Ti.UI.FILL,
@@ -48,6 +49,38 @@
             e.cancelBubble = !0;
             $.getParentController().createChildTable(getChildTitle(), getChildCollections());
         });
+=======
+        var errorLabel, hasChild = $.$attrs.hasChild || $.$view.hasChild, getChildCollections = function() {
+            return hasChild ? [ $.$model.xGet(hasChild) ] : [];
+        }, getChildTitle = function() {
+            var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
+            return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
+        };
+        if (hasChild) {
+            var openChildButton = Ti.UI.createButton({
+                title: ">",
+                height: Ti.UI.FILL,
+                width: 42,
+                right: 0
+            });
+            $.$view.add(openChildButton);
+            $.content.setRight(42);
+            openChildButton.addEventListener("singletap", function(e) {
+                e.cancelBubble = !0;
+                $.getParentController().createChildTable(getChildTitle(), getChildCollections());
+            });
+            function enableOpenChildButton() {
+                $.$model.xGet(hasChild).length === 0 ? openChildButton.setEnabled(!1) : openChildButton.setEnabled(!0);
+            }
+            $.$model.xGet(hasChild).on("remove", enableOpenChildButton);
+            $.$model.xGet(hasChild).on("add", enableOpenChildButton);
+            $.onWindowCloseDo(function() {
+                $.$model.xGet(hasChild).off("remove", enableOpenChildButton);
+                $.$model.xGet(hasChild).off("add", enableOpenChildButton);
+            });
+            enableOpenChildButton();
+        }
+>>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
         $.deleteModel = function() {
             Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
                 var deleteFunc = $.$model.xDelete || $.$model._xDelete;
@@ -92,6 +125,7 @@
                 });
             });
         };
+<<<<<<< HEAD
         var getChildCollections = function() {
             var hasChild = $.$attrs.hasChild || $.$view.hasChild;
             return hasChild ? [ $.$model.xGet(hasChild) ] : [];
@@ -99,6 +133,9 @@
             var hasChild = $.$attrs.hasChild || $.$view.hasChild, hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
             return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
         }, isRemoving = !1;
+=======
+        var isRemoving = !1;
+>>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
         $.$model.on("change", shakeMe);
         $.$attrs.$collection.on("remove", removeRow);
         $.onWindowCloseDo(function() {

@@ -10,16 +10,16 @@ function Controller() {
         id: "index"
     });
     $.addTopLevelView($.__views.index);
-    $.__views.__alloyId12 = Ti.UI.createView({
+    $.__views.__alloyId30 = Ti.UI.createView({
         layout: "vertical",
         top: "0",
-        id: "__alloyId12"
+        id: "__alloyId30"
     });
-    $.__views.index.add($.__views.__alloyId12);
-    $.__views.__alloyId13 = Alloy.createController("user/login", {
-        id: "__alloyId13"
+    $.__views.index.add($.__views.__alloyId30);
+    $.__views.__alloyId31 = Alloy.createController("user/login", {
+        id: "__alloyId31"
     });
-    $.__views.__alloyId13.setParent($.__views.__alloyId12);
+    $.__views.__alloyId31.setParent($.__views.__alloyId30);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseWindowController($, arguments[0]);

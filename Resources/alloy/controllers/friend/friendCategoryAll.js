@@ -13,12 +13,12 @@ function Controller() {
         title: "好友分类"
     });
     $.__views.titleBar.setParent($.__views.friendCategoryAll);
-    $.__views.projectsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
-        id: "projectsTable",
+    $.__views.friendCategoriesTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
+        id: "friendCategoriesTable",
         bottom: "42",
         top: "42"
     });
-    $.__views.projectsTable.setParent($.__views.friendCategoryAll);
+    $.__views.friendCategoriesTable.setParent($.__views.friendCategoryAll);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
@@ -32,11 +32,11 @@ function Controller() {
         }));
         return menuSection;
     };
-    $.titleBar.bindXTable($.projectsTable);
+    $.titleBar.bindXTable($.friendCategoriesTable);
     var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({
         parentFriendCategory: null
     });
-    $.projectsTable.addCollection(collection);
+    $.friendCategoriesTable.addCollection(collection);
     _.extend($, exports);
 }
 

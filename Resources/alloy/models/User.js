@@ -28,6 +28,10 @@ exports.definition = {
             activeProject: {
                 type: "Project",
                 attribute: null
+            },
+            defaultFriendCategory: {
+                type: "FriendCategory",
+                attribute: null
             }
         },
         rowView: "user/userRow",
@@ -42,7 +46,7 @@ exports.definition = {
         _.extend(Model.prototype, Alloy.Globals.XModel, {
             validators: {
                 userName: function(xValidateComplete) {
-                    this.isNew() || this.get("userName") !== this.previous("userName") && xValidateComplete({
+                    this.isNew() || this.hasChanged("userName") && xValidateComplete({
                         msg: "用户名不能被修改"
                     });
                     xValidateComplete();
