@@ -2,22 +2,25 @@
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增账户" readModeTitle="账户详细" editModeTitle="修改账户"/>
-		<TableView id="table" class="table-edit" bottom="0" top="42">
-			<TableViewRow class="table-edit-row">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种名称" hintText="请输入币种名称"
-				bindModel="$.$model"
-				bindAttribute="name"/>
-			</TableViewRow>
-			<TableViewRow class="table-edit-row">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种符号" hintText="请输入币种符号"
-				bindModel="$.$model"
-				bindAttribute="symbol"/>
-			</TableViewRow>
-			<TableViewRow class="table-edit-row">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种代号" hintText="请输入币种代号"
-				bindModel="$.$model"
-				bindAttribute="code"/>
-			</TableViewRow>
-		</TableView>
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户名称" hintText="请输入账户名称"
+			bindModel="$.$model"
+			bindAttribute="name"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种" hintText="请选择币种"
+			bindModel="$.$model"
+			bindAttribute="currency"
+			bindAttributeIsModel="name"
+			bindModelSelector="setting/currency/currencyAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="当前余额" hintText="请输入当前余额"
+			bindModel="$.$model"
+			bindAttribute="currentBalance"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="共享类型" hintText="请选择共享类型"
+			bindModel="$.$model"
+			bindAttribute="sharingType"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注" hintText="请输入备注"
+			bindModel="$.$model"
+			bindAttribute="remark"/>
+		</ScrollView>
 	</View>
 </Alloy>
