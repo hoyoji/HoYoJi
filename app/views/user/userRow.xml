@@ -1,11 +1,9 @@
 <Alloy>
-<<<<<<< HEAD
-	<View class="container" openForm="friendAddRequestMsg/">
-			<!-- <Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
-=======
+<!-- <<<<<<< HEAD -->
+	<!-- <View class="container" openForm="friendAddRequestMsg/"> -->
+			<!-- <Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"-->
 	<View class="container" openForm="user/registerForm" height="42">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
->>>>>>> 36bc443a4994e8e476ae9598cfe79197eb5330ab
 				bindModel = "$.$model"
 				bindAttribute = "userName" 
 			/>
