@@ -10,6 +10,9 @@ $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeCurrency", activeCurrency);
 
+var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currency : $.$model.xGet("activeCurrency"), currentBalance : "0", sharingType : "个人", ownerUser : $.$model}).xAddToSave($);
+$.$model.xSet("activeMoneyAccount", activeMoneyAccount);
+
 $.onWindowCloseDo(function(){
 	Alloy.Globals.initStore();
 })

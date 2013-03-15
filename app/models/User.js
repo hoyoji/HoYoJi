@@ -7,6 +7,7 @@ exports.definition = {
 			password : "TEXT NOT NULL",
 			activeProjectId : "TEXT NOT NULL",
 			activeCurrencyId : "TEXT NOT NULL",
+			activeAccountId : "TEXT NOT NULL",
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL"
@@ -28,7 +29,6 @@ exports.definition = {
 			activeProject : {type : "Project", attribute : null},
 			activeCurrency : {type : "Currency", attribute : null},
 			activeAccount : {type : "MoneyAccount", attribute : null},
-			defaultFriendCategory : {type : "FriendCategory", attribute : null},
 			defaultFriendCategory : {type : "FriendCategory", attribute : null},
 			messageBox : {type : "MessageBox", attribute : null}
 		},
