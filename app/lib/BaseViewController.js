@@ -45,27 +45,41 @@
 						e.sourceController.saveErrorCB();
 					}
 				},
-				createContextMenuItem : function(title, callback) {
+				createContextMenuItem : function(title, callback, disabled) {
 					var row = Ti.UI.createTableViewRow({
 						title : title,
 						height : Alloy.CFG.UI.DefaultRowHeight
 					});
-					row.addEventListener("click", callback);
+					if(disabled){
+						row.setColor("gray");
+					} else {
+						row.addEventListener("click", callback);
+					}
 					return row;
 				}
 			});
 
 			$.$view.addEventListener("opencontextmenu", function(e) {
 				if ($.makeContextMenu) {
-					Alloy.Globals.MenuSections.push($.makeContextMenu());
+					var sourceModel; 
+					if(e.sourceModel){
+						sourceModel = Alloy.Collections[e.sourceModel.type].get(e.sourceModel.id);
+					}
+					Alloy.Globals.MenuSections.push($.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel));
 				}
 			});
 			
 			$.$view.addEventListener("longpress", function(e) {
 				e.cancelBubble = true;
 				Alloy.Globals.MenuSections = [];
+				var sourceModel;
+				if($.$model){
+					console.info("longpress " + $.$model.get("name"));
+					sourceModel = { type : $.$model.config.adapter.collection_name, id : $.$model.xGet("id")};
+				}
 				$.$view.fireEvent("opencontextmenu", {
-					bubbles : true
+					bubbles : true,
+					sourceModel : sourceModel
 				});
 			});
 
@@ -86,6 +100,15 @@
 					var saveCB = e.onSaveCB || e.saveModelCB;
 					$.$view.addEventListener("save", function(e) {
 						e.cancelBubble = true;
+						if(!$.__hiddenTextField){
+							$.__hiddenTextField = Ti.UI.createTextField({
+								visible : false
+							});
+							$.$view.add($.__hiddenTextField);
+						}
+						$.__hiddenTextField.focus();
+						$.__hiddenTextField.blur();
+						
 						$.saveStart(e);
 						setTimeout(function() {
 							// try{

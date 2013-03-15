@@ -61,6 +61,18 @@
                 e.windowCallback(cbE, $);
             });
         });
+        $.$view.addEventListener("textfieldfocused", function(e) {
+            if (e.inputType === "NumericKeyboard") {
+                $.dateTimePicker && $.dateTimePicker.close();
+                $.numericKeyboard && $.numericKeyboard.open(e.source);
+            } else if (e.inputType === "DateTimePicker") {
+                $.numericKeyboard && $.numericKeyboard.close();
+                $.dateTimePicker && $.dateTimePicker.open(e.source);
+            } else {
+                $.numericKeyboard && $.numericKeyboard.close();
+                $.dateTimePicker && $.dateTimePicker.close();
+            }
+        });
         $.$view.addEventListener("closewin", function(e) {
             $.close();
         });

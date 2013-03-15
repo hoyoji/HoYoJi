@@ -27,7 +27,8 @@ function Controller() {
     $.__views.userName = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         id: "userName",
         labelText: "用户名",
-        hintText: "请输入用户名"
+        hintText: "请输入用户名",
+        keyboardType: Ti.UI.KEYBOARD_ASCII
     });
     $.__views.userName.setParent($.__views.login);
     $.__views.password = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
@@ -37,6 +38,7 @@ function Controller() {
         passwordMask: "true"
     });
     $.__views.password.setParent($.__views.login);
+<<<<<<< HEAD
     $.__views.__alloyId50 = Ti.UI.createView({
         layout: "horizontal",
         height: Ti.UI.SIZE,
@@ -61,6 +63,32 @@ function Controller() {
     _.extend($, $.__views);
     __defers["$.__views.__alloyId51!click!doLogin"] && $.__views.__alloyId51.addEventListener("click", doLogin);
     __defers["$.__views.__alloyId52!click!openRegister"] && $.__views.__alloyId52.addEventListener("click", openRegister);
+=======
+    $.__views.__alloyId65 = Ti.UI.createView({
+        layout: "horizontal",
+        height: Ti.UI.SIZE,
+        id: "__alloyId65"
+    });
+    $.__views.login.add($.__views.__alloyId65);
+    $.__views.__alloyId66 = Ti.UI.createButton({
+        title: "登入",
+        width: "50%",
+        id: "__alloyId66"
+    });
+    $.__views.__alloyId65.add($.__views.__alloyId66);
+    doLogin ? $.__views.__alloyId66.addEventListener("click", doLogin) : __defers["$.__views.__alloyId66!click!doLogin"] = !0;
+    $.__views.__alloyId67 = Ti.UI.createButton({
+        title: "注册",
+        width: "50%",
+        id: "__alloyId67"
+    });
+    $.__views.__alloyId65.add($.__views.__alloyId67);
+    openRegister ? $.__views.__alloyId67.addEventListener("click", openRegister) : __defers["$.__views.__alloyId67!click!openRegister"] = !0;
+    exports.destroy = function() {};
+    _.extend($, $.__views);
+    __defers["$.__views.__alloyId66!click!doLogin"] && $.__views.__alloyId66.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId67!click!openRegister"] && $.__views.__alloyId67.addEventListener("click", openRegister);
+>>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
     _.extend($, exports);
 }
 

@@ -57,6 +57,9 @@
             view.addEventListener("registerdirtycallback", function(e) {
                 scView.fireEvent("registerdirtycallback", e);
             });
+            view.addEventListener("textfieldfocused", function(e) {
+                scView.fireEvent("textfieldfocused", e);
+            });
         });
     };
     String.prototype.contains = function(it) {

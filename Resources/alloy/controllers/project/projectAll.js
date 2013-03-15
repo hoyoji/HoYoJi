@@ -22,12 +22,15 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    $.makeContextMenu = function() {
+    $.makeContextMenu = function(e, isSelectMode, sourceModel) {
         var menuSection = Ti.UI.createTableViewSection();
         menuSection.add($.createContextMenuItem("新增项目", function() {
             Alloy.Globals.openWindow("project/projectForm", {
                 $model: "Project",
-                saveableMode: "add"
+                saveableMode: "add",
+                data: {
+                    parentProject: sourceModel
+                }
             });
         }));
         return menuSection;

@@ -5,10 +5,17 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
+<<<<<<< HEAD
 			activeProjectId : "TEXT NOT NULL",
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL"
+=======
+			activeProjectId : "TEXT NOT NULL"
+			// ,
+			// age : "INTEGER",
+			// birthday : "TEXT"
+>>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
 		},
 		defaults : {
 			userName : "",
@@ -36,7 +43,7 @@ exports.definition = {
 			validators : {
 				userName : function(xValidateComplete) {
 					if(!this.isNew()){
-						if(this.get("userName") !== this.previous("userName")){
+						if(this.hasChanged("userName")){
 							xValidateComplete({ msg : "用户名不能被修改" });
 						} 
 					}

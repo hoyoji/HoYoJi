@@ -51,7 +51,15 @@ function Controller() {
     Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
     $.$attrs.hintText && ($.field.hintText = $.$attrs.hintText);
     $.$attrs.passwordMask === "true" && $.field.setPasswordMask(!0);
+    $.$attrs.keyboardType && $.field.setKeyboardType($.$attrs.keyboardType);
     $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
+    $.setEditable = function(editable) {
+        editable === !1 ? $.field.setHintText("") : $.field.setHintText($.$attrs.hintText);
+        if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard" || $.$attrs.inputType === "DateTimePicker") editable = !1;
+        $.field.setEditable(editable);
+        editable === !1 ? $.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS : $.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+    };
+    $.setSaveableMode($.saveableMode);
     _.extend($, exports);
 }
 

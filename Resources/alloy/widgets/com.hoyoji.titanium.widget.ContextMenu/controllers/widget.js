@@ -34,7 +34,8 @@ function Controller() {
         width: Ti.UI.FILL,
         height: Ti.UI.SIZE,
         right: "0",
-        backgroundColor: "white"
+        backgroundColor: "white",
+        allowSelection: "false"
     });
     $.__views.menuWrapper.add($.__views.header);
     $.__views.__alloyId1 = Ti.UI.createView({
