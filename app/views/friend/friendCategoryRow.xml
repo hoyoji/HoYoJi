@@ -1,9 +1,5 @@
 <Alloy>
-<<<<<<< HEAD
-	<View class="container" height="42" openForm="friend/friendCategoryForm" hasChild="subFriendCategories" collapsible="true">
-=======
-	<View class="container" height="42" openForm="friend/friendCategoryForm" hasChild="subFriendCategories" hasDetail="subFriendCategories" collapsible="true">
->>>>>>> 2cfb9d0beb6a427d975639f6aead59dc5007b396
+	<View class="container" height="42" openForm="friend/friendCategoryForm" hasChild="subFriendCategories" hasDetail="subFriendCategories">
 		<View id="content" class="row-content" height="Ti.UI.FILL">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
