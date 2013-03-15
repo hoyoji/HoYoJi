@@ -44,6 +44,10 @@
         });
         $.$view.add(openChildButton);
         $.content.setRight(42);
+        openChildButton.addEventListener("singletap", function(e) {
+            e.cancelBubble = !0;
+            $.getParentController().createChildTable(getChildTitle(), getChildCollections());
+        });
         $.deleteModel = function() {
             Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
                 var deleteFunc = $.$model.xDelete || $.$model._xDelete;
@@ -88,10 +92,6 @@
                 });
             });
         };
-        openChildButton.addEventListener("singletap", function(e) {
-            e.cancelBubble = !0;
-            $.getParentController().createChildTable(getChildTitle(), getChildCollections());
-        });
         var getChildCollections = function() {
             var hasChild = $.$attrs.hasChild || $.$view.hasChild;
             return hasChild ? [ $.$model.xGet(hasChild) ] : [];

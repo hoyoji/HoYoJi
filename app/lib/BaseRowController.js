@@ -13,6 +13,10 @@
 			});
 			$.$view.add(openChildButton);
 			$.content.setRight(42);
+			openChildButton.addEventListener("singletap", function(e) {
+				e.cancelBubble = true;
+				$.getParentController().createChildTable(getChildTitle(), getChildCollections());
+			});
 
 			$.deleteModel = function() {
 				// var dialogs = require('alloy/dialogs');
@@ -66,10 +70,6 @@
 				);
 			}
 
-			openChildButton.addEventListener("singletap", function(e) {
-				e.cancelBubble = true;
-				$.getParentController().createChildTable(getChildTitle(), getChildCollections());
-			});
 
 			var getChildCollections = function() {
 				var hasChild = $.$attrs.hasChild || $.$view.hasChild

@@ -5,17 +5,22 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL"
+			activeProjectId : "TEXT NOT NULL",
+			activeCurrencyId : "TEXT NOT NULL"
 		},
 		defaults : {
 			userName : ""
 		},
 		hasMany : {
 	    	projects : {type : "Project", attribute : "ownerUser" },
-	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" }
+	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" },
+	    	currencies : {type : "Currency", attribute : "ownerUser"},
+	    	moneyAccounts : {type : "MoneyAccount", attribute : "ownerUser"}
 		},
 		belongsTo : {
-			activeProject : {type : "Project", attribute : null}
+			activeProject : {type : "Project", attribute : null},
+			activeCurrency : {type : "Currency", attribute : null},
+			activeAccount : {type : "MoneyAccount", attribute : null}
 		},
 		rowView : "user/userRow",
 		adapter : {

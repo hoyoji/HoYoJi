@@ -18,6 +18,10 @@ exports.definition = {
             friendCategories: {
                 type: "FriendCategory",
                 attribute: "ownerUser"
+            },
+            currencies: {
+                type: "Currency",
+                attribute: "ownerUser"
             }
         },
         belongsTo: {
