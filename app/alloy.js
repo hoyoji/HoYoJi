@@ -24,6 +24,16 @@ _.extend(Alloy.Globals, require("utils").Utils);
 	// }
 // }
 
+//==================================================================================
+
+Alloy.Globals.sendMsg = function(userId, content, xCallback){
+	var error;
+	
+	
+	
+	xCallback(error);
+}
+
 //=============================================== Views ============================
 
 // UI Component 继承表

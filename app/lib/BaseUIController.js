@@ -53,7 +53,7 @@
 					}
 				},
 				onWindowOpenDo : function(callback){
-					if($.__currentWindow){
+					if($.__currentWindow && $.__parentController){
 						callback();
 					} else {
 						$.$view.addEventListener("winopen", function(e){
@@ -109,6 +109,9 @@
 							console.info("++++++++++++++ got parent echo @ " + $.$view.id);
 							if(!$.__parentController){
 								$.__parentController = parentController;
+								if($.__currentWindow){
+									$.$view.fireEvent("winopen", {bubbles : false});					
+								}
 							}
 						},
 						windowPreListenCallback : function(e, winController){
@@ -116,7 +119,9 @@
 							console.info("++++++++++++++ got window echo @ " + $.$view.id);
 							if(!$.__currentWindow){
 								$.__currentWindow = winController;
-								$.$view.fireEvent("winopen", {bubbles : false});					
+								if($.__currentParent){
+									$.$view.fireEvent("winopen", {bubbles : false});					
+								}
 								
 								winController.$view.addEventListener("close", function(){
 									$.destroy();
