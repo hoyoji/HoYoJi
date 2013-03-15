@@ -44,7 +44,15 @@ Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 Alloy.Collections.instance("Currency");
+=======
+Alloy.Collections.instance("Friend");
+
+Alloy.Collections.instance("Message");
+
+Alloy.Collections.instance("MessageBox");
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 =======
 >>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
 

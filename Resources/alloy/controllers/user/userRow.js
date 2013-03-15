@@ -9,6 +9,7 @@ function Controller() {
     });
     $.addTopLevelView($.__views.userRow);
 <<<<<<< HEAD
+<<<<<<< HEAD
     $.__views.__alloyId68 = Ti.UI.createLabel({
         text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
         top: "0",
@@ -16,6 +17,15 @@ function Controller() {
         id: "__alloyId68"
     });
     $.__views.userRow.add($.__views.__alloyId68);
+=======
+    $.__views.__alloyId60 = Ti.UI.createLabel({
+        text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
+        top: "0",
+        height: "42",
+        id: "__alloyId60"
+    });
+    $.__views.userRow.add($.__views.__alloyId60);
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 =======
     $.__views.__alloyId71 = Ti.UI.createLabel({
         text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),

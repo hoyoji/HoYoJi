@@ -2,24 +2,25 @@ exports.definition = {
 	config : {
 		columns : {
 			id : "TEXT NOT NULL PRIMARY KEY",
-			name : "TEXT NOT NULL",
-			ownerUserId : "TEXT NOT NULL",
-			parentFriendCategoryId : "TEXT"
+			messageState : "TEXT NOT NULL", //new, read, closed
+        	date : "TEXT NOT NULL",
+        	messageTitle : "TEXT",
+        	detail : "TEXT",
+        	type : "TEXT NOT NULL",
+        	messageData : "TEXT",
+			fromUserId : "TEXT",
+			toUserId : "TEXT NOT NULL",
+			messageBoxId : "TEXT NOT NULL"
 		},
-		// defaults : {
-			// name : "",
-		// },
 		belongsTo : {
-			ownerUser : { type : "User", attribute : "friendCategories" },
-			parentFriendCategory : { type : "FriendCategory", attribute : "subFriendCategories" }
+			messageBox : { type : "MessageBox", attribute : "messages" },
+			fromUser : { type : "User", attribute : null },
+			toUser : { type : "User", attribute : null }
 		},
 		hasMany : {
-			subFriendCategories : { type : "FriendCategory", attribute : "parentFriendCategory" },
-			friends : { type : "Friend", attribute : "friendCategory" }
 		},
-		rowView : "friend/friendCategoryRow",
 		adapter : {
-			collection_name : "FriendCategory",
+			collection_name : "Message",
 			idAttribute : "id",
 			type : "sql",
 			db_name : "hoyoji"

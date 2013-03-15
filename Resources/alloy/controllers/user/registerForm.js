@@ -18,12 +18,21 @@ function Controller() {
     });
     $.__views.titleBar.setParent($.__views.registerForm);
 <<<<<<< HEAD
+<<<<<<< HEAD
     $.__views.__alloyId61 = Ti.UI.createTableViewRow({
         id: "__alloyId61"
     });
     var __alloyId62 = [];
     __alloyId62.push($.__views.__alloyId61);
     $.__views.__alloyId63 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+    $.__views.__alloyId53 = Ti.UI.createTableViewRow({
+        id: "__alloyId53"
+    });
+    var __alloyId54 = [];
+    __alloyId54.push($.__views.__alloyId53);
+    $.__views.__alloyId55 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 =======
     $.__views.table = Ti.UI.createScrollView({
         layout: "vertical",
@@ -42,6 +51,7 @@ function Controller() {
         bindModel: "$.$model",
         bindAttribute: "userName",
 <<<<<<< HEAD
+<<<<<<< HEAD
         id: "__alloyId63"
     });
     $.__views.__alloyId63.setParent($.__views.__alloyId61);
@@ -50,6 +60,16 @@ function Controller() {
     });
     __alloyId62.push($.__views.__alloyId64);
     $.__views.__alloyId65 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+        id: "__alloyId55"
+    });
+    $.__views.__alloyId55.setParent($.__views.__alloyId53);
+    $.__views.__alloyId56 = Ti.UI.createTableViewRow({
+        id: "__alloyId56"
+    });
+    __alloyId54.push($.__views.__alloyId56);
+    $.__views.__alloyId57 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 =======
         id: "__alloyId68"
     });
@@ -62,6 +82,7 @@ function Controller() {
         bindModel: "$.$model",
         bindAttribute: "password",
 <<<<<<< HEAD
+<<<<<<< HEAD
         id: "__alloyId65"
     });
     $.__views.__alloyId65.setParent($.__views.__alloyId64);
@@ -70,6 +91,16 @@ function Controller() {
     });
     __alloyId62.push($.__views.__alloyId66);
     $.__views.__alloyId67 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+=======
+        id: "__alloyId57"
+    });
+    $.__views.__alloyId57.setParent($.__views.__alloyId56);
+    $.__views.__alloyId58 = Ti.UI.createTableViewRow({
+        id: "__alloyId58"
+    });
+    __alloyId54.push($.__views.__alloyId58);
+    $.__views.__alloyId59 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 =======
         id: "__alloyId69"
     });
@@ -82,6 +113,7 @@ function Controller() {
         bindModel: "$.$model",
         bindAttribute: "password2",
 <<<<<<< HEAD
+<<<<<<< HEAD
         id: "__alloyId67"
     });
     $.__views.__alloyId67.setParent($.__views.__alloyId66);
@@ -93,7 +125,18 @@ function Controller() {
     });
     $.__views.registerForm.add($.__views.table);
 =======
+        id: "__alloyId59"
+    });
+    $.__views.__alloyId59.setParent($.__views.__alloyId58);
+    $.__views.table = Ti.UI.createTableView({
+        data: __alloyId54,
+        id: "table",
+        bottom: "0",
+        top: "42"
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
+=======
         id: "__alloyId70"
+>>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
     });
     $.__views.__alloyId70.setParent($.__views.table);
 >>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
@@ -106,7 +149,10 @@ function Controller() {
     }).xAddToSave($), defaultFriendCategory = Alloy.createModel("FriendCategory", {
         name: "我的好友",
         ownerUser: $.$model
+    }).xAddToSave($), messageBox = Alloy.createModel("MessageBox", {
+        ownerUser: $.$model
     }).xAddToSave($);
+    $.$model.xSet("messageBox", messageBox);
     $.$model.xSet("activeProject", defaultProject);
     $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
     $.onWindowCloseDo(function() {
