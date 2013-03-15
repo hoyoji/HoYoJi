@@ -42,14 +42,11 @@ Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 
 Alloy.Collections.instance("FriendCategory");
-<<<<<<< HEAD
 
 Alloy.Collections.instance("Friend");
 
 Alloy.Collections.instance("Message");
 
 Alloy.Collections.instance("MessageBox");
-=======
->>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
 
 Alloy.createController("index");
