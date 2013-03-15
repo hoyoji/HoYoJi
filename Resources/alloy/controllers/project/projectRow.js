@@ -7,6 +7,7 @@ function Controller() {
         height: "42",
         openForm: "project/projectForm",
         hasChild: "subProjects",
+        collapsible: "true",
         id: "projectRow"
     });
     $.addTopLevelView($.__views.projectRow);

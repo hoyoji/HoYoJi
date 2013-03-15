@@ -1,15 +1,19 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.XTableView/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.XTableView/" + s.substring(index + 1);
-    return path.indexOf("/") !== 0 ? "/" + path : path;
+    return path;
 }
 
 function Controller() {
     function addRow(rowModel, collection) {
-        var rowView = Alloy.createController(rowModel.config.rowView, {
+        var rowViewController = Alloy.createController(rowModel.config.rowView, {
             $model: rowModel,
             $collection: collection
         }), row = Ti.UI.createTableViewRow();
-        rowView.setParent(row);
+        rowViewController.setParent(row);
+        if (rowViewController.$attrs.collapsible === "true" || rowViewController.$view.collapsible === "true") collapsibleSections[rowModel.xGet("id")] = {
+            parentRowController: rowViewController,
+            rows: []
+        };
         $.table.appendRow(row);
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
@@ -34,17 +38,43 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseUIController($, arguments[0]);
-    var collections = [];
+    var collections = [], collapsibleSections = {};
     $.table.addEventListener("scroll", function(e) {
         console.info("........... " + e.contentOffset.y);
         e.contentOffset.y <= 0 && (e.cancelBubbles = !0);
     });
     $.$view.addEventListener("click", function(e) {
-        if (e.deleterow === !0) {
-            e.cancelBubble = !0;
-            $.table.deleteRow(e.index);
-        }
+        console.info("XTable get click event .... ");
+        e.cancelBubble = !0;
+        if (e.deleteRow === !0) $.table.deleteRow(e.index); else if (e.expandSection === !0) {
+            console.info("XTable get expanding section .... ");
+            exports.expandSection(e.index, e.sectionRowId);
+        } else e.collapseSection === !0 && exports.collapseSection(e.index, e.sectionRowId);
     });
+    exports.expandSection = function(rowIndex, sectionRowId) {
+        var index = rowIndex, sectionRows = collapsibleSections[sectionRowId].rows, parentController = collapsibleSections[sectionRowId].parentRowController, collections = parentController.getChildCollections();
+        console.info("expanding section .... ");
+        for (var i = 0; i < collections.length; i++) {
+            console.info("expanding section .... populating collection .... ");
+            for (var j = 0; j < collections[i].length; j++) {
+                console.info("expanding section .... populating collection .... adding row ");
+                var rowModel = collections[i].at(j), rowViewController = Alloy.createController(rowModel.config.rowView, {
+                    $model: rowModel,
+                    $collection: collections[i],
+                    collapsible: !1
+                }), row = Ti.UI.createTableViewRow();
+                rowViewController.setParent(row);
+                sectionRows.push(row);
+                $.table.insertRowAfter(index, row);
+                index++;
+            }
+        }
+    };
+    exports.collapseSection = function(rowIndex, sectionRowId) {
+        var index = rowIndex + 1, sectionRows = collapsibleSections[sectionRowId].rows;
+        for (var i = 0; i < sectionRows.length; i++) $.table.deleteRow(index);
+        collapsibleSections[sectionRowId].rows = [];
+    };
     exports.addCollection = function(collection) {
         console.info("xTableView adding collection " + collection.length);
         collections.push(collection);

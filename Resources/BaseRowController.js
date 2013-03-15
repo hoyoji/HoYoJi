@@ -13,7 +13,7 @@
                     animation.addEventListener("complete", function() {
                         $.$view.fireEvent("click", {
                             bubbles: !0,
-                            deleterow: !0
+                            deleteRow: !0
                         });
                     });
                     $.$view.animate(animation);
@@ -27,24 +27,34 @@
                     animation.addEventListener("complete", function() {
                         $.$view.fireEvent("click", {
                             bubbles: !0,
-                            deleterow: !0
+                            deleteRow: !0
                         });
                     });
                 }
                 $.$view.animate(animation);
             }
         }
-        function shakeMe() {}
+        function shakeMe() {
+            Alloy.Globals.alloyAnimation.shake($.$view, 200);
+        }
         Alloy.Globals.extendsBaseViewController($, attrs);
-        var errorLabel, hasChild = $.$attrs.hasChild || $.$view.hasChild, getChildCollections = function() {
-            return hasChild ? [ $.$model.xGet(hasChild) ] : [];
-        }, getChildTitle = function() {
+        var errorLabel, childrenCollections, isExpanded = !1, hasChild = $.$attrs.hasChild || $.$view.hasChild, isCollapsible = $.$attrs.collapsible === "true" || $.$view.collapsible === "true";
+        if ($.$attrs.collapsible === "false" || $.$attrs.collapsible === !1) isCollapsible = !1;
+        $.getChildCollections = function() {
+            if (!childrenCollections) {
+                var children = hasChild ? hasChild.split(",") : [];
+                childrenCollections = [];
+                for (var i = 0; i < children.length; i++) childrenCollections.push($.$model.xGet(hasChild));
+            }
+            return childrenCollections;
+        };
+        $.getChildTitle = function() {
             var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
             return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
         };
         if (hasChild) {
             var openChildButton = Ti.UI.createButton({
-                title: ">",
+                title: isCollapsible ? "＋" : ">",
                 height: Ti.UI.FILL,
                 width: 42,
                 right: 0
@@ -53,18 +63,24 @@
             $.content.setRight(42);
             openChildButton.addEventListener("singletap", function(e) {
                 e.cancelBubble = !0;
-                $.getParentController().createChildTable(getChildTitle(), getChildCollections());
+                if (isCollapsible) if (isExpanded) {
+                    isExpanded = !1;
+                    openChildButton.setTitle("＋");
+                    $.$view.fireEvent("click", {
+                        bubbles: !0,
+                        collapseSection: !0,
+                        sectionRowId: $.$model.xGet("id")
+                    });
+                } else {
+                    isExpanded = !0;
+                    openChildButton.setTitle("－");
+                    $.$view.fireEvent("click", {
+                        bubbles: !0,
+                        expandSection: !0,
+                        sectionRowId: $.$model.xGet("id")
+                    });
+                } else $.getParentController().createChildTable($.getChildTitle(), $.getChildCollections());
             });
-            function enableOpenChildButton() {
-                $.$model.xGet(hasChild).length === 0 ? openChildButton.setEnabled(!1) : openChildButton.setEnabled(!0);
-            }
-            $.$model.xGet(hasChild).on("remove", enableOpenChildButton);
-            $.$model.xGet(hasChild).on("add", enableOpenChildButton);
-            $.onWindowCloseDo(function() {
-                $.$model.xGet(hasChild).off("remove", enableOpenChildButton);
-                $.$model.xGet(hasChild).off("add", enableOpenChildButton);
-            });
-            enableOpenChildButton();
         }
         $.deleteModel = function() {
             Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
@@ -116,10 +132,6 @@
         $.onWindowCloseDo(function() {
             $.$attrs.$collection.off("remove", removeRow);
             $.$model.off("change", shakeMe);
-        });
-        $.$view.addEventListener("click", function(e) {
-            if (e.deleterow) return;
-            e.cancelBubble = !0;
         });
         $.$view.addEventListener("singletap", function(e) {
             e.cancelBubble = !0;

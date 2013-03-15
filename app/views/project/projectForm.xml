@@ -2,7 +2,7 @@
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增项目" readModeTitle="项目资料" editModeTitle="修改项目"/>
-			  <ScrollView layout="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级项目" hintText="请选择上级项目" 
                 		bindModel="$.$model"
                 		bindAttribute="parentProject"

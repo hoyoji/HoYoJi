@@ -76,6 +76,11 @@
                 $.error.animate(animation);
             }
         };
+        $.field.addEventListener("focus", function(e) {
+            $.$view.fireEvent("singletap", {
+                bubbles: !0
+            });
+        });
         $.$view.addEventListener("singletap", function(e) {
             if ($.saveableMode === "read") return;
             if ($.$attrs.bindAttributeIsModel) {

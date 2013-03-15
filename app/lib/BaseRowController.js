@@ -2,20 +2,30 @@
 		exports.extends = function($, attrs) {
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			
-			var errorLabel;
+			var errorLabel, childrenCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
-				
-			var getChildCollections = function() {
-				return hasChild ? [$.$model.xGet(hasChild)] : [];
+			var isCollapsible = $.$attrs.collapsible === "true" || $.$view.collapsible === "true";
+			if($.$attrs.collapsible === "false" || $.$attrs.collapsible === false){
+				isCollapsible = false;
 			}
-			var getChildTitle = function() {
+			$.getChildCollections = function() {
+				if(!childrenCollections){
+					var children = hasChild ? hasChild.split(",") : [];
+					childrenCollections = [];
+					for(var i=0; i < children.length; i++){
+						childrenCollections.push($.$model.xGet(hasChild));
+					}	
+				}
+				return childrenCollections;
+			}
+			$.getChildTitle = function() {
 				var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
 				return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
 			}
 			
 			if(hasChild){
 				var openChildButton = Ti.UI.createButton({
-					title : ">",
+					title : isCollapsible ? "＋" : ">",
 					height : Ti.UI.FILL,
 					width : 42,
 					right : 0
@@ -24,22 +34,42 @@
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
 					e.cancelBubble = true;
-					$.getParentController().createChildTable(getChildTitle(), getChildCollections());
-				});
-				function enableOpenChildButton(){
-					if($.$model.xGet(hasChild).length === 0){
-						openChildButton.setEnabled(false);
+					if(isCollapsible){
+						if(isExpanded){
+							isExpanded = false;
+							openChildButton.setTitle("＋");
+							$.$view.fireEvent("click", {
+								bubbles : true,
+								collapseSection : true,
+								sectionRowId : $.$model.xGet("id") 
+							});
+						} else {
+							isExpanded = true;
+							openChildButton.setTitle("－");
+							$.$view.fireEvent("click", {
+								bubbles : true,
+								expandSection : true,
+								sectionRowId : $.$model.xGet("id")
+							});
+						}				
 					} else {
-						openChildButton.setEnabled(true);
-					}	
-				}
-				$.$model.xGet(hasChild).on("remove", enableOpenChildButton);
-				$.$model.xGet(hasChild).on("add", enableOpenChildButton);
-				$.onWindowCloseDo(function() {
-					$.$model.xGet(hasChild).off("remove", enableOpenChildButton);
-					$.$model.xGet(hasChild).off("add", enableOpenChildButton);
+						$.getParentController().createChildTable($.getChildTitle(), $.getChildCollections());
+					}
 				});
-				enableOpenChildButton();
+				// function enableOpenChildButton(){
+					// if($.$model.xGet(hasChild).length === 0){
+						// openChildButton.setEnabled(false);
+					// } else {
+						// openChildButton.setEnabled(true);
+					// }	
+				// }
+				// $.$model.xGet(hasChild).on("remove", enableOpenChildButton);
+				// $.$model.xGet(hasChild).on("add", enableOpenChildButton);
+				// $.onWindowCloseDo(function() {
+					// $.$model.xGet(hasChild).off("remove", enableOpenChildButton);
+					// $.$model.xGet(hasChild).off("add", enableOpenChildButton);
+				// });
+				// enableOpenChildButton();
 			}
 			
 			$.deleteModel = function() {
@@ -114,7 +144,7 @@
 							animation.addEventListener('complete', function() {
 								$.$view.fireEvent("click", {
 									bubbles : true,
-									deleterow : true
+									deleteRow : true
 								});
 							});
 							$.$view.animate(animation);
@@ -130,7 +160,7 @@
 						animation.addEventListener('complete', function() {
 							$.$view.fireEvent("click", {
 								bubbles : true,
-								deleterow : true
+								deleteRow : true
 							});
 						});
 					}
@@ -139,7 +169,7 @@
 			}
 
 			function shakeMe() {
-				//Alloy.Globals.alloyAnimation.shake($.$view, 200);
+				Alloy.Globals.alloyAnimation.shake($.$view, 200);
 			}
 
 			$.$model.on("change", shakeMe);
@@ -149,12 +179,12 @@
 				$.$model.off("change", shakeMe);
 			});
 
-			$.$view.addEventListener("click", function(e) {
-				if (e.deleterow) {
-					return;
-				}
-				e.cancelBubble = true;
-			});
+			// $.$view.addEventListener("click", function(e) {
+				// if (e.deleteRow) {
+					// return;
+				// }
+				// e.cancelBubble = true;
+			// });
 
 			$.$view.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;
