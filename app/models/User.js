@@ -5,20 +5,11 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 			activeProjectId : "TEXT NOT NULL",
-			activeCurrencyId : "TEXT NOT NULL"
-=======
-<<<<<<< HEAD
-			activeProjectId : "TEXT NOT NULL",
->>>>>>> eaaf18ae3cfbfa10b6e17d043531983282176619
+			activeCurrencyId : "TEXT NOT NULL",
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL"
->>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
+			messageBoxId : "TEXT NOT NULL"
 			// ,
 			// age : "INTEGER",
 			// birthday : "TEXT"
@@ -35,14 +26,11 @@ exports.definition = {
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},
-<<<<<<< HEAD
 			activeCurrency : {type : "Currency", attribute : null},
-			activeAccount : {type : "MoneyAccount", attribute : null}
-			defaultFriendCategory : {type : "FriendCategory", attribute : null}
-=======
+			activeAccount : {type : "MoneyAccount", attribute : null},
+			defaultFriendCategory : {type : "FriendCategory", attribute : null},
 			defaultFriendCategory : {type : "FriendCategory", attribute : null},
 			messageBox : {type : "MessageBox", attribute : null}
->>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 		},
 		rowView : "user/userRow",
 		adapter : {
