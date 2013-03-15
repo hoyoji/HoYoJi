@@ -6,7 +6,7 @@ function Controller() {
         backgroundColor: "white",
         height: "42",
         openForm: "friend/friendCategoryForm",
-        hasChild: "subFriendCategories,friends",
+        hasChild: "subFriendCategories",
         collapsible: "true",
         id: "friendCategoryRow"
     });
