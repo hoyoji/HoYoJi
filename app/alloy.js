@@ -92,9 +92,13 @@ Alloy.Collections.instance("Project");
 Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
+<<<<<<< HEAD
+Alloy.Collections.instance("Currency");
+=======
 Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");
+>>>>>>> 258d286599be9e1e192780c36803ee13c9d8896d
 
 // Alloy.Collections.Project.on("all", function(eName){
 	// console.info("Alloy.Collections.Project event : " + eName);

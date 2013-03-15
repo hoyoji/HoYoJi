@@ -7,6 +7,9 @@ $.$model.xSet("messageBox", messageBox);
 $.$model.xSet("activeProject", defaultProject);
 $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 
+var defaultCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
+$.$model.xSet("activeCurrency", defaultCurrency);
+
 $.onWindowCloseDo(function(){
 	Alloy.Globals.initStore();
 })

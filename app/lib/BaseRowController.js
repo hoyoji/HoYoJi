@@ -1,7 +1,6 @@
 ( function() {
 		exports.extends = function($, attrs) {
 			Alloy.Globals.extendsBaseViewController($, attrs);
-			
 			var errorLabel;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 				
