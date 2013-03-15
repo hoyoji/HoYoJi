@@ -5,10 +5,14 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL"
+			activeProjectId : "TEXT NOT NULL",
+			friendAuthorization : "TEXT NOT NULL",
+			defaultFriendCategoryId : "TEXT NOT NULL",
+			messageBoxId : "TEXT NOT NULL"
 		},
 		defaults : {
-			userName : ""
+			userName : "",
+			friendAuthorization : "required"
 		},
 		hasMany : {
 	    	projects : {type : "Project", attribute : "ownerUser" },
@@ -16,7 +20,8 @@ exports.definition = {
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},
-			defaultFriendCategory : {type : "FriendCategory", attribute : null}
+			defaultFriendCategory : {type : "FriendCategory", attribute : null},
+			messageBox : {type : "MessageBox", attribute : null}
 		},
 		rowView : "user/userRow",
 		adapter : {

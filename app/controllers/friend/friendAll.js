@@ -5,6 +5,9 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增好友分类", function() {
 		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", saveableMode : "add"});
 	}));
+	menuSection.add($.createContextMenuItem("添加好友", function() {
+		Alloy.Globals.openWindow("friend/friendSearchAll");
+	}));
 	return menuSection;
 }
 

@@ -5,7 +5,7 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("删除好友分类", function() {
 		$.deleteModel();
 	}));
-	menuSection.add($.createContextMenuItem("新增子好友分类", function() {
+	menuSection.add($.createContextMenuItem("新增子分类", function() {
 		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", saveableMode : "add", data : { parentFriendCategory : $.$model}});
 	}));
 	return menuSection;

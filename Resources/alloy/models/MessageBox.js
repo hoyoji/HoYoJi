@@ -2,33 +2,22 @@ exports.definition = {
     config: {
         columns: {
             id: "TEXT NOT NULL PRIMARY KEY",
-            name: "TEXT NOT NULL",
-            ownerUserId: "TEXT NOT NULL",
-            parentFriendCategoryId: "TEXT"
+            ownerUserId: "TEXT NOT NULL"
         },
         belongsTo: {
             ownerUser: {
                 type: "User",
-                attribute: "friendCategories"
-            },
-            parentFriendCategory: {
-                type: "FriendCategory",
-                attribute: "subFriendCategories"
+                attribute: null
             }
         },
         hasMany: {
-            subFriendCategories: {
-                type: "FriendCategory",
-                attribute: "parentFriendCategory"
-            },
-            friends: {
-                type: "Friend",
-                attribute: "friendCategory"
+            messages: {
+                type: "Message",
+                attribute: "messageBox"
             }
         },
-        rowView: "friend/friendCategoryRow",
         adapter: {
-            collection_name: "FriendCategory",
+            collection_name: "MessageBox",
             idAttribute: "id",
             type: "sql",
             db_name: "hoyoji"
@@ -48,9 +37,9 @@ exports.definition = {
 
 var Alloy = require("alloy"), _ = require("alloy/underscore")._, model, collection;
 
-model = Alloy.M("FriendCategory", exports.definition, []);
+model = Alloy.M("MessageBox", exports.definition, []);
 
-collection = Alloy.C("FriendCategory", exports.definition, model);
+collection = Alloy.C("MessageBox", exports.definition, model);
 
 exports.Model = model;
 
