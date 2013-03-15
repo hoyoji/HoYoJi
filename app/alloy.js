@@ -97,7 +97,6 @@ Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");
 
-
 // Alloy.Collections.Project.on("all", function(eName){
 	// console.info("Alloy.Collections.Project event : " + eName);
 // });

@@ -6,6 +6,7 @@ exports.definition = {
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
 			activeProjectId : "TEXT NOT NULL",
+			activeCurrencyId : "TEXT NOT NULL",
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL"

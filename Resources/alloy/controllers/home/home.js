@@ -33,20 +33,7 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-<<<<<<< HEAD
-    $.makeContextMenu = function() {
-        var menuSection = Ti.UI.createTableViewSection({
-            headerTitle: "设置操作"
-        });
-        menuSection.add($.createContextMenuItem("币种设置", function() {
-            Alloy.Globals.openWindow("setting/currency/currencyAll");
-        }));
-        return menuSection;
-    };
-    __defers["$.__views.__alloyId27!click!openMoneyAddNew"] && $.__views.__alloyId27.addEventListener("click", openMoneyAddNew);
-=======
     __defers["$.__views.__alloyId45!click!openMoneyAddNew"] && $.__views.__alloyId45.addEventListener("click", openMoneyAddNew);
->>>>>>> 53658da4e0c243f2506c916dd3b8dd0bfce71b26
     _.extend($, exports);
 }
 

@@ -30,6 +30,9 @@ function Controller() {
                 saveableMode: "add"
             });
         }));
+        menuSection.add($.createContextMenuItem("添加好友", function() {
+            Alloy.Globals.openWindow("friend/friendSearchAll");
+        }));
         return menuSection;
     };
     $.titleBar.bindXTable($.friendCategoriesTable);
