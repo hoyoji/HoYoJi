@@ -25,6 +25,16 @@ exports.definition = {
 	extendModel: function(Model) {		
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
+			xDelete : function(xFinishCallback){
+				var error;
+				if(Alloy.Models.User.xGet("activeCurrency") === this){
+					error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除。"};
+				 } else {
+					this._xDelete(xFinishCallback);
+					return;
+				}
+				xFinishCallback(error);
+			}
 		});
 		
 		return Model;
