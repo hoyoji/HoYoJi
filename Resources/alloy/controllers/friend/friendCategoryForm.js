@@ -23,8 +23,8 @@ function Controller() {
     var __alloyId39 = [];
     __alloyId39.push($.__views.__alloyId38);
     $.__views.__alloyId40 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
-        labelText: "上级好友分类",
-        hintText: "请选择上级好友分类",
+        labelText: "上级分类",
+        hintText: "请选择上级分类",
         bindModel: "$.$model",
         bindAttribute: "parentFriendCategory",
         bindAttributeIsModel: "name",
@@ -37,8 +37,8 @@ function Controller() {
     });
     __alloyId39.push($.__views.__alloyId41);
     $.__views.__alloyId42 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
-        labelText: "好友分类名称",
-        hintText: "请输入好友分类名称",
+        labelText: "分类名称",
+        hintText: "请输入分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
         id: "__alloyId42"

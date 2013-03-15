@@ -38,30 +38,30 @@ function Controller() {
         passwordMask: "true"
     });
     $.__views.password.setParent($.__views.login);
-    $.__views.__alloyId65 = Ti.UI.createView({
+    $.__views.__alloyId77 = Ti.UI.createView({
         layout: "horizontal",
         height: Ti.UI.SIZE,
-        id: "__alloyId65"
+        id: "__alloyId77"
     });
-    $.__views.login.add($.__views.__alloyId65);
-    $.__views.__alloyId66 = Ti.UI.createButton({
+    $.__views.login.add($.__views.__alloyId77);
+    $.__views.__alloyId78 = Ti.UI.createButton({
         title: "登入",
         width: "50%",
-        id: "__alloyId66"
+        id: "__alloyId78"
     });
-    $.__views.__alloyId65.add($.__views.__alloyId66);
-    doLogin ? $.__views.__alloyId66.addEventListener("click", doLogin) : __defers["$.__views.__alloyId66!click!doLogin"] = !0;
-    $.__views.__alloyId67 = Ti.UI.createButton({
+    $.__views.__alloyId77.add($.__views.__alloyId78);
+    doLogin ? $.__views.__alloyId78.addEventListener("click", doLogin) : __defers["$.__views.__alloyId78!click!doLogin"] = !0;
+    $.__views.__alloyId79 = Ti.UI.createButton({
         title: "注册",
         width: "50%",
-        id: "__alloyId67"
+        id: "__alloyId79"
     });
-    $.__views.__alloyId65.add($.__views.__alloyId67);
-    openRegister ? $.__views.__alloyId67.addEventListener("click", openRegister) : __defers["$.__views.__alloyId67!click!openRegister"] = !0;
+    $.__views.__alloyId77.add($.__views.__alloyId79);
+    openRegister ? $.__views.__alloyId79.addEventListener("click", openRegister) : __defers["$.__views.__alloyId79!click!openRegister"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
-    __defers["$.__views.__alloyId66!click!doLogin"] && $.__views.__alloyId66.addEventListener("click", doLogin);
-    __defers["$.__views.__alloyId67!click!openRegister"] && $.__views.__alloyId67.addEventListener("click", openRegister);
+    __defers["$.__views.__alloyId78!click!doLogin"] && $.__views.__alloyId78.addEventListener("click", doLogin);
+    __defers["$.__views.__alloyId79!click!openRegister"] && $.__views.__alloyId79.addEventListener("click", openRegister);
     _.extend($, exports);
 }
 

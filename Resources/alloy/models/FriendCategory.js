@@ -20,6 +20,10 @@ exports.definition = {
             subFriendCategories: {
                 type: "FriendCategory",
                 attribute: "parentFriendCategory"
+            },
+            friends: {
+                type: "Friend",
+                attribute: "friendCategory"
             }
         },
         rowView: "friend/friendCategoryRow",
