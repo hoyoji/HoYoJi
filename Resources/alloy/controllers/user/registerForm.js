@@ -19,6 +19,7 @@ function Controller() {
     $.__views.titleBar.setParent($.__views.registerForm);
     $.__views.table = Ti.UI.createScrollView({
         layout: "vertical",
+        scrollType: "vertical",
         disableBounce: "true",
         id: "table",
         bottom: "0",

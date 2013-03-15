@@ -46,13 +46,22 @@
 					}
 				},
 				createContextMenuItem : function(title, callback, disabled) {
-					var row = Ti.UI.createTableViewRow({
-						title : title,
-						height : Alloy.CFG.UI.DefaultRowHeight
-					});
+					var row;
 					if(disabled){
-						row.setColor("gray");
+						row = Ti.UI.createTableViewRow({
+						title : title,
+						color : 'gray',
+						height : Alloy.CFG.UI.DefaultRowHeight
+						});
+						row.addEventListener("click", function(e){
+							e.cancelBubble = true;
+						});
 					} else {
+						row = Ti.UI.createTableViewRow({
+						title : title,
+						color : 'black',
+						height : Alloy.CFG.UI.DefaultRowHeight
+						});
 						row.addEventListener("click", callback);
 					}
 					return row;

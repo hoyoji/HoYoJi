@@ -14,7 +14,8 @@ exports.definition = {
 			parentFriendCategory : { type : "FriendCategory", attribute : "subFriendCategories" }
 		},
 		hasMany : {
-			subFriendCategories : { type : "FriendCategory", attribute : "parentFriendCategory" }
+			subFriendCategories : { type : "FriendCategory", attribute : "parentFriendCategory" },
+			friends : { type : "Friend", attribute : "friendCategory" }
 		},
 		rowView : "friend/friendCategoryRow",
 		adapter : {
@@ -27,13 +28,6 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
-				// name : function(xValidateComplete){
-					// var error;
-					// if(!this.has("name") || this.get("name").length <= 0){
-						// error = {msg : "请输入项目名称"};
-					// }
-					// xValidateComplete(error);
-				// }
 			}	
 		});
 		return Model;

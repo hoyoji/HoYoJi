@@ -5,11 +5,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "项目操作"
 	});
 
-	menuSection.add($.createContextMenuItem("删除项目", 
-	function() {
-		$.deleteModel();
-	},isSelectMode));
-	
 	menuSection.add($.createContextMenuItem("支出分类", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
 			selectedProject : $.$model
@@ -20,5 +15,12 @@ $.makeContextMenu = function(e, isSelectMode) {
 			selectedProject : $.$model
 		});
 	}));
+	menuSection.add(
+		$.createContextMenuItem("删除项目", 
+			function() {
+				$.deleteModel();
+			}
+			,isSelectMode));
+	
 	return menuSection;
 }

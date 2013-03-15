@@ -92,6 +92,10 @@ Alloy.Collections.instance("Project");
 Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
+Alloy.Collections.instance("Currency");
+Alloy.Collections.instance("Friend");
+Alloy.Collections.instance("Message");
+Alloy.Collections.instance("MessageBox");
 
 // Alloy.Collections.Project.on("all", function(eName){
 	// console.info("Alloy.Collections.Project event : " + eName);
