@@ -94,7 +94,6 @@
 				this.__xValidateCount++;
 				setTimeout(function() {
 
-
 					self.validators[key].call(self, function(error) {
 						self.__xValidateCount--;
 						if (error) {

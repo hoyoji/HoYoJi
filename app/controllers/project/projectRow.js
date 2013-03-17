@@ -1,9 +1,9 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
-$.onRowTap = function(e){
-	alert("openForm");
-	return false;
-}
+// $.onRowTap = function(e){
+	// alert("openForm");
+	// return false;
+// }
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
