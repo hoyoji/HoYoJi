@@ -3,65 +3,79 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var collections = [], collapsibleSections = {};
 
 $.$view.addEventListener("click", function(e) {
-		e.cancelBubble = true;
+	e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		$.table.deleteRow(e.index);
 	} else if (e.expandSection === true) {
 		exports.expandSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
 		exports.collapseSection(e.index, e.sectionRowId);
+	} else if (e.addRowToSection) {
+		var section = collapsibleSections[e.sectionRowId];
+		var rowModel, collection;
+		for (var i = 0; i < section.collections.length; i++) {
+			rowModel = section.collections[i].get(e.addRowToSection);
+			if (rowModel) {
+				collection = section.collections[i];
+				break;
+			}
+		}
+		var len = collection.length ? collection.length - 1 : 0;
+		addRowToSection(rowModel, collection, e.index + len);
 	}
 });
 
-function addRow(rowModel, collection) {
+function addRowToSection(rowModel, collection, index) {
 	var rowViewController = Alloy.createController(rowModel.config.rowView, {
 		$model : rowModel,
 		$collection : collection
 	});
 	var row = Ti.UI.createTableViewRow();
 	rowViewController.setParent(row);
-	
-	if(rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail){
-		// var collapsibleSection = Ti.UI.createTableViewSection();
-		// collapsibleSection.addEventListener("click", function(e){
-			// console.info("collapsibleSection got click event ");
-			// collapsibleSection.fireEvent("click",e);
-		// });
-		// collapsibleSection.add(row);
-		collapsibleSections[rowModel.xGet("id")] = {parentRowController : rowViewController, rows : []};
-		// $.table.appendSection(collapsibleSection);
+	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
+		collapsibleSections[rowModel.xGet("id")] = {
+			parentRowController : rowViewController,
+			collections : []
+		};
 	}
-	$.table.appendRow(row);
+	
+	if (index === undefined) {
+		$.table.appendRow(row);
+	} else {
+		$.table.insertRowAfter(index, row);
+	}
 }
 
-exports.expandSection = function(rowIndex, sectionRowId){
+function addRow(rowModel, collection) {
+	addRowToSection(rowModel, collection);
+}
+
+exports.expandSection = function(rowIndex, sectionRowId) {
 	var index = rowIndex;
-	var sectionRows = collapsibleSections[sectionRowId].rows;
 	var parentController = collapsibleSections[sectionRowId].parentRowController;
 	var collections = parentController.getDetailCollections();
-	for(var i = 0; i < collections.length; i++){
-		for(var j=0; j < collections[i].length; j++){
-			var rowModel = collections[i].at(j);
-			var rowViewController = Alloy.createController(rowModel.config.rowView, {
-				$model : rowModel,
-				$collection : collections[i]
-			});
-			var row = Ti.UI.createTableViewRow();
-			rowViewController.setParent(row);
-			sectionRows.push(row);
-			$.table.insertRowAfter(index, row);
-			index ++;
-		}		
+	for (var i = 0; i < collections.length; i++) {
+		for (var j = 0; j < collections[i].length; j++) {
+			addRowToSection(collections[i].at(j), collections[i], index);
+			index++;
+		}
+		collapsibleSections[sectionRowId].collections.push(collections[i]);
 	}
 }
 
-exports.collapseSection = function(rowIndex, sectionRowId){
+exports.collapseSection = function(rowIndex, sectionRowId) {
 	var index = rowIndex + 1;
-	var sectionRows = collapsibleSections[sectionRowId].rows;
-	for(var i=0; i<sectionRows.length; i++){
-		$.table.deleteRow(index);
+	var collections = collapsibleSections[sectionRowId].collections;
+	for (var c = 0; c < collections.length; c++) {
+		for (var i = 0; i < collections[c].length; i++) {
+			var rowId = collections[c].at(i).get("id");
+			if(collapsibleSections[rowId]){
+				exports.collapseSection(index, rowId);
+			}
+			$.table.deleteRow(index);
+		}
 	}
-	collapsibleSections[sectionRowId].rows = [];
+	collapsibleSections[sectionRowId].collections = [];
 }
 
 exports.addCollection = function(collection) {
@@ -111,6 +125,7 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
+
 
 	$.$view.setTop("99%")
 	animate();

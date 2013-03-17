@@ -1,5 +1,10 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.onRowTap = function(e){
+	alert("openForm");
+	return false;
+}
+
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "项目操作"

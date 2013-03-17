@@ -49,6 +49,15 @@
 					openDetailButton.setEnabled(true);
 				}
 			}			
+			function addRowToExpandedSection(model){
+				if(isExpanded){
+					$.$view.fireEvent("click", {
+							bubbles : true,
+							addRowToSection : model.xGet("id"),
+							sectionRowId : $.$model.xGet("id")
+						});
+				}
+			}
 			$.getDetailCollections = function() {
 				if (!detailCollections) {
 					var details = hasDetail ? hasDetail.split(",") : [];
@@ -58,9 +67,11 @@
 						detailCollections.push(collection);
 						collection.on("remove", enableOpenDetailButton);
 						collection.on("add", enableOpenDetailButton);
+						collection.on("add", addRowToExpandedSection);
 						$.onWindowCloseDo(function() {
 							collection.off("remove", enableOpenDetailButton);
 							collection.off("add", enableOpenDetailButton);
+							collection.off("add", addRowToExpandedSection);
 						});
 					}
 				}
@@ -69,7 +80,7 @@
 			var getDetailCount = function(){
 				var count = 0;
 				if(!detailCollections){
-					$.getDetailCollectioins();
+					$.getDetailCollections();
 				}
 				for (var i = 0; i < detailCollections.length; i++) {
 						count += detailCollections[i].length;
@@ -121,6 +132,7 @@
 						});
 					}
 				});
+				enableOpenDetailButton();
 			}
 
 			$.deleteModel = function() {
