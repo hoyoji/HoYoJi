@@ -20,7 +20,8 @@ $.$view.addEventListener("click", function(e) {
 				break;
 			}
 		}
-		addRowToSection(rowModel, collection, e.index);
+		var len = collection.length ? collection.length - 1 : 0;
+		addRowToSection(rowModel, collection, e.index + len);
 	}
 });
 
@@ -39,9 +40,9 @@ function addRowToSection(rowModel, collection, index) {
 	}
 	
 	if (index === undefined) {
-		$.table.insertRowAfter(index, row);
-	} else {
 		$.table.appendRow(row);
+	} else {
+		$.table.insertRowAfter(index, row);
 	}
 }
 
