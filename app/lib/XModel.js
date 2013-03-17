@@ -222,6 +222,10 @@
 						return collection;
 					}
 
+					var filter = {};
+					filter[key] = this;
+					collection.xSetFilter(filter);
+					
 					console.info("xGet hasMany : " + type + collection.length);
 					var idString;
 					if (this.get('id')) {
@@ -233,10 +237,6 @@
 						query : "SELECT * FROM " + type + " WHERE " + key + "Id " + idString
 					});
 					console.info("xGet hasMany : " + key + collection.length);
-
-					var filter = {};
-					filter[key] = this;
-					collection.xSetFilter(filter);
 
 					this.set(attr, collection, {
 						silent : true
