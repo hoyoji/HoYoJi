@@ -94,7 +94,6 @@
 				this.__xValidateCount++;
 				setTimeout(function() {
 
-
 					self.validators[key].call(self, function(error) {
 						self.__xValidateCount--;
 						if (error) {
@@ -246,15 +245,18 @@
 					return collection;
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
-
+					console.info("xGet belongsTo " + fKey + " : " + fId);
 					if (!fId) return null;
 					
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
-						m = Alloy.createModel(table).fetch({
+						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+						m = Alloy.createModel(table);
+						m.fetch({
 							query : "SELECT * FROM " + table + " WHERE id " + idString
 						});
+						console.info("xGet fetch belongsTo from DB " + m);
 					}
 					this.set(attr, m, {
 						silent : true
