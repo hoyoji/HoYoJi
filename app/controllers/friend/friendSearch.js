@@ -14,7 +14,7 @@ $.titleBar.bindXTable($.searchUserTable);
 var collection = Alloy.createCollection("User");
 $.searchUserTable.addCollection(collection);
 
-$.search.addEventListener("change", function(e){
+$.searchButton.addEventListener("click", function(e){
 	console.info("搜索好友。。。");
 	collection.xSetFilter({userName : $.search.getValue()});
 	if(collection.xSearchInDb({userName : $.search.getValue()}).length === 0){

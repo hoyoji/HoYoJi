@@ -126,6 +126,7 @@
 						if(this.config.belongsTo && 
 							this.config.belongsTo[column.slice(0,-2)]){
 								if(!this.xGet(column.slice(0,-2))){
+									console.info("validating column : " + column + "  " + this.xGet(column.slice(0,-2)));
 									this.__xValidationErrorCount++;
 									this.__xValidationError[column] = {msg : "不能为空"};
 									continue;

@@ -26,10 +26,10 @@ _.extend(Alloy.Globals, require("utils").Utils);
 
 //==================================================================================
 
-Alloy.Globals.sendMsg = function(userId, content, xCallback){
+Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback){
 	var error;
 	
-	
+	// HyjApp.store.get("adapter").sendMsg(msgJSON, deferred);
 	
 	xCallback(error);
 }
