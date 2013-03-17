@@ -37,7 +37,8 @@ function addRowToSection(rowModel, collection, index) {
 			collections : []
 		};
 	}
-	if (index) {
+	
+	if (index === undefined) {
 		$.table.insertRowAfter(index, row);
 	} else {
 		$.table.appendRow(row);
@@ -66,6 +67,10 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 	var collections = collapsibleSections[sectionRowId].collections;
 	for (var c = 0; c < collections.length; c++) {
 		for (var i = 0; i < collections[c].length; i++) {
+			var rowId = collections[c].at(i).get("id");
+			if(collapsibleSections[rowId]){
+				exports.collapseSection(index, rowId);
+			}
 			$.table.deleteRow(index);
 		}
 	}
