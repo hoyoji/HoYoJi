@@ -1,0 +1,12 @@
+<Alloy>
+	<View layout="vertical">
+			<View height="Ti.UI.SIZE" layout="horizontal">
+				<Label id="label" />
+				<View id="radioView" height="Ti.UI.SIZE" width="Ti.UI.SIZE" layout="horizontal">
+				</View>
+				 <!-- <TextField id="gender"></TextField> -->
+				 <!-- <Switch id="gender" value="false" titleOff="女" titleOn="男" onChange="outputState"/>-->
+				 <Label id="genderValidateMsg" color="red"/> 
+			</View>
+	</View>
+</Alloy>

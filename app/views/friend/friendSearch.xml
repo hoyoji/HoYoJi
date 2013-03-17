@@ -1,0 +1,7 @@
+<Alloy>
+	<View class="container" title="添加好友" backgroundColor="cyan">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加好友"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="searchUserTable" bottom="42" top="42"/>
+		 <SearchBar id="search" barColor="#000" showCancel="false" height="43" bottom="0" zIndex="850"/>
+	</View>
+</Alloy>

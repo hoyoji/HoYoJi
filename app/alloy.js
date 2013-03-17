@@ -24,6 +24,16 @@ _.extend(Alloy.Globals, require("utils").Utils);
 	// }
 // }
 
+//==================================================================================
+
+Alloy.Globals.sendMsg = function(userId, content, xCallback){
+	var error;
+	
+	
+	
+	xCallback(error);
+}
+
 //=============================================== Views ============================
 
 // UI Component 继承表
@@ -93,6 +103,7 @@ Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
 Alloy.Collections.instance("Currency");
+Alloy.Collections.instance("MoneyAccount");
 Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");

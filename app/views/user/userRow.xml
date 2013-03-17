@@ -1,5 +1,9 @@
 <Alloy>
-	<View class="container" openForm="user/registerForm">
-		<Label text="{userName}" top="0" height="42"/>
+	<View class="container" openForm="user/registerForm" height="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
+				bindModel = "$.$model"
+				bindAttribute = "userName" 
+			/>
+			<!-- <Label id="userName"/> -->
 	</View>
 </Alloy>

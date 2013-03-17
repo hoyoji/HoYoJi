@@ -1,0 +1,1 @@
+Alloy.Globals.extendsBaseFormController($, arguments[0]);

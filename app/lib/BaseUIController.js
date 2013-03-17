@@ -83,6 +83,7 @@
 			});
 
 			$.$view.addEventListener("registerwindowevent", function(e){
+				console.info($.$view.id + " 111 ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
 				if(e.windowEvent === "detectwindow" && e.source !== $.$view){
 				console.info($.$view.id + " ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
 					if($.__currentWindow && e.windowPreListenCallback) {
@@ -99,16 +100,20 @@
 				}
 			});
 			
-			function detectWindow(){
+			function detectWindow(e){
 				$.$view.removeEventListener("postlayout", detectWindow);
-				console.info("firing registerwindowevent from " + $.$view.id);
+				console.info("detectWindow firing registerwindowevent from " + e.source.id);
 				$.$view.fireEvent("registerwindowevent",
 					{ 	bubbles : true,
+						source : $.$view,
 						windowEvent : "detectwindow", 
 						parentWindowCallback : function(parentController){
 							console.info("++++++++++++++ got parent echo @ " + $.$view.id);
 							if(!$.__parentController){
 								$.__parentController = parentController;
+								// if($.__currentWindow){
+									// $.$view.fireEvent("winopen", {bubbles : false});					
+								// }
 							}
 						},
 						windowPreListenCallback : function(e, winController){
@@ -116,7 +121,9 @@
 							console.info("++++++++++++++ got window echo @ " + $.$view.id);
 							if(!$.__currentWindow){
 								$.__currentWindow = winController;
-								$.$view.fireEvent("winopen", {bubbles : false});					
+								// if($.__currentParent){
+									$.$view.fireEvent("winopen", {bubbles : false});					
+								// }
 								
 								winController.$view.addEventListener("close", function(){
 									$.destroy();
