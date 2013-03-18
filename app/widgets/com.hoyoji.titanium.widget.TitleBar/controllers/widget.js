@@ -3,6 +3,17 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var boundXTable = null;
 exports.bindXTable = function(xTable){
 	boundXTable = xTable;
+	$.onWindowOpenDo(function(){
+		if($.getCurrentWindow().$attrs.selectorCallback){
+			$.$attrs.title = "选择" + $.$attrs.title + "(顶级)";
+			$.title.setText($.$attrs.title);
+			$.title.addEventListener("singletap", function(e){
+				e.cancelBubble = true;
+				$.getCurrentWindow().$attrs.selectorCallback(null);
+				$.getCurrentWindow().close();
+			});
+		}
+	});
 	xTable.$view.addEventListener("navigatedown", function(e){
 			$.childTableTitle.setText(e.childTableTitle);
 			$.title.hide();

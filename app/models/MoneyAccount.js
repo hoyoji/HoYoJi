@@ -6,7 +6,7 @@ exports.definition = {
 		    "currencyId": "TEXT NOT NULL",
 		    "currentBalance" : "TEXT NOT NULL",
 		    "sharingType" : "TEXT　NOT NULL",
-		    "remark" : "remark",
+		    "remark" : "TEXT",
 		    "ownerUserId" : "TEXT NOT NULL"
 		},
 		belongsTo : {
@@ -24,6 +24,16 @@ exports.definition = {
 	extendModel: function(Model) {		
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
+			xDelete : function(xFinishCallback){
+				var error;
+				if(Alloy.Models.User.xGet("activeMoneyAccount") === this){
+					error = { msg : "默认账户不能删除。"};
+				 } else {
+					this._xDelete(xFinishCallback);
+					return;
+				}
+				xFinishCallback(error);
+			}
 		});
 		
 		return Model;

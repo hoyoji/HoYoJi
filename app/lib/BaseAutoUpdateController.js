@@ -218,7 +218,11 @@
 						}
 
 						for (var i = 1; i < path.length; i++) {
-							model = model[path[i]];
+							if(_.isFunction(model.xGet)){
+								model = model.xGet(path[i]);
+							} else {
+								model = model[path[i]];
+							}
 						}
 						$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 					}

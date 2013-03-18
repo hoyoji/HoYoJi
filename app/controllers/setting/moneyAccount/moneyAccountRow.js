@@ -5,7 +5,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "账户操作"
 	});
 	menuSection.add(
-		$.createContextMenuItem("删除项目", 
+		$.createContextMenuItem("删除账户", 
 			function() {
 				$.deleteModel();
 			}
@@ -13,3 +13,4 @@ $.makeContextMenu = function(e, isSelectMode) {
 	
 	return menuSection;
 }
+

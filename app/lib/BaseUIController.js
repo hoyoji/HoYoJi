@@ -86,17 +86,17 @@
 				console.info($.$view.id + " 111 ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
 				if(e.windowEvent === "detectwindow" && e.source !== $.$view){
 				console.info($.$view.id + " ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
+					if(e.parentWindowCallback){
+						e.parentWindowCallback($);
+						e.parentWindowCallback = null;
+						delete e.parentWindowCallback;
+					}
 					if($.__currentWindow && e.windowPreListenCallback) {
 						e.cancelBubble = true;
 						e.windowPreListenCallback(null, $.__currentWindow);
 						e.windowPreListenCallback = null;
 						delete e.windowPreListenCallback;
 					} 
-					if(e.parentWindowCallback){
-						e.parentWindowCallback($);
-						e.parentWindowCallback = null;
-						delete e.parentWindowCallback;
-					}
 				}
 			});
 			
