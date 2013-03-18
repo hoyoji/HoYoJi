@@ -1,30 +1,34 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
-
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "汇率设置操作"
 	});
-	menuSection.add(
-		$.createContextMenuItem("删除汇率", 
-			function() {
-				$.deleteModel();
-			}
-			,isSelectMode));
-	
+	menuSection.add($.createContextMenuItem("删除汇率", function() {
+		$.deleteModel();
+	}, isSelectMode));
+
 	return menuSection;
 }
 
-$.onWindowOpenDo(function(){
 
-     var parentController = $.getParentController();
+function changeForeignAmount() {
+	var parentController = $.getParentController().getParentController();
+	var localCurrencyAmount = parentController.localCurrencyAmount.getValue();
+	var rate = $.$model.get("rate");
+	console.info("++++++" + localCurrencyAmount + "++++++++" + rate);
+	var foreignCurrencyAmount = String.formatCurrency(localCurrencyAmount / rate);
+	console.info("++++++" + foreignCurrencyAmount + "++++++++");
+	$.foreignCurrencyAmount.setText(foreignCurrencyAmount);
+	console.info("----" + foreignCurrencyAmount + "----");
+}
 
-     parentController.localCurrencyAmount.addEventListener("change", function(){
+$.onWindowOpenDo(function() {
+	var parentController = $.getParentController().getParentController();
+	parentController.localCurrencyAmount.addEventListener("change", changeForeignAmount);
+	changeForeignAmount();
+});
 
-                 var localCurrencyAmount = parentController.localCurrencyAmount.getValue();
-                 var rate = $.$model.get("rate");
-                 console.info("++++++"+localCurrencyAmount+"++++++++"+rate);
-                 $.foreignCurrencyAmount.setText(String.formatCurrency(foreignCurrencyAmount/rate));
-                 
-    });
-
+$.onWindowCloseDo(function() {
+	var parentController = $.getParentController().getParentController();
+	parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
 });

@@ -45,17 +45,18 @@ exports.definition = {
 					}
 
 					var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-					localCurrency : localCurrency,
-					foreignCurrency : foreignCurrency
+						localCurrency : localCurrency,
+						foreignCurrency : foreignCurrency
 					});
-					var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-					localCurrency : foreignCurrency,
-					foreignCurrency : localCurrency
-					});
-					if(currencyPositive.length>0 || currencyNegative.length>0){
-					error = {
-					msg : "新增失败，汇率已存在。。"
-					};
+					// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+					// localCurrency : foreignCurrency,
+					// foreignCurrency : localCurrency
+					// });
+					// if(currencyPositive.length>0 || currencyNegative.length>0){
+					if (currencyPositive.length > 0) {
+						error = {
+							msg : "新增失败，汇率已存在。。"
+						};
 					}
 					xValidateComplete(error);
 				}

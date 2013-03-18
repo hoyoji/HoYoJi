@@ -187,50 +187,35 @@
 			}
 			var isRemoving = false;
 			function removeRow(row) {
-				console.info("removing row ...........");
+				console.info("removing rowwwwwwww ........... " + row.xGet("id") );
 				if (row === $.$model) {
 					isRemoving = true;
 					var animation = Titanium.UI.createAnimation();
-
-					if ($.$model.id) {
-						console.info("removing row ...........");
-						// animation.duration = 200;
-						// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-						// animation.left = "20%"
-						// animation.addEventListener('complete', function() {
-						// var animation = Titanium.UI.createAnimation();
 						animation.duration = 500;
 						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-						animation.left = "-100%"
-						animation.addEventListener('complete', function() {
-							$.$view.fireEvent("click", {
-								bubbles : true,
-								deleteRow : true
-							});
-						});
-						$.$view.animate(animation);
-						// });
+
+					if ($.$model.id) {
+						console.info("removing rowwwwwwww2 ..........." + row.xGet("id"));
+						animation.left = "-100%";
 					} else {
 						console.info("destroy row ...........");
-						animation.duration = 800;
-						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-						// animation.backgroundColor = "black";
 						animation.opacity = "0.5";
 						animation.height = 0;
 						animation.width = 0;
-						animation.addEventListener('complete', function() {
-							$.$view.fireEvent("click", {
-								bubbles : true,
-								deleteRow : true
-							});
-						});
 					}
+					animation.addEventListener('complete', function() {
+						console.info("row firing click event to deleteeeeeeeeeeeeeeeeeeeeeee row " + row.xGet("id"));
+						$.$view.fireEvent("click", {
+							bubbles : true,
+							deleteRow : true
+						});
+					});
 					$.$view.animate(animation);
 				}
 			}
 
 			function shakeMe() {
-				Alloy.Globals.alloyAnimation.shake($.$view, 200);
+				// Alloy.Globals.alloyAnimation.shake($.$view, 200);
 			}
 
 
@@ -241,12 +226,13 @@
 				$.$model.off("change", shakeMe);
 			});
 
-			// $.$view.addEventListener("click", function(e) {
-			// if (e.deleteRow) {
-			// return;
-			// }
-			// e.cancelBubble = true;
-			// });
+			$.$view.addEventListener("click", function(e) {
+				console.info("row clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
+				if (e.deleteRow || e.expandSection || e.collapseSection) {
+					return;
+				}
+				e.cancelBubble = true;
+			});
 
 			$.$view.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;

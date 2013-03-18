@@ -15,7 +15,7 @@
 			bindModel="$.$model"
 			bindAttribute="rate"
 			/>
-			<Label id="foreignCurrencyAmount" right="5">0</Label>
+			<Label id="foreignCurrencyAmount" right="5" color= "#000">0</Label>
 		</View>
 	</View>
 </Alloy>
