@@ -29,9 +29,10 @@ _.extend(Alloy.Globals, require("utils").Utils);
 Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback){
 	var error;
 	
-	// HyjApp.store.get("adapter").sendMsg(msgJSON, deferred);
+	var msg = Alloy.createModel("Message");
+    msg.save(msgJSON, {patch : true, wait : true, success : xFinishedCallback});
 	
-	xCallback(error);
+	xFinishedCallback(error);
 }
 
 //=============================================== Views ============================
