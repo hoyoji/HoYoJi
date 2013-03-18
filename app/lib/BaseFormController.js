@@ -76,7 +76,7 @@
 
 			$.saveableMode = "edit";
 			$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || "edit");
-			if ($.titleBar) {
+			if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
 				$.titleBar.setSaveableMode($.saveableMode);
 			}
 

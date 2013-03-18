@@ -38,11 +38,11 @@
 						}
 					}
 				},
-				saveError : function(e) {
+				saveError : function(e, msg) {
 					console.info("save error ...");
 					$.__savingCount--;
 					if (e.sourceController.saveErrorCB) {
-						e.sourceController.saveErrorCB();
+						e.sourceController.saveErrorCB(msg);
 					}
 				},
 				createContextMenuItem : function(title, callback, disabled) {
@@ -123,8 +123,8 @@
 							// try{
 							saveCB(function() {
 								$.saveEnd(e);
-							}, function() {
-								$.saveError(e);
+							}, function(msg) {
+								$.saveError(e, msg);
 							});
 							// } catch(err) {
 							// console.error(err.toString());

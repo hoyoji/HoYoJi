@@ -1,5 +1,8 @@
 <Alloy>
 	<View class="container" title="账务" backgroundColor="green">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="账务"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="账务"/>        
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+        	buttons="排序,日,月,报表"
+        	ids="sort,date,month,report"/>
 	</View>
 </Alloy>
