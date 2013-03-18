@@ -19,6 +19,7 @@ exports.definition = {
 		},
 		hasMany : {
 		},
+		rowView : "message/messageRow",
 		adapter : {
 			collection_name : "Message",
 			idAttribute : "id",

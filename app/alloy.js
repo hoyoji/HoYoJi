@@ -24,6 +24,16 @@ _.extend(Alloy.Globals, require("utils").Utils);
 	// }
 // }
 
+//==================================================================================
+
+Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback){
+	var error;
+	
+	// HyjApp.store.get("adapter").sendMsg(msgJSON, deferred);
+	
+	xCallback(error);
+}
+
 //=============================================== Views ============================
 
 // UI Component 继承表

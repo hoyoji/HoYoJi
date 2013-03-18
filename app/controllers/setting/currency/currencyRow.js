@@ -27,5 +27,7 @@ $.onWindowCloseDo(function(){
 	Alloy.Models.User.off("sync", setActiveCurrency);	
 });
 
-setActiveCurrency();
+$.onWindowOpenDo(function(){
+	setActiveCurrency();
+});
 

@@ -1,16 +1,15 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.makeContextMenu = function() {
+$.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增好友分类", function() {
-		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", saveableMode : "add"});
+		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", saveableMode : "add", data : { parentFriendCategory : sourceModel }});
 	}));
 	menuSection.add($.createContextMenuItem("添加好友", function() {
-		Alloy.Globals.openWindow("friend/friendSearchAll");
+		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}));
 	return menuSection;
 }
-
 $.titleBar.bindXTable($.friendCategoriesTable);
 
 var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null});

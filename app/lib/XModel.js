@@ -94,7 +94,6 @@
 				this.__xValidateCount++;
 				setTimeout(function() {
 
-
 					self.validators[key].call(self, function(error) {
 						self.__xValidateCount--;
 						if (error) {
@@ -126,6 +125,7 @@
 						if(this.config.belongsTo && 
 							this.config.belongsTo[column.slice(0,-2)]){
 								if(!this.xGet(column.slice(0,-2))){
+									console.info("validating column : " + column + "  " + this.xGet(column.slice(0,-2)));
 									this.__xValidationErrorCount++;
 									this.__xValidationError[column] = {msg : "不能为空"};
 									continue;
@@ -222,6 +222,10 @@
 						return collection;
 					}
 
+					var filter = {};
+					filter[key] = this;
+					collection.xSetFilter(filter);
+					
 					console.info("xGet hasMany : " + type + collection.length);
 					var idString;
 					if (this.get('id')) {
@@ -234,10 +238,6 @@
 					});
 					console.info("xGet hasMany : " + key + collection.length);
 
-					var filter = {};
-					filter[key] = this;
-					collection.xSetFilter(filter);
-
 					this.set(attr, collection, {
 						silent : true
 					});
@@ -245,15 +245,18 @@
 					return collection;
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
-
+					console.info("xGet belongsTo " + fKey + " : " + fId);
 					if (!fId) return null;
 					
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
-						m = Alloy.createModel(table).fetch({
+						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+						m = Alloy.createModel(table);
+						m.fetch({
 							query : "SELECT * FROM " + table + " WHERE id " + idString
 						});
+						console.info("xGet fetch belongsTo from DB " + m);
 					}
 					this.set(attr, m, {
 						silent : true
