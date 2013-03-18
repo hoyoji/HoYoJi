@@ -20,7 +20,8 @@ $.$view.addEventListener("click", function(e) {
 				break;
 			}
 		}
-		addRowToSection(rowModel, collection, e.index);
+		var len = collection.length ? collection.length - 1 : 0;
+		addRowToSection(rowModel, collection, e.index + len);
 	}
 });
 
@@ -37,10 +38,11 @@ function addRowToSection(rowModel, collection, index) {
 			collections : []
 		};
 	}
-	if (index) {
-		$.table.insertRowAfter(index, row);
-	} else {
+	
+	if (index === undefined) {
 		$.table.appendRow(row);
+	} else {
+		$.table.insertRowAfter(index, row);
 	}
 }
 
@@ -66,6 +68,10 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 	var collections = collapsibleSections[sectionRowId].collections;
 	for (var c = 0; c < collections.length; c++) {
 		for (var i = 0; i < collections[c].length; i++) {
+			var rowId = collections[c].at(i).get("id");
+			if(collapsibleSections[rowId]){
+				exports.collapseSection(index, rowId);
+			}
 			$.table.deleteRow(index);
 		}
 	}

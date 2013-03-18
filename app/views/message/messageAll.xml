@@ -1,6 +1,6 @@
 <Alloy>
-	<View class="container" title="消息" backgroundColor="pink">
+	<View class="container" title="消息" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="消息"/>
-		<Button>click</Button>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="messagesTable" bottom="42" top="42"/>
 	</View>
 </Alloy>
