@@ -32,6 +32,10 @@ exports.definition = {
             moneyAccounts: {
                 type: "MoneyAccount",
                 attribute: "ownerUser"
+            },
+            exchanges: {
+                type: "Exchange",
+                attribute: "ownerUser"
             }
         },
         belongsTo: {

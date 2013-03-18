@@ -41,7 +41,7 @@ function Controller() {
             Alloy.Globals.openWindow("setting/currency/currencyAll");
         }));
         menuSection.add($.createContextMenuItem("汇率设置", function() {
-            Alloy.Globals.openWindow("setting/currency/currencyExchangeAll");
+            Alloy.Globals.openWindow("setting/currency/exchangeAll");
         }));
         menuSection.add($.createContextMenuItem("账户设置", function() {
             Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");

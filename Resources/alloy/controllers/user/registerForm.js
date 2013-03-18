@@ -26,34 +26,34 @@ function Controller() {
         top: "42"
     });
     $.__views.registerForm.add($.__views.table);
-    $.__views.__alloyId76 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId85 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "用户名",
         hintText: "请输入用户名",
         keyboardType: Ti.UI.KEYBOARD_ASCII,
         editModeEditability: "noneditable",
         bindModel: "$.$model",
         bindAttribute: "userName",
-        id: "__alloyId76"
+        id: "__alloyId85"
     });
-    $.__views.__alloyId76.setParent($.__views.table);
-    $.__views.__alloyId77 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId85.setParent($.__views.table);
+    $.__views.__alloyId86 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "密码",
         hintText: "请输入密码",
         passwordMask: "true",
         bindModel: "$.$model",
         bindAttribute: "password",
-        id: "__alloyId77"
+        id: "__alloyId86"
     });
-    $.__views.__alloyId77.setParent($.__views.table);
-    $.__views.__alloyId78 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId86.setParent($.__views.table);
+    $.__views.__alloyId87 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "确认密码",
         hintText: "请再次输入密码",
         passwordMask: "true",
         bindModel: "$.$model",
         bindAttribute: "password2",
-        id: "__alloyId78"
+        id: "__alloyId87"
     });
-    $.__views.__alloyId78.setParent($.__views.table);
+    $.__views.__alloyId87.setParent($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

@@ -7,15 +7,15 @@ function Controller() {
         id: "userRow"
     });
     $.addTopLevelView($.__views.userRow);
-    $.__views.__alloyId79 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId88 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "userName",
-        id: "__alloyId79"
+        id: "__alloyId88"
     });
-    $.__views.__alloyId79.setParent($.__views.userRow);
+    $.__views.__alloyId88.setParent($.__views.userRow);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
