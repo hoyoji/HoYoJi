@@ -23,7 +23,8 @@ exports.definition = {
 	    	projects : {type : "Project", attribute : "ownerUser" },
 	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" },
 	    	currencies : {type : "Currency", attribute : "ownerUser"},
-	    	moneyAccounts : {type : "MoneyAccount", attribute : "ownerUser"}
+	    	moneyAccounts : {type : "MoneyAccount", attribute : "ownerUser"},
+	    	exchanges : {type : "Exchange", attribute : "ownerUser"}
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},

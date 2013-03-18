@@ -103,6 +103,7 @@ Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
 Alloy.Collections.instance("Currency");
+Alloy.Collections.instance("Exchange");
 Alloy.Collections.instance("MoneyAccount");
 Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
