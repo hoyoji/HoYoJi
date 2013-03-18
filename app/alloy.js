@@ -26,13 +26,9 @@ _.extend(Alloy.Globals, require("utils").Utils);
 
 //==================================================================================
 
-Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback){
-	var error;
-	
+Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback, xErrorCallback){
 	var msg = Alloy.createModel("Message");
-    msg.save(msgJSON, {patch : true, wait : true, success : xFinishedCallback});
-	
-	xFinishedCallback(error);
+    msg.save(msgJSON, {patch : true, wait : true, success : xFinishedCallback, error : xErrorCallback});
 }
 
 //=============================================== Views ============================
