@@ -2,7 +2,8 @@
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增币种" readModeTitle="币种详细" editModeTitle="修改币种"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" 
+		id="table" class="table-edit" bottom="0" top="42">
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种名称" hintText="请输入币种名称"
 			bindModel="$.$model"
 			bindAttribute="name"/>
