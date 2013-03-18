@@ -77,6 +77,17 @@ function Controller() {
     var boundXTable = null;
     exports.bindXTable = function(xTable) {
         boundXTable = xTable;
+        $.onWindowOpenDo(function() {
+            if ($.getCurrentWindow().$attrs.selectorCallback) {
+                $.$attrs.title = "选择顶级" + $.$attrs.title;
+                $.title.setText($.$attrs.title);
+                $.title.addEventListener("singletap", function(e) {
+                    e.cancelBubble = !0;
+                    $.getCurrentWindow().$attrs.selectorCallback(null);
+                    $.getCurrentWindow().close();
+                });
+            }
+        });
         xTable.$view.addEventListener("navigatedown", function(e) {
             $.childTableTitle.setText(e.childTableTitle);
             $.title.hide();

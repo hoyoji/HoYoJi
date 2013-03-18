@@ -26,7 +26,7 @@ function Controller() {
         top: "42"
     });
     $.__views.moneyExpenseCategoryForm.add($.__views.table);
-    $.__views.__alloyId50 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId53 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级分类",
         hintText: "请选择上级分类",
         bindModel: "$.$model",
@@ -34,17 +34,17 @@ function Controller() {
         bindAttributeIsModel: "name",
         bindModelSelector: "money/moneyExpenseCategoryAll",
         bindModelSelectorParams: "selectedProject:project",
-        id: "__alloyId50"
+        id: "__alloyId53"
     });
-    $.__views.__alloyId50.setParent($.__views.table);
-    $.__views.__alloyId51 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId53.setParent($.__views.table);
+    $.__views.__alloyId54 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "分类名称",
         hintText: "请输入分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId51"
+        id: "__alloyId54"
     });
-    $.__views.__alloyId51.setParent($.__views.table);
+    $.__views.__alloyId54.setParent($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

@@ -17,12 +17,16 @@ function Controller() {
         editModeTitle: "修改收入分类"
     });
     $.__views.titleBar.setParent($.__views.moneyIncomeCategoryForm);
-    $.__views.__alloyId53 = Ti.UI.createTableViewRow({
-        id: "__alloyId53"
+    $.__views.__alloyId56 = Ti.UI.createScrollView({
+        layout: "vertical",
+        scrollType: "vertical",
+        disableBounce: "true",
+        bottom: "0",
+        top: "42",
+        id: "__alloyId56"
     });
-    var __alloyId54 = [];
-    __alloyId54.push($.__views.__alloyId53);
-    $.__views.__alloyId55 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.moneyIncomeCategoryForm.add($.__views.__alloyId56);
+    $.__views.__alloyId57 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级分类",
         hintText: "请选择上级分类",
         bindModel: "$.$model",
@@ -30,28 +34,17 @@ function Controller() {
         bindAttributeIsModel: "name",
         bindModelSelector: "money/moneyIncomeCategoryAll",
         bindModelSelectorParams: "selectedProject:project",
-        id: "__alloyId55"
+        id: "__alloyId57"
     });
-    $.__views.__alloyId55.setParent($.__views.__alloyId53);
-    $.__views.__alloyId56 = Ti.UI.createTableViewRow({
-        id: "__alloyId56"
-    });
-    __alloyId54.push($.__views.__alloyId56);
-    $.__views.__alloyId57 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId57.setParent($.__views.__alloyId56);
+    $.__views.__alloyId58 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "分类名称",
         hintText: "请输入分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId57"
+        id: "__alloyId58"
     });
-    $.__views.__alloyId57.setParent($.__views.__alloyId56);
-    $.__views.table = Ti.UI.createTableView({
-        data: __alloyId54,
-        id: "table",
-        bottom: "0",
-        top: "42"
-    });
-    $.__views.moneyIncomeCategoryForm.add($.__views.table);
+    $.__views.__alloyId58.setParent($.__views.__alloyId56);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

@@ -13,44 +13,37 @@ function Controller() {
     $.__views.titleBar = Alloy.createWidget("com.hoyoji.titanium.widget.TitleBar", "widget", {
         id: "titleBar",
         addModeTitle: "新增好友分类",
-        readModeTitle: "好友分类资料",
+        readModeTitle: "好友分类",
         editModeTitle: "修改好友分类"
     });
     $.__views.titleBar.setParent($.__views.friendCategoryForm);
-    $.__views.__alloyId38 = Ti.UI.createTableViewRow({
-        id: "__alloyId38"
+    $.__views.table = Ti.UI.createScrollView({
+        layout: "vertical",
+        scrollType: "vertical",
+        disableBounce: "true",
+        id: "table",
+        bottom: "0",
+        top: "42"
     });
-    var __alloyId39 = [];
-    __alloyId39.push($.__views.__alloyId38);
-    $.__views.__alloyId40 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.friendCategoryForm.add($.__views.table);
+    $.__views.__alloyId38 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级分类",
         hintText: "请选择上级分类",
         bindModel: "$.$model",
         bindAttribute: "parentFriendCategory",
         bindAttributeIsModel: "name",
         bindModelSelector: "friend/friendAll",
-        id: "__alloyId40"
+        id: "__alloyId38"
     });
-    $.__views.__alloyId40.setParent($.__views.__alloyId38);
-    $.__views.__alloyId41 = Ti.UI.createTableViewRow({
-        id: "__alloyId41"
-    });
-    __alloyId39.push($.__views.__alloyId41);
-    $.__views.__alloyId42 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId38.setParent($.__views.table);
+    $.__views.__alloyId39 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "分类名称",
         hintText: "请输入分类名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId42"
+        id: "__alloyId39"
     });
-    $.__views.__alloyId42.setParent($.__views.__alloyId41);
-    $.__views.table = Ti.UI.createTableView({
-        data: __alloyId39,
-        id: "table",
-        bottom: "0",
-        top: "42"
-    });
-    $.__views.friendCategoryForm.add($.__views.table);
+    $.__views.__alloyId39.setParent($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

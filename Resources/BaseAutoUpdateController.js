@@ -148,7 +148,7 @@
                     console.info("resolved bindModel from saveable " + model);
                     var path = model.split(".");
                     path[0] === "$" ? model = saveableController : model = Alloy.Models[path[0]];
-                    for (var i = 1; i < path.length; i++) model = model[path[i]];
+                    for (var i = 1; i < path.length; i++) _.isFunction(model.xGet) ? model = model.xGet(path[i]) : model = model[path[i]];
                     $.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
                 };
                 $.onWindowOpenDo(function() {

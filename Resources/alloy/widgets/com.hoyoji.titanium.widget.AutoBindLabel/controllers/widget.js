@@ -29,7 +29,7 @@ function Controller() {
         if (model && typeof model == "string") {
             var path = model.split(".");
             path[0] === "$" ? model = $.getParentController() : model = Alloy.Models[path[0]];
-            for (var i = 1; i < path.length; i++) model = model[path[i]];
+            for (var i = 1; i < path.length; i++) model.xGet ? model = model.xGet(path[i]) : model = model[path[i]];
         }
         $.onWindowCloseDo(function() {
             model.off("sync", updateLabel);
