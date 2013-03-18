@@ -5,7 +5,7 @@ exports.definition = {
 		    "date": "TEXT NOT NULL",
 		    "amount": "TEXT NOT NULL",
 		    "incomeType": "TEXT NOT NULL",
-		    "merchantId": "TEXT NOT NULL",
+		    "friendId": "TEXT NOT NULL",
 		    "accountId": "TEXT NOT NULL",
 		    "projectId": "TEXT NOT NULL",
 		    "categoryId": "TEXT NOT NULL",
@@ -15,7 +15,13 @@ exports.definition = {
 		    "ownerUserId" : "TEXT NOT NULL"
 		},
 		belongsTo : {
-			
+			friend : {type : "Friend", attribute : null},
+			account : {type : "MoneyAccount", attribute : null},
+			project : {type : "Project", attribute : null},
+			category : {type : "moneyIncomeCategory", attribute : "moneyIncomes"},
+			localCurrency : {type : "localCurrency", attribute : null},
+			foreignCurrency : {type : "foreignCurrency", attribute : null},
+			ownerUser : {type : "User", attribute : "moneyIncomes"}
 		},
 		adapter: {
 			type: "sql",
