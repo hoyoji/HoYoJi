@@ -28,12 +28,12 @@
 							// }
 						// }
 						var successCB = function() {
-							console.info("save successCB");
 							$.$model.off("sync", successCB);
+							$.$model.off("error", errorCB);
 							saveEndCB();
 						}
 						var errorCB = function() {
-							console.info("save errorCB");
+							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
 							saveErrorCB();
 						}

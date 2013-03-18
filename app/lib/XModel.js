@@ -68,10 +68,14 @@
 						self.trigger("error", self, self.__xValidationError, options);
 					} else {
 						for (var belongsTo in self.config.belongsTo) {
-							var belongsToModel = self.get(belongsTo);
-							if (belongsToModel) {
-								if (self.isNew() || self.hasChanged(belongsTo)) {
+							if (self.isNew() || self.hasChanged(belongsTo)) {
+								var belongsToModel = self.get(belongsTo);
+								if (belongsToModel) {
 									self.set(belongsTo + "Id", belongsToModel.get("id"), {
+										silent : true
+									});
+								} else {
+									self.set(belongsTo + "Id", null, {
 										silent : true
 									});
 								}
