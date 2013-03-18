@@ -98,7 +98,18 @@
 			return false;
 		};
 
-		// IOS doesn't support bind
+    Number.prototype.toFixed2 = function(){
+        return this.toFixed(2);
+    }
+    
+    Number.prototype.toUserCurrency = function(){
+        if(this){
+            return this.toFixed2();
+        }
+        return this;
+    }
+    
+	// IOS doesn't support bind
 		if (!Function.prototype.bind) {
 			Function.prototype.bind = function(obj) {
 				if ( typeof this !== 'function')
