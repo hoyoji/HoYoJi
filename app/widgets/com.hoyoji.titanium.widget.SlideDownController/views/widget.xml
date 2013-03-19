@@ -1,5 +1,5 @@
 <Alloy>
-<View width="Ti.UI.FILL" height="Ti.UI.FILL" visible="false">
+<View width="Ti.UI.FILL" height="Ti.UI.FILL" visible="false" zIndex="101">
 	<View id="slideDownButtons" top="-42" width="Ti.UI.FILL" height="Ti.UI.SIZE" layout="horizontal"></View>
 </View>
 </Alloy>

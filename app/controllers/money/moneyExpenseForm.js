@@ -1,7 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-
-$.onSave = function(saveEndCB, saveErrorCB){
-	 console.info("on save expense!");
-	 setTimeout(saveEndCB, 3000);
-}
+// if(!$.$model){
+	// $.$model = Alloy.createModel("MoneyExpense", {date : (new Date()).toISOString()});
+	// $.setSaveableMode("add");
+// }
