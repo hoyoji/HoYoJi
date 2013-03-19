@@ -5,7 +5,7 @@
 	</View>
 	<View id="localCurrencyView" height="Ti.UI.SIZE"  top="42" backgroundColor="white">
 		<Label color= "#000" left="10">本币：</Label>
-		<Label id="localCurrencyLabel" left="150" color= "#000"/>
+		<Label id="localCurrencyLabel" right="100" color= "#000"/>
 		<TextField id="localCurrencyAmount" right="5" width="100" value="100"/>
 	</View>
 </Alloy>
