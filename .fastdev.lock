@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+{"ip": "0.0.0.0", "app_guid": "939ff6a3-85b7-4ecd-b2ef-7c00a36fdc97", "port": 61895, "dir": "C:\\Users\\360yunpan\\titanium\\HoYoJi", "app_id": "com.hoyoji.hoyoji"}
+=======
 {"ip": "0.0.0.0", "app_guid": "939ff6a3-85b7-4ecd-b2ef-7c00a36fdc97", "port": 50374, "dir": "C:\\Users\\hoyoji_LiJianQiang\\360yunpan\\titaniumworkspace\\HoYoJi", "app_id": "com.hoyoji.hoyoji"}
+>>>>>>> a0aeb45f81086980559333d20e3c3b9e2c8b45b5
