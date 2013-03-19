@@ -22,6 +22,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		"detail" : $.$model.xGet("detail"),
 		"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")
 	},function(){
-             $.saveModel(saveEndCB, saveErrorCB);
-        });
+        $.saveModel(saveEndCB, saveErrorCB);
+    	alert("发送成功，请等待回复");         
+    });
 }
+
+$.$model.xSet("detail", "请求将您添加为好友");
+
+$.onWindowOpenDo(function(){
+	$.requestContent.becameDirty();
+});
