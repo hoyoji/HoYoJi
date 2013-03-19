@@ -18,8 +18,8 @@
 			
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
+				_bindAttributeIsModel = value;
 				if($.$attrs.bindAttributeIsModel && value){
-					_bindAttributeIsModel = value;
 					value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
 				}
             	value = this.convertModelValue(value);
@@ -171,10 +171,10 @@
 					// model.trigger("invalid");
 					// return;
 					// };
-					if (!model.changed[attribute] && $.__dirtyCount > 0) {
+					if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 						$.becameClean();
 						return;
-					} else if (model.changed[attribute] && $.__dirtyCount === 0) {
+					} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
 						$.becameDirty();
 					}
 				}
@@ -185,7 +185,7 @@
 
 				// clean up listener upon window close to prevent memory leak
 				$.onWindowCloseDo(function(){
-						if (model.changed[attribute]) {
+						if (model.hasChanged(attribute)) {
 							model.xSet(attribute, model.previous(attribute));
 						}
 						model.off(null, updateField);

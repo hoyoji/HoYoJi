@@ -1,5 +1,54 @@
 <Alloy>
-	<View class="container" title="收入" saveableContainer="true">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="新增收入"/>
+	<View class="container" title="收入" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="新增收入" readModeTitle="收入详细" editModeTitle="修改收入"/>
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="时间" hintText="请输入时间"
+			bindModel="$.$model"
+			bindAttribute="date"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="金额" hintText="请输入金额"
+			bindModel="$.$model"
+			bindAttribute="amount"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种" hintText="请选择币种"
+			bindModel="$.$model"
+			bindAttribute="foreignCurrency"
+			bindAttributeIsModel="name"
+			bindModelSelector="setting/currency/currencyAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="当前汇率" hintText="请选择收入类型"
+			bindModel="$.$model"
+			bindAttribute="exchangeCurrencyRate"/>
+			<Button id="updateRate">更新本地汇率</Button>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="收入类型" hintText="请选择收入类型"
+			bindModel="$.$model"
+			bindAttribute="incomeType"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
+			bindModel="$.$model"
+			bindAttribute="friend"
+			bindAttributeIsModel="name"
+			bindModelSelector="friend/friendAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户" hintText="请选择账户"
+			bindModel="$.$model"
+			bindAttribute="account"
+			bindAttributeIsModel="name"
+			bindModelSelector="setting/moneyAccount/moneyAccountAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
+			bindModel="$.$model"
+			bindAttribute="project"
+			bindAttributeIsModel="name"
+			bindModelSelector="project/projectAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类" hintText="请选择分类"
+			bindModel="$.$model"
+			bindAttribute="category"
+			bindAttributeIsModel="name"
+			bindModelSelector="moeny/moneyIncomeCategoryAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注" hintText="请输入备注"
+			bindModel="$.$model"
+			bindAttribute="remark"/>
+		</ScrollView>
 	</View>
 </Alloy>

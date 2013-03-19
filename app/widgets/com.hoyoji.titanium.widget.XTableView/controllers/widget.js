@@ -4,7 +4,9 @@ var collections = [], collapsibleSections = {};
 
 $.$view.addEventListener("click", function(e) {
 	e.cancelBubble = true;
+	console.info("xtable catched row clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 	if (e.deleteRow === true) {
+		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 		$.table.deleteRow(e.index);
 	} else if (e.expandSection === true) {
 		exports.expandSection(e.index, e.sectionRowId);

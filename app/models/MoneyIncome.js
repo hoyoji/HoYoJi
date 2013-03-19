@@ -5,12 +5,13 @@ exports.definition = {
 		    "date": "TEXT NOT NULL",
 		    "amount": "TEXT NOT NULL",
 		    "incomeType": "TEXT NOT NULL",
-		    "friendId": "TEXT NOT NULL",
+		    "friendId": "TEXT",
 		    "accountId": "TEXT NOT NULL",
 		    "projectId": "TEXT NOT NULL",
 		    "categoryId": "TEXT NOT NULL",
 		    "localCurrencyId": "TEXT NOT NULL",
 		    "foreignCurrencyId": "TEXT NOT NULL",
+		    "exchangeCurrencyRate" : "TEXT NOT NULL",
 		    "remark" : "TEXT",
 		    "ownerUserId" : "TEXT NOT NULL"
 		},
@@ -21,7 +22,7 @@ exports.definition = {
 			category : {type : "moneyIncomeCategory", attribute : "moneyIncomes"},
 			localCurrency : {type : "localCurrency", attribute : null},
 			foreignCurrency : {type : "foreignCurrency", attribute : null},
-			ownerUser : {type : "User", attribute : "moneyIncomes"}
+			ownerUser : {type : "User", attribute : null}
 		},
 		adapter: {
 			type: "sql",

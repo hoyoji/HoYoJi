@@ -108,6 +108,8 @@ Alloy.Collections.instance("MoneyAccount");
 Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");
+Alloy.Collections.instance("MoneyExpense");
+Alloy.Collections.instance("MoneyIncome");
 
 // Alloy.Collections.Project.on("all", function(eName){
 	// console.info("Alloy.Collections.Project event : " + eName);
