@@ -8,7 +8,7 @@ exports.definition = {
 		    "ownerUserId" : "TEXT NOT NULL"
 		},
 		hasMany : {
-			moneyAccounts : { type : "MoneyAccounts", attribute : "currency"},
+			moneyAccounts : { type : "MoneyAccount", attribute : "currency"},
 			subProjects : { type : "Project", attribute : "parentProject" }
 		},
 		belongsTo : {
