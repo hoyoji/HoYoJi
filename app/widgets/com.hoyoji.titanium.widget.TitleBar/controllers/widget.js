@@ -58,6 +58,7 @@ exports.saveStartCB = function() {
 	$.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
 	$.menuButton.setEnabled(false);
 }
+
 exports.saveEndCB = function() {
 	exports.cleanCB();
 	showMsg("保存成功");
@@ -65,11 +66,15 @@ exports.saveEndCB = function() {
 	
 	$.menuButton.setEnabled(false);
 }
-exports.saveErrorCB = function() {
-	showMsg("出错啦...");
+
+exports.saveErrorCB = function(msg) {
+	showMsg(msg || "出错啦...");
 	console.info("Titlebar saveErrorCB");
-	
-	$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+	if($.saveableMode === "read"){
+		$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
+	} else {
+		$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+	}
 	$.menuButton.setEnabled(true);
 }
 
@@ -124,12 +129,16 @@ $.menuButton.addEventListener('singletap', function(e) {
 			bubbles : true
 		});
 	} else if ($.saveableMode === "edit" || $.saveableMode === "add") {
-		$.menuButton.fireEvent("save", {
-			bubbles : true,
-			sourceController : exports
-		});
+		exports.save();
 	}
 });
+
+exports.save = function(){
+	$.$view.fireEvent("save", {
+		bubbles : true,
+		sourceController : exports
+	});
+}
 
 exports.setSaveableMode($.$attrs.saveableMode || "read");
 
