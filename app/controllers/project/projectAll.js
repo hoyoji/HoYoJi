@@ -13,7 +13,8 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.projectsTable);
+$.titleBar.bindXTable($.myProjectsTable);
 
 var collection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null});
-$.projectsTable.addCollection(collection);
+$.myProjectsTable.addCollection(collection);
+

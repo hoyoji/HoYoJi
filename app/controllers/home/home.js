@@ -1,11 +1,15 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-function openMoneyAddNew(e){
-	Alloy.Globals.openWindow("money/moneyAddNew");
+function onFooterbarTap(e){
+	if(e.source.id === "moneyAddNew"){
+		Alloy.Globals.openWindow("money/moneyAddNew");
+	}
 }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({headerTitle : "设置操作"});
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "设置操作"
+	});
 	menuSection.add($.createContextMenuItem("币种设置", function() {
 		Alloy.Globals.openWindow("setting/currency/currencyAll");
 	}));
@@ -14,6 +18,9 @@ $.makeContextMenu = function() {
 	}));
 	menuSection.add($.createContextMenuItem("账户设置", function() {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
+	}));
+	menuSection.add($.createContextMenuItem("新增收入", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeForm");
 	}));
 	return menuSection;
 }

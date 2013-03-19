@@ -6,6 +6,8 @@ exports.close = function(e) {
 	});
 }
 
+Alloy.Models.User.xGet("messageBox").processNewMessages();
+
 $.onWindowCloseDo(function(){
 	Alloy.Models.User = null;
 	Alloy.Globals.initStore();

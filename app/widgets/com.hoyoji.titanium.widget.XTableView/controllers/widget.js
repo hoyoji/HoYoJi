@@ -104,6 +104,11 @@ exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
 	collections[_.indexOf(collections, collection)] = null;
 }
+
+exports.getCollections = function(){
+	return collections;
+}
+
 exports.close = function() {
 	var animation = Titanium.UI.createAnimation();
 	animation.top = "100%";
@@ -114,6 +119,26 @@ exports.close = function() {
 		$.parent.remove($.$view);
 	});
 	$.$view.animate(animation);
+}
+
+exports.slideDown = function(zIndex, top) {
+	if (top === undefined)
+		top = 42;
+	
+	function animate() {
+		$.$view.removeEventListener("postlayout", animate);
+		var animation = Titanium.UI.createAnimation();
+		animation.top = top;
+		animation.duration = 500;
+		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+
+		$.$view.animate(animation);
+	}
+
+	$.$view.addEventListener("postlayout", animate);
+
+	$.$view.setTop("-100%");
+	$.$view.setZIndex(zIndex);
 }
 
 exports.open = function(top) {
@@ -127,7 +152,6 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
-
 
 	$.$view.setTop("99%")
 	animate();

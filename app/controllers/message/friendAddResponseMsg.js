@@ -21,13 +21,19 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 // });
 // });
 
+var onFooterbarTap = function(e) {
+	if(e.source.id === "addFriend"){
+		$.titleBar.save();
+	}
+}
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 		friendUserId : $.$model.xGet("fromUser").xGet("id"),
 		friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
 	}).length;
-	if (friendlength>0) {
-		alert("用户" + $.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
+	if (friendlength > 0) {
+		saveErrorCB("用户" + $.$model.xGet("fromUser").xGet("userName") + "已经是好友");
 	} else {
 		var date = (new Date()).toISOString();
 		$.$model.xSet("date", date);
@@ -43,6 +49,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}, function() {
 			var friend = Alloy.createModel("Friend", {
 				nickName : "测试好友",
+				ownerUser : Alloy.Models.User,
 				friendUser : $.$model.xGet("fromUser"),
 				friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 			});

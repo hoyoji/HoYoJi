@@ -34,6 +34,14 @@ exports.definition = {
 					return;
 				}
 				xFinishCallback(error);
+			},
+			getExchanges : function(){
+				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : this});
+				var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({foreignCurrency : this});
+				var collectionArray;
+				collectionArray.add(currencyPositive);
+				collectionArray.add(currencyNegative);
+				return collectionArray;
 			}
 		});
 		

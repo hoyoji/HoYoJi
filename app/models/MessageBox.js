@@ -21,7 +21,28 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
 			},
-			processNewMessage : function(){
+			processNewMessages : function(){
+				this.xGet("messages").map(function(msg){
+					console.info("------------=============================="+msg.xGet("messageState"));
+					if(msg.xGet("messageState") === "new"){
+						if(msg.xGet("type") === "System.Friend.AddResponse"){
+								var friendlength = Alloy.createCollection("Friend").xSearchInDb({
+								friendUserId : msg.xGet("fromUser").xGet("id"),
+								ownerUserId : Alloy.Models.User.id
+								}).length;
+							if (friendlength===0) {
+								var friend = Alloy.createModel("Friend", {
+									nickName : "测试好友",
+									ownerUser :　Alloy.Models.User,
+									friendUser : msg.xGet("fromUser"),
+									friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+								});
+								friend.xSave();
+								console.info("------------====================-----------"+msg.xGet("fromUser").xGet("userName"));
+							}
+						}
+					}
+				});
 			}
 		});
 		return Model;
