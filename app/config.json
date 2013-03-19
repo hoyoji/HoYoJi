@@ -15,7 +15,8 @@
         "com.hoyoji.titanium.widget.AutoBindLabel": "1.0",
         "com.hoyoji.titanium.widget.NumericKeyboard": "1.0",
         "com.hoyoji.titanium.widget.DateTimePicker": "1.0",
-        "com.hoyoji.titanium.widget.FooterBar": "1.0"
+        "com.hoyoji.titanium.widget.FooterBar": "1.0",
+        "com.hoyoji.titanium.widget.SlideDownController": "1.0"
     },
     "UI": {
         "DefaultRowHeight": 42

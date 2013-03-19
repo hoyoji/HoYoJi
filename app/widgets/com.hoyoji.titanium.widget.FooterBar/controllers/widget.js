@@ -9,6 +9,7 @@ if($.$attrs.buttons){
 		$.$view.add(button);
 	}
 }
+
 var currentSlide = null;
 $.$view.addEventListener("singletap", function(e){
 	console.info("controll slideDown " + e.source.id);
