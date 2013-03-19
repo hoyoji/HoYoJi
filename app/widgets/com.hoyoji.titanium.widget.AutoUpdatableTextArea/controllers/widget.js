@@ -1,26 +1,21 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
 if ($.$attrs.hintText) {
-	$.area.hintText = $.$attrs.hintText;
+	$.field.hintText = $.$attrs.hintText;
 }
-if ($.$attrs.passwordMask === "true") {
-	$.area.setPasswordMask(true);
-}
-if ($.$attrs.keyboardType) {
-	$.area.setKeyboardType($.$attrs.keyboardType);
-}
+
 if (OS_IOS) {
-	$.area.setAutocapitalization(false);
+	$.field.setAutocapitalization(false);
 }
 if (OS_ANDROID) {
-	$.area.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
+	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
 $.setEditable = function(editable) {
 	if (editable === false) {
-		$.area.setHintText("");
+		$.field.setHintText("");
 	} else {
-		$.area.setHintText($.$attrs.hintText);
+		$.field.setHintText($.$attrs.hintText);
 	}
 	
 	if($.$attrs.bindAttributeIsModel || 
@@ -29,12 +24,12 @@ $.setEditable = function(editable) {
 		editable = false;
 	}
 	
-	$.area.setEditable(editable);
+	$.field.setEditable(editable);
 	if (OS_ANDROID) {
 		if (editable === false ) {
-			$.area.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+			$.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
 		} else {
-			$.area.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
+			$.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS;
 		}
 	}
 }

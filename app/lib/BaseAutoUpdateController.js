@@ -47,7 +47,7 @@
 							$.$view.show();
 							break;
 						default :
-							exports.setEditable(false);
+							$.setEditable(false);
 							$.$view.show();
 					}
 				} else if (saveableMode === "edit") {

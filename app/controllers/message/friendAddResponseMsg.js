@@ -21,13 +21,35 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 // });
 // });
 
+
+var operation = "";
 var onFooterbarTap = function(e) {
 	if(e.source.id === "addFriend"){
+		operation = "addFriend";
 		$.titleBar.save();
+	}else if(e.source.id === "reject"){
+		operation = "reject";
+		$.titleBar.save();
+	}else if(e.source.id === "ignore"){
+		$.getCurrentWindow().close();
 	}
 }
 
+$.onWindowOpenDo(function(){
+	if($.$model.xGet('messageState') === "closed"){
+		$.footerBar.hide();
+		// $.scrollview.setBottom(0);
+	}
+});
+
 $.onSave = function(saveEndCB, saveErrorCB) {
+	if(operation = "addFriend") {
+		
+	} else if(operation = "reject") {
+		
+	}
+	
+	
 	var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 		friendUserId : $.$model.xGet("fromUser").xGet("id"),
 		friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
@@ -36,7 +58,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("用户" + $.$model.xGet("fromUser").xGet("userName") + "已经是好友");
 	} else {
 		var date = (new Date()).toISOString();
-		$.$model.xSet("date", date);
+		// $.$model.xSet("date", date);
 		Alloy.Globals.sendMsg({
 			"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 			"fromUserId" : $.$model.xGet("toUser").xGet("id"),
@@ -53,19 +75,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				friendUser : $.$model.xGet("fromUser"),
 				friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 			});
-			var successCB = function() {
-				friend.off("sync", successCB);
-				friend.off("error", errorCB);
-				saveEndCB();
-			}
-			var errorCB = function() {
-				friend.off("sync", successCB);
-				friend.off("error", errorCB);
-				saveErrorCB();
-			}
-			friend.on("sync", successCB);
-			friend.on("error", errorCB);
-			friend.xSave();
+			// var successCB = function() {
+				// friend.off("sync", successCB);
+				// friend.off("error", errorCB);
+				// saveEndCB();
+			// }
+			// var errorCB = function() {
+				// friend.off("sync", successCB);
+				// friend.off("error", errorCB);
+				// saveErrorCB();
+			// }
+			// friend.on("sync", successCB);
+			// friend.on("error", errorCB);
+			friend.xSave({success : saveEndCB});
 		});
 	}
 }
