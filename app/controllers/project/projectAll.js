@@ -18,13 +18,3 @@ $.titleBar.bindXTable($.myProjectsTable);
 var collection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null});
 $.myProjectsTable.addCollection(collection);
 
-var zIndex = 10;
-function onFooterbarTap(e){
-	if(e.source.id === "myProjects"){
-		$.myProjectsTable.slideDown(zIndex++);
-	} else if(e.source.id === "sharedWithMe"){
-		$.shareWithMeTable.slideDown(zIndex++);
-	} else if(e.source.id === "sharedWithHer"){
-		$.shareWithHerTable.slideDown(zIndex++);
-	}
-}

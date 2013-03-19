@@ -9,7 +9,16 @@ if($.$attrs.buttons){
 		$.$view.add(button);
 	}
 }
-
+var currentSlide = null;
 $.$view.addEventListener("singletap", function(e){
+	console.info("controll slideDown " + e.source.id);
+	if($.$attrs.controllSlideDown && $.getParentController()[e.source.id]){
+		if(currentSlide){
+			currentSlide.$view.setZIndex(-1);
+		}
+		console.info("controll slideDown " + e.source.id);
+		currentSlide = $.getParentController()[e.source.id];
+		currentSlide.slideDown(1);
+	}
 	$.trigger("singletap", e);
 });

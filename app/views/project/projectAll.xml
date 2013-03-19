@@ -1,11 +1,11 @@
 <Alloy>
 	<View class="container" title="项目" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="项目"/>
-		<Widget id="shareWithHerTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
-		<Widget id="shareWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
+		<Widget id="sharedWithHerTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
+		<Widget id="sharedWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
 		<Widget id="myProjectsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
-        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controllSlideDown="true"
         	buttons="我的项目,共享给我,共享给他"
-        	ids="myProjects,sharedWithMe,sharedWithHer"/>
+        	ids="myProjectsTable,sharedWithMeTable,sharedWithHerTable"/>
 	</View>
 </Alloy>
