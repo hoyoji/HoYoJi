@@ -1,5 +1,8 @@
 <Alloy>
 	<View class="container" title="系统设置">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="系统设置"/>
+		<Button top="52" width="150" height="42" left="10" onClick="openCurrency">币种设置</Button>
+		<Button top="52" width="150" height="42" right="10" onClick="openExchange">汇率设置</Button>
+		<Button top="94" width="150" height="42" left="10" onClick="openMoneyAccount">账户设置</Button>
 	</View>
 </Alloy>

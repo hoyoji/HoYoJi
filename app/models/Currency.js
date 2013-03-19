@@ -27,21 +27,32 @@ exports.definition = {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback){
 				var error;
+				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+					localCurrency : this
+					});
+				var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+					foreignCurrency : this
+					});
+				
 				if(Alloy.Models.User.xGet("activeCurrency") === this){
-					error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除。"};
+					error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除"};
+				 } 
+				else if(currencyPositive.length>0 || currencyNegative.length>0){
+					error = { msg : "删除失败，请先删除相关汇率"};
 				 } else {
 					this._xDelete(xFinishCallback);
 					return;
 				}
+				
 				xFinishCallback(error);
 			},
 			getExchanges : function(){
 				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : this});
-				var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({foreignCurrency : this});
-				var collectionArray;
-				collectionArray.add(currencyPositive);
-				collectionArray.add(currencyNegative);
-				return collectionArray;
+				// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({foreignCurrency : this});
+				// var collectionArray;
+				// collectionArray.add(currencyPositive);
+				// collectionArray.add(currencyNegative);
+				return currencyPositive;
 			}
 		});
 		

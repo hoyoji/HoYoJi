@@ -1,11 +1,11 @@
 <Alloy>
 	<View class="container" title="汇率设置" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="汇率设置"/>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" bottom="42" top="42"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" bottom="0" top="86"/>
 	</View>
-	<View id="localCurrencyView" height="Ti.UI.SIZE" layout="horizontal" left="10" bottom="44" backgroundColor="white">
-		<Label color= "#000">本币：</Label>
-		<Label id="localCurrencyLabel" color= "#000"/>
-		<TextField id="localCurrencyAmount" value="100"/>
+	<View id="localCurrencyView" height="Ti.UI.SIZE"  top="42" backgroundColor="white">
+		<Label color= "#000" left="10">本币：</Label>
+		<Label id="localCurrencyLabel" left="150" color= "#000"/>
+		<TextField id="localCurrencyAmount" right="5" width="100" value="100"/>
 	</View>
 </Alloy>
