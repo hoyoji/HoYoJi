@@ -49,6 +49,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}, function() {
 			var friend = Alloy.createModel("Friend", {
 				nickName : "测试好友",
+				ownerUser : Alloy.Models.User,
 				friendUser : $.$model.xGet("fromUser"),
 				friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 			});

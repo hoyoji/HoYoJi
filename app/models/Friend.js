@@ -5,11 +5,13 @@ exports.definition = {
 			nickName : "TEXT",
 			remark : "TEXT",
 			friendUserId : "TEXT NOT NULL",
-			friendCategoryId : "TEXT NOT NULL"
+			friendCategoryId : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
 			friendCategory : { type : "FriendCategory", attribute : "friends" },
-			friendUser : { type : "User", attribute : null }
+			friendUser : { type : "User", attribute : null },
+			ownerUser : { type : "User", attribute : null }
 		},
 		hasMany : {
 		},
