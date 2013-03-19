@@ -56,13 +56,13 @@ exports.definition = {
 					if (this.isNew()) {
 						if (currencyPositive.length > 0) {
 							error = {
-								msg : "新增失败，汇率已存在。。"
+								msg : "新增失败，汇率已存在"
 							};
 						}
 					} else {
 						if (currencyPositive.length > 1) {
 							error = {
-								msg : "新增失败，汇率已存在。。"
+								msg : "新增失败，汇率已存在"
 							};
 						}
 					}

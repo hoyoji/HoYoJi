@@ -6,10 +6,10 @@
 				bindModel="$.$model.foreignCurrency"
 				bindAttribute="name"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" 
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0"  width="Ti.UI.SIZE" height="42" 
 				bindModel="$.$model.foreignCurrency"
-				bindAttribute="symbol"
-				/>
+				bindAttribute="code"
+				/> -->
 			</View>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
 			bindModel="$.$model"
