@@ -16,7 +16,7 @@ function changeForeignAmount() {
 	var localCurrencyAmount = parentController.localCurrencyAmount.getValue();
 	var rate = $.$model.get("rate");
 	console.info("++++++" + localCurrencyAmount + "++++++++" + rate);
-	var foreignCurrencyAmount = String.formatCurrency(localCurrencyAmount / rate);
+	var foreignCurrencyAmount = (localCurrencyAmount / rate).toUserCurrency();
 	console.info("++++++" + foreignCurrencyAmount + "++++++++");
 	$.foreignCurrencyAmount.setText(foreignCurrencyAmount);
 	console.info("----" + foreignCurrencyAmount + "----");
