@@ -29,7 +29,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (friendlength>0) {
 		alert("用户" + $.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
 	} else {
-		var date = (new Date()).toString();
+		var date = (new Date()).toISOString();
 		$.$model.xSet("date", date);
 		Alloy.Globals.sendMsg({
 			"toUserId" : $.$model.xGet("fromUser").xGet("id"),
@@ -43,6 +43,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}, function() {
 			var friend = Alloy.createModel("Friend", {
 				nickName : "测试好友",
+				ownerUser : Alloy.Models.User,
 				friendUser : $.$model.xGet("fromUser"),
 				friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 			});

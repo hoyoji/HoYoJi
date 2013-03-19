@@ -3,7 +3,7 @@
 function doLogin(e){
 	Alloy.Models.instance("User").xFindInDb({userName : $.userName.getValue()});
 	if(Alloy.Models.User.id){
-		// Alloy.Modes.User.xGet("messageBox").processNewMessages();
+		
 		console.info("------------------------------------------------------------------"+Alloy.Models.User.xGet("defaultFriendCategory").xGet("friends").length);
 		console.info("------------------------------------------------------------------"+Alloy.Models.User.xGet("messageBox").xGet("messages").length);
 		Alloy.createController("mainWindow").open();
