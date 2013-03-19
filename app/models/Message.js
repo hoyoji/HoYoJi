@@ -30,7 +30,7 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
-			}	
+			}
 		});
 		return Model;
 	},

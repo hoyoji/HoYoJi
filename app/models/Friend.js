@@ -24,7 +24,14 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
-			}	
+			},
+			displayName : function() {
+				if (this.xGet("nickName")) {
+					return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
+				}
+				return this.xGet("friendUser").xGet("userName");
+			}
+
 		});
 		return Model;
 	},
