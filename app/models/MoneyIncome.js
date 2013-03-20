@@ -19,14 +19,17 @@ exports.definition = {
 			friend : {type : "Friend", attribute : null},
 			moneyAccount : {type : "MoneyAccount", attribute : null},
 			project : {type : "Project", attribute : null},
-			category : {type : "moneyIncomeCategory", attribute : "moneyIncomes"},
-			localCurrency : {type : "localCurrency", attribute : null},
-			foreignCurrency : {type : "foreignCurrency", attribute : null},
-			ownerUser : {type : "User", attribute : null}
+			category : {type : "MoneyIncomeCategory", attribute : "moneyIncomes"},
+			localCurrency : {type : "Currency", attribute : null},
+			foreignCurrency : {type : "Currency", attribute : null},
+			ownerUser : {type : "User", attribute : "incomes"}
 		},
+		rowView : "money/moneyIncomeRow",
 		adapter: {
-			type: "sql",
-			collection_name: "MoneyIncome"
+			collection_name: "MoneyIncome",
+			idAttribute : "id",
+			type : "sql",
+			db_name : "hoyoji"
 		}
 	},		
 	extendModel: function(Model) {		

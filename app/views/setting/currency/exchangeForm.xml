@@ -17,7 +17,7 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="setting/currency/currencyAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="汇率" hintText="请输入汇率"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" labelText="汇率" hintText="请输入汇率"
 			    bindModel="$.$model"
 			    bindAttribute="rate"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="是否自动更新"
