@@ -19,9 +19,21 @@ $.onWindowOpenDo(function() {
 			}
 		}
 	}
-
+	
+	function getAttributeValue(model, attributes){
+		var path = attributes.split(".");
+		var value = model;
+		for (var i = 0; i < path.length-1; i++) {
+			if(!value){
+				return null;
+			}
+			value = value.xGet(path[i]);
+		}
+		return value.xGet(path[path.length-1]);
+	}
+	
 	function updateLabel(model) {
-		$.label.setText(model.xGet($.$attrs.bindAttribute));
+		$.label.setText(getAttributeValue(model, $.$attrs.bindAttribute));
 	}
 
 

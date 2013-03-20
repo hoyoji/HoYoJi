@@ -310,7 +310,9 @@
 				if (!error) {
 					this.destroy();
 				}
-				xFinishCallback(error);
+				if(xFinishCallback){
+					xFinishCallback(error);
+				}
 				return this;
 			},
 			xFindInDb : function(filter){

@@ -89,7 +89,7 @@ Alloy.Globals.initStore = function(){
 		if(m === "instance") continue;
 		Alloy.Models[m] = null;
 		delete Alloy.Models[m];
-		Alloy.Models.instance(m)
+		//Alloy.Models.instance(m)
 	}
 }
 

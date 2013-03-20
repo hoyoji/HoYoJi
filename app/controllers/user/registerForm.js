@@ -12,6 +12,9 @@ $.$model.xSet("activeCurrency", activeCurrency);
 var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currency : $.$model.xGet("activeCurrency"), currentBalance : "0", sharingType : "个人", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeMoneyAccount", activeMoneyAccount);
 
+var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "日常", project:$.$model.xGet("activeProject")}).xAddToSave($);
+$.$model.xGet("activeProject").xSet("defaultIncomeCategory",defaultIncomeCategory);
+
 $.onWindowCloseDo(function(){
 	Alloy.Globals.initStore();
 })

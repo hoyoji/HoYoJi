@@ -14,30 +14,45 @@ exports.close = function() {
 
 exports.open = function(textField) {//绑定textField
 	if(!activeTextField){
-		textField.focus();
-		textField.blur(); //使软键盘不弹出
-		
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
-		showDatePicker.top = $.parent.getSize().height - 260;
+		showDatePicker.top = $.parent.getSize().height - 215;
 		showDatePicker.duration = 300;
 		showDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(showDatePicker);
 	}
 	activeTextField = textField;
+	if(textField.getDateTime()){
+		$.datePicker.setValue(textField.getDateTime());
+		if(OS_ANDROID){
+			$.timePicker.setValue(textField.getDateTime());
+		}
+	} else {
+		var d = new Date();
+		$.datePicker.setValue(d);
+		if(OS_ANDROID){
+			$.timePicker.setValue(d);
+		}
+		if(OS_IOS){
+			updateFieldValue();
+		}
+	}
 }
 
-$.datePicker.setValue(new Date());
-        
-function buttonClick() {//设置日期
-	var date;
-	var time;
-
-	// time = String.formatTime($.timePicker.getValue(), ["medium"]);
-	activeTextField.setValue($.datePicker.getValue());
-	// activeTextField.fireEvent("change");
+function updateFieldValue(){
+		if(activeTextField){
+			var datetime = $.datePicker.getValue();
+			if(OS_ANDROID){
+				datetime.setTime($.timePicker.getValue());
+			}
+			activeTextField.setValue(datetime);
+			activeTextField.field.fireEvent("change");
+		}
 }
-
-$.submitButton.addEventListener("click", buttonClick);
-//绑定button的click事件
-
+$.datePicker.addEventListener("change", updateFieldValue);
+if(OS_ANDROID){
+	$.timePicker.addEventListener("change", updateFieldValue);
+}
+$.datePicker.addEventListener("singletap", function(){
+	exports.close();
+});
 

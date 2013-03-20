@@ -6,7 +6,7 @@ exports.definition = {
 		    "amount": "TEXT NOT NULL",
 		    "incomeType": "TEXT NOT NULL",
 		    "friendId": "TEXT",
-		    "accountId": "TEXT NOT NULL",
+		    "moneyAccountId": "TEXT NOT NULL",
 		    "projectId": "TEXT NOT NULL",
 		    "categoryId": "TEXT NOT NULL",
 		    "localCurrencyId": "TEXT NOT NULL",
@@ -17,7 +17,7 @@ exports.definition = {
 		},
 		belongsTo : {
 			friend : {type : "Friend", attribute : null},
-			account : {type : "MoneyAccount", attribute : null},
+			moneyAccount : {type : "MoneyAccount", attribute : null},
 			project : {type : "Project", attribute : null},
 			category : {type : "moneyIncomeCategory", attribute : "moneyIncomes"},
 			localCurrency : {type : "localCurrency", attribute : null},
@@ -30,14 +30,14 @@ exports.definition = {
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 		});
 		
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 		

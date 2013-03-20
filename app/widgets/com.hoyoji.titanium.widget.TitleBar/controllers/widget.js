@@ -40,16 +40,23 @@ $.tableNavButton.addEventListener('singletap', function(e) {
 });
 
 exports.dirtyCB = function() {
-	if ($.saveableMode !== "read") {
+	if($.saveableMode === "edit"){
 		$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setEnabled(true);
+		Alloy.Globals.alloyAnimation.flash($.menuButton);
+	} else if($.saveableMode === "add"){
+		$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 		$.menuButton.setEnabled(true);
 		Alloy.Globals.alloyAnimation.flash($.menuButton);
 	}
 }
 
 exports.cleanCB = function() {
-	if ($.saveableMode !== "read") {
+	if($.saveableMode === "edit"){
 		$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setEnabled(false);
+	} else if($.saveableMode === "add"){
+		$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 		$.menuButton.setEnabled(false);
 	}
 }
@@ -72,8 +79,10 @@ exports.saveErrorCB = function(msg) {
 	console.info("Titlebar saveErrorCB");
 	if($.saveableMode === "read"){
 		$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
-	} else {
+	} else if($.saveableMode === "edit"){
 		$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+	} else if($.saveableMode === "add"){
+		$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 	}
 	$.menuButton.setEnabled(true);
 }
@@ -83,7 +92,7 @@ exports.setSaveableMode = function(mode) {
 	$.saveableMode = mode;
 	if ($.saveableMode === "add") {
 		$.title.setText($.$attrs.addModeTitle || $.$attrs.title);
-		$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 		$.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "edit") {
 		$.title.setText($.$attrs.editModeTitle || $.$attrs.title);

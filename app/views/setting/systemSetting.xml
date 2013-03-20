@@ -1,5 +1,19 @@
 <Alloy>
 	<View class="container" title="系统设置">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="系统设置"/>
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+            <View height="42">
+				<Button right="10" left="10" onSingletap="logout">注销</Button>
+        	</View>
+            <View height="42">
+				<Button right="10" left="10" onSingletap="openMoneyAccount">账户设置</Button>
+        	</View>
+            <View height="42">
+        		<Button right="10" left="10" onSingletap="openCurrency">币种设置</Button>
+		    </View>
+            <View height="42">
+				<Button right="10" left="10" onSingletap="openExchange">汇率设置</Button>
+        	</View>
+        </ScrollView>
 	</View>
 </Alloy>

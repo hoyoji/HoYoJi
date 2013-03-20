@@ -1,6 +1,14 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.onSave = function(saveEndCB, saveErrorCB){
-	 console.info("on save income!");
-	 setTimeout(saveEndCB, 3000);
+if (!$.$model) {
+	$.$model = Alloy.createModel("MoneyIncome", {
+		date : (new Date()).toISOString(),
+		amount : "0",
+		currency : Alloy.Models.User.xGet("activeCurrency"),
+		exchangeCurrencyRate : "1",
+		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+		project : Alloy.Models.User.xGet("activeProject"),
+		category : Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory")
+	});
+	$.setSaveableMode("add");
 }

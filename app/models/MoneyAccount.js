@@ -27,7 +27,7 @@ exports.definition = {
 			xDelete : function(xFinishCallback){
 				var error;
 				if(Alloy.Models.User.xGet("activeMoneyAccount") === this){
-					error = { msg : "默认账户不能删除。"};
+					error = { msg : "默认账户不能删除"};
 				 } else {
 					this._xDelete(xFinishCallback);
 					return;
