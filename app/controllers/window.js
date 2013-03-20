@@ -1,6 +1,15 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 exports.close = function(e) {
+	if (!$.__hiddenTextField) {
+		$.__hiddenTextField = Ti.UI.createTextField({
+			visible : false
+		});
+		$.$view.add($.__hiddenTextField);
+	}
+	$.__hiddenTextField.focus();
+	$.__hiddenTextField.blur();
+
 	function animateClose() {
 		var animation = Titanium.UI.createAnimation();
 		animation.left = "100%";
@@ -14,15 +23,30 @@ exports.close = function(e) {
 
 	if ($.__dirtyCount > 0) {
 		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", function() {
-			animateClose({animated : false});
+			animateClose({
+				animated : false
+			});
 		});
 	} else {
-		animateClose({animated : false});
+		animateClose({
+			animated : false
+		});
 	}
 }
 
 exports.open = function() {
-	$.$view.open({animted : false});
+	if (!$.__hiddenTextField) {
+		$.__hiddenTextField = Ti.UI.createTextField({
+			visible : false
+		});
+		$.$view.add($.__hiddenTextField);
+	}
+	$.__hiddenTextField.focus();
+	$.__hiddenTextField.blur();	
+	
+	$.$view.open({
+		animted : false
+	});
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";
 	animation.duration = 500;
@@ -40,14 +64,14 @@ exports.openWin = function(contentController, options) {
 
 	$.open();
 }
-// 
+//
 // var touchend = false;
 // $.$view.addEventListener('touchend', function(e) {
-	// touchend = true;
+// touchend = true;
 // });
-// 
+//
 // $.$view.addEventListener('touchstart', function(e) {
-	// touchend = false;
+// touchend = false;
 // });
 
 $.$view.addEventListener('swipe', function(e) {
