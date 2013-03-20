@@ -76,6 +76,12 @@
         }
         return !1;
     };
+    Number.prototype.toFixed2 = function() {
+        return this.toFixed(2);
+    };
+    Number.prototype.toUserCurrency = function() {
+        return this ? this.toFixed2() : this;
+    };
     Function.prototype.bind || (Function.prototype.bind = function(obj) {
         if (typeof this != "function") throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         var slice = Array.prototype.slice, args = slice.call(arguments, 1), self = this, nop = function() {}, bound = function() {

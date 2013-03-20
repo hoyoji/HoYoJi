@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
+Alloy.Globals.mainWindow = $;
+
 exports.close = function(e) {
 	Alloy.Globals.confirm("退出", "您确定要退出吗？", function(){
 		$.$view.close({animated : false});
