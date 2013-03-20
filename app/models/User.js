@@ -10,10 +10,9 @@ exports.definition = {
 			activeMoneyAccountId : "TEXT NOT NULL",
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL"
-			// ,
-			// age : "INTEGER",
-			// birthday : "TEXT"
+			messageBoxId : "TEXT NOT NULL",
+			age : "INTEGER",
+			birthday : "TEXT"
 		},
 		defaults : {
 			userName : "",
