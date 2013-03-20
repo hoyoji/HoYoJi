@@ -13,11 +13,9 @@
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="确认密码" hintText="请再次输入密码" passwordMask="true"
                 		bindModel="$.$model"
                 		bindAttribute="password2"/>
-                <!-- 
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="年龄" hintText="请输入年龄" inputType="NumericKeyboard"
                 		bindModel="$.$model"
-                		bindAttribute="age"/>
-                -->
+                		bindAttribute="age"/> 
                 <!-- 
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="生日" hintText="请输入生日" inputType="DateTimePicker"
                 		bindModel="$.$model"

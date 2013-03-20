@@ -98,11 +98,7 @@
 					$.error.animate(animation);
 				}
 			}
-			if(OS_IOS){
-				$.field.addEventListener("focus", function(e){
-					$.$view.fireEvent("singletap", {bubbles : true});
-				});
-			}
+			
 			$.$view.addEventListener("singletap", function(e) {
 				if ($.saveableMode === "read") {
 					return;
@@ -123,9 +119,6 @@
 						}
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector,attributes);
 					}
-				} else {
-					$.field.focus();
-					$.field.fireEvent("textfieldfocused", {bubbles : true, source : $.field, inputType : $.$attrs.inputType});
 				}
 			});
 			
