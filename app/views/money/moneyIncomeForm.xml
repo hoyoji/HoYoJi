@@ -30,7 +30,7 @@
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"
-			bindAttribute="account"
+			bindAttribute="moneyAccount"
 			bindAttributeIsModel="name"
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			/>

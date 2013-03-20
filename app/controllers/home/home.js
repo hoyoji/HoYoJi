@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-function onFooterbarTap(e){
-	if(e.source.id === "moneyAddNew"){
+function onFooterbarTap(e) {
+	if (e.source.id === "moneyAddNew") {
 		Alloy.Globals.openWindow("money/moneyAddNew");
 	}
 }
@@ -12,6 +12,9 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("新增收入", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeForm");
+	}));
+	menuSection.add($.createContextMenuItem("新增支出", function() {
+		Alloy.Globals.openWindow("money/moneyExpenseForm");
 	}));
 	return menuSection;
 }
