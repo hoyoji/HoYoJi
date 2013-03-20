@@ -9,21 +9,17 @@ exports.close = function(e) {
 		animation.duration = 500;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		animation.addEventListener('complete', function() {
-			$.$view.close();
+			$.$view.close({
+				animated : false
+			});
 		});
 		$.$view.animate(animation);
 	}
 
 	if ($.__dirtyCount > 0) {
-		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", function() {
-			animateClose({
-				animated : false
-			});
-		});
+		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose);
 	} else {
-		animateClose({
-			animated : false
-		});
+		animateClose();
 	}
 }
 
