@@ -15,8 +15,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 					"fromUserId" : Alloy.Models.User.id,
 					"type" : "System.Friend.Delete",
 					"messageState" : "new",
-					"messageTitle" : "移除好友",
-					"date" : date,
+					"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId")
 				}, function() {
@@ -27,9 +27,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 	return menuSection;
 }
 $.onWindowOpenDo(function(){
-	if($.$model.xGet("nickName")){
+	// if($.$model.xGet("nickName")){
 		$.userName.setText("(" + $.$model.xGet("friendUser").xGet("userName") + ")");
-	}else{
-		$.userName.setText($.$model.xGet("friendUser").xGet("userName"));
-	}   
+	// }else{
+		// $.userName.setText($.$model.xGet("friendUser").xGet("userName"));
+	// }   
 });

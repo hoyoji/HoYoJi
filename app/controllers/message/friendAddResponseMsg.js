@@ -23,9 +23,18 @@ $.onWindowOpenDo(function(){
 		$.$model.xSave();
 	}
 	if($.$model.xGet('messageState') === "closed" || $.$model.xGet('messageState') === "read"){
-		$.footerBar.hide();
+		$.footerBar.$view.hide();
 		// $.scrollview.setBottom(0);
 	}
+	if($.$model.xGet('messageState') === "new"){
+		$.$model.xSet('messageState',"close");
+		$.$model.xSave();
+	}
+	if($.$model.xGet('messageState') === "read"){
+		$.$model.xSet('messageState',"closed");
+		$.$model.xSave();
+	}
+	
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {

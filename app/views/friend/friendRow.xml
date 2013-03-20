@@ -1,11 +1,11 @@
 <Alloy>
 	<View class="container" height="42" openForm="friend/friendForm">
-		<View id="content" class="row-content" height="Ti.UI.FILL">
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+		<View id="content" layout="horizontal" horizontalWrap="false" class="row-content" height="Ti.UI.FILL">
+			<Widget id="nickName" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
 				bindAttribute = "nickName"
 			/>
-			<Label id="userName"/>
+			<Label id="userName" />
 		</View>
 	</View>
 </Alloy>

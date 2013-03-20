@@ -17,7 +17,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		"fromUserId" : $.$model.xGet("fromUser").xGet("id"),
 		"type" : "System.Friend.AddRequest",
 		"messageState" : "new",
-		"messageTitle" : "好友请求",
+		"messageTitle" : Alloy.Models.User.xGet("userName") + "请求添加您为好友",
 		"date" : date,
 		"detail" : Alloy.Models.User.xGet("userName") + "请求添加您为好友",
 		"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")

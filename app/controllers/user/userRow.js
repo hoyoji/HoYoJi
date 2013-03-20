@@ -29,7 +29,6 @@ $.onRowTap = function(e) {
 					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				});
 				friend.xSave({
-					success : saveEndCB
 				});
 			});
 			alert("不需要用户验证,可以直接添加");
