@@ -20,4 +20,5 @@ $.searchButton.addEventListener("click", function(e){
 	if(collection.xSearchInDb({userName : $.search.getValue()}).length === 0){
 		alert("no user found!");
 	};
+	$.search.blur();
 });
