@@ -26,5 +26,8 @@ $.onWindowCloseDo(function() {
 	Alloy.Models.User.off("change:activeCurrency", setLocalCurrency);
 });
 
-setLocalCurrency();
+$.onWindowOpenDo(function() {
+	setLocalCurrency();
+});
+
 

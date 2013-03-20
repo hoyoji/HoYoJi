@@ -1,9 +1,7 @@
 <Alloy>
 	<View class="container" backgroundColor="white">
-		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar"/>
-		<ScrollableView id="scrollableView" showPagingControl="false" top="5">
-			<Require src="money/moneyExpenseForm" saveableMode="add">
-			<Require src="money/moneyIncomeForm" saveableMode="add">
-		</ScrollableView>
+		<Widget id="slideDownController" src="com.hoyoji.titanium.widget.SlideDownController" 
+			slides="money/moneyExpenseForm,money/moneyIncomeForm"
+			titles="支出,收入" />
 	</View>
 </Alloy>

@@ -9,28 +9,32 @@ $.makeContextMenu = function(e, isSelectMode) {
 
 	return menuSection;
 }
-
-
 function changeForeignAmount() {
 	var parentController = $.getParentController().getParentController();
 	var localCurrencyAmount = parentController.localCurrencyAmount.getValue();
-	var rate = $.$model.get("rate");
+	var rate = $.$model.xGet("rate");
+	var symbol = $.$model.xGet("foreignCurrency").xGet("symbol");
+	console.info("-------------"+symbol);
 	console.info("++++++" + localCurrencyAmount + "++++++++" + rate);
-	var foreignCurrencyAmount = (localCurrencyAmount / rate).toUserCurrency();
-	console.info("++++++" + foreignCurrencyAmount + "++++++++");
-	$.foreignCurrencyAmount.setText(foreignCurrencyAmount);
-	console.info("----" + foreignCurrencyAmount + "----");
+	if (!isNaN(localCurrencyAmount)) {
+		var foreignCurrencyAmount = (localCurrencyAmount / rate).toUserCurrency();
+		console.info("++++++" + foreignCurrencyAmount + "++++++++");
+		$.foreignCurrencyAmount.setText(symbol+foreignCurrencyAmount);
+		console.info("----" + foreignCurrencyAmount + "----");
+	} else {
+		alert("请输入正确数字");
+	}
 }
 
 $.onWindowOpenDo(function() {
-	$.$model.on("change:rate",changeForeignAmount);
+	$.$model.on("change:rate", changeForeignAmount);
 	var parentController = $.getParentController().getParentController();
 	parentController.localCurrencyAmount.addEventListener("change", changeForeignAmount);
 	changeForeignAmount();
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.off("change:rate",changeForeignAmount);
+	$.$model.off("change:rate", changeForeignAmount);
 	var parentController = $.getParentController().getParentController();
 	parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
 });

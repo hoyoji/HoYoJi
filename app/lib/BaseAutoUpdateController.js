@@ -218,7 +218,7 @@
 						}
 
 						for (var i = 1; i < path.length; i++) {
-							if(_.isFunction(model.xGet)){
+							if(model.xGet){
 								model = model.xGet(path[i]);
 							} else {
 								model = model[path[i]];
