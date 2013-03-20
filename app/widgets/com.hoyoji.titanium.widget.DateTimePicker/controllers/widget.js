@@ -5,6 +5,7 @@ var activeTextField;
 exports.close = function() {
 	if (!activeTextField)
 		return;
+	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
 	var hideDatePicker = Titanium.UI.createAnimation();
 	//关闭时动画
@@ -14,7 +15,13 @@ exports.close = function() {
 	$.widget.animate(hideDatePicker);
 }
 
+var cancelTouchStart = function(e){
+		e.cancelBubble = true;
+}
+
 exports.open = function(textField) {//绑定textField
+	textField.$view.addEventListener("touchstart", cancelTouchStart);
+	
 	if(!activeTextField){
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
 		showDatePicker.top = $.parent.getSize().height - 215;
@@ -57,7 +64,15 @@ $.datePicker.addEventListener("change", updateFieldValue);
 if(OS_ANDROID){
 	$.timePicker.addEventListener("change", updateFieldValue);
 }
-$.$view.addEventListener("singletap", function(){
-	exports.close();
+
+$.onWindowOpenDo(function(){
+	$.$view.addEventListener("touchstart", function(e){
+		e.cancelBubble = true;
+	});
+	$.getCurrentWindow().$view.addEventListener("touchstart", function(e){
+		if(activeTextField){
+			exports.close();
+		}
+	});
 });
 

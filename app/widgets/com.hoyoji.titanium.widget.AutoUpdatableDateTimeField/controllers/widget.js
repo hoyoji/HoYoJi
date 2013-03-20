@@ -12,24 +12,31 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 }
 
-$.field.addEventListener("focus", function(e) {
-	e.cancelBubble = true;
+$.onWindowOpenDo(function(){
 
-	if ($.saveableMode === "read") {
-		return;
-	}
-	if (OS_IOS) {
-		$.field.blur();
-	}
-	$.field.fireEvent("textfieldfocused", {
-		bubbles : true,
-		inputType : "DateTimePicker"
+	$.field.addEventListener("focus", function(e) {
+		e.cancelBubble = true;
+	
+		if ($.saveableMode === "read") {
+			return;
+		}
+		$.field.fireEvent("textfieldfocused", {
+			bubbles : true,
+			inputType : "DateTimePicker"
+		});
+		if (OS_IOS) {
+			$.field.blur();
+			$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
+		}
 	});
-	$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
+
 });
 
-$.label.addEventListener("singletap", function(e) {
-	$.field.focus();
+$.$view.addEventListener("singletap", function(e) {	
+	if(e.source !== $.field){
+		$.field.focus();
+	}
+	$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
 });
 
 $.setEditable = function(editable) {
