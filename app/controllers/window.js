@@ -40,19 +40,19 @@ exports.openWin = function(contentController, options) {
 
 	$.open();
 }
-
-var touchend = false;
-$.$view.addEventListener('touchend', function(e) {
-	touchend = true;
-});
-
-$.$view.addEventListener('touchstart', function(e) {
-	touchend = false;
-});
+// 
+// var touchend = false;
+// $.$view.addEventListener('touchend', function(e) {
+	// touchend = true;
+// });
+// 
+// $.$view.addEventListener('touchstart', function(e) {
+	// touchend = false;
+// });
 
 $.$view.addEventListener('swipe', function(e) {
 	e.cancelBubble = true;
-	if (e.direction === "right" && touchend) {
+	if (e.direction === "right") {
 		$.close();
 	}
 });
