@@ -7,7 +7,7 @@
                 		bindModel="$.$model"
                 		bindAttribute="parentFriendCategory"
                 		bindAttributeIsModel="name"
-                		bindModelSelector="friend/friendAll"
+                		bindModelSelector="friend/friendCategoryAll"
                 		/>
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类名称" hintText="请输入分类名称" 
                 		bindModel="$.$model"

@@ -29,19 +29,24 @@ exports.definition = {
 				name : function(xValidateComplete){
 					var error;
 					if(Alloy.Models.User){
-						var oldCurrency = Alloy.Models.User.xGet("currencies").xCreateFilter({
+						var oldCurrencys = Alloy.Models.User.xGet("currencies").xCreateFilter({
 							name : this.get("name")
 						});
 						if (this.isNew()) {
-							if (oldCurrency.length > 0) {
+							if (oldCurrencys.length > 0) {
 								error = {
 									msg : "新增失败，币种已存在"
 								};
 							}
 						} else {
-							if (oldCurrency.length > 1) {
+							if(oldCurrencys.length > 0 && this.xGet("id") !== oldCurrencys.at(0).xGet("id")){
 								error = {
-									msg : "新增失败，币种已存在"
+									msg : "修改失败，币种已存在"
+								};
+							}
+							else if(oldCurrencys.length > 1 && this.xGet("id") === oldCurrencys.at(0).xGet("id")){
+								error = {
+									msg : "修改失败，币种已存在"
 								};
 							}
 						}
