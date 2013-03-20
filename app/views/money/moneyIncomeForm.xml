@@ -45,6 +45,7 @@
 			bindAttribute="category"
 			bindAttributeIsModel="name"
 			bindModelSelector="money/moneyIncomeCategoryAll"
+			bindModelSelectorParams="selectedProject:project"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
