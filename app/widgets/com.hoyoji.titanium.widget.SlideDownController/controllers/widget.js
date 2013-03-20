@@ -3,23 +3,20 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var buttons = [], slides, lastButton, currentButton, currentSlide, slideViews = {}, isOpened = false;
 
 var open = function() {
-	$.getParentController().$view.removeEventListener("touchmove", open);
+	isOpened = true;
 	$.$view.show();
 	var animation = Titanium.UI.createAnimation();
 	animation.top = "0";
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	animation.addEventListener("complete", function() {
-		isOpened = true;
-	});
 	$.slideDownButtons.animate(animation);
 }
-var close = function(e) {
+var close = function() {
 	if (lastButton !== currentButton) {
 		lastButton.setColor("black");
 		lastButton = currentButton;
 		lastButton.setColor("blue");
-		lastButton.fireEvent("singletap");
+		lastButton.fireEvent("selectbutton");
 	}
 
 	var animation = Titanium.UI.createAnimation();
@@ -30,7 +27,6 @@ var close = function(e) {
 		isOpened = false;
 		$.$view.hide();
 		lastButton.setHeight(42);
-		$.getParentController().$view.addEventListener("touchmove", open);
 	});
 	$.slideDownButtons.animate(animation);
 }
@@ -100,13 +96,38 @@ if ($.$attrs.slides) {
 		});
 		$.slideDownButtons.add(button);
 		buttons.push(button);
-		button.addEventListener("singletap", slideDown.bind(null, slides[i]));
+		button.addEventListener("singletap", function(src, e){
+			e.cancelBubble = true;
+			slideDown(src);
+		}.bind(null, slides[i]));
+		button.addEventListener("selectbutton", function(src, e){
+			e.cancelBubble = true;
+			slideDown(src);
+		}.bind(null, slides[i]));
 	}
 
 	$.onWindowOpenDo(function() {
-		$.getParentController().$view.addEventListener("touchend", close);
-		$.getParentController().$view.addEventListener("touchmove", selectSlide);
-		$.getParentController().$view.addEventListener("touchmove", open);
+		// var touchStartX, touchStartY, slideXLength = $.$view.getSize().width / 5;
+		// $.getParentController().$view.addEventListener("touchstart", function(e){
+			// if(!isOpened){
+				// touchStartX = e.x;
+				// touchStartY = e.y;
+			// }
+		// });
+		// $.getParentController().$view.addEventListener("touchend", function(e){
+			// if(isOpened){
+				// close();
+			// }
+		// });
+		// $.getParentController().$view.addEventListener("touchmove", function(e){
+			// if(!isOpened && 
+				// Math.abs(e.x - touchStartX) > slideXLength &&
+				// Math.abs(e.y - touchStartY) < (slideXLength * 0.7)){
+				// open();
+			// } else {
+			//	selectSlide(e);
+			// }
+		// });
 
 		// $.getParentController().$view.addEventListener("swipe", function(e) {
 		// if (e.direction === "down") {
@@ -114,10 +135,12 @@ if ($.$attrs.slides) {
 		// e.cancelBubble = true;
 		// }
 		// });
-		// $.getParentController().$view.addEventListener("doubletap", function(e) {
-		// open();
-		// e.cancelBubble = true;
-		// });
+		$.getParentController().$view.addEventListener("doubletap", function(e) {
+			if(!isOpened){
+				open();
+			}
+			e.cancelBubble = true;
+		});
 	});
 }
 
