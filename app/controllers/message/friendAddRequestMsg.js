@@ -19,7 +19,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		"messageState" : "new",
 		"messageTitle" : "好友请求",
 		"date" : date,
-		"detail" : $.$model.xGet("detail"),
+		"detail" : Alloy.Models.User.xGet("userName") + "请求添加您为好友",
 		"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")
 	},function(){
         $.saveModel(saveEndCB, saveErrorCB);

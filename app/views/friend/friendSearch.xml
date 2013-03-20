@@ -2,9 +2,9 @@
 	<View class="container" title="添加好友" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加好友"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="searchUserTable" bottom="42" top="42"/>
-		<View bottom="0" layout="horizontal" height="Ti.UI.SIZE">
-		 <SearchBar id="search" barColor="#000" showCancel="true" height="43" hinText="请输入好友账户名" width="80%" zIndex="850"/>
-		 <Button id="searchButton" title="查找" height="43" width="20%" />
+		<View bottom="0" height="Ti.UI.SIZE">
+		 <SearchBar id="search" barColor="#000" showCancel="false" height="43" hintText="请输入好友账户名" left="0" width="80%" zIndex="850"/>
+		 <Button id="searchButton" title="查找" height="43" right="0" width="20%" />
 		</View>
 
 	</View>

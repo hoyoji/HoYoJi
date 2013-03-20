@@ -1,3 +1,3 @@
 <Alloy>
-	<View bottom="0" height="42" width="Ti.UI.FILL" layout="horizontal"></View>
+	<View bottom="0" height="42" width="Ti.UI.FILL" layout="horizontal" horizontalWrap="false"></View>
 </Alloy>

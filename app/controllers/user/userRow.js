@@ -1,26 +1,52 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
-$.onRowTap = function(e){
+$.onRowTap = function(e) {
 	var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-			friendUserId : $.$model.xGet("id"),
-			ownerUserId : Alloy.Models.User.id
-			}).length;
-	if($.$model === Alloy.Models.User){
+		friendUserId : $.$model.xGet("id"),
+		ownerUserId : Alloy.Models.User.id
+	}).length;
+	if ($.$model === Alloy.Models.User) {
 		alert("不能添加自己为好友！");
-	}else if(friendlength > 0){
+	} else if (friendlength > 0) {
 		alert("不能重复添加好友！");
-	}else{
-		var newMessage = Alloy.createModel("Message");
-    	newMessage.xSet("toUser", $.$model);
-		Alloy.Globals.openWindow("message/friendAddRequestMsg", {$model : newMessage});
+	} else {
+		if ($.$model.xGet("friendAuthorization") === "none") {
+			var date = (new Date()).toISOString();
+			// $.$model.xSet("date", date);
+			Alloy.Globals.sendMsg({
+				"toUserId" : $.$model.xGet("id"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "System.Friend.AutoAdd",
+				"messageState" : "new",
+				"messageTitle" : "好友请求回复",
+				"date" : date,
+				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "添加您为好友",
+				"messageBoxId" : $.$model.xGet("messageBoxId")
+			}, function() {
+				var friend = Alloy.createModel("Friend", {
+					ownerUser : Alloy.Models.User,
+					friendUser : $.$model,
+					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+				});
+				friend.xSave({
+					success : saveEndCB
+				});
+			});
+			alert("不需要用户验证,可以直接添加");
+		} else {
+			var newMessage = Alloy.createModel("Message");
+			newMessage.xSet("toUser", $.$model);
+			Alloy.Globals.openWindow("message/friendAddRequestMsg", {
+				$model : newMessage
+			});
+		}
 	}
-		return false;
-    
-}
+	return false;
 
+}
 // $.onWindowOpenDo(function(){
-	// $.$model.on("change", function(){
-		// $.userName.setText($.$model.xGet("userName"));
-	// });
-	// $.userName.setText($.$model.xGet("userName"));
+// $.$model.on("change", function(){
+// $.userName.setText($.$model.xGet("userName"));
+// });
+// $.userName.setText($.$model.xGet("userName"));
 // });
