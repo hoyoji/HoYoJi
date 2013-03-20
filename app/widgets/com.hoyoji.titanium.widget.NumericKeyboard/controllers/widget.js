@@ -13,9 +13,6 @@ exports.close = function() {
 
 exports.open = function(textField) {
 	if (!activeTextField) {
-		$.number.focus();
-		$.number.blur(); // to hide the soft keyboard
-	
 		var animation = Titanium.UI.createAnimation();
 		animation.top = $.parent.getSize().height - 176;
 		animation.duration = 300;

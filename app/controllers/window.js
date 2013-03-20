@@ -1,15 +1,8 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 exports.close = function(e) {
-	if (!$.__hiddenTextField) {
-		$.__hiddenTextField = Ti.UI.createTextField({
-			visible : false
-		});
-		$.$view.add($.__hiddenTextField);
-	}
-	$.__hiddenTextField.focus();
-	$.__hiddenTextField.blur();
-
+	$.closeSoftKeyboard();
+	
 	function animateClose() {
 		var animation = Titanium.UI.createAnimation();
 		animation.left = "100%";
@@ -35,18 +28,14 @@ exports.close = function(e) {
 }
 
 exports.open = function() {
-	if (!$.__hiddenTextField) {
-		$.__hiddenTextField = Ti.UI.createTextField({
-			visible : false
-		});
-		$.$view.add($.__hiddenTextField);
-	}
-	$.__hiddenTextField.focus();
-	$.__hiddenTextField.blur();	
-	
 	$.$view.open({
 		animted : false
 	});
+	$.closeSoftKeyboard();
+	if(OS_ANDROID){
+		$.$view.focus();
+	}
+	
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";
 	animation.duration = 500;
