@@ -4,15 +4,16 @@
 			addModeTitle="新增汇率" readModeTitle="汇率详细" editModeTitle="修改汇率"/>
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true"
 			id="table" class="table-edit" bottom="0" top="42">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="本币币种" hintText="请选择本币币种"
+				addModeEditability="noneditable"
+                editModeEditability="noneditable"
+                bindModel="$.$model"
+				bindAttribute="localCurrency"
+				bindAttributeIsModel="name"
+				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="外币币种" hintText="请选择外币币种"
 				bindModel="$.$model"
 				bindAttribute="foreignCurrency"
-				bindAttributeIsModel="name"
-				bindModelSelector="setting/currency/currencyAll"
-				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="本币币种" hintText="请选择本币币种"
-				bindModel="$.$model"
-				bindAttribute="localCurrency"
 				bindAttributeIsModel="name"
 				bindModelSelector="setting/currency/currencyAll"
 				/>

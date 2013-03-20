@@ -17,17 +17,17 @@ $.titleBar.bindXTable($.exchangesTable);
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")});
 $.exchangesTable.addCollection(collection);
 
-function setLocalCurrency() {
-	$.localCurrencyLabel.setText(localCurrency.xGet("name")+localCurrency.xGet("symbol"));
-}
-
-Alloy.Models.User.on("change:activeCurrency", setLocalCurrency);
-$.onWindowCloseDo(function() {
-	Alloy.Models.User.off("change:activeCurrency", setLocalCurrency);
-});
-
-$.onWindowOpenDo(function() {
-	setLocalCurrency();
-});
+// function setLocalCurrency() {
+	// $.localCurrencyLabel.setText(localCurrency.xGet("name")+localCurrency.xGet("symbol"));
+// }
+// 
+// Alloy.Models.User.on("change:activeCurrency", setLocalCurrency);
+// $.onWindowCloseDo(function() {
+	// Alloy.Models.User.off("change:activeCurrency", setLocalCurrency);
+// });
+// 
+// $.onWindowOpenDo(function() {
+	// setLocalCurrency();
+// });
 
 
