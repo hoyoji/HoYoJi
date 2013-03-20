@@ -72,7 +72,7 @@
 							visible : false
 						});
 						if (OS_ANDROID) {
-							$.__hiddenTextField.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+							$.__hiddenTextField.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 						}
 						$.$view.add($.__hiddenTextField);
 					}

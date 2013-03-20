@@ -1,3 +1,5 @@
+Alloy.Globals.extendsBaseUIController($, arguments[0]);
+
 var activeTextField;
 
 exports.close = function() {
@@ -42,7 +44,10 @@ function updateFieldValue(){
 		if(activeTextField){
 			var datetime = $.datePicker.getValue();
 			if(OS_ANDROID){
-				datetime.setTime($.timePicker.getValue());
+				var time = $.timePicker.getValue();
+				datetime.setHours(time.getHours());
+				datetime.setMinutes(time.getMinutes());
+				datetime.setSeconds(time.getSeconds());
 			}
 			activeTextField.setValue(datetime);
 			activeTextField.field.fireEvent("change");
@@ -52,7 +57,7 @@ $.datePicker.addEventListener("change", updateFieldValue);
 if(OS_ANDROID){
 	$.timePicker.addEventListener("change", updateFieldValue);
 }
-$.datePicker.addEventListener("singletap", function(){
+$.$view.addEventListener("singletap", function(){
 	exports.close();
 });
 

@@ -1,3 +1,5 @@
+Alloy.Globals.extendsBaseUIController($, arguments[0]);
+
 var activeTextField, oldValue=0;
 
 exports.close = function() {
