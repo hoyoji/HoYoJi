@@ -26,7 +26,7 @@ exports.open = function(textField) {
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		
 		var animation = Titanium.UI.createAnimation();
-		animation.top = $.parent.getSize().height - 200;
+		animation.top = $.parent.getSize().height - 176;
 		animation.duration = 300;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(animation);
@@ -71,7 +71,7 @@ function numPress(e) {
 		}
 	}
 	setOPColor();
-	activeTextField.$view.fireEvent("change");
+	activeTextField.field.fireEvent("change");
 }
 
 //+-*/操作
@@ -107,7 +107,7 @@ function operation(e) {
 		accum = parseFloat(accum).toFixed(2) / 1;
 		activeTextField.setValue(accum + "");
 		
-		activeTextField.$view.fireEvent("change");
+		activeTextField.field.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
 		if(latestClickOp === ""){
@@ -131,7 +131,7 @@ function decimal() {
 		}
 	}
 	activeTextField.setValue(curReadOut);
-	activeTextField.$view.fireEvent("change");
+	activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
@@ -148,7 +148,7 @@ function backspace() {
 		}
 	} else {
 		activeTextField.setValue("0");
-		activeTextField.$view.fireEvent("change");
+		activeTextField.field.fireEvent("change");
 	}
 	setOPColor();
 }
