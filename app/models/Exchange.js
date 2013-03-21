@@ -60,12 +60,17 @@ exports.definition = {
 							};
 						}
 					} else {
-						if (currencyPositive.length > 1) {
-							error = {
-								msg : "新增失败，汇率已存在"
-							};
+							if(currencyPositive.length > 0 && this.xGet("id") !== currencyPositive.at(0).xGet("id")){
+								error = {
+									msg : "修改失败，币种已存在"
+								};
+							}
+							else if(currencyPositive.length > 1 && this.xGet("id") === currencyPositive.at(0).xGet("id")){
+								error = {
+									msg : "修改失败，币种已存在"
+								};
+							}
 						}
-					}
 					xValidateComplete(error);
 				}
 			}
