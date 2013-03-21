@@ -89,7 +89,7 @@ Alloy.Globals.initStore = function(){
 		if(m === "instance") continue;
 		Alloy.Models[m] = null;
 		delete Alloy.Models[m];
-		Alloy.Models.instance(m)
+		//Alloy.Models.instance(m)
 	}
 }
 
@@ -105,7 +105,7 @@ Alloy.Collections.instance("MoneyAccount");
 Alloy.Collections.instance("Friend");
 Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");
-// Alloy.Collections.instance("MoneyExpense");
+Alloy.Collections.instance("MoneyExpense");
 Alloy.Collections.instance("MoneyIncome");
 
 // Alloy.Collections.Project.on("all", function(eName){

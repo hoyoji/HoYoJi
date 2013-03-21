@@ -23,15 +23,17 @@ $.field.addEventListener("focus", function(e){
 		return;
 	} 
 	if(OS_IOS){
-		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard" || $.$attrs.inputType === "DateTimePicker") {
+		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
 			$.field.blur();
 		}	
 	}
 	$.field.fireEvent("textfieldfocused", {
 		bubbles : true,
-		source : $.field,
 		inputType : $.$attrs.inputType
 	});
+	if($.$attrs.inputType === "NumericKeyboard"){
+		$.getCurrentWindow().numericKeyboard.open($.field);
+	}
 });
 
 
@@ -47,8 +49,8 @@ $.setEditable = function(editable) {
 	}
 
 	if (OS_ANDROID) {
-		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard" || $.$attrs.inputType === "DateTimePicker") {
-				$.field.softKeyboardOnFocus = Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS;
+		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
+			$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 		}
 	}
 
