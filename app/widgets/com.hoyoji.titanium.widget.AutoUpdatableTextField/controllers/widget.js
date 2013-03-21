@@ -16,29 +16,33 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
-$.field.addEventListener("focus", function(e){
-	e.cancelBubble = true;
-
-	if ($.saveableMode === "read") {
-		return;
-	} 
-	if(OS_IOS){
-		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
-			$.field.blur();
-		}	
-	}
-	$.field.fireEvent("textfieldfocused", {
-		bubbles : true,
-		inputType : $.$attrs.inputType
+$.onWindowOpenDo(function(){
+	
+	$.field.addEventListener("focus", function(e){
+		e.cancelBubble = true;
+	
+		if ($.saveableMode === "read") {
+			return;
+		} 
+		if(OS_IOS){
+			if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
+				$.field.blur();
+			}
+			if($.$attrs.inputType === "NumericKeyboard"){
+				$.getCurrentWindow().numericKeyboard.open($);
+			}	
+		}
+		$.field.fireEvent("textfieldfocused", {
+			bubbles : true,
+			inputType : $.$attrs.inputType
+		});
 	});
-	if($.$attrs.inputType === "NumericKeyboard"){
-		$.getCurrentWindow().numericKeyboard.open($.field);
-	}
+
 });
 
-
-$.label.addEventListener("singletap", function(e) {
+$.$view.addEventListener("singletap", function(e) {
 	$.field.focus();
+	$.getCurrentWindow().numericKeyboard.open($);
 });
 
 $.setEditable = function(editable) {
