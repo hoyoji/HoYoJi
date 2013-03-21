@@ -22,3 +22,7 @@ $.searchButton.addEventListener("click", function(e){
 	};
 	$.search.blur();
 });
+
+$.onWindowOpenDo(function(){
+	$.search.blur();
+});

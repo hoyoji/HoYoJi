@@ -1,13 +1,13 @@
 <Alloy>
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
-				 addModeTitle="新增好友共享" readModeTitle="查看共享权限" editModeTitle="修改共享权限"/>
+				 addModeTitle="新增支出分类" readModeTitle="支出分类" editModeTitle="修改支出分类"/>
 			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="请选择上级分类" 
                 		bindModel="$.$model"
-                		bindAttribute="Friend"
-                		bindAttributeIsModel="nickName"
-                		bindModelSelector="friend/moneyExpenseCategoryAll"
+                		bindAttribute="parentExpenseCategory"
+                		bindAttributeIsModel="name"
+                		bindModelSelector="money/moneyExpenseCategoryAll"
                 		bindModelSelectorParams="selectedProject:project"
                 		/>
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类名称" hintText="请输入分类名称" 
