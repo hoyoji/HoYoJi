@@ -3,6 +3,7 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var activeTextField;
 
 exports.close = function() {
+	console.info("close DateTimePicker");
 	if (!activeTextField)
 		return;
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
@@ -20,16 +21,23 @@ var cancelTouchStart = function(e){
 }
 
 exports.open = function(textField) {//绑定textField
-	textField.$view.addEventListener("touchstart", cancelTouchStart);
-	
 	if(!activeTextField){
+		activeTextField = textField;
+		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
 		showDatePicker.top = $.parent.getSize().height - 215;
 		showDatePicker.duration = 300;
 		showDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(showDatePicker);
+	} else if (activeTextField !== textField){
+		activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+		activeTextField = textField;
+		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+	} else {
+		return;
 	}
-	activeTextField = textField;
+	
 	if(textField.getDateTime()){
 		$.datePicker.setValue(textField.getDateTime());
 		if(OS_ANDROID){

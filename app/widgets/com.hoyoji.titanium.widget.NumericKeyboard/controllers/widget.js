@@ -3,8 +3,10 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var activeTextField, oldValue=0;
 
 exports.close = function() {
+	console.info("close NumericKeyboard");
 	if (!activeTextField)
 		return;
+	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
 	var animation = Titanium.UI.createAnimation();
 	animation.top = "100%"
@@ -13,18 +15,44 @@ exports.close = function() {
 	$.widget.animate(animation);
 }
 
+var cancelTouchStart = function(e){
+		e.cancelBubble = true;
+}
+
 exports.open = function(textField) {
 	if (!activeTextField) {
+		activeTextField = textField;
+		activeTextField.$view.fireEvent("touchstart"); // close other pickers
+		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+		
 		var animation = Titanium.UI.createAnimation();
 		animation.top = $.parent.getSize().height - 176;
 		animation.duration = 300;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(animation);
+	} else if (activeTextField !== textField){
+		activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+		activeTextField = textField;
+		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+	} else {
+		return;
 	}
-	activeTextField = textField;
+	
 	oldValue = activeTextField.getValue();
 	$.number.setValue(activeTextField.getValue());
 }
+
+$.onWindowOpenDo(function(){
+	$.$view.addEventListener("touchstart", function(e){
+		e.cancelBubble = true;
+	});
+	$.getCurrentWindow().$view.addEventListener("touchstart", function(e){
+		if(activeTextField && e.source !== activeTextField.$view){
+			exports.close();
+		}
+	});
+});
+
 var accum = 0;
 var flagNewNum = false;
 var pendingOp = "";
@@ -45,7 +73,7 @@ function numPress(e) {
 			activeTextField.setValue(thisNum);
 		}
 	}
-	activeTextField.fireEvent("change");
+	activeTextField.$view.fireEvent("change");
 }
 
 //+-*/操作
@@ -79,7 +107,7 @@ function operation(e) {
 		accum = parseFloat(accum).toFixed(2) / 1;
 		$.number.setValue(accum + "");
 		activeTextField.setValue(accum + "");
-		activeTextField.fireEvent("change");
+		activeTextField.$view.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
 }
@@ -97,7 +125,7 @@ function decimal() {
 	}
 	$.number.setValue(curReadOut);
 	activeTextField.setValue(curReadOut);
-		activeTextField.fireEvent("change");
+		activeTextField.$view.fireEvent("change");
 }
 
 //退格键
@@ -116,7 +144,7 @@ function backspace() {
 	} else {
 		$.number.setValue("0");
 		activeTextField.setValue("0");
-		activeTextField.fireEvent("change");
+		activeTextField.$view.fireEvent("change");
 	}
 }
 
