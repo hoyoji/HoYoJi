@@ -3,7 +3,7 @@
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			var errorLabel, childrenCollections, detailCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
-			var hasDetail = $.$attrs.hasDetail || $.$view.hasDetail;
+			var hasDetail = $.$attrs.hasDetail === undefined ?  $.$view.hasDetail : $.$attrs.hasDetail;
 			$.getChildTitle = function() {
 				var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
 				return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";

@@ -30,7 +30,8 @@ $.$view.addEventListener("click", function(e) {
 function addRowToSection(rowModel, collection, index) {
 	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
-		$collection : collection
+		$collection : collection,
+		hasDetail : $.$attrs.hasDetail
 	});
 	var row = Ti.UI.createTableViewRow();
 	rowViewController.setParent(row);
