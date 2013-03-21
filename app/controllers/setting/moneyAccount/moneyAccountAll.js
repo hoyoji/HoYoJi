@@ -10,10 +10,10 @@ $.makeContextMenu = function() {
 
 $.titleBar.bindXTable($.moneyAccountsTable);
 
-var collection;
-if ($.$attrs.selectedCurrency) {
-	collection = $.$attrs.selectedCurrency.xGet("moneyAccounts");
-} else {
-	collection = Alloy.Models.User.xGet("moneyAccounts");
-}
+// var collection;
+// if ($.$attrs.selectedCurrency) {
+	// collection = $.$attrs.selectedCurrency.xGet("moneyAccounts");
+// } else {
+	var collection = Alloy.Models.User.xGet("moneyAccounts");
+// }
 $.moneyAccountsTable.addCollection(collection);

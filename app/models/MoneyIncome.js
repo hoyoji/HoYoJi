@@ -10,7 +10,6 @@ exports.definition = {
 		    "projectId": "TEXT NOT NULL",
 		    "categoryId": "TEXT NOT NULL",
 		    "localCurrencyId": "TEXT NOT NULL",
-		    "foreignCurrencyId": "TEXT NOT NULL",
 		    "exchangeCurrencyRate" : "TEXT NOT NULL",
 		    "remark" : "TEXT",
 		    "ownerUserId" : "TEXT NOT NULL"
@@ -21,7 +20,6 @@ exports.definition = {
 			project : {type : "Project", attribute : null},
 			category : {type : "MoneyIncomeCategory", attribute : "moneyIncomes"},
 			localCurrency : {type : "Currency", attribute : null},
-			foreignCurrency : {type : "Currency", attribute : null},
 			ownerUser : {type : "User", attribute : "incomes"}
 		},
 		rowView : "money/moneyIncomeRow",
