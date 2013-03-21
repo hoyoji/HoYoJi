@@ -35,11 +35,24 @@
                 e.sourceController.saveErrorCB && e.sourceController.saveErrorCB();
             },
             createContextMenuItem: function(title, callback, disabled) {
-                var row = Ti.UI.createTableViewRow({
-                    title: title,
-                    height: Alloy.CFG.UI.DefaultRowHeight
-                });
-                disabled ? row.setColor("gray") : row.addEventListener("click", callback);
+                var row;
+                if (disabled) {
+                    row = Ti.UI.createTableViewRow({
+                        title: title,
+                        color: "gray",
+                        height: Alloy.CFG.UI.DefaultRowHeight
+                    });
+                    row.addEventListener("click", function(e) {
+                        e.cancelBubble = !0;
+                    });
+                } else {
+                    row = Ti.UI.createTableViewRow({
+                        title: title,
+                        color: "black",
+                        height: Alloy.CFG.UI.DefaultRowHeight
+                    });
+                    row.addEventListener("click", callback);
+                }
                 return row;
             }
         });

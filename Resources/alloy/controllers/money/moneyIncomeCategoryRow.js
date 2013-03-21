@@ -15,15 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.moneyIncomeCategoryRow.add($.__views.content);
-    $.__views.__alloyId61 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId59 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId61"
+        id: "__alloyId59"
     });
-    $.__views.__alloyId61.setParent($.__views.content);
+    $.__views.__alloyId59.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);

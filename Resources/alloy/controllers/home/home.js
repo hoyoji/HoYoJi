@@ -16,24 +16,39 @@ function Controller() {
         title: "主页"
     });
     $.__views.titleBar.setParent($.__views.home);
-    $.__views.__alloyId44 = Ti.UI.createView({
+    $.__views.__alloyId42 = Ti.UI.createView({
         height: "42",
         borderWidth: "1",
         borderColor: "black",
         bottom: "0",
-        id: "__alloyId44"
+        id: "__alloyId42"
     });
-    $.__views.home.add($.__views.__alloyId44);
-    $.__views.__alloyId45 = Ti.UI.createButton({
+    $.__views.home.add($.__views.__alloyId42);
+    $.__views.__alloyId43 = Ti.UI.createButton({
         title: "记一笔",
-        id: "__alloyId45"
+        id: "__alloyId43"
     });
-    $.__views.__alloyId44.add($.__views.__alloyId45);
-    openMoneyAddNew ? $.__views.__alloyId45.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId45!click!openMoneyAddNew"] = !0;
+    $.__views.__alloyId42.add($.__views.__alloyId43);
+    openMoneyAddNew ? $.__views.__alloyId43.addEventListener("click", openMoneyAddNew) : __defers["$.__views.__alloyId43!click!openMoneyAddNew"] = !0;
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);
-    __defers["$.__views.__alloyId45!click!openMoneyAddNew"] && $.__views.__alloyId45.addEventListener("click", openMoneyAddNew);
+    $.makeContextMenu = function() {
+        var menuSection = Ti.UI.createTableViewSection({
+            headerTitle: "设置操作"
+        });
+        menuSection.add($.createContextMenuItem("币种设置", function() {
+            Alloy.Globals.openWindow("setting/currency/currencyAll");
+        }));
+        menuSection.add($.createContextMenuItem("汇率设置", function() {
+            Alloy.Globals.openWindow("setting/currency/exchangeAll");
+        }));
+        menuSection.add($.createContextMenuItem("账户设置", function() {
+            Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
+        }));
+        return menuSection;
+    };
+    __defers["$.__views.__alloyId43!click!openMoneyAddNew"] && $.__views.__alloyId43.addEventListener("click", openMoneyAddNew);
     _.extend($, exports);
 }
 

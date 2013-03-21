@@ -7,7 +7,6 @@ function Controller() {
         height: "42",
         openForm: "project/projectForm",
         hasChild: "subProjects",
-        collapsible: "true",
         id: "projectRow"
     });
     $.addTopLevelView($.__views.projectRow);
@@ -16,15 +15,15 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.projectRow.add($.__views.content);
-    $.__views.__alloyId64 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId62 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId64"
+        id: "__alloyId62"
     });
-    $.__views.__alloyId64.setParent($.__views.content);
+    $.__views.__alloyId62.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
@@ -32,9 +31,6 @@ function Controller() {
         var menuSection = Ti.UI.createTableViewSection({
             headerTitle: "项目操作"
         });
-        menuSection.add($.createContextMenuItem("删除项目", function() {
-            $.deleteModel();
-        }, isSelectMode));
         menuSection.add($.createContextMenuItem("支出分类", function() {
             Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
                 selectedProject: $.$model
@@ -45,6 +41,9 @@ function Controller() {
                 selectedProject: $.$model
             });
         }));
+        menuSection.add($.createContextMenuItem("删除项目", function() {
+            $.deleteModel();
+        }, isSelectMode));
         return menuSection;
     };
     _.extend($, exports);

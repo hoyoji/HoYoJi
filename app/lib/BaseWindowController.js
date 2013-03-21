@@ -4,8 +4,14 @@
 			// a window is by default a saveableContainer
 			attrs.saveableContainer = "true";
 			Alloy.Globals.extendsBaseViewController($, attrs);
+			
+			if(OS_ANDROID){
+				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+			}
+			
 			_.extend($, {
 				close : function(){
+					$.closeSoftKeyboard();
 					$.$view.close({animated : false});
 				},				
 				open : function(){
