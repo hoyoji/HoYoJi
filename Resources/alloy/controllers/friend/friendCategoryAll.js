@@ -27,10 +27,7 @@ function Controller() {
         menuSection.add($.createContextMenuItem("新增好友分类", function() {
             Alloy.Globals.openWindow("friend/friendCategoryForm", {
                 $model: "FriendCategory",
-                saveableMode: "add",
-                data: {
-                    parentFriendCategory: sourceModel
-                }
+                saveableMode: "add"
             });
         }));
         return menuSection;

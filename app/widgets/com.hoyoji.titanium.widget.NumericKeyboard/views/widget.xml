@@ -1,37 +1,41 @@
 <Alloy>
-		<View class="keyboard" zIndex="900" width="Ti.UI.FILL"  top="100%" height="176">
+		<View class="keyboard" zIndex="900" width="Ti.UI.FILL"  top="100%">
 			<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
-			<View top="0" height="Ti.UI.SIZE" layout="horizontal" visible="false">
-				<Label id="label" width="40%">金额</Label>
-				<TextField id="number" width="60%" value="0"></TextField>
+			<View layout="vertical">
+			<View layout="vertical" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
+				<View height="Ti.UI.SIZE" layout="horizontal">
+					<Button class="num" onSingletap="numPress" title="7" />
+					<Button class="num" onSingletap="numPress" title="8" />
+					<Button class="num" onSingletap="numPress" title="9" />
+					<Button onSingletap="operation" title="÷" />
+					<Button onSingletap="clear" title="C" />
+				</View>
+				<View height="Ti.UI.SIZE" layout="horizontal">
+					<Button class="num" onSingletap="numPress" title="4" />
+					<Button class="num" onSingletap="numPress" title="5" />
+					<Button class="num" onSingletap="numPress" title="6" />
+					<Button onSingletap="operation" title="×" />
+					<Button onSingletap="backspace" title="←" />
+				</View>
 			</View>
-			<View top="0" height="Ti.UI.SIZE" layout="horizontal">
-				<Button class="num" onSingletap="numPress" title="7" />
-				<Button class="num" onSingletap="numPress" title="8" />
-				<Button class="num" onSingletap="numPress" title="9" />
-				<Button onSingletap="operation" title="÷" />
-				<Button onSingletap="clear" title="C" />
+			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
+				<View width="Ti.UI.SIZE" layout="vertical" height="Ti.UI.SIZE">
+					<View width="Ti.UI.SIZE" height="Ti.UI.SIZE" layout="horizontal">
+						<Button class="num" onSingletap="numPress" title="1" />
+						<Button class="num" onSingletap="numPress" title="2" />
+						<Button class="num" onSingletap="numPress" title="3" />
+						<Button onSingletap="operation" title="-" />
+					</View>
+					<View width="Ti.UI.SIZE" height="Ti.UI.SIZE" layout="horizontal">
+						<Button onSingletap="decimal" title="." />
+						<Button class="num" onSingletap="numPress" title="0" />
+						<Button onSingletap="operation" title="=" />
+						<Button onSingletap="operation" title="+" />
+					</View>
+				</View>
+				<Button id="submitButton" onSingletap="submitValue" title="确定" height="100%"/>
+			
 			</View>
-			<View top="44" height="Ti.UI.SIZE" layout="horizontal">
-				<Button class="num" onSingletap="numPress" title="4" />
-				<Button class="num" onSingletap="numPress" title="5" />
-				<Button class="num" onSingletap="numPress" title="6" />
-				<Button onSingletap="operation" title="×" />
-				<Button onSingletap="backspace" title="←" />
-			</View>
-			<View top="88" height="Ti.UI.SIZE" layout="horizontal">
-				<Button class="num" onSingletap="numPress" title="1" />
-				<Button class="num" onSingletap="numPress" title="2" />
-				<Button class="num" onSingletap="numPress" title="3" />
-				<Button onSingletap="operation" title="-" />
-				<Button onSingletap="close" title="取消" />
-			</View>
-			<View top="132" height="Ti.UI.SIZE" layout="horizontal">
-				<Button onSingletap="decimal" title="." />
-				<Button class="num" onSingletap="numPress" title="0" />
-				<Button onSingletap="operation" title="=" />
-				<Button onSingletap="operation" title="+" />
-				<Button id="submitButton" onSingletap="submitValue" title="确定" />
 			</View>
 		</View>
 </Alloy>

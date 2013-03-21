@@ -27,7 +27,6 @@
                         }) ];
                     } else menuFooter = [ $.createContextMenuItem(title, $.close) ];
                     $.contextMenu.open(Alloy.Globals.MenuSections, menuHeader, menuFooter);
-                    e.firstScrollableView && ($.contextMenu.firstScrollableView = e.firstScrollableView);
                 }
             },
             closeContextMenu: function() {
@@ -49,13 +48,13 @@
         });
         $.$view.addEventListener("registerwindowevent", function(e) {
             console.info("window ======== receive registerwindowevent " + e.windowEvent + " from " + e.source.id);
-            if (e.parentWindowCallback) {
-                console.info("window ======== receive registerwindowevent calling back ParentCallback " + e.windowEvent + " from " + e.source.id);
-                e.parentWindowCallback($);
-            }
             if (e.windowPreListenCallback) {
                 console.info("window ======== receive registerwindowevent calling back PreListenCallback " + e.windowEvent + " from " + e.source.id);
                 e.windowPreListenCallback(e, $);
+            }
+            if (e.parentWindowCallback) {
+                console.info("window ======== receive registerwindowevent calling back ParentCallback " + e.windowEvent + " from " + e.source.id);
+                e.parentWindowCallback($);
             }
             e.windowCallback && $.$view.addEventListener(e.windowEvent, function(cbE) {
                 e.windowCallback(cbE, $);

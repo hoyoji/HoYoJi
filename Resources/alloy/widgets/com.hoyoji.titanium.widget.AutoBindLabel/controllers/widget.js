@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.AutoBindLabel/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.AutoBindLabel/" + s.substring(index + 1);
-    return path.indexOf("/") !== 0 ? "/" + path : path;
+    return path;
 }
 
 function Controller() {
@@ -29,7 +29,7 @@ function Controller() {
         if (model && typeof model == "string") {
             var path = model.split(".");
             path[0] === "$" ? model = $.getParentController() : model = Alloy.Models[path[0]];
-            for (var i = 1; i < path.length; i++) model.xGet ? model = model.xGet(path[i]) : model = model[path[i]];
+            for (var i = 1; i < path.length; i++) model = model[path[i]];
         }
         $.onWindowCloseDo(function() {
             model.off("sync", updateLabel);

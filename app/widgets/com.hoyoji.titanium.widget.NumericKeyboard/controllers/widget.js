@@ -26,7 +26,7 @@ exports.open = function(textField) {
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		
 		var animation = Titanium.UI.createAnimation();
-		animation.top = $.parent.getSize().height - 176;
+		animation.top = $.parent.getSize().height - 200;
 		animation.duration = 300;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(animation);
@@ -39,7 +39,6 @@ exports.open = function(textField) {
 	}
 	
 	oldValue = activeTextField.getValue();
-	$.number.setValue(activeTextField.getValue());
 }
 
 $.onWindowOpenDo(function(){
@@ -57,31 +56,32 @@ var accum = 0;
 var flagNewNum = false;
 var pendingOp = "";
 var numSubmit = 0;
+var latestClickOp ="";
 //输入数字操作
 function numPress(e) {
 	if (flagNewNum) {
-		$.number.setValue(e.source.getTitle());
 		activeTextField.setValue(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		if ($.number.getValue() === "0") {
-			$.number.setValue(e.source.getTitle());
+		if (activeTextField.getValue() === "0") {
 			activeTextField.setValue(e.source.getTitle());
 		} else {
-			var thisNum = $.number.getValue() + e.source.getTitle();
-			$.number.setValue(thisNum);
+			var thisNum = activeTextField.getValue() + e.source.getTitle();
 			activeTextField.setValue(thisNum);
 		}
 	}
+	setOPColor();
 	activeTextField.$view.fireEvent("change");
 }
 
 //+-*/操作
 function operation(e) {
-	var readout = $.number.getValue();
+	var readout = activeTextField.getValue();
+	if(activeTextField.getValue()===""){
+		readout = 0;
+	}
 	var pendOp = pendingOp;
-	if (flagNewNum && pendOp !== "=")
-		;
+	if (flagNewNum && pendOp !== "=");
 	else {
 		flagNewNum = true;
 		if ('+' === pendOp) {
@@ -105,16 +105,23 @@ function operation(e) {
 			accum = parseFloat(readout);
 		}
 		accum = parseFloat(accum).toFixed(2) / 1;
-		$.number.setValue(accum + "");
 		activeTextField.setValue(accum + "");
+		
 		activeTextField.$view.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
+		if(latestClickOp === ""){
+			e.source.setColor("blue");
+		}else if(latestClickOp !== e.source){
+			latestClickOp.setColor("black");
+			e.source.setColor("blue");
+		}
+		latestClickOp = e.source;
 }
 
 //小数点
 function decimal() {
-	var curReadOut = $.number.getValue();
+	var curReadOut = activeTextField.getValue();
 	if (flagNewNum) {
 		curReadOut = "0.";
 		flagNewNum = false;
@@ -123,49 +130,47 @@ function decimal() {
 			curReadOut += ".";
 		}
 	}
-	$.number.setValue(curReadOut);
 	activeTextField.setValue(curReadOut);
-		activeTextField.$view.fireEvent("change");
+	activeTextField.$view.fireEvent("change");
+	setOPColor();
 }
 
 //退格键
 function backspace() {
-	var readout = $.number.getValue();
+	var readout = activeTextField.getValue();
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
-			$.number.setValue("0");
 			activeTextField.setValue("0");
 		} else {
 			var rout = readout.substr(0, len - 1);
-			$.number.setValue(rout);
 			activeTextField.setValue(rout);
 		}
 	} else {
-		$.number.setValue("0");
 		activeTextField.setValue("0");
 		activeTextField.$view.fireEvent("change");
 	}
+	setOPColor();
 }
 
 //清除
 function clear(e) {
 	accum = 0;
 	pendingOp = "";
-	$.number.setValue("0");
 	activeTextField.setValue("0");
 	flagNewNum = true;
+	setOPColor();
 }
 
-//关闭
-function close() {
-	activeTextField.setValue(oldValue);
-	exports.close();
+function setOPColor(){
+	if(latestClickOp !== ""){
+		latestClickOp.setColor("black");
+		latestClickOp = "";
+	}
 }
-
 //提交
 function submitValue() {
-	oldValue = $.number.getValue();
+	// oldValue = $.number.getValue();
 	exports.close();
 }
 

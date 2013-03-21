@@ -11,23 +11,23 @@ function Controller() {
         id: "tabBar"
     });
     $.__views.tabBar.setParent($.__views.moneyAddNew);
-    var __alloyId50 = [];
-    $.__views.__alloyId51 = Alloy.createController("money/moneyExpenseForm", {
+    var __alloyId47 = [];
+    $.__views.__alloyId48 = Alloy.createController("money/moneyExpenseForm", {
         saveableMode: "add",
-        id: "__alloyId51"
+        id: "__alloyId48"
     });
-    __alloyId50.push($.__views.__alloyId51.getViewEx({
+    __alloyId47.push($.__views.__alloyId48.getViewEx({
         recurse: !0
     }));
-    $.__views.__alloyId52 = Alloy.createController("money/moneyIncomeForm", {
+    $.__views.__alloyId49 = Alloy.createController("money/moneyIncomeForm", {
         saveableMode: "add",
-        id: "__alloyId52"
+        id: "__alloyId49"
     });
-    __alloyId50.push($.__views.__alloyId52.getViewEx({
+    __alloyId47.push($.__views.__alloyId49.getViewEx({
         recurse: !0
     }));
     $.__views.scrollableView = Ti.UI.createScrollableView({
-        views: __alloyId50,
+        views: __alloyId47,
         id: "scrollableView",
         showPagingControl: "false",
         top: "5"
