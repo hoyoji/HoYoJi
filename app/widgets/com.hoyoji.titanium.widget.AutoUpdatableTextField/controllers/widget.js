@@ -37,13 +37,16 @@ $.onWindowOpenDo(function(){
 			inputType : $.$attrs.inputType
 		});
 	});
+	
+	$.$view.addEventListener("singletap", function(e) {
+		$.field.focus();
+		if($.$attrs.inputType === "NumericKeyboard"){
+			$.getCurrentWindow().numericKeyboard.open($);
+		}	
+	});
 
 });
 
-$.$view.addEventListener("singletap", function(e) {
-	$.field.focus();
-	$.getCurrentWindow().numericKeyboard.open($);
-});
 
 $.setEditable = function(editable) {
 	if (editable === false) {

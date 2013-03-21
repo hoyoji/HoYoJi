@@ -77,9 +77,9 @@
 						$.$view.add($.__hiddenTextField);
 					}
 					$.__hiddenTextField.focus();
-					if (OS_IOS) {
+					// if (OS_IOS) {
 						$.__hiddenTextField.blur();
-					}
+					// }
 				}
 			});
 
