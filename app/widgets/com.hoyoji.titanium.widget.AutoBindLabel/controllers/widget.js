@@ -31,7 +31,7 @@ $.onWindowOpenDo(function() {
 		}
 		var lastAttr = path[path.length-1];
 		if(lastAttr.endsWith("()")){
-			return value[lastAttr.slice(0,-2)];		
+			return value[lastAttr.slice(0,-2)]();		
 		} else {
 			return value.xGet(lastAttr);
 		}
@@ -45,7 +45,7 @@ $.onWindowOpenDo(function() {
 		} else if($.$attrs.dataType === "Date"){
 			d = new Date(value);
 			value = String.formatDate(d, "medium");	
-		} else if($.$attrs.dataType === "DateTime"){
+		} else if($.$attrs.dataType === "Time"){
 			d = new Date(value);
 			value = String.formatTime(d, "medium");	
 		}
