@@ -4,7 +4,7 @@
 		<Widget id="sharedWithHerTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
 		<Widget id="sharedWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
 		<Widget id="myProjectsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
-        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controllSlideDown="true"
+        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true"
         	buttons="我的项目,共享给我,共享给他"
         	ids="myProjectsTable,sharedWithMeTable,sharedWithHerTable"/>
 	</View>

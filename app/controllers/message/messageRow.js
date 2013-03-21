@@ -5,7 +5,7 @@ $.onRowTap = function(e){
 		Alloy.Globals.openWindow("message/friendAddRequestMsg", {$model : $.$model});
 		return false;
 	}else{
-		Alloy.Globals.openWindow("message/friendAddResponseMsg", {$model : $.$model, saveableMode : "read"});
+		Alloy.Globals.openWindow("message/friendAddResponseMsg", {$model : $.$model, saveableMode : "noRead"});
 		return false;
 	}
 	

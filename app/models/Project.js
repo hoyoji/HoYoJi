@@ -41,7 +41,10 @@ exports.definition = {
 					// }
 					// xValidateComplete(error);
 				// }
-			}	
+			},
+			getNameId : function(){
+				return this.xGet("name") + " " + this.xGet("id");
+			}
 		});
 		return Model;
 	},

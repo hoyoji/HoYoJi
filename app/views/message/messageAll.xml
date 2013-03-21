@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="消息"/>
         <Widget src="com.hoyoji.titanium.widget.XTableView" id="oldMessagesTable" bottom="42" top="42"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="newMessagesTable" bottom="42" top="42"/>
-        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controllSlideDown="true"
+        <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true"
         	buttons="未读消息,已读消息"
         	ids="newMessagesTable,oldMessagesTable"/>
 	</View>

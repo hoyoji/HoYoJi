@@ -28,9 +28,10 @@ $.$view.addEventListener("click", function(e) {
 });
 
 function addRowToSection(rowModel, collection, index) {
-	var rowViewController = Alloy.createController(rowModel.config.rowView, {
+	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
-		$collection : collection
+		$collection : collection,
+		hasDetail : $.$attrs.hasDetail
 	});
 	var row = Ti.UI.createTableViewRow();
 	rowViewController.setParent(row);
@@ -81,8 +82,11 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 	collapsibleSections[sectionRowId].collections = [];
 }
 
-exports.addCollection = function(collection) {
+exports.addCollection = function(collection, rowView) {
 	console.info("xTableView adding collection " + collection.length);
+	if(rowView){
+		collection.__rowView = rowView;
+	}
 	collections.push(collection);
 
 	collection.map(function(row) {

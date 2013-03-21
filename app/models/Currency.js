@@ -62,7 +62,6 @@ exports.definition = {
 				// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
 					// foreignCurrency : this
 					// });
-// 				
 				if(Alloy.Models.User.xGet("activeCurrency") === this){
 					error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除"};
 				 } 

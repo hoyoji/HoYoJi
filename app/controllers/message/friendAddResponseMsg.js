@@ -37,13 +37,13 @@ $.onWindowOpenDo(function() {
 			$.footerBar.$view.hide();
 		}		
 	}
-	if ($.$model.xGet('messageState') === "read") {
+	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.xSet('messageState', "closed");
 		$.$model.xSave();
 		$.footerBar.$view.hide();
 	}
 	if ($.$model.xGet('messageState') === "new") {
-		$.$model.xSet('messageState', "close");
+		$.$model.xSet('messageState', "readed");
 		$.$model.xSave();
 	}
 });
@@ -66,7 +66,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				messageState : "new"
 			})
 			messages.map(function(message) {
-				message.xSet("messageState", "read");
+				message.xSet("messageState", "noRead");
 				message.xSave();
 			});
 		}
@@ -109,7 +109,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.Reject",
-				"messageState" : "new",
+				"messageState" : "noRead",
 				"messageTitle" : Alloy.Models.User.xGet("userName") + "拒绝您的好友请求",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝您的好友请求",
