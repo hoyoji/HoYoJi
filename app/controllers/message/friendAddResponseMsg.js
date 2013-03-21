@@ -32,7 +32,10 @@ $.onWindowOpenDo(function() {
 		$.$model.xSet('messageState', "close");
 		$.$model.xSave();
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> a9d65069abc4b3818e8c7e1e5838a91b23582146
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
