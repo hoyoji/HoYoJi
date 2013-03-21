@@ -1,16 +1,16 @@
 <Alloy>
-		<View class="keyboard" zIndex="900" width="Ti.UI.FILL"  top="100%">
-			<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
-			<View layout="vertical">
-			<View layout="vertical" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
-				<View height="Ti.UI.SIZE" layout="horizontal">
+	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="176" top="100%">
+		<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
+		<View layout="vertical" height="Ti.UI.FILL" width="Ti.UI.FILL">
+			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
+				<View height="Ti.UI.SIZE" layout="horizontal" horizontalWrap="false">
 					<Button class="num" onSingletap="numPress" title="7" />
 					<Button class="num" onSingletap="numPress" title="8" />
 					<Button class="num" onSingletap="numPress" title="9" />
 					<Button onSingletap="operation" title="÷" />
 					<Button onSingletap="clear" title="C" />
 				</View>
-				<View height="Ti.UI.SIZE" layout="horizontal">
+				<View height="Ti.UI.SIZE" layout="horizontal" horizontalWrap="false">
 					<Button class="num" onSingletap="numPress" title="4" />
 					<Button class="num" onSingletap="numPress" title="5" />
 					<Button class="num" onSingletap="numPress" title="6" />
@@ -18,24 +18,25 @@
 					<Button onSingletap="backspace" title="←" />
 				</View>
 			</View>
-			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
-				<View width="Ti.UI.SIZE" layout="vertical" height="Ti.UI.SIZE">
-					<View width="Ti.UI.SIZE" height="Ti.UI.SIZE" layout="horizontal">
-						<Button class="num" onSingletap="numPress" title="1" />
-						<Button class="num" onSingletap="numPress" title="2" />
-						<Button class="num" onSingletap="numPress" title="3" />
-						<Button onSingletap="operation" title="-" />
+			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
+				<View width="80%" layout="vertical" height="Ti.UI.FILL">
+					<View width="Ti.UI.FILL" height="Ti.UI.SIZE" layout="horizontal" horizontalWrap="false">
+						<Button width="25%" class="num" onSingletap="numPress" title="1" />
+						<Button width="25%" class="num" onSingletap="numPress" title="2" />
+						<Button width="25%" class="num" onSingletap="numPress" title="3" />
+						<Button width="25%" onSingletap="operation" title="-" />
 					</View>
-					<View width="Ti.UI.SIZE" height="Ti.UI.SIZE" layout="horizontal">
-						<Button onSingletap="decimal" title="." />
-						<Button class="num" onSingletap="numPress" title="0" />
-						<Button onSingletap="operation" title="=" />
-						<Button onSingletap="operation" title="+" />
+					<View width="Ti.UI.FILL" height="Ti.UI.SIZE" layout="horizontal" horizontalWrap="false">
+						<Button width="25%" onSingletap="decimal" title="." />
+						<Button width="25%" class="num" onSingletap="numPress" title="0" />
+						<Button width="25%" onSingletap="operation" title="=" />
+						<Button width="25%" onSingletap="operation" title="+" />
 					</View>
 				</View>
-				<Button id="submitButton" onSingletap="submitValue" title="确定" height="100%"/>
-			
-			</View>
+				<View width="20%" height="Ti.UI.FILL">
+					<Button id="submitButton" onSingletap="submitValue" title="确定" width="Ti.UI.FILL" height="Ti.UI.FILL"/>
+				</View>
 			</View>
 		</View>
+	</View>
 </Alloy>
