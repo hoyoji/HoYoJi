@@ -1,6 +1,6 @@
 {
-	"id": "com.hoyoji.titanium.widget.Switcher",
-	"name": "com.hoyoji.titanium.widget.Switcher",
+	"id": "com.hoyoji.titanium.widget.AutoUpdatableSwitcher",
+	"name": "com.hoyoji.titanium.widget.AutoUpdatableSwitcher",
 	"description" : "",
 	"author": "",
 	"version": "1.0",

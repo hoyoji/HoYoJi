@@ -1,5 +1,5 @@
-var attrs = arguments[0] || {};
-$.label.setText(attrs.labelText);
+Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
+
 var items = [];
 var values = [];
 var labels = [];

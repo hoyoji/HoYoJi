@@ -14,6 +14,10 @@ for (var i = 0; i < items.length; i++) {//根据items的长度动态创建rows
 };
 $.field.add(data);//把rows添加到picker
 
+$.$view.addEventListener("singletap", function(e){
+	$.getCurrentWindow().closeSoftKeyboard();
+});
+
 $.field.addEventListener("change", function(e){
 	selectedValue = e.selectedValue[0];
 });
