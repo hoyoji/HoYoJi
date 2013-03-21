@@ -95,7 +95,7 @@
 
 				this.__filterCollection.on("add", addModel);
 				this.__filterCollection.on("remove", removeModel);
-				this.__filterCollection.on("change", changeModel);
+				this.__filterCollection.on("sync", changeModel);
 				
 				// this.on("destroy", function(){
 					// self.__filterCollection.off("add", addModel);
