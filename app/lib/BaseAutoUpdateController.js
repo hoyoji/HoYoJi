@@ -150,19 +150,19 @@
 						hideErrorMsg();
 					}
 				}
-				var updateField = function() {
+				var updateField = function(e) {
 					$.setValue(model.xGet(attribute));
 					
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
 					}
 				}
-				var updateModel = function() {
+				var updateModel = function(e) {
 					hideErrorMsg();
 					if(bindAttributeIsModel){
 						model.xSet(attribute, _bindAttributeIsModel);
 					} else {
-						model.xSet(attribute, $.getValue());
+						model.xSet(attribute, $.getValue(e));
 					}
 					// if(model.validate(model.attributes)){
 					// model.trigger("invalid");

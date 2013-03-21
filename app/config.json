@@ -12,6 +12,7 @@
         "com.hoyoji.titanium.widget.AutoUpdatableTextField": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableTextAreaField": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableDateTimeField": "1.0",
+        "com.hoyoji.titanium.widget.AutoUpdatableSelector": "1.0",
         "nl.fokkezb.pullToRefresh": "1.1",
         "com.hoyoji.titanium.widget.XTableView": "1.0",
         "com.hoyoji.titanium.widget.AutoBindLabel": "1.0",

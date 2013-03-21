@@ -16,7 +16,8 @@
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="年龄" hintText="请输入年龄" inputType="NumericKeyboard"
                 		bindModel="$.$model"
                 		bindAttribute="age"/> 
-                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="生日" hintText="请输入生日" inputType="DateTimePicker"
+                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="生日" hintText="请输入生日" 
+                		items="18世纪，19世纪，20世纪"
                 		bindModel="$.$model"
                 		bindAttribute="birthday"/>
 	       </ScrollView>
