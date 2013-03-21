@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" title="共享项目" backgroundColor="cyan">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="共享项目"/>
+		<Widget id="myProjectSharedToesTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
+	</View>
+</Alloy>

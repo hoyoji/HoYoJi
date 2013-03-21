@@ -14,6 +14,7 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : null }
 		},
 		hasMany : {
+			projectSharedToes : { type : "ProjectSharedTo", attribute : "friend" }
 		},
 		rowView : "friend/friendRow",
 		adapter : {
