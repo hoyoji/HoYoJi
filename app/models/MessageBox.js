@@ -29,7 +29,7 @@ exports.definition = {
 				})
 				newMessages.map(function(msg){
 					if(msg.xGet("type") === "System.Friend.AddResponse"){
-							msg.xSet("messageState","read");
+							msg.xSet("messageState","noRead");
 							var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -44,7 +44,7 @@ exports.definition = {
 						}
 						msg.xSave();
 					}else if(msg.xGet("type") === "System.Friend.AutoAdd"){
-						msg.xSet("messageState","read");
+						msg.xSet("messageState","noRead");
 						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -59,7 +59,7 @@ exports.definition = {
 						}
 						msg.xSave();
 					}else if(msg.xGet("type") === "System.Friend.Delete"){
-						msg.xSet("messageState","read");
+						msg.xSet("messageState","noRead");
 						var friends = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
