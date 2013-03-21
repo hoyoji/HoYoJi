@@ -13,7 +13,7 @@ if($.$attrs.buttons){
 var currentSlide = null;
 $.$view.addEventListener("singletap", function(e){
 	console.info("controll slideDown " + e.source.id);
-	if($.$attrs.controllSlideDown && $.getParentController()[e.source.id]){
+	if($.$attrs.controlSlideDown && $.getParentController()[e.source.id]){
 		if(currentSlide){
 			currentSlide.$view.setZIndex(-1);
 		}

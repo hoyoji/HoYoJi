@@ -20,7 +20,11 @@
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
 				_bindAttributeIsModel = value;
 				if($.$attrs.bindAttributeIsModel && value){
-					value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+					if($.$attrs.bindAttributeIsModel.endsWith("()")){
+						value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
+					} else {
+						value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+					}
 				}
             	value = this.convertModelValue(value);
 				$.field.setValue(value || "");

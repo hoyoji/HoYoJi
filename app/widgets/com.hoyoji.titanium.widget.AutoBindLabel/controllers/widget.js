@@ -29,11 +29,27 @@ $.onWindowOpenDo(function() {
 			}
 			value = value.xGet(path[i]);
 		}
-		return value.xGet(path[path.length-1]);
+		var lastAttr = path[path.length-1];
+		if(lastAttr.endsWith("()")){
+			return value[lastAttr.slice(0,-2)]();		
+		} else {
+			return value.xGet(lastAttr);
+		}
 	}
 	
 	function updateLabel(model) {
-		$.label.setText(getAttributeValue(model, $.$attrs.bindAttribute));
+		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;
+		if($.$attrs.dataType === "DateTime"){
+			d = new Date(value);
+			value = String.formatDate(d, "medium") + " " + String.formatTime(d, "medium");	
+		} else if($.$attrs.dataType === "Date"){
+			d = new Date(value);
+			value = String.formatDate(d, "medium");	
+		} else if($.$attrs.dataType === "Time"){
+			d = new Date(value);
+			value = String.formatTime(d, "medium");	
+		}
+		$.label.setText(value);
 	}
 
 
