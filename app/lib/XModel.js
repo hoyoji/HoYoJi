@@ -82,6 +82,7 @@
 							}
 						}
 
+						console.info("xValidation done with no errors ");
 						//self.__cascadeUpdateBelongsTo(function() {
 						//	self.__cascadeUpdateHasMany(function(){
 						self.save(null, options);
