@@ -26,24 +26,24 @@ function Controller() {
         top: "42"
     });
     $.__views.projectForm.add($.__views.table);
-    $.__views.__alloyId62 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId60 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级项目",
         hintText: "请选择上级项目",
         bindModel: "$.$model",
         bindAttribute: "parentProject",
         bindAttributeIsModel: "name",
         bindModelSelector: "project/projectAll",
-        id: "__alloyId62"
+        id: "__alloyId60"
     });
-    $.__views.__alloyId62.setParent($.__views.table);
-    $.__views.__alloyId63 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    $.__views.__alloyId60.setParent($.__views.table);
+    $.__views.__alloyId61 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "项目名称",
         hintText: "请输入项目名称",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId63"
+        id: "__alloyId61"
     });
-    $.__views.__alloyId63.setParent($.__views.table);
+    $.__views.__alloyId61.setParent($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

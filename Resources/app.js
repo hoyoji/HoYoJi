@@ -2,6 +2,11 @@ var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
 
 _.extend(Alloy.Globals, require("utils").Utils);
 
+Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback) {
+    var error;
+    xCallback(error);
+};
+
 Alloy.Globals.extendsBaseUIController = require("BaseUIController").extends;
 
 Alloy.Globals.extendsBaseAutoUpdateController = require("BaseAutoUpdateController").extends;
@@ -42,5 +47,17 @@ Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 
 Alloy.Collections.instance("FriendCategory");
+
+Alloy.Collections.instance("Currency");
+
+Alloy.Collections.instance("Exchange");
+
+Alloy.Collections.instance("MoneyAccount");
+
+Alloy.Collections.instance("Friend");
+
+Alloy.Collections.instance("Message");
+
+Alloy.Collections.instance("MessageBox");
 
 Alloy.createController("index");

@@ -7,6 +7,7 @@ function Controller() {
         height: "42",
         openForm: "friend/friendCategoryForm",
         hasChild: "subFriendCategories",
+        hasDetail: "subFriendCategories",
         id: "friendCategoryRow"
     });
     $.addTopLevelView($.__views.friendCategoryRow);
@@ -15,34 +16,25 @@ function Controller() {
         height: Ti.UI.FILL
     });
     $.__views.friendCategoryRow.add($.__views.content);
-    $.__views.__alloyId43 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
+    $.__views.__alloyId40 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
         width: Ti.UI.SIZE,
         height: "42",
         bindModel: "$.$model",
         bindAttribute: "name",
-        id: "__alloyId43"
+        id: "__alloyId40"
     });
-    $.__views.__alloyId43.setParent($.__views.content);
+    $.__views.__alloyId40.setParent($.__views.content);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
-    $.makeContextMenu = function() {
+    $.makeContextMenu = function(e, isSelectMode) {
         var menuSection = Ti.UI.createTableViewSection({
             headerTitle: "好友分类操作"
         });
         menuSection.add($.createContextMenuItem("删除好友分类", function() {
             $.deleteModel();
-        }));
-        menuSection.add($.createContextMenuItem("新增子好友分类", function() {
-            Alloy.Globals.openWindow("friend/friendCategoryForm", {
-                $model: "FriendCategory",
-                saveableMode: "add",
-                data: {
-                    parentFriendCategory: $.$model
-                }
-            });
-        }));
+        }, isSelectMode));
         return menuSection;
     };
     _.extend($, exports);

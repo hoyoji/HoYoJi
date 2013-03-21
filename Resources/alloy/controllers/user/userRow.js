@@ -4,20 +4,29 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.userRow = Ti.UI.createView({
         backgroundColor: "white",
-        openForm: "user/registerForm",
         id: "userRow"
     });
     $.addTopLevelView($.__views.userRow);
-    $.__views.__alloyId71 = Ti.UI.createLabel({
-        text: typeof $model.__transform.userName != "undefined" ? $model.__transform.userName : $model.get("userName"),
+    $.__views.__alloyId88 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
         top: "0",
+        width: Ti.UI.SIZE,
         height: "42",
-        id: "__alloyId71"
+        bindModel: "$.$model",
+        bindAttribute: "userName",
+        id: "__alloyId88"
     });
-    $.__views.userRow.add($.__views.__alloyId71);
+    $.__views.__alloyId88.setParent($.__views.userRow);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseRowController($, arguments[0]);
+    $.onRowTap = function(e) {
+        var newMessage = Alloy.createModel("Message");
+        newMessage.xSet("toUser", $.$model);
+        Alloy.Globals.openWindow("message/friendAddRequestMsg", {
+            $model: newMessage
+        });
+        return !1;
+    };
     _.extend($, exports);
 }
 

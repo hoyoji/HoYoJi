@@ -21,6 +21,15 @@ $.onWindowOpenDo(function() {
 	if (friendlength > 0 && $.$model.xGet('messageState') !== "closed") {
 		$.$model.xSet('messageState', "closed");
 		$.$model.xSave();
+<<<<<<< HEAD
+	}
+	if($.$model.xGet('messageState') === "read"){
+		$.$model.xSet('messageState',"closed");
+		$.$model.xSave();
+	}
+	if($.$model.xGet('messageState') === "closed" || $.$model.xGet('messageState') === "read"){
+=======
+>>>>>>> 93ab8823d1a83d45d9dcc22a72cfd2e992f54980
 		$.footerBar.$view.hide();
 	}
 	if ($.$model.xGet('messageState') === "read") {
@@ -28,11 +37,15 @@ $.onWindowOpenDo(function() {
 		$.$model.xSave();
 		$.footerBar.$view.hide();
 	}
+<<<<<<< HEAD
+	
+=======
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.xSet('messageState', "close");
 		$.$model.xSave();
 	}
 
+>>>>>>> 93ab8823d1a83d45d9dcc22a72cfd2e992f54980
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
