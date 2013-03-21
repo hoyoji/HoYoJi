@@ -32,7 +32,6 @@ $.onWindowOpenDo(function() {
 		$.$model.xSet('messageState', "close");
 		$.$model.xSave();
 	}
-
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
