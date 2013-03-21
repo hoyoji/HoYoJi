@@ -49,6 +49,7 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
+		console.info("adding new row to XTable eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	addRowToSection(rowModel, collection);
 }
 

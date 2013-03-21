@@ -9,15 +9,12 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<View width="Ti.UI.SIZE" height="42" layout="horizontal" horizontalWrap="false">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户" width="50%"
-				bindModel="$.$model"
-				bindAttribute="moneyAccount"
-				bindAttributeIsModel="name"
-				bindModelSelector="setting/moneyAccount/moneyAccountAll"
-				/>
-				<Label id="accountCurrency" width="Ti.UI.SIZE"/>
-			</View>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户" width="50%"
+			bindModel="$.$model"
+			bindAttribute="moneyAccount"
+			bindAttributeIsModel="getAccountNameCurrency()"
+			bindModelSelector="setting/moneyAccount/moneyAccountAll"
+			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" labelText="当前汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeCurrencyRate"/>

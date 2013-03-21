@@ -1,6 +1,6 @@
 function WPATH(s) {
     var index = s.lastIndexOf("/"), path = index === -1 ? "com.hoyoji.titanium.widget.TitleBar/" + s : s.substring(0, index) + "/com.hoyoji.titanium.widget.TitleBar/" + s.substring(index + 1);
-    return path.indexOf("/") !== 0 ? "/" + path : path;
+    return path;
 }
 
 function Controller() {
@@ -77,17 +77,6 @@ function Controller() {
     var boundXTable = null;
     exports.bindXTable = function(xTable) {
         boundXTable = xTable;
-        $.onWindowOpenDo(function() {
-            if ($.getCurrentWindow().$attrs.selectorCallback) {
-                $.$attrs.title = "选择" + $.$attrs.title + "(顶级)";
-                $.title.setText($.$attrs.title);
-                $.title.addEventListener("singletap", function(e) {
-                    e.cancelBubble = !0;
-                    $.getCurrentWindow().$attrs.selectorCallback(null);
-                    $.getCurrentWindow().close();
-                });
-            }
-        });
         xTable.$view.addEventListener("navigatedown", function(e) {
             $.childTableTitle.setText(e.childTableTitle);
             $.title.hide();

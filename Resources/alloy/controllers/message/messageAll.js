@@ -4,7 +4,7 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.messageAll = Ti.UI.createView({
         title: "消息",
-        backgroundColor: "cyan",
+        backgroundColor: "pink",
         id: "messageAll"
     });
     $.addTopLevelView($.__views.messageAll);
@@ -13,12 +13,11 @@ function Controller() {
         title: "消息"
     });
     $.__views.titleBar.setParent($.__views.messageAll);
-    $.__views.messagesTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
-        id: "messagesTable",
-        bottom: "42",
-        top: "42"
+    $.__views.__alloyId46 = Ti.UI.createButton({
+        title: "click",
+        id: "__alloyId46"
     });
-    $.__views.messagesTable.setParent($.__views.messageAll);
+    $.__views.messageAll.add($.__views.__alloyId46);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseViewController($, arguments[0]);

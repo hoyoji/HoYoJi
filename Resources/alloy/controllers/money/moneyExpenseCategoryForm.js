@@ -17,16 +17,12 @@ function Controller() {
         editModeTitle: "修改支出分类"
     });
     $.__views.titleBar.setParent($.__views.moneyExpenseCategoryForm);
-    $.__views.table = Ti.UI.createScrollView({
-        layout: "vertical",
-        scrollType: "vertical",
-        disableBounce: "true",
-        id: "table",
-        bottom: "0",
-        top: "42"
+    $.__views.__alloyId50 = Ti.UI.createTableViewRow({
+        id: "__alloyId50"
     });
-    $.__views.moneyExpenseCategoryForm.add($.__views.table);
-    $.__views.__alloyId53 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
+    var __alloyId51 = [];
+    __alloyId51.push($.__views.__alloyId50);
+    $.__views.__alloyId52 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "上级分类",
         hintText: "请选择上级分类",
         bindModel: "$.$model",
@@ -34,9 +30,13 @@ function Controller() {
         bindAttributeIsModel: "name",
         bindModelSelector: "money/moneyExpenseCategoryAll",
         bindModelSelectorParams: "selectedProject:project",
+        id: "__alloyId52"
+    });
+    $.__views.__alloyId52.setParent($.__views.__alloyId50);
+    $.__views.__alloyId53 = Ti.UI.createTableViewRow({
         id: "__alloyId53"
     });
-    $.__views.__alloyId53.setParent($.__views.table);
+    __alloyId51.push($.__views.__alloyId53);
     $.__views.__alloyId54 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoUpdatableTextField", "widget", {
         labelText: "分类名称",
         hintText: "请输入分类名称",
@@ -44,7 +44,14 @@ function Controller() {
         bindAttribute: "name",
         id: "__alloyId54"
     });
-    $.__views.__alloyId54.setParent($.__views.table);
+    $.__views.__alloyId54.setParent($.__views.__alloyId53);
+    $.__views.table = Ti.UI.createTableView({
+        data: __alloyId51,
+        id: "table",
+        bottom: "0",
+        top: "42"
+    });
+    $.__views.moneyExpenseCategoryForm.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
     Alloy.Globals.extendsBaseFormController($, arguments[0]);

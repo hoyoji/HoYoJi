@@ -1,11 +1,10 @@
 (function() {
     exports.extends = function($, attrs) {
-        function detectWindow(e) {
+        function detectWindow() {
             $.$view.removeEventListener("postlayout", detectWindow);
-            console.info("detectWindow firing registerwindowevent from " + e.source.id);
+            console.info("firing registerwindowevent from " + $.$view.id);
             $.$view.fireEvent("registerwindowevent", {
                 bubbles: !0,
-                source: $.$view,
                 windowEvent: "detectwindow",
                 parentWindowCallback: function(parentController) {
                     console.info("++++++++++++++ got parent echo @ " + $.$view.id);
@@ -75,19 +74,18 @@
             }
         });
         $.$view.addEventListener("registerwindowevent", function(e) {
-            console.info($.$view.id + " 111 ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
             if (e.windowEvent === "detectwindow" && e.source !== $.$view) {
                 console.info($.$view.id + " ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
-                if (e.parentWindowCallback) {
-                    e.parentWindowCallback($);
-                    e.parentWindowCallback = null;
-                    delete e.parentWindowCallback;
-                }
                 if ($.__currentWindow && e.windowPreListenCallback) {
                     e.cancelBubble = !0;
                     e.windowPreListenCallback(null, $.__currentWindow);
                     e.windowPreListenCallback = null;
                     delete e.windowPreListenCallback;
+                }
+                if (e.parentWindowCallback) {
+                    e.parentWindowCallback($);
+                    e.parentWindowCallback = null;
+                    delete e.parentWindowCallback;
                 }
             }
         });

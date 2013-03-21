@@ -33,11 +33,6 @@ function Controller() {
                 }
             });
         }));
-        menuSection.add($.createContextMenuItem("show project store", function() {
-            Alloy.Collections.Project.map(function(item) {
-                console.info(" project in store : " + item.xGet("name"));
-            });
-        }));
         return menuSection;
     };
     $.titleBar.bindXTable($.projectsTable);
