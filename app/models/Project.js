@@ -20,7 +20,8 @@ exports.definition = {
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
 			moneyIncomeCategories : { type : "MoneyIncomeCategory", attribute : "project"},
-			subProjects : { type : "Project", attribute : "parentProject" }
+			subProjects : { type : "Project", attribute : "parentProject" },
+			projectSharedToes : { type : "ProjectSharedTo", attribute : "project" }
 		},
 		rowView : "project/projectRow",
 		adapter : {

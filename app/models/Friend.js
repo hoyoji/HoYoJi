@@ -14,6 +14,7 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : null }
 		},
 		hasMany : {
+			projectSharedToes : { type : "ProjectSharedTo", attribute : "friend" }
 		},
 		rowView : "friend/friendRow",
 		adapter : {
@@ -26,6 +27,15 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
+				friendCategory : function(xValidateComplete) {
+					var error;
+					if (!this.has("friendCategory")) {
+						error = {
+							msg : "好友分类不能为空"
+						};
+					}
+					xValidateComplete(error);
+				}
 			}
 
 		});
