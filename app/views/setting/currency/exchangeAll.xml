@@ -15,7 +15,7 @@
 					bindModel = "User"
 					bindAttribute = "activeCurrency.symbol" 
 				/>
-				<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" value="100"/>
+				<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
 			</View>
 		</View>
 		

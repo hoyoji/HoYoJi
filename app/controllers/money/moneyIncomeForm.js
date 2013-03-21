@@ -1,5 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.onWindowOpenDo(function() {
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
@@ -13,3 +14,5 @@ if (!$.$model) {
 	});
 	$.setSaveableMode("add");
 }
+
+});

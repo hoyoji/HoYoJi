@@ -9,7 +9,6 @@ exports.definition = {
 		},
 		hasMany : {
 			moneyAccounts : { type : "MoneyAccount", attribute : "currency"},
-			subProjects : { type : "Project", attribute : "parentProject" }
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : "currencies" }
