@@ -1,0 +1,10 @@
+<Alloy>
+	<View class="container" height="42" openForm="friend/friendCategoryForm" hasChild="subFriendCategories">
+		<View id="content" class="row-content" height="Ti.UI.FILL">
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+				bindModel = "$.$model"
+				bindAttribute = "name" 
+			/>
+		</View>
+	</View>
+</Alloy>
