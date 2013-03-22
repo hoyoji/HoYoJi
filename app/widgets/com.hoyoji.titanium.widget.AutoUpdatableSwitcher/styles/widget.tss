@@ -7,3 +7,15 @@
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
 }
+
+"#error": {
+	color: 'red',
+	font: {
+		fontSize: 12
+	},
+	top : 42,
+	height: 16,
+	width: "60%",
+	right : 0,
+	zIndex : 1
+}
