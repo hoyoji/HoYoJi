@@ -7,7 +7,7 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var oldAmount;
 var oldMoneyAccount;
-$.onWindowOpenDo(function() {
+// $.onWindowOpenDo(function() {
 	if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyIncome", {
 			date : (new Date()).toISOString(),
@@ -28,7 +28,7 @@ $.onWindowOpenDo(function() {
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	oldAmount = $.$model.xGet("amount");
 	// }
-});
+// });
 
 // $.onWindowCloseDo(function() {
 	// $.moneyAccount.field.removeEventListener("change", setAccountCurrency);
