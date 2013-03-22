@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 
 $.titleBar.bindXTable($.moneyIncomesTable);
 
-var collection = Alloy.Models.User.xGet("incomes");
+var collection = Alloy.Models.User.xGet("moneyIncomes");
 console.info("+++++________"+collection);
 $.moneyIncomesTable.addCollection(collection);
 
