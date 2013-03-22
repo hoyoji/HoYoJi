@@ -50,8 +50,8 @@ $.getValue = function(e){
 }
 
 $.setValue = function(value) {
-    _bindAttributeIsModel = value;
-    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
+    $.__bindAttributeIsModel = value;
+    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
     
      if(currentItemIndex >= 0){
 	    labels[currentItemIndex].setBackgroundColor("white");

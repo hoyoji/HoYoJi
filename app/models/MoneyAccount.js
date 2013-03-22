@@ -4,7 +4,7 @@ exports.definition = {
 		    "id": "TEXT NOT NULL PRIMARY KEY",
 		    "name": "TEXT NOT NULL",
 		    "currencyId": "TEXT NOT NULL",
-		    "currentBalance" : "TEXT NOT NULL",
+		    "currentBalance" : "REAL NOT NULL",
 		    "sharingType" : "TEXT　NOT NULL",
 		    "remark" : "TEXT",
 		    "ownerUserId" : "TEXT NOT NULL"
