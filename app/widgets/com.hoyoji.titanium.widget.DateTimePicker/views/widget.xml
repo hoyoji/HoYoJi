@@ -1,5 +1,5 @@
 <Alloy>
-	<View height="215" width="Ti.UI.FILL" top="100%" zIndex="900" layout="horizontal" horizontalWrap="false">
+	<View height="215" width="Ti.UI.FILL" bottom="-215" zIndex="900" layout="horizontal" horizontalWrap="false">
 		<!-- <View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
 		<Picker top="0" id="datePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_DATE_AND_TIME" />
 		<Picker top="0" id="datePicker" platform="android" width="60%" useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE" />

@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="176" top="100%">
+	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="200" bottom="-200">
 		<View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" />
 		<View layout="vertical" height="Ti.UI.FILL" width="Ti.UI.FILL">
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">

@@ -8,9 +8,8 @@ exports.close = function() {
 		return;
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
-	var hideDatePicker = Titanium.UI.createAnimation();
-	//关闭时动画
-	hideDatePicker.top = "100%";
+	var hideDatePicker = Titanium.UI.createAnimation(); //关闭时动画
+	hideDatePicker.bottom = -215;
 	hideDatePicker.duration = 300;
 	hideDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(hideDatePicker);
@@ -24,7 +23,6 @@ exports.open = function(textField) {//绑定textField
 	if(!activeTextField){
 		activeTextField = textField;
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
-		$.widget.setTop("auto");
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
 		showDatePicker.bottom = 0;
 		showDatePicker.duration = 300;
