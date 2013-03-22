@@ -24,9 +24,9 @@ exports.open = function(textField) {//绑定textField
 	if(!activeTextField){
 		activeTextField = textField;
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
-
+		$.widget.setTop("auto");
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
-		showDatePicker.top = $.parent.getSize().height - 215;
+		showDatePicker.bottom = 0;
 		showDatePicker.duration = 300;
 		showDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(showDatePicker);
