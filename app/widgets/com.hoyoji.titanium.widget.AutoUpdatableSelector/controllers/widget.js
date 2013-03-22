@@ -8,8 +8,7 @@ if($.$attrs.values){
 var data = [], selectedValue;
 for (var i = 0; i < items.length; i++) {//根据items的长度动态创建rows
 	data[i] = Ti.UI.createPickerRow({
-		title : items[i],
-		value : values[i]
+		title : items[i]
 	});
 };
 $.field.add(data);//把rows添加到picker
@@ -19,12 +18,13 @@ $.$view.addEventListener("singletap", function(e){
 });
 
 $.field.addEventListener("change", function(e){
-	selectedValue = e.selectedValue[0];
+	console.info("Selector selected value : " + values[e.rowIndex]);
+	selectedValue = values[e.rowIndex];
 });
 
 $.getValue = function(e){
 	if(e){
-		return e.selectedValue[0];
+		return values[e.rowIndex];
 	} else {
 		return selectedValue;
 	}
