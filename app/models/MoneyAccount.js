@@ -5,9 +5,9 @@ exports.definition = {
 		    name : "TEXT NOT NULL",
 		    currencyId : "TEXT NOT NULL",
 		    currentBalance : "REAL NOT NULL",
-		    "sharingType" : "TEXT　NOT NULL",
-		    "remark" : "TEXT",
-		    "ownerUserId" : "TEXT NOT NULL"
+		    sharingType : "TEXT　NOT NULL",
+		    remark : "TEXT",
+		    ownerUserId : "TEXT NOT NULL"
 		},
 		defaults : {
 			currentBalance : 0
