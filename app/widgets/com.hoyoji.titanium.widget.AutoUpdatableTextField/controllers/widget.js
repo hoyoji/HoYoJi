@@ -62,7 +62,6 @@ $.setEditable = function(editable) {
 	}
 
 	$.field.setEditable(editable);
-
 }
 
 $.setSaveableMode($.saveableMode); 

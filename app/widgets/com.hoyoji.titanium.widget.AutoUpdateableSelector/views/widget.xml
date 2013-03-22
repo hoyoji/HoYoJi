@@ -1,8 +1,0 @@
-<Alloy>
-	<View layout="vertical" height="Ti.UI.SIZE" exitOnClose="true" backgroundColor="white" zIndex="900" opacity="0.5">
-		<View id="categoryView" height="Ti.UI.SIZE" layout="horizontal">
-			<Label id="labelText"/>
-			<Picker id="picker" selectionIndicator="true" width="40%"/>
-		</View>
-	</View>
-</Alloy>
