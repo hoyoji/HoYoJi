@@ -150,7 +150,7 @@
 						}
 					}
 					if (field.contains("INTEGER") && fieldValue !== undefined && fieldValue !== null) {						
-						if(_.isNaN(Number(fieldValue)) || fieldValue.contains(".")){
+						if(_.isNaN(Number(fieldValue)) || fieldValue.toString().contains(".")){
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "请输入整数 "};
 							continue;
@@ -219,7 +219,7 @@
 			},
 			xGet : function(attr) {
 				var value = this.get(attr);
-				if (value !== undefined) {
+				if (value !== undefined && value !== null) {
 					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
 					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
