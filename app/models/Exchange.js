@@ -1,12 +1,12 @@
 exports.definition = {
 	config : {
 		columns : {
-			"id" : "TEXT NOT NULL PRIMARY KEY",
-			"localCurrencyId" : "TEXT NOT NULL",
-			"foreignCurrencyId" : "TEXT NOT NULL",
-			"rate" : "REAL NOT NULL",
-			"autoUpdate" : "TEXT",
-			"ownerUserId" : "TEXT NOT NULL"
+			id : "TEXT NOT NULL PRIMARY KEY",
+			localCurrencyId : "TEXT NOT NULL",
+			foreignCurrencyId : "TEXT NOT NULL",
+			rate : "REAL NOT NULL",
+			autoUpdate : "TEXT",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
 			localCurrency : {
@@ -71,6 +71,20 @@ exports.definition = {
 								};
 							}
 						}
+					xValidateComplete(error);
+				},
+				rate : function(xValidateComplete){
+					var error;
+					if(this.get("rate")===0){
+						error = {
+							msg : "汇率不能为0，请重新输入"
+						}
+					}
+					else if(isNaN(this.get("rate"))){
+						error = {
+							msg : "请输入正确数字"
+						}
+					}
 					xValidateComplete(error);
 				}
 			}

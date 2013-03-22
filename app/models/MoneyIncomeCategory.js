@@ -1,10 +1,10 @@
 exports.definition = {
 	config: {
 		columns: {
-		    "id": "TEXT NOT NULL PRIMARY KEY",
-		    "name": "TEXT NOT NULL",
-		    "parentIncomeCategoryId": "TEXT",
-		    "projectId" : "TEXT NOT NULL"
+		    id: "TEXT NOT NULL PRIMARY KEY",
+		    name: "TEXT NOT NULL",
+		    parentIncomeCategoryId: "TEXT",
+		    projectId : "TEXT NOT NULL"
 		},
 		hasMany : {
 			subIncomeCategories : { type : "MoneyIncomeCategory", attribute : "parentIncomeCategory" }

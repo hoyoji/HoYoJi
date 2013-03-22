@@ -1,18 +1,18 @@
 exports.definition = {
 	config : {
 		columns : {
-			"id" : "TEXT NOT NULL PRIMARY KEY",
-			"date" : "TEXT NOT NULL",
-			"amount" : "REAL NOT NULL",
-			"incomeType" : "TEXT NOT NULL",
-			"friendId" : "TEXT",
-			"moneyAccountId" : "TEXT NOT NULL",
-			"projectId" : "TEXT NOT NULL",
-			"categoryId" : "TEXT NOT NULL",
-			"localCurrencyId" : "TEXT NOT NULL",
-			"exchangeCurrencyRate" : "REAL NOT NULL",
-			"remark" : "TEXT",
-			"ownerUserId" : "TEXT NOT NULL"
+			id : "TEXT NOT NULL PRIMARY KEY",
+			date : "TEXT NOT NULL",
+			amount : "REAL NOT NULL",
+			incomeType : "TEXT NOT NULL",
+			friendId : "TEXT",
+			moneyAccountId : "TEXT NOT NULL",
+			projectId : "TEXT NOT NULL",
+			categoryId : "TEXT NOT NULL",
+			localCurrencyId : "TEXT NOT NULL",
+			exchangeCurrencyRate : "REAL NOT NULL",
+			remark : "TEXT",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
 			friend : {
@@ -51,11 +51,13 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
-			// xDelete : function(xFinishCallback){
-				// var error;
-				// var moneyAccount = this.xGet("moneyAccount");
-				// var amount = this.xGet("amount");
-			// }
+			xDelete : function(xFinishCallback) {
+				var moneyAccount = this.xGet("moneyAccount");
+				var amount = this.xGet("amount");
+				this._xDelete(xFinishCallback);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyAccount.xSave();
+			}
 		});
 		return Model;
 	},
