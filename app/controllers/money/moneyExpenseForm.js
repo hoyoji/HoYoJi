@@ -1,10 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-function setAccountCurrency() {
-	var symbol = $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol");
-	$.accountCurrency.setText(symbol);
-}
-
 var oldAmount;
 var oldMoneyAccount;
 $.onWindowOpenDo(function() {
@@ -21,23 +16,17 @@ $.onWindowOpenDo(function() {
 		});
 		$.setSaveableMode("add");
 	}
-	setAccountCurrency();
-	$.moneyAccount.field.addEventListener("change", setAccountCurrency);
-
 	// if (!$.$model.isNew()) {
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	oldAmount = Number($.$model.xGet("amount"));
+	oldAmount = $.$model.xGet("amount");
 	// }
 });
 
-$.onWindowCloseDo(function() {
-	$.moneyAccount.field.removeEventListener("change", setAccountCurrency);
-});
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	var newCurrentBalance = Number(newMoneyAccount.xGet("currentBalance"));
-	var newAmount = Number($.$model.xGet("amount"));
-	var oldCurrentBalance = Number(oldMoneyAccount.xGet("currentBalance"));
+	var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
+	var newAmount = $.$model.xGet("amount");
+	var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 	// if ($.$model.isNew()) {
 	// newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 	// $.saveModel(saveEndCB, function(e) {

@@ -1,13 +1,16 @@
 exports.definition = {
 	config: {
 		columns: {
-		    "id": "TEXT NOT NULL PRIMARY KEY",
-		    "name": "TEXT NOT NULL",
-		    "currencyId": "TEXT NOT NULL",
-		    "currentBalance" : "TEXT NOT NULL",
+		    id : "TEXT NOT NULL PRIMARY KEY",
+		    name : "TEXT NOT NULL",
+		    currencyId : "TEXT NOT NULL",
+		    currentBalance : "REAL NOT NULL",
 		    "sharingType" : "TEXT　NOT NULL",
 		    "remark" : "TEXT",
 		    "ownerUserId" : "TEXT NOT NULL"
+		},
+		defaults : {
+			currentBalance : 0
 		},
 		belongsTo : {
 			currency : {type : "Currency",attribute : "moneyAccounts"},
@@ -33,6 +36,9 @@ exports.definition = {
 					return;
 				}
 				xFinishCallback(error);
+			},
+			getAccountNameCurrency : function() {
+				return this.xGet("name") + "(" + this.xGet("currency").xGet("symbol") + ")";
 			}
 		});
 		

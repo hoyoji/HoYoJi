@@ -6,7 +6,8 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	menuSection.add($.createContextMenuItem("新增汇率", function() {
 		Alloy.Globals.openWindow("setting/currency/exchangeForm", {
 			$model : "Exchange",
-			saveableMode : "add"
+			saveableMode : "add",
+			data : {localCurrency : Alloy.Models.User.xGet("activeCurrency"),rate : "0"}
 		});
 	}));
 	return menuSection;

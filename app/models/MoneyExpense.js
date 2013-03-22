@@ -3,14 +3,14 @@ exports.definition = {
 		columns : {
 			"id" : "TEXT NOT NULL PRIMARY KEY",
 			"date" : "TEXT NOT NULL",
-			"amount" : "TEXT NOT NULL",
+			"amount" : "REAL NOT NULL",
 			"expenseType" : "TEXT NOT NULL",
 			"friendId" : "TEXT",
 			"moneyAccountId" : "TEXT NOT NULL",
 			"projectId" : "TEXT NOT NULL",
 			"categoryId" : "TEXT NOT NULL",
 			"localCurrencyId" : "TEXT NOT NULL",
-			"exchangeCurrencyRate" : "TEXT NOT NULL",
+			"exchangeCurrencyRate" : "REAL NOT NULL",
 			"remark" : "TEXT",
 			"ownerUserId" : "TEXT NOT NULL"
 		},
@@ -52,9 +52,6 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
-			getAccountNameCurrency : function() {
-				return this.xGet("moneyAccount") + "(" + this.xGet("moneyAccount").xGet("currency").xGet("symbol") + ")";
-			}
 		});
 
 		return Model;
