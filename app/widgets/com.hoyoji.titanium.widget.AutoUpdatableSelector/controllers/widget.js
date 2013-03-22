@@ -33,6 +33,9 @@ $.getValue = function(e){
 $.setValue = function(value) {
     _bindAttributeIsModel = value;
     $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
-    
-     $.field.setSelectedRow(0,_.indexOf(values, value || ""));
+    var rowIndex = _.indexOf(values, value || "");
+    if(rowIndex < 0){
+		rowIndex = 0;
+    } 
+     $.field.setSelectedRow(0,rowIndex);
 };

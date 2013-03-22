@@ -1,59 +1,63 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-var items = [];
-var values = [];
+var items = null;
+var values = null;
 var labels = [];
-exports.bindModel = function(model, attribute,item,value) {
-	items = item.split(",");
-	values = value.split(",");
+var currentItemIndex = -1;
+
+	items = $.$attrs.items.split(",");
+	values = items;
+	if($.$attrs.values){
+		values = $.$attrs.values.split(",");
+	} 
+	var labelWidth = (1 / items.length * 100) + "%"
 	for (i=0;i<items.length ;i++){
-		labels[i] = Ti.UI.createLabel({
+		labels.push(Ti.UI.createLabel({
 			text :　items[i],
 			borderWidth : 1,
-			width : 50,
-			height : 50,
+			width : labelWidth,
+			height : Ti.UI.FILL,
 			borderColor : "blue",
+			backgroundColor : "white",
 			color : "black",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
-		});
-		console.info("1"+model.get(attribute));
-		console.info("2"+values[i]);
-		if(model.get(attribute) === values[i]){
-			console.info("1"+model.get(attribute));
-			console.info("2"+values[i]);
-			labels[i].setBackgroundColor("blue");
-		}
-		$.radioView.add(labels[i]);
+		}));
+		
+		$.field.add(labels[i]);
 	}
-	model.on("change:" + attribute, function() {
-		for (i=0;i<labels.length;i++){
-			if(values[i] === model.get(attribute)){
-				labels[i].setBackgroundColor("blue");
-			}else{
-				labels[i].setBackgroundColor("white");
-			}
-		}
-	});
-	$.radioView.addEventListener("click", function(e){
-		var genderValue = "";
-		for (i=0;i<items.length;i++){
-			console.info(items[i]);
-			if(items[i] === e.source.getText()){
-				e.source.setBackgroundColor("blue");
-				genderValue = values[i];
-			}else{
-				labels[i].setBackgroundColor("white");
-			}
-		}
-		var o = {};
-		o[attribute] = genderValue;
-		model.set(o,{
-			silent : true
-		});
-		$.genderValidateMsg.setText("");
-		model.save();
-	});
-	model.on("error",function(model , error){
-		$.genderValidateMsg.setText(error);
-	});
+
+$.$view.addEventListener("singletap", function(e){
+	$.getCurrentWindow().closeSoftKeyboard();
+});
+
+$.field.addEventListener("singletap", function(e){
+	if(e.source === $.field){
+		return;
+	}
+	
+	 if(currentItemIndex >= 0){
+	    labels[currentItemIndex].setBackgroundColor("white");
+	 }
+	 console.info(currentItemIndex + " current index : " + e.source.getText());
+     currentItemIndex = _.indexOf(labels, e.source);
+	e.source.setBackgroundColor("cyan");
+    
+	$.field.fireEvent("change");
+});
+
+$.getValue = function(e){
+	return values[currentItemIndex];
 }
+
+$.setValue = function(value) {
+    _bindAttributeIsModel = value;
+    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
+    
+     if(currentItemIndex >= 0){
+	    labels[currentItemIndex].setBackgroundColor("white");
+	 }
+     currentItemIndex = _.indexOf(values, value);
+     if(currentItemIndex >= 0){
+		 labels[currentItemIndex].setBackgroundColor("cyan");
+     }
+};

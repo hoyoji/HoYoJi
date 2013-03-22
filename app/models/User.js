@@ -11,8 +11,8 @@ exports.definition = {
 			friendAuthorization : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
-			age : "INTEGER",
-			birthday : "TEXT"
+			age : "INTEGER NOT NULL",
+			birthday : "TEXT NOT NULL"
 		},
 		defaults : {
 			userName : "",
