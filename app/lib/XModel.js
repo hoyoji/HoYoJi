@@ -219,7 +219,7 @@
 			},
 			xGet : function(attr) {
 				var value = this.get(attr);
-				if (value !== undefined && value !== null) {
+				if (value !== undefined) {
 					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
 					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
