@@ -7,7 +7,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("setting/currency/exchangeForm", {
 			$model : "Exchange",
 			saveableMode : "add",
-			data : {localCurrency : Alloy.Models.User.xGet("activeCurrency"),rate : "0"}
+			data : {localCurrency : Alloy.Models.User.xGet("activeCurrency"),rate : 0}
 		});
 	}));
 	return menuSection;

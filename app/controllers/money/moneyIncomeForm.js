@@ -11,9 +11,9 @@ $.onWindowOpenDo(function() {
 	if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyIncome", {
 			date : (new Date()).toISOString(),
-			amount : "0",
+			amount : 0,
 			localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-			exchangeCurrencyRate : "1",
+			exchangeCurrencyRate : 1,
 			incomeType : "Ordinary",
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : Alloy.Models.User.xGet("activeProject"),

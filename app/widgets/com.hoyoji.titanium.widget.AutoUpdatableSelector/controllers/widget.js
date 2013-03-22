@@ -18,6 +18,9 @@ $.$view.addEventListener("singletap", function(e){
 });
 
 $.field.addEventListener("change", function(e){
+	 if($.__setValueChangeEvent){
+    	return; 	
+     }
 	console.info("Selector selected value : " + values[e.rowIndex]);
 	selectedValue = values[e.rowIndex];
 });
@@ -29,13 +32,15 @@ $.getValue = function(e){
 		return selectedValue;
 	}
 }
-
 $.setValue = function(value) {
-    _bindAttributeIsModel = value;
-    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
+    $.__bindAttributeIsModel = value;
+    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
     var rowIndex = _.indexOf(values, value || "");
     if(rowIndex < 0){
 		rowIndex = 0;
-    } 
+    }
+    // $.field.columns[0].setSelectedRow(rowIndex);
+     $.__setValueChangeEvent = true;
      $.field.setSelectedRow(0,rowIndex);
-};
+}
+

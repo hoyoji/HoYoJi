@@ -53,7 +53,7 @@ var datetime = null;
 
 $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
-		return _bindAttributeIsModel;
+		return $.__bindAttributeIsModel;
 	}
 	if(datetime){
 		return datetime.toISOString();

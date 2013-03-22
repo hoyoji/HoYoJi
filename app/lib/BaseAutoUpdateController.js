@@ -2,12 +2,13 @@
 		exports.extends = function($, attrs) {
 			Alloy.Globals.extendsBaseUIController($, attrs);
 			$.saveableMode = $.$attrs.saveableMode || $.$view.saveableMode || "edit";
-			
-			var _bindAttributeIsModel = null;
+
+			$.__setValueChangeEvent = false; // some control will raise change event when setting its value programmatically
+			$.__bindAttributeIsModel = null;
 			
 			$.getValue = function() {
 				if($.$attrs.bindAttributeIsModel){
-					return _bindAttributeIsModel;
+					return $.__bindAttributeIsModel;
 				}
 				return $.field.getValue();
 			}
@@ -18,12 +19,12 @@
 			
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
-				_bindAttributeIsModel = value;
+				$.__bindAttributeIsModel = value;
 				if($.$attrs.bindAttributeIsModel && value){
 					if($.$attrs.bindAttributeIsModel.endsWith("()")){
-						value = _bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
+						value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
 					} else {
-						value = _bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+						value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
 					}
 				}
             	value = this.convertModelValue(value);
@@ -158,9 +159,13 @@
 					}
 				}
 				var updateModel = function(e) {
+					if($.__setValueChangeEvent){
+     					$.__setValueChangeEvent = false;
+						return;
+					}
 					hideErrorMsg();
 					if(bindAttributeIsModel){
-						model.xSet(attribute, _bindAttributeIsModel);
+						model.xSet(attribute, $.__bindAttributeIsModel);
 					} else {
 						model.xSet(attribute, $.getValue(e));
 					}
