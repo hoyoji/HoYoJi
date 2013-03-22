@@ -4,7 +4,7 @@ exports.definition = {
 			"id" : "TEXT NOT NULL PRIMARY KEY",
 			"localCurrencyId" : "TEXT NOT NULL",
 			"foreignCurrencyId" : "TEXT NOT NULL",
-			"rate" : "TEXT NOT NULL",
+			"rate" : "REAL NOT NULL",
 			"autoUpdate" : "TEXT",
 			"ownerUserId" : "TEXT NOT NULL"
 		},

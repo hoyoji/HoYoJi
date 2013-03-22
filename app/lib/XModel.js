@@ -121,11 +121,11 @@
 					var field = this.config.columns[column],
 						fieldValue = this.xGet(column);
 					
+					console.info("validating column : " + column + "  " + fieldValue);
 					if(typeof fieldValue === "string"){
 						fieldValue = Alloy.Globals.alloyString.trim(fieldValue);
 					}
 					// 检查不能为空
-					console.info("validating column : " + column + "  " + this.xGet(column));
 					if (field.contains("NOT NULL")) {
 						if(this.config.belongsTo && 
 							this.config.belongsTo[column.slice(0,-2)]){
@@ -135,21 +135,21 @@
 									this.__xValidationError[column] = {msg : "不能为空"};
 									continue;
 								}
-						} else if(!fieldValue) {
+						} else if(fieldValue === undefined || fieldValue === null) {
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "不能为空"};
 							continue;
 						}
 					}
 					// 检查数据类型
-					if (field.contains("REAL") && fieldValue) {
+					if (field.contains("REAL") && fieldValue !== undefined && fieldValue !== null) {
 						if(_.isNaN(Number(fieldValue))){
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "请输入数字"};
 							continue;
 						}
 					}
-					if (field.contains("INTEGER") && fieldValue) {						
+					if (field.contains("INTEGER") && fieldValue !== undefined && fieldValue !== null) {						
 						if(_.isNaN(Number(fieldValue)) || fieldValue.contains(".")){
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {msg : "请输入整数 "};
@@ -218,8 +218,9 @@
 				return this;
 			},
 			xGet : function(attr) {
-				if (this.get(attr)) {
-					return this.get(attr);
+				var value = this.get(attr);
+				if (value !== undefined) {
+					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
 					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
 
@@ -268,7 +269,7 @@
 					});
 					return m;
 				}
-				return null;
+				return value;
 			},
 			xGetDescendents : function(attribute) {
 				var descendents = Alloy.createCollection(this.config.adapter.collection_name);
