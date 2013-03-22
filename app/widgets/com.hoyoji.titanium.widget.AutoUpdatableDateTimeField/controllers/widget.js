@@ -67,10 +67,8 @@ $.getDateTime = function(){
 }
 
 $.convertModelValue = function(value) {
-	console.info("convertModelValue " + value + " to " + new Date(value));
 	if(value){
 		datetime = new Date(value); 
-	console.info("convertModelValue " + value + " to " + String.formatDate(datetime) + " " + String.formatTime(datetime, "medium"));
 		return String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium")
 	}
 	return datetime = null;
