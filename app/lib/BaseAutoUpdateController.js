@@ -14,6 +14,9 @@
 			}
 
 			$.convertModelValue = function(value) {
+				if(typeof value === "number"){
+					return value.toString();
+				}
 				return value;
 			}
 			
@@ -167,7 +170,17 @@
 					if(bindAttributeIsModel){
 						model.xSet(attribute, $.__bindAttributeIsModel);
 					} else {
-						model.xSet(attribute, $.getValue(e));
+						var val = $.getValue(e);
+						if((model.config.columns[attribute] && 
+							(model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) 
+							|| $.$attrs.dataType==="Number"){
+							val = Number(val);
+							if(_.isNaN(val)){
+								showErrorMsg("请输入数值");
+								return;
+							}		
+						}
+						model.xSet(attribute, val);
 					}
 					// if(model.validate(model.attributes)){
 					// model.trigger("invalid");
