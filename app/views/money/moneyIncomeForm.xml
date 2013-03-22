@@ -24,6 +24,7 @@
 			<Button id="updateRate">更新本地汇率</Button>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
 			items="正常收入，预收金额，从预收里扣除"
+			values="Ordinary,PreIncome,PreIncomePayOff"
 			bindModel="$.$model"
 			bindAttribute="expenseType"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
