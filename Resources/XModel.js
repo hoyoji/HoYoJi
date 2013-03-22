@@ -84,6 +84,7 @@
                 console.info("validating column : " + column + "  " + this.xGet(column));
                 if (field.contains("NOT NULL")) if (this.config.belongsTo && this.config.belongsTo[column.slice(0, -2)]) {
                     if (!this.xGet(column.slice(0, -2))) {
+                        console.info("validating column : " + column + "  " + this.xGet(column.slice(0, -2)));
                         this.__xValidationErrorCount++;
                         this.__xValidationError[column] = {
                             msg: "不能为空"
@@ -165,6 +166,9 @@
             if (this.config.hasMany && this.config.hasMany[attr]) {
                 var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
                 if (this.isNew()) return collection;
+                var filter = {};
+                filter[key] = this;
+                collection.xSetFilter(filter);
                 console.info("xGet hasMany : " + type + collection.length);
                 var idString;
                 this.get("id") ? idString = " = '" + this.get("id") + "' " : idString = " IS NULL ";
@@ -172,9 +176,6 @@
                     query: "SELECT * FROM " + type + " WHERE " + key + "Id " + idString
                 });
                 console.info("xGet hasMany : " + key + collection.length);
-                var filter = {};
-                filter[key] = this;
-                collection.xSetFilter(filter);
                 this.set(attr, collection, {
                     silent: !0
                 });
@@ -182,13 +183,17 @@
             }
             if (this.config.belongsTo && this.config.belongsTo[attr]) {
                 var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
+                console.info("xGet belongsTo " + fKey + " : " + fId);
                 if (!fId) return null;
                 var m = Alloy.Collections[table].get(fId);
                 if (!m) {
                     var idString = " = '" + fId + "' ";
-                    m = Alloy.createModel(table).fetch({
+                    console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+                    m = Alloy.createModel(table);
+                    m.fetch({
                         query: "SELECT * FROM " + table + " WHERE id " + idString
                     });
+                    console.info("xGet fetch belongsTo from DB " + m);
                 }
                 this.set(attr, m, {
                     silent: !0
