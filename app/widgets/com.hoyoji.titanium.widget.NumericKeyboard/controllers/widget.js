@@ -25,8 +25,9 @@ exports.open = function(textField) {
 		activeTextField.$view.fireEvent("touchstart"); // close other pickers
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		
+		$.widget.setTop("auto");
 		var animation = Titanium.UI.createAnimation();
-		animation.top = $.parent.getSize().height - 176;
+		animation.bottom = 0;
 		animation.duration = 300;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(animation);
