@@ -1,8 +1,8 @@
 <Alloy>
-	<View height="215" width="Ti.UI.FILL" bottom="-215" zIndex="900" layout="horizontal" horizontalWrap="false">
-		<!-- <View backgroundColor="white" opacity="0.5" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
+	<View platform="ios" height="215" width="Ti.UI.FILL" bottom="-215" zIndex="900">
 		<Picker top="0" id="datePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_DATE_AND_TIME" />
-		<Picker top="0" id="datePicker" platform="android" width="60%" useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE" />
-		<Picker top="0" id="timePicker" platform="android" width="40%" useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_TIME" />
 	</View>
+	<ScrollView id="widget" platform="android" height="155" bottom="-155" backgroundColor="#40000000" width="Ti.UI.FILL" scrollType="horizontal" zIndex="900" layout="horizontal" horizontalWrap="false">
+			<Picker top="0" id="datePicker" useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE" />
+	</ScrollView>
 </Alloy>

@@ -9,7 +9,7 @@ exports.close = function() {
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
 	var animation = Titanium.UI.createAnimation();
-	animation.bottom = -200;
+	animation.bottom = -168;
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(animation);

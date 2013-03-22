@@ -1,5 +1,21 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+if(OS_ANDROID){
+	$.timePicker = Ti.UI.createPicker({
+	  type:Ti.UI.PICKER_TYPE_TIME,
+	  useSpinner : true,
+	  selectionIndicator : true,
+	  format24 : Ti.Platform.is24HourTimeFormat(),
+	  top:0
+	});
+	
+	$.widget.add($.timePicker);	
+		
+	$.widget.addEventListener("swipe", function(e){
+		e.cancelBubble = true;
+	});
+}
+
 var activeTextField;
 
 exports.close = function() {
@@ -9,7 +25,7 @@ exports.close = function() {
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
 	var hideDatePicker = Titanium.UI.createAnimation(); //关闭时动画
-	hideDatePicker.bottom = -215;
+	hideDatePicker.bottom = -$.$view.getHeight();
 	hideDatePicker.duration = 300;
 	hideDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(hideDatePicker);
