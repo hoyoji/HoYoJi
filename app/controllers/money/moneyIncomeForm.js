@@ -13,40 +13,53 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 		category : Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory")
 	});
+	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
+	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
 }
 oldMoneyAccount = $.$model.xGet("moneyAccount");
 oldAmount = $.$model.xGet("amount");
 
-function setExchangeRate() {
+$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+
+// 这个没必要做了，如果window关闭了，这个 moneyAccount field 也会被删掉，不会造成内存泄漏
+// $.onWindowCloseDo(function() {
+	// $.moneyAccount.field.removeEventListener("change", updateExchangeRate);
+// });
+
+// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
+// 只有新增时才需要做这步，我们直接在上面做	
+// $.onWindowOpenDo(function() {
+	// updateExchangeRate(); 
+// });
+
+function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
-		var exchangeCurrencyRateValue;
-		if ($.moneyAccount.getValue().xGet("currency") === $.$model.xGet("localCurrency")) {
-			console.info("+++++++++++++++++++++++++++++++++++hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			exchangeCurrencyRateValue = 1;
-		} else {
-			var exchanges =  $.$model.xGet("localCurrency").getExchanges($.moneyAccount.getValue().xGet("currency"));
-			if (exchanges) {
-				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
-				console.info("++++++++++++++++++++++++++++++++" + exchanges.at(0).xGet("rate") + "+++hello2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			} else {
-				exchangeCurrencyRateValue = null;
-				console.info("+++++++++++++++++++++++++++++++++++hellonull!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			}
-		}
-		$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
-		$.exchangeCurrencyRate.field.fireEvent("change");
+		setExchangeRate($.moneyAccount.getValue(), $.$model);
 	}
 }
 
-$.moneyAccount.field.addEventListener("change", setExchangeRate);
-$.onWindowCloseDo(function() {
-	$.moneyAccount.field.removeEventListener("change", setExchangeRate);
-});
-
-$.onWindowOpenDo(function() {
-	setExchangeRate();
-});
+function setExchangeRate(moneyAccount, model, setToModel){
+		var exchangeCurrencyRateValue;
+		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
+			exchangeCurrencyRateValue = 1;
+			$.exchangeCurrencyRate.hide();
+		} else {
+			var exchanges =  model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
+			if (exchanges.length) {
+				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+			} else {
+				exchangeCurrencyRateValue = null;
+			}
+			$.exchangeCurrencyRate.show();
+		}
+		if(setToModel){
+			model.xSet("exchangeCurrencyRate", exchangeCurrencyRateValue);			
+		} else {
+			$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
+			$.exchangeCurrencyRate.field.fireEvent("change");
+		}
+}
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);

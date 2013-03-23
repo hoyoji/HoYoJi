@@ -7,15 +7,20 @@
 			$.__bindAttributeIsModel = null;
 			
 			$.hide = function(){
+				console.info("hiding auto updatable field .............. ");
 				var animation = Titanium.UI.createAnimation();
-				animation.height = 0;
+				animation.height = 1;
 				animation.duration = 200;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+				animation.addEventListener("complete", function(){
+					$.widget.hide();
+				});
 				$.widget.animate(animation);
 			}
 			
 			$.show = function(){
-				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.height; 
+				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.getHeight(); 
+				$.widget.show();
 				var animation = Titanium.UI.createAnimation();
 				animation.height = height || 42;
 				animation.duration = 200;

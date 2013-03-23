@@ -75,10 +75,10 @@ exports.definition = {
 				xFinishCallback(error);
 			},
 			getExchanges : function(foreignCurrency) {
-					var exchanges = Alloy.Collections.createCollection("Exchange");
+					var exchanges = Alloy.createCollection("Exchange");
 					if (foreignCurrency) {
 						exchanges.xSearchInDb({
-							ownerUserId : Alloy.User.xGet("id"),
+							ownerUserId : Alloy.Models.User.xGet("id"),
 							localCurrencyId : this.xGet("id"),
 							foreignCurrencyId : foreignCurrency.xGet("id")
 						});
