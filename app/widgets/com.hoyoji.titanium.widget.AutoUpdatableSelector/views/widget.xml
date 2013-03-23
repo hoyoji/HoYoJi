@@ -1,6 +1,6 @@
 <Alloy>
-	<View height="44">
-		<Label id="error" top="44"/>
+	<View height="47">
+		<Label id="error" top="47"/>
 		<Label id="label" left="0" width="30%" height="Ti.UI.FILL"/>
 		<Picker id="field" right="0" backgroundColor="white" height="Ti.UI.FILL" type="Titanium.UI.PICKER_TYPE_PLAIN" selectionIndicator="true" width="70%"/>
 	</View>

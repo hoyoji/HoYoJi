@@ -3,61 +3,77 @@
 			Alloy.Globals.extendsBaseUIController($, attrs);
 			$.saveableMode = $.$attrs.saveableMode || $.$view.saveableMode || "edit";
 
-			$.__setValueChangeEvent = false; // some control will raise change event when setting its value programmatically
+			$.__setValueChangeEvent = false;
+			// some control will raise change event when setting its value programmatically
 			$.__bindAttributeIsModel = null;
-			
-			$.hide = function(){
-				console.info("hiding auto updatable field .............. ");
+
+			$.hide = function() {
+				var height = 0;
 				var animation = Titanium.UI.createAnimation();
-				animation.height = 1;
-				animation.duration = 200;
-				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-				animation.addEventListener("complete", function(){
-					$.widget.hide();
-				});
-				$.widget.animate(animation);
-			}
-			
-			$.show = function(){
-				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.getHeight(); 
-				$.widget.show();
-				var animation = Titanium.UI.createAnimation();
-				animation.height = height || 42;
+				animation.height = height;
 				animation.duration = 200;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.widget.animate(animation);
 			}
-			
+
+			$.show = function() {
+				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.getHeight();
+				function animateOpen() {
+					var animation = Titanium.UI.createAnimation();
+
+					if (OS_IOS) {
+						$.$view.removeEventListener("postlayout", animateOpen);
+						animation.addEventListener("complete", function(){
+							$.$view.setHeight(height);
+						});
+					}
+
+					animation.height = height || 42;
+					animation.width = Ti.UI.FILL;
+					animation.duration = 200;
+					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+					$.$view.animate(animation);
+				}
+
+				if (OS_IOS) {
+					$.$view.addEventListener("postlayout", animateOpen);
+					$.$view.setHeight(1);
+				}
+				if(OS_ANDROID){
+					animateOpen();
+				}
+			}
+
 			$.getValue = function() {
-				if($.$attrs.bindAttributeIsModel){
+				if ($.$attrs.bindAttributeIsModel) {
 					return $.__bindAttributeIsModel;
 				}
 				return $.field.getValue();
 			}
 
 			$.convertModelValue = function(value) {
-				if(typeof value === "number"){
+				if ( typeof value === "number") {
 					return value.toString();
 				}
 				return value;
 			}
-			
+
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
 				$.__bindAttributeIsModel = value;
-				if($.$attrs.bindAttributeIsModel && value){
-					if($.$attrs.bindAttributeIsModel.endsWith("()")){
+				if ($.$attrs.bindAttributeIsModel && value) {
+					if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
 						value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
 					} else {
 						value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
 					}
 				}
-            	value = this.convertModelValue(value);
+				value = this.convertModelValue(value);
 				$.field.setValue(value || "");
 			}
 
 			$.setEditable = function(editable) {
-				if($.$attrs.bindAttributeIsModel) {
+				if ($.$attrs.bindAttributeIsModel) {
 					$.field.setEnabled(false);
 				} else {
 					$.field.setEnabled(editable);
@@ -66,7 +82,7 @@
 
 			$.setSaveableMode = function(saveableMode) {
 				$.saveableMode = saveableMode || "edit";
-				
+
 				if (saveableMode === "read") {
 					switch($.$attrs.readModeEditability) {
 						case "hidden" :
@@ -133,32 +149,34 @@
 				if ($.saveableMode === "read") {
 					return;
 				}
-				if($.$attrs.bindAttributeIsModel) {
+				if ($.$attrs.bindAttributeIsModel) {
 					// open bindModelSelector
-					if($.$attrs.bindModelSelector) {
-						var attributes = { selectorCallback : function(model){ 
-								$.setValue(model); 
+					if ($.$attrs.bindModelSelector) {
+						var attributes = {
+							selectorCallback : function(model) {
+								$.setValue(model);
 								$.field.fireEvent("change");
-							}};
-						if($.$attrs.bindModelSelectorParams){
+							}
+						};
+						if ($.$attrs.bindModelSelectorParams) {
 							var params = $.$attrs.bindModelSelectorParams.split(",");
-							for(var i=0; i<params.length;i++){
+							for (var i = 0; i < params.length; i++) {
 								var param = params[i].split(":");
 								attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
 							}
 						}
-						Alloy.Globals.openWindow($.$attrs.bindModelSelector,attributes);
+						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
 			});
-			
+
 			$.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
 				$.$attrs.bindModel = model;
 				$.$attrs.bindAttributeIsModel = bindAttributeIsModel;
 				$.$attrs.bindModelSelector = bindModelSelector;
-				
+
 				console.info(" init autoupdateController ============= " + attribute + model.xGet(attribute));
-				
+
 				var path = attribute.split(".");
 				if (path.length > 1) {
 					for (var i = 1; i < path.length - 1; i++) {
@@ -178,29 +196,27 @@
 				}
 				var updateField = function(e) {
 					$.setValue(model.xGet(attribute));
-					
+
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
 					}
 				}
 				var updateModel = function(e) {
-					if($.__setValueChangeEvent){
-     					$.__setValueChangeEvent = false;
+					if ($.__setValueChangeEvent) {
+						$.__setValueChangeEvent = false;
 						return;
 					}
 					hideErrorMsg();
-					if(bindAttributeIsModel){
+					if (bindAttributeIsModel) {
 						model.xSet(attribute, $.__bindAttributeIsModel);
 					} else {
 						var val = $.getValue(e);
-						if((model.config.columns[attribute] && 
-							(model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) 
-							|| $.$attrs.dataType==="Number"){
+						if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
 							val = Number(val);
-							if(_.isNaN(val)){
+							if (_.isNaN(val)) {
 								showErrorMsg("请输入数值");
 								return;
-							}		
+							}
 						}
 						model.xSet(attribute, val);
 					}
@@ -221,15 +237,14 @@
 				$.field.addEventListener("change", updateModel);
 
 				// clean up listener upon window close to prevent memory leak
-				$.onWindowCloseDo(function(){
-						if (model.hasChanged(attribute)) {
-							model.xSet(attribute, model.previous(attribute));
-						}
-						model.off(null, updateField);
-						model.off(null, handleError);
+				$.onWindowCloseDo(function() {
+					if (model.hasChanged(attribute)) {
+						model.xSet(attribute, model.previous(attribute));
+					}
+					model.off(null, updateField);
+					model.off(null, handleError);
 				});
 			}
-
 			if ($.$attrs.editable) {
 				$.setEditable($.$attrs.editable);
 			}
@@ -255,7 +270,7 @@
 						}
 
 						for (var i = 1; i < path.length; i++) {
-							if(model.xGet){
+							if (model.xGet) {
 								model = model.xGet(path[i]);
 							} else {
 								model = model[path[i]];
@@ -263,9 +278,9 @@
 						}
 						$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 					}
-					$.onWindowOpenDo(function(){
+					$.onWindowOpenDo(function() {
 						console.info("on window open ********************************************** " + $.$attrs.bindAttribute);
-						$.widget.fireEvent("resolvesaveablemodel", {
+						$.$view.fireEvent("resolvesaveablemodel", {
 							bubbles : true,
 							callback : function($) {
 								resolveBindModelFromSaveable($);

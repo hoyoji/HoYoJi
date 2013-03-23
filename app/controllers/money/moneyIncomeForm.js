@@ -44,6 +44,11 @@ function setExchangeRate(moneyAccount, model, setToModel){
 		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
 			exchangeCurrencyRateValue = 1;
 			$.exchangeCurrencyRate.hide();
+			// var animation = Titanium.UI.createAnimation();
+			// animation.height = 1;
+			// animation.duration = 200;
+			// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+			// $.exchangeCurrencyRateWrapper.animate(animation);	
 		} else {
 			var exchanges =  model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
 			if (exchanges.length) {
@@ -52,6 +57,18 @@ function setExchangeRate(moneyAccount, model, setToModel){
 				exchangeCurrencyRateValue = null;
 			}
 			$.exchangeCurrencyRate.show();
+			// $.exchangeCurrencyRateWrapper.addEventListener("postlayout", function(){
+				// console.info("wraper after show x " + $.exchangeCurrencyRateWrapper.getRect().x);
+				// console.info("wraper after show y " + $.exchangeCurrencyRateWrapper.getRect().y);
+				// console.info("wraper after show w " + $.exchangeCurrencyRateWrapper.getRect().width);
+				// console.info("wraper after show h " + $.exchangeCurrencyRateWrapper.getRect().height);
+			// });
+			// var animation = Titanium.UI.createAnimation();
+			// animation.height = 42;
+			// animation.width = Ti.UI.FILL;
+			// animation.duration = 200;
+			// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+			// $.exchangeCurrencyRateWrapper.animate(animation);
 		}
 		if(setToModel){
 			model.xSet("exchangeCurrencyRate", exchangeCurrencyRateValue);			

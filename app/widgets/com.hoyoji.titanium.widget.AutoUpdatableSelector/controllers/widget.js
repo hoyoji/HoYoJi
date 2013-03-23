@@ -1,5 +1,9 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
+if(OS_IOS){
+	$.field.setSelectionIndicator(false);
+}
+
 var items = $.$attrs.items.split("，");//从input widget获取items转为array
 var values = items;
 if($.$attrs.values){
@@ -18,9 +22,11 @@ $.$view.addEventListener("singletap", function(e){
 	if(OS_IOS){
 		if(!$.__expanded){
 			$.widget.setHeight(215);
+			$.field.setSelectionIndicator(true);
 			$.__expanded = true;
 		} else {
-			$.widget.setHeight(42);
+			$.widget.setHeight(47);
+			$.field.setSelectionIndicator(false);
 			$.__expanded = false;
 		}
 	}
