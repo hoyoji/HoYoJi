@@ -9,7 +9,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户" width="50%"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"
 			bindAttribute="moneyAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
@@ -18,7 +18,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="exchangeCurrencyRate" labelText="当前汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeCurrencyRate"/>
-			<Button id="updateRate">更新本地汇率</Button>
+			<!-- <Button id="updateRate">更新本地汇率</Button> -->
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
 			items="正常收入，预收金额，从预收里扣除"
 			values="Ordinary,PreIncome,PreIncomePayOff"

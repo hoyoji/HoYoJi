@@ -15,6 +15,15 @@ $.field.add(data);//把rows添加到picker
 
 $.$view.addEventListener("singletap", function(e){
 	$.getCurrentWindow().closeSoftKeyboard();
+	if(OS_IOS){
+		if(!$.__expanded){
+			$.widget.setHeight(215);
+			$.__expanded = true;
+		} else {
+			$.widget.setHeight(42);
+			$.__expanded = false;
+		}
+	}
 });
 
 $.field.addEventListener("change", function(e){

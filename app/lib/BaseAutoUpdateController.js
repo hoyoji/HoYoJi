@@ -6,6 +6,23 @@
 			$.__setValueChangeEvent = false; // some control will raise change event when setting its value programmatically
 			$.__bindAttributeIsModel = null;
 			
+			$.hide = function(){
+				var animation = Titanium.UI.createAnimation();
+				animation.height = 0;
+				animation.duration = 200;
+				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+				$.widget.animate(animation);
+			}
+			
+			$.show = function(){
+				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.height; 
+				var animation = Titanium.UI.createAnimation();
+				animation.height = height || 42;
+				animation.duration = 200;
+				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+				$.widget.animate(animation);
+			}
+			
 			$.getValue = function() {
 				if($.$attrs.bindAttributeIsModel){
 					return $.__bindAttributeIsModel;
