@@ -25,10 +25,10 @@ function setExchangeRate() {
 			console.info("+++++++++++++++++++++++++++++++++++hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			exchangeCurrencyRateValue = 1;
 		} else {
-			var exchange =  $.$model.xGet("localCurrency").getExchanges($.moneyAccount.getValue().xGet("currency"));
-			if (exchange) {
-				exchangeCurrencyRateValue = collection.at(0).xGet("rate");
-				console.info("++++++++++++++++++++++++++++++++" + collection.at(0).xGet("rate") + "+++hello2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			var exchanges =  $.$model.xGet("localCurrency").getExchanges($.moneyAccount.getValue().xGet("currency"));
+			if (exchanges) {
+				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+				console.info("++++++++++++++++++++++++++++++++" + exchanges.at(0).xGet("rate") + "+++hello2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			} else {
 				exchangeCurrencyRateValue = null;
 				console.info("+++++++++++++++++++++++++++++++++++hellonull!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
