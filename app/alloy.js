@@ -72,12 +72,6 @@ Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").exte
 
 //============================================ Data Store ==============================
 
-// 主要扩展了：xSave, xValidate, xValidateAttribute
-Alloy.Globals.XModel = require("XModel").XModel;
-
-// 主要扩展了：
-Alloy.Globals.XCollection = require("XCollection").XCollection;
-
 Alloy.Globals.initStore = function(){
 	for(var c in Alloy.Collections){
 		if(c === "instance") continue;

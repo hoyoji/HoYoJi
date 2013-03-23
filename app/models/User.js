@@ -38,7 +38,7 @@ exports.definition = {
 		adapter : {
 			collection_name : "User",
 			idAttribute : "id",
-			type : "sql",
+			type : "hyjSql",
 			db_name : "hoyoji"
 		}
 	},

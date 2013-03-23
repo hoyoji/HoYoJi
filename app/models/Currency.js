@@ -15,14 +15,11 @@ exports.definition = {
 		},
 		rowView : "setting/currency/currencyRow",
 		adapter: {
-			collection_name: "Currency",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			// extended functions and properties go here
 			validators : {
 				name : function(xValidateComplete){
@@ -95,7 +92,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		
