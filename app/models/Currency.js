@@ -74,8 +74,7 @@ exports.definition = {
 				
 				xFinishCallback(error);
 			},
-	
-				getExchanges : function(foreignCurrency) {
+			getExchanges : function(foreignCurrency) {
 					var exchanges = Alloy.createCollection("Exchange");
 					if (foreignCurrency) {
 						exchanges.xSearchInDb({

@@ -9,27 +9,6 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户" width="50%"
-			bindModel="$.$model"
-			bindAttribute="moneyAccount"
-			bindAttributeIsModel="getAccountNameCurrency()"
-			bindModelSelector="setting/moneyAccount/moneyAccountAll"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="exchangeCurrencyRate" labelText="当前汇率" hintText="请输入汇率"
-			bindModel="$.$model"
-			bindAttribute="exchangeCurrencyRate"/>
-			<Button id="updateRate">更新本地汇率</Button>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
-			items="正常收入，预收金额，从预收里扣除"
-			values="Ordinary,PreIncome,PreIncomePayOff"
-			bindModel="$.$model"
-			bindAttribute="incomeType"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
-			bindModel="$.$model"
-			bindAttribute="friend"
-			bindAttributeIsModel="name"
-			bindModelSelector="friend/friendAll"
-			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 			bindModel="$.$model"
 			bindAttribute="project"
@@ -43,7 +22,29 @@
 			bindModelSelector="money/moneyIncomeCategoryAll"
 			bindModelSelectorParams="selectedProject:project"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注" hintText="请输入备注"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
+			bindModel="$.$model"
+			bindAttribute="moneyAccount"
+			bindAttributeIsModel="getAccountNameCurrency()"
+			bindModelSelector="setting/moneyAccount/moneyAccountAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
+			bindModel="$.$model"
+			bindAttribute="exchangeCurrencyRate"/>
+			<!-- <Button id="updateRate">更新本地汇率</Button> -->
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
+			bindModel="$.$model"
+			bindAttribute="friend"
+			bindAttributeIsModel="name"
+			bindModelSelector="friend/friendAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
+			items="正常收入，预收金额，从预收里扣除"
+			values="Ordinary,PreIncome,PreIncomePayOff"
+			bindModel="$.$model"
+			bindAttribute="incomeType"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
 		</ScrollView>

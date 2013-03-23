@@ -43,7 +43,7 @@
 			bindModelSelector="money/moneyExpenseCategoryAll"
 			bindModelSelectorParams="selectedProject:project"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注" hintText="请输入备注"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
 		</ScrollView>
