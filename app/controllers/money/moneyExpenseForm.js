@@ -12,14 +12,42 @@ $.onWindowOpenDo(function() {
 			expenseType : "Ordinary",
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : Alloy.Models.User.xGet("activeProject"),
-			category : Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory")
+			moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory")
 		});
 		$.setSaveableMode("add");
 	}
-	// if (!$.$model.isNew()) {
-	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	oldAmount = $.$model.xGet("amount");
-	// }
+});
+
+oldMoneyAccount = $.$model.xGet("moneyAccount");
+oldAmount = $.$model.xGet("amount");
+
+$.moneyAccount.field.addEventListener("change", function() {
+	if ($.moneyAccount.getValue()) {
+		var exchangeCurrencyRateValue;
+		if ($.moneyAccount.getValue().xGet("currency") === $.$model.xGet("localCurrency")) {
+			console.info("+++++++++++++++++++++++++++++++++++hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			exchangeCurrencyRateValue = 1;
+		} else {
+			var exchanges = $.$model.xGet("localCurrency").getExchanges($.moneyAccount.getValue().xGet("currency"));
+			if (exchanges.length>0) {
+				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+				console.info("++++++++++++++++++++++++++++++++" + exchanges.at(0).xGet("rate") + "+++hello2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			} else {
+				exchangeCurrencyRateValue = null;
+				console.info("+++++++++++++++++++++++++++++++++++hellonull!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			}
+		}
+		$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
+		$.exchangeCurrencyRate.field.fireEvent("change");
+	}
+});
+
+$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
+if($.project.getValue()){
+	var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
+	$.moneyExpenseCategory.setValue(defaultExpenseCategory);
+	$.moneyExpenseCategory.field.fireEvent("change");
+}
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {

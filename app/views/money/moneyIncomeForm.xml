@@ -9,18 +9,19 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 			bindModel="$.$model"
 			bindAttribute="project"
 			bindAttributeIsModel="name"
 			bindModelSelector="project/projectAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类" hintText="请选择分类"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyIncomeCategory" labelText="分类" hintText="请选择分类"
 			bindModel="$.$model"
-			bindAttribute="category"
+			bindAttribute="moneyIncomeCategory"
 			bindAttributeIsModel="name"
 			bindModelSelector="money/moneyIncomeCategoryAll"
 			bindModelSelectorParams="selectedProject:project"
+			/>
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"

@@ -8,7 +8,7 @@ exports.definition = {
 			friendId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
-			categoryId : "TEXT NOT NULL",
+			moneyIncomeCategoryId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
 			remark : "TEXT",
@@ -27,7 +27,7 @@ exports.definition = {
 				type : "Project",
 				attribute : null
 			},
-			category : {
+			moneyIncomeCategory : {
 				type : "MoneyIncomeCategory",
 				attribute : "moneyIncomes"
 			},
@@ -37,7 +37,7 @@ exports.definition = {
 			},
 			ownerUser : {
 				type : "User",
-				attribute : "incomes"
+				attribute : "moneyIncomes"
 			}
 		},
 		rowView : "money/moneyIncomeRow",
