@@ -2,8 +2,13 @@ exports.definition = {
 	config : {
 		columns : {
 			id : "TEXT NOT NULL PRIMARY KEY",
-			sharedType : "TEXT",
+			shareType : "TEXT",
         	remark : "TEXT",
+        	
+	        shareToUserId : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL",
+			friendId : "TEXT NOT NULL",
+	        projectId : "TEXT NOT NULL",
 			
 			shareAllSubProjects : "INTEGER NOT NULL",
 			
@@ -58,12 +63,7 @@ exports.definition = {
 	        projectShareLoanReturnOwnerDataOnly : "INTEGER NOT NULL",
 	        projectShareLoanReturnAddNew : "INTEGER NOT NULL",
 	        projectShareLoanReturnEdit : "INTEGER NOT NULL",
-	        projectShareLoanReturnDelete : "INTEGER NOT NULL",
-	        
-	        sharedToUserId : "TEXT NOT NULL",
-			ownerUserId : "TEXT NOT NULL",
-			friendId : "TEXT NOT NULL",
-	        projectId : "TEXT NOT NULL"
+	        projectShareLoanReturnDelete : "INTEGER NOT NULL"
 		},
 		defaults : {
 			shareAllSubProjects : 0,
@@ -123,14 +123,14 @@ exports.definition = {
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null },
-			friend : { type : "Friend", attribute : "projectSharedToes" },
-			project : { type : "Project", attribute : "projectSharedToes" }
+			friend : { type : "Friend", attribute : "projectShareAuthorizations" },
+			project : { type : "Project", attribute : "projectShareAuthorizations" }
 		},
 		hasMany : {
 		},
-		rowView : "project/projectSharedToRow",
+		rowView : "project/projectShareAuthorizationRow",
 		adapter : {
-			collection_name : "ProjectSharedTo",
+			collection_name : "ProjectShareAuthorization",
 			idAttribute : "id",
 			type : "sql",
 			db_name : "hoyoji"
