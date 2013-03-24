@@ -49,6 +49,7 @@ function Migrator(config, transactionDb) {
             k === this.idAttribute && (found = !0);
             columns.push(k + " " + this.column(config.columns[k]));
         }
+        columns.push("_creatorId TEXT NOT NULL");
         !found && this.idAttribute === ALLOY_ID_DEFAULT && columns.push(ALLOY_ID_DEFAULT + " TEXT");
         var sql = "CREATE TABLE IF NOT EXISTS " + this.table + " ( " + columns.join(",") + ")";
         this.db.execute(sql);
@@ -83,6 +84,12 @@ function Migrator(config, transactionDb) {
     };
 }
 
+var projectPermissionTables = ["Project","ProjectPreExpenseBalance","ProjectPreIncomeBalance",
+								"MoneyExpense","MoneyExpenseCategory","MoneyExpenseDetail",
+								"MoneyIncome", "MoneyIncomeCategory","MoneyIncomeDetail",
+								"LoanLend","LoanPayback","LoanBorrow","LoanReturn","MoneyTransfer"];
+
+
 function Sync(method, model, opts) {
     var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
     switch (method) {
@@ -105,7 +112,29 @@ function Sync(method, model, opts) {
                 values.push(model.get(k));
                 q.push("?");
             }
+            names.push("_creatorId");
+            if(Alloy.Models.User){
+            	values.push(Alloy.Models.User.xGet("id"));
+            } else {
+            	values.push("0");
+            }
+            q.push("?");
+            
+            // var sqlCheckPermission;
+            // if(_.indexOf(projectPermissionTables, table) > -1   && table !== "Project"){
+                // if(table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance"){
+                    // sqlCheckPermission =  'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+                    // 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+                    // 'OR joinedtable.projectId IS NOT NULL)';
+                // } else { 
+                    // sqlCheckPermission =  'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + Alloy.Models.User.get("id") + '" ' + 
+                    // 'WHERE p.id = "' + model.xGet("projectId")+ '" AND (p.ownerUserId = "' + Alloy.Models.xGet("id") + '" ' + 
+                    // 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
+                // } 
+            // }
+            
             var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
+            
             db = Ti.Database.open(dbName);
             db.execute("BEGIN;");
             db.execute(sqlInsert, values);
@@ -125,7 +154,56 @@ function Sync(method, model, opts) {
         }();
         break;
       case "read":
-        var sql = opts.query || "SELECT * FROM " + table;
+        var sql = opts.query || "SELECT main.* FROM " + table + " main";
+       	var qs = opts.query.split("WHERE"), q;
+        if(_.indexOf(projectPermissionTables, table) > -1){
+        	if(table === "Project"){
+        		qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.id = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
+	        	q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
+	    	} else if(table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance"){
+	    		qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId ';
+	            q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+	                 'OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+	                 'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
+            } else {
+                qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" '; 
+                q = '(main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" AND joinedtable.projectId IS NULL) ' + 
+                     'OR joinedtable.projectShare' + table + 'OwnerDataOnly = 0 ' + 
+                     'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
+        	}
+        	
+	        if(qs.length > 1){
+	        	sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
+	        } else {
+	        	sql = qs[0] + " WHERE " + q;
+	        }
+        } else if(table === "User"){
+        	
+        } else if(table === "ProjectShareAuthorization"){
+        	q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' " + 
+            	 "OR EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND main.friendId = id AND friendUserId = '" + Alloy.Models.User.xGet("id") + "'))";
+            if(qs.length > 1){
+	        	sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
+	        } else {
+	        	sql = qs[0] + " WHERE " + q;
+	        }
+	    } else if(table === "MoneyAccount"){
+            q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR main.sharingType = 'Public' " + 
+            	 "OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
+            if(qs.length > 1){
+	        	sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
+	        } else {
+	        	sql = qs[0] + " WHERE " + q;
+	        }
+        } else {
+        	q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
+        	if(qs.length > 1){
+	        	sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
+	        } else {
+	        	sql = qs[0] + " WHERE " + q;
+	        }
+        }
+        
         db = Ti.Database.open(dbName);
         var rs = db.execute(sql), len = 0, values = [];
         while (rs.isValidRow()) {

@@ -131,7 +131,7 @@
 			},
 			xSearchInDb : function(filter){
 				var table = this.config.adapter.collection_name,
-					query = "SELECT * FROM " + table + " WHERE ",
+					query = "SELECT main.* FROM " + table + " main WHERE ",
 					filterStr = "";
 				
 				for(var f in filter){
@@ -139,6 +139,7 @@
 					if(filterStr){
 						filterStr += " AND "
 					}
+					f = "main." + f;
 					if(_.isNull(value)){
 						filterStr += f + " IS NULL ";
 					} else if(_.isNumber(value)){
