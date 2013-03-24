@@ -18,5 +18,5 @@ var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "æ
 $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCategory);
 
 $.onWindowCloseDo(function(){
-	Alloy.Globals.initStore();
+	Alloy.Globals.DataStore.initStore();
 })

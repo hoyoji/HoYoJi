@@ -12,7 +12,7 @@ exports.close = function(e) {
 
 $.onWindowCloseDo(function(){
 	Alloy.Models.User = null;
-	Alloy.Globals.initStore();
+	Alloy.Globals.DataStore.initStore();
 });
 
 

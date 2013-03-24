@@ -73,7 +73,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		var date = (new Date()).toISOString();
 
 		if (operation === "addFriend") {
-			Alloy.Globals.sendMsg({
+			Alloy.Globals.Server.sendMsg({
 				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.AddResponse",
@@ -105,7 +105,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 
 		} else if (operation === "reject") {
-			Alloy.Globals.sendMsg({
+			Alloy.Globals.Server.sendMsg({
 				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.Reject",

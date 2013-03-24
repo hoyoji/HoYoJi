@@ -12,7 +12,7 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var date = (new Date()).toISOString();
 	$.$model.xSet("date", date);
-	Alloy.Globals.sendMsg({
+	Alloy.Globals.Server.sendMsg({
 		"toUserId" : $.$model.xGet("toUser").xGet("id"),
 		"fromUserId" : $.$model.xGet("fromUser").xGet("id"),
 		"type" : "System.Friend.AddRequest",

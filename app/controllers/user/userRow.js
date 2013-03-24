@@ -13,7 +13,7 @@ $.onRowTap = function(e) {
 		if ($.$model.xGet("friendAuthorization") === "none") {
 			var date = (new Date()).toISOString();
 			// $.$model.xSet("date", date);
-			Alloy.Globals.sendMsg({
+			Alloy.Globals.Server.sendMsg({
 				"toUserId" : $.$model.xGet("id"),
 				"fromUserId" : Alloy.Models.User.id,
 				"type" : "System.Friend.AutoAdd",
