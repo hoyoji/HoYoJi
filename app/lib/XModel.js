@@ -11,6 +11,9 @@
 			initialize : function() {
 				if (this.isNew()) {
 					this.attributes.id = guid();
+					if(Alloy.Models.User){
+						this.xSet("ownerUser", Alloy.Models.User);
+					}
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
 				} else {
 					this.__initializeExistingModel();
@@ -58,13 +61,17 @@
 				this.__xValidationError = {};
 				this.__xValidationErrorCount = 0;
 
-				if (!self.xGet("ownerUser")) {
-					self.xSet("ownerUser", Alloy.Models.User);
-				}
+				// if (!self.xGet("ownerUser")) {
+					// self.xSet("ownerUser", Alloy.Models.User);
+				// }
 
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
+						self.__xValidationError.__summury = { msg : "验证错误" };
+						for(var e in self.__xValidationError){
+							console.info(e + " : " + self.__xValidationError[e]);
+						}
 						self.trigger("error", self, self.__xValidationError, options);
 					} else {
 						for (var belongsTo in self.config.belongsTo) {
@@ -240,7 +247,7 @@
 						idString = " IS NULL ";
 					}
 					collection.xFetch({
-						query : "SELECT * FROM " + type + " WHERE " + key + "Id " + idString
+						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 					});
 					console.info("xGet hasMany : " + key + collection.length);
 
@@ -260,7 +267,7 @@
 						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
 						m = Alloy.createModel(table);
 						m.fetch({
-							query : "SELECT * FROM " + table + " WHERE id " + idString
+							query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
 						});
 						console.info("xGet fetch belongsTo from DB " + m);
 					}
@@ -319,7 +326,7 @@
 			},
 			xFindInDb : function(filter){
 				var table = this.config.adapter.collection_name,
-					query = "SELECT * FROM " + table + " WHERE ",
+					query = "SELECT main.* FROM " + table + " main WHERE ",
 					filterStr = "";
 				
 				for(var f in filter){
@@ -327,6 +334,7 @@
 					if(filterStr){
 						filterStr += " AND "
 					}
+					f = "main." + f;
 					if(_.isNull(value)){
 						filterStr += f + " IS NULL ";
 					} else if(_.isNumber(value)){

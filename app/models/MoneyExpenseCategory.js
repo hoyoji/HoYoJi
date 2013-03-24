@@ -4,14 +4,19 @@ exports.definition = {
 		    "id": "TEXT NOT NULL PRIMARY KEY",
 		    "name": "TEXT NOT NULL",
 		    "parentExpenseCategoryId": "TEXT",
-		    "projectId" : "TEXT NOT NULL"
+		    "projectId" : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		hasMany : {
 			subExpenseCategories : { type : "MoneyExpenseCategory", attribute : "parentExpenseCategory" }
 		},
 		belongsTo : {
 			project : { type : "Project", attribute : "moneyExpenseCategories" },
-			parentExpenseCategory : { type : "MoneyExpenseCategory", attribute : "subExpenseCategories" }
+			parentExpenseCategory : { type : "MoneyExpenseCategory", attribute : "subExpenseCategories" },
+			ownerUser : {
+				type : "User",
+				attribute : "moneyIncomes"
+			}
 		},
 		rowView : "money/moneyExpenseCategoryRow",
 		adapter: {

@@ -10,12 +10,17 @@ exports.definition = {
         	messageData : "TEXT",
 			fromUserId : "TEXT",
 			toUserId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL"
+			messageBoxId : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
 			messageBox : { type : "MessageBox", attribute : "messages" },
 			fromUser : { type : "User", attribute : null },
-			toUser : { type : "User", attribute : null }
+			toUser : { type : "User", attribute : null },
+			ownerUser : {
+				type : "User",
+				attribute : "moneyIncomes"
+			}
 		},
 		hasMany : {
 		},

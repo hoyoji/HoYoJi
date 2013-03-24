@@ -32,10 +32,14 @@
 							$.$model.off("error", errorCB);
 							saveEndCB();
 						}
-						var errorCB = function() {
+						var errorCB = function(model, error) {
 							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
-							saveErrorCB();
+							var errMsg;
+							if(error.__summury){
+								errMsg = error.__summury.msg;
+							}
+							saveErrorCB(errMsg);
 						}
 
 						$.$model.on("sync", successCB);
