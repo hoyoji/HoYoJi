@@ -47,6 +47,7 @@
 						alert("dirtyCount@becameClean 出错拉！！！");
 					}
 					if ($.__dirtyCount === 0) {
+						console.info("becameClean " + $.$view.id);
 						$.$view.fireEvent("becameclean", {
 							bubbles : true
 						});
