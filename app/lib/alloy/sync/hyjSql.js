@@ -175,7 +175,7 @@ function Sync(method, model, opts) {
 				if (table === "Project") {
 					qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.id = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
 					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
-				} else if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+				} else if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 					qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId ';
 					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 'OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
 				} else {
