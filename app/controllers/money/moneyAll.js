@@ -13,9 +13,11 @@ $.makeContextMenu = function() {
 
 $.titleBar.bindXTable($.moneyIncomesTable);
 
-var collection = Alloy.Models.User.xGet("moneyIncomes");
+var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
+var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
 console.info("+++++________"+collection);
-$.moneyIncomesTable.addCollection(collection);
+$.moneyIncomesTable.addCollection(moneyIncomes);
+$.moneyIncomesTable.addCollection(moneyExpenses);
 
 
 function onFooterbarTap(e) {

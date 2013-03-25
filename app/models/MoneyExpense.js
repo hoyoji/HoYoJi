@@ -14,6 +14,9 @@ exports.definition = {
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL"
 		},
+		hasMany : {
+			moneyExpenseDetails : {type : "MoneyExpenseDetail",attribute : "moneyExpense"}
+		},
 		belongsTo : {
 			friend : {
 				type : "Friend",
