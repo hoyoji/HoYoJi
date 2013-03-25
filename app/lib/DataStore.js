@@ -3,6 +3,7 @@
 // Creating all the collection singletons, they will be use as store
 Alloy.Collections.instance("User");
 Alloy.Collections.instance("Project");
+Alloy.Collections.instance("ProjectShareAuthorization");
 Alloy.Collections.instance("MoneyExpenseCategory");
 Alloy.Collections.instance("MoneyIncomeCategory");
 Alloy.Collections.instance("FriendCategory");
@@ -14,6 +15,8 @@ Alloy.Collections.instance("Message");
 Alloy.Collections.instance("MessageBox");
 Alloy.Collections.instance("MoneyExpense");
 Alloy.Collections.instance("MoneyIncome");
+// Alloy.Collections.instance("MoneyExpenseDetail");
+Alloy.Collections.instance("MoneyIncomeDetail");
 
 exports.DataStore = {
 	initStore : function(){

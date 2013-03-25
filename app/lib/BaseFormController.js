@@ -32,10 +32,14 @@
 							$.$model.off("error", errorCB);
 							saveEndCB();
 						}
-						var errorCB = function() {
+						var errorCB = function(model, error) {
 							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
-							saveErrorCB();
+							var errMsg;
+							if(error.__summury){
+								errMsg = error.__summury.msg;
+							}
+							saveErrorCB(errMsg);
 						}
 
 						$.$model.on("sync", successCB);
@@ -44,14 +48,18 @@
 						// try to catch the database error
 						// try{
 						
-						function saveCollection(xCompleteCallback){
+						function saveCollection(xCompleteCallback, xErrorCallback){
 							var i = 0;
 							for(var i = 0; i < $.__saveCollection.length; i++){
 								if($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged()){
 									$.__saveCollection[i].once("sync", function(){
-											saveCollection(xCompleteCallback);
-									});	
-									$.__saveCollection[i].xSave();
+											saveCollection(xCompleteCallback,xErrorCallback);
+									});
+										
+									$.__saveCollection[i].xSave({error : function(model, error){
+										xErrorCallback(model, error);
+										return;
+									}});
 									return;
 								}
 							}
@@ -62,7 +70,7 @@
 						
 						saveCollection(function(){
 							$.$model.xSave();
-						});
+						}, errorCB);
 						
 						// } catch (err) {
 						// if (_.isFunction(clearModelId)) {

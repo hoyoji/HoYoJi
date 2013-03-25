@@ -2,6 +2,7 @@
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				var msg = Alloy.createModel("Message");
+				msgJSON.ownerUserId = msgJSON.toUserId;
 				msg.save(msgJSON, {
 					patch : true,
 					wait : true,

@@ -75,7 +75,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
 			}, function() {
 				var friend = Alloy.createModel("Friend", {
-					ownerUser : Alloy.Models.User,
 					friendUser : $.$model.xGet("fromUser"),
 					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				});
