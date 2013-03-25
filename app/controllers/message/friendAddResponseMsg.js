@@ -14,18 +14,6 @@ var onFooterbarTap = function(e) {
 }
 
 $.onWindowOpenDo(function() {
-	var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-		friendUserId : $.$model.xGet("fromUser").xGet("id"),
-		friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
-	}).length;
-	if (friendlength > 0 && $.$model.xGet('messageState') !== "closed") {
-		$.$model.xSet('messageState', "closed");
-		$.$model.xSave();
-	}
-	if($.$model.xGet('messageState') === "read"){
-		$.$model.xSet('messageState',"closed");
-		$.$model.xSave();
-	}
 	if ($.$model.xGet('messageState') !== "closed") {
 		var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 			friendUserId : $.$model.xGet("fromUser").xGet("id"),
@@ -40,6 +28,9 @@ $.onWindowOpenDo(function() {
 	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.xSet('messageState', "closed");
 		$.$model.xSave();
+		$.footerBar.$view.hide();
+	}
+	if ($.$model.xGet('messageState') === "closed") {
 		$.footerBar.$view.hide();
 	}
 	if ($.$model.xGet('messageState') === "new") {
