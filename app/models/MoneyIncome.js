@@ -51,6 +51,9 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
+			getLocalAmount : function(){
+				return this.xGet("amount")*this.xGet("exchangeCurrencyRate");
+			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");

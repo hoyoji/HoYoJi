@@ -1,4 +1,17 @@
 <Alloy>
-	<View class="container">
+	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="新增支出明细" readModeTitle="支出明细" editModeTitle="修改支出明细"/>
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商品" hintText="请输入商品名称"
+			bindModel="$.$model"
+			bindAttribute="name"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
+			bindModel="$.$model"
+			bindAttribute="amount"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
+			bindModel="$.$model"
+			bindAttribute="remark"/>
+		</ScrollView>
 	</View>
 </Alloy>
