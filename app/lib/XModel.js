@@ -165,9 +165,9 @@
 					}
 					// 检查唯一性
 					if(field.contains("UNIQUE")){
-						var filter = {};
-						filter[column] = fieldValue;
 						if(this.isNew() || this.hasChanged(column)){
+							var filter = {};
+							filter[column] = fieldValue;
 							if(Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0){
 								console.info("Check UNIQUE : NO!!");
 								this.__xValidationErrorCount++;

@@ -120,13 +120,15 @@ function Sync(method, model, opts) {
 				var sqlCheckPermission;
 				if (Alloy.Models.User) {
 					ownerUserId = Alloy.Models.User.xGet("id");
-					if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project" && !model.xGet("project").isNew()) {
-						if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
-							sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
-						} else if (table === "MoneyIncomeDetail" || table === "MoneyExpenseDetail"){
+					if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project") {
+						if (table === "MoneyIncomeDetail" || table === "MoneyExpenseDetail"){
 					
-						} else {
-							sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
+						} else if(!model.xGet("project").isNew()){
+							if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+								sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
+							} else {
+								sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
+							}	
 						}
 					}
 				} else if (model.config.adapter.collection_name === "User") {
