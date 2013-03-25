@@ -22,7 +22,6 @@
 							e.sourceController.saveEndCB();
 						}
 						var isSaveableContainer = $.$attrs.saveableContainer === "true" || $.$view.saveableContainer === "true";
-						var saveableMode = $.$view.saveableMode || $.$attrs.saveableMode;
 						if (isSaveableContainer) {
 							var closeWinOnSaveCB = function(e, win) {
 								if (win.__dirtyCount === 0) {
