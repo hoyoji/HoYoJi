@@ -167,11 +167,13 @@
 					if(field.contains("UNIQUE")){
 						var filter = {};
 						filter[column] = fieldValue;
-						if(Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0){
-							console.info("Check UNIQUE : NO!!");
-							this.__xValidationErrorCount++;
-							this.__xValidationError[column] = {msg : "该名称已存在"};
-							continue;
+						if(this.isNew() || this.hasChanged(column)){
+							if(Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0){
+								console.info("Check UNIQUE : NO!!");
+								this.__xValidationErrorCount++;
+								this.__xValidationError[column] = {msg : "该名称已存在"};
+								continue;
+							}
 						}
 						console.info("Check UNIQUE : YES!!");
 					}
