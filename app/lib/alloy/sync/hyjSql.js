@@ -242,23 +242,23 @@ function Sync(method, model, opts) {
 			var sql = "UPDATE " + table + " SET " + names.join(",") + " WHERE " + model.idAttribute + "=?";
 			values.push(model.id);
 
-            if(_.indexOf(projectPermissionTables, table) > -1 && table !== "Project"){
-                if(table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance"){
-                    sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
-                    ' WHERE p.id = "' + model.id + '" ' + 
-                    'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
-                    'OR joinedtable.projectId IS NOT NULL)) ';
-                } else { 
-                    sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
-                    ' WHERE p.id = "' + model.id + '" ' + 
-                    'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
-                    'AND (joinedtable.projectId IS NULL OR joinedtable.projectShare' + table + 'Edit = 1))) ';
-                }
-            }            
-            else {
-                sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
-            }
-			
+            // if(_.indexOf(projectPermissionTables, table) > -1 && table !== "Project"){
+                // if(table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance"){
+                    // sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+                    // ' WHERE p.id = "' + model.id + '" ' + 
+                    // 'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
+                    // 'OR joinedtable.projectId IS NOT NULL)) ';
+                // } else { 
+                    // sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+                    // ' WHERE p.id = "' + model.id + '" ' + 
+                    // 'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
+                    // 'AND (joinedtable.projectId IS NULL OR joinedtable.projectShare' + table + 'Edit = 1))) ';
+                // }
+            // }            
+            // else {
+                // sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
+            // }
+// 			
 			db = Ti.Database.open(dbName);
 			db.execute(sql, values);
 			if(db.rowsAffected === 0){
@@ -271,15 +271,15 @@ function Sync(method, model, opts) {
 		case "delete":
 			var sql = "DELETE FROM " + table + " WHERE " + model.idAttribute + "=?";
 			
-			if(_.indexOf(projectPermissionTables, table) > -1 && table !== "Project"){
-                sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
-                'WHERE p.id = "' + model.id + '" ' + 
-                'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
-                'AND (joinedtable.projectId IS NULL OR joinedtable.projectShare' + table + 'Delete = 1))) ';
-            }
-            else{
-                sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
-            }
+			// if(_.indexOf(projectPermissionTables, table) > -1 && table !== "Project"){
+                // sql += ' AND id = (SELECT p.id FROM ' + table + ' p LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 
+                // 'WHERE p.id = "' + model.id + '" ' + 
+                // 'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
+                // 'AND (joinedtable.projectId IS NULL OR joinedtable.projectShare' + table + 'Delete = 1))) ';
+            // }
+            // else{
+                // sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
+            // }
             			
 			db = Ti.Database.open(dbName);
 			db.execute(sql, model.id);
