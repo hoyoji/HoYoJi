@@ -9,12 +9,28 @@
                 		bindAttributeIsModel="name"
                 		/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="请选择上级分类"
-					bindModel="$.$model"
-					bindAttribute="friend"
-					bindAttributeIsModel="nickName"
-					bindModelSelector="friend/friendAll"
-					bindModelSelectorParams="selectedProject:project"
+						bindModel="$.$model"
+						bindAttribute="friend"
+						bindAttributeIsModel="nickName"
+						bindModelSelector="friend/friendAll"
+						bindModelSelectorParams="selectedProject:project"
 					/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="共享所有子项目" hintText="请输入年龄"
+						items="1,0"
+						bindModel="$.$model"
+						bindAttribute="shareAllSubProjects"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
+						items="1,0"
+						bindModel="$.$model"
+						bindAttribute="projectShareMoneyExpenseOwnerDataOnly"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
+						items="1,0"
+						bindModel="$.$model"
+						bindAttribute="shareAllSubProjects"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
+						items="1,0"
+						bindModel="$.$model"
+						bindAttribute="shareAllSubProjects"/>
            </ScrollView>
 	</View>
 </Alloy>
