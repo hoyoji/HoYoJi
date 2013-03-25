@@ -21,15 +21,14 @@ if (!$.$model) {
 oldMoneyAccount = $.$model.xGet("moneyAccount");
 oldAmount = $.$model.xGet("amount");
 
-$.moneyAccount.field.addEventListener("change", updateExchangeRate);
-// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
-// 只有新增时才需要做这步，我们直接在上面做
-
 function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
 		setExchangeRate($.moneyAccount.getValue(), $.$model);
 	}
 }
+
+$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
 
 function setExchangeRate(moneyAccount, model, setToModel) {
 	var exchangeCurrencyRateValue;
@@ -77,16 +76,17 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 	}
 
-	//记住当前账户为下次打开时的默认账户
-	Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-	//记住当前分类为下次打开时的默认分类
-	Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("category"));
-	//直接把activeMoneyAccountId保存到数据库，不经过validation
-	Alloy.Models.User.save({
-			activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id")
-	}, {patch : true, wait : true});
-	Alloy.Models.User.xGet("activeProject").xAddToSave($);
-	
+	if($.$model.isNew()){
+		//记住当前账户为下次打开时的默认账户
+		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+		//记住当前分类为下次打开时的默认分类
+		Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("category"));
+		//直接把activeMoneyAccountId保存到数据库，不经过validation
+		Alloy.Models.User.save({
+				activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id")
+		}, {patch : true, wait : true});
+		Alloy.Models.User.xGet("activeProject").xAddToSave($);
+	}
 	
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
@@ -96,6 +96,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 		exchange.xAddToSave($);
 	}
+	
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 		oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
