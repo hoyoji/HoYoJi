@@ -15,7 +15,7 @@ $.titleBar.bindXTable($.moneyIncomesTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-console.info("+++++________"+collection);
+console.info("+++++________"+moneyIncomes);
 $.moneyIncomesTable.addCollection(moneyIncomes);
 $.moneyIncomesTable.addCollection(moneyExpenses);
 
