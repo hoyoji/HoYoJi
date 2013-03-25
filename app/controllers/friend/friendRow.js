@@ -26,10 +26,3 @@ $.makeContextMenu = function(e, isSelectMode) {
 	}, isSelectMode));
 	return menuSection;
 }
-$.onWindowOpenDo(function(){
-	// if($.$model.xGet("nickName")){
-		$.userName.setText("(" + $.$model.xGet("friendUser").xGet("userName") + ")");
-	// }else{
-		// $.userName.setText($.$model.xGet("friendUser").xGet("userName"));
-	// }   
-});

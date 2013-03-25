@@ -30,12 +30,10 @@ exports.definition = {
 	        projectShareMoneyIncomeDetailEdit : "INTEGER NOT NULL",
 	        projectShareMoneyIncomeDetailDelete : "INTEGER NOT NULL",
 	        
-	        projectShareMoneyExpenseCategoryOwnerDataOnly : "INTEGER NOT NULL",
 	        projectShareMoneyExpenseCategoryAddNew : "INTEGER NOT NULL",
 	        projectShareMoneyExpenseCategoryEdit : "INTEGER NOT NULL",
 	        projectShareMoneyExpenseCategoryDelete : "INTEGER NOT NULL",
 	        
-	        projectShareMoneyIncomeCategoryOwnerDataOnly : "INTEGER NOT NULL",
 	        projectShareMoneyIncomeCategoryAddNew : "INTEGER NOT NULL",
 	        projectShareMoneyIncomeCategoryEdit : "INTEGER NOT NULL",
 	        projectShareMoneyIncomeCategoryDelete : "INTEGER NOT NULL",
@@ -88,12 +86,10 @@ exports.definition = {
 	        projectShareMoneyIncomeDetailEdit : 1,
 	        projectShareMoneyIncomeDetailDelete : 1,
 	        
-	        projectShareMoneyExpenseCategoryOwnerDataOnly : 1,
 	        projectShareMoneyExpenseCategoryAddNew : 1,
 	        projectShareMoneyExpenseCategoryEdit : 1,
 	        projectShareMoneyExpenseCategoryDelete : 1,
 	        
-	        projectShareMoneyIncomeCategoryOwnerDataOnly : 1,
 	        projectShareMoneyIncomeCategoryAddNew : 1,
 	        projectShareMoneyIncomeCategoryEdit : 1,
 	        projectShareMoneyIncomeCategoryDelete : 1,
