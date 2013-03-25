@@ -31,7 +31,7 @@
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
-				bindAttribute = "amount"
+				bindAttribute = "getLocalAmount()"
 				/>
 			</View>
 		</View>

@@ -15,7 +15,7 @@ exports.definition = {
 			},
 			ownerUser : {
 				type : "User",
-				attribute : "null"
+				attribute : null
 			}
 		},
 		rowView : "money/moneyIncomeDetailRow",

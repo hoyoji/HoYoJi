@@ -18,7 +18,7 @@ if (!$.$model) {
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
 }
-oldMoneyAccount = $.$model.xGet("moneyAccount");
+oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount");
 
 $.moneyAccount.field.addEventListener("change", updateExchangeRate);
@@ -93,11 +93,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 	}
-
-	Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-	//记住当前账户为下次打开时的默认账户
-	Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("category"));
-	//记住当前分类为下次打开时的默认分类
+	if ($.$model.isNew()) {//新增时自动记住上次使用的账户和分类
+		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+		//记住当前账户为下次打开时的默认账户
+		Alloy.Models.User.xSet("project",$.$model.xGet("project"));
+		//记住当前项目为下次打开时的默认项目
+		$.$model.xGet("project").xSet("defaultIncomeCategory", $.$model.xGet("moneyIncomeCategory"));
+		//记住当前分类为下次打开时的默认分类
+		$.$model.xGet("project").xAddToSave($);
+	}
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("localCurrency"),
@@ -113,4 +117,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", Alloy.Models.User.previous("activeProject").xGet("defaultIncomeCategory"));
 		saveErrorCB(e);
 	});
+}
+
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "收入操作"
+	});
+	menuSection.add($.createContextMenuItem("收入明细", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {selectedIncome : $.$model});
+	}));
+	return menuSection;
 }
