@@ -12,24 +12,8 @@
 
 _.extend(Alloy.Globals, require("utils").Utils);
 
-// Alloy.Globals.switchActiveProject = function(project){
-	// Alloy.Models.User.xSet("activeProject", project);
-	// Ti.App.fireEvent("activeprojectswitched");
-// }
-// 
-// Alloy.Globals.onActiveProjectSwitchedDo = function(callback, executeNow){
-	// Ti.App.addEventListener("activeprojectswitched", callback);
-	// if(executeNow === true){
-		// callback();
-	// }
-// }
-
-//==================================================================================
-
-Alloy.Globals.sendMsg = function(msgJSON, xFinishedCallback, xErrorCallback){
-	var msg = Alloy.createModel("Message");
-    msg.save(msgJSON, {patch : true, wait : true, success : xFinishedCallback, error : xErrorCallback});
-}
+Alloy.Globals.Server = require("Server").Server;
+Alloy.Globals.DataStore = require("DataStore").DataStore;
 
 //=============================================== Views ============================
 
@@ -69,48 +53,3 @@ Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
 //	- 可被关闭
 Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends; 
 
-
-//============================================ Data Store ==============================
-
-// 主要扩展了：xSave, xValidate, xValidateAttribute
-Alloy.Globals.XModel = require("XModel").XModel;
-
-// 主要扩展了：
-Alloy.Globals.XCollection = require("XCollection").XCollection;
-
-Alloy.Globals.initStore = function(){
-	for(var c in Alloy.Collections){
-		if(c === "instance") continue;
-		Alloy.Collections[c] = null;
-		delete Alloy.Collections[c];
-		Alloy.Collections.instance(c)
-	}
-	for(var m in Alloy.Models){
-		if(m === "instance") continue;
-		Alloy.Models[m] = null;
-		delete Alloy.Models[m];
-		//Alloy.Models.instance(m)
-	}
-}
-
-// Creating all the collection singletons, they will be use as store
-Alloy.Collections.instance("User");
-Alloy.Collections.instance("Project");
-Alloy.Collections.instance("MoneyExpenseCategory");
-Alloy.Collections.instance("MoneyIncomeCategory");
-Alloy.Collections.instance("FriendCategory");
-Alloy.Collections.instance("Currency");
-Alloy.Collections.instance("Exchange");
-Alloy.Collections.instance("MoneyAccount");
-Alloy.Collections.instance("Friend");
-Alloy.Collections.instance("Message");
-Alloy.Collections.instance("MessageBox");
-Alloy.Collections.instance("MoneyExpense");
-Alloy.Collections.instance("MoneyIncome");
-
-// Alloy.Collections.Project.on("all", function(eName){
-	// console.info("Alloy.Collections.Project event : " + eName);
-// });
-// Alloy.Collections.User.on("all", function(eName){
-	// console.info("Alloy.Collections.User event : " + eName);
-// });

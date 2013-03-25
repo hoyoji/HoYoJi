@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		if (friendlength = 0) {
 			saveErrorCB("用户" + $.$model.xGet("fromUser").xGet("userName") + "已经是好友");
 		} else {
-				Alloy.Globals.sendMsg({
+				Alloy.Globals.Server.sendMsg({
 					"toUserId" : $.$model.xGet("friendUserId"),
 					"fromUserId" : Alloy.Models.User.id,
 					"type" : "System.Friend.Delete",

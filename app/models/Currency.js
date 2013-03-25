@@ -1,11 +1,11 @@
 exports.definition = {
 	config: {
 		columns: {
-		    "id": "TEXT NOT NULL PRIMARY KEY",
-		    "name": "TEXT NOT NULL",
-		    "symbol": "TEXT NOT NULL",
-		    "code" : "TEXT NOT NULL",
-		    "ownerUserId" : "TEXT NOT NULL"
+		    id: "TEXT NOT NULL PRIMARY KEY",
+		    name: "TEXT NOT NULL",
+		    symbol: "TEXT NOT NULL",
+		    code : "TEXT NOT NULL",
+		    ownerUserId : "TEXT NOT NULL"
 		},
 		hasMany : {
 			moneyAccounts : { type : "MoneyAccount", attribute : "currency"},
@@ -15,14 +15,11 @@ exports.definition = {
 		},
 		rowView : "setting/currency/currencyRow",
 		adapter: {
-			collection_name: "Currency",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			// extended functions and properties go here
 			validators : {
 				name : function(xValidateComplete){
@@ -74,20 +71,28 @@ exports.definition = {
 				
 				xFinishCallback(error);
 			},
-			getExchanges : function(){
-				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : this});
-				// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({foreignCurrency : this});
-				// var collectionArray;
-				// collectionArray.add(currencyPositive);
-				// collectionArray.add(currencyNegative);
-				return currencyPositive;
-			}
+			getExchanges : function(foreignCurrency) {
+					var exchanges = Alloy.createCollection("Exchange");
+					if (foreignCurrency) {
+						exchanges.xSearchInDb({
+							ownerUserId : Alloy.Models.User.xGet("id"),
+							localCurrencyId : this.xGet("id"),
+							foreignCurrencyId : foreignCurrency.xGet("id")
+						});
+					} else {
+						exchanges.xSearchInDb({
+							ownerUserId : Alloy.Models.User.xGet("id"),
+							localCurrencyId : this.xGet("id")
+						});
+					}
+					return exchanges;
+				}
 		});
 		
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		

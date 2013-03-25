@@ -14,18 +14,15 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : null }
 		},
 		hasMany : {
-			projectSharedToes : { type : "ProjectSharedTo", attribute : "friend" }
+			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "friend" }
 		},
 		rowView : "friend/friendRow",
 		adapter : {
-			collection_name : "Friend",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			validators : {
 				friendCategory : function(xValidateComplete) {
 					var error;
@@ -42,7 +39,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		return Collection;

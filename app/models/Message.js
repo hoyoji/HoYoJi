@@ -10,32 +10,34 @@ exports.definition = {
         	messageData : "TEXT",
 			fromUserId : "TEXT",
 			toUserId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL"
+			messageBoxId : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
 			messageBox : { type : "MessageBox", attribute : "messages" },
 			fromUser : { type : "User", attribute : null },
-			toUser : { type : "User", attribute : null }
+			toUser : { type : "User", attribute : null },
+			ownerUser : {
+				type : "User",
+				attribute : "moneyIncomes"
+			}
 		},
 		hasMany : {
 		},
 		rowView : "message/messageRow",
 		adapter : {
-			collection_name : "Message",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			validators : {
 			}
 		});
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		return Collection;

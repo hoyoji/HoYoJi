@@ -1,5 +1,21 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+if(OS_ANDROID){
+	$.timePicker = Ti.UI.createPicker({
+	  type:Ti.UI.PICKER_TYPE_TIME,
+	  useSpinner : true,
+	  selectionIndicator : true,
+	  format24 : Ti.Platform.is24HourTimeFormat(),
+	  top:0
+	});
+	
+	$.widget.add($.timePicker);	
+		
+	$.widget.addEventListener("swipe", function(e){
+		e.cancelBubble = true;
+	});
+}
+
 var activeTextField;
 
 exports.close = function() {
@@ -8,9 +24,8 @@ exports.close = function() {
 		return;
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
-	var hideDatePicker = Titanium.UI.createAnimation();
-	//关闭时动画
-	hideDatePicker.top = "100%";
+	var hideDatePicker = Titanium.UI.createAnimation(); //关闭时动画
+	hideDatePicker.bottom = -$.$view.getHeight();
 	hideDatePicker.duration = 300;
 	hideDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(hideDatePicker);
@@ -24,9 +39,8 @@ exports.open = function(textField) {//绑定textField
 	if(!activeTextField){
 		activeTextField = textField;
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
-
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
-		showDatePicker.top = $.parent.getSize().height - 215;
+		showDatePicker.bottom = 0;
 		showDatePicker.duration = 300;
 		showDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		$.widget.animate(showDatePicker);

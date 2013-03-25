@@ -9,7 +9,7 @@ exports.close = function() {
 	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 	activeTextField = null;
 	var animation = Titanium.UI.createAnimation();
-	animation.top = "100%"
+	animation.bottom = -168;
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(animation);
@@ -25,11 +25,16 @@ exports.open = function(textField) {
 		activeTextField.$view.fireEvent("touchstart"); // close other pickers
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		
-		var animation = Titanium.UI.createAnimation();
-		animation.top = $.parent.getSize().height - 176;
-		animation.duration = 300;
-		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		$.widget.animate(animation);
+		function animateOpen(){
+			// $.widget.removeEventListener("postlayout", animateOpen);
+			var animation = Titanium.UI.createAnimation();
+			animation.bottom = 0;
+			animation.duration = 300;
+			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+			$.widget.animate(animation);	
+		}
+		// $.widget.addEventListener("postlayout", animateOpen);
+		animateOpen();
 	} else if (activeTextField !== textField){
 		activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
 		activeTextField = textField;

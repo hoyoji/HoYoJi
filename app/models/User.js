@@ -24,8 +24,8 @@ exports.definition = {
 	    	currencies : {type : "Currency", attribute : "ownerUser"},
 	    	moneyAccounts : {type : "MoneyAccount", attribute : "ownerUser"},
 	    	exchanges : {type : "Exchange", attribute : "ownerUser"},
-	    	incomes : {type : "MoneyIncome", attribute : "ownerUser"},
-	    	expenses : {type : "MoneyExpense", attribute : "ownerUser"}
+	    	moneyIncomes : {type : "MoneyIncome", attribute : "ownerUser"},
+	    	moneyExpenses : {type : "MoneyExpense", attribute : "ownerUser"}
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},
@@ -36,14 +36,11 @@ exports.definition = {
 		},
 		rowView : "user/userRow",
 		adapter : {
-			collection_name : "User",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			validators : {
 				userName : function(xValidateComplete) {
 					if(!this.isNew()){
@@ -80,7 +77,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		return Collection;

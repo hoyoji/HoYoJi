@@ -6,7 +6,8 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT NOT NULL",
-			defaultExpenseCategoryId : "TEXT NOT NULL"
+			defaultExpenseCategoryId : "TEXT NOT NULL",
+			projectSharedById : "TEXT"
 		},
 		// defaults : {
 			// name : "",
@@ -15,24 +16,22 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : "projects" },
 			parentProject : { type : "Project", attribute : "subProjects" },
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
-			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
+			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null},
+			projectSharedBy : {type : "Project", attribute : null}
 		},
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
 			moneyIncomeCategories : { type : "MoneyIncomeCategory", attribute : "project"},
 			subProjects : { type : "Project", attribute : "parentProject" },
-			projectSharedToes : { type : "ProjectSharedTo", attribute : "project" }
+			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "project" }
 		},
 		rowView : "project/projectRow",
 		adapter : {
-			collection_name : "Project",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			validators : {
 				// name : function(xValidateComplete){
 					// var error;
@@ -49,7 +48,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		return Collection;

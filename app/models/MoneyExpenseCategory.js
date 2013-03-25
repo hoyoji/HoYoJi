@@ -4,32 +4,34 @@ exports.definition = {
 		    "id": "TEXT NOT NULL PRIMARY KEY",
 		    "name": "TEXT NOT NULL",
 		    "parentExpenseCategoryId": "TEXT",
-		    "projectId" : "TEXT NOT NULL"
+		    "projectId" : "TEXT NOT NULL",
+			ownerUserId : "TEXT NOT NULL"
 		},
 		hasMany : {
 			subExpenseCategories : { type : "MoneyExpenseCategory", attribute : "parentExpenseCategory" }
 		},
 		belongsTo : {
 			project : { type : "Project", attribute : "moneyExpenseCategories" },
-			parentExpenseCategory : { type : "MoneyExpenseCategory", attribute : "subExpenseCategories" }
+			parentExpenseCategory : { type : "MoneyExpenseCategory", attribute : "subExpenseCategories" },
+			ownerUser : {
+				type : "User",
+				attribute : "moneyIncomes"
+			}
 		},
 		rowView : "money/moneyExpenseCategoryRow",
 		adapter: {
-			collection_name: "MoneyExpenseCategory",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			// extended functions and properties go here
 		});
 		
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		

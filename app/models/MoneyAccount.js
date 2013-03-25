@@ -5,9 +5,9 @@ exports.definition = {
 		    name : "TEXT NOT NULL",
 		    currencyId : "TEXT NOT NULL",
 		    currentBalance : "REAL NOT NULL",
-		    "sharingType" : "TEXT　NOT NULL",
-		    "remark" : "TEXT",
-		    "ownerUserId" : "TEXT NOT NULL"
+		    sharingType : "TEXT　NOT NULL",
+		    remark : "TEXT",
+		    ownerUserId : "TEXT NOT NULL"
 		},
 		defaults : {
 			currentBalance : 0
@@ -18,14 +18,11 @@ exports.definition = {
 		},
 		rowView : "setting/moneyAccount/moneyAccountRow",
 		adapter: {
-			collection_name: "MoneyAccount",
-			idAttribute : "id",
-			type : "sql",
-			db_name : "hoyoji"
+			type : "hyjSql"
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel, {
+		_.extend(Model.prototype, {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback){
 				var error;
@@ -45,7 +42,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		
