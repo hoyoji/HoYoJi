@@ -28,6 +28,11 @@ if (!$.$model) {
 	});
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
+	
+		$.$model.on("xchange:amount", function(){
+		$.amount.setValue($.$model.xGet("amount"));
+		$.amount.field.fireEvent("change");
+	});
 }
 
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
@@ -99,7 +104,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 		//记住当前分类为下次打开时的默认分类
-		Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("moneyIncomeCategory"));
+		Alloy.Models.User.xGet("activeProject").xSet("defaultExpenseCategory", $.$model.xGet("moneyExpenseCategory"));
 		Alloy.Models.User.xGet("activeProject").xAddToSave($);
 		//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
 		Alloy.Models.User.save({
@@ -109,7 +114,23 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			patch : true,
 			wait : true
 		});
+		
+				// save all expense details	
+		$.$model.xGet("moneyExpenseDetails").map(function(item){
+			console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
+			item.xAddToSave($);
+		});
 	}
+	
+		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+		var exchange = Alloy.createModel("Exchange", {
+			localCurrency : $.$model.xGet("localCurrency"),
+			foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+			rate : $.$model.xGet("exchangeCurrencyRate")
+		});
+		exchange.xAddToSave($);
+	}
+	
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 		oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));

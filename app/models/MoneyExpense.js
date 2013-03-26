@@ -72,7 +72,7 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 				moneyAccount.xSave();
 			}
 		});
