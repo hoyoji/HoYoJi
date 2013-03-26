@@ -29,40 +29,61 @@ $.onWindowOpenDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-		$.$model.xSet('messageState', "closed");
 		var projectShareData = JSON.parse($.$model.get("messageData"));
 		var date = (new Date()).toISOString();
 
 		if (operation === "agree") {
-			var projectShareAuthorization = Alloy.createCollection("Friend").xSearchInDb({
+			var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 				id : projectShareData.projectShareAuthorizationId
 			});
-			var project = Alloy.createModel("ProjectShareAuthorization", {projectSharedBy : projectShareAuthorization});
-			if(projectShareData.shareAllSubProjects){
-				projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-					var subProjectShareAuthorization = Alloy.createCollection("Friend").xSearchInDb({
-						id : subProjectShareAuthorizationId
+			if (projectShareAuthorization.xGet("id")){
+			
+			var project = Alloy.createModel("Project", {
+				ownerUser : Alloy.Models.User,
+				name :　projectShareAuthorization.xGet("project").xGet("name"),
+				projectSharedBy : projectShareAuthorization
+			}); 
+			var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
+				name : "日常收入",
+				project : project
+			}).xAddToSave($);
+			project.xSet("defaultIncomeCategory", defaultIncomeCategory);
+		
+			var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
+				name : "日常支出",
+				project : project
+			}).xAddToSave($);
+			project.xSet("defaultExpenseCategory", defaultExpenseCategory);
+
+				project.xSave();
+				if(projectShareData.shareAllSubProjects){
+					projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+						var subProjectShareAuthorization = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+							id : subProjectShareAuthorizationId
+						});
+						var subProject = Alloy.createModel("Project", {projectSharedBy : subProjectShareAuthorization});
+						subProject.xSave();
 					});
-					var subProject = Alloy.createModel("ProjectShareAuthorization", {projectSharedBy : projectShareAuthorization});
-					subProject.xSave();
+				}
+				Alloy.Globals.Server.sendMsg({
+					"toUserId" : $.$model.xGet("fromUser").xGet("id"),
+					"fromUserId" : $.$model.xGet("toUser").xGet("id"),
+					"type" : "Project.Share.Accept",
+					"messageState" : "new",
+					"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+					"date" : date,
+					"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+					"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
+				}, function() {
+					$.saveModel(saveEndCB, saveErrorCB);
+					saveEndCB("您接受了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
+				}, function() {
+					saveErrorCB("拒绝分享项目失败,请重新发送");
 				});
+			}else{
+				alert(projectShareData.projectShareAuthorizationId+"出错了，请重试");
 			}
-			project.xSave();
-			Alloy.Globals.Server.sendMsg({
-				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
-				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
-				"type" : "Project.Share.Accept",
-				"messageState" : "new",
-				"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
-				"date" : date,
-				"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
-				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
-			}, function() {
-				$.saveModel(saveEndCB, saveErrorCB);
-				saveEndCB("您接受了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
-			}, function() {
-				saveErrorCB("拒绝分享项目失败,请重新发送");
-			});
+			
 				
 			
 
@@ -82,4 +103,5 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				saveErrorCB("拒绝分享项目失败,请重新发送");
 			});
 		}
+		$.$model.xSet('messageState', "closed");
 }
