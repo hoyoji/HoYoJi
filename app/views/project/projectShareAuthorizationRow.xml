@@ -4,7 +4,6 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
 				bindAttribute = "friend"
-				bindAttributeIsModel="getDisplayName()"
 			/>
 		</View>
 	</View>
