@@ -1,5 +1,17 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "支出操作"
+	});
+	menuSection.add($.createContextMenuItem("支出明细", function() {
+		Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
+			selectedExpense : $.$model
+		});
+	}));
+	return menuSection;
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;

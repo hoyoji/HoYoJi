@@ -36,7 +36,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
 			bindModel="$.$model"
 			bindAttribute="friend"
-			bindAttributeIsModel="name"
+			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
