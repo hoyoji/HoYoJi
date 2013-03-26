@@ -10,6 +10,10 @@
 //
 // Alloy.Globals.someGlobalFunction = function(){};
 
+Alloy.Globals.MenuSections = [];
+Alloy.Globals.openingWindow = {};
+
+					
 _.extend(Alloy.Globals, require("utils").Utils);
 
 Alloy.Globals.Server = require("Server").Server;

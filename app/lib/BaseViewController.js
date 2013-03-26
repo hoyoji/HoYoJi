@@ -88,13 +88,18 @@
 					if (e.sourceModel) {
 						sourceModel = Alloy.Collections[e.sourceModel.type].get(e.sourceModel.id);
 					}
-					Alloy.Globals.MenuSections.push($.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel));
+					var menuSection = $.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel);
+					Alloy.Globals.MenuSections.push(menuSection);
 				}
 			});
 
 			$.$view.addEventListener("longpress", function(e) {
 				e.cancelBubble = true;
-				Alloy.Globals.MenuSections = [];
+				if(Alloy.Globals.openingMenu){
+					 var a = 1;
+					return false;
+				}
+				Alloy.Globals.openingMenu = true;
 				var sourceModel;
 				if ($.$model) {
 					console.info("longpress " + $.$model.get("name"));

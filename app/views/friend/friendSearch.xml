@@ -8,7 +8,7 @@
 		</View>
 		<TableView id="searchUserTable" dataCollection="$.userCollection" bottom="0" top="84">
 			<TableViewRow>
-				<Require src="User/userRow"/>
+				<Require src="user/userRow"/>
 			</TableViewRow>
 		</TableView>
 
