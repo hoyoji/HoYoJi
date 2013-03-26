@@ -214,20 +214,17 @@
 				}
 			}
 
-			function shakeMe() {
+			// function shakeMe() {
 				// Alloy.Globals.alloyAnimation.shake($.$view, 200);
-			}
-
-
-			$.$model.on("change", shakeMe);
+			// }
+			// $.$model.on("change", shakeMe);
 			$.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection.off("remove", removeRow);
-				$.$model.off("change", shakeMe);
+				// $.$model.off("change", shakeMe);
 			});
 
 			$.$view.addEventListener("click", function(e) {
-				console.info("row clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 				if (e.deleteRow || e.expandSection || e.collapseSection) {
 					return;
 				}
