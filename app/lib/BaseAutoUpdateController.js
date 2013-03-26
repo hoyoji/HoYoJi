@@ -240,7 +240,7 @@
 
 				// clean up listener upon window close to prevent memory leak
 				$.onWindowCloseDo(function() {
-					if (model.hasChanged(attribute)) {
+					if (!model.isNew() && model.hasChanged(attribute)) {
 						model.xSet(attribute, model.previous(attribute));
 					}
 					model.off(null, updateField);

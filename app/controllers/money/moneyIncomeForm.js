@@ -1,5 +1,18 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "收入操作"
+	});
+	menuSection.add($.createContextMenuItem("收入明细", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
+			selectedIncome : $.$model
+		});
+	}));
+	return menuSection;
+}
+
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -17,6 +30,11 @@ if (!$.$model) {
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
+	
+	$.$model.on("xchange:amount", function(){
+		$.amount.setValue($.$model.xGet("amount"));
+		$.amount.field.fireEvent("change");
+	});
 }
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount");
@@ -90,6 +108,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			patch : true,
 			wait : true
 		});
+		
+		// save all income details	
+		$.$model.xGet("moneyIncomeDetails").map(function(item){
+			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
+			item.xAddToSave($);
+		});
+		
 	}
 
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -113,14 +138,3 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	});
 }
 
-$.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "收入操作"
-	});
-	menuSection.add($.createContextMenuItem("收入明细", function() {
-		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
-			selectedIncome : $.$model
-		});
-	}));
-	return menuSection;
-}
