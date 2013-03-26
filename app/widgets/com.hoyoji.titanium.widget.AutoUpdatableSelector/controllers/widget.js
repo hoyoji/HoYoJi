@@ -33,11 +33,11 @@ $.$view.addEventListener("singletap", function(e){
 });
 
 $.field.addEventListener("change", function(e){
-	if(OS_IOS){
+	// if(OS_IOS){
 		 if($.__setValueChangeEvent){
 	    	return; 	
 	     }
-	}
+	// }
 	console.info("Selector selected value : " + values[e.rowIndex]);
 	selectedValue = values[e.rowIndex];
 });
@@ -57,9 +57,9 @@ $.setValue = function(value) {
 		rowIndex = 0;
     }
     // $.field.columns[0].setSelectedRow(rowIndex);
-    if(OS_IOS){
+    // if(OS_IOS){
 	     $.__setValueChangeEvent = true;
-    }
+    // }
      $.field.setSelectedRow(0,rowIndex);
 }
 
