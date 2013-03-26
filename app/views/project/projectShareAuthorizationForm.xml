@@ -15,7 +15,7 @@
 						bindModelSelector="friend/friendAll"
 					/>
 			<View height="42">
-				<Label left="0" width="30%">个人情况</Label>
+				<Label left="0" width="30%">共享所有子项目</Label>
 				<View right="0" width="70%" layout="horizontal" horizontalWrap="false">
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="否,是"
