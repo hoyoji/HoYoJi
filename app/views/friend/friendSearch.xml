@@ -1,6 +1,6 @@
 <Alloy>
 	<Collection id="userCollection" src="User" instance="true"/>
-	<View class="container" title="添加好友" backgroundColor="cyan">
+	<View class="container" title="添加好友" backgroundColor="white">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加好友"/>
 		<View top="42" height="Ti.UI.SIZE">
 		 <SearchBar id="search" barColor="#000" showCancel="false" height="42" hintText="请输入好友账户名" left="0" width="80%"/>
