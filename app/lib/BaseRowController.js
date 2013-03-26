@@ -187,7 +187,6 @@
 			}
 			var isRemoving = false;
 			function removeRow(row) {
-				console.info("removing rowwwwwwww ........... " + row.xGet("id") );
 				if (row === $.$model) {
 					isRemoving = true;
 					var animation = Titanium.UI.createAnimation();
@@ -195,16 +194,13 @@
 						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
 
 					if ($.$model.id) {
-						console.info("removing rowwwwwwww2 ..........." + row.xGet("id"));
 						animation.left = "-100%";
 					} else {
-						console.info("destroy row ...........");
 						animation.opacity = "0.5";
 						animation.height = 0;
 						animation.width = 0;
 					}
 					animation.addEventListener('complete', function() {
-						console.info("row firing click event to deleteeeeeeeeeeeeeeeeeeeeeee row " + row.xGet("id"));
 						$.$view.fireEvent("click", {
 							bubbles : true,
 							deleteRow : true
