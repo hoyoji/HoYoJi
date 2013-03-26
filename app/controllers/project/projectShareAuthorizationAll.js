@@ -12,5 +12,5 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
 
-var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter({parentExpenseCategory : null});
+var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter({project : selectedProject});
 $.myProjectShareAuthorizationsTable.addCollection(collection);

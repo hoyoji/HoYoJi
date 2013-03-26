@@ -3,9 +3,8 @@
 		<View id="content" layout="horizontal" horizontalWrap="false" class="row-content" height="42">
 			<Widget id="nickName" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
-				bindAttribute = "nickName"
+				bindAttribute = "getDisplayName()"
 			/>
-			<Label id="userName" />
 		</View>
 	</View>
 </Alloy>

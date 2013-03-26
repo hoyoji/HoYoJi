@@ -18,7 +18,7 @@ $.onRowTap = function(e) {
 				"fromUserId" : Alloy.Models.User.id,
 				"type" : "System.Friend.AutoAdd",
 				"messageState" : "new",
-				"messageTitle" : "好友请求回复",
+				"messageTitle" : Alloy.Models.User.xGet("userName") + "添加您为好友",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "添加您为好友",
 				"messageBoxId" : $.$model.xGet("messageBoxId")

@@ -26,14 +26,21 @@ exports.definition = {
 			validators : {
 				friendCategory : function(xValidateComplete) {
 					var error;
-					if (!this.has("friendCategory")) {
+					if (!this.xGet("friendCategory")) {
 						error = {
 							msg : "好友分类不能为空"
-						};
-					}
+							};
+						}
 					xValidateComplete(error);
+					}
+				},
+				getDisplayName : function() {
+					if(!this.xGet("nickName")){
+						return this.xGet("friendUser").xGet("userName");
+					}else{
+						return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
+					}
 				}
-			}
 
 		});
 		return Model;

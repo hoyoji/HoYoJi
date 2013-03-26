@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" title="共享项目" backgroundColor="cyan">
+	<View class="container" title="共享属性" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="共享项目"/>
 		<Widget id="myProjectShareAuthorizationsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
 	</View>
