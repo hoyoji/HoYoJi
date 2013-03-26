@@ -98,7 +98,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 		//记住当前分类为下次打开时的默认分类
-		Alloy.Models.User.xGet("activeProject").xSet("defaultExpenseCategory", $.$model.xGet("moneyIncomeCategory"));
+		Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("moneyIncomeCategory"));
 		Alloy.Models.User.xGet("activeProject").xAddToSave($);
 		//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
 		Alloy.Models.User.save({

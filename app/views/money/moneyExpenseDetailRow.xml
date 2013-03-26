@@ -5,7 +5,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "name"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="10" top="0" width="Ti.UI.SIZE" height="42"
+			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoBindLabel" right="10" top="0" width="Ti.UI.SIZE" height="42"
 			bindModel="$.$model"
 			bindAttribute="amount"
 			/>
