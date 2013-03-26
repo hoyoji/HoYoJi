@@ -19,10 +19,8 @@ $.onSave = function(saveEndCB, saveErrorCB){
 		$.$model.xGet("moneyIncome").trigger("xchange:amount", $.$model.xGet("moneyIncome"));
 		$.becameClean();
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").add($.$model);
-		
-		if(OS_IOS){
-			$.getCurrentWindow().$view.close();
-		}
+		$.getCurrentWindow().$view.close();
+	
 	}
 }
 
