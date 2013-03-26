@@ -10,19 +10,11 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 	// }));
 	// return menuSection;
 // }
-$.titleBar.bindXTable($.searchUserTable);
-var collection = Alloy.createCollection("User");
-$.searchUserTable.addCollection(collection);
 
 $.searchButton.addEventListener("click", function(e){
 	console.info("搜索好友。。。");
-	collection.xSetFilter({userName : $.search.getValue()});
-	if(collection.xSearchInDb({userName : $.search.getValue()}).length === 0){
+	if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 0){
 		alert("no user found!");
 	};
-	$.search.blur();
-});
-
-$.onWindowOpenDo(function(){
 	$.search.blur();
 });
