@@ -5,7 +5,7 @@ exports.bindXTable = function(xTable){
 	boundXTable = xTable;
 	$.onWindowOpenDo(function(){
 		if($.getCurrentWindow().$attrs.selectorCallback){
-			$.$attrs.title = "选择" + $.$attrs.title + "(顶级)";
+			$.$attrs.title = "选择" + ($.getCurrentWindow().$attrs.title || $.$attrs.title);
 			$.title.setText($.$attrs.title);
 			$.title.addEventListener("singletap", function(e){
 				e.cancelBubble = true;

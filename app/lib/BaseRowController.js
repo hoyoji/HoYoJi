@@ -241,8 +241,11 @@
 				}
 
 				if ($.getCurrentWindow().$attrs.selectorCallback) {
-					$.getCurrentWindow().$attrs.selectorCallback($.$model);
-					$.getCurrentWindow().close();
+					console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
+					if($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name){
+						$.getCurrentWindow().$attrs.selectorCallback($.$model);
+						$.getCurrentWindow().close();
+					}
 					return;
 				}
 

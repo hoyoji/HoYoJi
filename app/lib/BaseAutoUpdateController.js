@@ -165,6 +165,8 @@
 								attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
 							}
 						}
+						attributes.title = $.label.getText();
+						attributes.selectModelType = $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
