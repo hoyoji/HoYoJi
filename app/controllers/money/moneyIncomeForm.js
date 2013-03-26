@@ -18,12 +18,8 @@ if (!$.$model) {
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
 }
-oldMoneyAccount = $.$model.xGet("moneyAccount");
+oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount");
-
-$.moneyAccount.field.addEventListener("change", updateExchangeRate);
-// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
-// 只有新增时才需要做这步，我们直接在上面做
 
 function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
@@ -31,17 +27,15 @@ function updateExchangeRate(e) {
 	}
 }
 
+$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
+
 function setExchangeRate(moneyAccount, model, setToModel) {
 	var exchangeCurrencyRateValue;
 	if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
 		isRateExist = true;
 		exchangeCurrencyRateValue = 1;
 		$.exchangeCurrencyRate.hide();
-		// var animation = Titanium.UI.createAnimation();
-		// animation.height = 1;
-		// animation.duration = 200;
-		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		// $.exchangeCurrencyRateWrapper.animate(animation);
 	} else {
 		var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
 		if (exchanges.length) {
@@ -52,18 +46,6 @@ function setExchangeRate(moneyAccount, model, setToModel) {
 			exchangeCurrencyRateValue = null;
 		}
 		$.exchangeCurrencyRate.show();
-		// $.exchangeCurrencyRateWrapper.addEventListener("postlayout", function(){
-		// console.info("wraper after show x " + $.exchangeCurrencyRateWrapper.getRect().x);
-		// console.info("wraper after show y " + $.exchangeCurrencyRateWrapper.getRect().y);
-		// console.info("wraper after show w " + $.exchangeCurrencyRateWrapper.getRect().width);
-		// console.info("wraper after show h " + $.exchangeCurrencyRateWrapper.getRect().height);
-		// });
-		// var animation = Titanium.UI.createAnimation();
-		// animation.height = 42;
-		// animation.width = Ti.UI.FILL;
-		// animation.duration = 200;
-		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		// $.exchangeCurrencyRateWrapper.animate(animation);
 	}
 	if (setToModel) {
 		model.xSet("exchangeCurrencyRate", exchangeCurrencyRateValue);
@@ -94,10 +76,22 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 	}
 
-	Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-	//记住当前账户为下次打开时的默认账户
-	Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", $.$model.xGet("category"));
-	//记住当前分类为下次打开时的默认分类
+	if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
+		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+		//记住当前分类为下次打开时的默认分类
+		Alloy.Models.User.xGet("activeProject").xSet("defaultExpenseCategory", $.$model.xGet("moneyIncomeCategory"));
+		Alloy.Models.User.xGet("activeProject").xAddToSave($);
+		//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
+		Alloy.Models.User.save({
+			activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
+			activeProjectId : $.$model.xGet("project").xGet("id")
+		}, {
+			patch : true,
+			wait : true
+		});
+	}
+
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("localCurrency"),
@@ -106,11 +100,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 		exchange.xAddToSave($);
 	}
+
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 		oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-		Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
-		Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", Alloy.Models.User.previous("activeProject").xGet("defaultIncomeCategory"));
+		if ($.$model.isNew()) {
+			Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
+			Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
+			Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", Alloy.Models.User.previous("activeProject").xGet("defaultIncomeCategory"));
+		}
 		saveErrorCB(e);
 	});
+}
+
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "收入操作"
+	});
+	menuSection.add($.createContextMenuItem("收入明细", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
+			selectedIncome : $.$model
+		});
+	}));
+	return menuSection;
 }

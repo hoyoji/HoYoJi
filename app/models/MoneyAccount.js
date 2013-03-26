@@ -34,9 +34,12 @@ exports.definition = {
 				}
 				xFinishCallback(error);
 			},
-			getAccountNameCurrency : function() {
-				return this.xGet("name") + "(" + this.xGet("currency").xGet("symbol") + ")";
-			}
+            getAccountNameCurrency : function() {
+					if (this) {
+						return this.xGet("name") + "(" + this.xGet("currency").xGet("symbol") + ")";
+					}
+				}
+
 		});
 		
 		return Model;

@@ -187,7 +187,6 @@
 			}
 			var isRemoving = false;
 			function removeRow(row) {
-				console.info("removing rowwwwwwww ........... " + row.xGet("id") );
 				if (row === $.$model) {
 					isRemoving = true;
 					var animation = Titanium.UI.createAnimation();
@@ -195,16 +194,13 @@
 						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
 
 					if ($.$model.id) {
-						console.info("removing rowwwwwwww2 ..........." + row.xGet("id"));
 						animation.left = "-100%";
 					} else {
-						console.info("destroy row ...........");
 						animation.opacity = "0.5";
 						animation.height = 0;
 						animation.width = 0;
 					}
 					animation.addEventListener('complete', function() {
-						console.info("row firing click event to deleteeeeeeeeeeeeeeeeeeeeeee row " + row.xGet("id"));
 						$.$view.fireEvent("click", {
 							bubbles : true,
 							deleteRow : true
@@ -214,20 +210,17 @@
 				}
 			}
 
-			function shakeMe() {
+			// function shakeMe() {
 				// Alloy.Globals.alloyAnimation.shake($.$view, 200);
-			}
-
-
-			$.$model.on("change", shakeMe);
+			// }
+			// $.$model.on("change", shakeMe);
 			$.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection.off("remove", removeRow);
-				$.$model.off("change", shakeMe);
+				// $.$model.off("change", shakeMe);
 			});
 
 			$.$view.addEventListener("click", function(e) {
-				console.info("row clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 				if (e.deleteRow || e.expandSection || e.collapseSection) {
 					return;
 				}
@@ -241,8 +234,11 @@
 				}
 
 				if ($.getCurrentWindow().$attrs.selectorCallback) {
-					$.getCurrentWindow().$attrs.selectorCallback($.$model);
-					$.getCurrentWindow().close();
+					console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
+					if($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name){
+						$.getCurrentWindow().$attrs.selectorCallback($.$model);
+						$.getCurrentWindow().close();
+					}
 					return;
 				}
 
