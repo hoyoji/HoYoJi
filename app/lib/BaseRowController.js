@@ -214,9 +214,9 @@
 				// Alloy.Globals.alloyAnimation.shake($.$view, 200);
 			// }
 			// $.$model.on("change", shakeMe);
-			$.$attrs.$collection.on("remove", removeRow);
+			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
-				$.$attrs.$collection.off("remove", removeRow);
+				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 				// $.$model.off("change", shakeMe);
 			});
 
