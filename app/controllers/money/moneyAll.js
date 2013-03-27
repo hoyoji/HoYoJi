@@ -14,15 +14,17 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.moneyIncomesTable);
+$.titleBar.bindXTable($.moneysTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-var moneyTransfers = Alloy.Models.User.xGet("moneyTransfer");
+var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferOutOwnerUser : Alloy.Models.User});
+var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferInOwnerUser : Alloy.Models.User});
 
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
-$.moneysTable.addCollection(moneyTransfers);
+$.moneysTable.addCollection(moneyTransferOuts,"money/moneyTransferOutRow");
+$.moneysTable.addCollection(moneyTransferIns,"money/moneyTransferInRow");
 
 
 function onFooterbarTap(e) {

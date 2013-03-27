@@ -9,12 +9,24 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
-			friendCategory : { type : "FriendCategory", attribute : "friends" },
-			friendUser : { type : "User", attribute : null },
-			ownerUser : { type : "User", attribute : null }
+			friendCategory : {
+				type : "FriendCategory",
+				attribute : "friends"
+			},
+			friendUser : {
+				type : "User",
+				attribute : null
+			},
+			ownerUser : {
+				type : "User",
+				attribute : null
+			}
 		},
 		hasMany : {
-			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "friend" }
+			projectShareAuthorizations : {
+				type : "ProjectShareAuthorization",
+				attribute : "friend"
+			}
 		},
 		rowView : "friend/friendRow",
 		adapter : {
@@ -29,19 +41,31 @@ exports.definition = {
 					if (!this.xGet("friendCategory")) {
 						error = {
 							msg : "好友分类不能为空"
-							};
-						}
+						};
+					}
 					xValidateComplete(error);
-					}
-				},
-				getDisplayName : function() {
-					if(!this.xGet("nickName")){
-						return this.xGet("friendUser").xGet("userName");
-					}else{
-						return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
-					}
 				}
-
+			},
+			getDisplayName : function() {
+				if (!this.xGet("nickName")) {
+					return this.xGet("friendUser").xGet("userName");
+				} else {
+					return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
+				}
+			},
+			getSharedAccounts : function() {
+				if (!this.__sharedAccounts) {
+					var moneyAccounts = Alloy.createCollection("MoneyAccount");
+					moneyAccounts.xSetFilter({
+						ownerUser : this.xGet("friendUser")
+					});
+					moneyAccounts.xSearchInDb({
+						ownerUser : this.xGet("friendUser")
+					});
+					this.__sharedAccounts = moneyAccounts;
+				}
+				return this.__sharedAccounts;
+			}
 		});
 		return Model;
 	},
