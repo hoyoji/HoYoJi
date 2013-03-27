@@ -5,7 +5,7 @@ $.onRowTap = function(e) {
 		friendUserId : $.$model.xGet("id"),
 		ownerUserId : Alloy.Models.User.id
 	}).length;
-	if ($.$model === Alloy.Models.User) {
+	if ($.$model.xGet("id") === Alloy.Models.User.id) {
 		alert("不能添加自己为好友！");
 	} else if (friendlength > 0) {
 		alert("不能重复添加好友！");
