@@ -3,7 +3,9 @@
 function doLogin(e){
 	Alloy.Models.instance("User").xFindInDb({userName : $.userName.getValue()});
 	if(Alloy.Models.User.id){
-		Alloy.createController("mainWindow").open();
+		if(!Alloy.Globals.mainWindow){
+			Alloy.createController("mainWindow").open();
+		}
 	}
 }
 

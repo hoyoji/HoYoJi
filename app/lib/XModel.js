@@ -70,7 +70,7 @@
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
 						self.__xValidationError.__summury = { msg : "验证错误" };
 						for(var e in self.__xValidationError){
-							console.info(e + " : " + self.__xValidationError[e]);
+							console.info(e + " : " + self.__xValidationError[e].msg);
 						}
 						self.trigger("error", self, self.__xValidationError, options);
 					} else {
@@ -234,6 +234,9 @@
 					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
 
 					if (this.isNew()) {
+						this.set(attr, collection, {
+							silent : true
+						});
 						return collection;
 					}
 

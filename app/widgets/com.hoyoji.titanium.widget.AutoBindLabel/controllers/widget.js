@@ -1,5 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+
 $.onWindowOpenDo(function() {
 	var model = $.$attrs.bindModel || $.$model;
 
@@ -35,6 +36,10 @@ $.onWindowOpenDo(function() {
 		} else {
 			return value.xGet(lastAttr);
 		}
+	}
+
+	$.refresh = function(){
+		updateLabel(model);
 	}
 	
 	function updateLabel(model) {

@@ -13,3 +13,6 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.$model.on("xchange:amount", function(){
+	$.amount.refresh();
+});

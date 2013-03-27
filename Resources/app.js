@@ -1,5 +1,9 @@
 var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
 
+Alloy.Globals.MenuSections = [];
+
+Alloy.Globals.openingWindow = {};
+
 _.extend(Alloy.Globals, require("utils").Utils);
 
 Alloy.Globals.extendsBaseUIController = require("BaseUIController").extends;
