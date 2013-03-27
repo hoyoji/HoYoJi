@@ -42,6 +42,7 @@ exports.definition = {
 					}
 				},
 				xDelete : function(xFinishCallback) {
+					var self = this;
 					var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 							ownerUserId : Alloy.Models.User.id,
 							friendId : this.xGet("id")
@@ -63,9 +64,9 @@ exports.definition = {
 								"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 								"date" : (new Date()).toISOString(),
 								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-								"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId")
+								"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId")
 							}, function() {
-								this._xDelete(xFinishCallback);
+								self._xDelete(xFinishCallback);
 							});
 						}
 					}
