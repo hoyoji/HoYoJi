@@ -24,19 +24,20 @@ $.onWindowOpenDo(function(){
 			bubbles : true,
 			inputType : "DateTimePicker"
 		});
-		if (OS_IOS) {
+		// if (OS_IOS) {
 			$.field.blur();
 			$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
-		}
+		// }
 	});
 
 });
 
 $.$view.addEventListener("singletap", function(e) {	
-	if(e.source !== $.field){
+//	if(e.source !== $.field){
+		$.field.blur();
 		$.field.focus();
-	}
-	$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
+//	}
+//	$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
 });
 
 $.setEditable = function(editable) {

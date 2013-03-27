@@ -23,7 +23,7 @@ exports.close = function(e) {
 	}
 }
 
-exports.open = function() {
+exports.open = function(contentController) {
 	$.$view.open({
 		animted : false
 	});
@@ -36,6 +36,11 @@ exports.open = function() {
 	animation.left = "0";
 	animation.duration = 500;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	if(contentController){
+		animation.addEventListener("complete", function(){
+			delete Alloy.Globals.openingWindow[contentController];
+		});
+	}
 	$.$view.animate(animation);
 }
 
@@ -47,7 +52,7 @@ exports.openWin = function(contentController, options) {
 	var content = Alloy.createController(contentController, options);
 	content.setParent($.window);
 
-	$.open();
+	$.open(contentController);
 }
 //
 // var touchend = false;

@@ -113,7 +113,7 @@
 						if(modelValue){
 							modelValue = model.get(f+"Id");
 						}
-						if(filterValue){
+						if(filterValue && filterValue.xGet){
 							filterValue = filterValue.get("id");
 						}
 					} else {
@@ -123,7 +123,9 @@
 					}
 					
 		 			console.info(model.hasChanged(f) + " __compareFilter " + f + " :: " + modelValue + " " + filterValue);
-					if(modelValue !== filterValue){
+					if(filterValue === "NOT NULL"){
+						return modelValue !== null;
+					} else if(modelValue !== filterValue){
 						return false;
 					}
 				}

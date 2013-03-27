@@ -58,6 +58,8 @@ exports.close = function() {
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener('complete', function() {
 		$.widget.hide();
+		Alloy.Globals.MenuSections = [];
+		Alloy.Globals.openingMenu = false;
 	});
 
 	$.menuWrapper.animate(animation);

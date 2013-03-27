@@ -6,11 +6,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	});
 
 	menuSection.add($.createContextMenuItem("删除好友分类", function() {
-		if(Alloy.Models.User.xGet("defaultFriendCategoryId") === $.$model.xGet("id")){
-			alert("不能删除系统默认好友分类");
-		}else{
-			$.deleteModel();
-		}
+		$.deleteModel();
 	}, isSelectMode));
 
 	return menuSection;
