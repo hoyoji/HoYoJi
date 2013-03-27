@@ -8,6 +8,9 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增收入", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeForm");
 	}));
+		menuSection.add($.createContextMenuItem("新增转账", function() {
+		Alloy.Globals.openWindow("money/moneyTransferForm");
+	}));
 	return menuSection;
 }
 
@@ -15,9 +18,11 @@ $.titleBar.bindXTable($.moneyIncomesTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-console.info("+++++________"+moneyIncomes);
-$.moneyIncomesTable.addCollection(moneyIncomes);
-$.moneyIncomesTable.addCollection(moneyExpenses);
+var moneyTransfers = Alloy.Models.User.xGet("moneyTransfer");
+
+$.moneysTable.addCollection(moneyIncomes);
+$.moneysTable.addCollection(moneyExpenses);
+$.moneysTable.addCollection(moneyTransfers);
 
 
 function onFooterbarTap(e) {
