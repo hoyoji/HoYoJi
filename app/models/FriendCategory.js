@@ -25,7 +25,14 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			validators : {
-			}	
+			},
+			xDelete : function(xFinishCallback) {
+				if(Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){
+					xFinishCallback({ msg :"不能删除系统默认好友分类"});
+				}else{
+					this._xDelete(xFinishCallback);
+				}
+			}
 		});
 		return Model;
 	},
