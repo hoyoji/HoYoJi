@@ -32,7 +32,11 @@
 		// }
 
 		exports.Utils.openWindow = function(windowName, options) {
-			Alloy.createController("window").openWin(windowName, options);
+			if(!Alloy.Globals.openingWindow[windowName]){
+				Alloy.Globals.openingWindow[windowName] = true;
+				var win = Alloy.createController("window");
+				win.openWin(windowName, options);
+			}
 		}
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {

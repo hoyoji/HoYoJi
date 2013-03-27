@@ -342,6 +342,8 @@
 					f = "main." + f;
 					if(_.isNull(value)){
 						filterStr += f + " IS NULL ";
+					} else if(value === "NOT NULL"){
+						filterStr += f + " IS NOT NULL ";
 					} else if(_.isNumber(value)){
 						filterStr += f + " = " + value + " ";
 					} else {

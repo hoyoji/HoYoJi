@@ -21,17 +21,18 @@ $.onWindowOpenDo(function(){
 	$.field.addEventListener("focus", function(e){
 		e.cancelBubble = true;
 	
-		if ($.saveableMode === "read") {
+		if ($.saveableMode === "read") { 
+			// in readonly mode, android will still get focus, we need to surpress it
 			return;
 		} 
-		if(OS_IOS){
+		// if(OS_IOS){
 			if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
 				$.field.blur();
 			}
 			if($.$attrs.inputType === "NumericKeyboard"){
 				$.getCurrentWindow().numericKeyboard.open($);
 			}	
-		}
+		// }
 		$.field.fireEvent("textfieldfocused", {
 			bubbles : true,
 			inputType : $.$attrs.inputType
@@ -39,10 +40,10 @@ $.onWindowOpenDo(function(){
 	});
 	
 	$.$view.addEventListener("singletap", function(e) {
-		$.field.focus();
-		if($.$attrs.inputType === "NumericKeyboard"){
-			$.getCurrentWindow().numericKeyboard.open($);
-		}	
+		//if(e.source !== $.field){
+			$.field.blur();
+			$.field.focus();
+		//}
 	});
 
 });
