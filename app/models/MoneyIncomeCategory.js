@@ -26,6 +26,13 @@ exports.definition = {
 	extendModel: function(Model) {		
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
+			xDelete : function(xFinishCallback) {
+				if(this.xGet("id") === this.xGet("project").xGet("defaultIncomeCategoryId")){
+					this.xGet("project").xSet("defaultIncomeCategoryId",null);
+					this.xGet("project").xSave();
+				}
+				this._xDelete(xFinishCallback);
+			}
 		});
 		
 		return Model;
