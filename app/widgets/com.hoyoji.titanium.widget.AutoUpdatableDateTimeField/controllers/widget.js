@@ -12,11 +12,7 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 }
 
-$.onWindowOpenDo(function(){
-
-	$.field.addEventListener("focus", function(e) {
-		e.cancelBubble = true;
-	
+function openDateTimePicker(){
 		if ($.saveableMode === "read") {
 			return;
 		}
@@ -27,18 +23,14 @@ $.onWindowOpenDo(function(){
 		// if (OS_IOS) {
 			$.field.blur();
 			$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
-		// }
-	});
+		// }	
+}
 
+$.onWindowOpenDo(function(){
+	$.field.addEventListener("focus", openDateTimePicker);
+	$.$view.addEventListener("singletap", openDateTimePicker);
 });
 
-$.$view.addEventListener("singletap", function(e) {	
-//	if(e.source !== $.field){
-		$.field.blur();
-		$.field.focus();
-//	}
-//	$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
-});
 
 $.setEditable = function(editable) {
 	if (editable === false) {
