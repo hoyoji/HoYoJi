@@ -59,15 +59,14 @@ exports.definition = {
 					}
 					else if(msg.xGet("type") === "System.Friend.Delete"){
 						msg.xSet("messageState","noRead");
-						var friends = Alloy.createCollection("Friend").xSearchInDb({
+						var friend = Alloy.createModel("Friend").xFindInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							});
-					    var friendlength = friends.length;
-						if (friendlength>0) {
-							friends.at(0)._xDelete(function(){
-								
-							});
+						console.info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||out"+friend.xGet("id"));
+					    if (friend.xGet("id")) {
+						console.info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||in");
+							friend._xDelete();
 						}
 						msg.xSave();
 					}
