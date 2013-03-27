@@ -1,45 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 	
-	// $.$model.xSet("shareAllSubProjects", 0);
-    // $.$model.xSet("projectShareMoneyExpenseOwnerDataOnly", 0);
-    // $.$model.xSet("projectShareMoneyExpenseAddNew", 1);
-    // $.$model.xSet("projectShareMoneyExpenseEdit", 1);
-    // $.$model.xSet("projectShareMoneyExpenseDelete", 1);
-    // $.$model.xSet("projectShareMoneyIncomeOwnerDataOnly", 0);
-    // $.$model.xSet("projectShareMoneyIncomeAddNew", 1);
-    // $.$model.xSet("projectShareMoneyIncomeEdit", 1);
-    // $.$model.xSet("projectShareMoneyIncomeDelete", 1);
-    // $.$model.xSet("projectShareMoneyExpenseCategoryAddNew", 1);
-    // $.$model.xSet("projectShareMoneyExpenseCategoryEdit", 1);
-    // $.$model.xSet("projectShareMoneyExpenseCategoryDelete", 1);
-    // $.$model.xSet("projectShareMoneyIncomeCategoryAddNew", 1);
-    // $.$model.xSet("projectShareMoneyIncomeCategoryEdit", 1);
-    // $.$model.xSet("projectShareMoneyIncomeCategoryDelete", 1);
-    // $.$model.xSet("projectShareMoneyTransferOwnerDataOnly", 0);
-    // $.$model.xSet("projectShareMoneyTransferAddNew", 1);
-    // $.$model.xSet("projectShareMoneyTransferEdit", 1);
-    // $.$model.xSet("projectShareMoneyTransferDelete", 1);
-    // $.$model.xSet("projectShareLoanLendOwnerDataOnly",0);
-	// $.$model.xSet("projectShareLoanLendAddNew", 1);
-	// $.$model.xSet("projectShareLoanLendEdit", 1);
-	// $.$model.xSet("projectShareLoanLendDelete", 1);
-	// $.$model.xSet("projectShareLoanBorrowOwnerDataOnly", 0);
-	// $.$model.xSet("projectShareLoanBorrowAddNew", 1);
-	// $.$model.xSet("projectShareLoanBorrowEdit", 1);
-	// $.$model.xSet("projectShareLoanBorrowDelete", 1);
-	// $.$model.xSet("projectShareLoanPaybackOwnerDataOnly", 0);
-	// $.$model.xSet("projectShareLoanPaybackAddNew", 1);
-	// $.$model.xSet("projectShareLoanPaybackEdit", 1);
-	// $.$model.xSet("projectShareLoanPaybackDelete", 1);
-	// $.$model.xSet("projectShareLoanReturnOwnerDataOnly", 0);
-	// $.$model.xSet("projectShareLoanReturnAddNew", 1);
-	// $.$model.xSet("projectShareLoanReturnEdit", 1);
-	// $.$model.xSet("projectShareLoanReturnDelete", 1);
-    
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var subProjectShareAuthorizationIds = [];
-	if($.$model.get("shareAllSubProjects")){
-		$.$model.get("project").xGetDescendents("subProjects").map(function(subProject){
+	if($.$model.xGet("shareAllSubProjects")){
+		$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 			
 			var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", {
 				project : subProject,
@@ -101,7 +65,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		        projectShareLoanReturnEdit : $.$model.xGet("projectShareLoanReturnEdit"),
 		        projectShareLoanReturnDelete : $.$model.xGet("projectShareLoanReturnDelete")
 			}); 
-			subProjectShareAuthorization.xSave();
+			subProjectShareAuthorization.xAddToSave($);
 			subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 
 		});

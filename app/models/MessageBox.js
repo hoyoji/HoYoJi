@@ -68,6 +68,26 @@ exports.definition = {
 							});
 						}
 						msg.xSave();
+					}else if(msg.xGet("type") === "Project.Share.Reject"){
+						msg.xSet("messageState","noRead");
+						var projectShareData = JSON.parse(msg.get("messageData"));
+						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							id : projectShareData.projectShareAuthorizationId
+						});
+						if (projectShareAuthorization.xGet("id")){
+							projectShareAuthorization._xDelete();
+						}
+						if(projectShareData.shareAllSubProjects){
+							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+									id : subProjectShareAuthorizationId
+								});
+								if (subProjectShareAuthorization.xGet("id")){
+									subProjectShareAuthorization._xDelete();
+								}
+							});
+						msg.xSave();
+						}
 					}
 				});
 			}
