@@ -134,7 +134,39 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			validators : {
-			}	
+			},
+			xDelete : function(xFinishCallback) {
+				var subProjectShareAuthorizationIds = [];
+				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
+					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : subProject.xGet("id"),
+							friendId : this.get("friendId")
+						});
+					if(subProjectShareAuthorization.xGet("id")){
+						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+						subProjectShareAuthorization._xDelete();
+					}
+				});
+				Alloy.Globals.Server.sendMsg({
+					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
+					"fromUserId" : Alloy.Models.User.xGet("id"),
+					"type" : "Project.Share.Edit",
+					"messageState" : "new",
+					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+this.xGet("project").xGet("name")+"的子项目给您",
+					"date" : date,
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + this.xGet("project").xGet("name") +"的子项目给您",
+					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"messageData" : JSON.stringify({
+			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
+			                            projectShareAuthorizationId : this.get("id"),
+			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+			                        })
+			         },function(){
+				        this._xDelete(xFinishCallback);
+	    			},function(){
+	    				xFinishCallback({ msg :"删除出错,请重试"});
+	    			});	
+			}
 		});
 		return Model;
 	},
