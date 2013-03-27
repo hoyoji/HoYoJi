@@ -150,7 +150,7 @@ exports.definition = {
 				Alloy.Globals.Server.sendMsg({
 					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
-					"type" : "Project.Share.Edit",
+					"type" : "Project.Share.Delete",
 					"messageState" : "new",
 					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+this.xGet("project").xGet("name")+"的子项目给您",
 					"date" : date,
