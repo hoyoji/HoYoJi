@@ -27,14 +27,14 @@ function changeForeignAmount() {
 }
 
 $.onWindowOpenDo(function() {
-	$.$model.on("change:rate", changeForeignAmount);
+	$.$model.on("sync", changeForeignAmount);
 	var parentController = $.getParentController().getParentController();
 	parentController.localCurrencyAmount.addEventListener("change", changeForeignAmount);
 	changeForeignAmount();
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.off("change:rate", changeForeignAmount);
+	$.$model.off("sync", changeForeignAmount);
 	var parentController = $.getParentController().getParentController();
 	parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
 });

@@ -145,7 +145,7 @@
 				}
 			}
 			$.error.addEventListener("singletap", hideErrorMsg);
-			$.$view.addEventListener("singletap", function(e) {
+			$.field.addEventListener("singletap", function(e) {
 				if ($.saveableMode === "read") {
 					return;
 				}
