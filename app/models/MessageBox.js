@@ -104,19 +104,22 @@ exports.definition = {
 										ownerUser : Alloy.Models.User,
 										name :　subProjectShareAuthorization.xGet("project").xGet("name"),
 										projectSharedBy : subProjectShareAuthorization
-									}).xAddToSave($); 
+									}); 
 									
 									var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 										name : "日常收入",
 										project : subProject
-									}).xAddToSave($);
+									});
 									subProject.xSet("defaultIncomeCategory", defaultIncomeCategory);
 								
 									var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 										name : "日常支出",
 										project : subProject
-									}).xAddToSave($);
+									});
 									subProject.xSet("defaultExpenseCategory", defaultExpenseCategory);
+									defaultIncomeCategory.xSave();
+									defaultExpenseCategory.xSave();
+									subProject.xSave();
 								}
 							});
 						}else{
@@ -140,6 +143,7 @@ exports.definition = {
 							projectSharedById : projectShareData.projectShareAuthorizationId
 						});
 						if(project.xGet("id")){
+							project.xGet("projectSharedBy",null);
 							project.xGet("defaultExpenseCategory").destroy();
 							project.xGet("defaultIncomeCategory").destroy();
 							project.destroy();
@@ -150,6 +154,7 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
+									subProject.xGet("projectSharedBy",null);
 									subProject.xGet("defaultExpenseCategory").destroy();
 									subProject.xGet("defaultIncomeCategory").destroy();
 									subProject.destroy();

@@ -136,11 +136,12 @@ exports.definition = {
 			validators : {
 			},
 			xDelete : function(xFinishCallback) {
+				var self = this;
 				var subProjectShareAuthorizationIds = [];
 				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							projectId : subProject.xGet("id"),
-							friendId : this.get("friendId")
+							friendId : self.xGet("friendId")
 						});
 					if(subProjectShareAuthorization.xGet("id")){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -153,16 +154,16 @@ exports.definition = {
 					"type" : "Project.Share.Delete",
 					"messageState" : "new",
 					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+this.xGet("project").xGet("name")+"的子项目给您",
-					"date" : date,
+					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + this.xGet("project").xGet("name") +"的子项目给您",
 					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
-			                            projectShareAuthorizationId : this.get("id"),
+			                            projectShareAuthorizationId : this.xGet("id"),
 			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 			                        })
 			         },function(){
-				        this._xDelete(xFinishCallback);
+				        self._xDelete(xFinishCallback);
 	    			},function(){
 	    				xFinishCallback({ msg :"删除出错,请重试"});
 	    			});	
