@@ -97,7 +97,7 @@ exports.definition = {
 				}
 			},
 			xDelete : function(xFinishCallback) {
-				if(!this.xGet("projectSharedBy")){
+				if(this.xGet("projectSharedBy")){
 					xFinishCallback({ msg : "不能移除共享来的项目"});
 				}else if(this.xGet("projectShareAuthorizations").length > 0){
 					xFinishCallback({ msg : "项目共享给好友,请移除共享再删除"});

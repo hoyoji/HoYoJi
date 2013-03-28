@@ -63,11 +63,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							
 							if(projectShareData.shareAllSubProjects){
 								projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-									var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-										id : subProjectShareAuthorizationId
+									var project = Alloy.createModel("Project").xFindInDb({
+										projectSharedById : subProjectShareAuthorizationId
 									});
-									if (subProjectShareAuthorization.xGet("id")){
-										createNewProject(subProjectShareAuthorization);
+									if(!project.xGet("id")){
+										var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+											id : subProjectShareAuthorizationId
+										});
+										if (subProjectShareAuthorization.xGet("id")){
+											createNewProject(subProjectShareAuthorization);
+										}
 									}
 								});
 							}
@@ -89,7 +94,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								saveErrorCB("接受分享项目失败,请重新发送");
 							});
 			} else {
-					alert(projectShareData.projectShareAuthorizationId+"出错了，请重试");
+					saveErrorCB("出错了，请重试");
 			}	
 		}, function(){
 			// error handling
