@@ -35,10 +35,8 @@ exports.definition = {
 					xFinishCallback(error);
 				},
             getAccountNameCurrency : function() {
-				if (this) {
-						return this.xGet("name") + "(" + this.xGet("currency").xGet("symbol") + ")";
-					}
-				}
+				return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + ")";
+			}
 		});
 		
 		return Model;

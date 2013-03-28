@@ -1,4 +1,5 @@
 ( function() {
+		var dataUrl = "http://localhost/data/";
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				var msg = Alloy.createModel("Message");
@@ -14,6 +15,20 @@
 				var collection = Alloy.createCollection(modelName);
 				collection.xSearchInDb(filter);
 				xFinishedCallback(collection);
+			},
+			sync : function(lastSyncTime) {
+				var url = dataUrl + "User/1";
+				var xhr = Ti.Network.createHTTPClient({
+					onload : function(e) {
+						alert(JSON.stringify(this.responseText));
+					},
+					onerror : function(e) {
+						alert(e.error);
+					},
+					timeout : 5000 /* in milliseconds */
+				});
+				xhr.open("GET", url);
+				xhr.send();
 			}
 		}
 	}());

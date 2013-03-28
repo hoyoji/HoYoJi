@@ -65,8 +65,45 @@ exports.definition = {
 					this.__sharedAccounts = moneyAccounts;
 				}
 				return this.__sharedAccounts;
+			},
+
+			xDelete : function(xFinishCallback) {
+				var self = this;
+				var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+					ownerUserId : Alloy.Models.User.id,
+					friendId : this.xGet("id")
+				});
+				if (projectShareAuthorizations.length > 0) {
+					xFinishCallback({
+						msg : "您们之间有分享项目,请移除共享再删除"
+					});
+				} else {
+					var friendProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+						ownerUserId : this.xGet("friendUserId")
+					});
+					if (friendProjectShareAuthorizations.length > 0) {
+						xFinishCallback({
+							msg : "您们之间有分享项目,请移除共享再删除"
+						});
+					} else {
+						Alloy.Globals.Server.sendMsg({
+							"toUserId" : this.xGet("friendUserId"),
+							"fromUserId" : Alloy.Models.User.id,
+							"type" : "System.Friend.Delete",
+							"messageState" : "new",
+							"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+							"date" : (new Date()).toISOString(),
+							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+							"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId")
+						}, function() {
+							self._xDelete(xFinishCallback);
+						});
+					}
+				}
+
 			}
 		});
+
 		return Model;
 	},
 	extendCollection : function(Collection) {

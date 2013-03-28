@@ -25,25 +25,26 @@ $.onWindowOpenDo(function(){
 			// in readonly mode, android will still get focus, we need to surpress it
 			return;
 		} 
-		// if(OS_IOS){
 			if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
 				$.field.blur();
 			}
 			if($.$attrs.inputType === "NumericKeyboard"){
 				$.getCurrentWindow().numericKeyboard.open($);
 			}	
-		// }
-		$.field.fireEvent("textfieldfocused", {
-			bubbles : true,
-			inputType : $.$attrs.inputType
-		});
+			// if(OS_IOS){
+				$.field.fireEvent("singletap");
+			// }
+			$.field.fireEvent("textfieldfocused", {
+				bubbles : true,
+				inputType : $.$attrs.inputType
+			});
 	});
 	
 	$.$view.addEventListener("singletap", function(e) {
-		//if(e.source !== $.field){
+		if(e.source !== $.field){
 			$.field.blur();
 			$.field.focus();
-		//}
+		}
 	});
 
 });

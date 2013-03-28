@@ -5,8 +5,8 @@ exports.definition = {
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
-			defaultIncomeCategoryId : "TEXT NOT NULL",
-			defaultExpenseCategoryId : "TEXT NOT NULL",
+			defaultIncomeCategoryId : "TEXT",
+			defaultExpenseCategoryId : "TEXT",
 			projectSharedById : "TEXT"
 		},
 		// defaults : {
@@ -44,8 +44,66 @@ exports.definition = {
 					// xValidateComplete(error);
 				// }
 			},
-			getNameId : function(){
-				return this.xGet("name") + " " + this.xGet("id");
+			xGet : function(attr) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					return Model.prototype.xGet.call(projectSharedBy.xGet("project"), attr);
+				} else {
+					return Model.prototype.xGet.call(this, attr);
+				}
+			},
+			xSave : function(options) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					return Model.prototype.xSave.call(projectSharedBy.xGet("project"), options);
+				} else {
+					return Model.prototype.xSave.call(this, options);
+				}
+			},
+			xAddToSave : function(saveableController) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					return Model.prototype.xAddToSave.call(projectSharedBy.xGet("project"), saveableController);
+				} else {
+					return Model.prototype.xAddToSave.call(this, saveableController);
+				}
+			},
+			xSet : function(a, b, c) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					return Model.prototype.xSet.call(projectSharedBy.xGet("project"), a, b, c);
+				} else {
+					return Model.prototype.xSet.call(this, a, b, c);
+				}
+			},			
+			xGetDescendents : function(attribute) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					alert("we.should.not.use.this on shared project");
+					return null;
+					// return Model.prototype.xGetDescendents.call(projectSharedBy.xGet("project"), attribute);
+				} else {
+					return Model.prototype.xGetDescendents.call(this, attribute);
+				}
+			},
+			xGetAncestors : function(attribute) {
+				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				if(projectSharedBy){
+					alert("we.should.not.use.this on shared project");
+					return null;
+					// return Model.prototype.xGetAncestors.call(projectSharedBy.xGet("project"), attribute);
+				} else {
+					return Model.prototype.xGetAncestors.call(this, attribute);
+				}
+			},
+			xDelete : function(xFinishCallback) {
+				if(!this.xGet("projectSharedBy")){
+					xFinishCallback({ msg : "不能移除共享来的项目"});
+				}else if(this.xGet("projectShareAuthorizations").length > 0){
+					xFinishCallback({ msg : "项目共享给好友,请移除共享再删除"});
+				}else{
+					this._xDelete(xFinishCallback);
+				}
 			}
 		});
 		return Model;
