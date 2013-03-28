@@ -201,12 +201,12 @@ function Sync(method, model, opts) {
 			} else if (table === "User") {
 
 			} else if (table === "ProjectShareAuthorization") {
-				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' " + "OR EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND main.friendId = id AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')";
-				if (qs.length > 1) {
-					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
-				} else {
-					sql = qs[0] + " WHERE " + q;
-				}
+				// q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' " + "OR EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND main.friendId = id AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')";
+				// if (qs.length > 1) {
+					// sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
+				// } else {
+					// sql = qs[0] + " WHERE " + q;
+				// }
 			} else if (table === "MoneyAccount") {
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR main.sharingType = 'Public' " + "OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "'))";
 				if (qs.length > 1) {

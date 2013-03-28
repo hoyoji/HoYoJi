@@ -44,9 +44,13 @@
 				}
 
 				for (var key in this.config.hasMany) {
-					this.set(key, null, {
-						silent : true
-					});
+					this.attributes[key] = null;
+					delete this.attributes[key];
+					delete this._previousAttributes[key];
+					delete this.changed[key];
+					// this.set(key, undefined, {
+						// silent : true
+					// });
 				}
 			},
 			xSave : function(options) {
@@ -228,7 +232,7 @@
 			},
 			xGet : function(attr) {
 				var value = this.get(attr);
-				if (value !== undefined && value !== null) {
+				if (value !== undefined) {
 					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
 					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
@@ -276,9 +280,12 @@
 						});
 						console.info("xGet fetch belongsTo from DB " + m);
 					}
-					this.set(attr, m, {
-						silent : true
-					});
+					
+					this.attributes[attr] = m;
+					
+					// this.set(attr, m, {
+						// silent : true
+					// });
 					return m;
 				}
 				return value;
