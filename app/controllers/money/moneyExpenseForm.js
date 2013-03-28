@@ -32,7 +32,10 @@ if (!$.$model) {
 		$.amount.field.fireEvent("change");
 	});
 }
-
+$.onWindowOpenDo(function(){
+	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+});
+	
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount") || 0;
 

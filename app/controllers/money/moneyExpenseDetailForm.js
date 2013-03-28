@@ -1,6 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var oldDetailAmount = $.$model.xGet("amount") || 0;//detail的旧值
+var oldDetailAmount = $.$model.xGet("amount") || 0;
+//detail的旧值
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var expenseAmount = 0;
@@ -8,8 +9,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		expenseAmount = $.$model.xGet("moneyExpense").xGet("amount");
 	}
 
-	$.$model.xGet("moneyExpense").xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));//增改的时候计算amount
-	$.$model.trigger("xchange:amount", $.$model);//通知moneyExpenseDetailAll,更新页面
+	$.$model.xGet("moneyExpense").xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
+	//增改的时候计算amount
+	$.$model.trigger("xchange:amount", $.$model);
+	//通知moneyExpenseDetailAll,更新页面
 
 	if (!$.$model.xGet("moneyExpense").isNew()) {//如果是修改时，detail更改后自动保存amount
 		var oldMoneyAccount = $.$model.xGet("moneyExpense").xGet("moneyAccount");
@@ -17,7 +20,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			oldMoneyAccount = $.$model.xGet("moneyExpense").previous("moneyAccount");
 		}
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
-		var newAmount = $.$model.xGet("amount");//detail的新值
+		var newAmount = $.$model.xGet("amount");
+		//detail的新值
 
 		if (newMoneyAccount) {//从expenseForm打开detailAll 传进newMoneyAccount
 			var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
@@ -31,7 +35,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}
 		} else {//从ExpenseRow进入detailAll
 			if ($.$model.isNew) {//新增detail
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - newAmount);
+				var oldExpenseAmount = $.$model.xGet("moneyExpense").xGet("amount");
+				if ($.$model.xGet("moneyExpense").hasChanged("amount")) {
+					oldExpenseAmount = $.$model.xGet("moneyExpense").previous("amount");
+				}
+				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldExpenseAmount - newAmount);
 			} else {//修改detail
 				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldDetailAmount - newAmount);
 			}

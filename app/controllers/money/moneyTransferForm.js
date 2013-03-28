@@ -7,9 +7,12 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 	});
 	$.setSaveableMode("add");
-	$.exchangeCurrencyRate.hide();
-	$.transferInAmount.hide();
 }
+
+$.onWindowOpenDo(function(){
+	updateForeignCurrencyAmount();	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
+});
+	
 
 $.transferOut.field.addEventListener("change", updateForeignCurrencyAmount);
 $.transferIn.field.addEventListener("change", updateForeignCurrencyAmount);

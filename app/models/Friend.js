@@ -60,7 +60,7 @@ exports.definition = {
 						ownerUser : this.xGet("friendUser")
 					});
 					moneyAccounts.xSearchInDb({
-						ownerUser : this.xGet("friendUser")
+						ownerUserId : this.xGet("friendUser").xGet("id")
 					});
 					this.__sharedAccounts = moneyAccounts;
 				}
