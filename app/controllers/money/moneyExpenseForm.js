@@ -96,6 +96,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 	} else {
 		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+		oldMoneyAccount.xAddToSave($);
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 	}
 

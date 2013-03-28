@@ -26,20 +26,24 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
-			xDelete : function(xFinishCallback){
+			xDelete : function(xFinishCallback) {
 				var incomeAmount = this.xGet("moneyIncome").xGet("amount");
 				this.xGet("moneyIncome").xSet("amount", incomeAmount - this.xGet("amount"));
-				
-				if(this.xGet("moneyIncome").isNew()){
+
+				if (this.xGet("moneyIncome").isNew()) {
 					this.xGet("moneyIncome").trigger("xchange:amount", this.xGet("moneyIncome"));
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
-					xFinishCallback();					
+					xFinishCallback();
 				} else {
+					var moneyAccount = this.xGet("moneyIncome").xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+					moneyAccount.xSave();
+					
 					this.xGet("moneyIncome").xSave();
 					this._xDelete(xFinishCallback);
 				}
 			}
-
 		});
 		return Model;
 	},

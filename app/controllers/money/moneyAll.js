@@ -18,9 +18,10 @@ $.titleBar.bindXTable($.moneysTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferOutOwnerUser : Alloy.Models.User});
-var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferInOwnerUser : Alloy.Models.User});
-
+var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferOutOwnerUser : null});
+var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferInOwnerUser : null});
+console.info("+++moenyTransferOut"+moneyTransferOuts.length);
+console.info("+++moenyTransferIn"+moneyTransferIns.length);
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
 $.moneysTable.addCollection(moneyTransferOuts,"money/moneyTransferOutRow");
