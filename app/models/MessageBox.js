@@ -63,9 +63,7 @@ exports.definition = {
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							});
-						console.info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||out"+friend.xGet("id"));
 					    if (friend.xGet("id")) {
-						console.info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||in");
 							friend._xDelete();
 						}
 						msg.xSave();
