@@ -32,7 +32,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}
 		} else {//从IncomeRow进入detailAll
 			if ($.$model.isNew) {//新增detail
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + newAmount);
+				var oldIncomeAmount = $.$model.xGet("moneyExpense").xGet("amount");
+				if ($.$model.xGet("moneyExpense").hasChanged("amount")) {
+					oldIncomeAmount = $.$model.xGet("moneyExpense").previous("amount");
+				}
+				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldIncomeAmount + newAmount);
 			} else {//修改detail
 				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldDetailAmount + newAmount);
 			}
