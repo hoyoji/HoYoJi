@@ -105,6 +105,9 @@
 				return this;
 			},
 			__compareFilter : function(model){
+				if(_.isFunction(this.__filter)){
+					return this.__filter();
+				}
 				for(var f in this.__filter){
 					var modelValue = model.xGet(f),
 						filterValue = this.__filter[f];
