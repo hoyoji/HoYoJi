@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="分享请求" readModeTitle="分享请求" editModeTitle="分享请求" editModeMenuButtonTitle="同意"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友22s" 
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
                 		bindModel="$.$model"
                 		bindAttribute="fromUser"
                 		bindAttributeIsModel="userName"

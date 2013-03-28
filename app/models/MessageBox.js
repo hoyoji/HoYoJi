@@ -128,9 +128,9 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
-									subProject.xGet("defaultExpenseCategory")._xDelete();
-									subProject.xGet("defaultIncomeCategory")._xDelete();
-									subProject._xDelete();
+									subProject.xGet("defaultExpenseCategory").destroy();
+									subProject.xGet("defaultIncomeCategory").destroy();
+									subProject.destroy();
 								}
 							});
 						}
@@ -143,8 +143,9 @@ exports.definition = {
 							projectSharedById : projectShareData.projectShareAuthorizationId
 						});
 						if(project.xGet("id")){
-							project.xGet("defaultExpenseCategory")._xDelete();
-							project.xGet("defaultIncomeCategory")._xDelete();
+							project.xGet("projectSharedBy",null);
+							project.xGet("defaultExpenseCategory").destroy();
+							project.xGet("defaultIncomeCategory").destroy();
 							project.destroy();
 						}
 						if(projectShareData.shareAllSubProjects){
@@ -153,9 +154,10 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
-									subProject.xGet("defaultExpenseCategory")._xDelete();
-									subProject.xGet("defaultIncomeCategory")._xDelete();
-									subProject._xDelete();
+									subProject.xGet("projectSharedBy",null);
+									subProject.xGet("defaultExpenseCategory").destroy();
+									subProject.xGet("defaultIncomeCategory").destroy();
+									subProject.destroy();
 								}
 							});
 						}
