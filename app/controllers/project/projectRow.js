@@ -9,6 +9,10 @@ $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "项目操作"
 	});
+	var projectIsSharedToMe = true;
+	if(!$.$model.xGet("projectSharedBy")){
+		projectIsSharedToMe = false;
+	}
 
 	menuSection.add($.createContextMenuItem("支出分类", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
@@ -30,7 +34,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 			selectedProject : $.$model
 		});
-	}));
+	},projectIsSharedToMe));
 	
 	return menuSection;
 }
