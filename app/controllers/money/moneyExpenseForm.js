@@ -25,7 +25,6 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory")
 	});
-	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
 	
 		$.$model.on("xchange:amount", function(){
