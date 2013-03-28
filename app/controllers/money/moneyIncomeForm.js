@@ -24,8 +24,7 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory")
 	});
-	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
-	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+
 	$.setSaveableMode("add");
 
 	$.$model.on("xchange:amount", function() {
@@ -34,6 +33,12 @@ if (!$.$model) {
 
 	});
 }
+
+$.onWindowOpenDo(function(){
+	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
+});
+	
+
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount") || 0;
 
