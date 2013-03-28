@@ -104,19 +104,22 @@ exports.definition = {
 										ownerUser : Alloy.Models.User,
 										name :　subProjectShareAuthorization.xGet("project").xGet("name"),
 										projectSharedBy : subProjectShareAuthorization
-									}).xAddToSave($); 
+									}); 
 									
 									var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 										name : "日常收入",
 										project : subProject
-									}).xAddToSave($);
+									});
 									subProject.xSet("defaultIncomeCategory", defaultIncomeCategory);
 								
 									var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 										name : "日常支出",
 										project : subProject
-									}).xAddToSave($);
+									});
 									subProject.xSet("defaultExpenseCategory", defaultExpenseCategory);
+									defaultIncomeCategory.xSave();
+									defaultExpenseCategory.xSave();
+									subProject.xSave();
 								}
 							});
 						}else{
@@ -125,9 +128,9 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
-									subProject.xGet("defaultExpenseCategory").destroy();
-									subProject.xGet("defaultIncomeCategory").destroy();
-									subProject.destroy();
+									subProject.xGet("defaultExpenseCategory")._xDelete();
+									subProject.xGet("defaultIncomeCategory")._xDelete();
+									subProject._xDelete();
 								}
 							});
 						}
@@ -140,8 +143,8 @@ exports.definition = {
 							projectSharedById : projectShareData.projectShareAuthorizationId
 						});
 						if(project.xGet("id")){
-							project.xGet("defaultExpenseCategory").destroy();
-							project.xGet("defaultIncomeCategory").destroy();
+							project.xGet("defaultExpenseCategory")._xDelete();
+							project.xGet("defaultIncomeCategory")._xDelete();
 							project.destroy();
 						}
 						if(projectShareData.shareAllSubProjects){
@@ -150,9 +153,9 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
-									subProject.xGet("defaultExpenseCategory").destroy();
-									subProject.xGet("defaultIncomeCategory").destroy();
-									subProject.destroy();
+									subProject.xGet("defaultExpenseCategory")._xDelete();
+									subProject.xGet("defaultIncomeCategory")._xDelete();
+									subProject._xDelete();
 								}
 							});
 						}

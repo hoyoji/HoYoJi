@@ -15,7 +15,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
 					}
 					for(var attr in $.$model.config.columns){
-						if(attrs.startsWith("projectShare")){
+						if(attr.startsWith("projectShare")){
 							data[attr] = $.$model.xGet(attr);
 						}
 					}
@@ -57,7 +57,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
 					}
 					for(var attr in $.$model.config.columns){
-						if(attrs.startsWith("projectShare")){
+						if(attr.startsWith("projectShare")){
 							data[attr] = $.$model.xGet(attr);
 						}
 					}
@@ -98,9 +98,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Edit",
 					"messageState" : "new",
-					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+$.$model.xGet("project").xGet("name")+"的子项目给您",
+					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+$.$model.xGet("project").xGet("name")+"的子项目给您",
 					"date" : date,
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
 					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
