@@ -18,7 +18,6 @@ var isRateExist;
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
 		date : (new Date()).toISOString(),
-		amount : 0,
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeCurrencyRate : 1,
 		expenseType : "Ordinary",
@@ -36,7 +35,7 @@ if (!$.$model) {
 }
 
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-oldAmount = $.$model.xGet("amount");
+oldAmount = $.$model.xGet("amount") || 0;
 
 function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
@@ -97,6 +96,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 	} else {
 		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+		oldMoneyAccount.xAddToSave($);
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 	}
 

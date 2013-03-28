@@ -3,47 +3,44 @@ exports.definition = {
 		columns : {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
-			amount : "REAL NOT NULL",
-			incomeType : "TEXT NOT NULL",
-			friendId : "TEXT",
-			moneyAccountId : "TEXT NOT NULL",
-			projectId : "TEXT NOT NULL",
-			moneyIncomeCategoryId : "TEXT NOT NULL",
-			localCurrencyId : "TEXT NOT NULL",
+			transferOutAmount : "REAL NOT NULL",
+			transferOutOwnerUserId : "TEXT",
+			transferOutId : "TEXT NOT NULL",
+			transferInAmount : "REAL NOT NULL",
+			transferInOwnerUserId : "TEXT",
+			transferInId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
+			projectId : "TEXT NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL"
 		},
-		hasMany : {
-	    	moneyIncomeDetails : {type : "MoneyIncomeDetail", attribute : "moneyIncome"}
-		},
 		belongsTo : {
-			friend : {
+			transferOutOwnerUser : {
 				type : "Friend",
 				attribute : null
 			},
-			moneyAccount : {
+			transferOut : {
+				type : "MoneyAccount",
+				attribute : null
+			},
+			transferInOwnerUser : {
+				type : "Friend",
+				attribute : null
+			},
+			transferIn : {
 				type : "MoneyAccount",
 				attribute : null
 			},
 			project : {
 				type : "Project",
-				attribute : null
-			},
-			moneyIncomeCategory : {
-				type : "MoneyIncomeCategory",
-				attribute : "moneyIncomes"
-			},
-			localCurrency : {
-				type : "Currency",
-				attribute : null
+				attribute : "moneyTransfers"
 			},
 			ownerUser : {
 				type : "User",
-				attribute : "moneyIncomes"
+				attribute : "moneyTransfers"
 			}
 		},
-		rowView : "money/moneyIncomeRow",
+		rowView : "money/moneyTransferOutRow",
 		adapter : {
 			type : "hyjSql"
 		}
@@ -51,15 +48,33 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			// extended functions and properties go here
-			getLocalAmount : function(){
-				return this.xGet("amount")*this.xGet("exchangeCurrencyRate");
+			validators : {
+				transferOut : function(xValidateComplete) {
+					var error;
+					if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
+						error = {
+							msg : "转出账户和转入账户不能相同"
+						}
+					}
+					xValidateComplete(error);
+				},
+				transferIn : function(xValidateComplete) {
+					var error;
+					if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
+						error = {
+							msg : "转入账户和转出账户不能相同"
+						}
+					}
+					xValidateComplete(error);
+				}
 			},
-			xDelete : function(xFinishCallback) {
-				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
-				moneyAccount.xSave();
+			getTransferOut : function() {
+				var transferOut = this.xGet("transferOut");
+				return transferOut.xGet("name");
+			},
+			getTransferIn : function() {
+				var transferIn = this.xGet("transferIn");
+				return transferIn.xGet("name");
 			}
 		});
 		return Model;

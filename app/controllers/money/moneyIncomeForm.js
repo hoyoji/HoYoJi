@@ -11,15 +11,12 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
-
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
-		amount : 0,
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeCurrencyRate : 1,
 		incomeType : "Ordinary",
@@ -30,14 +27,15 @@ if (!$.$model) {
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	$.setSaveableMode("add");
-	
-	$.$model.on("xchange:amount", function(){
+
+	$.$model.on("xchange:amount", function() {
 		$.amount.setValue($.$model.xGet("amount"));
 		$.amount.field.fireEvent("change");
+
 	});
 }
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-oldAmount = $.$model.xGet("amount");
+oldAmount = $.$model.xGet("amount") || 0;
 
 function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
@@ -91,6 +89,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 	} else {//账户改变时
 		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+		oldMoneyAccount.xAddToSave($);
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 	}
 
@@ -108,13 +107,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			patch : true,
 			wait : true
 		});
-		
-		// save all income details	
-		$.$model.xGet("moneyIncomeDetails").map(function(item){
+
+		// save all income details
+		$.$model.xGet("moneyIncomeDetails").map(function(item) {
 			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
 			item.xAddToSave($);
 		});
-		
+
 	}
 
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条

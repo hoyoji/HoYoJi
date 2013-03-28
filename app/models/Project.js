@@ -23,7 +23,10 @@ exports.definition = {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
 			moneyIncomeCategories : { type : "MoneyIncomeCategory", attribute : "project"},
 			subProjects : { type : "Project", attribute : "parentProject" },
-			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "project" }
+			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "project" },
+			moneyExpenses : {type : "MoneyExpense", attribute : "project"},
+			moneyIncomes : {type : "MoneyIncome", attribute : "project"},
+			moneyTransfers : {type : "MoneyTransfer", attribute : "project"}
 		},
 		rowView : "project/projectRow",
 		adapter : {

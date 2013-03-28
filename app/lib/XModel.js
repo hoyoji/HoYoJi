@@ -280,12 +280,9 @@
 						});
 						console.info("xGet fetch belongsTo from DB " + m);
 					}
-					
+
 					this.attributes[attr] = m;
-					
-					// this.set(attr, m, {
-						// silent : true
-					// });
+
 					return m;
 				}
 				return value;

@@ -28,7 +28,7 @@ exports.definition = {
 			},
 			project : {
 				type : "Project",
-				attribute : null
+				attribute : "moneyIncomes"
 			},
 			moneyIncomeCategory : {
 				type : "MoneyIncomeCategory",
