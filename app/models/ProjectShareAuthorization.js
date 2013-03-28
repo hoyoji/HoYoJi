@@ -134,6 +134,19 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			validators : {
+				friend : function(xValidateComplete) {
+					var error;
+					var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+							projectId : this.xGet("project").xGet("id"),
+							friendId : this.xGet("friend").xGet("id")
+						});
+					if (subProjectShareAuthorizations.length > 0) {
+						error = {
+							msg : "已经添加到共享列表，不能重复添加"
+							};
+						}
+					xValidateComplete(error);
+				}
 			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
