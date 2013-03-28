@@ -136,15 +136,17 @@ exports.definition = {
 			validators : {
 				friend : function(xValidateComplete) {
 					var error;
-					var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-							projectId : this.xGet("project").xGet("id"),
-							friendId : this.xGet("friend").xGet("id")
-						});
-					if (subProjectShareAuthorizations.length > 0) {
+					if (!this.xGet("friend")) {
 						error = {
-							msg : "已经添加到共享列表，不能重复添加"
-							};
+							msg : "好友不能为空"
+						};
+					}else if (!this.isNew()) {
+						if (this.hasChanged("friend")) {
+							xValidateComplete({
+								msg : "好友不能被修改"
+							});
 						}
+					}
 					xValidateComplete(error);
 				}
 			},
