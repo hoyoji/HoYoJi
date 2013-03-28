@@ -294,10 +294,6 @@
 					}
 
 					this.attributes[attr] = m;
-
-					// this.set(attr, m, {
-					// silent : true
-					// });
 					return m;
 				}
 				return value;
