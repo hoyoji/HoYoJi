@@ -134,7 +134,53 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, {
 			validators : {
-			}	
+				friend : function(xValidateComplete) {
+					var error;
+					var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+							projectId : this.xGet("project").xGet("id"),
+							friendId : this.xGet("friend").xGet("id")
+						});
+					if (subProjectShareAuthorizations.length > 0) {
+						error = {
+							msg : "已经添加到共享列表，不能重复添加"
+							};
+						}
+					xValidateComplete(error);
+				}
+			},
+			xDelete : function(xFinishCallback) {
+				var self = this;
+				var subProjectShareAuthorizationIds = [];
+				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
+					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : subProject.xGet("id"),
+							friendId : self.xGet("friendId")
+						});
+					if(subProjectShareAuthorization.xGet("id")){
+						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+						subProjectShareAuthorization._xDelete();
+					}
+				});
+				Alloy.Globals.Server.sendMsg({
+					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
+					"fromUserId" : Alloy.Models.User.xGet("id"),
+					"type" : "Project.Share.Delete",
+					"messageState" : "new",
+					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+this.xGet("project").xGet("name")+"的子项目给您",
+					"date" : (new Date()).toISOString(),
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + this.xGet("project").xGet("name") +"的子项目给您",
+					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"messageData" : JSON.stringify({
+			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
+			                            projectShareAuthorizationId : this.xGet("id"),
+			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+			                        })
+			         },function(){
+				        self._xDelete(xFinishCallback);
+	    			},function(){
+	    				xFinishCallback({ msg :"删除出错,请重试"});
+	    			});	
+			}
 		});
 		return Model;
 	},

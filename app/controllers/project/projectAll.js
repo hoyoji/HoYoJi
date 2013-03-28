@@ -11,5 +11,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 $.titleBar.bindXTable($.myProjectsTable);
 
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null,projectSharedBy : null});
+var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({projectSharedBy : "NOT NULL"});
 $.myProjectsTable.addCollection(myProjectsTableCollection);
+$.sharedWithMeTable.addCollection(sharedWithMeTableCollection);
 
