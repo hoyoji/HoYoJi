@@ -20,6 +20,9 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增收入", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeForm");
 	}));
+	menuSection.add($.createContextMenuItem("新增转账", function() {
+		Alloy.Globals.openWindow("money/moneyTransferForm");
+	}));
 
 	menuSection.add($.createContextMenuItem("切换权限", function() {
 		// Alloy.Globals.openWindow("user/userForm",{$model : Alloy.Models.User});

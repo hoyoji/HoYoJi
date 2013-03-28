@@ -8,16 +8,24 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增收入", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeForm");
 	}));
+		menuSection.add($.createContextMenuItem("新增转账", function() {
+		Alloy.Globals.openWindow("money/moneyTransferForm");
+	}));
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.moneyIncomesTable);
+$.titleBar.bindXTable($.moneysTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-console.info("+++++________"+moneyIncomes);
-$.moneyIncomesTable.addCollection(moneyIncomes);
-$.moneyIncomesTable.addCollection(moneyExpenses);
+var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferOutOwnerUser : null});
+var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferInOwnerUser : null});
+console.info("+++moenyTransferOut"+moneyTransferOuts.length);
+console.info("+++moenyTransferIn"+moneyTransferIns.length);
+$.moneysTable.addCollection(moneyIncomes);
+$.moneysTable.addCollection(moneyExpenses);
+$.moneysTable.addCollection(moneyTransferOuts,"money/moneyTransferOutRow");
+$.moneysTable.addCollection(moneyTransferIns,"money/moneyTransferInRow");
 
 
 function onFooterbarTap(e) {

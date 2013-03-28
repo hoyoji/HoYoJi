@@ -17,6 +17,7 @@ Alloy.Collections.instance("MoneyExpense");
 Alloy.Collections.instance("MoneyIncome");
 Alloy.Collections.instance("MoneyExpenseDetail");
 Alloy.Collections.instance("MoneyIncomeDetail");
+Alloy.Collections.instance("MoneyTransfer");
 
 exports.DataStore = {
 	initStore : function(){
