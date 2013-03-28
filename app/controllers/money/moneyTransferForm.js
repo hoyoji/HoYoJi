@@ -4,23 +4,62 @@ if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyTransfer", {
 		date : (new Date()).toISOString(),
 		transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
+		exchangeCurrencyRate : 1,
+		transferInAmount : 0,
 		project : Alloy.Models.User.xGet("activeProject"),
 	});
 	$.setSaveableMode("add");
 }
 
-$.onWindowOpenDo(function(){
-	updateForeignCurrencyAmount();	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
+$.onWindowOpenDo(function() {
+	updateExchangeCurrencyRate();
+	updateForeignCurrencyAmount();
+	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 });
-	
 
-$.transferOut.field.addEventListener("change", updateForeignCurrencyAmount);
-$.transferIn.field.addEventListener("change", updateForeignCurrencyAmount);
-function updateForeignCurrencyAmount() {
+var isRateExist;
+$.transferOut.field.addEventListener("change", updateExchangeCurrencyRate);
+$.transferIn.field.addEventListener("change", updateExchangeCurrencyRate);
+function updateExchangeCurrencyRate() {
+	var exchangeCurrencyRateValue;
 	if ($.transferOut.getValue() && $.transferIn.getValue()) {
-
+		var transferOut = $.transferOut.getValue();
+		var transferIn = $.transferIn.getValue();
+		if (transferOut.xGet("currency") === transferIn.xGet("currency")) {
+			isRateExist = true;
+			exchangeCurrencyRateValue = 1;
+			$.exchangeCurrencyRate.hide();
+			$.transferInAmount.hide();
+		} else {
+			var exchanges = transferOut.xGet("currency").getExchanges(transferIn.xGet("currency"));
+			if (exchanges.length) {
+				isRateExist = true;
+				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+			} else {
+				isRateExist = false;
+				exchangeCurrencyRateValue = null;
+			}
+			$.exchangeCurrencyRate.show();
+			$.transferInAmount.show();
+		}
 	} else {
+		exchangeCurrencyRateValue = 1;
 		$.exchangeCurrencyRate.hide();
 		$.transferInAmount.hide();
 	}
+	$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
+	$.exchangeCurrencyRate.field.fireEvent("change");
 }
+
+$.transferOutAmount.field.addEventListener("change", updateForeignCurrencyAmount);
+$.exchangeCurrencyRate.field.addEventListener("change", updateForeignCurrencyAmount);
+
+function updateForeignCurrencyAmount() {
+	if ($.transferOutAmount.getValue() && $.exchangeCurrencyRate.getValue()) {
+		var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeCurrencyRate.getValue()).toUserCurrency();
+		$.transferInAmount.setValue(foreignCurrencyAmount);
+		$.transferInAmount.field.fireEvent("change");
+	}
+}
+
+
