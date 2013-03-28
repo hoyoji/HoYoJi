@@ -11,12 +11,45 @@
 					error : xErrorCallback
 				});
 			},
+			getData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				var collection = Alloy.createCollection(modelName);
+				collection.xSearchInDb(filter);
+				xFinishedCallback(collection);
+			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);
 				collection.xSearchInDb(filter);
 				xFinishedCallback(collection);
 			},
-			sync : function(lastSyncTime) {
+			updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				var collection = Alloy.createCollection(modelName);
+				collection.xSearchInDb(filter);
+				xFinishedCallback(collection);
+			},
+			deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				var collection = Alloy.createCollection(modelName);
+				collection.xSearchInDb(filter);
+				xFinishedCallback(collection);
+			},
+			createData : function(data, xFinishedCallback, xErrorCallback){
+				data = JSON.stringify(data);
+				console.info(data);
+				var url = dataUrl + "createData";
+				var xhr = Ti.Network.createHTTPClient({
+					onload : function(e) {
+						console.info("Server.createData success : " + JSON.stringify(this.responseText));
+						xFinishedCallback();
+					},
+					onerror : function(e) {
+						console.info("Server.createData error : " + JSON.stringify(this.responseText));
+						xErrorCallback(e);
+					},
+					timeout : 5000 /* in milliseconds */
+				});
+				xhr.open("POST", url);
+				xhr.send(data);
+			},
+			sync : function(lastSyncTime, xFinishedCallback, xErrorCallback) {
 				var url = dataUrl + "User/1";
 				var xhr = Ti.Network.createHTTPClient({
 					onload : function(e) {

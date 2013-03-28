@@ -21,7 +21,7 @@
 				},
 				saveCollection : function(xCompleteCallback, xErrorCallback) {
 					var i = 0;
-					for (var i = 0; i < $.__saveCollection.length; i++) {
+					for (i = 0; i < $.__saveCollection.length; i++) {
 						if ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged()) {
 							$.__saveCollection[i].once("sync", function() {
 								$.saveCollection(xCompleteCallback, xErrorCallback);
