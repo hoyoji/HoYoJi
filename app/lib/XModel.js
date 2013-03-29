@@ -11,7 +11,7 @@
 			initialize : function() {
 				if (this.isNew()) {
 					this.attributes.id = guid();
-					if(Alloy.Models.User){
+					if (Alloy.Models.User) {
 						this.xSet("ownerUser", Alloy.Models.User);
 					}
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
@@ -49,7 +49,7 @@
 					delete this._previousAttributes[key];
 					delete this.changed[key];
 					// this.set(key, undefined, {
-						// silent : true
+					// silent : true
 					// });
 				}
 			},
@@ -66,14 +66,16 @@
 				this.__xValidationErrorCount = 0;
 
 				// if (!self.xGet("ownerUser")) {
-					// self.xSet("ownerUser", Alloy.Models.User);
+				// self.xSet("ownerUser", Alloy.Models.User);
 				// }
 
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
-						self.__xValidationError.__summury = { msg : "验证错误" };
-						for(var e in self.__xValidationError){
+						self.__xValidationError.__summury = {
+							msg : "验证错误"
+						};
+						for (var e in self.__xValidationError) {
 							console.info(e + " : " + self.__xValidationError[e].msg);
 						}
 						self.trigger("error", self, self.__xValidationError, options);
@@ -116,7 +118,7 @@
 							self.__xValidationErrorCount++;
 							self.__xValidationError[key] = error;
 						}
-					console.info("xValidateAttribute : " + key + " " + self.__xValidateCount);
+						console.info("xValidateAttribute : " + key + " " + self.__xValidateCount);
 						if (self.__xValidateCount === 0) {
 							xCallback();
 						}
@@ -124,58 +126,67 @@
 				}, 1);
 			},
 			xValidate : function(xFinishCallback) {
-				var self = this; 
-				
+				var self = this;
+
 				for (var column in this.config.columns) {
-					if(column === "id") continue;
-					
-					var field = this.config.columns[column],
-						fieldValue = this.xGet(column);
-					
+					if (column === "id")
+						continue;
+
+					var field = this.config.columns[column], fieldValue = this.xGet(column);
+
 					console.info("validating column : " + column + "  " + fieldValue);
-					if(typeof fieldValue === "string"){
+					if ( typeof fieldValue === "string") {
 						fieldValue = Alloy.Globals.alloyString.trim(fieldValue);
 					}
 					// 检查不能为空
 					if (field.contains("NOT NULL")) {
-						if(this.config.belongsTo && 
-							this.config.belongsTo[column.slice(0,-2)]){
-								if(!this.xGet(column.slice(0,-2))){
-									console.info("validating column : " + column + "  " + this.xGet(column.slice(0,-2)));
-									this.__xValidationErrorCount++;
-									this.__xValidationError[column] = {msg : "不能为空"};
-									continue;
-								}
-						} else if(fieldValue === undefined || fieldValue === null) {
+						if (this.config.belongsTo && this.config.belongsTo[column.slice(0, -2)]) {
+							if (!this.xGet(column.slice(0, -2))) {
+								console.info("validating column : " + column + "  " + this.xGet(column.slice(0, -2)));
+								this.__xValidationErrorCount++;
+								this.__xValidationError[column] = {
+									msg : "不能为空"
+								};
+								continue;
+							}
+						} else if (fieldValue === undefined || fieldValue === null) {
 							this.__xValidationErrorCount++;
-							this.__xValidationError[column] = {msg : "不能为空"};
+							this.__xValidationError[column] = {
+								msg : "不能为空"
+							};
 							continue;
 						}
 					}
 					// 检查数据类型
 					if (field.contains("REAL") && fieldValue !== undefined && fieldValue !== null) {
-						if(_.isNaN(Number(fieldValue))){
+						if (_.isNaN(Number(fieldValue))) {
 							this.__xValidationErrorCount++;
-							this.__xValidationError[column] = {msg : "请输入数字"};
+							this.__xValidationError[column] = {
+								msg : "请输入数字"
+							};
 							continue;
 						}
 					}
-					if (field.contains("INTEGER") && fieldValue !== undefined && fieldValue !== null) {						
-						if(_.isNaN(Number(fieldValue)) || fieldValue.toString().contains(".")){
+					if (field.contains("INTEGER") && fieldValue !== undefined && fieldValue !== null) {
+						if (_.isNaN(Number(fieldValue)) || fieldValue.toString().contains(".")) {
 							this.__xValidationErrorCount++;
-							this.__xValidationError[column] = {msg : "请输入整数 "};
+							this.__xValidationError[column] = {
+								msg : "请输入整数 "
+							};
 							continue;
 						}
 					}
 					// 检查唯一性
-					if(field.contains("UNIQUE")){
-						if(this.isNew() || this.hasChanged(column)){
+					if (field.contains("UNIQUE")) {
+						if (this.isNew() || this.hasChanged(column)) {
 							var filter = {};
 							filter[column] = fieldValue;
-							if(Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0){
+							if (Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0) {
 								console.info("Check UNIQUE : NO!!");
 								this.__xValidationErrorCount++;
-								this.__xValidationError[column] = {msg : "该名称已存在"};
+								this.__xValidationError[column] = {
+									msg : "该名称已存在"
+								};
 								continue;
 							}
 						}
@@ -247,7 +258,7 @@
 					var filter = {};
 					filter[key] = this;
 					collection.xSetFilter(filter);
-					
+
 					console.info("xGet hasMany : " + type + collection.length);
 					var idString;
 					if (this.get('id')) {
@@ -268,8 +279,9 @@
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
-					if (!fId) return null;
-					
+					if (!fId)
+						return null;
+
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
@@ -282,7 +294,6 @@
 					}
 
 					this.attributes[attr] = m;
-
 					return m;
 				}
 				return value;
@@ -328,35 +339,53 @@
 				if (!error) {
 					this.destroy();
 				}
-				if(xFinishCallback){
+				if (xFinishCallback) {
 					xFinishCallback(error);
 				}
 				return this;
 			},
-			xFindInDb : function(filter){
-				var table = this.config.adapter.collection_name,
-					query = "SELECT main.* FROM " + table + " main WHERE ",
-					filterStr = "";
-				
-				for(var f in filter){
+			xFindInDb : function(filter) {
+				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
+
+				for (var f in filter) {
 					var value = filter[f]
-					if(filterStr){
+					if (filterStr) {
 						filterStr += " AND "
 					}
 					f = "main." + f;
-					if(_.isNull(value)){
+					if (_.isNull(value)) {
 						filterStr += f + " IS NULL ";
-					} else if(value === "NOT NULL"){
+					} else if (value === "NOT NULL") {
 						filterStr += f + " IS NOT NULL ";
-					} else if(_.isNumber(value)){
+					} else if (_.isNumber(value)) {
 						filterStr += f + " = " + value + " ";
 					} else {
 						filterStr += f + " = '" + value + "' ";
 					}
 				}
-				
-				this.fetch({query : query + filterStr});
+
+				this.fetch({
+					query : query + filterStr
+				});
 				return this;
+			},
+			toJSON : function(options) {
+				var attributes = _.clone(this.attributes);
+				attributes.__dataType = this.config.adapter.collection_name;
+				for (var obj in attributes) {
+						if(this.config.belongsTo && this.config.belongsTo[obj]){
+							if(attributes[obj]){
+								attributes[obj+"Id"] = attributes[obj].xGet("id");
+							} else if(attributes[obj] === null){
+								attributes[obj+"Id"] = null;
+							}
+							delete attributes[obj];
+						} else if(this.config.hasMany && this.config.hasMany[obj]){
+							delete attributes[obj];
+						} 
+				}
+			
+				return attributes;
 			}
 		}
 	}());
