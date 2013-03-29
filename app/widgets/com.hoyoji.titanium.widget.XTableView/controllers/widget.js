@@ -3,11 +3,12 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var collections = [], collapsibleSections = {};
 
 $.$view.addEventListener("click", function(e) {
+	$.__changingRow = true;
 	e.cancelBubble = true;
-	console.info("xtable catched row clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 	if (e.deleteRow === true) {
 		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 		$.table.deleteRow(e.index);
+		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked" + e.index);
 	} else if (e.expandSection === true) {
 		exports.expandSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -25,6 +26,8 @@ $.$view.addEventListener("click", function(e) {
 		var len = collection.length ? collection.length - 1 : 0;
 		addRowToSection(rowModel, collection, e.index + len);
 	}
+	$.__changingRow = false;
+	$.trigger("endchangingrow");
 });
 
 function addRowToSection(rowModel, collection, index) {
