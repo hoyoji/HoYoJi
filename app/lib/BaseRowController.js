@@ -114,23 +114,38 @@
 				$.content.setLeft(42);
 				openDetailButton.addEventListener("singletap", function(e) {
 					e.cancelBubble = true;
-					if (isExpanded) {
-						isExpanded = false;
-						openDetailButton.setTitle("＋");
-						$.$view.fireEvent("click", {
-							bubbles : true,
-							collapseSection : true,
-							sectionRowId : $.$model.xGet("id")
-						});
-					} else {
-						isExpanded = true;
-						openDetailButton.setTitle("－");
-						$.$view.fireEvent("click", {
-							bubbles : true,
-							expandSection : true,
-							sectionRowId : $.$model.xGet("id")
-						});
+					
+					function doExpandSection(){
+						function _expandSection(){
+							if (isExpanded) {
+								isExpanded = false;
+								openDetailButton.setTitle("＋");
+								$.$view.fireEvent("click", {
+									bubbles : true,
+									collapseSection : true,
+									sectionRowId : $.$model.xGet("id")
+								});
+							} else {
+								isExpanded = true;
+								openDetailButton.setTitle("－");
+								$.$view.fireEvent("click", {
+									bubbles : true,
+									expandSection : true,
+									sectionRowId : $.$model.xGet("id")
+								});
+							}
+						}
+						
+						$.getParentController().off("endchangingrow", doExpandSection);
+						if($.getParentController().__changingRow){
+							$.getParentController().on("endchangingrow", doExpandSection);	
+						} else {
+							$.getParentController().__changingRow = true;
+							_expandSection();
+						}
 					}
+					
+					doExpandSection();
 				});
 				enableOpenDetailButton();
 			}
@@ -189,24 +204,35 @@
 			function removeRow(row) {
 				if (row === $.$model) {
 					isRemoving = true;
-					var animation = Titanium.UI.createAnimation();
-						animation.duration = 500;
-						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+					function doRemoveRow(){
+						$.getParentController().off("endchangingrow", doRemoveRow);	
+						if($.getParentController().__changingRow){
+							console.info("row is changing, we waiting ");
+							$.getParentController().on("endchangingrow", doRemoveRow);	
+						} else {
+							$.getParentController().__changingRow = true;
 
-					if ($.$model.id) {
-						animation.left = "-100%";
-					} else {
-						animation.opacity = "0.5";
-						animation.height = 0;
-						animation.width = 0;
+							var animation = Titanium.UI.createAnimation();
+								animation.duration = 500;
+								animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+		
+							if ($.$model.id) {
+								animation.left = "-100%";
+							} else {
+								animation.opacity = "0.5";
+								animation.height = 0;
+								animation.width = 0;
+							}
+							animation.addEventListener('complete', function() {
+								$.$view.fireEvent("click", {
+									bubbles : true,
+									deleteRow : true
+								});
+							});
+							$.$view.animate(animation);
+						}
 					}
-					animation.addEventListener('complete', function() {
-						$.$view.fireEvent("click", {
-							bubbles : true,
-							deleteRow : true
-						});
-					});
-					$.$view.animate(animation);
+					doRemoveRow();
 				}
 			}
 
