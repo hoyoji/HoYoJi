@@ -19,14 +19,14 @@ exports.definition = {
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			validators : {
 				name : function(xValidateComplete){
 					var error;
 					if(Alloy.Models.User){
 						var oldCurrencys = Alloy.Models.User.xGet("currencies").xCreateFilter({
-							name : this.get("name")
+							name : this.xGet("name")
 						});
 						if (this.isNew()) {
 							if (oldCurrencys.length > 0) {
@@ -92,7 +92,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 		

@@ -399,7 +399,10 @@ function installDatabase(config) {
 	db.close();
 }
 
-var _ = require("alloy/underscore")._, util = require("alloy/sync/util"), XModel = require("XModel").XModel, XCollection = require("XCollection").XCollection, ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
+var _ = require("alloy/underscore")._, util = require("alloy/sync/util"), 
+	// XModel = require("XModel").XModel, 
+	// XCollection = require("XCollection").XCollection, 
+	ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
 	config : {},
 	Model : {},
 	Collection : {}
@@ -429,7 +432,7 @@ module.exports.afterModelCreate = function(Model, name) {
 		return cache.Model[name];
 	Model || ( Model = {});
 	Model.prototype.idAttribute = Model.prototype.config.adapter.idAttribute;
-	_.extend(Model.prototype, XModel);
+	// _.extend(Model.prototype, XModel);
 	Migrate(Model);
 	cache.Model[name] = Model;
 	return Model;
@@ -439,7 +442,7 @@ module.exports.afterCollectionCreate = function(Collection) {
 	if (cache.Collection[Collection.prototype.config.adapter.collection_name])
 		return cache.Collection[Collection.prototype.config.adapter.collection_name];
 	Collection || ( Collection = {});
-	_.extend(Collection.prototype, XCollection);
+	// _.extend(Collection.prototype, XCollection);
 	cache.Collection[Collection.prototype.config.adapter.collection_name] = Collection;
 	return Collection;
 }

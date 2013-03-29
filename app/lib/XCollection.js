@@ -31,17 +31,17 @@
 					console.info("xFetch " + options.query);
 					var c = Alloy.createCollection(this.config.adapter.collection_name);
 					// self.map(function(m){
-						// console.info("xFetch before merged : " + m.get("id"));
+						// console.info("xFetch before merged : " + m.xGet("id"));
 					// });
 					
 					c.fetch(options);
 					c.map(function(m){
-						console.info("xFetch " + m.get("id"));
+						console.info("xFetch " + m.xGet("id"));
 						self.add(m);
 					});
 					//self.add(c);
 					// self.map(function(m){
-						// console.info("xFetch after merged : " + m.get("id"));
+						// console.info("xFetch after merged : " + m.xGet("id"));
 					// });
 					
 					//this.fetch(options);
@@ -59,7 +59,7 @@
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);
 				self.map(function(m){
-					console.info(" --------- " + m.get("id"));
+					console.info(" --------- " + m.xGet("id"));
 				});
 				this.__filterCollection.map(function(model){
 					if(self.__compareFilter(model)){
@@ -114,10 +114,10 @@
 					
 					if(model.config.belongsTo[f]){
 						if(modelValue){
-							modelValue = model.get(f+"Id");
+							modelValue = model.xGet(f+"Id");
 						}
 						if(filterValue && filterValue.xGet){
-							filterValue = filterValue.get("id");
+							filterValue = filterValue.xGet("id");
 						}
 					} else {
 						if(model.hasChanged(f)){
