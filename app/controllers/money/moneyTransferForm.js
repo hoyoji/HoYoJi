@@ -10,6 +10,10 @@ if (!$.$model) {
 	});
 	$.setSaveableMode("add");
 }
+var oldTransferOutAmount = $.$model.xGet("transferOutAmount");
+var oldTransferInAmount = $.$model.xGet("transferInAmount");
+var oldTransferOut = $.$model.xGet("transferOut");
+var oldTransferInt = $.$model.xGet("transferIn");
 
 $.onWindowOpenDo(function() {
 	updateExchangeCurrencyRate();
@@ -62,4 +66,17 @@ function updateForeignCurrencyAmount() {
 	}
 }
 
+$.onSave = function(saveEndCB, saveErrorCB) {
 
+
+
+	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+		var exchange = Alloy.createModel("Exchange", {
+			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
+			foreignCurrency : $.$model.xGet("transferIn").xGet("currency"),
+			rate : $.$model.xGet("exchangeCurrencyRate")
+		});
+		exchange.xAddToSave($);
+	}
+	$.saveModel(saveEndCB, saveErrorCB);
+}
