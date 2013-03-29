@@ -126,6 +126,7 @@ exports.definition = {
 									projectSharedById : subProjectShareAuthorizationId
 								});
 								if(subProject.xGet("id")){
+									subProject.xGet("projectSharedBy",null);
 									subProject.xGet("defaultExpenseCategory").destroy();
 									subProject.xGet("defaultIncomeCategory").destroy();
 									subProject.destroy();

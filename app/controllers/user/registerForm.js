@@ -1,11 +1,14 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var defaultProject = Alloy.createModel("Project", {name : "我的收支", ownerUser : $.$model}).xAddToSave($);
+var activeProject = Alloy.createModel("Project", {name : "我的收支", ownerUser : $.$model}).xAddToSave($);
+$.$model.xSet("activeProject", activeProject);
+
 var defaultFriendCategory = Alloy.createModel("FriendCategory", {name : "我的好友", ownerUser : $.$model}).xAddToSave($);
+$.$model.xSet("defaultFriendCategory", defaultFriendCategory);
+
 var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("messageBox", messageBox);
-$.$model.xSet("activeProject", defaultProject);
-$.$model.xSet("defaultFriendCategory", defaultFriendCategory);
+
 var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeCurrency", activeCurrency);
 
@@ -13,9 +16,23 @@ var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", cur
 $.$model.xSet("activeMoneyAccount", activeMoneyAccount);
 
 var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "日常收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
-var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "日常支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 $.$model.xGet("activeProject").xSet("defaultIncomeCategory",defaultIncomeCategory);
+
+var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "日常支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCategory);
+
+$.onSave = function(saveEndCB, saveErrorCB){
+	var data = [$.$model.toJSON()];
+	for (var i = 0; i < $.__saveCollection.length; i++) {
+		data.push($.__saveCollection[i].toJSON());
+	}
+	Alloy.Globals.Server.createData(data,function(){
+		$.saveModel(saveEndCB, saveErrorCB);
+	}, function(e){
+		alert("连接服务器出错, 不过你的注册可以成功，因为我们还在测试 :P");
+		$.saveModel(saveEndCB, saveErrorCB);
+	});		
+}
 
 $.onWindowCloseDo(function(){
 	Alloy.Globals.DataStore.initStore();
