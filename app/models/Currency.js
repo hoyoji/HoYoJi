@@ -26,7 +26,7 @@ exports.definition = {
 					var error;
 					if(Alloy.Models.User){
 						var oldCurrencys = Alloy.Models.User.xGet("currencies").xCreateFilter({
-							name : this.get("name")
+							name : this.xGet("name")
 						});
 						if (this.isNew()) {
 							if (oldCurrencys.length > 0) {

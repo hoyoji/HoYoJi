@@ -7,7 +7,6 @@ function doLogin(e){
 			Alloy.createController("mainWindow").open();
 		}
 	}
-	Alloy.Models.instance("Project").sayHello();
 }
 
 function openRegister(e){

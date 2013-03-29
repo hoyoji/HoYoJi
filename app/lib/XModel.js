@@ -56,9 +56,9 @@
 			_xSave : function(options){
 						for (var belongsTo in this.config.belongsTo) {
 							if (this.isNew() || this.hasChanged(belongsTo)) {
-								var belongsToModel = this.get(belongsTo);
+								var belongsToModel = this.xGet(belongsTo);
 								if (belongsToModel) {
-									this.set(belongsTo + "Id", belongsToModel.get("id"), {
+									this.set(belongsTo + "Id", belongsToModel.xGet("id"), {
 										silent : true
 									});
 								} else {

@@ -53,7 +53,7 @@ exports.definition = {
 				},
 				password : function(xValidateComplete) {
 					var error;
-					if (!this.has("password") || this.get("password").length < 6) {
+					if (!this.has("password") || this.xGet("password").length < 6) {
 						error = {
 							msg : "请输入至少六位数的密码"
 						};
@@ -62,7 +62,7 @@ exports.definition = {
 				},
 				password2 : function(xValidateComplete) {
 					var error;
-					if (this.get("password2") !== this.get("password")) {
+					if (this.xGet("password2") !== this.xGet("password")) {
 						error = {
 							msg : "两次输入的密码不一样"
 						};

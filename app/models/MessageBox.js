@@ -70,7 +70,7 @@ exports.definition = {
 					}
 					else if(msg.xGet("type") === "Project.Share.Reject"){
 						msg.xSet("messageState","noRead");
-						var projectShareData = JSON.parse(msg.get("messageData"));
+						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							id : projectShareData.projectShareAuthorizationId
 						});
@@ -91,7 +91,7 @@ exports.definition = {
 					}
 					else if(msg.xGet("type") === "Project.Share.Edit"){
 						msg.xSet("messageState","noRead");
-						var projectShareData = JSON.parse(msg.get("messageData"));
+						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						if(projectShareData.shareAllSubProjects){
 							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -137,7 +137,7 @@ exports.definition = {
 					}
 					else if(msg.xGet("type") === "Project.Share.Delete"){
 						msg.xSet("messageState","noRead");
-						var projectShareData = JSON.parse(msg.get("messageData"));
+						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						var project = Alloy.createModel("Project").xFindInDb({
 							projectSharedById : projectShareData.projectShareAuthorizationId
 						});

@@ -49,7 +49,7 @@ function createNewProject(projectShareAuthorization){
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-		var projectShareData = JSON.parse($.$model.get("messageData"));
+		var projectShareData = JSON.parse($.$model.xGet("messageData"));
 		var date = (new Date()).toISOString();
 
 		if (operation === "agree") {

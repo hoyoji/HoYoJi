@@ -75,7 +75,7 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 	var collections = collapsibleSections[sectionRowId].collections;
 	for (var c = 0; c < collections.length; c++) {
 		for (var i = 0; i < collections[c].length; i++) {
-			var rowId = collections[c].at(i).get("id");
+			var rowId = collections[c].at(i).xGet("id");
 			if(collapsibleSections[rowId]){
 				exports.collapseSection(index, rowId);
 			}

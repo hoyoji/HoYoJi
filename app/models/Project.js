@@ -38,7 +38,7 @@ exports.definition = {
 			validators : {
 				// name : function(xValidateComplete){
 					// var error;
-					// if(!this.has("name") || this.get("name").length <= 0){
+					// if(!this.has("name") || this.xGet("name").length <= 0){
 						// error = {msg : "请输入项目名称"};
 					// }
 					// xValidateComplete(error);

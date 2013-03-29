@@ -86,7 +86,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-			                            projectShareAuthorizationId : $.$model.get("id"),
+			                            projectShareAuthorizationId : $.$model.xGet("id"),
 			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 			                        })
 				},function(){
@@ -127,7 +127,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 						"messageData" : JSON.stringify({
 				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-				                            projectShareAuthorizationId : $.$model.get("id"),
+				                            projectShareAuthorizationId : $.$model.xGet("id"),
 				                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 				                        })
 				         },function(){
@@ -137,7 +137,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 								projectId : subProject.xGet("id"),
-								friendId : $.$model.get("friendId")
+								friendId : $.$model.xGet("friendId")
 							});
 						if(subProjectShareAuthorization.xGet("id")){
 							subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -155,7 +155,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 						"messageData" : JSON.stringify({
 				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-				                            projectShareAuthorizationId : $.$model.get("id"),
+				                            projectShareAuthorizationId : $.$model.xGet("id"),
 				                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 				                        })
 				         },function(){
