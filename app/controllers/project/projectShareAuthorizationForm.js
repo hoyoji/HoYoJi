@@ -50,26 +50,30 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				saveErrorCB("好友已在共享列表,请重新选择好友！");
 			}else{
 				if($.$model.xGet("shareAllSubProjects")){
-				$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
-						var data = {
-							project : subProject,
-							friend :　$.$model.xGet("friend"),
-							shareType : $.$model.xGet("shareType"),
-				        	remark : $.$model.xGet("remark"),
-				        	ownerUser : $.$model.xGet("ownerUser"),
-							shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
-						}
-						for(var attr in $.$model.config.columns){
-							if(attr.startsWith("projectShare")){
-								data[attr] = $.$model.xGet(attr);
-							}
-						}
+					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
+						// 有些subProject已被共享过，不能再次共享
 						
-					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", data); 
-					subProjectShareAuthorization.xAddToSave($);
-					subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-		
-				});
+						
+						
+							var data = {
+								project : subProject,
+								friend :　$.$model.xGet("friend"),
+								shareType : $.$model.xGet("shareType"),
+					        	remark : $.$model.xGet("remark"),
+					        	ownerUser : $.$model.xGet("ownerUser"),
+								shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+							}
+							for(var attr in $.$model.config.columns){
+								if(attr.startsWith("projectShare")){
+									data[attr] = $.$model.xGet(attr);
+								}
+							}
+							
+						var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", data); 
+						subProjectShareAuthorization.xAddToSave($);
+						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+			
+					});
 				}
 				Alloy.Globals.Server.sendMsg({
 					"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
@@ -129,7 +133,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				         },function(){
 					        $.saveModel(saveEndCB, saveErrorCB);
 		    			});
-				}else{
+				} else {
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 								projectId : subProject.xGet("id"),

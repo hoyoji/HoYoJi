@@ -53,52 +53,49 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		var date = (new Date()).toISOString();
 
 		if (operation === "agree") {
-			
-			Alloy.Globals.Server.loadData("ProjectShareAuthorization", {
-				id : projectShareData.projectShareAuthorizationId
-			}, function(collection){
-				if(collection.length > 0){
-							var projectShareAuthorization = collection.at(0);
-							createNewProject(projectShareAuthorization);
-							
-							if(projectShareData.shareAllSubProjects){
-								projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-									var project = Alloy.createModel("Project").xFindInDb({
-										projectSharedById : subProjectShareAuthorizationId
-									});
-									if(!project.xGet("id")){
-										var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-											id : subProjectShareAuthorizationId
-										});
-										if (subProjectShareAuthorization.xGet("id")){
-											createNewProject(subProjectShareAuthorization);
+					var projectShareIds = [projectShareData.projectShareAuthorizationId];
+					projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+						projectShareIds.push(subProjectShareAuthorizationId);
+					});
+
+					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
+							if(collection.length > 0){
+										var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
+										createNewProject(projectShareAuthorization);
+										
+										if(projectShareData.shareAllSubProjects){
+											projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+												// var project = Alloy.createModel("Project").xFindInDb({
+													// projectSharedById : subProjectShareAuthorizationId
+												// });
+												// 为什么要检查这个 project
+												// if(!project.xGet("id")){
+													var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
+													createNewProject(subProjectShareAuthorization);
+												// }
+											});
 										}
-									}
-								});
-							}
-							
-							Alloy.Globals.Server.sendMsg({
-								"toUserId" : $.$model.xGet("fromUser").xGet("id"),
-								"fromUserId" : $.$model.xGet("toUser").xGet("id"),
-								"type" : "Project.Share.Accept",
-								"messageState" : "noRead",
-								"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
-								"date" : date,
-								"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
-								"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
-							}, function() {
-								// $.saveModel(saveEndCB, saveErrorCB);
-								$.saveCollection(saveEndCB, saveErrorCB);
-								saveEndCB("您接受了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
-							}, function() {
-								saveErrorCB("接受分享项目失败,请重新发送");
-							});
-			} else {
-					saveErrorCB("出错了，请重试");
-			}	
-		}, function(){
-			// error handling
-		});
+										
+										Alloy.Globals.Server.sendMsg({
+											"toUserId" : $.$model.xGet("fromUser").xGet("id"),
+											"fromUserId" : $.$model.xGet("toUser").xGet("id"),
+											"type" : "Project.Share.Accept",
+											"messageState" : "noRead",
+											"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+											"date" : date,
+											"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+											"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
+										}, function() {
+											// $.saveModel(saveEndCB, saveErrorCB);
+											$.saveCollection(saveEndCB, saveErrorCB);
+											saveEndCB("您接受了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
+										}, function() {
+											saveErrorCB("接受分享项目失败,请重新发送");
+										});
+						} else {
+								saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+						}	
+					}, saveErrorCB);
 			
 
 		} else if (operation === "reject") {

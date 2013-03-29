@@ -132,7 +132,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
 				friend : function(xValidateComplete) {
 					var error;
@@ -187,7 +187,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 		return Collection;

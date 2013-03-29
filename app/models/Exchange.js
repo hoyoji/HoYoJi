@@ -28,7 +28,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			validators : {
 				foreignCurrency : function(xValidateComplete) {
@@ -89,7 +89,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 

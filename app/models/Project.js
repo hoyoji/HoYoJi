@@ -34,7 +34,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
 				// name : function(xValidateComplete){
 					// var error;
@@ -45,55 +45,55 @@ exports.definition = {
 				// }
 			},
 			xGet : function(attr) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
-					return Model.prototype.xGet.call(projectSharedBy.xGet("project"), attr);
+					return Alloy.Globals.XModel.xGet.call(projectSharedBy.xGet("project"), attr);
 				} else {
-					return Model.prototype.xGet.call(this, attr);
+					return Alloy.Globals.XModel.xGet.call(this, attr);
 				}
 			},
 			xSave : function(options) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
-					return Model.prototype.xSave.call(projectSharedBy.xGet("project"), options);
+					return Alloy.Globals.XModel.xSave.call(projectSharedBy.xGet("project"), options);
 				} else {
-					return Model.prototype.xSave.call(this, options);
+					return Alloy.Globals.XModel.xSave.call(this, options);
 				}
 			},
 			xAddToSave : function(saveableController) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
-					return Model.prototype.xAddToSave.call(projectSharedBy.xGet("project"), saveableController);
+					return Alloy.Globals.XModel.xAddToSave.call(projectSharedBy.xGet("project"), saveableController);
 				} else {
-					return Model.prototype.xAddToSave.call(this, saveableController);
+					return Alloy.Globals.XModel.xAddToSave.call(this, saveableController);
 				}
 			},
 			xSet : function(a, b, c) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
-					return Model.prototype.xSet.call(projectSharedBy.xGet("project"), a, b, c);
+					return Alloy.Globals.XModel.xSet.call(projectSharedBy.xGet("project"), a, b, c);
 				} else {
-					return Model.prototype.xSet.call(this, a, b, c);
+					return Alloy.Globals.XModel.xSet.call(this, a, b, c);
 				}
 			},			
 			xGetDescendents : function(attribute) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
 					alert("we.should.not.use.this on shared project");
 					return null;
-					// return Model.prototype.xGetDescendents.call(projectSharedBy.xGet("project"), attribute);
+					// return Alloy.Globals.XModel.xGetDescendents.call(projectSharedBy.xGet("project"), attribute);
 				} else {
-					return Model.prototype.xGetDescendents.call(this, attribute);
+					return Alloy.Globals.XModel.xGetDescendents.call(this, attribute);
 				}
 			},
 			xGetAncestors : function(attribute) {
-				var projectSharedBy = Model.prototype.xGet.call(this, "projectSharedBy");
+				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
 				if(projectSharedBy){
 					alert("we.should.not.use.this on shared project");
 					return null;
-					// return Model.prototype.xGetAncestors.call(projectSharedBy.xGet("project"), attribute);
+					// return Alloy.Globals.XModel.xGetAncestors.call(projectSharedBy.xGet("project"), attribute);
 				} else {
-					return Model.prototype.xGetAncestors.call(this, attribute);
+					return Alloy.Globals.XModel.xGetAncestors.call(this, attribute);
 				}
 			},
 			xDelete : function(xFinishCallback) {
@@ -109,7 +109,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 		return Collection;

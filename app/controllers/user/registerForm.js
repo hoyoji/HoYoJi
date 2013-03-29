@@ -22,16 +22,32 @@ var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "�
 $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCategory);
 
 $.onSave = function(saveEndCB, saveErrorCB){
-	var data = [$.$model.toJSON()];
-	for (var i = 0; i < $.__saveCollection.length; i++) {
-		data.push($.__saveCollection[i].toJSON());
-	}
-	Alloy.Globals.Server.createData(data,function(){
-		$.saveModel(saveEndCB, saveErrorCB);
-	}, function(e){
-		alert("连接服务器出错, 不过你的注册可以成功，因为我们还在测试 :P");
-		$.saveModel(saveEndCB, saveErrorCB);
-	});		
+	$.$model.xValidate(function() {
+		if ($.$model.__xValidationErrorCount > 0) {
+			$.$model.__xValidationError.__summury = {
+				msg : "验证错误"
+			};
+			for (var e in $.$model.__xValidationError) {
+				console.info(e + " : " + $.$model.__xValidationError[e].msg);
+			}
+			$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+			saveErrorCB();
+		} else {
+			var userData = $.$model.toJSON();
+			userData.password = Ti.Utils.sha1($.$model.xGet("password"));
+			userData.password2 = Ti.Utils.sha1($.$model.xGet("password2"));
+			var data = [userData];
+			for (var i = 0; i < $.__saveCollection.length; i++) {
+				data.push($.__saveCollection[i].toJSON());
+			}
+			Alloy.Globals.Server.createData(data,function(){
+				$.saveModel(saveEndCB, saveErrorCB);
+			}, function(e){
+				alert("连接服务器出错, 不过你的注册依然成功，因为我们还在测试 :P");
+				$.saveModel(saveEndCB, saveErrorCB);
+			});		
+		}
+	});
 }
 
 $.onWindowCloseDo(function(){
