@@ -1,6 +1,41 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 	
 $.onSave = function(saveEndCB, saveErrorCB) {
+	//支出明细的权限
+    if($.$model.xGet("projectShareMoneyExpenseOwnerDataOnly")){
+        $.$model.xSet("projectShareMoneyExpenseDetailOwnerDataOnly", true);
+    }
+    else{
+        $.$model.xSet("projectShareMoneyExpenseDetailOwnerDataOnly", false);
+    }
+    if($.$model.xGet("projectShareMoneyExpenseAddNew") || $.$model.xGet("projectShareMoneyExpenseEdit")){
+        $.$model.xSet("projectShareMoneyExpenseDetailAddNew", true);
+        $.$model.xSet("projectShareMoneyExpenseDetailEdit", true);
+        $.$model.xSet("projectShareMoneyExpenseDetailDelete", true);
+    }
+    else{
+        $.$model.xSet("projectShareMoneyExpenseDetailAddNew", false);
+        $.$model.xSet("projectShareMoneyExpenseDetailEdit", false);
+        $.$model.xSet("projectShareMoneyExpenseDetailDelete", false);
+    }
+    //收入明细的权限
+    if($.$model.xGet("projectShareMoneyIncomeOwnerDataOnly")){
+        $.$model.xSet("projectShareMoneyIncomeDetailOwnerDataOnly", true);
+    }
+    else{
+        $.$model.xSet("projectShareMoneyIncomeDetailOwnerDataOnly", false);
+    }
+    if($.$model.xGet("projectShareMoneyIncomeAddNew") || $.$model.xGet("projectShareMoneyIncomeEdit")){
+        $.$model.xSet("projectShareMoneyIncomeDetailAddNew", true);
+        $.$model.xSet("projectShareMoneyIncomeDetailEdit", true);
+        $.$model.xSet("projectShareMoneyIncomeDetailDelete", true);
+    }
+    else{
+        $.$model.xSet("projectShareMoneyIncomeDetailAddNew", false);
+        $.$model.xSet("projectShareMoneyIncomeDetailEdit", false);
+        $.$model.xSet("projectShareMoneyIncomeDetailDelete", false);
+    }
+	
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
 	if(!$.$model.xGet("friend")){
