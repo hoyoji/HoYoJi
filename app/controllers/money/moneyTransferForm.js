@@ -5,6 +5,7 @@ if (!$.$model) {
 		date : (new Date()).toISOString(),
 		transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
 		exchangeCurrencyRate : 1,
+		transferOutAmount : 0,
 		transferInAmount : 0,
 		project : Alloy.Models.User.xGet("activeProject"),
 	});
@@ -66,9 +67,21 @@ function updateForeignCurrencyAmount() {
 	}
 }
 
+$.transferOutOwnerUser.field.addEventLisener("change", transferToFriend);
+$.transferInOwnerUser.field.addEventLisener("change", transferToFriend);
+
+function transferToFriend() {
+	if ($.transferOutOwnerUser.getValue()) {
+		$.exchangeCurrencyRate.hide();
+		$.transferOutAmount.hide();
+	}
+	if ($.transferInOwnerUser.getValue()) {
+		$.exchangeCurrencyRate.hide();
+		$.transferInAmount.hide();
+	}
+}
+
 $.onSave = function(saveEndCB, saveErrorCB) {
-
-
 
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
