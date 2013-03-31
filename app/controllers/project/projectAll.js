@@ -28,9 +28,13 @@ $.titleBar.bindXTable($.myProjectsTable);
 	   	// return false;
 	// });
 
-var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null,projectSharedBy : null});
-var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({projectSharedBy : "NOT NULL"});
-var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({projectShareAuthorizations : "NOT NULL"});
+var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null, ownerUserId : Alloy.Models.User.id});
+var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
+	return model.xGet("ownerUserId") !== Alloy.Models.User.id;
+});
+var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
+	return model.xGet("projectShareAuthorizations").length > 0;
+});
 $.myProjectsTable.addCollection(myProjectsTableCollection);
 $.sharedWithMeTable.addCollection(sharedWithMeTableCollection);
 $.sharedWithHerTable.addCollection(sharedWithHerTableCollection);

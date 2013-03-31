@@ -73,7 +73,44 @@ exports.definition = {
 			_xSave : function(options){
 				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
 				Alloy.Globals.XModel._xSave.call(this, options);
-			}
+			},
+			xGetHasMany : function(attr){
+				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
+				if (this.isNew()) {
+					this.set(attr, collection, {
+						silent : true
+					});
+					return collection;
+				}
+
+				var filter = {};
+				filter[key] = this;
+				collection.xSetFilter(filter);
+
+				console.info("xGet hasMany : " + type + collection.length);
+				var idString;
+				if (this.get('id')) {
+					idString = " = '" + this.get('id') + "' ";
+				} else {
+					idString = " IS NULL ";
+				}
+				if(key === "ownerUser"){
+					collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main "
+					});
+				} else {
+					collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+					});
+				}
+				console.info("xGet hasMany : " + key + collection.length);
+
+				this.set(attr, collection, {
+					silent : true
+				});
+
+				return collection;				
+			}			
 		});
 		return Model;
 	},

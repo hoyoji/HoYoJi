@@ -6,8 +6,8 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
-			defaultExpenseCategoryId : "TEXT",
-			projectSharedById : "TEXT"
+			defaultExpenseCategoryId : "TEXT"
+			// projectSharedById : "TEXT"
 		},
 		// defaults : {
 			// name : "",
@@ -16,8 +16,8 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : "projects" },
 			parentProject : { type : "Project", attribute : "subProjects" },
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
-			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null},
-			projectSharedBy : {type : "ProjectShareAuthorization", attribute : null}
+			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
+			// projectSharedBy : {type : "ProjectShareAuthorization", attribute : null}
 		},
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
@@ -43,68 +43,69 @@ exports.definition = {
 					// }
 					// xValidateComplete(error);
 				// }
-			},
-			xGet : function(attr) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					return Alloy.Globals.XModel.xGet.call(projectSharedBy.xGet("project"), attr);
-				} else {
-					return Alloy.Globals.XModel.xGet.call(this, attr);
-				}
-			},
-			xSave : function(options) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					return Alloy.Globals.XModel.xSave.call(projectSharedBy.xGet("project"), options);
-				} else {
-					return Alloy.Globals.XModel.xSave.call(this, options);
-				}
-			},
-			xAddToSave : function(saveableController) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					return Alloy.Globals.XModel.xAddToSave.call(projectSharedBy.xGet("project"), saveableController);
-				} else {
-					return Alloy.Globals.XModel.xAddToSave.call(this, saveableController);
-				}
-			},
-			xSet : function(a, b, c) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					return Alloy.Globals.XModel.xSet.call(projectSharedBy.xGet("project"), a, b, c);
-				} else {
-					return Alloy.Globals.XModel.xSet.call(this, a, b, c);
-				}
-			},			
-			xGetDescendents : function(attribute) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					alert("we.should.not.use.this on shared project");
-					return null;
-					// return Alloy.Globals.XModel.xGetDescendents.call(projectSharedBy.xGet("project"), attribute);
-				} else {
-					return Alloy.Globals.XModel.xGetDescendents.call(this, attribute);
-				}
-			},
-			xGetAncestors : function(attribute) {
-				var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
-				if(projectSharedBy){
-					alert("we.should.not.use.this on shared project");
-					return null;
-					// return Alloy.Globals.XModel.xGetAncestors.call(projectSharedBy.xGet("project"), attribute);
-				} else {
-					return Alloy.Globals.XModel.xGetAncestors.call(this, attribute);
-				}
-			},
-			xDelete : function(xFinishCallback) {
-				if(this.xGet("projectSharedBy")){
-					xFinishCallback({ msg : "不能移除共享来的项目"});
-				}else if(this.xGet("projectShareAuthorizations").length > 0){
-					xFinishCallback({ msg : "项目共享给好友,请移除共享再删除"});
-				}else{
-					this._xDelete(xFinishCallback);
-				}
 			}
+			// ,
+			// xGet : function(attr) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// return Alloy.Globals.XModel.xGet.call(projectSharedBy.xGet("project"), attr);
+				// } else {
+					// return Alloy.Globals.XModel.xGet.call(this, attr);
+				// }
+			// },
+			// xSave : function(options) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// return Alloy.Globals.XModel.xSave.call(projectSharedBy.xGet("project"), options);
+				// } else {
+					// return Alloy.Globals.XModel.xSave.call(this, options);
+				// }
+			// },
+			// xAddToSave : function(saveableController) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// return Alloy.Globals.XModel.xAddToSave.call(projectSharedBy.xGet("project"), saveableController);
+				// } else {
+					// return Alloy.Globals.XModel.xAddToSave.call(this, saveableController);
+				// }
+			// },
+			// xSet : function(a, b, c) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// return Alloy.Globals.XModel.xSet.call(projectSharedBy.xGet("project"), a, b, c);
+				// } else {
+					// return Alloy.Globals.XModel.xSet.call(this, a, b, c);
+				// }
+			// },			
+			// xGetDescendents : function(attribute) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// alert("we.should.not.use.this on shared project");
+					// return null;
+					// // return Alloy.Globals.XModel.xGetDescendents.call(projectSharedBy.xGet("project"), attribute);
+				// } else {
+					// return Alloy.Globals.XModel.xGetDescendents.call(this, attribute);
+				// }
+			// },
+			// xGetAncestors : function(attribute) {
+				// var projectSharedBy = Alloy.Globals.XModel.xGet.call(this, "projectSharedBy");
+				// if(projectSharedBy){
+					// alert("we.should.not.use.this on shared project");
+					// return null;
+					// // return Alloy.Globals.XModel.xGetAncestors.call(projectSharedBy.xGet("project"), attribute);
+				// } else {
+					// return Alloy.Globals.XModel.xGetAncestors.call(this, attribute);
+				// }
+			// },
+			// xDelete : function(xFinishCallback) {
+				// if(this.xGet("projectSharedBy")){
+					// xFinishCallback({ msg : "不能移除共享来的项目"});
+				// }else if(this.xGet("projectShareAuthorizations").length > 0){
+					// xFinishCallback({ msg : "项目共享给好友,请移除共享再删除"});
+				// }else{
+					// this._xDelete(xFinishCallback);
+				// }
+			// }
 		});
 		return Model;
 	},

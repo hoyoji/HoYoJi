@@ -14,7 +14,7 @@
 			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);
 				if(_.isArray(filter)){
-					collection.fetch({query : "SELECT * FROM " + modelName + " WHERE id IN ('" + filter.join("','") + "')"});	
+					collection.fetch({query : "SELECT * FROM " + modelName + " main WHERE main.id IN ('" + filter.join("','") + "')"});	
 				} else {
 					collection.xSearchInDb(filter);
 				}
@@ -23,9 +23,9 @@
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				this.searchData(modelName, filter, function(collection){
-					collection.map(function(item){
-						item.save({wait : true});
-					});
+					// collection.map(function(item){
+						// item.save({wait : true});
+					// });
 					
 					xFinishedCallback(collection);
 				}, xErrorCallback);

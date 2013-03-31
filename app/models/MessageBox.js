@@ -26,12 +26,12 @@ exports.definition = {
 				})
 				newMessages.map(function(msg){
 					if(msg.xGet("type") === "System.Friend.AddResponse"){
-							msg.xSet("messageState","noRead");
-							var friendlength = Alloy.createCollection("Friend").xSearchInDb({
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							}).length;
-						if (friendlength===0) {
+						if (friendlength === 0) {
 							var friend = Alloy.createModel("Friend", {
 								ownerUser :　Alloy.Models.User,
 								friendUser : msg.xGet("fromUser"),
@@ -39,10 +39,8 @@ exports.definition = {
 							});
 							friend.xSave();
 						}
-						msg.xSave();
-					}
-					else if(msg.xGet("type") === "System.Friend.AutoAdd"){
-						msg.xSet("messageState","noRead");
+					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -55,10 +53,8 @@ exports.definition = {
 							});
 							friend.xSave();
 						}
-						msg.xSave();
-					}
-					else if(msg.xGet("type") === "System.Friend.Delete"){
-						msg.xSet("messageState","noRead");
+					} else if(msg.xGet("type") === "System.Friend.Delete"){
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var friend = Alloy.createModel("Friend").xFindInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -66,10 +62,8 @@ exports.definition = {
 					    if (friend.xGet("id")) {
 							friend._xDelete();
 						}
-						msg.xSave();
-					}
-					else if(msg.xGet("type") === "Project.Share.Reject"){
-						msg.xSet("messageState","noRead");
+					} else if(msg.xGet("type") === "Project.Share.Reject"){
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							id : projectShareData.projectShareAuthorizationId
@@ -86,82 +80,32 @@ exports.definition = {
 									subProjectShareAuthorization._xDelete();
 								}
 							});
-						msg.xSave();
 						}
-					}
-					else if(msg.xGet("type") === "Project.Share.Edit"){
-						msg.xSet("messageState","noRead");
+					} else if(msg.xGet("type") === "Project.Share.Edit"){
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						if(projectShareData.shareAllSubProjects){
-							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-									id : subProjectShareAuthorizationId
+							Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareData.subProjectShareAuthorizationIds, function(collection){
+								collection.map(function(projectShareAuthorization){
+									projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
 								});
-								if (subProjectShareAuthorization.xGet("id")){
-									var subProject = Alloy.createModel("Project", {
-										ownerUser : Alloy.Models.User,
-										name :　subProjectShareAuthorization.xGet("project").xGet("name"),
-										projectSharedBy : subProjectShareAuthorization
-									}); 
-									
-									var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
-										name : "日常收入",
-										project : subProject
-									});
-									subProject.xSet("defaultIncomeCategory", defaultIncomeCategory);
-								
-									var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
-										name : "日常支出",
-										project : subProject
-									});
-									subProject.xSet("defaultExpenseCategory", defaultExpenseCategory);
-									defaultIncomeCategory.xSave();
-									defaultExpenseCategory.xSave();
-									subProject.xSave();
-								}
 							});
 						}else{
-							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-								var subProject = Alloy.createModel("Project").xFindInDb({
-									projectSharedById : subProjectShareAuthorizationId
-								});
-								if(subProject.xGet("id")){
-									subProject.xGet("projectSharedBy",null);
-									subProject.xGet("defaultExpenseCategory").destroy();
-									subProject.xGet("defaultIncomeCategory").destroy();
-									subProject.destroy();
-								}
+							var collection = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareData.subProjectShareAuthorizationIds);
+							collection.map(function(subProjectShareAuthorization){
+								subProjectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});						
 							});
 						}
-						msg.xSave();
-					}
-					else if(msg.xGet("type") === "Project.Share.Delete"){
-						msg.xSet("messageState","noRead");
+					} else if(msg.xGet("type") === "Project.Share.Delete"){
+						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
-						var project = Alloy.createModel("Project").xFindInDb({
-							projectSharedById : projectShareData.projectShareAuthorizationId
+						var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+						var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareIds);
+						projectShareAuthorizations.map(function(projectShareAuthorization){
+							projectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});
+							// we shall delete all the shared data from the phone
 						});
-						if(project.xGet("id")){
-							project.xGet("projectSharedBy",null);
-							project.xGet("defaultExpenseCategory").destroy();
-							project.xGet("defaultIncomeCategory").destroy();
-							project.destroy();
-						}
-						if(projectShareData.shareAllSubProjects){
-							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-								var subProject = Alloy.createModel("Project").xFindInDb({
-									projectSharedById : subProjectShareAuthorizationId
-								});
-								if(subProject.xGet("id")){
-									subProject.xGet("projectSharedBy",null);
-									subProject.xGet("defaultExpenseCategory").destroy();
-									subProject.xGet("defaultIncomeCategory").destroy();
-									subProject.destroy();
-								}
-							});
-						}
-						msg.xSave();
-					}
+					}			
 				});
 			}
 		});
