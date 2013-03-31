@@ -4,6 +4,7 @@ if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyTransfer", {
 		date : (new Date()).toISOString(),
 		transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
+		transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
 		exchangeCurrencyRate : 1,
 		transferOutAmount : 0,
 		transferInAmount : 0,
@@ -15,42 +16,50 @@ var oldTransferOutAmount = $.$model.xGet("transferOutAmount");
 var oldTransferInAmount = $.$model.xGet("transferInAmount");
 var oldTransferOut = $.$model.xGet("transferOut");
 var oldTransferInt = $.$model.xGet("transferIn");
+var oldTransferOutOwnerUser = $.$model.xGet("transferOutOwnerUser");
+var oldTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 
 $.onWindowOpenDo(function() {
-	updateExchangeCurrencyRate();
+	setExchangeCurrencyRate($.$model.xGet("transferOut"), $.$model.xGet("transferIn"));
 	updateForeignCurrencyAmount();
+	firstOpenWindow();
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 });
 
-var isRateExist;
+var createRate;
 $.transferOut.field.addEventListener("change", updateExchangeCurrencyRate);
 $.transferIn.field.addEventListener("change", updateExchangeCurrencyRate);
-function updateExchangeCurrencyRate() {
-	var exchangeCurrencyRateValue;
-	if ($.transferOut.getValue() && $.transferIn.getValue()) {
-		var transferOut = $.transferOut.getValue();
-		var transferIn = $.transferIn.getValue();
-		if (transferOut.xGet("currency") === transferIn.xGet("currency")) {
-			isRateExist = true;
-			exchangeCurrencyRateValue = 1;
+function updateExchangeCurrencyRate(transferOut, transferIn) {
+	if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
+		if ($.transferOut.getValue() && $.transferIn.getValue()) {
+			setExchangeCurrencyRate($.transferOut.getValue(), $.transferIn.getValue());
+		} else {
 			$.exchangeCurrencyRate.hide();
 			$.transferInAmount.hide();
-		} else {
-			var exchanges = transferOut.xGet("currency").getExchanges(transferIn.xGet("currency"));
-			if (exchanges.length) {
-				isRateExist = true;
-				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
-			} else {
-				isRateExist = false;
-				exchangeCurrencyRateValue = null;
-			}
-			$.exchangeCurrencyRate.show();
-			$.transferInAmount.show();
+			$.exchangeCurrencyRate.setValue(1);
+			$.exchangeCurrencyRate.field.fireEvent("change");
 		}
-	} else {
+	}
+}
+
+function setExchangeCurrencyRate(transferOut, transferIn) {
+	var exchangeCurrencyRateValue;
+	if (transferOut.xGet("currency") === transferIn.xGet("currency")) {
+		createRate = false;
 		exchangeCurrencyRateValue = 1;
 		$.exchangeCurrencyRate.hide();
 		$.transferInAmount.hide();
+	} else {
+		var exchanges = transferOut.xGet("currency").getExchanges(transferIn.xGet("currency"));
+		if (exchanges.length) {
+			createRate = false;
+			exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+		} else {
+			createRate = true;
+			exchangeCurrencyRateValue = null;
+		}
+		$.exchangeCurrencyRate.show();
+		$.transferInAmount.show();
 	}
 	$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
 	$.exchangeCurrencyRate.field.fireEvent("change");
@@ -60,30 +69,136 @@ $.transferOutAmount.field.addEventListener("change", updateForeignCurrencyAmount
 $.exchangeCurrencyRate.field.addEventListener("change", updateForeignCurrencyAmount);
 
 function updateForeignCurrencyAmount() {
-	if ($.transferOutAmount.getValue() && $.exchangeCurrencyRate.getValue()) {
-		var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeCurrencyRate.getValue()).toUserCurrency();
-		$.transferInAmount.setValue(foreignCurrencyAmount);
-		$.transferInAmount.field.fireEvent("change");
+	if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
+		if ($.transferOutAmount.getValue() && $.exchangeCurrencyRate.getValue()) {
+			var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeCurrencyRate.getValue()).toUserCurrency();
+			$.transferInAmount.setValue(foreignCurrencyAmount);
+			$.transferInAmount.field.fireEvent("change");
+		}
 	}
 }
 
-$.transferOutOwnerUser.field.addEventLisener("change", transferToFriend);
-$.transferInOwnerUser.field.addEventLisener("change", transferToFriend);
+$.transferOutOwnerUser.field.addEventListener("change", transferToFriend);
+$.transferInOwnerUser.field.addEventListener("change", transferToFriend);
 
 function transferToFriend() {
-	if ($.transferOutOwnerUser.getValue()) {
+	if ($.transferOutOwnerUser.getValue() || $.transferInOwnerUser.getValue()) {
+		$.$model.xSet("exchangeCurrencyRate", 1);
 		$.exchangeCurrencyRate.hide();
-		$.transferOutAmount.hide();
+		if ($.transferOutOwnerUser.getValue()) {
+			$.$model.xSet("transferOutAmount", 0);
+			$.transferOutAmount.hide();
+			$.transferOut.setValue(null);
+			$.transferOut.field.fireEvent("change");
+		} else {
+			$.transferOut.setValue(Alloy.Models.User.xGet("activeMoneyAccount"));
+			$.transferOut.field.fireEvent("change");
+			$.transferOutAmount.show();
+		}
+		if ($.transferInOwnerUser.getValue()) {
+			$.$model.xSet("transferInAmount", 0);
+			$.transferInAmount.hide();
+			$.transferIn.setValue(null);
+			$.transferIn.field.fireEvent("change");
+		} else {
+			$.transferIn.setValue(Alloy.Models.User.xGet("activeMoneyAccount"));
+			$.transferIn.field.fireEvent("change");
+			$.transferInAmount.show();
+		}
+	} else {
+		updateExchangeCurrencyRate();
 	}
-	if ($.transferInOwnerUser.getValue()) {
+}
+
+function firstOpenWindow() {
+	if ($.transferOutOwnerUser.getValue() || $.transferInOwnerUser.getValue()) {
 		$.exchangeCurrencyRate.hide();
-		$.transferInAmount.hide();
+		if ($.transferOutOwnerUser.getValue()) {
+			$.transferOutAmount.hide();
+		} else {
+			$.transferOutAmount.show();
+		}
+		if ($.transferInOwnerUser.getValue()) {
+			$.transferInAmount.hide();
+		} else {
+			$.transferInAmount.show();
+		}
 	}
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	var newTransferOutAmount = $.$model.xGet("transferOutAmount");
+	var newTransferInAmount = $.$model.xGet("transferInAmount");
+	var newTransferOut = $.$model.xGet("transferOut");
+	var newTransferInt = $.$model.xGet("transferIn");
+	var newTransferOutOwnerUser = $.$model.xGet("transferOutOwnerUser");
+	var newTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 
-	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+	if ($.$model.isNew()) {
+		if (!newTransferOutOwnerUser) {
+			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+		}
+		if (!newTransferInOwnerUser) {
+			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+		}
+	} else {
+		if (!oldTransferOutOwnerUser) {
+			if (!newTransferOutOwnerUser) {
+				if (oldTransferOut.xGet("id") === newTransferOut.xGet("id")) {
+					newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
+				} else {
+					oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount);
+					newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+				}
+			} else {
+				oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount);
+			}
+		} else {
+			if (!newTransferOutOwnerUser) {
+				newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+			}
+		}
+		if (!oldTransferInOwnerUser) {
+			if (!newTransferInOwnerUser) {
+				if (oldTransferIn.xGet("id") === newTransferIn.xGet("id")) {
+					newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") - oldTransferInAmount + newTransferInAmount);
+				} else {
+					oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount);
+					newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+				}
+			} else {
+				oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount);
+			}
+		} else {
+			if (!newTransferInOwnerUser) {
+				newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+			}
+		}
+	}
+	if (oldTransferOut) {
+		oldTransferOut.xAddToSave($);
+	}
+	if (oldTransferIn) {
+		oldTransferIn.xAddToSave($);
+	}
+	if (newTransferOut) {
+		newTransferOut.xAddToSave($);
+	}
+	if (newTransferIn) {
+		newTransferIn.xAddToSave($);
+	}
+
+	if ($.$model.isNew()) {//记住project为下次打开时project
+		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+		Alloy.Models.User.save({
+			activeProjectId : $.$model.xGet("project").xGet("id")
+		}, {
+			patch : true,
+			wait : true
+		});
+	}
+
+	if (createRate) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
 			foreignCurrency : $.$model.xGet("transferIn").xGet("currency"),
