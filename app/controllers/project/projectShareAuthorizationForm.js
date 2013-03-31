@@ -42,6 +42,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("好友不能为空！");
 	}else{
 		if ($.$model.isNew()) {
+			$.$model.xSet("state", "Wait");
 			var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendId : $.$model.xGet("friend").xGet("id")
@@ -52,12 +53,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if($.$model.xGet("shareAllSubProjects")){
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						// 有些subProject已被共享过，不能再次共享
-						
-						
-						
 							var data = {
 								project : subProject,
 								friend :　$.$model.xGet("friend"),
+								state : "Wait",
 								shareType : $.$model.xGet("shareType"),
 					        	remark : $.$model.xGet("remark"),
 					        	ownerUser : $.$model.xGet("ownerUser"),
@@ -102,6 +101,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						var data = {
 							project : subProject,
 							friend :　$.$model.xGet("friend"),
+							state : "Wait",
 							shareType : $.$model.xGet("shareType"),
 				        	remark : $.$model.xGet("remark"),
 				        	ownerUser : $.$model.xGet("ownerUser"),
@@ -167,60 +167,4 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}
 	   }
    }
-	
 }
-
-
-
-				// projectShareMoneyExpenseOwnerDataOnly : $.$model.xGet("projectShareMoneyExpenseOwnerDataOnly"),
-		        // projectShareMoneyExpenseAddNew : $.$model.xGet("projectShareMoneyExpenseAddNew"),
-		        // projectShareMoneyExpenseEdit : $.$model.xGet("projectShareMoneyExpenseEdit"),
-		        // projectShareMoneyExpenseDelete : $.$model.xGet("projectShareMoneyExpenseDelete"),
-// 		        
-		        // projectShareMoneyExpenseDetailOwnerDataOnly : $.$model.xGet("projectShareMoneyExpenseDetailOwnerDataOnly"),
-		        // projectShareMoneyExpenseDetailAddNew : $.$model.xGet("projectShareMoneyExpenseDetailAddNew"),
-		        // projectShareMoneyExpenseDetailEdit : $.$model.xGet("projectShareMoneyExpenseDetailEdit"),
-		        // projectShareMoneyExpenseDetailDelete : $.$model.xGet("projectShareMoneyExpenseDetailDelete"),
-// 		        
-		        // projectShareMoneyIncomeOwnerDataOnly : $.$model.xGet("projectShareMoneyIncomeOwnerDataOnly"),
-		        // projectShareMoneyIncomeAddNew : $.$model.xGet("projectShareMoneyIncomeAddNew"),
-		        // projectShareMoneyIncomeEdit : $.$model.xGet("projectShareMoneyIncomeEdit"),
-		        // projectShareMoneyIncomeDelete : $.$model.xGet("projectShareMoneyIncomeDelete"),
-// 		        
-		        // projectShareMoneyIncomeDetailOwnerDataOnly : $.$model.xGet("projectShareMoneyIncomeDetailOwnerDataOnly"),
-		        // projectShareMoneyIncomeDetailAddNew : $.$model.xGet("projectShareMoneyIncomeDetailAddNew"),
-		        // projectShareMoneyIncomeDetailEdit : $.$model.xGet("projectShareMoneyIncomeDetailEdit"),
-		        // projectShareMoneyIncomeDetailDelete : $.$model.xGet("projectShareMoneyIncomeDetailDelete"),
-// 		        
-		        // projectShareMoneyExpenseCategoryAddNew : $.$model.xGet("projectShareMoneyExpenseCategoryAddNew"),
-		        // projectShareMoneyExpenseCategoryEdit : $.$model.xGet("projectShareMoneyExpenseCategoryEdit"),
-		        // projectShareMoneyExpenseCategoryDelete : $.$model.xGet("projectShareMoneyExpenseCategoryDelete"),
-// 		        
-		        // projectShareMoneyIncomeCategoryAddNew : $.$model.xGet("projectShareMoneyIncomeCategoryAddNew"),
-		        // projectShareMoneyIncomeCategoryEdit : $.$model.xGet("projectShareMoneyIncomeCategoryEdit"),
-		        // projectShareMoneyIncomeCategoryDelete : $.$model.xGet("projectShareMoneyIncomeCategoryDelete"),
-// 		        
-		        // projectShareMoneyTransferOwnerDataOnly : $.$model.xGet("projectShareMoneyTransferOwnerDataOnly"),
-		        // projectShareMoneyTransferAddNew : $.$model.xGet("projectShareMoneyTransferAddNew"),
-		        // projectShareMoneyTransferEdit : $.$model.xGet("projectShareMoneyTransferEdit"),
-		        // projectShareMoneyTransferDelete : $.$model.xGet("projectShareMoneyTransferDelete"),
-// 		        
-		        // projectShareLoanLendOwnerDataOnly : $.$model.xGet("projectShareLoanLendOwnerDataOnly"),
-		        // projectShareLoanLendAddNew : $.$model.xGet("projectShareLoanLendAddNew"),
-		        // projectShareLoanLendEdit : $.$model.xGet("projectShareLoanLendEdit"),
-		        // projectShareLoanLendDelete : $.$model.xGet("projectShareLoanLendDelete"),
-// 		        
-		        // projectShareLoanBorrowOwnerDataOnly : $.$model.xGet("projectShareLoanBorrowOwnerDataOnly"),
-		        // projectShareLoanBorrowAddNew : $.$model.xGet("projectShareLoanBorrowAddNew"),
-		        // projectShareLoanBorrowEdit : $.$model.xGet("projectShareLoanBorrowEdit"),
-		        // projectShareLoanBorrowDelete : $.$model.xGet("projectShareLoanBorrowDelete"),
-// 		        
-		        // projectShareLoanPaybackOwnerDataOnly : $.$model.xGet("projectShareLoanPaybackOwnerDataOnly"),
-		        // projectShareLoanPaybackAddNew : $.$model.xGet("projectShareLoanPaybackAddNew"),
-		        // projectShareLoanPaybackEdit : $.$model.xGet("projectShareLoanPaybackEdit"),
-		        // projectShareLoanPaybackDelete : $.$model.xGet("projectShareLoanPaybackDelete"),
-// 		        
-		        // projectShareLoanReturnOwnerDataOnly : $.$model.xGet("projectShareLoanReturnOwnerDataOnly"),
-		        // projectShareLoanReturnAddNew : $.$model.xGet("projectShareLoanReturnAddNew"),
-		        // projectShareLoanReturnEdit : $.$model.xGet("projectShareLoanReturnEdit"),
-		        // projectShareLoanReturnDelete : $.$model.xGet("projectShareLoanReturnDelete")

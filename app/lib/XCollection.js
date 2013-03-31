@@ -138,21 +138,25 @@
 				var table = this.config.adapter.collection_name,
 					query = "SELECT main.* FROM " + table + " main WHERE ",
 					filterStr = "";
-				
-				for(var f in filter){
-					var value = filter[f]
-					if(filterStr){
-						filterStr += " AND "
-					}
-					f = "main." + f;
-					if(_.isNull(value)){
-						filterStr += f + " IS NULL ";
-					} else if(_.isNumber(value)){
-						filterStr += f + " = " + value + " ";
-					} else {
-						filterStr += f + " = '" + value + "' ";
+				if(_.isArray(filter)){
+					filterStr = "main.id IN ('" + filter.join("','") + "')";
+				} else {
+					for(var f in filter){
+						var value = filter[f]
+						if(filterStr){
+							filterStr += " AND "
+						}
+						f = "main." + f;
+						if(_.isNull(value)){
+							filterStr += f + " IS NULL ";
+						} else if(_.isNumber(value)){
+							filterStr += f + " = " + value + " ";
+						} else {
+							filterStr += f + " = '" + value + "' ";
+						}
 					}
 				}
+				
 				console.info("xSearchInDb " + query + filterStr);
 				this.fetch({query : query + filterStr});
 				return this;
