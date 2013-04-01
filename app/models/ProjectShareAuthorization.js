@@ -168,10 +168,10 @@ exports.definition = {
 					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
-					"messageState" : "new",
-					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+this.xGet("project").xGet("name")+"及子项目给您",
+					"messageState" : "noRead",
+					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+this.xGet("project").xGet("name")+"及子项目给您",
 					"date" : (new Date()).toISOString(),
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + this.xGet("project").xGet("name") +"及子项目给您",
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + this.xGet("project").xGet("name") +"及子项目给您",
 					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
