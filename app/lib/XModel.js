@@ -291,7 +291,9 @@
 						});
 						console.info("xGet fetch belongsTo from DB " + m);
 					}
-
+					if(m.isNew()){
+						m = null;
+					}
 					this.attributes[attr] = m;
 					return m;
 				}
