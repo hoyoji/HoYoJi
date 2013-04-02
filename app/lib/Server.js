@@ -11,15 +11,24 @@
 					error : xErrorCallback
 				});
 			},
-			getData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
+				if(_.isArray(filter)){
+					collection.fetch({query : "SELECT * FROM " + modelName + " main WHERE main.id IN ('" + filter.join("','") + "')"});	
+				} else {
+					collection.xSearchInDb(filter);
+				}
+				
 				xFinishedCallback(collection);
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
-				xFinishedCallback(collection);
+				this.searchData(modelName, filter, function(collection){
+					// collection.map(function(item){
+						// item.save({wait : true});
+					// });
+					
+					xFinishedCallback(collection);
+				}, xErrorCallback);
 			},
 			updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);

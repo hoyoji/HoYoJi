@@ -28,14 +28,14 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			validators : {
 				foreignCurrency : function(xValidateComplete) {
 					var error;
-					var localCurrency = this.get("localCurrency");
-					var foreignCurrency = this.get("foreignCurrency");
-					if (localCurrency.get("id") === foreignCurrency.get("id")) {
+					var localCurrency = this.xGet("localCurrency");
+					var foreignCurrency = this.xGet("foreignCurrency");
+					if (localCurrency.xGet("id") === foreignCurrency.xGet("id")) {
 						error = {
 							msg : "本币和外币不能相同，请重新选择！"
 						};
@@ -72,12 +72,12 @@ exports.definition = {
 				},
 				rate : function(xValidateComplete){
 					var error;
-					if(this.get("rate")===0){
+					if(this.xGet("rate")===0){
 						error = {
 							msg : "汇率不能为0，请重新输入"
 						}
 					}
-					else if(isNaN(this.get("rate"))){
+					else if(isNaN(this.xGet("rate"))){
 						error = {
 							msg : "请输入正确数字"
 						}
@@ -89,7 +89,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 

@@ -102,7 +102,7 @@
 				Alloy.Globals.openingMenu = true;
 				var sourceModel;
 				if ($.$model) {
-					console.info("longpress " + $.$model.get("name"));
+					console.info("longpress " + $.$model.xGet("name"));
 					sourceModel = {
 						type : $.$model.config.adapter.collection_name,
 						id : $.$model.xGet("id")

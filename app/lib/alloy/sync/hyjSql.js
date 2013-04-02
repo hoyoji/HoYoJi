@@ -120,17 +120,17 @@ function Sync(method, model, opts) {
 				var sqlCheckPermission;
 				if (Alloy.Models.User) {
 					ownerUserId = Alloy.Models.User.xGet("id");
-					if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project") {
-						if (table === "MoneyIncomeDetail" || table === "MoneyExpenseDetail"){
-					
-						} else if(!model.xGet("project").isNew()){
-							if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
-								sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
-							} else {
-								sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
-							}	
-						}
-					}
+					// if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project") {
+						// if (table === "MoneyIncomeDetail" || table === "MoneyExpenseDetail"){
+// 					
+						// } else if(!model.xGet("project").isNew()){
+							// if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+								// sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
+							// } else {
+								// sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (projectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON p.id = joinedtable.projectId AND joinedtable.ownerUserId = p.ownerUserId  AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
+							// }	
+						// }
+					// }
 				} else if (model.config.adapter.collection_name === "User") {
 					ownerUserId = model.xGet("id");
 				} else if (model.xGet("ownerUserId")) {
@@ -177,18 +177,20 @@ function Sync(method, model, opts) {
 			var qs = opts.query.split("WHERE"), q;
 			if (_.indexOf(projectPermissionTables, table) > -1) {
 				if (table === "Project") {
-					qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.id = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
+					qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = 'Accept' AND pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.id = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
 					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
 				} else if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
-					qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId ';
-					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 'OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
+					qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = 'Accept' AND pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
+					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
 				} else if (table === "MoneyIncomeDetail" || table === "MoneyExpenseDetail"){
+					// qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.id = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
+					// q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
+				
 					// qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.moneyExpenseId = joinedtable.moneyExpenseId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
 					// q = '(main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" AND joinedtable.projectId IS NULL) ' + 'OR joinedtable.projectShare' + table + 'OwnerDataOnly = 0 ' + 'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
-				
 				} else {
-					qs[0] += ' LEFT JOIN (Project prj JOIN ProjectShareAuthorization pst ON prj.projectSharedById = pst.id JOIN friend f ON pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
-					q = '(main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" AND joinedtable.projectId IS NULL) ' + 'OR joinedtable.projectShare' + table + 'OwnerDataOnly = 0 ' + 'OR EXISTS (SELECT id FROM Project WHERE id = main.projectId AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '") ';
+					qs[0] += " LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = 'Accept' AND pst.friendId = f.id AND f.ownerUserId = pst.ownerUserId) joinedtable ON main.projectId = joinedtable.projectId AND joinedtable.ownerUserId = main.ownerUserId ";
+					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR (joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND joinedtable.projectShare' + table + 'OwnerDataOnly = 0)';
 				}
 
 				if(q){
@@ -399,7 +401,10 @@ function installDatabase(config) {
 	db.close();
 }
 
-var _ = require("alloy/underscore")._, util = require("alloy/sync/util"), XModel = require("XModel").XModel, XCollection = require("XCollection").XCollection, ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
+var _ = require("alloy/underscore")._, util = require("alloy/sync/util"), 
+	// XModel = require("XModel").XModel, 
+	// XCollection = require("XCollection").XCollection, 
+	ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
 	config : {},
 	Model : {},
 	Collection : {}
@@ -429,7 +434,7 @@ module.exports.afterModelCreate = function(Model, name) {
 		return cache.Model[name];
 	Model || ( Model = {});
 	Model.prototype.idAttribute = Model.prototype.config.adapter.idAttribute;
-	_.extend(Model.prototype, XModel);
+	// _.extend(Model.prototype, XModel);
 	Migrate(Model);
 	cache.Model[name] = Model;
 	return Model;
@@ -439,7 +444,7 @@ module.exports.afterCollectionCreate = function(Collection) {
 	if (cache.Collection[Collection.prototype.config.adapter.collection_name])
 		return cache.Collection[Collection.prototype.config.adapter.collection_name];
 	Collection || ( Collection = {});
-	_.extend(Collection.prototype, XCollection);
+	// _.extend(Collection.prototype, XCollection);
 	cache.Collection[Collection.prototype.config.adapter.collection_name] = Collection;
 	return Collection;
 }

@@ -41,7 +41,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, {
+		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
 				userName : function(xValidateComplete) {
 					if(!this.isNew()){
@@ -53,7 +53,7 @@ exports.definition = {
 				},
 				password : function(xValidateComplete) {
 					var error;
-					if (!this.has("password") || this.get("password").length < 6) {
+					if (!this.has("password") || this.xGet("password").length < 6) {
 						error = {
 							msg : "请输入至少六位数的密码"
 						};
@@ -62,23 +62,60 @@ exports.definition = {
 				},
 				password2 : function(xValidateComplete) {
 					var error;
-					if (!this.has("password2") || this.get("password2").length < 6) {
-						error = {
-							msg : "请输入至少六位数的密码"
-						};
-					} else if (this.get("password2") !== this.get("password")) {
+					if (this.xGet("password2") !== this.xGet("password")) {
 						error = {
 							msg : "两次输入的密码不一样"
 						};
 					}
 					xValidateComplete(error);
 				}
+			},
+			_xSave : function(options){
+				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
+				Alloy.Globals.XModel._xSave.call(this, options);
+			},
+			xGetHasMany : function(attr){
+				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
+				if (this.isNew()) {
+					this.set(attr, collection, {
+						silent : true
+					});
+					return collection;
+				}
+
+				var filter = {};
+				filter[key] = this;
+				collection.xSetFilter(filter);
+
+				console.info("xGet hasMany : " + type + collection.length);
+				var idString;
+				if (this.get('id')) {
+					idString = " = '" + this.get('id') + "' ";
+				} else {
+					idString = " IS NULL ";
+				}
+				if(key === "ownerUser"){
+					collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main "
+					});
+				} else {
+					collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+					});
+				}
+				console.info("xGet hasMany : " + key + collection.length);
+
+				this.set(attr, collection, {
+					silent : true
+				});
+
+				return collection;				
 			}			
 		});
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
 			// extended functions and properties go here
 		});
 		return Collection;

@@ -53,6 +53,29 @@
 					// });
 				}
 			},
+			_xSave : function(options){
+				for (var belongsTo in this.config.belongsTo) {
+					if (this.isNew() || this.hasChanged(belongsTo)) {
+						var belongsToModel = this.xGet(belongsTo);
+						if (belongsToModel) {
+							this.set(belongsTo + "Id", belongsToModel.xGet("id"), {
+								silent : true
+							});
+						} else {
+							this.set(belongsTo + "Id", null, {
+								silent : true
+							});
+						}
+					}
+				}
+
+				console.info("xValidation done with no errors ");
+				//self.__cascadeUpdateBelongsTo(function() {
+				//	self.__cascadeUpdateHasMany(function(){
+				this.save(null, options);
+				//	});
+				//});
+			},
 			xSave : function(options) {
 				var self = this;
 				options = _.extend({}, options, {
@@ -62,13 +85,7 @@
 					throw Error("Model is still pending for xValidation to be completed! Can not call xSave again!!");
 					return;
 				}
-				this.__xValidationError = {};
-				this.__xValidationErrorCount = 0;
-
-				// if (!self.xGet("ownerUser")) {
-				// self.xSet("ownerUser", Alloy.Models.User);
-				// }
-
+						
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
@@ -80,38 +97,16 @@
 						}
 						self.trigger("error", self, self.__xValidationError, options);
 					} else {
-						for (var belongsTo in self.config.belongsTo) {
-							if (self.isNew() || self.hasChanged(belongsTo)) {
-								var belongsToModel = self.get(belongsTo);
-								if (belongsToModel) {
-									self.set(belongsTo + "Id", belongsToModel.get("id"), {
-										silent : true
-									});
-								} else {
-									self.set(belongsTo + "Id", null, {
-										silent : true
-									});
-								}
-							}
-						}
-
-						console.info("xValidation done with no errors ");
-						//self.__cascadeUpdateBelongsTo(function() {
-						//	self.__cascadeUpdateHasMany(function(){
-						self.save(null, options);
-						self.__xValidationError = {};
-						self.__xValidationErrorCount = 0;
-						//	});
-						//});
+						self._xSave(options);					
 					}
 				});
+				
 				return this;
 			},
 			xValidateAttribute : function(key, xCallback) {
 				var self = this;
 				this.__xValidateCount++;
 				setTimeout(function() {
-
 					self.validators[key].call(self, function(error) {
 						self.__xValidateCount--;
 						if (error) {
@@ -127,6 +122,8 @@
 			},
 			xValidate : function(xFinishCallback) {
 				var self = this;
+				this.__xValidationError = {};
+				this.__xValidationErrorCount = 0;
 
 				for (var column in this.config.columns) {
 					if (column === "id")
@@ -241,41 +238,43 @@
 				this.set(d, c);
 				return this;
 			},
+			xGetHasMany : function(attr){
+				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
+				if (this.isNew()) {
+					this.set(attr, collection, {
+						silent : true
+					});
+					return collection;
+				}
+
+				var filter = {};
+				filter[key] = this;
+				collection.xSetFilter(filter);
+
+				console.info("xGet hasMany : " + type + collection.length);
+				var idString;
+				if (this.get('id')) {
+					idString = " = '" + this.get('id') + "' ";
+				} else {
+					idString = " IS NULL ";
+				}
+				collection.xFetch({
+					query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+				});
+				console.info("xGet hasMany : " + key + collection.length);
+
+				this.set(attr, collection, {
+					silent : true
+				});
+
+				return collection;				
+			},
 			xGet : function(attr) {
 				var value = this.get(attr);
 				if (value !== undefined) {
 					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
-					var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
-
-					if (this.isNew()) {
-						this.set(attr, collection, {
-							silent : true
-						});
-						return collection;
-					}
-
-					var filter = {};
-					filter[key] = this;
-					collection.xSetFilter(filter);
-
-					console.info("xGet hasMany : " + type + collection.length);
-					var idString;
-					if (this.get('id')) {
-						idString = " = '" + this.get('id') + "' ";
-					} else {
-						idString = " IS NULL ";
-					}
-					collection.xFetch({
-						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
-					});
-					console.info("xGet hasMany : " + key + collection.length);
-
-					this.set(attr, collection, {
-						silent : true
-					});
-
-					return collection;
+					return this.xGetHasMany(attr);
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
