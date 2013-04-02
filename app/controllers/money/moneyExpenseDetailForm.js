@@ -58,5 +58,4 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").add($.$model);
 		$.getCurrentWindow().$view.close();
 	}
-
 }
