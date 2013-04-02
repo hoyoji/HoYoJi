@@ -46,7 +46,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
 				transferOut : function(xValidateComplete) {
@@ -75,12 +75,28 @@ exports.definition = {
 			getTransferIn : function() {
 				var transferIn = this.xGet("transferIn");
 				return transferIn.xGet("name");
+			},
+			xDelete : function(xFinishCallback) {
+				var transferOutOwnerUser = this.xGet("transferOutOwnerUser");
+				var transferInOwnerUser = this.xGet("transferInOwnerUser");
+				var transferOut = this.xGet("transferOut");
+				var transferIn = this.xGet("transferIn");
+				var amount = this.xGet("amount");
+				this._xDelete(xFinishCallback);
+				if(!transferOutOwnerUser){
+					transferOut.xSet("currentBalance",transferOut.xGet("currentBalance" + amount));
+					transferOut.xSave();
+				}
+				if(!transferInOwnerUser){
+					transferIn.xSet("currentBalance",transferIn.xGet("currentBalance" - amount));
+					transferIn.xSave();
+				}
 			}
 		});
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 

@@ -3,8 +3,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		Alloy.Globals.openWindow("money/moneyAddNew");
-	} else if(e.source.id === "sync"){
-		Alloy.Globals.Server.sync();		
+	} else if (e.source.id === "sync") {
+		Alloy.Globals.Server.sync();
 	}
 }
 
@@ -22,6 +22,12 @@ $.makeContextMenu = function() {
 	}));
 	menuSection.add($.createContextMenuItem("新增转账", function() {
 		Alloy.Globals.openWindow("money/moneyTransferForm");
+	}));
+	menuSection.add($.createContextMenuItem("新增借入", function() {
+		Alloy.Globals.openWindow("money/moneyLoanBorrowForm");
+	}));
+	menuSection.add($.createContextMenuItem("新增借出", function() {
+		Alloy.Globals.openWindow("money/moneyLoanLendForm");
 	}));
 
 	menuSection.add($.createContextMenuItem("切换权限", function() {
