@@ -31,8 +31,8 @@ exports.definition = {
 				type : "Currency",
 				attribute : null
 			},
-			moneyLoanBorrow : {
-				type : "MoneyLoanBorrow",
+			moneyLoanLend : {
+				type : "MoneyLoanLend",
 				attribute : "moneyLoanPaybacks"
 			},
 			ownerUser : {

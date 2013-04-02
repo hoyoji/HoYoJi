@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" title="收款明细" backgroundColor="cyan">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="还款明细"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收款明细"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyLoanPaybacksTable" bottom="0" top="42"/>
 	</View>
 </Alloy>
