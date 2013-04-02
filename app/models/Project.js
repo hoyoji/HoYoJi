@@ -26,7 +26,11 @@ exports.definition = {
 			projectShareAuthorizations : { type : "ProjectShareAuthorization", attribute : "project" },
 			moneyExpenses : {type : "MoneyExpense", attribute : "project"},
 			moneyIncomes : {type : "MoneyIncome", attribute : "project"},
-			moneyTransfers : {type : "MoneyTransfer", attribute : "project"}
+			moneyTransfers : {type : "MoneyTransfer", attribute : "project"},
+			moneyLoanBorrows : {type : "MoneyLoanBorrow", attribute : "project"},
+			moneyLoanReturns : {type : "MoneyLoanReturn", attribute : "project"},
+			moneyLoanLends : {type : "MoneyLoanLend", attribute : "project"},
+			moneyLoanPaybacks : {type : "MoneyLoanPayback", attribute : "project"}
 		},
 		rowView : "project/projectRow",
 		adapter : {

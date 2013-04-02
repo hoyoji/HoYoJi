@@ -1,4 +1,43 @@
 <Alloy>
-	<View class="container">
+	<View class="container" title="收款" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="新增收款" readModeTitle="收款详细" editModeTitle="修改收款"/>
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间"
+			bindModel="$.$model"
+			bindAttribute="date"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
+			bindModel="$.$model"
+			bindAttribute="amount"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+			bindModel="$.$model"
+			bindAttribute="project"
+			bindAttributeIsModel="name"
+			bindModelSelector="project/projectAll"
+			/>
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
+			bindModel="$.$model"
+			bindAttribute="moneyAccount"
+			bindAttributeIsModel="getAccountNameCurrency()"
+			bindModelSelector="setting/moneyAccount/moneyAccountAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
+			bindModel="$.$model"
+			bindAttribute="exchangeCurrencyRate"/>
+			<!-- <Button id="updateRate">更新本地汇率</Button> -->
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="债务人" hintText="请选择债务人"
+			bindModel="$.$model"
+			bindAttribute="friend"
+			bindAttributeIsModel="getDisplayName()"
+			bindModelSelector="friend/friendAll"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="利息" hintText="请输入利息"
+			bindModel="$.$model"
+			bindAttribute="interest"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
+			bindModel="$.$model"
+			bindAttribute="remark"/>
+		</ScrollView>
 	</View>
 </Alloy>

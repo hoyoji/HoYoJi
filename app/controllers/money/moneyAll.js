@@ -8,8 +8,14 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("新增收入", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeForm");
 	}));
-		menuSection.add($.createContextMenuItem("新增转账", function() {
+	menuSection.add($.createContextMenuItem("新增转账", function() {
 		Alloy.Globals.openWindow("money/moneyTransferForm");
+	}));
+	menuSection.add($.createContextMenuItem("新增借入", function() {
+		Alloy.Globals.openWindow("money/moneyLoanBorrowForm");
+	}));
+		menuSection.add($.createContextMenuItem("新增借出", function() {
+		Alloy.Globals.openWindow("money/moneyLoanLendForm");
 	}));
 	return menuSection;
 }
@@ -18,15 +24,20 @@ $.titleBar.bindXTable($.moneysTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
-var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferOutOwnerUser : null});
-var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({transferInOwnerUser : null});
-console.info("+++moenyTransferOut"+moneyTransferOuts.length);
-console.info("+++moenyTransferIn"+moneyTransferIns.length);
+var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
+	transferOutOwnerUser : null
+});
+var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
+	transferInOwnerUser : null
+});
+var moneyLoanBorrows = Alloy.Models.User.xGet("moneyLoanBorrows");
+var moneyLoanLends = Alloy.Models.User.xGet("moneyLoanLends");
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
-$.moneysTable.addCollection(moneyTransferOuts,"money/moneyTransferOutRow");
-$.moneysTable.addCollection(moneyTransferIns,"money/moneyTransferInRow");
-
+$.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
+$.moneysTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
+$.moneysTable.addCollection(moneyLoanBorrows);
+$.moneysTable.addCollection(moneyLoanLends);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "") {
