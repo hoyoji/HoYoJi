@@ -41,8 +41,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-										subProjectShareAuthorization.xAddToSave($);
-										subProjectShareAuthorization.xSet("state", "Accept");
+										// if(subProjectShareAuthorization.xGet("state") === "wait"){
+											subProjectShareAuthorization.xAddToSave($);
+											subProjectShareAuthorization.xSet("state", "Accept");
+										// }
+										
 									});
 								}
 								
@@ -71,25 +74,51 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						}
 					}, saveErrorCB);
 		} else if (operation === "reject") {
-			Alloy.Globals.Server.sendMsg({
-				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
-				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
-				"type" : "Project.Share.Reject",
-				"messageState" : "new",
-				"messageTitle" : Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
-				"date" : date,
-				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
-				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
-				"messageData" : $.$model.xGet("messageData")
-			}, function() {
-				$.$model.xSet('messageState', "closed");
-				$.saveModel(function(){
-					saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
-				}, saveErrorCB);
-				return;
-			}, function() {
-				saveErrorCB("拒绝分享项目失败,请重新发送");
-				return;
-			});
+			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
+							if(collection.length > 0){
+								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
+								// if(projectShareAuthorization.xGet("state") === "wait"){
+									projectShareAuthorization.xAddToSave($);
+									projectShareAuthorization.xSet("state", "Reject");
+								// }
+								if(projectShareData.shareAllSubProjects){
+									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
+										if(subProjectShareAuthorization.xGet("state") === "wait"){
+											subProjectShareAuthorization.xAddToSave($);
+											subProjectShareAuthorization.xSet("state", "Reject");
+										}
+									});
+								}
+								
+								Alloy.Globals.Server.sendMsg({
+									"toUserId" : $.$model.xGet("fromUser").xGet("id"),
+									"fromUserId" : $.$model.xGet("toUser").xGet("id"),
+									"type" : "Project.Share.Reject",
+									"messageState" : "noRead",
+									"messageTitle" : Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+									"date" : date,
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+									"messageData" : $.$model.xGet("messageData")
+								}, function() {
+									$.$model.xSet('messageState', "closed");
+									$.saveModel(function(){
+										saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
+									}, saveErrorCB);
+									return;
+								}, function() {
+									saveErrorCB("拒绝分享项目失败,请重新发送");
+									return;
+								});
+						} else {
+								saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+								return;
+						}
+					}, saveErrorCB);
+			
+			
+			
 		}
 }

@@ -62,26 +62,28 @@ exports.definition = {
 					    if (friend.xGet("id")) {
 							friend._xDelete();
 						}
-					} else if(msg.xGet("type") === "Project.Share.Reject"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
-						var projectShareData = JSON.parse(msg.xGet("messageData"));
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							id : projectShareData.projectShareAuthorizationId
-						});
-						if (projectShareAuthorization.xGet("id")){
-							projectShareAuthorization._xDelete();
-						}
-						if(projectShareData.shareAllSubProjects){
-							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
-								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-									id : subProjectShareAuthorizationId
-								});
-								if (subProjectShareAuthorization.xGet("id")){
-									subProjectShareAuthorization._xDelete();
-								}
-							});
-						}
-					} else if(msg.xGet("type") === "Project.Share.Edit"){
+					} 
+					// else if(msg.xGet("type") === "Project.Share.Reject"){
+						// msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						// var projectShareData = JSON.parse(msg.xGet("messageData"));
+						// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							// id : projectShareData.projectShareAuthorizationId
+						// });
+						// if (projectShareAuthorization.xGet("id")){
+							// projectShareAuthorization._xDelete();
+						// }
+						// if(projectShareData.shareAllSubProjects){
+							// projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+								// var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+									// id : subProjectShareAuthorizationId
+								// });
+								// if (subProjectShareAuthorization.xGet("id")){
+									// subProjectShareAuthorization._xDelete();
+								// }
+							// });
+						// }
+					// } 
+					else if(msg.xGet("type") === "Project.Share.Edit"){
 						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						if(projectShareData.shareAllSubProjects){
@@ -90,22 +92,24 @@ exports.definition = {
 									projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
 								});
 							});
-						}else{
-							var collection = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareData.subProjectShareAuthorizationIds);
-							collection.map(function(subProjectShareAuthorization){
-								subProjectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});						
-							});
 						}
-					} else if(msg.xGet("type") === "Project.Share.Delete"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
-						var projectShareData = JSON.parse(msg.xGet("messageData"));
-						var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
-						var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareIds);
-						projectShareAuthorizations.map(function(projectShareAuthorization){
-							projectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});
-							// we shall delete all the shared data from the phone
-						});
-					}			
+						// else{
+							// var collection = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareData.subProjectShareAuthorizationIds);
+							// collection.map(function(subProjectShareAuthorization){
+								// subProjectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});						
+							// });
+						// }
+					} 
+					// else if(msg.xGet("type") === "Project.Share.Delete"){
+						// msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						// var projectShareData = JSON.parse(msg.xGet("messageData"));
+						// var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+						// var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareIds);
+						// projectShareAuthorizations.map(function(projectShareAuthorization){
+							// projectShareAuthorization.save({state : "Delete"}, {wait : true, patch : true});
+							// // we shall delete all the shared data from the phone
+						// });
+					// }			
 				});
 			}
 		});
