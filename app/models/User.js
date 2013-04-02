@@ -26,7 +26,11 @@ exports.definition = {
 	    	exchanges : {type : "Exchange", attribute : "ownerUser"},
 	    	moneyIncomes : {type : "MoneyIncome", attribute : "ownerUser"},
 	    	moneyExpenses : {type : "MoneyExpense", attribute : "ownerUser"},
-	    	moneyTransfers : {type : "MoneyTransfer", attribute : "ownerUser"}
+	    	moneyTransfers : {type : "MoneyTransfer", attribute : "ownerUser"},
+	    	moneyLoanBorrows : {type : "MoneyLoanBorrow", attribute : "ownerUser"},
+	    	moneyLoanReturns : {type : "MoneyLoanReturn", attribute : "ownerUser"},
+	    	moneyLoanLends : {type : "MoneyLoanLend", attribute : "ownerUser"},
+			moneyLoanPaybacks : {type : "MoneyLoanPayback", attribute : "ownerUser"}
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},

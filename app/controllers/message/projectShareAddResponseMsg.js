@@ -65,7 +65,31 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
 								return;
 						}
-					}, saveErrorCB);
+						
+						Alloy.Globals.Server.sendMsg({
+							"toUserId" : $.$model.xGet("fromUser").xGet("id"),
+							"fromUserId" : $.$model.xGet("toUser").xGet("id"),
+							"type" : "Project.Share.Accept",
+							"messageState" : "noRead",
+							"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+							"date" : date,
+							"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
+							"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
+						}, function() {
+							$.$model.xSet('messageState', "closed");
+							$.saveModel(function(){
+								saveEndCB("您接受了 " + $.$model.xGet("fromUser").xGet("userName") + " 分享的项目");
+							}, saveErrorCB);
+							return;
+						}, function() {
+							saveErrorCB("接受分享项目失败,请重新发送");
+							return;
+						});
+				} else {
+						saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+						return;
+				}
+			}, saveErrorCB);
 		} else if (operation === "reject") {
 			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
@@ -100,10 +124,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									saveErrorCB("拒绝分享项目失败,请重新发送");
 									return;
 								});
-						} else {
-								saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+							}
+							
+							Alloy.Globals.Server.sendMsg({
+								"toUserId" : $.$model.xGet("fromUser").xGet("id"),
+								"fromUserId" : $.$model.xGet("toUser").xGet("id"),
+								"type" : "Project.Share.Reject",
+								"messageState" : "noRead",
+								"messageTitle" : Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+								"date" : date,
+								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+								"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+								"messageData" : $.$model.xGet("messageData")
+							}, function() {
+								$.$model.xSet('messageState', "closed");
+								$.saveModel(function(){
+									saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
+								}, saveErrorCB);
 								return;
-						}
-					}, saveErrorCB);
+							}, function() {
+								saveErrorCB("拒绝分享项目失败,请重新发送");
+								return;
+							});
+					} else {
+							saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+							return;
+					}
+				}, saveErrorCB);
 		}
 }
