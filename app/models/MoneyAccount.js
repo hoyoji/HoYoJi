@@ -28,12 +28,12 @@ exports.definition = {
 				var error;
 				if(Alloy.Models.User.xGet("activeMoneyAccount") === this){
 					error = { msg : "默认账户不能删除"};
-					 } else {
+				} else {
 						this._xDelete(xFinishCallback);
 						return;
-					}
-					xFinishCallback(error);
-				},
+				}
+				xFinishCallback(error);
+			},
             getAccountNameCurrency : function() {
 				return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + ")";
 			}

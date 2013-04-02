@@ -35,17 +35,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 							if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								projectShareAuthorization.xAddToSave($);
-								projectShareAuthorization.xSet("state", "Accept");
+								projectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 								
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-										// if(subProjectShareAuthorization.xGet("state") === "wait"){
-											subProjectShareAuthorization.xAddToSave($);
-											subProjectShareAuthorization.xSet("state", "Accept");
-										// }
-										
+										subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 									});
 								}
 								
@@ -59,10 +54,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
 								}, function() {
-									$.$model.xSet('messageState', "closed");
-									$.saveModel(function(){
-										saveEndCB("您接受了 " + $.$model.xGet("fromUser").xGet("userName") + " 分享的项目");
-									}, saveErrorCB);
+									$.$model.save({messageState : "closed"}, {wait : true, patch : true});
+									saveEndCB("您接受了 " + $.$model.xGet("fromUser").xGet("userName") + " 分享的项目");
 									return;
 								}, function() {
 									saveErrorCB("接受分享项目失败,请重新发送");
@@ -78,16 +71,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 							if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								// if(projectShareAuthorization.xGet("state") === "wait"){
-									projectShareAuthorization.xAddToSave($);
-									projectShareAuthorization.xSet("state", "Reject");
-								// }
+								projectShareAuthorization.save({state : "Reject"}, {wait : true, patch : false});
+								
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 										if(subProjectShareAuthorization.xGet("state") === "wait"){
-											subProjectShareAuthorization.xAddToSave($);
-											subProjectShareAuthorization.xSet("state", "Reject");
+											subProjectShareAuthorization.save({state : "Reject"}, {wait : true, patch : true});
 										}
 									});
 								}
@@ -103,10 +93,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
-									$.$model.xSet('messageState', "closed");
-									$.saveModel(function(){
-										saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
-									}, saveErrorCB);
+									$.$model.save({messageState : "closed"}, {wait : true, patch : true});
+									saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
 									return;
 								}, function() {
 									saveErrorCB("拒绝分享项目失败,请重新发送");
@@ -117,8 +105,5 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								return;
 						}
 					}, saveErrorCB);
-			
-			
-			
 		}
 }
