@@ -43,11 +43,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}else{
 		if ($.$model.isNew()) {
 			$.$model.xSet("state", "Wait");
-			var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+			var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendId : $.$model.xGet("friend").xGet("id")
 			});
-			if (projectShareAuthorizations.length > 0) {
+			if (projectShareAuthorization.xGet("id") 
+				&& (projectShareAuthorization.xGet("state") === "Wait" || projectShareAuthorization.xGet("state") === "Accept")) {
 				saveErrorCB("好友已在共享列表,请重新选择好友！");
 			}else{
 				if($.$model.xGet("shareAllSubProjects")){
@@ -56,15 +57,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						console.info("||||||||||||||||||||||||||subProject||||||||||||||||||||||||||||" + subProject.xGet("id"));
 						console.info("||||||||||||||||||||||||||friend||||||||||||||||||||||||||||" + $.$model.xGet("friend").xGet("id"));
 						var subProjectShareAuthorization;
-						// subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							// projectId : subProject.xGet("id"),
-							// friendId : $.$model.xGet("friend").xGet("id")
-						// });
-						// if (subProjectShareAuthorization.xGet("id")) {
+						subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : subProject.xGet("id"),
+							friendId : $.$model.xGet("friend").xGet("id")
+						});
+						if (subProjectShareAuthorization.xGet("id") 
+							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 							// subProjectShareAuthorization.xAddToSave($);
-						// }else{
+						}else{
 							var data = {
 								project : subProject,
 								friend :　$.$model.xGet("friend"),
@@ -82,7 +84,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", data); 
 							subProjectShareAuthorization.xAddToSave($);
 							subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						// }
+						}
 							
 					});
 				}
@@ -105,21 +107,21 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			    	saveEndCB("发送成功，请等待回复");
 			    });
 			}
-			
 	   }else{
 	   		if($.$model.hasChanged("shareAllSubProjects")){
 				if($.$model.xGet("shareAllSubProjects")){
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						var subProjectShareAuthorization;
-						// subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							// projectId : subProject.xGet("id"),
-							// friendId : $.$model.xGet("friend").xGet("id")
-						// });
-						// if (subProjectShareAuthorization.xGet("id")) {
+						subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : subProject.xGet("id"),
+							friendId : $.$model.xGet("friend").xGet("id")
+						});
+						if (subProjectShareAuthorization.xGet("id")
+							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 							// subProjectShareAuthorization.xAddToSave($);
-						// }else{
+						}else{
 							var data = {
 								project : subProject,
 								friend :　$.$model.xGet("friend"),
@@ -137,9 +139,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", data); 
 							subProjectShareAuthorization.xAddToSave($);
 							subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						// }
+						}
 					});
-					Alloy.Globals.Server.sendMsg({
+					if(subProjectShareAuthorizationIds.length){
+						Alloy.Globals.Server.sendMsg({
 						"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
@@ -156,13 +159,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				         },function(){
 					        $.saveModel(saveEndCB, saveErrorCB);
 		    			});
-				} else {
+					}
+				} 
+				else {
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 								projectId : subProject.xGet("id"),
 								friendId : $.$model.xGet("friendId")
 							});
-						if(subProjectShareAuthorization.xGet("id")){
+						if(subProjectShareAuthorization.xGet("id") 
+							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 							// subProjectShareAuthorization._xDelete();
 							subProjectShareAuthorization.xSet("state", "Delete");
@@ -170,7 +176,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							subProjectShareAuthorization.xAddToSave($);
 						}
 					});
-					Alloy.Globals.Server.sendMsg({
+					if(subProjectShareAuthorizationIds.length){
+						Alloy.Globals.Server.sendMsg({
 						"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
@@ -187,6 +194,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				         },function(){
 					        $.saveModel(saveEndCB, saveErrorCB);
 		    			});
+					}
 				}
 			}else{
 				$.saveModel(saveEndCB, saveErrorCB);

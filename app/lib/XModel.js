@@ -285,13 +285,17 @@
 					if (!m) {
 						var idString = " = '" + fId + "' ";
 						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
-						m = Alloy.createModel(table);
+						m = Alloy.createCollection(table);
 						m.fetch({
 							query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
 						});
-						console.info("xGet fetch belongsTo from DB " + m);
+						console.info("xGet fetch belongsTo from DB " + m.length);
+						if(m.length === 0){
+							m = null;
+						} else {
+							m = m.at(0);
+						}
 					}
-
 					this.attributes[attr] = m;
 					return m;
 				}
@@ -385,6 +389,29 @@
 				}
 			
 				return attributes;
+			},
+			canEdit : function(){
+				if(this.isNew()){
+					return true;
+				} else if(this.xGet("project")){
+					if(this.xGet("project").xGet("ownerUser") === Alloy.Models.User){
+						return true;
+					} else {
+						var type = this.config.adapter.collection_name;
+						if(this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"Edit") ||
+							this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"AddNew")){
+							return true;		
+						} else {
+							return false;
+						}
+					}
+				} else {
+					return true;
+				}
+			},
+			canDelete : function(){
+				return false;
 			}
+			
 		}
 	}());

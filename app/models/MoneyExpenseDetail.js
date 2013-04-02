@@ -43,6 +43,9 @@ exports.definition = {
 					this.xGet("moneyExpense").xSave();
 					this._xDelete(xFinishCallback);
 				}
+			},
+			canEdit : function(){
+				return this.xGet("moneyExpense").canEdit();				
 			}
 		});
 

@@ -1,6 +1,10 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var oldDetailAmount = $.$model.xGet("amount") || 0;
+// if (!$.$model.canEdit()) {
+	// $.setSaveableMode("read");
+// } else {
+	var oldDetailAmount = $.$model.xGet("amount") || 0;
+
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var incomeAmount = 0;
@@ -52,7 +56,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		$.becameClean();
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").add($.$model);
 		$.getCurrentWindow().$view.close();
-
-	}
+		}
 }
-
+// }
