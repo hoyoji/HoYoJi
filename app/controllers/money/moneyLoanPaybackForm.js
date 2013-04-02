@@ -12,7 +12,7 @@ if (!$.$model) {
 		localCurrency : selectedLoanLend.xGet("localCurrency"),
 		exchangeCurrencyRate : 1,
 		moneyAccount : selectedLoanLend.xGet("moneyAccount"),
-		moneyLoanBorrow : selectedLoanLend,
+		moneyLoanLend : selectedLoanLend,
 		project : selectedLoanLend.xGet("project")
 	});
 
