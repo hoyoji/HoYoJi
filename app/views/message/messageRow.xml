@@ -6,7 +6,7 @@
 					bindModel = "$.$model"
 					bindAttribute = "messageTitle" 
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" right="5" width="Ti.UI.SIZE" height="42"
 					dataType="DateTime"
 					bindModel = "$.$model"
 					bindAttribute = "date"
