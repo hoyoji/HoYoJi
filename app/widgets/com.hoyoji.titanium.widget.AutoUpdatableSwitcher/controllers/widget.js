@@ -33,7 +33,7 @@ $.setValue = function(value) {
     $.__bindAttributeIsModel = value;
     $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
     
-     	currentItemIndex = _.indexOf(values, value.toString());
+     	currentItemIndex = _.indexOf(values, value && value.toString());
      	if(currentItemIndex < 0){
      		currentItemIndex = 0;
      	}

@@ -108,12 +108,12 @@
 						// try{
 
 						$.saveCollection(function() {
-							$.$model.xSave({dbTrans : dbTrans});
-							if(!hasError){
-								db.execute("COMMIT;");
-								db.close();
-								dbTrans.trigger("commit");
-							}
+							$.$model.xSave({dbTrans : dbTrans, commit : true});
+							// if(!hasError){
+								// db.execute("COMMIT;");
+								// db.close();
+								// dbTrans.trigger("commit");
+							// }
 						}, errorCB, dbTrans);
 
 						// } catch (err) {

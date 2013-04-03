@@ -48,6 +48,11 @@ exports.definition = {
 					// xValidateComplete(error);
 				// }
 			},
+			getSharedWithHerSubProjects : function(){
+				return this.xGet("subProjects").xCreateFilter({
+					// ....
+				});
+			},
 			setDefaultExpenseCategory : function(expenseCategory){
 				if(this.xGet("ownerUser") === Alloy.Models.User && this.xGet("defaultExpenseCategory") !== expenseCategory){
 					this.xSet("defaultExpenseCategory", expenseCategory);

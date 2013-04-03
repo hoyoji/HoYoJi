@@ -91,7 +91,7 @@ function Sync(method, model, opts) {
 	var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
 	var error;
 	if(opts.dbTrans){
-		console.info("sync in transaction");
+		console.info("sync in transaction " + model.config.adapter.collection_name);
 		db = opts.dbTrans.db;
 	}
 	switch (method) {
@@ -429,20 +429,29 @@ function Sync(method, model, opts) {
 	}
 	if (resp) {
 		if(opts.dbTrans){
-			function commitTrans(){
-				opts.dbTrans.off("commit", commitTrans);
-				opts.dbTrans.off("rollback", rollbackTrans);
+			if(opts.commit === true){
+				db.execute("COMMIT;");
+				db.close();
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch");
+				opts.dbTrans.trigger("commit");
+			} else {
+				function commitTrans(){
+					opts.dbTrans.off("commit", commitTrans);
+					opts.dbTrans.off("rollback", rollbackTrans);
+					_.isFunction(opts.success) && opts.success(resp);
+					method === "read" && model.trigger("fetch");
+				}
+				function rollbackTrans(){
+					opts.dbTrans.off("commit", commitTrans);
+					opts.dbTrans.off("rollback", rollbackTrans);
+					error = { __summury : { msg : "没有删除权限"}};
+					_.isFunction(opts.error) && opts.error(model, error);
+				}
+				opts.dbTrans.on("commit", commitTrans);
+				opts.dbTrans.on("rollback", rollbackTrans);
 			}
-			function rollbackTrans(){
-				opts.dbTrans.off("commit", commitTrans);
-				opts.dbTrans.off("rollback", rollbackTrans);
-				error = { __summury : { msg : "没有删除权限"}};
-				_.isFunction(opts.error) && opts.error(model, error);
-			}
-			opts.dbTrans.on("commit", commitTrans);
-			opts.dbTrans.on("rollback", rollbackTrans);
+			
 		} else {
 			_.isFunction(opts.success) && opts.success(resp);
 			method === "read" && model.trigger("fetch");

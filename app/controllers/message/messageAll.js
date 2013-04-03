@@ -1,7 +1,10 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.titleBar.bindXTable($.newMessagesTable);
+//$.titleBar.bindXTable($.newMessagesTable);
 
+function onFooterbarTap (e) {
+	$.titleBar.setTitle(e.source.getTitle());
+}
 
 var newMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),

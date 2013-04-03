@@ -20,7 +20,12 @@
 					var children = hasChild ? hasChild.split(",") : [];
 					childrenCollections = [];
 					for (var i = 0; i < children.length; i++) {
-						var collection = $.$model.xGet(children[i]);
+						var collection;
+						if(children[i].endsWith("()")){
+							collection = $.$model[children[i].slice(0,-2)]();	
+						} else {
+							collection = $.$model.xGet(children[i]);
+						}
 						childrenCollections.push(collection);
 						collection.on("remove", enableOpenChildButton);
 						collection.on("add", enableOpenChildButton);
@@ -63,7 +68,13 @@
 					var details = hasDetail ? hasDetail.split(",") : [];
 					detailCollections = [];
 					for (var i = 0; i < details.length; i++) {
-						var collection = $.$model.xGet(details[i]);
+						var collection;
+						if(details[i].endsWith("()")){
+							collection = $.$model[details[i].slice(0,-2)]();	
+						} else {
+							collection = $.$model.xGet(details[i]);
+						}
+						
 						detailCollections.push(collection);
 						collection.on("remove", enableOpenDetailButton);
 						collection.on("add", enableOpenDetailButton);
