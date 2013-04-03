@@ -19,49 +19,85 @@
 						}
 					}
 				},
-				saveCollection : function(xCompleteCallback, xErrorCallback) {
-					var i = 0;
+				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans) {
+					var mydb, myDbTrans;
+					if(!dbTrans){
+						mydb = Ti.Database.open("hoyoji");
+						mydb.execute("BEGIN;");
+						
+						myDbTrans = {db : mydb};
+						_.extend(myDbTrans, Backbone.Events);
+					} else {
+						myDbTrans = dbTrans;
+						mydb = dbTrans.db;
+					}
+					var i = 0, hasError;
 					for (i = 0; i < $.__saveCollection.length; i++) {
-						if ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged()) {
-							$.__saveCollection[i].once("sync", function() {
-								$.saveCollection(xCompleteCallback, xErrorCallback);
-							});
+						if (!hasError && ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged())) {
+							// $.__saveCollection[i].once("sync", function() {
+								// $.saveCollection(xCompleteCallback, xErrorCallback, myDbTrans);
+							// });
 
 							$.__saveCollection[i].xSave({
+								dbTrans : myDbTrans,
 								error : function(model, error) {
 									$.__saveCollection = [];
+									if(!dbTrans){
+										mydb.execute("ROLLBACK;");
+										mydb.close();
+										myDbTrans.trigger("rollback");
+									}
+									hasError = true;
 									xErrorCallback(model, error);
-									return;
 								}
 							});
+							// return;
+						} else {
 							return;
 						}
 					}
-					if (i === $.__saveCollection.length) {
+					if (!hasError) {
 						$.__saveCollection = [];
+						if(!dbTrans){
+							mydb.execute("COMMIT;");
+							mydb.close();
+							myDbTrans.trigger("commit");
+						}
 						xCompleteCallback();
 					}
 				},
 				saveModel : function(saveEndCB, saveErrorCB) {
 					if ($.$model) {
+						
+						var db = Ti.Database.open("hoyoji");
+						var dbTrans = {db : db};
+						_.extend(dbTrans, Backbone.Events);
+						
+						db.execute("BEGIN;");
+						
 						// if (!$.$model.isNew()) {
 						// if this is a addnew action, reset the id if there is any error during sync operation
 						// var clearModelId = function() {
 						// $.$model.xSet("id", null);
 						// }
 						// }
+						var hasError;
 						var successCB = function() {
 							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
 							saveEndCB();
 						}
 						var errorCB = function(model, error) {
+							hasError = true;
 							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
 							var errMsg;
 							if (error.__summury) {
 								errMsg = error.__summury.msg;
 							}
+							db.execute("ROLLBACK;");
+							db.close();
+							dbTrans.trigger("rollback");
 							saveErrorCB(errMsg);
 						}
 
@@ -72,8 +108,13 @@
 						// try{
 
 						$.saveCollection(function() {
-							$.$model.xSave();
-						}, errorCB);
+							$.$model.xSave({dbTrans : dbTrans});
+							if(!hasError){
+								db.execute("COMMIT;");
+								db.close();
+								dbTrans.trigger("commit");
+							}
+						}, errorCB, dbTrans);
 
 						// } catch (err) {
 						// if (_.isFunction(clearModelId)) {

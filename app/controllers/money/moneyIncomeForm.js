@@ -50,10 +50,8 @@ if (!$.$model) {
 			setExchangeRate($.moneyAccount.getValue(), $.$model);
 		}
 	}
-
-
+	
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
-	// setExchange will 触发 change 事件，change事件会使 form dirty, dirty form 会提示用户说修改未保存，
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
 		var exchangeCurrencyRateValue;
@@ -99,16 +97,16 @@ if (!$.$model) {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-			oldMoneyAccount.xAddToSave($);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 		}
 
-		if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
-			Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-			Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+		if ($.$model.isNew()) {
 			//记住当前分类为下次打开时的默认分类
-			Alloy.Models.User.xGet("activeProject").setDefaultIncomeCategory($.$model.xGet("moneyIncomeCategory"));
+			$.$model.xGet("project").setDefaultIncomeCategory($.$model.xGet("moneyIncomeCategory"));
 
+			//记住当前账户为下次打开时的默认账户
+			// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+			// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 			//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
 			Alloy.Models.User.save({
 				activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
@@ -139,9 +137,9 @@ if (!$.$model) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			if ($.$model.isNew()) {
-				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
-				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
-				Alloy.Models.User.xGet("activeProject").xSet("defaultIncomeCategory", Alloy.Models.User.previous("activeProject").xGet("defaultIncomeCategory"));
+				// $.$model.xGet("project").setDefaultIncomeCategory(Alloy.Models.User.previous("activeProject").xGet("defaultIncomeCategory"));
+				// Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
+				// Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
 			}
 			saveErrorCB(e);
 		});

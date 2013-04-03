@@ -9,18 +9,26 @@
 		exports.XModel = {
 			__xValidateCount : 0,
 			initialize : function() {
+				var self = this;
 				if (this.isNew()) {
 					this.attributes.id = guid();
 					if (Alloy.Models.User) {
 						this.xSet("ownerUser", Alloy.Models.User);
 					}
+					this.on("sync", function(){
+						for (var belongsTo in self.config.belongsTo) {
+							self.attributes[belongsTo] = null;
+							delete self.attributes[belongsTo];
+							delete self._previousAttributes[belongsTo];
+							delete self.changed[belongsTo];
+						}	
+					});
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
 				} else {
 					this.__initializeExistingModel();
 				}
 
 				// revert the belongsTo ID changes on error
-				var self = this;
 				this.on("error", function() {
 					for (var belongsTo in self.config.belongsTo) {
 						var attr = belongsTo + "Id";
