@@ -13,7 +13,8 @@ if (!$.$model) {
 		exchangeCurrencyRate : 1,
 		moneyAccount : selectedLoanBorrow.xGet("moneyAccount"),
 		moneyLoanBorrow : selectedLoanBorrow,
-		project : selectedLoanBorrow.xGet("project")
+		project : selectedLoanBorrow.xGet("project"),
+		friend : selectedLoanBorrow.xGet("friend")
 	});
 
 	$.setSaveableMode("add");
@@ -26,6 +27,7 @@ $.onWindowOpenDo(function() {
 
 oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 oldAmount = $.$model.xGet("amount") || 0;
+var oldInterest = $.$model.xGet("interest") || 0;
 
 function updateExchangeRate(e) {
 	if ($.moneyAccount.getValue()) {
@@ -65,13 +67,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 	var newAmount = $.$model.xGet("amount");
 	var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
+	var newInterest = $.$model.xGet("interest");
 
 	if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount + oldInterest - newInterest);
 	} else {//账户改变时
-		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount + oldInterest);
 		oldMoneyAccount.xAddToSave($);
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount - newInterest);
 	}
 
 	if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
@@ -93,6 +96,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 		exchange.xAddToSave($);
 	}
+
+	var returnedAmount = $.$model.xGet("moneyLoanBorrow").xGet("returnedAmount");//更新已还款
+	var borrowRate = $.$model.xGet("moneyLoanBorrow").xGet("exchangeCurrencyRate");
+	var returnRate = $.$model.xGet("exchangeCurrencyRate");
+	$.$model.xGet("moneyLoanBorrow").xSet("returnedAmount", (returnedAmount - (oldAmount + newAmount)*returnRate/borrowRate).toUserCurrency());
+	$.$model.xGet("moneyLoanBorrow").xAddToSave($);
 
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));

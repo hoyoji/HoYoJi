@@ -8,9 +8,13 @@
                 		bindAttribute="fromUser"
                 		bindAttributeIsModel="userName"
                 		/>
-				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="请求消息"
-				bindModel="$.$model"
-				bindAttribute="detail"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="发送时间" 
+					bindModel = "$.$model"
+					bindAttribute = "date"
+				/>
+				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求消息"
+					bindModel="$.$model"
+					bindAttribute="detail"/>
 		</ScrollView>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
         	buttons="忽略,拒绝,接受共享"

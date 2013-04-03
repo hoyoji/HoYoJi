@@ -35,12 +35,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 						if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								projectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
-								
+								if(projectShareAuthorization.xGet("state") === "wait"){
+									projectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
+								}
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-										subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
+										if(subProjectShareAuthorization.xGet("state") === "wait"){
+											subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
+										}
 									});
 								}
 								
@@ -71,8 +74,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 					if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								projectShareAuthorization.save({state : "Reject"}, {wait : true, patch : false});
-								
+								if(projectShareAuthorization.xGet("state") === "wait"){
+									projectShareAuthorization.save({state : "Reject"}, {wait : true, patch : false});
+								}
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);

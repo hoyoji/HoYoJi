@@ -9,30 +9,12 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 }
 $.titleBar.bindXTable($.myProjectsTable);
 
-// var sharedWithMeTableCollection = Alloy.createCollection("Project").xSearchInDb({ownerUserId : Alloy.Models.User.id,projectSharedById : "NOT NULL"});
-    // sharedWithMeTableCollection = sharedWithMeTableCollection.xSetFilter(function(model){
-    	// var parentProject = null;
-    	// if(!model.xGet("projectSharedBy").xGet("project").xGet("parentProject")){
-    		// return true;
-    	// }
-	   	// return false;
-	// });
-// 	
-// var sharedWithHerTableCollection = Alloy.createCollection("Project").xSearchInDb({ownerUserId : Alloy.Models.User.id,projectSharedById : null});
-    // sharedWithHerTableCollection = sharedWithHerTableCollection.xSetFilter(function(model){
-    	// if(model.xGet("projectShareAuthorizations").length > 0 
-    	// && (model.xGet("projectProject").xGet("projectShareAuthorizations").length === 0 || model.xGet("projectProject").xGet("id") === null)){
-    		// return true;
-    	// }
-	   	// return false;
-	// });
-
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null, ownerUserId : Alloy.Models.User.id});
 var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
-	return model.xGet("ownerUserId") !== Alloy.Models.User.id;
+	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
 });
 var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
-	return model.xGet("projectShareAuthorizations").length > 0;
+	return model.xGet("projectShareAuthorizations").length > 0 && model.xGet("ownerUserId") === Alloy.Models.User.id && !model.xGet("parentProject");
 });
 $.myProjectsTable.addCollection(myProjectsTableCollection);
 $.sharedWithMeTable.addCollection(sharedWithMeTableCollection);

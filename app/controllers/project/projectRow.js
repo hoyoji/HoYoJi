@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "项目操作"
 	});
 	var projectIsSharedToMe = true;
-	if(!$.$model.xGet("projectSharedBy")){
+	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 		projectIsSharedToMe = false;
 	}
 
@@ -85,7 +85,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		        projectShareLoanReturnDelete : 1
 			}
 		}); 
-	}));
+	},projectIsSharedToMe));
 	menuSection.add(
 		$.createContextMenuItem("删除项目", 
 			function() {

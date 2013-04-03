@@ -10,10 +10,10 @@
 			bindModel="$.$model"
 			bindAttribute="amount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="project"
 			bindAttributeIsModel="name"
-			bindModelSelector="project/projectAll"
 			/>
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
@@ -27,12 +27,12 @@
 			bindAttribute="exchangeCurrencyRate"/>
 			<!-- <Button id="updateRate">更新本地汇率</Button> -->
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="债务人" hintText="请选择债务人"
+			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="friend"
 			bindAttributeIsModel="getDisplayName()"
-			bindModelSelector="friend/friendAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="利息" hintText="请输入利息"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="interest" labelText="利息" hintText="请输入利息"
 			bindModel="$.$model"
 			bindAttribute="interest"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
