@@ -29,6 +29,7 @@
 
 							$.__saveCollection[i].xSave({
 								error : function(model, error) {
+									$.__saveCollection = [];
 									xErrorCallback(model, error);
 									return;
 								}
@@ -37,6 +38,7 @@
 						}
 					}
 					if (i === $.__saveCollection.length) {
+						$.__saveCollection = [];
 						xCompleteCallback();
 					}
 				},

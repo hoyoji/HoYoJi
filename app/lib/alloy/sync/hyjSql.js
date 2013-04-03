@@ -327,7 +327,7 @@ function Sync(method, model, opts) {
 					error = { __summury : { msg : "没有修改权限"}};
 					db.execute("ROLLBACK;");
 					db.close();
-					return;
+					break;
 				}
 			}
 
@@ -338,7 +338,7 @@ function Sync(method, model, opts) {
 					error = { __summury : { msg : "没有修改权限"}};
 					db.execute("ROLLBACK;");
 					db.close();
-					return;
+					break;
 				}
 			}
 
