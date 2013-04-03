@@ -13,7 +13,8 @@ if (!$.$model) {
 		exchangeCurrencyRate : 1,
 		moneyAccount : selectedLoanBorrow.xGet("moneyAccount"),
 		moneyLoanBorrow : selectedLoanBorrow,
-		project : selectedLoanBorrow.xGet("project")
+		project : selectedLoanBorrow.xGet("project"),
+		friend : selectedLoanBorrow.xGet("friend")
 	});
 
 	$.setSaveableMode("add");
@@ -93,6 +94,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 		exchange.xAddToSave($);
 	}
+
+	var returnedAmount = $.$model.xGet("moneyLoanBorrow").xGet("returnedAmount");//更新已还款
+	var borrowRate = $.$model.xGet("moneyLoanBorrow").xGet("exchangeCurrencyRate");
+	var returnRate = $.$model.xGet("exchangeCurrencyRate");
+	$.$model.xGet("moneyLoanBorrow").xSet("returnedAmount", (returnedAmount - (oldAmount + newAmount)*returnRate/borrowRate).toUserCurrency());
+	$.$model.xGet("moneyLoanBorrow").xAddToSave($);
 
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
