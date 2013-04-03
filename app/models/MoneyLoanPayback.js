@@ -51,6 +51,9 @@ exports.definition = {
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
+			getInterest : function(){
+				return this.xGet("interest").toUserCurrency();
+			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
