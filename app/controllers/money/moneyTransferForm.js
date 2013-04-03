@@ -15,7 +15,7 @@ if (!$.$model) {
 var oldTransferOutAmount = $.$model.xGet("transferOutAmount");
 var oldTransferInAmount = $.$model.xGet("transferInAmount");
 var oldTransferOut = $.$model.xGet("transferOut");
-var oldTransferInt = $.$model.xGet("transferIn");
+var oldTransferIn = $.$model.xGet("transferIn");
 var oldTransferOutOwnerUser = $.$model.xGet("transferOutOwnerUser");
 var oldTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 
@@ -44,7 +44,7 @@ function updateExchangeCurrencyRate(transferOut, transferIn) {
 
 function setExchangeCurrencyRate(transferOut, transferIn) {
 	var exchangeCurrencyRateValue;
-	if (transferOut.xGet("currency") === transferIn.xGet("currency")) {
+	if (transferOut.xGet("currency").xGet("code") === transferIn.xGet("currency").xGet("code")) {
 		createRate = false;
 		exchangeCurrencyRateValue = 1;
 		$.exchangeCurrencyRate.hide();
@@ -130,7 +130,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var newTransferOutAmount = $.$model.xGet("transferOutAmount");
 	var newTransferInAmount = $.$model.xGet("transferInAmount");
 	var newTransferOut = $.$model.xGet("transferOut");
-	var newTransferInt = $.$model.xGet("transferIn");
+	var newTransferIn = $.$model.xGet("transferIn");
 	var newTransferOutOwnerUser = $.$model.xGet("transferOutOwnerUser");
 	var newTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 

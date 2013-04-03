@@ -81,14 +81,15 @@ exports.definition = {
 				var transferInOwnerUser = this.xGet("transferInOwnerUser");
 				var transferOut = this.xGet("transferOut");
 				var transferIn = this.xGet("transferIn");
-				var amount = this.xGet("amount");
+				var transferOutAmount = this.xGet("transferOutAmount");
+				var transferInAmount = this.xGet("transferInAmount");
 				this._xDelete(xFinishCallback);
 				if(!transferOutOwnerUser){
-					transferOut.xSet("currentBalance",transferOut.xGet("currentBalance" + amount));
+					transferOut.xSet("currentBalance",transferOut.xGet("currentBalance") + transferOutAmount);
 					transferOut.xSave();
 				}
 				if(!transferInOwnerUser){
-					transferIn.xSet("currentBalance",transferIn.xGet("currentBalance" - amount));
+					transferIn.xSet("currentBalance",transferIn.xGet("currentBalance") - transferInAmount);
 					transferIn.xSave();
 				}
 			}

@@ -35,9 +35,10 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="请选择时间"
 			bindModel="$.$model"
 			bindAttribute="repaymentDate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="paybackedAmount" labelText="已收金额" hintText="请输入已收金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
+			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
-			bindAttribute="paybackedAmount"/>
+			bindAttribute="returnedAmount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>

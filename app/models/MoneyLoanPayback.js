@@ -40,7 +40,7 @@ exports.definition = {
 				attribute : "moneyLoanPaybacks"
 			}
 		},
-		rowView : "money/moneyLoanPaybackRow",
+
 		adapter : {
 			type : "hyjSql"
 		}
@@ -49,12 +49,21 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			getLocalAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeCurrencyRate");
+				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
+			},
+			getInterest : function(){
+				return this.xGet("interest").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
+				var moneyLoanLend = this.xGet("moneyLoanLend");
+				var lendRate = moneyLoanLend.xGet("exchangeCurrencyRate");
+				var paybackRate = this.xGet("exchangeCurrencyRate");
+
 				this._xDelete(xFinishCallback);
+				moneyLoanLend.xSet("paybackedAmount", moneyLoanLend.xGet("paybackedAmount") - amount*paybackRate/lendRate);
+				moneyLoanLend.xSave();
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 				moneyAccount.xSave();
 			}
