@@ -3,19 +3,18 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="分享请求" readModeTitle="分享请求" editModeTitle="分享请求" editModeMenuButtonTitle="同意"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" labelText="发送时间" 
-					dataType="DateTime"
-					bindModel = "$.$model"
-					bindAttribute = "date"
-				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
                 		bindModel="$.$model"
                 		bindAttribute="fromUser"
                 		bindAttributeIsModel="userName"
                 		/>
-				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="请求消息"
-				bindModel="$.$model"
-				bindAttribute="detail"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="发送时间" 
+					bindModel = "$.$model"
+					bindAttribute = "date"
+				/>
+				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求消息"
+					bindModel="$.$model"
+					bindAttribute="detail"/>
 		</ScrollView>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
         	buttons="忽略,拒绝,接受共享"

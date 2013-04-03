@@ -3,32 +3,32 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 $.titleBar.bindXTable($.newMessagesTable);
 
 
-var newMsgcollection = Alloy.createCollection("Message").xSearchInDb({
+var newMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	toUserId : Alloy.Models.User.id,
 	messageState : "new"
 });
-newMsgcollection = newMsgcollection.xSetFilter({
+newMsgCollection = newMsgCollection.xSetFilter({
 	messageBox : Alloy.Models.User.xGet("messageBox"),
 	toUser : Alloy.Models.User,
 	messageState : "new"
 });
-var noReadMsgcollection = Alloy.createCollection("Message").xSearchInDb({
+var noReadMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	toUserId : Alloy.Models.User.id,
 	messageState : "noRead"
 });
-noReadMsgcollection = noReadMsgcollection.xSetFilter({
+noReadMsgCollection = noReadMsgCollection.xSetFilter({
 	messageBox : Alloy.Models.User.xGet("messageBox"),
 	toUser : Alloy.Models.User,
 	messageState : "noRead"
 });
-var readedMsgcollection = Alloy.createCollection("Message").xSearchInDb({
+var readedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	toUserId : Alloy.Models.User.id,
 	messageState : "readed"
 });
-readedMsgcollection = readedMsgcollection.xSetFilter({
+readedMsgCollection = readedMsgCollection.xSetFilter({
 	messageBox : Alloy.Models.User.xGet("messageBox"),
 	toUser : Alloy.Models.User,
 	messageState : "readed"
@@ -47,13 +47,21 @@ var sendedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	fromUserId : Alloy.Models.User.id
 });
-sendedMsgCollection = closedMsgCollection.xSetFilter({
+sendedMsgCollection = sendedMsgCollection.xSetFilter({
 	messageBox : Alloy.Models.User.xGet("messageBox"),
 	fromUser : Alloy.Models.User
 }); 
-
-$.newMessagesTable.addCollection(newMsgcollection);
-$.newMessagesTable.addCollection(noReadMsgcollection);
-$.oldMessagesTable.addCollection(readedMsgcollection);
+// var newMsgcollection = Alloy.Models.User.xGet("messageBox").xGet("messages").xCreateFilter(function(model){
+	// return (model.xGet("messageState") === "new" || model.xGet("messageState") === "noRead") && model.xGet("toUserId") === Alloy.Models.User.id;
+// });
+// var closedMsgCollection = Alloy.Models.User.xGet("messageBox").xGet("messages").xCreateFilter(function(model){
+	// return (model.xGet("messageState") === "closed" || model.xGet("messageState") === "readed") && model.xGet("toUserId") === Alloy.Models.User.id;
+// });
+// var sendedMsgcollection = Alloy.Models.User.xGet("messageBox").xGet("messages").xCreateFilter(function(model){
+	// return model.xGet("fromUserId") === Alloy.Models.User.id;
+// });
+$.newMessagesTable.addCollection(newMsgCollection);
+$.newMessagesTable.addCollection(noReadMsgCollection);
+$.oldMessagesTable.addCollection(readedMsgCollection);
 $.oldMessagesTable.addCollection(closedMsgCollection);
 $.sendedMessagesTable.addCollection(sendedMsgCollection);

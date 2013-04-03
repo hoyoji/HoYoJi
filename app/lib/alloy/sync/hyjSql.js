@@ -313,9 +313,9 @@ function Sync(method, model, opts) {
 				} else if(table === "User"){
 					
 				} else if(table === "ProjectShareAuthorization"){
-					sql += ' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = ' + table + '.ownerUserId AND id = ' + table + '.friendId AND friendUserId = "' + ownerUserId + '")';
+					sql += ' AND (EXISTS (SELECT id FROM Friend WHERE ownerUserId = ' + table + '.ownerUserId AND id = ' + table + '.friendId AND friendUserId = "' + ownerUserId + '") OR ownerUserId = "' + ownerUserId + '")';
 				} else {
-	                sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
+	                sql += ' AND ownerUserId = "' + ownerUserId + '"';
 	            }
 
 			db = Ti.Database.open(dbName);
