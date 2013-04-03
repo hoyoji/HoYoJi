@@ -56,7 +56,7 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			getLocalAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeCurrencyRate");
+				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
 			// setAmount : function(amount){
 				// amount = amount || 0;

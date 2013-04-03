@@ -1,16 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "借入操作"
-	});
-	menuSection.add($.createContextMenuItem("还款明细", function() {
-		Alloy.Globals.openWindow("money/moneyLoanReturnAll", {
-			selectedBorrow : $.$model
-		});
-	}));
-	return menuSection;
-}
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -26,7 +15,22 @@ if (!$.$model) {
 	});
 
 	$.setSaveableMode("add");
-
+$.returnedAmount.hide();
+}
+else{
+	$.returnedAmount.show();
+	
+	$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "借入操作"
+	});
+	menuSection.add($.createContextMenuItem("还款明细", function() {
+		Alloy.Globals.openWindow("money/moneyLoanReturnAll", {
+			selectedLoanBorrow : $.$model
+		});
+	}));
+	return menuSection;
+}
 }
 $.onWindowOpenDo(function() {
 	setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
