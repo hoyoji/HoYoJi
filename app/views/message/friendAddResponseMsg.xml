@@ -3,6 +3,11 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="好友请求" readModeTitle="好友请求" editModeTitle="好友请求" editModeMenuButtonTitle="同意"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" labelText="发送时间" 
+					dataType="DateTime"
+					bindModel = "$.$model"
+					bindAttribute = "date"
+				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
                 		bindModel="$.$model"
                 		bindAttribute="fromUser"
