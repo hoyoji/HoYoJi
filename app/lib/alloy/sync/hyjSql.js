@@ -184,13 +184,13 @@ function Sync(method, model, opts) {
 							silent : !0
 						});
 					} else
-						Ti.API.warn("Unable to get ID from database for model: " + model.toJSON());
+						Ti.API.warn("Unable to get ID from database for model: " + model.attributes);
 				}
 				if(!opts.dbTrans){
 					db.execute("COMMIT;");
 					db.close();
 				}
-				return model.toJSON();
+				return model.attributes;
 			}();
 			break;
 		case "read":
@@ -371,7 +371,7 @@ function Sync(method, model, opts) {
 				error = { __summury : { msg : "修改失败，请重试"}};
 				delete opts.wait;
 			} else {
-				resp = model.toJSON();
+				resp = model.attributes;
 			}
 			if(!opts.dbTrans){
 				db.execute("COMMIT;");
@@ -421,7 +421,7 @@ function Sync(method, model, opts) {
 				error = { __summury : { msg : "没有删除权限"}};
 			} else {
 				model.id = null;
-				resp = model.toJSON();
+				resp = model.attributes;
 			}
 			if(!opts.dbTrans){	
 				db.close();

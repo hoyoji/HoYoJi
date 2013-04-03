@@ -99,22 +99,7 @@ if (!$.$model) {
 		}
 	
 		if ($.$model.isNew()) {
-			//记住当前分类为下次打开时的默认分类
-			$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
-			
-			//记住当前账户为下次打开时的默认账户
-			// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-			// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-			//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
-			Alloy.Models.User.save({
-				activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
-				activeProjectId : $.$model.xGet("project").xGet("id")
-			}, {
-				patch : true,
-				wait : true
-			});
-			
-					// save all expense details	
+			// save all expense details	
 			$.$model.xGet("moneyExpenseDetails").map(function(item){
 				console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
 				item.xAddToSave($);
@@ -129,15 +114,29 @@ if (!$.$model) {
 			});
 			exchange.xAddToSave($);
 		}
-		
-		$.saveModel(saveEndCB, function(e) {
+		var modelIsNew = $.$model.isNew();
+		$.saveModel(function(e){
+				if(modelIsNew){
+					//记住当前分类为下次打开时的默认分类
+					$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
+					
+					//记住当前账户为下次打开时的默认账户
+					// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+					// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+					//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
+					Alloy.Models.User.save({
+						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
+						activeProjectId : $.$model.xGet("project").xGet("id")
+					}, {
+						patch : true,
+						wait : true
+					});				
+				}
+				saveEndCB(e);
+			}, 
+			function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if ($.$model.isNew()) {
-				// $.$model.xGet("project").setDefaultExpenseCategory(Alloy.Models.User.previous("activeProject").xGet("defaultExpenseCategory"));
-				// Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
-				// Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
-			}
 			saveErrorCB(e);
 		});
 	}
