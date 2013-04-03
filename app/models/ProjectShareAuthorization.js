@@ -183,6 +183,14 @@ exports.definition = {
 	    			},function(){
 	    				xFinishCallback({ msg :"删除出错,请重试"});
 	    			});	
+			},
+			canEdit : function(){
+				if(this.isNew()){
+					return true;
+				} else if(this.xGet("ownerUser") === Alloy.Models.User){
+					return true;
+				}
+				return false;
 			}
 		});
 		return Model;

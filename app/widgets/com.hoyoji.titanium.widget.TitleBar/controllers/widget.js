@@ -100,6 +100,7 @@ exports.setSaveableMode = function(mode) {
 		$.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "read") {
 		$.title.setText($.$attrs.readModeTitle || $.$attrs.title);
+		$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
 		$.menuButton.setEnabled(true);
 	} else {
 		alert("$.we.should.not.be.here.! " + mode);

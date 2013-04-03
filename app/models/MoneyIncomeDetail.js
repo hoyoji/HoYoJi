@@ -43,6 +43,9 @@ exports.definition = {
 					this.xGet("moneyIncome").xSave();
 					this._xDelete(xFinishCallback);
 				}
+			},
+			canEdit : function(){
+				return this.xGet("moneyIncome").canEdit();				
 			}
 		});
 		return Model;
