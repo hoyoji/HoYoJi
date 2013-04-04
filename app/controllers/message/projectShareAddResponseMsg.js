@@ -13,7 +13,7 @@ var onFooterbarTap = function(e) {
 	}
 }
 
-$.onWindowOpenDo(function() {
+// $.onWindowOpenDo(function() {
 	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.save({messageState : "closed"}, {wait : true, patch : true});
 		$.footerBar.$view.hide();
@@ -24,7 +24,7 @@ $.onWindowOpenDo(function() {
 	else if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({messageState : "readed"}, {wait : true, patch : true});
 	}
-});
+// });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 		var projectShareData = JSON.parse($.$model.xGet("messageData"));

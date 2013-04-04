@@ -26,17 +26,21 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory")
 	});
 	$.setSaveableMode("add");
-	
-	$.$model.on("xchange:amount", function(){
+	function updateAmuont(){
 		$.amount.setValue($.$model.xGet("amount"));
 		$.amount.field.fireEvent("change");
+	}
+	$.$model.on("xchange:amount", updateAmount);
+	$.onWindowCloseDo(function(){
+		$.$model.off("xchange:amount", updateAmount);
 	});
 }
 
-// if(!$.$model.canEdit()){
-	// $.setSaveableMode("read");
-	// $.exchangeCurrencyRate.hide();
-// } else {
+if($.saveableMode === "read"){
+	$.setSaveableMode("read");
+	$.exchangeCurrencyRate.hide();
+	$.moneyAccount.hide();
+} else {
 	$.onWindowOpenDo(function(){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	});
@@ -140,4 +144,4 @@ if (!$.$model) {
 			saveErrorCB(e);
 		});
 	}
-// }
+}
