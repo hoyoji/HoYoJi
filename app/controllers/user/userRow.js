@@ -10,7 +10,7 @@ $.onRowTap = function(e) {
 	} else if (friendlength > 0) {
 		alert("不能重复添加好友！");
 	} else {
-		if ($.$model.xGet("friendAuthorization") === "none") {
+		if ($.$model.xGet("newFriendAuthentication") === "none") {
 			var date = (new Date()).toISOString();
 			// $.$model.xSet("date", date);
 			Alloy.Globals.Server.sendMsg({

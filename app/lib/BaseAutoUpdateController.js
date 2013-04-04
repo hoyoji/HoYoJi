@@ -144,8 +144,9 @@
 					$.error.animate(animation);
 				}
 			}
-			$.error.addEventListener("singletap", hideErrorMsg);
+			// $.error.addEventListener("singletap", hideErrorMsg);
 			$.field.addEventListener("singletap", function(e) {
+				hideErrorMsg();
 				if ($.saveableMode === "read") {
 					return;
 				}
@@ -221,6 +222,9 @@
 							}
 						}
 						model.xSet(attribute, val);
+						if($.$attrs.autoSave === "true"){
+							model._xSave();
+						}
 					}
 					// if(model.validate(model.attributes)){
 					// model.trigger("invalid");
@@ -253,8 +257,10 @@
 			if ($.$attrs.value) {
 				$.setValue($.$attrs.value);
 			}
-			if ($.$attrs.labelText) {
-				$.label.setText($.$attrs.labelText);
+			if($.label){
+				if ($.$attrs.labelText) {
+					$.label.setText($.$attrs.labelText);
+				}
 			}
 
 			// $.setSaveableMode($.saveableMode);
@@ -262,33 +268,38 @@
 			if ($.$attrs.bindAttribute) {
 				var model = $.$attrs.bindModel;
 				if (model && typeof model === "string") {
-					var resolveBindModelFromSaveable = function(saveableController) {
-						console.info("resolved bindModel from saveable " + model);
-						var path = model.split(".");
-						if (path[0] === "$") {
-							model = saveableController;
-						} else {
-							model = Alloy.Models[path[0]];
-						}
-
-						for (var i = 1; i < path.length; i++) {
-							if (model.xGet) {
-								model = model.xGet(path[i]);
-							} else {
-								model = model[path[i]];
+						var resolveBindModelFromSaveable = function(saveableController) {
+							console.info("resolved bindModel from saveable " + model);
+							var path = model.split(".");
+							// if (path[0] === "$") {
+								model = saveableController;
+							// } else {
+								// model = Alloy.Models[path[0]];
+							// }
+	
+							for (var i = 1; i < path.length; i++) {
+								if (model.xGet) {
+									model = model.xGet(path[i]);
+								} else {
+									model = model[path[i]];
+								}
 							}
+							$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 						}
-						$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
-					}
-					$.onWindowOpenDo(function() {
-						console.info("on window open ********************************************** " + $.$attrs.bindAttribute);
-						$.$view.fireEvent("resolvesaveablemodel", {
-							bubbles : true,
-							callback : function($) {
-								resolveBindModelFromSaveable($);
+						$.onWindowOpenDo(function() {
+							if(!model.startsWith("$.")){
+								resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
+							} else {
+									console.info("on window open ********************************************** " + $.$attrs.bindAttribute);
+									$.$view.fireEvent("resolvesaveablemodel", {
+										bubbles : true,
+										callback : function($) {
+											resolveBindModelFromSaveable($);
+										}
+									});
 							}
 						});
-					});
+					
 				} else if (model && typeof model === "object") {
 					$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 				} else {
