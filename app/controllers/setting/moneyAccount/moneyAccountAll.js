@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 			data : {
 				currency : Alloy.Models.User.xGet("activeCurrency"),
 				currentBalance : 0,
-				sharingType : "个人"
+				sharingType : "private"
 			}
 		});
 	}));

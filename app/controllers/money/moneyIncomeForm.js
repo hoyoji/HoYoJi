@@ -27,7 +27,7 @@ if (!$.$model) {
 
 	$.setSaveableMode("add");
 
-	function updateAmuont(){
+	function updateAmount(){
 		$.amount.setValue($.$model.xGet("amount"));
 		$.amount.field.fireEvent("change");
 	}

@@ -26,7 +26,7 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory")
 	});
 	$.setSaveableMode("add");
-	function updateAmuont(){
+	function updateAmount(){
 		$.amount.setValue($.$model.xGet("amount"));
 		$.amount.field.fireEvent("change");
 	}
