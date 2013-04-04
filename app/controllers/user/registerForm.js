@@ -10,6 +10,7 @@ var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToS
 $.$model.xSet("messageBox", messageBox);
 
 var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
+activeCurrency.attributes["id"] = "CNY";
 $.$model.xSet("activeCurrency", activeCurrency);
 
 var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currency : $.$model.xGet("activeCurrency"), currentBalance : 0, sharingType : "person", ownerUser : $.$model}).xAddToSave($);

@@ -17,10 +17,12 @@
 					}
 					this.on("sync", function(){
 						for (var belongsTo in self.config.belongsTo) {
-							self.attributes[belongsTo] = null;
-							delete self.attributes[belongsTo];
-							delete self._previousAttributes[belongsTo];
-							delete self.changed[belongsTo];
+							if(self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")){
+								self.attributes[belongsTo] = null;
+								delete self.attributes[belongsTo];
+								delete self._previousAttributes[belongsTo];
+								delete self.changed[belongsTo];
+							}
 						}	
 					});
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
