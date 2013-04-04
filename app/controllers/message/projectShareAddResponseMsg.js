@@ -13,7 +13,7 @@ var onFooterbarTap = function(e) {
 	}
 }
 
-$.onWindowOpenDo(function() {
+// $.onWindowOpenDo(function() {
 	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.save({messageState : "closed"}, {wait : true, patch : true});
 		$.footerBar.$view.hide();
@@ -24,7 +24,7 @@ $.onWindowOpenDo(function() {
 	else if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({messageState : "readed"}, {wait : true, patch : true});
 	}
-});
+// });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 		var projectShareData = JSON.parse($.$model.xGet("messageData"));
@@ -35,13 +35,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 						if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								if(projectShareAuthorization.xGet("state") === "wait"){
+								if(projectShareAuthorization.xGet("state") === "Wait"){
 									projectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 								}
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-										if(subProjectShareAuthorization.xGet("state") === "wait"){
+										if(subProjectShareAuthorization.xGet("state") === "Wait"){
 											subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 										}
 									});
@@ -74,13 +74,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
 					if(collection.length > 0){
 								var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-								if(projectShareAuthorization.xGet("state") === "wait"){
+								if(projectShareAuthorization.xGet("state") === "Wait"){
 									projectShareAuthorization.save({state : "Reject"}, {wait : true, patch : false});
 								}
 								if(projectShareData.shareAllSubProjects){
 									projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 										var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-										if(subProjectShareAuthorization.xGet("state") === "wait"){
+										if(subProjectShareAuthorization.xGet("state") === "Wait"){
 											subProjectShareAuthorization.save({state : "Reject"}, {wait : true, patch : true});
 										}
 									});

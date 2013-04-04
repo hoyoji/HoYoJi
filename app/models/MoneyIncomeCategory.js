@@ -32,9 +32,6 @@ exports.definition = {
 					this.xGet("project").xSave();
 				}
 				this._xDelete(xFinishCallback);
-			},
-			canEdit : function(){
-				return true;
 			}
 		});
 		

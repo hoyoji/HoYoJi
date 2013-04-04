@@ -231,12 +231,23 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "MoneyAccount") {
-				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR main.sharingType = 'Public' " + "OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "'))";
+				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.remark, main.ownerUserId, main._creatorId, main.currentBalance");
+				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'" 
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
 				} else {
 					sql = qs[0] + " WHERE " + q;
 				}
+				
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, null, null, null FROM MoneyAccount main ";
+				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
+				if (qs.length > 1) {
+					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";
+				} else {
+					sql2 = qs0 + " WHERE " + q;
+				}
+				sql += " UNION ALL " + sql2;
+				console.info(sql);
 			} else {
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
 				if (qs.length > 1) {
@@ -368,7 +379,7 @@ function Sync(method, model, opts) {
 
 			db.execute(sql, values);
 			if(db.rowsAffected === 0){
-				error = { __summury : { msg : "修改失败，请重试"}};
+				error = { __summury : { msg : "没有修改权限"}};
 				delete opts.wait;
 			} else {
 				resp = model.attributes;

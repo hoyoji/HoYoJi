@@ -8,9 +8,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 			Alloy.Models.User.save({activeCurrencyId : $.$model.xGet("id")},{wait : true, patch : true});
 		}
 	},isSelectMode));
-	menuSection.add($.createContextMenuItem("删除币种", function() {
-		$.deleteModel();
-	},isSelectMode));
+	// menuSection.add($.createContextMenuItem("删除币种", function() {
+		// $.deleteModel();
+	// },isSelectMode));
 	return menuSection;
 }
 

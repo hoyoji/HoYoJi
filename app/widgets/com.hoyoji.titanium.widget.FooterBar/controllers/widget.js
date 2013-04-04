@@ -23,3 +23,8 @@ $.$view.addEventListener("singletap", function(e){
 	}
 	$.trigger("singletap", e);
 });
+
+$.$view.addEventListener("longpress", function(e){
+	e.cancelBubble = true;
+	$.trigger("longpress", e);
+});

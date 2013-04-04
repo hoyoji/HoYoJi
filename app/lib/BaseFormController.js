@@ -17,7 +17,10 @@
 								views[view].setEditable($.saveableMode !== "read");
 							}
 						}
-					}
+						if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
+							$.titleBar.setSaveableMode($.saveableMode);
+						}	
+					}	
 				},
 				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans) {
 					var mydb, myDbTrans;
@@ -33,12 +36,12 @@
 					}
 					var i = 0, hasError;
 					for (i = 0; i < $.__saveCollection.length; i++) {
-						if (!hasError && ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged())) {
+						if ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged()) {
 							// $.__saveCollection[i].once("sync", function() {
 								// $.saveCollection(xCompleteCallback, xErrorCallback, myDbTrans);
 							// });
 
-							$.__saveCollection[i].xSave({
+							$.__saveCollection[i]._xSave({
 								dbTrans : myDbTrans,
 								error : function(model, error) {
 									$.__saveCollection = [];
@@ -51,20 +54,16 @@
 									xErrorCallback(model, error);
 								}
 							});
-							// return;
-						} else {
-							return;
 						}
+						if(hasError) return;
 					}
-					if (!hasError) {
-						$.__saveCollection = [];
-						if(!dbTrans){
-							mydb.execute("COMMIT;");
-							mydb.close();
-							myDbTrans.trigger("commit");
-						}
-						xCompleteCallback();
+					$.__saveCollection = [];
+					if(!dbTrans){
+						mydb.execute("COMMIT;");
+						mydb.close();
+						myDbTrans.trigger("commit");
 					}
+					xCompleteCallback();
 				},
 				saveModel : function(saveEndCB, saveErrorCB) {
 					if ($.$model) {
@@ -125,13 +124,20 @@
 					}
 				}
 			});
-
-			$.saveableMode = "edit";
-			$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || "edit");
-			if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
-				$.titleBar.setSaveableMode($.saveableMode);
+			
+			if($.$model) {
+				var saveableMode = "read";
+				if($.$model.canEdit()){
+					if($.$model.isNew()){
+						saveableMode = "add";
+					} else {
+						saveableMode = "edit";
+					}
+				}
+				
+				$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || saveableMode);
 			}
-
+	
 			$.onWindowOpenDo(function() {
 				$.$view.fireEvent("registersaveablecallback", {
 					bubbles : true,

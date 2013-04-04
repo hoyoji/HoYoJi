@@ -179,6 +179,8 @@
 									textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
 								});
 								$.$view.add(errorLabel);
+							} else {
+								errorLabel.setText(error.msg);
 							}
 
 							var animation = Titanium.UI.createAnimation();

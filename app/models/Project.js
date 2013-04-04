@@ -72,6 +72,9 @@ exports.definition = {
 					return true;
 				}
 				return false;
+			},
+			canDelete : function(){
+				return this.xGet("ownerUser") === Alloy.Models.User;
 			}
 		});
 		return Model;

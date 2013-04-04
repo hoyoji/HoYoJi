@@ -27,7 +27,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("添加共享", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
 			$model : "ProjectShareAuthorization",
-			saveableMode : "add",
 			data : {
 				project : $.$model,
 				shareAllSubProjects : 0,

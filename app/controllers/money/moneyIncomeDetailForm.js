@@ -24,7 +24,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		var newDetailAmount = $.$model.xGet("amount");
 		var oldIncomeAmount = 0;
-		if ($.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").length < 0) {//没有details时，新增detail前Income的amount，计算currentBalance时要先加上
+		if ($.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").length < 0) {
+			//没有details时，新增detail前Income的amount，计算currentBalance时要先加上
 			if ($.$model.xGet("moneyIncome").hasChanged("amount")) {
 				oldIncomeAmount = $.$model.xGet("moneyIncome").previous("amount");
 			} else {

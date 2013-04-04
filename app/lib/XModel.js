@@ -17,10 +17,12 @@
 					}
 					this.on("sync", function(){
 						for (var belongsTo in self.config.belongsTo) {
-							self.attributes[belongsTo] = null;
-							delete self.attributes[belongsTo];
-							delete self._previousAttributes[belongsTo];
-							delete self.changed[belongsTo];
+							if(self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")){
+								self.attributes[belongsTo] = null;
+								delete self.attributes[belongsTo];
+								delete self._previousAttributes[belongsTo];
+								delete self.changed[belongsTo];
+							}
 						}	
 					});
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
@@ -348,10 +350,23 @@
 					}
 				}
 				if (!error) {
-					this.destroy();
-				}
-				if (xFinishCallback) {
-					xFinishCallback(error);
+					function delSuccess(){
+						this.off("destroy", delSuccess);
+						this.off("error", delFail);
+						if (xFinishCallback) {
+							xFinishCallback(error);
+						}
+					}
+					function delFail(model, error){
+						this.off("destroy", delSuccess);
+						this.off("error", delFail);
+						if (xFinishCallback) {
+							xFinishCallback(error.__summury);
+						}
+					}
+					this.on("destroy", delSuccess);
+					this.on("error", delFail);
+					this.destroy({wait : true});
 				}
 				return this;
 			},
@@ -406,20 +421,34 @@
 						return true;
 					} else {
 						var type = this.config.adapter.collection_name;
-						if(this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"Edit") ||
-							this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"AddNew")){
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if(this.xGet("ownerUser") === Alloy.Models.User && (projectShareAuthorization.xGet("projectShare"+type+"Edit") ||
+							projectShareAuthorization.xGet("projectShare"+type+"AddNew"))){
 							return true;		
 						} else {
 							return false;
 						}
 					}
 				} else {
-					return true;
+					return this.xGet("ownerUser") === Alloy.Models.User;
 				}
 			},
 			canDelete : function(){
-				return false;
+				if(this.xGet("project")){
+					if(this.xGet("project").xGet("ownerUser") === Alloy.Models.User){
+						return true;
+					} else {
+						var type = this.config.adapter.collection_name;
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if(this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShare"+type+"Delete")){
+							return true;		
+						} else {
+							return false;
+						}
+					}
+				} else {
+					return this.xGet("project").xGet("ownerUser") === Alloy.Models.User;
+				}
 			}
-			
 		}
 	}());
