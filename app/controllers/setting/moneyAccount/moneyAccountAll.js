@@ -5,7 +5,6 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	menuSection.add($.createContextMenuItem("新增账户", function() {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountForm", {
 			$model : "MoneyAccount",
-			saveableMode : "add",
 			data : {
 				currency : Alloy.Models.User.xGet("activeCurrency"),
 				currentBalance : 0,

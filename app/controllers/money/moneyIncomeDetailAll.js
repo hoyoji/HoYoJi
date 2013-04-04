@@ -5,7 +5,7 @@ var selectedIncome = $.$attrs.selectedIncome;
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增收入明细", function() {
-		Alloy.Globals.openWindow("money/moneyIncomeDetailForm", {$model : "MoneyIncomeDetail", saveableMode : "add",data:{moneyIncome : selectedIncome,ownerUser : Alloy.Models.User}});
+		Alloy.Globals.openWindow("money/moneyIncomeDetailForm", {$model : "MoneyIncomeDetail", data:{moneyIncome : selectedIncome,ownerUser : Alloy.Models.User}});
 	}, !selectedIncome.canEdit()));
 	return menuSection;
 }

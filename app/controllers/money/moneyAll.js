@@ -20,7 +20,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.moneysTable);
+// $.titleBar.bindXTable($.moneysTable);
 
 var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");

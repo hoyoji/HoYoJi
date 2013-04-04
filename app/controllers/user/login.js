@@ -10,6 +10,6 @@ function doLogin(e){
 }
 
 function openRegister(e){
-	Alloy.Globals.openWindow("user/registerForm", {$model : "User", saveableMode : "add"});
+	Alloy.Globals.openWindow("user/registerForm", {$model : "User"});
 }
 

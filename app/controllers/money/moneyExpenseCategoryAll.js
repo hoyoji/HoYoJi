@@ -5,7 +5,7 @@ var selectedProject = $.$attrs.selectedProject;
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增支出分类", function() {
-		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {$model : "MoneyExpenseCategory", saveableMode : "add", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {$model : "MoneyExpenseCategory", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
 	}));
 	return menuSection;
 }
