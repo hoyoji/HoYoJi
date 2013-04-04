@@ -49,9 +49,12 @@ exports.definition = {
 				// }
 			},
 			getSharedWithHerSubProjects : function(){
-				return this.xGet("subProjects").xCreateFilter({
+				if(!this.__getSharedWIthHerSubProjectsFilter){
+					this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({
 					// ....
-				});
+					});
+				}
+				return this.__getSharedWIthHerSubProjectsFilter;
 			},
 			setDefaultExpenseCategory : function(expenseCategory){
 				if(this.xGet("ownerUser") === Alloy.Models.User && this.xGet("defaultExpenseCategory") !== expenseCategory){
