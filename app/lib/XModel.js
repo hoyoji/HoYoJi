@@ -350,10 +350,23 @@
 					}
 				}
 				if (!error) {
-					this.destroy();
-				}
-				if (xFinishCallback) {
-					xFinishCallback(error);
+					function delSuccess(){
+						this.off("destroy", delSuccess);
+						this.off("error", delFail);
+						if (xFinishCallback) {
+							xFinishCallback(error);
+						}
+					}
+					function delFail(model, error){
+						this.off("destroy", delSuccess);
+						this.off("error", delFail);
+						if (xFinishCallback) {
+							xFinishCallback(error.__summury);
+						}
+					}
+					this.on("destroy", delSuccess);
+					this.on("error", delFail);
+					this.destroy({wait : true});
 				}
 				return this;
 			},
