@@ -21,10 +21,17 @@
 					childrenCollections = [];
 					for (var i = 0; i < children.length; i++) {
 						var collection;
+						var ch = children[i].split(":")
+						if(ch.length > 1){
+							children[i] = ch[0];
+						}
 						if(children[i].endsWith("()")){
 							collection = $.$model[children[i].slice(0,-2)]();	
 						} else {
 							collection = $.$model.xGet(children[i]);
+						}
+						if(ch.length > 1){
+							collection.__rowView = ch[1];
 						}
 						childrenCollections.push(collection);
 						collection.on("remove", enableOpenChildButton);
@@ -69,12 +76,18 @@
 					detailCollections = [];
 					for (var i = 0; i < details.length; i++) {
 						var collection;
+						var ch = details[i].split(":")
+						if(ch.length > 1){
+							details[i] = ch[0];
+						}
 						if(details[i].endsWith("()")){
 							collection = $.$model[details[i].slice(0,-2)]();	
 						} else {
 							collection = $.$model.xGet(details[i]);
 						}
-						
+						if(ch.length > 1){
+							collection.__rowView = ch[1];
+						}
 						detailCollections.push(collection);
 						collection.on("remove", enableOpenDetailButton);
 						collection.on("add", enableOpenDetailButton);
