@@ -9,11 +9,11 @@ $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("messageBox", messageBox);
 
-var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
-activeCurrency.attributes["id"] = "CNY";
-$.$model.xSet("activeCurrency", activeCurrency);
+// var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
+// activeCurrency.attributes["id"] = "CNY";
+$.$model.xSet("activeCurrencyId", "CNY");
 
-var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currency : $.$model.xGet("activeCurrency"), currentBalance : 0, sharingType : "person", ownerUser : $.$model}).xAddToSave($);
+var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currencyId : "CNY", currentBalance : 0, sharingType : "person", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeMoneyAccount", activeMoneyAccount);
 
 var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "日常收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);

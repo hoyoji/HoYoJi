@@ -46,6 +46,9 @@ exports.definition = {
 			},
 			canEdit : function(){
 				return this.xGet("moneyIncome").canEdit();				
+			},
+			canDelete : function(){
+				return this.xGet("moneyIncome").canDelete();
 			}
 		});
 		return Model;

@@ -86,7 +86,13 @@ exports.definition = {
 						});
 					}
 					return exchanges;
-				}
+			},
+			canEdit : function(){
+				return false;
+			},
+			canDelete : function(){
+				return false;
+			}
 		});
 		
 		return Model;

@@ -40,4 +40,26 @@ exports.DataStore = {
 	}
 }
 
+var currencies = [
+					["CNY", "人民币", "¥", "CNY", "0", "0"],
+					["USD", "美金", "$", "USD", "0", "0"],
+					["EUR", "欧元", "¢", "EUR", "0", "0"],
+					["HKD", "港币", "$", "HKD", "0", "0"]
+				 ];
+				 
+var insertSql = "INSERT INTO Currency (id, name, symbol, code, ownerUserId, _creatorId) VALUES (?,?,?,?,?,?)";
+var db = Ti.Database.open("hoyoji");
+db.execute("BEGIN;");
+
+var rs = db.execute("SELECT * FROM Currency");
+if(rs.rowCount === 0){
+	for(var i=0; i < currencies.length; i++){
+		db.execute(insertSql, currencies[i]);
+	}
+}
+rs.close();
+rs = null;
+db.execute("COMMIT;");
+db.close();
+db = null;
 }());

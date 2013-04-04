@@ -239,7 +239,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 				
-				var sql2, qs0 = qs[0].replace(/main\.currentBalance/ig, "null");
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, null, null, null FROM MoneyAccount main ";
 				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
 				if (qs.length > 1) {
 					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";

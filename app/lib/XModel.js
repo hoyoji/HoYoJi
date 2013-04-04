@@ -408,20 +408,34 @@
 						return true;
 					} else {
 						var type = this.config.adapter.collection_name;
-						if(this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"Edit") ||
-							this.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("projectShare"+type+"AddNew")){
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if(projectShareAuthorization.xGet("projectShare"+type+"Edit") ||
+							projectShareAuthorization.xGet("projectShare"+type+"AddNew")){
 							return true;		
 						} else {
 							return false;
 						}
 					}
 				} else {
-					return true;
+					return this.xGet("ownerUser") === Alloy.Models.User;
 				}
 			},
 			canDelete : function(){
-				return false;
+				if(this.xGet("project")){
+					if(this.xGet("project").xGet("ownerUser") === Alloy.Models.User){
+						return true;
+					} else {
+						var type = this.config.adapter.collection_name;
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if(projectShareAuthorization.xGet("projectShare"+type+"Delete")){
+							return true;		
+						} else {
+							return false;
+						}
+					}
+				} else {
+					return this.xGet("project").xGet("ownerUser") === Alloy.Models.User;
+				}
 			}
-			
 		}
 	}());

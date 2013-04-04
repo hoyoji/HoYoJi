@@ -17,7 +17,10 @@
 								views[view].setEditable($.saveableMode !== "read");
 							}
 						}
-					}
+						if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
+							$.titleBar.setSaveableMode($.saveableMode);
+						}	
+					}	
 				},
 				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans) {
 					var mydb, myDbTrans;
@@ -121,13 +124,20 @@
 					}
 				}
 			});
-
-			$.saveableMode = "edit";
-			$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || "edit");
-			if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
-				$.titleBar.setSaveableMode($.saveableMode);
+			
+			if($.$model) {
+				var saveableMode = "read";
+				if($.$model.canEdit()){
+					if($.$model.isNew()){
+						saveableMode = "add";
+					} else {
+						saveableMode = "edit";
+					}
+				}
+				
+				$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || saveableMode);
 			}
-
+	
 			$.onWindowOpenDo(function() {
 				$.$view.fireEvent("registersaveablecallback", {
 					bubbles : true,
