@@ -45,11 +45,11 @@
 								dbTrans : myDbTrans,
 								error : function(model, error) {
 									$.__saveCollection = [];
-									if(!dbTrans){
+									// if(!dbTrans){
 										mydb.execute("ROLLBACK;");
 										mydb.close();
 										myDbTrans.trigger("rollback");
-									}
+									// }
 									hasError = true;
 									xErrorCallback(model, error);
 								}
@@ -113,7 +113,7 @@
 								// db.close();
 								// dbTrans.trigger("commit");
 							// }
-						}, errorCB, dbTrans);
+						}, saveErrorCB, dbTrans);
 
 						// } catch (err) {
 						// if (_.isFunction(clearModelId)) {

@@ -32,6 +32,7 @@ exports.definition = {
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();
 				} else {
+					
 					this._xDelete(function(error){
 						if(!error){
 							var amount = this.xGet("amount");
