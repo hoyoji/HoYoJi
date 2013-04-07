@@ -139,9 +139,9 @@ if($.saveableMode === "read"){
 				saveEndCB(e);
 			}, 
 			function(e) {
-			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
-			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			saveErrorCB(e);
-		});
+				newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+				oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+				saveErrorCB(e);
+			});
 	}
 }
