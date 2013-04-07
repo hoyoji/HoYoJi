@@ -84,15 +84,32 @@ exports.definition = {
 						// }
 					// } 
 					else if(msg.xGet("type") === "Project.Share.Edit"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
 						if(projectShareData.shareAllSubProjects){
-							Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareData.subProjectShareAuthorizationIds, function(collection){
-								collection.map(function(projectShareAuthorization){
-									projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
-								});
+							var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+							Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
+								if(collection.length > 0){
+									var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
+									if(projectShareAuthorization.xGet("state") === "Accept"){
+										projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
+											var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
+											if(subProjectShareAuthorization.xGet("state") === "Wait"){
+												subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
+											}
+										});
+										msg.save({messageState : "noRead"}, {wait : true, patch : true});
+											// Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareData.subProjectShareAuthorizationIds, function(collection){
+												// collection.map(function(projectShareAuthorization){
+													// projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
+												// });
+											// });
+										// projectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
+									}
+									
+								}
 							});
 						}
+						
 						// else{
 							// var collection = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareData.subProjectShareAuthorizationIds);
 							// collection.map(function(subProjectShareAuthorization){
