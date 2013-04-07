@@ -63,25 +63,25 @@ $.makeContextMenu = function(e, isSelectMode) {
 		        projectShareMoneyTransferEdit : 1,
 		        projectShareMoneyTransferDelete : 1,
 		        
-		        projectShareLoanLendOwnerDataOnly : 0,
-		        projectShareLoanLendAddNew : 1,
-		        projectShareLoanLendEdit : 1,
-		        projectShareLoanLendDelete : 1,
+		        projectShareMoneyLendOwnerDataOnly : 0,
+		        projectShareMoneyLendAddNew : 1,
+		        projectShareMoneyLendEdit : 1,
+		        projectShareMoneyLendDelete : 1,
 		        
-		        projectShareLoanBorrowOwnerDataOnly : 0,
-		        projectShareLoanBorrowAddNew : 1,
-		        projectShareLoanBorrowEdit : 1,
-		        projectShareLoanBorrowDelete : 1,
+		        projectShareMoneyBorrowOwnerDataOnly : 0,
+		        projectShareMoneyBorrowAddNew : 1,
+		        projectShareMoneyBorrowEdit : 1,
+		        projectShareMoneyBorrowDelete : 1,
 		        
-		        projectShareLoanPaybackOwnerDataOnly : 0,
-		        projectShareLoanPaybackAddNew : 1,
-		        projectShareLoanPaybackEdit : 1,
-		        projectShareLoanPaybackDelete : 1,
+		        projectShareMoneyPaybackOwnerDataOnly : 0,
+		        projectShareMoneyPaybackAddNew : 1,
+		        projectShareMoneyPaybackEdit : 1,
+		        projectShareMoneyPaybackDelete : 1,
 		        
-		        projectShareLoanReturnOwnerDataOnly : 0,
-		        projectShareLoanReturnAddNew : 1,
-		        projectShareLoanReturnEdit : 1,
-		        projectShareLoanReturnDelete : 1
+		        projectShareMoneyReturnOwnerDataOnly : 0,
+		        projectShareMoneyReturnAddNew : 1,
+		        projectShareMoneyReturnEdit : 1,
+		        projectShareMoneyReturnDelete : 1
 			}
 		}); 
 	},projectIsSharedToMe));

@@ -24,10 +24,10 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyTransferForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借入", function() {
-		Alloy.Globals.openWindow("money/moneyLoanBorrowForm");
+		Alloy.Globals.openWindow("money/moneyBorrowForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借出", function() {
-		Alloy.Globals.openWindow("money/moneyLoanLendForm");
+		Alloy.Globals.openWindow("money/moneyLendForm");
 	}));
 	return menuSection;
 }

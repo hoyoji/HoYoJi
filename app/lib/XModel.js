@@ -417,9 +417,7 @@
 				if(this.isNew()){
 					return true;
 				} else if(this.xGet("project")){
-					if(this.xGet("project").xGet("ownerUser") === Alloy.Models.User){
-						return true;
-					} else {
+					if(this.xGet("project").xGet("ownerUser") !== Alloy.Models.User){
 						var type = this.config.adapter.collection_name;
 						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
 						if(this.xGet("ownerUser") === Alloy.Models.User && (projectShareAuthorization.xGet("projectShare"+type+"Edit") ||
@@ -429,9 +427,9 @@
 							return false;
 						}
 					}
-				} else {
-					return this.xGet("ownerUser") === Alloy.Models.User;
 				}
+				
+				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			canDelete : function(){
 				if(this.xGet("project")){

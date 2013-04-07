@@ -85,7 +85,7 @@ function Migrator(config, transactionDb) {
 }
 
 var projectPermissionTables = ["Project", "ProjectPreExpenseBalance", "ProjectPreIncomeBalance", "MoneyPreIncome", "MoneyPreExpense", "ProjectDeposit", "ProjectDepositeReturn",
-								"MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "LoanLend", "LoanPayback", "LoanBorrow", "LoanReturn", "MoneyTransfer"];
+								"MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "MoneyLend", "MoneyPayback", "MoneyBorrow", "MoneyReturn", "MoneyTransfer"];
 
 function Sync(method, model, opts) {
 	var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
