@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="账务"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneysTable" bottom="42" top="42"/>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="查找,排序,日,账户,报表"
-		ids="search,sort,date,moneyAccount,report"/>
+		buttons="查找,排序,流水;日流水;周流水;月流水,账户,报表"
+		ids="search,sort,transaction;dateTransaction;weekTransaction;monthTransaction,moneyAccount,report"/>
 	</View>
 </Alloy>

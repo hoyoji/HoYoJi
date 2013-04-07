@@ -4,7 +4,7 @@
 		
 		
         <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-        	buttons="同步,记一笔"
-        	ids="sync,moneyAddNew"/>
+        	buttons="同步,记一笔, 设置"
+        	ids="sync,moneyAddNew,setting"/>
 	</View>
 </Alloy>
