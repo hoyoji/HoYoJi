@@ -5,6 +5,8 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
+	} else if (e.source.id === "setting") {
+		Alloy.Globals.openWindow("setting/systemSetting");
 	}
 }
 

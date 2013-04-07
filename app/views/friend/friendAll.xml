@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" bottom="42" top="42"/> 
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-        	buttons="添加好友,附近商家"
-        	ids="addFriend,nearbyMerchant"/>
+        	buttons="添加好友"
+        	ids="addFriend"/>
 	</View>
 </Alloy>
