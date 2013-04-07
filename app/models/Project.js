@@ -27,10 +27,10 @@ exports.definition = {
 			moneyExpenses : {type : "MoneyExpense", attribute : "project"},
 			moneyIncomes : {type : "MoneyIncome", attribute : "project"},
 			moneyTransfers : {type : "MoneyTransfer", attribute : "project"},
-			moneyLoanBorrows : {type : "MoneyLoanBorrow", attribute : "project"},
-			moneyLoanReturns : {type : "MoneyLoanReturn", attribute : "project"},
-			moneyLoanLends : {type : "MoneyLoanLend", attribute : "project"},
-			moneyLoanPaybacks : {type : "MoneyLoanPayback", attribute : "project"}
+			moneyBorrows : {type : "MoneyBorrow", attribute : "project"},
+			moneyReturns : {type : "MoneyReturn", attribute : "project"},
+			moneyLends : {type : "MoneyLend", attribute : "project"},
+			moneyPaybacks : {type : "MoneyPayback", attribute : "project"}
 		},
 		rowView : "project/projectRow",
 		adapter : {

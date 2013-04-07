@@ -18,10 +18,10 @@ Alloy.Collections.instance("MoneyIncome");
 Alloy.Collections.instance("MoneyExpenseDetail");
 Alloy.Collections.instance("MoneyIncomeDetail");
 Alloy.Collections.instance("MoneyTransfer");
-Alloy.Collections.instance("MoneyLoanBorrow");
-Alloy.Collections.instance("MoneyLoanReturn");
-Alloy.Collections.instance("MoneyLoanLend");
-Alloy.Collections.instance("MoneyLoanPayback");
+Alloy.Collections.instance("MoneyBorrow");
+Alloy.Collections.instance("MoneyReturn");
+Alloy.Collections.instance("MoneyLend");
+Alloy.Collections.instance("MoneyPayback");
 
 exports.DataStore = {
 	initStore : function(){

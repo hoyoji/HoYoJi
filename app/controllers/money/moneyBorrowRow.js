@@ -5,7 +5,7 @@ $.makeContextMenu = function() {
 		headerTitle : "借入操作"
 	});
 	menuSection.add($.createContextMenuItem("还款明细", function() {
-		Alloy.Globals.openWindow("money/moneyLoanReturnAll", {selectedLoanBorrow : $.$model});
+		Alloy.Globals.openWindow("money/moneyReturnAll", {selectedBorrow : $.$model});
 	}));
 	menuSection.add($.createContextMenuItem("删除借入", function() {
 		$.deleteModel();

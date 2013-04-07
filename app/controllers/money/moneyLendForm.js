@@ -5,28 +5,28 @@ var oldMoneyAccount;
 var isRateExist;
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyLoanBorrow", {
+	$.$model = Alloy.createModel("MoneyLend", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeCurrencyRate : 1,
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 		project : Alloy.Models.User.xGet("activeProject"),
-		returnedAmount : 0
+		paybackedAmount : 0
 	});
 
 	$.setSaveableMode("add");
-$.returnedAmount.hide();
+	$.paybackedAmount.hide();
 }
 else{
-	$.returnedAmount.show();
+	$.paybackedAmount.show();
 	
 	$.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "借入操作"
+		headerTitle : "借出操作"
 	});
-	menuSection.add($.createContextMenuItem("还款明细", function() {
-		Alloy.Globals.openWindow("money/moneyLoanReturnAll", {
-			selectedLoanBorrow : $.$model
+	menuSection.add($.createContextMenuItem("收款明细", function() {
+		Alloy.Globals.openWindow("money/moneyPaybackAll", {
+			selectedLend : $.$model
 		});
 	}));
 	return menuSection;
@@ -80,11 +80,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 	if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 	} else {//账户改变时
-		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
 		oldMoneyAccount.xAddToSave($);
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 	}
 
 	if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
