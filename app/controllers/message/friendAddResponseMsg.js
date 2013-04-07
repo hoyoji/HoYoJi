@@ -69,7 +69,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.AddResponse",
 				"messageState" : "new",
-				"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "同意您的好友请求",
+				"messageTitle" : "系统消息",
 				"date" : date,
 				"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "同意您的好友请求",
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
@@ -100,7 +100,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.Reject",
 				"messageState" : "noRead",
-				"messageTitle" : Alloy.Models.User.xGet("userName") + "拒绝您的好友请求",
+				"messageTitle" : "系统消息",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝您的好友请求",
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")

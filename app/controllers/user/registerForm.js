@@ -6,6 +6,8 @@ $.$model.xSet("activeProject", activeProject);
 var defaultFriendCategory = Alloy.createModel("FriendCategory", {name : "我的好友", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 
+var merchantFriendCategory = Alloy.createModel("FriendCategory", {name : "商家好友", ownerUser : $.$model}).xAddToSave($);
+
 var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("messageBox", messageBox);
 
