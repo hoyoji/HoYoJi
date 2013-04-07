@@ -1,20 +1,20 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var selectedLoanBorrow = $.$attrs.selectedLoanBorrow;
+var selectedLend = $.$attrs.selectedLend;
 
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyLoanReturn", {
+	$.$model = Alloy.createModel("MoneyPayback", {
 		date : (new Date()).toISOString(),
-		localCurrency : selectedLoanBorrow.xGet("localCurrency"),
+		localCurrency : selectedLend.xGet("localCurrency"),
 		exchangeCurrencyRate : 1,
-		moneyAccount : selectedLoanBorrow.xGet("moneyAccount"),
-		moneyLoanBorrow : selectedLoanBorrow,
-		project : selectedLoanBorrow.xGet("project"),
-		friend : selectedLoanBorrow.xGet("friend")
+		moneyAccount : selectedLend.xGet("moneyAccount"),
+		moneyLend : selectedLend,
+		project : selectedLend.xGet("project"),
+		friend : selectedLend.xGet("friend")
 	});
 
 	$.setSaveableMode("add");
@@ -70,11 +70,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var newInterest = $.$model.xGet("interest");
 
 	if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount + oldInterest - newInterest);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount - oldInterest + newInterest);
 	} else {//账户改变时
-		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount + oldInterest);
+		oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount - oldInterest);
 		oldMoneyAccount.xAddToSave($);
-		newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount - newInterest);
+		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount + newInterest);
 	}
 
 	if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
@@ -97,11 +97,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		exchange.xAddToSave($);
 	}
 
-	var returnedAmount = $.$model.xGet("moneyLoanBorrow").xGet("returnedAmount");//更新已还款
-	var borrowRate = $.$model.xGet("moneyLoanBorrow").xGet("exchangeCurrencyRate");
-	var returnRate = $.$model.xGet("exchangeCurrencyRate");
-	$.$model.xGet("moneyLoanBorrow").xSet("returnedAmount", (returnedAmount - (oldAmount + newAmount)*returnRate/borrowRate).toUserCurrency());
-	$.$model.xGet("moneyLoanBorrow").xAddToSave($);
+	var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");//更新已收款
+	var lendRate = $.$model.xGet("moneyLend").xGet("exchangeCurrencyRate");
+	var paybackRate = $.$model.xGet("exchangeCurrencyRate");
+	$.$model.xGet("moneyLend").xSet("paybackedAmount", paybackedAmount - (oldAmount + newAmount)*paybackRate/lendRate);
+	$.$model.xGet("moneyLend").xAddToSave($);
 
 	$.saveModel(saveEndCB, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));

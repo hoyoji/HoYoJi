@@ -46,6 +46,14 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getSharedWithHerProjects : function(){
+				if(!this.__getSharedWithHerProjectsFilter){
+					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
+						return model.xGet("state") === "Wait" || model.xGet("state") === "Accept";
+					});
+				}
+				return this.__getSharedWithHerProjectsFilter;
+			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {
 					return this.xGet("friendUser").xGet("userName");

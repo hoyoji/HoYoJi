@@ -11,7 +11,7 @@ exports.definition = {
 			exchangeCurrencyRate : "REAL NOT NULL",
 			interest : "REAL NOT　NULL",
 			remark : "TEXT",
-			moneyLoanLendId : "TEXT NOT NULL",
+			moneyBorrowId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL"
 		},
 		belongsTo : {
@@ -25,19 +25,19 @@ exports.definition = {
 			},
 			project : {
 				type : "Project",
-				attribute : "moneyLoanPaybacks"
+				attribute : "moneyReturns"
 			},
 			localCurrency : {
 				type : "Currency",
 				attribute : null
 			},
-			moneyLoanLend : {
-				type : "MoneyLoanLend",
-				attribute : "moneyLoanPaybacks"
+			moneyBorrow : {
+				type : "MoneyBorrow",
+				attribute : "moneyReturns"
 			},
 			ownerUser : {
 				type : "User",
-				attribute : "moneyLoanPaybacks"
+				attribute : "moneyReturns"
 			}
 		},
 
@@ -51,20 +51,20 @@ exports.definition = {
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
-			getInterest : function(){
+			getInterest : function() {
 				return this.xGet("interest").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
-				var moneyLoanLend = this.xGet("moneyLoanLend");
-				var lendRate = moneyLoanLend.xGet("exchangeCurrencyRate");
-				var paybackRate = this.xGet("exchangeCurrencyRate");
+				var moneyBorrow = this.xGet("moneyBorrow");
+				var borrowRate = moneyBorrow.xGet("exchangeCurrencyRate");
+				var returnRate = this.xGet("exchangeCurrencyRate");
 
 				this._xDelete(xFinishCallback);
-				moneyLoanLend.xSet("paybackedAmount", moneyLoanLend.xGet("paybackedAmount") - amount*paybackRate/lendRate);
-				moneyLoanLend.xSave();
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyBorrow.xSet("returnedAmount", moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
+				moneyBorrow.xSave();
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 				moneyAccount.xSave();
 			}
 		});

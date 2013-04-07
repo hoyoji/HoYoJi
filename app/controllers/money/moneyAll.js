@@ -18,10 +18,10 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyTransferForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借入", function() {
-		Alloy.Globals.openWindow("money/moneyLoanBorrowForm");
+		Alloy.Globals.openWindow("money/moneyBorrowForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借出", function() {
-		Alloy.Globals.openWindow("money/moneyLoanLendForm");
+		Alloy.Globals.openWindow("money/moneyLendForm");
 	}));
 	return menuSection;
 }
@@ -42,12 +42,12 @@ var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 	transferInOwnerUser : null
 });
-var moneyLoanBorrows = Alloy.Models.User.xGet("moneyLoanBorrows");
-var moneyLoanLends = Alloy.Models.User.xGet("moneyLoanLends");
+var moneyBorrows = Alloy.Models.User.xGet("moneyBorrows");
+var moneyLends = Alloy.Models.User.xGet("moneyLends");
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
 $.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
 $.moneysTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
-$.moneysTable.addCollection(moneyLoanBorrows);
-$.moneysTable.addCollection(moneyLoanLends);
+$.moneysTable.addCollection(moneyBorrows);
+$.moneysTable.addCollection(moneyLends);
 

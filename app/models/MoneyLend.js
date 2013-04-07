@@ -10,14 +10,14 @@ exports.definition = {
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
 			repaymentDate : "TEXT NOT　NULL",
-			returnedAmount : "REAL NOT NULL",
+			paybackedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL"
 		},
 		hasMany : {
-			moneyLoanReturns : {
-				type : "MoneyLoanReturn",
-				attribute : "moneyLoanBorrow"
+			moneyPaybacks : {
+				type : "MoneyPayback",
+				attribute : "moneyLend"
 			}
 		},
 		belongsTo : {
@@ -31,7 +31,7 @@ exports.definition = {
 			},
 			project : {
 				type : "Project",
-				attribute : "moneyLoanBorrows"
+				attribute : "moneyLends"
 			},
 			localCurrency : {
 				type : "Currency",
@@ -39,10 +39,10 @@ exports.definition = {
 			},
 			ownerUser : {
 				type : "User",
-				attribute : "moneyLoanBorrows"
+				attribute : "moneyLends"
 			}
 		},
-		rowView : "money/moneyLoanBorrowRow",
+		rowView : "money/moneyLendRow",
 		adapter : {
 			type : "hyjSql"
 		}
@@ -57,7 +57,7 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 				moneyAccount.xSave();
 			}
 		});
