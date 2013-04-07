@@ -44,7 +44,7 @@ function addRowToSection(rowModel, collection, index) {
 			collections : []
 		};
 	}
-	
+
 	if (index === undefined) {
 		$.table.appendRow(row);
 	} else {
@@ -53,7 +53,7 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-		console.info("adding new row to XTable eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+	console.info("adding new row to XTable eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	addRowToSection(rowModel, collection);
 }
 
@@ -76,7 +76,7 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 	for (var c = 0; c < collections.length; c++) {
 		for (var i = 0; i < collections[c].length; i++) {
 			var rowId = collections[c].at(i).xGet("id");
-			if(collapsibleSections[rowId]){
+			if (collapsibleSections[rowId]) {
 				exports.collapseSection(index, rowId);
 			}
 			$.table.deleteRow(index);
@@ -87,7 +87,7 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 
 exports.addCollection = function(collection, rowView) {
 	console.info("xTableView adding collection " + collection.length);
-	if(rowView){
+	if (rowView) {
 		collection.__rowView = rowView;
 	}
 	collections.push(collection);
@@ -113,7 +113,7 @@ exports.removeCollection = function(collection) {
 	collections[_.indexOf(collections, collection)] = null;
 }
 
-exports.getCollections = function(){
+exports.getCollections = function() {
 	return collections;
 }
 
@@ -132,7 +132,7 @@ exports.close = function() {
 exports.slideDown = function(zIndex, top) {
 	if (top === undefined)
 		top = 42;
-	
+
 	function animate() {
 		$.$view.removeEventListener("postlayout", animate);
 		var animation = Titanium.UI.createAnimation();
@@ -142,6 +142,7 @@ exports.slideDown = function(zIndex, top) {
 
 		$.$view.animate(animation);
 	}
+
 
 	$.$view.addEventListener("postlayout", animate);
 
@@ -161,9 +162,21 @@ exports.open = function(top) {
 		$.$view.animate(animation);
 	}
 
+
 	$.$view.setTop("99%")
 	animate();
 }
+function getLastTable() {
+	var lastTable = $;
+	while (lastTable.detailsTable) {
+		lastTable = lastTable.detailsTable;
+	}
+	return lastTable;
+}
+
+exports.getLastTableTitle = function() {
+	return getLastTable().backNavTitle;
+};
 
 exports.createChildTable = function(theBackNavTitle, collections) {
 	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {

@@ -8,7 +8,6 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 // 		
 		// Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
 			// $model : "ProjectShareAuthorization",
-			// saveableMode : "add",
 			// data : {
 				// project : selectedProject,
 				// shareAllSubProjects : 0,

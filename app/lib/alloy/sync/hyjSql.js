@@ -90,6 +90,10 @@ var projectPermissionTables = ["Project", "ProjectPreExpenseBalance", "ProjectPr
 function Sync(method, model, opts) {
 	var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
 	var error;
+	if(opts.dbTrans){
+		console.info("sync in transaction " + model.config.adapter.collection_name);
+		db = opts.dbTrans.db;
+	}
 	switch (method) {
 		case "create":
 			resp = function() {
@@ -131,7 +135,7 @@ function Sync(method, model, opts) {
 								sqlCheckPermission = 'SELECT p.* FROM Project p JOIN MoneyExpense mi ON mi.projectId = p.id LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND  pst.friendId = f.id) joinedtable ON p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' 
 								+ 'WHERE "' + ownerUserId + '" = mi.ownerUserId AND mi.id = "' + model.xGet("moneyExpenseId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShareMoneyExpenseAddNew = 1)';
 						} else if(!model.xGet("project").isNew()){
-							if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+							if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 								sqlCheckPermission = 'SELECT p.* FROM Project p LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND  pst.friendId = f.id) joinedtable ON p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' 
 								+ 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
 							} else {
@@ -150,16 +154,22 @@ function Sync(method, model, opts) {
 				q.push("?");
 
 				var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
-				db = Ti.Database.open(dbName);
-				db.execute("BEGIN;");
+				if(!opts.dbTrans){
+					db = Ti.Database.open(dbName);
+					db.execute("BEGIN;");
+				}
 				
 				if(sqlCheckPermission){
 					console.info(sqlCheckPermission);
 					var r = db.execute(sqlCheckPermission); 
 					if(r.rowCount === 0){
 						error = { __summury : { msg : "没有新增权限"}};
-						db.execute("ROLLBACK;");
-						db.close();
+						delete model.id;
+						delete opts.wait;
+						if(!opts.dbTrans){
+							db.execute("ROLLBACK;");
+							db.close();
+						}
 						return;
 					}
 				}
@@ -174,11 +184,13 @@ function Sync(method, model, opts) {
 							silent : !0
 						});
 					} else
-						Ti.API.warn("Unable to get ID from database for model: " + model.toJSON());
+						Ti.API.warn("Unable to get ID from database for model: " + model.attributes);
 				}
-				db.execute("COMMIT;");
-				db.close();
-				return model.toJSON();
+				if(!opts.dbTrans){
+					db.execute("COMMIT;");
+					db.close();
+				}
+				return model.attributes;
 			}();
 			break;
 		case "read":
@@ -219,12 +231,23 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "MoneyAccount") {
-				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR main.sharingType = 'Public' " + "OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "'))";
+				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.remark, main.ownerUserId, main._creatorId, main.currentBalance");
+				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'" 
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
 				} else {
 					sql = qs[0] + " WHERE " + q;
 				}
+				
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, null, null, null FROM MoneyAccount main ";
+				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
+				if (qs.length > 1) {
+					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";
+				} else {
+					sql2 = qs0 + " WHERE " + q;
+				}
+				sql += " UNION ALL " + sql2;
+				console.info(sql);
 			} else {
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
 				if (qs.length > 1) {
@@ -234,7 +257,9 @@ function Sync(method, model, opts) {
 				}
 			}
 
-			db = Ti.Database.open(dbName);
+			if(!opts.dbTrans){
+				db = Ti.Database.open(dbName);
+			}
 			var rs = db.execute(sql), len = 0, values = [];
 			while (rs.isValidRow()) {
 				var o = {}, fc = 0;
@@ -248,7 +273,9 @@ function Sync(method, model, opts) {
 				rs.next();
 			}
 			rs.close();
-			db.close();
+			if(!opts.dbTrans){
+				db.close();
+			}
 			model.length = len;
 			len === 1 ? resp = values[0] : resp = values;
 			break;
@@ -279,7 +306,7 @@ function Sync(method, model, opts) {
 							                'WHERE p.id = "' + model.id + '" ' + 
 							                'AND (p.ownerUserId = "' + ownerUserId + '" ' +
 							                'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1 OR joinedtable.projectShare' + table + 'AddNew = 1)) ';
-					} else if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+					} else if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN Project prj ON prj.id = p.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 
 							                'WHERE p.id = "' + model.id + '" ' + 
 							                'AND (p.ownerUserId = "' + ownerUserId + '" ' +
@@ -301,7 +328,7 @@ function Sync(method, model, opts) {
 								sqlCheckPermission2 = 'SELECT p.* FROM Project p JOIN MoneyExpense mi ON mi.projectId = pId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND  pst.friendId = f.id) joinedtable ON p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' 
 								+ 'WHERE "' + ownerUserId + '" = mi.ownerUserId AND mi.id = "' + model.xGet("moneyExpenseId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShareMoneyExpenseAddNew = 1)';
 						} else if(!model.xGet("project").isNew()){
-							if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+							if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND  pst.friendId = f.id) joinedtable ON p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' 
 								+ 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectId IS NOT NULL)';
 							} else {
@@ -313,20 +340,25 @@ function Sync(method, model, opts) {
 				} else if(table === "User"){
 					
 				} else if(table === "ProjectShareAuthorization"){
-					sql += ' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = ' + table + '.ownerUserId AND id = ' + table + '.friendId AND friendUserId = "' + ownerUserId + '")';
+					sql += ' AND (EXISTS (SELECT id FROM Friend WHERE ownerUserId = ' + table + '.ownerUserId AND id = ' + table + '.friendId AND friendUserId = "' + ownerUserId + '") OR ownerUserId = "' + ownerUserId + '")';
 				} else {
-	                sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
+	                sql += ' AND ownerUserId = "' + ownerUserId + '"';
 	            }
 
-			db = Ti.Database.open(dbName);
-			db.execute("BEGIN;");
+			if(!opts.dbTrans){
+				db = Ti.Database.open(dbName);
+				db.execute("BEGIN;");
+			}
 			if(sqlCheckPermission){
 				console.info(sqlCheckPermission);
 				var r = db.execute(sqlCheckPermission); 
 				if(r.rowCount === 0){
 					error = { __summury : { msg : "没有修改权限"}};
-					db.execute("ROLLBACK;");
-					db.close();
+					delete opts.wait;
+					if(!opts.dbTrans){
+						db.execute("ROLLBACK;");
+						db.close();
+					}
 					break;
 				}
 			}
@@ -336,20 +368,26 @@ function Sync(method, model, opts) {
 				var r = db.execute(sqlCheckPermission2); 
 				if(r.rowCount === 0){
 					error = { __summury : { msg : "没有修改权限"}};
-					db.execute("ROLLBACK;");
-					db.close();
+					delete opts.wait;
+					if(!opts.dbTrans){
+						db.execute("ROLLBACK;");
+						db.close();
+					}
 					break;
 				}
 			}
 
 			db.execute(sql, values);
 			if(db.rowsAffected === 0){
-				error = { __summury : { msg : "修改失败，请重试"}};
+				error = { __summury : { msg : "没有修改权限"}};
+				delete opts.wait;
 			} else {
-				resp = model.toJSON();
+				resp = model.attributes;
 			}
-			db.execute("COMMIT;");
-			db.close();
+			if(!opts.dbTrans){
+				db.execute("COMMIT;");
+				db.close();
+			}		
 			break;
 		case "delete":
 			var sql = "DELETE FROM " + table + " WHERE " + model.idAttribute + "=?";
@@ -365,7 +403,7 @@ function Sync(method, model, opts) {
 							                'WHERE p.id = "' + model.id + '" ' + 
 							                'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
 							                'AND (prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShare' + table + 'Edit = 1 OR joinedtable.projectShare' + table + 'Delete = 1)))';
-					} else if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
+					} else if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 						sql += ' AND id = (SELECT p.id FROM ' + table + ' p JOIN Project prj ON prj.id = p.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + Alloy.Models.User.xGet("id") + '") joinedtable ON prj.id = joinedtable.projectId ' + 
 							                'WHERE p.id = "' + model.id + '" ' + 
 							                'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' +
@@ -385,20 +423,50 @@ function Sync(method, model, opts) {
             else{
                 sql += ' AND ownerUserId = "' + Alloy.Models.User.xGet("id") + '"';
             }
-            			
-			db = Ti.Database.open(dbName);
+            		
+			if(!opts.dbTrans){	
+				db = Ti.Database.open(dbName);
+			}
 			db.execute(sql, model.id);
 			if(db.rowsAffected === 0){
-				error = { __summury : { msg : "没有权限"}};
+				error = { __summury : { msg : "没有删除权限"}};
 			} else {
 				model.id = null;
-				resp = model.toJSON();
+				resp = model.attributes;
 			}
-			db.close();
+			if(!opts.dbTrans){	
+				db.close();
+			}
 	}
 	if (resp) {
-		_.isFunction(opts.success) && opts.success(resp);
-		method === "read" && model.trigger("fetch");
+		if(opts.dbTrans){
+			if(opts.commit === true){
+				db.execute("COMMIT;");
+				db.close();
+				_.isFunction(opts.success) && opts.success(resp);
+				method === "read" && model.trigger("fetch");
+				opts.dbTrans.trigger("commit");
+			} else {
+				function commitTrans(){
+					opts.dbTrans.off("commit", commitTrans);
+					opts.dbTrans.off("rollback", rollbackTrans);
+					_.isFunction(opts.success) && opts.success(resp);
+					method === "read" && model.trigger("fetch");
+				}
+				function rollbackTrans(){
+					opts.dbTrans.off("commit", commitTrans);
+					opts.dbTrans.off("rollback", rollbackTrans);
+					error = { __summury : { msg : "没有删除权限"}};
+					_.isFunction(opts.error) && opts.error(model, error);
+				}
+				opts.dbTrans.on("commit", commitTrans);
+				opts.dbTrans.on("rollback", rollbackTrans);
+			}
+			
+		} else {
+			_.isFunction(opts.success) && opts.success(resp);
+			method === "read" && model.trigger("fetch");
+		}
 	} else
 		_.isFunction(opts.error) && opts.error(model, error);
 }

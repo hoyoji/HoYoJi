@@ -8,15 +8,14 @@ exports.definition = {
 			activeProjectId : "TEXT NOT NULL",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
-			friendAuthorization : "TEXT NOT NULL",
+			newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			age : "INTEGER NOT NULL",
 			birthday : "TEXT NOT NULL"
 		},
 		defaults : {
-			userName : "",
-			friendAuthorization : "required"
+			newFriendAuthentication : "required"
 		},
 		hasMany : {
 	    	projects : {type : "Project", attribute : "ownerUser" },

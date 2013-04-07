@@ -18,7 +18,7 @@
 			bindAttribute="currentBalance"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="共享类型" hintText="请输入共享类型"
 			items="个人,好友,公开"
-			values="person,friend,public"
+			values="private,friend,public"
 			bindModel="$.$model"
 			bindAttribute="sharingType"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
