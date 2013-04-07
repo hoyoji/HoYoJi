@@ -10,6 +10,7 @@
                 		/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" hintText="请选择好友"
 						bindModel="$.$model"
+						editModeEditability="noneditable"
                         bindAttribute="friend"
 						bindAttributeIsModel="getDisplayName()"
 						bindModelSelector="friend/friendAll"

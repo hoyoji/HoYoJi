@@ -26,7 +26,7 @@
 							children[i] = ch[0];
 						}
 						if(children[i].endsWith("()")){
-							collection = $.$model[children[i].slice(0,-2)]();	
+							collection = $.$model[children[i].slice(0,-2)]();
 						} else {
 							collection = $.$model.xGet(children[i]);
 						}
