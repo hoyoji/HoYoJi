@@ -26,7 +26,7 @@ else{
 	});
 	menuSection.add($.createContextMenuItem("收款明细", function() {
 		Alloy.Globals.openWindow("money/moneyLoanPaybackAll", {
-			selectedLend : $.$model
+			selectedLoanLend : $.$model
 		});
 	}));
 	return menuSection;
