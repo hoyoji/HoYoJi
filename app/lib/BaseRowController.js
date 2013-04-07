@@ -21,7 +21,7 @@
 					childrenCollections = [];
 					for (var i = 0; i < children.length; i++) {
 						var collection;
-						var ch = children[i].split(":")
+						var ch = children[i].split(":");
 						if(ch.length > 1){
 							children[i] = ch[0];
 						}

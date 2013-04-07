@@ -37,7 +37,7 @@ if (!$.$model) {
 	});
 }
 if($.saveableMode === "read"){
-	$.setSaveableMode("read");
+	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
 } else {
