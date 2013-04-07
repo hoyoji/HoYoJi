@@ -16,6 +16,7 @@ var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({paren
 $.friendCategoriesTable.addCollection(collection);
 
 function onFooterbarTap(e){
-	if(e.source.id === ""){
+	if(e.source.id === "addFriend"){
+		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}
 }

@@ -12,7 +12,7 @@
                 		bindAttribute="fromUser"
                 		bindAttributeIsModel="userName"
                 		/>
-				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" height="Ti.UI.SIZE" width="Ti.UI.FILL"
+				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求信息" height="Ti.UI.SIZE" width="Ti.UI.FILL"
 					bindModel="$.$model"
 					bindAttribute="detail"/>
 		</ScrollView>
