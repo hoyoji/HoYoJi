@@ -151,6 +151,23 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getSharedWithHerSubProjects : function(){
+				var self = this;
+				var found = false;
+				if(!this.__getSharedWIthHerSubProjectsFilter){
+					this.__getSharedWIthHerSubProjectsFilter = this.xGet("friend").xGet("projectShareAuthorizations").xCreateFilter(function(model){
+						found = false;
+						self.xGet("project").xGet("subProjects").map(function(subProject){
+							if (model.xGet("project").xGet("id") ===  subProject.xGet("id")
+								&& (model.xGet("state") === "Wait" || model.xGet("state") === "Accept")){
+								found = true;
+							}
+						});
+						return found;
+					});
+				}
+				return this.__getSharedWIthHerSubProjectsFilter;
+			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				var subProjectShareAuthorizationIds = [];

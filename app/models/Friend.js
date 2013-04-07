@@ -47,9 +47,18 @@ exports.definition = {
 				}
 			},
 			getSharedWithHerProjects : function(){
+				var self = this;
+				var found = false;
 				if(!this.__getSharedWithHerProjectsFilter){
 					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
-						return model.xGet("state") === "Wait" || model.xGet("state") === "Accept";
+						found = false;
+						self.xGet("projectShareAuthorizations").map(function(projectShareAuthorization){
+							if (!model.xGet("project").xGet("parentProject") 
+								&& (model.xGet("state") === "Wait" || model.xGet("state") === "Accept")){
+								found = true;
+							}
+						});
+						return found;
 					});
 				}
 				return this.__getSharedWithHerProjectsFilter;
