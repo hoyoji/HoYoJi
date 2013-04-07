@@ -35,7 +35,11 @@ exports.definition = {
 				xFinishCallback(error);
 			},
             getAccountNameCurrency : function() {
-				return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + this.xGet("currentBalance").toUserCurrency() + ")";
+            	if(this.xGet("ownerUser") === Alloy.Models.User){
+					return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + this.xGet("currentBalance").toUserCurrency() + ")";
+            	} else {
+					return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + ")";
+            	}
 			}
 		});
 		

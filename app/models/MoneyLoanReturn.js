@@ -51,15 +51,18 @@ exports.definition = {
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
+			getInterest : function() {
+				return this.xGet("interest").toUserCurrency();
+			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var moneyLoanBorrow = this.xGet("moneyLoanBorrow");
 				var borrowRate = moneyLoanBorrow.xGet("exchangeCurrencyRate");
 				var returnRate = this.xGet("exchangeCurrencyRate");
-				
+
 				this._xDelete(xFinishCallback);
-				moneyLoanBorrow.xSet("returnedAmount", moneyLoanBorrow.xGet("returnedAmount") - amount*returnRate/borrowRate);
+				moneyLoanBorrow.xSet("returnedAmount", moneyLoanBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
 				moneyLoanBorrow.xSave();
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 				moneyAccount.xSave();

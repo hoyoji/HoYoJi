@@ -5,7 +5,7 @@
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友添加权限" 
                 		bindModel="$.$model"
-                		bindAttribute="friendAuthorization"/>
+                		bindAttribute="newFriendAuthentication"/>
              </ScrollView>
 	</View>
 </Alloy>

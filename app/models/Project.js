@@ -48,6 +48,14 @@ exports.definition = {
 					// xValidateComplete(error);
 				// }
 			},
+			getSharedWithHerSubProjects : function(){
+				if(!this.__getSharedWIthHerSubProjectsFilter){
+					this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({
+					// ....
+					});
+				}
+				return this.__getSharedWIthHerSubProjectsFilter;
+			},
 			setDefaultExpenseCategory : function(expenseCategory){
 				if(this.xGet("ownerUser") === Alloy.Models.User && this.xGet("defaultExpenseCategory") !== expenseCategory){
 					this.xSet("defaultExpenseCategory", expenseCategory);
@@ -67,6 +75,9 @@ exports.definition = {
 					return true;
 				}
 				return false;
+			},
+			canDelete : function(){
+				return this.xGet("ownerUser") === Alloy.Models.User;
 			}
 		});
 		return Model;

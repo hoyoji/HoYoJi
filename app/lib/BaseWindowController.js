@@ -25,7 +25,7 @@
 						var menuHeader = null;
 						if ($.mainWindow) {
 							title = "记一笔";
-							menuHeader = [$.createContextMenuItem("系统设置", function() {
+							menuHeader = [$.createContextMenuItem("设置", function() {
 								Alloy.Globals.openWindow("setting/systemSetting");
 							})];
 							menuFooter = [$.createContextMenuItem(title, function(){

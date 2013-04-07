@@ -1,4 +1,4 @@
-Alloy.Globals.extendsBaseFormController($, arguments[0]);
+ModAlloy.Globals.extendsBaseFormController($, arguments[0]);
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyTransfer", {

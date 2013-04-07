@@ -1,11 +1,19 @@
 <Alloy>
-	<View class="container" title="系统设置">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="系统设置"/>
+	<View class="container" title="设置">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="设置"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
             <View height="42">
-				<Button right="10" left="10" onSingletap="logout">注销</Button>
+				<Button right="10" left="10" onSingletap="logout">退出登录</Button>
         	</View>
-            <View height="42">
+        	<View height="42">
+        	<Label left="10">加我为好友时需要验证</Label>
+        	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
+			values="required,none"
+			items="是,否"
+			bindModel="User"
+			bindAttribute="newFriendAuthentication"/>
+			</View>
+            <!-- <View height="42">
 				<Button right="10" left="10" onSingletap="openMoneyAccount">账户设置</Button>
         	</View>
             <View height="42">
@@ -13,7 +21,7 @@
 		    </View>
             <View height="42">
 				<Button right="10" left="10" onSingletap="openExchange">汇率设置</Button>
-        	</View>
+        	</View> -->
         </ScrollView>
 	</View>
 </Alloy>

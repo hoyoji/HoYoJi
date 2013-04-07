@@ -27,25 +27,31 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
-				var incomeAmount = this.xGet("moneyIncome").xGet("amount");
-				this.xGet("moneyIncome").xSet("amount", incomeAmount - this.xGet("amount"));
-
 				if (this.xGet("moneyIncome").isNew()) {
 					this.xGet("moneyIncome").trigger("xchange:amount", this.xGet("moneyIncome"));
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
 					xFinishCallback();
 				} else {
-					var moneyAccount = this.xGet("moneyIncome").xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
-					moneyAccount.xSave();
-					
-					this.xGet("moneyIncome").xSave();
-					this._xDelete(xFinishCallback);
+					this._xDelete(function(error){
+						if(!error){
+							var amount = this.xGet("amount");
+							var moneyAccount = this.xGet("moneyIncome").xGet("moneyAccount");
+							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+							moneyAccount._xSave();
+							
+							var incomeAmount = this.xGet("moneyIncome").xGet("amount");
+							this.xGet("moneyIncome").xSet("amount", incomeAmount - amount);
+							this.xGet("moneyIncome")._xSave();
+									
+						}
+					});
 				}
 			},
 			canEdit : function(){
 				return this.xGet("moneyIncome").canEdit();				
+			},
+			canDelete : function(){
+				return this.xGet("moneyIncome").canDelete();
 			}
 		});
 		return Model;

@@ -25,6 +25,15 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
+				parentFriendCategory : function(xValidateComplete) {
+					var error;
+					if (!this.isNew() && this.xGet("id") === Alloy.Models.User.xGet("defaultFriendCategoryId")) {
+						error = {
+							msg : "默认好友分类不能有上级分类"
+						};
+					}
+					xValidateComplete(error);
+				}
 			},
 			xDelete : function(xFinishCallback) {
 				if(Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){

@@ -2,42 +2,62 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var boundXTable = null;
 exports.bindXTable = function(xTable){
+	if(boundXTable){
+		boundXTable.$view.removeEventListener("navigatedown", XTableNavigateDown);
+		boundXTable.$view.removeEventListener("navigateup", XTableNavigateUp);	
+	}
 	boundXTable = xTable;
-	$.onWindowOpenDo(function(){
-		if($.getCurrentWindow().$attrs.selectorCallback){
-			$.$attrs.title = "选择" + ($.getCurrentWindow().$attrs.title || $.$attrs.title);
-			$.title.setText($.$attrs.title);
-			$.title.addEventListener("singletap", function(e){
-				e.cancelBubble = true;
-				$.getCurrentWindow().$attrs.selectorCallback(null);
-				$.getCurrentWindow().close();
-			});
-		}
-	});
-	xTable.$view.addEventListener("navigatedown", function(e){
-			$.childTableTitle.setText(e.childTableTitle);
-			$.title.hide();
-			$.childTableTitle.show();
-			$.tableNavButton.show();
-	});
-	xTable.$view.addEventListener("navigateup", function(e){
-		if(e.childTableTitle !== undefined){
-			$.childTableTitle.setText(e.childTableTitle);
-			$.title.hide();
-			$.childTableTitle.show();
-			$.tableNavButton.show();
-		} else {
-			$.childTableTitle.hide();
-			$.title.show();
-			$.tableNavButton.hide();
-		}
-	});	
+	xTable.$view.addEventListener("navigatedown", XTableNavigateDown);
+	xTable.$view.addEventListener("navigateup", XTableNavigateUp);	
+	setUpChildTableTitle(xTable.getLastTableTitle());
+
 }
+function XTableNavigateDown(e){
+	$.childTableTitle.setText(e.childTableTitle);
+	$.title.hide();
+	$.childTableTitle.show();
+	$.tableNavButton.show();
+}
+
+function XTableNavigateUp(e){
+	setUpChildTableTitle(e.childTableTitle);
+}
+
+function setUpChildTableTitle(childTableTitle){
+	if(childTableTitle !== undefined){
+		$.childTableTitle.setText(childTableTitle);
+		$.title.hide();
+		$.childTableTitle.show();
+		$.tableNavButton.show();
+	} else {
+		$.childTableTitle.hide();
+		$.title.show();
+		$.tableNavButton.hide();
+	}	
+}
+
+$.onWindowOpenDo(function(){
+	if($.getCurrentWindow().$attrs.selectorCallback){
+		$.$attrs.title = "选择" + ($.getCurrentWindow().$attrs.title || $.$attrs.title);
+		$.title.setText($.$attrs.title);
+		$.title.addEventListener("singletap", function(e){
+			e.cancelBubble = true;
+			$.getCurrentWindow().$attrs.selectorCallback(null);
+			$.getCurrentWindow().close();
+		});
+	}
+});
 
 $.tableNavButton.addEventListener('singletap', function(e) {
 	e.cancelBubble = true;
 	boundXTable.navigateUp();
 });
+
+
+exports.setTitle = function(title){
+	$.$attrs.title = title;
+	$.title.setText($.$attrs.title);	
+}
 
 exports.dirtyCB = function() {
 	if($.saveableMode === "edit"){
