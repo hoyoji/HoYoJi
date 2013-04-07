@@ -135,21 +135,21 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
-				friend : function(xValidateComplete) {
-					var error;
-					if (!this.xGet("friend")) {
-						error = {
-							msg : "好友不能为空"
-						};
-					}else if (!this.isNew()) {
-						if (this.hasChanged("friend")) {
-							xValidateComplete({
-								msg : "好友不能被修改"
-							});
-						}
-					}
-					xValidateComplete(error);
-				}
+				// friend : function(xValidateComplete) {
+					// var error;
+					// if (!this.xGet("friend")) {
+						// error = {
+							// msg : "好友不能为空"
+						// };
+					// }else if (!this.isNew()) {
+						// if (this.hasChanged("friend")) {
+							// xValidateComplete({
+								// msg : "好友不能被修改"
+							// });
+						// }
+					// }
+					// xValidateComplete(error);
+				// }
 			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
