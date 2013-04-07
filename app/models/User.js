@@ -8,15 +8,14 @@ exports.definition = {
 			activeProjectId : "TEXT NOT NULL",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
-			friendAuthorization : "TEXT NOT NULL",
+			newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			age : "INTEGER NOT NULL",
 			birthday : "TEXT NOT NULL"
 		},
 		defaults : {
-			userName : "",
-			friendAuthorization : "required"
+			newFriendAuthentication : "required"
 		},
 		hasMany : {
 	    	projects : {type : "Project", attribute : "ownerUser" },
@@ -27,10 +26,10 @@ exports.definition = {
 	    	moneyIncomes : {type : "MoneyIncome", attribute : "ownerUser"},
 	    	moneyExpenses : {type : "MoneyExpense", attribute : "ownerUser"},
 	    	moneyTransfers : {type : "MoneyTransfer", attribute : "ownerUser"},
-	    	moneyLoanBorrows : {type : "MoneyLoanBorrow", attribute : "ownerUser"},
-	    	moneyLoanReturns : {type : "MoneyLoanReturn", attribute : "ownerUser"},
-	    	moneyLoanLends : {type : "MoneyLoanLend", attribute : "ownerUser"},
-			moneyLoanPaybacks : {type : "MoneyLoanPayback", attribute : "ownerUser"}
+	    	moneyBorrows : {type : "MoneyBorrow", attribute : "ownerUser"},
+	    	moneyReturns : {type : "MoneyReturn", attribute : "ownerUser"},
+	    	moneyLends : {type : "MoneyLend", attribute : "ownerUser"},
+			moneyPaybacks : {type : "MoneyPayback", attribute : "ownerUser"}
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},

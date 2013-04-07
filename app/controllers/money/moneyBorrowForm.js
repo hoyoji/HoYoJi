@@ -5,7 +5,7 @@ var oldMoneyAccount;
 var isRateExist;
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyLoanBorrow", {
+	$.$model = Alloy.createModel("MoneyBorrow", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeCurrencyRate : 1,
@@ -25,8 +25,8 @@ else{
 		headerTitle : "借入操作"
 	});
 	menuSection.add($.createContextMenuItem("还款明细", function() {
-		Alloy.Globals.openWindow("money/moneyLoanReturnAll", {
-			selectedLoanBorrow : $.$model
+		Alloy.Globals.openWindow("money/moneyReturnAll", {
+			selectedBorrow : $.$model
 		});
 	}));
 	return menuSection;

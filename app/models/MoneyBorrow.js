@@ -9,10 +9,16 @@ exports.definition = {
 			projectId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
-			interest : "REAL NOT　NULL",
+			repaymentDate : "TEXT NOT　NULL",
+			returnedAmount : "REAL NOT NULL",
 			remark : "TEXT",
-			moneyLoanBorrowId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL"
+		},
+		hasMany : {
+			moneyReturns : {
+				type : "MoneyReturn",
+				attribute : "moneyBorrow"
+			}
 		},
 		belongsTo : {
 			friend : {
@@ -25,22 +31,18 @@ exports.definition = {
 			},
 			project : {
 				type : "Project",
-				attribute : "moneyLoanReturns"
+				attribute : "moneyBorrows"
 			},
 			localCurrency : {
 				type : "Currency",
 				attribute : null
 			},
-			moneyLoanBorrow : {
-				type : "MoneyLoanBorrow",
-				attribute : "moneyLoanReturns"
-			},
 			ownerUser : {
 				type : "User",
-				attribute : "moneyLoanReturns"
+				attribute : "moneyBorrows"
 			}
 		},
-
+		rowView : "money/moneyBorrowRow",
 		adapter : {
 			type : "hyjSql"
 		}
@@ -51,20 +53,11 @@ exports.definition = {
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
-			getInterest : function() {
-				return this.xGet("interest").toUserCurrency();
-			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
-				var moneyLoanBorrow = this.xGet("moneyLoanBorrow");
-				var borrowRate = moneyLoanBorrow.xGet("exchangeCurrencyRate");
-				var returnRate = this.xGet("exchangeCurrencyRate");
-
 				this._xDelete(xFinishCallback);
-				moneyLoanBorrow.xSet("returnedAmount", moneyLoanBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
-				moneyLoanBorrow.xSave();
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 				moneyAccount.xSave();
 			}
 		});

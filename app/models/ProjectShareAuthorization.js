@@ -44,25 +44,25 @@ exports.definition = {
 	        projectShareMoneyTransferEdit : "INTEGER NOT NULL",
 	        projectShareMoneyTransferDelete : "INTEGER NOT NULL",
 	        
-	        projectShareLoanLendOwnerDataOnly : "INTEGER NOT NULL",
-	        projectShareLoanLendAddNew : "INTEGER NOT NULL",
-	        projectShareLoanLendEdit : "INTEGER NOT NULL",
-	        projectShareLoanLendDelete : "INTEGER NOT NULL",
+	        projectShareMoneyLendOwnerDataOnly : "INTEGER NOT NULL",
+	        projectShareMoneyLendAddNew : "INTEGER NOT NULL",
+	        projectShareMoneyLendEdit : "INTEGER NOT NULL",
+	        projectShareMoneyLendDelete : "INTEGER NOT NULL",
 	        
-	        projectShareLoanBorrowOwnerDataOnly : "INTEGER NOT NULL",
-	        projectShareLoanBorrowAddNew : "INTEGER NOT NULL",
-	        projectShareLoanBorrowEdit : "INTEGER NOT NULL",
-	        projectShareLoanBorrowDelete : "INTEGER NOT NULL",
+	        projectShareMoneyBorrowOwnerDataOnly : "INTEGER NOT NULL",
+	        projectShareMoneyBorrowAddNew : "INTEGER NOT NULL",
+	        projectShareMoneyBorrowEdit : "INTEGER NOT NULL",
+	        projectShareMoneyBorrowDelete : "INTEGER NOT NULL",
 	        
-	        projectShareLoanPaybackOwnerDataOnly : "INTEGER NOT NULL",
-	        projectShareLoanPaybackAddNew : "INTEGER NOT NULL",
-	        projectShareLoanPaybackEdit : "INTEGER NOT NULL",
-	        projectShareLoanPaybackDelete : "INTEGER NOT NULL",
+	        projectShareMoneyPaybackOwnerDataOnly : "INTEGER NOT NULL",
+	        projectShareMoneyPaybackAddNew : "INTEGER NOT NULL",
+	        projectShareMoneyPaybackEdit : "INTEGER NOT NULL",
+	        projectShareMoneyPaybackDelete : "INTEGER NOT NULL",
 	        
-	        projectShareLoanReturnOwnerDataOnly : "INTEGER NOT NULL",
-	        projectShareLoanReturnAddNew : "INTEGER NOT NULL",
-	        projectShareLoanReturnEdit : "INTEGER NOT NULL",
-	        projectShareLoanReturnDelete : "INTEGER NOT NULL"
+	        projectShareMoneyReturnOwnerDataOnly : "INTEGER NOT NULL",
+	        projectShareMoneyReturnAddNew : "INTEGER NOT NULL",
+	        projectShareMoneyReturnEdit : "INTEGER NOT NULL",
+	        projectShareMoneyReturnDelete : "INTEGER NOT NULL"
 		},
 		defaults : {
 			shareAllSubProjects : 0,
@@ -100,25 +100,25 @@ exports.definition = {
 	        projectShareMoneyTransferEdit : 1,
 	        projectShareMoneyTransferDelete : 1,
 	        
-	        projectShareLoanLendOwnerDataOnly : 0,
-	        projectShareLoanLendAddNew : 1,
-	        projectShareLoanLendEdit : 1,
-	        projectShareLoanLendDelete : 1,
+	        projectShareMoneyLendOwnerDataOnly : 0,
+	        projectShareMoneyLendAddNew : 1,
+	        projectShareMoneyLendEdit : 1,
+	        projectShareMoneyLendDelete : 1,
 	        
-	        projectShareLoanBorrowOwnerDataOnly : 0,
-	        projectShareLoanBorrowAddNew : 1,
-	        projectShareLoanBorrowEdit : 1,
-	        projectShareLoanBorrowDelete : 1,
+	        projectShareMoneyBorrowOwnerDataOnly : 0,
+	        projectShareMoneyBorrowAddNew : 1,
+	        projectShareMoneyBorrowEdit : 1,
+	        projectShareMoneyBorrowDelete : 1,
 	        
-	        projectShareLoanPaybackOwnerDataOnly : 0,
-	        projectShareLoanPaybackAddNew : 1,
-	        projectShareLoanPaybackEdit : 1,
-	        projectShareLoanPaybackDelete : 1,
+	        projectShareMoneyPaybackOwnerDataOnly : 0,
+	        projectShareMoneyPaybackAddNew : 1,
+	        projectShareMoneyPaybackEdit : 1,
+	        projectShareMoneyPaybackDelete : 1,
 	        
-	        projectShareLoanReturnOwnerDataOnly : 0,
-	        projectShareLoanReturnAddNew : 1,
-	        projectShareLoanReturnEdit : 1,
-	        projectShareLoanReturnDelete : 1
+	        projectShareMoneyReturnOwnerDataOnly : 0,
+	        projectShareMoneyReturnAddNew : 1,
+	        projectShareMoneyReturnEdit : 1,
+	        projectShareMoneyReturnDelete : 1
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null },

@@ -108,22 +108,22 @@
 					items="自己,自己"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanBorrowOwnerDataOnly"/>
+					bindAttribute="projectShareMoneyBorrowOwnerDataOnly"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="增,增"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanBorrowAddNew"/>
+					bindAttribute="projectShareMoneyBorrowAddNew"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="改,改"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanBorrowEdit"/>
+					bindAttribute="projectShareMoneyBorrowEdit"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="删,删"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanBorrowDelete"/>
+					bindAttribute="projectShareMoneyBorrowDelete"/>
 				</View>
 			</View>
 			<View height="42">
@@ -133,22 +133,22 @@
 					items="自己,自己"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanLendOwnerDataOnly"/>
+					bindAttribute="projectShareMoneyLendOwnerDataOnly"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="增,增"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanLendAddNew"/>
+					bindAttribute="projectShareMoneyLendAddNew"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="改,改"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanLendEdit"/>
+					bindAttribute="projectShareMoneyLendEdit"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="删,删"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanLendDelete"/>
+					bindAttribute="projectShareMoneyLendDelete"/>
 				</View>
 			</View>
 			<View height="42">
@@ -158,22 +158,22 @@
 					items="自己,自己"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanReturnOwnerDataOnly"/>
+					bindAttribute="projectShareMoneyReturnOwnerDataOnly"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="增,增"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanReturnAddNew"/>
+					bindAttribute="projectShareMoneyReturnAddNew"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="改,改"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanReturnEdit"/>
+					bindAttribute="projectShareMoneyReturnEdit"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="删,删"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanReturnDelete"/>
+					bindAttribute="projectShareMoneyReturnDelete"/>
 				</View>
 			</View>
 			<View height="42">
@@ -183,22 +183,22 @@
 					items="自己,自己"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanPaybackOwnerDataOnly"/>
+					bindAttribute="projectShareMoneyPaybackOwnerDataOnly"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="增,增"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanPaybackAddNew"/>
+					bindAttribute="projectShareMoneyPaybackAddNew"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="改,改"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanPaybackEdit"/>
+					bindAttribute="projectShareMoneyPaybackEdit"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 					items="删,删"
 					values="0,1"
 					bindModel="$.$model"
-					bindAttribute="projectShareLoanPaybackDelete"/>
+					bindAttribute="projectShareMoneyPaybackDelete"/>
 				</View>
 			</View>
 			

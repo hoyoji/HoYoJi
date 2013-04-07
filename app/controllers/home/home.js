@@ -5,13 +5,13 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
+	} else if (e.source.id === "setting") {
+		Alloy.Globals.openWindow("setting/systemSetting");
 	}
 }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "设置操作"
-	});
+	var menuSection = Ti.UI.createTableViewSection();
 
 	menuSection.add($.createContextMenuItem("新增支出", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseForm");
@@ -24,32 +24,10 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyTransferForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借入", function() {
-		Alloy.Globals.openWindow("money/moneyLoanBorrowForm");
+		Alloy.Globals.openWindow("money/moneyBorrowForm");
 	}));
 	menuSection.add($.createContextMenuItem("新增借出", function() {
-		Alloy.Globals.openWindow("money/moneyLoanLendForm");
-	}));
-
-	menuSection.add($.createContextMenuItem("切换权限", function() {
-		// Alloy.Globals.openWindow("user/userForm",{$model : Alloy.Models.User});
-		if (Alloy.Models.User.xGet("friendAuthorization") === "required") {
-			Alloy.Models.User.save({
-				friendAuthorization : "none"
-			}, {
-				wait : true,
-				patch : true
-			});
-			alert("权限切换为：none");
-		} else {
-			Alloy.Models.User.save({
-				friendAuthorization : "required"
-			}, {
-				wait : true,
-				patch : true
-			});
-			alert("权限切换为：required");
-		}
-
+		Alloy.Globals.openWindow("money/moneyLendForm");
 	}));
 	return menuSection;
 }
