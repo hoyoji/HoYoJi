@@ -51,6 +51,55 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				transferOutAmount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("transferOutAmount"))) {
+						error = {
+							msg : "转出金额只能为数字"
+						};
+					} else {
+						if (this.xGet("transferOutAmount") < 0) {
+							error = {
+								msg : "转出金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
+				transferInAmount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("transferInAmount"))) {
+						error = {
+							msg : "转入金额只能为数字"
+						};
+					} else {
+						if (this.xGet("transferInAmount") < 0) {
+							error = {
+								msg : "转入金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
+				exchangeCurrencyRate : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("exchangeCurrencyRate"))) {
+						error = {
+							msg : "汇率只能为数字"
+						};
+					} else {
+						if (this.xGet("exchangeCurrencyRate") < 0) {
+							error = {
+								msg : "汇率不能为负数"
+							};
+						} else if (this.xGet("exchangeCurrencyRate") === 0) {
+							error = {
+								msg : "汇率不能为0"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
 				transferOut : function(xValidateComplete) {
 					var error;
 					if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
@@ -86,12 +135,12 @@ exports.definition = {
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
 				this._xDelete(xFinishCallback);
-				if(!transferOutOwnerUser){
-					transferOut.xSet("currentBalance",transferOut.xGet("currentBalance") + transferOutAmount);
+				if (!transferOutOwnerUser) {
+					transferOut.xSet("currentBalance", transferOut.xGet("currentBalance") + transferOutAmount);
 					transferOut.xSave();
 				}
-				if(!transferInOwnerUser){
-					transferIn.xSet("currentBalance",transferIn.xGet("currentBalance") - transferInAmount);
+				if (!transferInOwnerUser) {
+					transferIn.xSet("currentBalance", transferIn.xGet("currentBalance") - transferInAmount);
 					transferIn.xSave();
 				}
 			}

@@ -72,16 +72,21 @@ exports.definition = {
 						}
 					xValidateComplete(error);
 				},
-				rate : function(xValidateComplete){
+				rate : function(xValidateComplete) {
 					var error;
-					if(this.xGet("rate")===0){
+					if (isNaN(this.xGet("rate"))) {
 						error = {
-							msg : "汇率不能为0，请重新输入"
-						}
-					}
-					else if(isNaN(this.xGet("rate"))){
-						error = {
-							msg : "请输入正确数字"
+							msg : "汇率只能为数字"
+						};
+					} else {
+						if (this.xGet("rate") < 0) {
+							error = {
+								msg : "汇率不能为负数"
+							};
+						} else if (this.xGet("rate") === 0) {
+							error = {
+								msg : "汇率不能为0"
+							};
 						}
 					}
 					xValidateComplete(error);
