@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 exports.open = function(contentController) {
-	$.tabBar.$view.hide();
+	//$.tabBar.$view.hide();
 	$.$view.open({
 		animated : false
 	});
@@ -10,25 +10,25 @@ exports.open = function(contentController) {
 		$.$view.focus();
 	}
 	
-	// var animation = Titanium.UI.createAnimation();
-	// animation.left = "0";
-	// animation.duration = 500;
-	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// if(contentController){
-		// animation.addEventListener("complete", function(){
-			// delete Alloy.Globals.openingWindow[contentController];
-		// });
-	// }
-	// $.$view.animate(animation);
-	$.$view.addEventListener("open", function(){
-		function showTabBar(){
-			$.scrollableView.removeEventListener("scrollEnd", showTabBar);
-			$.tabBar.$view.show();
-		}
-		$.scrollableView.addEventListener("scrollEnd", showTabBar);
-		$.scrollableView.scrollToView(1);
-		
-	});
+	var animation = Titanium.UI.createAnimation();
+	animation.left = "0";
+	animation.duration = 500;
+	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	if(contentController){
+		animation.addEventListener("complete", function(){
+			delete Alloy.Globals.openingWindow[contentController];
+		});
+	}
+	$.$view.animate(animation);
+	// $.$view.addEventListener("open", function(){
+		// function showTabBar(){
+			// $.scrollableView.removeEventListener("scrollEnd", showTabBar);
+			// $.tabBar.$view.show();
+		// }
+		// $.scrollableView.addEventListener("scrollEnd", showTabBar);
+		// $.scrollableView.scrollToView(1);
+// 		
+	// });
 }
 
 exports.close = function(e) {
