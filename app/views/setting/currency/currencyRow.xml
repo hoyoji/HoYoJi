@@ -1,15 +1,23 @@
 <Alloy>
 	<View class="container" height="42" openForm="setting/currency/currencyForm">
 		<View id="content" class="row-content" height="Ti.UI.FILL" >
-			<View layout="horizontal">
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
-			bindModel = "$.$model"
-			bindAttribute = "name"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0" width="Ti.UI.SIZE" height="42"
-			bindModel = "$.$model"
-			bindAttribute = "symbol"
-			/>
+			<View layout="horizontal" horizontalWrap="false" left="10" width="Ti.UI.SIZE">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+				bindModel = "$.$model"
+				bindAttribute = "name"
+				/>
+			</View>
+			<View layout="horizontal" horizontalWrap="false" left="45%"  width="Ti.UI.SIZE">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="42"
+				bindModel = "$.$model"
+				bindAttribute = "code"
+				/>
+			</View>
+			<View layout="horizontal" horizontalWrap="false" right="30" width="Ti.UI.SIZE">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="42"
+				bindModel = "$.$model"
+				bindAttribute = "symbol"
+				/>
 			</View>
 			<Label id="check" visible="false" color="black" right="5">√</Label>
 		</View>

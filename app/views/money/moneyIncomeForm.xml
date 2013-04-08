@@ -39,9 +39,9 @@
 			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="收入类型" hintText="请选择收入类型"
-			items="正常收入，预收金额，从预收里扣除"
-			values="Ordinary,PreIncome,PreIncomePayOff"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="收入类型" hintText="请选择收入类型"
+			items="正常收入，预收金额"
+			values="Ordinary,PreIncome"
 			bindModel="$.$model"
 			bindAttribute="incomeType"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
