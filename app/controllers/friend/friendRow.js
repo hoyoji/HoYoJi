@@ -7,3 +7,6 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	}, isSelectMode));
 	return menuSection;
 }
+$.getChildTitle = function() {
+	return $.$model.xGet("friendUser").xGet("userName");
+}

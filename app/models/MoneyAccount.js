@@ -40,6 +40,9 @@ exports.definition = {
             	} else {
 					return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + ")";
             	}
+			},
+			getCurrentBalance : function(){
+				return this.xGet("currentBalance").toUserCurrency();
 			}
 		});
 		

@@ -213,23 +213,57 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 				}
 			}else{
-				// Alloy.Globals.Server.sendMsg({
-					// "toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
-					// "fromUserId" : Alloy.Models.User.xGet("id"),
-					// "type" : "Project.Share.Edit",
-					// "messageState" : "noRead",
-					// "messageTitle" : "项目"+$.$model.xGet("project").xGet("name")+"修改了的权限",
-					// "date" : date,
-					// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
-					// "messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-					// "messageData" : JSON.stringify({
-			                            // shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-			                            // projectShareAuthorizationId : $.$model.xGet("id"),
-			                            // subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-		                        // })
-		         // },function(){
-			        $.saveModel(saveEndCB, saveErrorCB);
-    			// });
+				if($.$model.xGet("shareAllSubProjects")){
+					Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function(){
+						$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
+							var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+									projectId : subProject.xGet("id"),
+									friendId : $.$model.xGet("friendId")
+								});
+							subProjectShareAuthorizations.map(function(subProjectShareAuthorization){
+								if(subProjectShareAuthorization.xGet("id") 
+								&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
+									var data = {
+										shareType : $.$model.xGet("shareType"),
+										shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+									}
+									for(var attr in $.$model.config.columns){
+										if(attr.startsWith("projectShare")){
+											data[attr] = $.$model.xGet(attr);
+										}
+									}
+									subProjectShareAuthorization.xSet(data); 
+									subProjectShareAuthorization.xAddToSave($);
+								}
+							});
+						});
+					});
+					Alloy.Globals.Server.sendMsg({
+						"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+						"fromUserId" : Alloy.Models.User.xGet("id"),
+						"type" : "Project.Share.Edit",
+						"messageState" : "noRead",
+						"messageTitle" : "项目"+$.$model.xGet("project").xGet("name")+"修改了的权限",
+						"date" : date,
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
+						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId")
+			         },function(){
+				        $.saveModel(saveEndCB, saveErrorCB);
+	    			});
+				}else{
+					Alloy.Globals.Server.sendMsg({
+						"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+						"fromUserId" : Alloy.Models.User.xGet("id"),
+						"type" : "Project.Share.Edit",
+						"messageState" : "noRead",
+						"messageTitle" : "项目"+$.$model.xGet("project").xGet("name")+"修改了的权限",
+						"date" : date,
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
+						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId")
+			         },function(){
+				        $.saveModel(saveEndCB, saveErrorCB);
+	    			});
+				}
 			}
 		}
 	   		
