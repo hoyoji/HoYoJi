@@ -52,12 +52,27 @@ exports.definition = {
 				if(!this.__getSharedWithHerProjectsFilter){
 					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
 						found = false;
-						self.xGet("projectShareAuthorizations").map(function(projectShareAuthorization){
-							if (!model.xGet("project").xGet("parentProject") 
-								&& (model.xGet("state") === "Wait" || model.xGet("state") === "Accept")){
-								found = true;
+							if(model.xGet("state") === "Wait" || model.xGet("state") === "Accept"){
+								if (!model.xGet("project").xGet("parentProject")){
+									found = true;
+								}else{
+									var parentProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+										projectId : model.xGet("project").xGet("parentProject").xGet("id"),
+										friendId : model.xGet("friendId")
+									});
+									if(parentProjectShareAuthorizations.length > 0){
+										found = true;
+										for(var i=0 ; i<parentProjectShareAuthorizations.length ; i++){
+											if(parentProjectShareAuthorizations.at(i).xGet("state") === "Wait" || parentProjectShareAuthorizations.at(i).xGet("state") === "Accept"){
+											 	found = false;
+											 	break;
+											 }
+										}
+									}else{
+										found = true;
+									}
+								}
 							}
-						});
 						return found;
 					});
 				}

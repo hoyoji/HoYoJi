@@ -4,7 +4,7 @@
 			slides="money/moneyExpenseForm,money/moneyIncomeForm"
 			titles="支出,收入" /> -->	
 		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar" hideFirstTab="true"/>
-		<ScrollableView id="scrollableView" showPagingControl="false" top="5">
+		<ScrollableView id="scrollableView" currentPage="1" showPagingControl="false" top="5">
 			<View id="goBackView"></View>
 			<Require src="money/moneyExpenseForm" />
 			<Require src="money/moneyIncomeForm" />
