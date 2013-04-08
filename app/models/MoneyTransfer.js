@@ -12,7 +12,9 @@ exports.definition = {
 			exchangeCurrencyRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			transferOutOwnerUser : {

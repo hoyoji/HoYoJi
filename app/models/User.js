@@ -12,10 +12,15 @@ exports.definition = {
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			age : "INTEGER NOT NULL",
-			birthday : "TEXT NOT NULL"
+			birthday : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+		    defaultTransactionDisplayType : "TEXT NOT NULL",
+		    isMerchant : "INTEGER NOT NULL"
 		},
 		defaults : {
-			newFriendAuthentication : "required"
+			newFriendAuthentication : "required",
+			defaultTransactionDisplayType : "Project",
+			isMerchant : 0
 		},
 		hasMany : {
 	    	projects : {type : "Project", attribute : "ownerUser" },

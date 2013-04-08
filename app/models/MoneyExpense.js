@@ -13,7 +13,9 @@ exports.definition = {
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		hasMany : {
 			moneyExpenseDetails : {

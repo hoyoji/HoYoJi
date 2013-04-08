@@ -15,7 +15,6 @@
 			bindAttributeIsModel="name"
 			bindModelSelector="project/projectAll"
 			/>
-			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"
 			bindAttribute="moneyAccount"

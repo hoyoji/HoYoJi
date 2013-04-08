@@ -10,7 +10,9 @@ exports.definition = {
   		    accountType : "TEXT NOT NULL",
   		    accountNumber : "TEXT",
   		    bankAddress : "TEXT",
-		    ownerUserId : "TEXT NOT NULL"
+		    ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		defaults : {
 			currentBalance : 0

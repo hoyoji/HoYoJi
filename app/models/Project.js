@@ -6,8 +6,9 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
-			defaultExpenseCategoryId : "TEXT"
-			// projectSharedById : "TEXT"
+			defaultExpenseCategoryId : "TEXT",
+			// projectSharedById : "TEXT",
+		    lastSyncTime : "TEXT"
 		},
 		// defaults : {
 			// name : "",

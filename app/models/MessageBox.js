@@ -2,7 +2,10 @@ exports.definition = {
 	config : {
 		columns : {
 			id : "TEXT NOT NULL PRIMARY KEY",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null }

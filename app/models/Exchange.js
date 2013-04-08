@@ -6,7 +6,9 @@ exports.definition = {
 			foreignCurrencyId : "TEXT NOT NULL",
 			rate : "REAL NOT NULL",
 			autoUpdate : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			localCurrency : {

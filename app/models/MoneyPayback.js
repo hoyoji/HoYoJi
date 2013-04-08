@@ -13,7 +13,9 @@ exports.definition = {
 			interest : "REAL NOT　NULL",
 			remark : "TEXT",
 			moneyLendId : "TEXT NOT NULL",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			friend : {

@@ -29,6 +29,8 @@ $.makeContextMenu = function() {
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
+	} else if (e.source.id === "report") {
+		Alloy.Globals.openWindow("report/transactionReport");
 	}
 }
 
