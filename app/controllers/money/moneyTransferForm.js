@@ -187,17 +187,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (newTransferIn) {
 		newTransferIn.xAddToSave($);
 	}
-
-	if ($.$model.isNew()) {//记住project为下次打开时project
-		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-		Alloy.Models.User.save({
-			activeProjectId : $.$model.xGet("project").xGet("id")
-		}, {
-			patch : true,
-			wait : true
-		});
-	}
-
 	if (createRate) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
@@ -206,5 +195,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 		exchange.xAddToSave($);
 	}
-	$.saveModel(saveEndCB, saveErrorCB);
+	var modelIsNew = $.$model.isNew();
+	$.saveModel(function(e) {
+		if ($.$model.isNew()) {//记住project为下次打开时project
+			Alloy.Models.User.save({
+				activeProjectId : $.$model.xGet("project").xGet("id")
+			}, {
+				patch : true,
+				wait : true
+			});
+		}
+		saveEndCB(e);
+	}, saveErrorCB);
 }

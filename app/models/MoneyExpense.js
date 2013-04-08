@@ -6,6 +6,7 @@ exports.definition = {
 			amount : "REAL NOT NULL",
 			expenseType : "TEXT NOT NULL",
 			friendId : "TEXT",
+			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
 			moneyExpenseCategoryId : "TEXT NOT NULL",
@@ -23,6 +24,10 @@ exports.definition = {
 		belongsTo : {
 			friend : {
 				type : "Friend",
+				attribute : null
+			},
+			friendAccount : {
+				type : "MoneyAccount",
 				attribute : null
 			},
 			moneyAccount : {
@@ -55,6 +60,21 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
+			validators : {
+				friendAccount : function(xValidateComplete){
+					var error;
+					var friendAccount = this.xGet("friendAccount");
+					if(friendAccount){
+						var moneyAccount = this.xGet("moneyAccount");
+						if(friendAccount.xGet("currency") !== moneyAccount.xGet("currency")){
+							error = {
+								msg : "请选择与账户相同币种的商家账户"
+							};
+						}
+					}
+					xValidateComplete(error);
+				}
+			},
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
