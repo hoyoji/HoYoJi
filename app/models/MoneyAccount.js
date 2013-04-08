@@ -45,7 +45,9 @@ exports.definition = {
             	}
 			},
 			getCurrentBalance : function(){
+				if(this.xGet("ownerUser") === Alloy.Models.User){
 				return this.xGet("currentBalance").toUserCurrency();
+				}
 			}
 		});
 		

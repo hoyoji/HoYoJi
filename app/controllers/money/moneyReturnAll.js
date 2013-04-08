@@ -10,9 +10,9 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.moneyReturnsTable);
+$.titleBar.bindXTable($.moneysTable);
 
-var collection = selectedBorrow.xGet("moneyReturns");
-var interest = selectedBorrow.xGet("moneyReturns");
-$.moneyReturnsTable.addCollection(collection,"money/moneyReturnRow");
-$.moneyReturnsTable.addCollection(interest,"money/moneyReturnInterestRow");
+var moneyReturns = selectedBorrow.xGet("moneyReturns");
+var interests = selectedBorrow.xGet("moneyReturns");
+$.moneysTable.addCollection(moneyReturns, "money/moneyReturnRow");
+$.moneysTable.addCollection(interests, "money/moneyReturnInterestRow");

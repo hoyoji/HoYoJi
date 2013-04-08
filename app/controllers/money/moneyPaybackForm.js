@@ -14,7 +14,8 @@ if (!$.$model) {
 		moneyAccount : selectedLend.xGet("moneyAccount"),
 		moneyLend : selectedLend,
 		project : selectedLend.xGet("project"),
-		friend : selectedLend.xGet("friend")
+		friend : selectedLend.xGet("friend"),
+		interest : 0
 	});
 
 	$.setSaveableMode("add");
