@@ -8,6 +8,10 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
+$.getChildTitle = function() {
+	return $.$model.xGet("name");
+}
+
 function onFooterbarTap (e) {
 	$.titleBar.setTitle(e.source.getTitle());
 	$.titleBar.bindXTable($[e.source.id]);
