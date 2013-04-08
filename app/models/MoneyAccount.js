@@ -9,7 +9,7 @@ exports.definition = {
   		    sharingType : "TEXT　NOT NULL",
   		    accountType : "TEXT NOT NULL",
   		    accountNumber : "TEXT",
-  		    createAddress : "TEXT",
+  		    bankAddress : "TEXT",
 		    ownerUserId : "TEXT NOT NULL"
 		},
 		defaults : {

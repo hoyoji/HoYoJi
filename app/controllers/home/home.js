@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		Alloy.Globals.openWindow("money/moneyAddNew");
+		Alloy.createController("money/moneyAddNew").open();
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
 	} else if (e.source.id === "setting") {

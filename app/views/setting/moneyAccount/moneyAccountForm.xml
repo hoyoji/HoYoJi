@@ -34,7 +34,7 @@
 			bindAttribute="accountNumber"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="开户地址" hintText="请输入开户地址"
 			bindModel="$.$model"
-			bindAttribute="createAddress"/>
+			bindAttribute="bankAddress"/>
 		</ScrollView>
 	</View>
 </Alloy>
