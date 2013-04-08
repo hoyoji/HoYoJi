@@ -9,7 +9,7 @@ exports.definition = {
 			projectId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
-			repaymentDate : "TEXT NOT　NULL",
+			paybackDate : "TEXT",
 			paybackedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL"
