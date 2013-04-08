@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="42" openForm="friend/friendForm" hasChild="projectShareAuthorizations">
+	<View class="container" height="42" openForm="friend/friendForm" hasChild="getSharedWithHerProjects():project/projectShareRow">
 		<View id="content" layout="horizontal" horizontalWrap="false" class="row-content" height="Ti.UI.FILL">
 			<Widget id="nickName" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"

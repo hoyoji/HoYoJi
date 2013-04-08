@@ -46,6 +46,23 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getSharedWithHerProjects : function(){
+				var self = this;
+				var found = false;
+				if(!this.__getSharedWithHerProjectsFilter){
+					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
+						found = false;
+						self.xGet("projectShareAuthorizations").map(function(projectShareAuthorization){
+							if (!model.xGet("project").xGet("parentProject") 
+								&& (model.xGet("state") === "Wait" || model.xGet("state") === "Accept")){
+								found = true;
+							}
+						});
+						return found;
+					});
+				}
+				return this.__getSharedWithHerProjectsFilter;
+			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {
 					return this.xGet("friendUser").xGet("userName");
@@ -100,7 +117,6 @@ exports.definition = {
 						});
 					}
 				}
-
 			}
 		});
 

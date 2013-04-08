@@ -56,6 +56,14 @@ exports.definition = {
 				}
 				return this.__getSharedWIthHerSubProjectsFilter;
 			},
+			getSharedWithHerFriends : function(){
+				if(!this.__getSharedWithHerFriendsFilter){
+					this.__getSharedWithHerFriendsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
+						return model.xGet("state") === "Wait" || model.xGet("state") === "Accept";
+					});
+				}
+				return this.__getSharedWithHerFriendsFilter;
+			},
 			setDefaultExpenseCategory : function(expenseCategory){
 				if(this.xGet("ownerUser") === Alloy.Models.User && this.xGet("defaultExpenseCategory") !== expenseCategory){
 					this.xSet("defaultExpenseCategory", expenseCategory);
