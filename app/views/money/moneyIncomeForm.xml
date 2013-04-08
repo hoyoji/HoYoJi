@@ -33,14 +33,21 @@
 			bindModel="$.$model"
 			bindAttribute="exchangeCurrencyRate"/>
 			<!-- <Button id="updateRate">更新本地汇率</Button> -->
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商家" hintText="请选择商家"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friend" labelText="商家" hintText="请选择商家"
 			bindModel="$.$model"
 			bindAttribute="friend"
 			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="商家账户" hintText="请选择商家账户"
+			bindModel="$.$model"
+			bindAttribute="merchantAccount"
+			bindAttributeIsModel="getAccountNameCurrency()"
+			bindModelSelector="setting/moneyAccount/moneyAccountAll"
+			bindModelSelectorParams="selectedFriend:friend"
+			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="收入类型" hintText="请选择收入类型"
-			items="正常收入，预收金额"
+			items="正常收入,预收金额"
 			values="Ordinary,PreIncome"
 			bindModel="$.$model"
 			bindAttribute="incomeType"/>

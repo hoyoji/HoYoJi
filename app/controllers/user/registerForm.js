@@ -15,7 +15,7 @@ $.$model.xSet("messageBox", messageBox);
 // activeCurrency.attributes["id"] = "CNY";
 $.$model.xSet("activeCurrencyId", "CNY");
 
-var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currencyId : "CNY", currentBalance : 0, sharingType : "person", ownerUser : $.$model}).xAddToSave($);
+var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currencyId : "CNY", currentBalance : 0, sharingType : "Private", accountType : "Cash",ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeMoneyAccount", activeMoneyAccount);
 
 var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "日常收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);

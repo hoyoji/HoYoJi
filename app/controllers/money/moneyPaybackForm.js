@@ -77,17 +77,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount + newInterest);
 	}
 
-	if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
-		Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-		Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-		Alloy.Models.User.save({
-			activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
-			activeProjectId : $.$model.xGet("project").xGet("id")
-		}, {
-			patch : true,
-			wait : true
-		});
-	}
 	if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("localCurrency"),
@@ -100,10 +89,24 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");//更新已收款
 	var lendRate = $.$model.xGet("moneyLend").xGet("exchangeCurrencyRate");
 	var paybackRate = $.$model.xGet("exchangeCurrencyRate");
-	$.$model.xGet("moneyLend").xSet("paybackedAmount", paybackedAmount - (oldAmount + newAmount)*paybackRate/lendRate);
+	$.$model.xGet("moneyLend").xSet("paybackedAmount", paybackedAmount + (oldAmount + newAmount)*paybackRate/lendRate);
 	$.$model.xGet("moneyLend").xAddToSave($);
 
-	$.saveModel(saveEndCB, function(e) {
+	var modelIsNew = $.$model.isNew();
+	$.saveModel(function(e) {
+		if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
+			Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+			Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+			Alloy.Models.User.save({
+				activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
+				activeProjectId : $.$model.xGet("project").xGet("id")
+			}, {
+				patch : true,
+				wait : true
+			});
+		}
+		saveEndCB(e);
+	}, function(e) {
 		newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 		oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 		if ($.$model.isNew()) {
