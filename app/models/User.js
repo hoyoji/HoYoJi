@@ -14,6 +14,7 @@ exports.definition = {
 			age : "INTEGER NOT NULL",
 			birthday : "TEXT NOT NULL",
 		    lastSyncTime : "TEXT",
+		    lastModifyTime : "TEXT",
 		    defaultTransactionDisplayType : "TEXT NOT NULL",
 		    isMerchant : "INTEGER NOT NULL"
 		},
