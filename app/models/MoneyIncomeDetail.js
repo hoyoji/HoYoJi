@@ -27,6 +27,7 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
+				var self = this;
 				if (this.xGet("moneyIncome").isNew()) {
 					this.xGet("moneyIncome").trigger("xchange:amount", this.xGet("moneyIncome"));
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
@@ -34,14 +35,14 @@ exports.definition = {
 				} else {
 					this._xDelete(function(error){
 						if(!error){
-							var amount = this.xGet("amount");
-							var moneyAccount = this.xGet("moneyIncome").xGet("moneyAccount");
+							var amount = self.xGet("amount");
+							var moneyAccount = self.xGet("moneyIncome").xGet("moneyAccount");
 							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 							moneyAccount._xSave();
 							
-							var incomeAmount = this.xGet("moneyIncome").xGet("amount");
-							this.xGet("moneyIncome").xSet("amount", incomeAmount - amount);
-							this.xGet("moneyIncome")._xSave();
+							var incomeAmount = self.xGet("moneyIncome").xGet("amount");
+							self.xGet("moneyIncome").xSet("amount", incomeAmount - amount);
+							self.xGet("moneyIncome")._xSave();
 									
 						}
 					});
