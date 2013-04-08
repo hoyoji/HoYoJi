@@ -51,7 +51,11 @@
 										myDbTrans.trigger("rollback");
 									// }
 									hasError = true;
-									xErrorCallback(model, error);
+									var errMsg;
+									if (error.__summury) {
+										errMsg = error.__summury.msg;
+									}
+									xErrorCallback(errMsg);
 								}
 							});
 						}

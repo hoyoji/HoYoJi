@@ -13,7 +13,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 		projectIsSharedToMe = false;
 	}
-
 	menuSection.add($.createContextMenuItem("支出分类", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseCategoryAll", {
 			selectedProject : $.$model
