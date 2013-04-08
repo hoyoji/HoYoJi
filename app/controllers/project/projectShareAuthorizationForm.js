@@ -117,7 +117,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			    });
 			}
 	   }else{
-	   		if($.$model.hasChanged("shareAllSubProjects")){
+	   	if($.$model.hasChanged("friend")){
+			saveErrorCB("好友不能修改！");
+		}else{
+			if($.$model.hasChanged("shareAllSubProjects")){
 				if($.$model.xGet("shareAllSubProjects")){
 					$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 						var subProjectShareAuthorization;
@@ -228,6 +231,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			        $.saveModel(saveEndCB, saveErrorCB);
     			// });
 			}
+		}
+	   		
 	   }
    }
 }

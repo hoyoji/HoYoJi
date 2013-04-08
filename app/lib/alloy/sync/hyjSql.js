@@ -456,8 +456,8 @@ function Sync(method, model, opts) {
 				function rollbackTrans(){
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					error = { __summury : { msg : "没有删除权限"}};
-					_.isFunction(opts.error) && opts.error(model, error);
+					//error = { __summury : { msg : "没有删除权限"}};
+					//_.isFunction(opts.error) && opts.error(model, error);
 				}
 				opts.dbTrans.on("commit", commitTrans);
 				opts.dbTrans.on("rollback", rollbackTrans);
