@@ -38,6 +38,8 @@ exports.definition = {
 			xDelete : function(xFinishCallback) {
 				if(Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除系统默认好友分类"});
+				}else if(this.xGet("friends").length > 0){
+					xFinishCallback({ msg :"分类中有好友，不能删除"});
 				}else{
 					this._xDelete(xFinishCallback);
 				}
