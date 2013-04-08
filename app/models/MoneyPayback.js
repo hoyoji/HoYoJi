@@ -5,6 +5,7 @@ exports.definition = {
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
 			friendId : "TEXT",
+			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
@@ -17,6 +18,10 @@ exports.definition = {
 		belongsTo : {
 			friend : {
 				type : "Friend",
+				attribute : null
+			},
+			friendAccount : {
+				type : "MoneyAccount",
 				attribute : null
 			},
 			moneyAccount : {
@@ -48,10 +53,25 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
+			validators : {
+				friendAccount : function(xValidateComplete) {
+					var error;
+					var friendAccount = this.xGet("friendAccount");
+					if (friendAccount) {
+						var moneyAccount = this.xGet("moneyAccount");
+						if (friendAccount.xGet("currency") !== moneyAccount.xGet("currency")) {
+							error = {
+								msg : "请选择与账户相同币种的债务人账户"
+							};
+						}
+					}
+					xValidateComplete(error);
+				}
+			},
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
-			getInterest : function(){
+			getInterest : function() {
 				return this.xGet("interest").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback) {
@@ -62,7 +82,7 @@ exports.definition = {
 				var paybackRate = this.xGet("exchangeCurrencyRate");
 
 				this._xDelete(xFinishCallback);
-				moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount*paybackRate/lendRate);
+				moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate);
 				moneyLend.xSave();
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 				moneyAccount.xSave();

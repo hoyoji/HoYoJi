@@ -1,7 +1,13 @@
 <Alloy>
-	<View class="container" backgroundColor="white">
-		<Widget id="slideDownController" src="com.hoyoji.titanium.widget.SlideDownController" 
+	<Window class="container" left="100%" width="100%" height="100%" zIndex="101">
+		<!-- <Widget id="slideDownController" src="com.hoyoji.titanium.widget.SlideDownController" 
 			slides="money/moneyExpenseForm,money/moneyIncomeForm"
-			titles="支出,收入" />
-	</View>
+			titles="支出,收入" /> -->	
+		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar" hideFirstTab="true"/>
+		<ScrollableView id="scrollableView" showPagingControl="false" top="5">
+			<View id="goBackView"></View>
+			<Require src="money/moneyExpenseForm" />
+			<Require src="money/moneyIncomeForm" />
+		</ScrollableView>			
+	</Window>
 </Alloy>
