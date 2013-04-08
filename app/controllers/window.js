@@ -25,7 +25,7 @@ exports.close = function(e) {
 
 exports.open = function(contentController) {
 	$.$view.open({
-		animted : false
+		animated : false
 	});
 	$.closeSoftKeyboard();
 	if(OS_ANDROID){

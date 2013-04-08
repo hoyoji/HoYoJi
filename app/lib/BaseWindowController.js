@@ -29,7 +29,7 @@
 								Alloy.Globals.openWindow("setting/systemSetting");
 							})];
 							menuFooter = [$.createContextMenuItem(title, function(){
-								Alloy.Globals.openWindow("money/moneyAddNew");								
+								Alloy.createController("money/moneyAddNew").open();					
 							})];
 						}else{
 							menuFooter = [$.createContextMenuItem(title, $.close)];

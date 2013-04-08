@@ -15,7 +15,7 @@ if (!$.$model) {
 	});
 
 	$.setSaveableMode("add");
-$.returnedAmount.hide();
+	$.returnedAmount.hide();
 }
 else{
 	$.returnedAmount.show();
