@@ -71,6 +71,20 @@ function setExchangeRate(moneyAccount, model, setToModel) {
 		$.exchangeCurrencyRate.field.fireEvent("change");
 	}
 }
+	
+    $.friend.field.addEventListener("change", function() {
+		if ($.friend.getValue()) {
+			$.friendAccount.show();
+			$.friendAccount.setValue("");
+			$.friendAccount.field.fireEvent("change");
+		} else {
+			$.friendAccount.hide();
+			$.friendAccount.setValue("");
+		}
+	});
+	if (!$.friend.getValue()) {
+		$.friendAccount.hide();
+	}
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
