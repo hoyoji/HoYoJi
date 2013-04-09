@@ -5,7 +5,9 @@ exports.definition = {
 		    "name": "TEXT NOT NULL",
 		    "parentExpenseCategoryId": "TEXT",
 		    "projectId" : "TEXT NOT NULL",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		hasMany : {
 			subExpenseCategories : { type : "MoneyExpenseCategory", attribute : "parentExpenseCategory" }

@@ -13,7 +13,9 @@ exports.definition = {
 			paybackDate : "TEXT",
 			paybackedAmount : "REAL NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		hasMany : {
 			moneyPaybacks : {
@@ -56,6 +58,40 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				amount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("amount"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("amount") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
+				exchangeCurrencyRate : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("exchangeCurrencyRate"))) {
+						error = {
+							msg : "汇率只能为数字"
+						};
+					} else {
+						if (this.xGet("exchangeCurrencyRate") < 0) {
+							error = {
+								msg : "汇率不能为负数"
+							};
+						} else if (this.xGet("exchangeCurrencyRate") === 0) {
+							error = {
+								msg : "汇率不能为0"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
 				friendAccount : function(xValidateComplete) {
 					var error;
 					var friendAccount = this.xGet("friendAccount");

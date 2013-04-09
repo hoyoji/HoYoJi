@@ -8,6 +8,11 @@
 			<View id="goBackView"></View>
 			<Require src="money/moneyExpenseForm" />
 			<Require src="money/moneyIncomeForm" />
+			<Require src="money/moneyTransferForm" />
+			<Require src="money/moneyBorrowForm" />
+			<Require src="money/moneyLendForm" />
 		</ScrollableView>			
+		<Widget id="numericKeyboard" src="com.hoyoji.titanium.widget.NumericKeyboard" />
+		<Widget id="dateTimePicker" src="com.hoyoji.titanium.widget.DateTimePicker" />
 	</Window>
 </Alloy>

@@ -35,7 +35,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="债权人账户" hintText="请选择债权人账户"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
-			bindAttribute="merchantAccount"
+			bindAttribute="friendAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"

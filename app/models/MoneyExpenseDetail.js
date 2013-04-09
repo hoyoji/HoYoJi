@@ -6,7 +6,9 @@ exports.definition = {
 			amount : "REAL NOT NULL",
 			moneyExpenseId : "TEXT NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			moneyExpense : {

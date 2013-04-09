@@ -12,7 +12,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.moneyPaybacksTable);
 
-var collection = selectedLend.xGet("moneyPaybacks");
-var interest = selectedLend.xGet("moneyPaybacks");
-$.moneyPaybacksTable.addCollection(collection,"money/moneyPaybackRow");
-$.moneyPaybacksTable.addCollection(interest,"money/moneyPaybackInterestRow");
+var moneyPaybacks = selectedLend.xGet("moneyPaybacks");
+var interests = selectedLend.xGet("moneyPaybacks");
+$.moneyPaybacksTable.addCollection(moneyPaybacks,"money/moneyPaybackRow");
+$.moneyPaybacksTable.addCollection(interests,"money/moneyPaybackInterestRow");

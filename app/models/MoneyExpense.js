@@ -13,7 +13,9 @@ exports.definition = {
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		hasMany : {
 			moneyExpenseDetails : {
@@ -58,15 +60,50 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
-				friendAccount : function(xValidateComplete){
+				amount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("amount"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("amount") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
+				exchangeCurrencyRate : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("exchangeCurrencyRate"))) {
+						error = {
+							msg : "汇率只能为数字"
+						};
+					} else {
+						if (this.xGet("exchangeCurrencyRate") < 0) {
+							error = {
+								msg : "汇率不能为负数"
+							};
+						}
+						else if (this.xGet("exchangeCurrencyRate") === 0){
+							error = {
+								msg : "汇率不能为0"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
+				friendAccount : function(xValidateComplete) {
 					var error;
 					var friendAccount = this.xGet("friendAccount");
-					if(friendAccount){
+					if (friendAccount) {
 						var moneyAccount = this.xGet("moneyAccount");
-						if(friendAccount.xGet("currency") !== moneyAccount.xGet("currency")){
+						if (friendAccount.xGet("currency") !== moneyAccount.xGet("currency")) {
 							error = {
 								msg : "请选择与账户相同币种的商家账户"
 							};
@@ -79,14 +116,14 @@ exports.definition = {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
 			// setAmount : function(amount){
-				// amount = amount || 0;
-				// if(this.xGet("moneyExpenseDetails").length > 0){
-					// amount = 0;
-					// this.xGet("moneyExpenseDetails").map(function(item){
-						// amount += item.xGet("amount");
-					// })
-				// }
-				// this.xSet("amount", amount);
+			// amount = amount || 0;
+			// if(this.xGet("moneyExpenseDetails").length > 0){
+			// amount = 0;
+			// this.xGet("moneyExpenseDetails").map(function(item){
+			// amount += item.xGet("amount");
+			// })
+			// }
+			// this.xSet("amount", amount);
 			// },
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
@@ -100,7 +137,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 
