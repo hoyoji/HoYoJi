@@ -1,15 +1,18 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var currentTab = 0;
+var currentFastSelectTab = null;
 var scrollableView = null;
 var isExpanded = true;
 var hideTimeoutId = null;
 var firstTimeOpen = true;
 
-function animateHideTabBar() {
+exports.animateHideTabBar = function() {
 	if (firstTimeOpen)
 		firstTimeOpen = false;
 
+	$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
+			
 	var animation = Titanium.UI.createAnimation();
 	animation.top = "-42";
 	animation.duration = 500;
@@ -22,9 +25,46 @@ function animateHideTabBar() {
 	$.tabs.animate(animation);
 }
 
+exports.animateShowTabBar = function(){
+		currentFastSelectTab = currentTab;
+		if (!isExpanded) {
+				isExpanded = true;
+				$.widget.height = "47";
+				var animation = Titanium.UI.createAnimation();
+				animation.top = "5";
+				animation.duration = 500;
+				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	
+				$.tabs.animate(animation);
+		}	
+}
+
+exports.getFastSelectTabIndex = function(){
+	if($.$attrs.hideFirstTab === "true"){
+		return currentFastSelectTab + 1;
+	}
+	return currentFastSelectTab;
+}
+
+exports.fastSelectTab = function(e){
+	if (e.x < 0) {
+		return;
+	}
+
+	var position = Math.floor(e.x / ($.$view.getSize().width / $.tabs.getChildren().length));
+	if (position < $.tabs.getChildren().length && currentFastSelectTab !== position) {
+		if(currentFastSelectTab !== null){
+			$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
+		}
+		currentFastSelectTab = position;
+		$.tabs.getChildren()[currentFastSelectTab].setHeight("60");
+	}
+	e.cancelBubble = true;	
+}
+
 function hideTabBar(timeout) {
 	// close the tab-bar
-	hideTimeoutId = setTimeout(animateHideTabBar, timeout);
+	hideTimeoutId = setTimeout(exports.animateHideTabBar, timeout);
 }
 
 function hightLightTab(e) {
@@ -98,17 +138,8 @@ exports.init = function(scView) {
 			return;
 		}
 
-		if (!isExpanded) {
-			if (!($.$attrs.hideFirstTab === "true" && e.currentPageAsFloat < 1)) {
-				isExpanded = true;
-				$.widget.height = "47";
-				var animation = Titanium.UI.createAnimation();
-				animation.top = "5";
-				animation.duration = 500;
-				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	
-				$.tabs.animate(animation);
-			}
+		if (!($.$attrs.hideFirstTab === "true" && e.currentPageAsFloat < 1)) {
+			exports.animateShowTabBar();
 		}
 		if ($.$attrs.hideFirstTab === "true") {
 			$.hightlight.setLeft((e.currentPageAsFloat - 1) * $.hightlight.getSize().width);
@@ -117,5 +148,5 @@ exports.init = function(scView) {
 			clearTimeout(hideTimeoutId);
 		}
 	});
-	setTimeout(animateHideTabBar, 1000);
+	setTimeout(exports.animateHideTabBar, 1000);
 }
