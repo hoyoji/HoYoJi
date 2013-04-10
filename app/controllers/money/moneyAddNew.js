@@ -20,6 +20,7 @@ function onFooterbarTap(e) {
 			$[e.source.id].$view.setBottom(42);
 			$[e.source.id].setParent($.$view);
 		} 
+		$.__dirtyCount = 0;
 		currentForm.$view.hide();
 		currentForm = $[e.source.id];
 		currentForm.$view.show();
@@ -101,6 +102,7 @@ exports.close = function(e) {
 		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose);
 	} else {
 		animateClose();
+		$.__dirtyCount = 0;
 	}
 }
 
