@@ -127,6 +127,12 @@ exports.definition = {
 				var transferIn = this.xGet("transferIn");
 				return transferIn.xGet("name");
 			},
+			getTransferOutAmount : function() {
+				return this.xGet("transferOutAmount").toUserCurrency();
+			},
+			getTransferInAmount : function() {
+				return this.xGet("transferInAmount").toUserCurrency();
+			},
 			xDelete : function(xFinishCallback) {
 				var transferOutOwnerUser = this.xGet("transferOutOwnerUser");
 				var transferInOwnerUser = this.xGet("transferInOwnerUser");

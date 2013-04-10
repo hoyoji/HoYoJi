@@ -233,7 +233,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										}
 									}
 									subProjectShareAuthorization.xSet(data); 
-									subProjectShareAuthorization.xAddToSave($);
+									subProjectShareAuthorization.xSave($);
 								}
 							});
 						});

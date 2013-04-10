@@ -1,10 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 // if (!$.$model.canEdit()) {
-	// $.setSaveableMode("read");
+// $.setSaveableMode("read");
 // } else {
-	var oldDetailAmount = $.$model.xGet("amount") || 0;
-
+var oldDetailAmount = $.$model.xGet("amount") || 0;
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var incomeAmount = 0;
@@ -24,7 +23,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		var newDetailAmount = $.$model.xGet("amount");
 		var oldIncomeAmount = 0;
-		if ($.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").length < 0) {
+		if ($.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").length < 1) {
 			//没有details时，新增detail前Income的amount，计算currentBalance时要先加上
 			if ($.$model.xGet("moneyIncome").hasChanged("amount")) {
 				oldIncomeAmount = $.$model.xGet("moneyIncome").previous("amount");
@@ -32,20 +31,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				oldIncomeAmount = $.$model.xGet("moneyIncome").xGet("amount");
 			}
 			if (!oldMoneyAccount) {//moneyAccount not change
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldIncomeAmount - newDetailAmount);
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldIncomeAmount + newDetailAmount);
 			} else {
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldIncomeAmount);
+				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldIncomeAmount);
 				oldMoneyAccount.xAddToSave($);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 			}
 		} else {
 			oldIncomeAmount = $.$model.xGet("moneyIncome").xGet("amount");
 			if (!oldMoneyAccount) {
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldDetailAmount - newDetailAmount);
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldDetailAmount + newDetailAmount);
 			} else {
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldDetailAmount);
+				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldDetailAmount);
 				oldMoneyAccount.xAddToSave($);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newDetailAmount);
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newDetailAmount);
 			}
 		}
 		newMoneyAccount.xAddToSave($);
@@ -57,6 +56,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		$.becameClean();
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").add($.$model);
 		$.getCurrentWindow().$view.close();
-		}
+	}
 }
 // }

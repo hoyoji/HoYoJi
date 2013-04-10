@@ -21,7 +21,10 @@ $.onWindowOpenDo(function() {
 	else if ($.$model.xGet('messageState') === "closed") {
 		$.footerBar.$view.hide();
 	}
-	else if ($.$model.xGet('messageState') === "new") {
+});
+
+$.onWindowCloseDo(function() {
+	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({messageState : "readed"}, {wait : true, patch : true});
 	}
 });
