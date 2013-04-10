@@ -104,6 +104,17 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+				},
+				returnDate : function(xValidateComplete) {
+					var error;
+					var returnDate = this.xGet("returnDate");
+					var date = this.xGet("date");
+					if(returnDate && returnDate < date){
+						error = {
+							msg : "还款日期在借入日期之前，请重新选择"
+						};
+					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {
