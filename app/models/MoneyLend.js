@@ -104,6 +104,17 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+				},
+				paybackDate : function(xValidateComplete) {
+					var error;
+					var paybackDate = this.xGet("paybackDate");
+					var date = this.xGet("date");
+					if(paybackDate && paybackDate < date){
+						error = {
+							msg : "收款日期在借出日期之前，请重新选择"
+						};
+					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {
