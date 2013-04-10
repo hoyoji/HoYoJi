@@ -68,33 +68,33 @@ var receivedMessagescollection = receivedMessagesCollection.xCreateFilter(functi
 function onFooterbarTap (e) {
 	$.titleBar.setTitle(e.source.getTitle());
 	if (e.source.id === "receivedMessagesTable") {
-		receivedMessagesCollection.xSearchInDb({
-			messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-			toUserId : Alloy.Models.User.id
-		});
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
 		});
-	} else if (e.source.id === "newMessagesTable") {
 		receivedMessagesCollection.xSearchInDb({
 			messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 			toUserId : Alloy.Models.User.id
 		});
+	} else if (e.source.id === "newMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "noRead")
 					&& model.xGet("toUserId") === Alloy.Models.User.id)
 		});
-	} else if (e.source.id === "oldMessagesTable") {
 		receivedMessagesCollection.xSearchInDb({
 			messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 			toUserId : Alloy.Models.User.id
 		});
+	} else if (e.source.id === "oldMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 					&& (model.xGet("messageState") === "readed" || model.xGet("messageState") === "closed")
 					&& model.xGet("toUserId") === Alloy.Models.User.id)
+		});
+		receivedMessagesCollection.xSearchInDb({
+			messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
+			toUserId : Alloy.Models.User.id
 		});
 	}
 }

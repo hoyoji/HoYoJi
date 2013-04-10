@@ -8,13 +8,6 @@
                 		bindAttribute="project"
                 		bindAttributeIsModel="name"
                 		/>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" hintText="请选择好友"
-						bindModel="$.$model"
-						editModeEditability="noneditable"
-                        bindAttribute="friend"
-						bindAttributeIsModel="getDisplayName()"
-						bindModelSelector="friend/friendAll"
-					/>
 			<View height="42">
 				<Label left="0" width="20%">共享所有子项目</Label>
 				<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
