@@ -1,5 +1,32 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
+
+
+$.$view.addEventListener("longpress", function(e){
+	$.scrollableView.setScrollingEnabled(false);
+	$.tabBar.animateShowTabBar();
+	function hideTabBar(e){
+		$.scrollableView.setScrollingEnabled(true);
+		$.$view.removeEventListener("touchend", hideTabBar);
+		$.tabBar.animateHideTabBar();
+	}
+	function scrollToCurrentTab(e){
+		$.scrollableView.setScrollingEnabled(true);
+		$.$view.removeEventListener("touchend", scrollToCurrentTab);
+		$.scrollableView.scrollToView($.tabBar.getFastSelectTabIndex());
+	}
+	$.$view.addEventListener("touchend", hideTabBar);
+	var firstTimeMove = true;
+	$.$view.addEventListener("touchmove", function(e){
+		if(firstTimeMove){
+		//	$.$view.removeEventListener("touchend", hideTabBar);
+			$.$view.addEventListener("touchend", scrollToCurrentTab);
+			firstTimeMove = false;	
+		}
+		$.tabBar.fastSelectTab(e);
+	})
+});
+
 exports.open = function(contentController) {
 	//$.tabBar.$view.hide();
 	$.$view.open({

@@ -94,6 +94,9 @@
 			});
 
 			$.$view.addEventListener("longpress", function(e) {
+				if($.getCurrentWindow().$view.contextMenu === "false"){
+					return;					
+				}
 				e.cancelBubble = true;
 				if(Alloy.Globals.openingMenu){
 					 var a = 1;
