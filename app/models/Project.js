@@ -6,9 +6,10 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
-			defaultExpenseCategoryId : "TEXT"
-			// projectSharedById : "TEXT"
-		},
+			defaultExpenseCategoryId : "TEXT",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
+		   },
 		// defaults : {
 			// name : "",
 		// },
@@ -17,7 +18,6 @@ exports.definition = {
 			parentProject : { type : "Project", attribute : "subProjects" },
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
 			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
-			// projectSharedBy : {type : "ProjectShareAuthorization", attribute : null}
 		},
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},

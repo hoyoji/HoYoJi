@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.makeContextMenu = function() {
-	if ($.$model.isNew()) {
+	if (!$.$model.isNew()) {
 		var menuSection = Ti.UI.createTableViewSection({
 			headerTitle : "借入操作"
 		});

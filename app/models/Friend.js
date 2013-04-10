@@ -6,7 +6,9 @@ exports.definition = {
 			remark : "TEXT",
 			friendUserId : "TEXT NOT NULL",
 			friendCategoryId : "TEXT NOT NULL",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			friendCategory : {

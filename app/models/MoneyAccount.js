@@ -10,7 +10,9 @@ exports.definition = {
   		    accountType : "TEXT NOT NULL",
   		    accountNumber : "TEXT",
   		    bankAddress : "TEXT",
-		    ownerUserId : "TEXT NOT NULL"
+		    ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		defaults : {
 			currentBalance : 0
@@ -45,7 +47,9 @@ exports.definition = {
             	}
 			},
 			getCurrentBalance : function(){
+				if(this.xGet("ownerUser") === Alloy.Models.User){
 				return this.xGet("currentBalance").toUserCurrency();
+				}
 			}
 		});
 		

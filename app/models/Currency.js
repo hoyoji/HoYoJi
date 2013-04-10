@@ -5,7 +5,9 @@ exports.definition = {
 		    name: "TEXT NOT NULL",
 		    symbol: "TEXT NOT NULL",
 		    code : "TEXT NOT NULL",
-		    ownerUserId : "TEXT NOT NULL"
+		    ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		hasMany : {
 			moneyAccounts : { type : "MoneyAccount", attribute : "currency"},

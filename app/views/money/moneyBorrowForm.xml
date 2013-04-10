@@ -15,7 +15,6 @@
 			bindAttributeIsModel="name"
 			bindModelSelector="project/projectAll"
 			/>
-			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"
 			bindAttribute="moneyAccount"
@@ -34,7 +33,7 @@
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="债权人账户" hintText="请选择债权人账户"
 			bindModel="$.$model"
-			bindAttribute="merchantAccount"
+			bindAttribute="friendAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"

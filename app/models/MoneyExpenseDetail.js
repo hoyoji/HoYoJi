@@ -6,7 +6,9 @@ exports.definition = {
 			amount : "REAL NOT NULL",
 			moneyExpenseId : "TEXT NOT NULL",
 			remark : "TEXT",
-			ownerUserId : "TEXT NOT NULL"
+			ownerUserId : "TEXT NOT NULL",
+		    lastSyncTime : "TEXT",
+			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
 			moneyExpense : {
@@ -27,6 +29,7 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
+				var self = this;
 				if (this.xGet("moneyExpense").isNew()) {
 					this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
@@ -35,15 +38,15 @@ exports.definition = {
 					
 					this._xDelete(function(error){
 						if(!error){
-							var amount = this.xGet("amount");
+							var amount = self.xGet("amount");
 							
-							var moneyAccount = this.xGet("moneyExpense").xGet("moneyAccount");
+							var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
 							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 							moneyAccount._xSave();
 							
-							var expenseAmount = this.xGet("moneyExpense").xGet("amount");
-							this.xGet("moneyExpense").xSet("amount", expenseAmount - amount);
-							this.xGet("moneyExpense")._xSave();
+							var expenseAmount = self.xGet("moneyExpense").xGet("amount");
+							self.xGet("moneyExpense").xSet("amount", expenseAmount - amount);
+							self.xGet("moneyExpense")._xSave();
 						}
 						xFinishCallback(error);
 					});
