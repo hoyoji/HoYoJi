@@ -26,4 +26,8 @@ Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
 
 Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends;
 
+Alloy.Globals.openMoneyAddNewWindow = function() {
+    Alloy.createController("money/moneyAddNew").open();
+};
+
 Alloy.createController("index");

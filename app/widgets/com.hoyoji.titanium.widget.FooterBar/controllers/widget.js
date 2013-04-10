@@ -9,7 +9,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 				width : Ti.UI.FILL,
 				layout : "horizontal",
 				horizontalWrap : false,
-				zIndex : 1
+				zIndex : 2
 		});
 		
 		var width = (1/(subButtons.length-1) * 100) + "%"
@@ -44,7 +44,7 @@ if($.$attrs.buttons){
 	var width = (1/buttons.length * 100) + "%"
 	for(var i=0; i < buttons.length; i++){
 		var subButtons = buttons[i].split(";"), subIds, button;
-		if(subButtons.length > 0){
+		if(subButtons.length > 1){
 			subIds = ids[i].split(";");
 			button = Ti.UI.createButton({id : subIds[0], title : subButtons[0], width : width});
 			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
@@ -56,7 +56,13 @@ if($.$attrs.buttons){
 }
 
 var currentSlide = null;
+
+$.$view.addEventListener("touchstart", function(e){
+	e.cancelBubble = true;
+});
+
 $.$view.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
 	console.info("controll slideDown " + e.source.id);
 	if($.$attrs.controlSlideDown && $.getParentController()[e.source.id]){
 		if(currentSlide){

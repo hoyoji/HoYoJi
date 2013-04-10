@@ -20,9 +20,16 @@ function onFooterbarTap(e) {
 			$[e.source.id].$view.setBottom(42);
 			$[e.source.id].setParent($.$view);
 		} 
-		$.__dirtyCount = 0;
+		if(currentForm === $[e.source.id]){
+			return;
+		}
 		currentForm.$view.hide();
 		currentForm = $[e.source.id];
+		currentForm.date.setValue((new Date()).toISOString());	
+		$.numericKeyboard.open(currentForm.amount, function(){
+			currentForm.titleBar.save();
+		}, 42);
+		$.__dirtyCount = currentForm.__dirtyCount;
 		currentForm.$view.show();
 }
 
@@ -53,23 +60,26 @@ function onFooterbarTap(e) {
 
 exports.open = function() {
 	//$.tabBar.$view.hide();
-	$.$view.open({
-		animated : false
-	});
+	// if(!Alloy.Globals.moneyAddNewWindow){
+		$.$view.open({
+			animated : false
+		});
+		// Alloy.Globals.moneyAddNewWindow = this;
+	// }
 	$.closeSoftKeyboard();
 	if(OS_ANDROID){
 		$.$view.focus();
 	}
 	
+	currentForm.date.setValue((new Date()).toISOString());
+	$.numericKeyboard.open(currentForm.amount, function(){
+		currentForm.titleBar.save();
+	}, 42);
+	
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";
 	animation.duration = 500;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// if(contentController){
-		// animation.addEventListener("complete", function(){
-			// delete Alloy.Globals.openingWindow[contentController];
-		// });
-	// }
 	$.$view.animate(animation);
 	// $.$view.addEventListener("open", function(){
 		// function showTabBar(){
@@ -102,7 +112,6 @@ exports.close = function(e) {
 		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose);
 	} else {
 		animateClose();
-		$.__dirtyCount = 0;
 	}
 }
 

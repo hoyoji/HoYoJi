@@ -59,3 +59,10 @@ Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
 //	- 可被关闭
 Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends; 
 
+Alloy.Globals.openMoneyAddNewWindow = function(){
+	// if(!Alloy.Globals.moneyAddNewWindow){
+		Alloy.createController("money/moneyAddNew").open();
+	// } else {
+		// Alloy.Globals.moneyAddNewWindow.open();
+	// }
+}

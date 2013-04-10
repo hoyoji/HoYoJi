@@ -28,8 +28,8 @@
 							menuHeader = [$.createContextMenuItem("设置", function() {
 								Alloy.Globals.openWindow("setting/systemSetting");
 							})];
-							menuFooter = [$.createContextMenuItem(title, function(){
-								Alloy.createController("money/moneyAddNew").open();					
+							menuFooter = [$.createContextMenuItem(title, function(){			
+								Alloy.Globals.openMoneyAddNewWindow();
 							})];
 						}else{
 							menuFooter = [$.createContextMenuItem(title, $.close)];
