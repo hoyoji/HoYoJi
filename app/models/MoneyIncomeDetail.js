@@ -7,7 +7,7 @@ exports.definition = {
 			moneyIncomeId : "TEXT NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
+			lastSyncTime : "TEXT",
 			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
@@ -26,8 +26,25 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
+			validators : {
+				amount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("amount"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("amount") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				}
+			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				if (this.xGet("moneyIncome").isNew()) {
@@ -35,32 +52,32 @@ exports.definition = {
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
 					xFinishCallback();
 				} else {
-					this._xDelete(function(error){
-						if(!error){
+					this._xDelete(function(error) {
+						if (!error) {
 							var amount = self.xGet("amount");
 							var moneyAccount = self.xGet("moneyIncome").xGet("moneyAccount");
 							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 							moneyAccount._xSave();
-							
+
 							var incomeAmount = self.xGet("moneyIncome").xGet("amount");
 							self.xGet("moneyIncome").xSet("amount", incomeAmount - amount);
 							self.xGet("moneyIncome")._xSave();
-									
+
 						}
 					});
 				}
 			},
-			canEdit : function(){
-				return this.xGet("moneyIncome").canEdit();				
+			canEdit : function() {
+				return this.xGet("moneyIncome").canEdit();
 			},
-			canDelete : function(){
+			canDelete : function() {
 				return this.xGet("moneyIncome").canDelete();
 			}
 		});
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 

@@ -7,7 +7,7 @@ exports.definition = {
 			moneyExpenseId : "TEXT NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
+			lastSyncTime : "TEXT",
 			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
@@ -26,8 +26,25 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
+			validators : {
+				amount : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("amount"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("amount") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				}
+			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				if (this.xGet("moneyExpense").isNew()) {
@@ -35,15 +52,15 @@ exports.definition = {
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();
 				} else {
-					
-					this._xDelete(function(error){
-						if(!error){
+
+					this._xDelete(function(error) {
+						if (!error) {
 							var amount = self.xGet("amount");
-							
+
 							var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
 							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
 							moneyAccount._xSave();
-							
+
 							var expenseAmount = self.xGet("moneyExpense").xGet("amount");
 							self.xGet("moneyExpense").xSet("amount", expenseAmount - amount);
 							self.xGet("moneyExpense")._xSave();
@@ -52,10 +69,10 @@ exports.definition = {
 					});
 				}
 			},
-			canEdit : function(){
-				return this.xGet("moneyExpense").canEdit();				
+			canEdit : function() {
+				return this.xGet("moneyExpense").canEdit();
 			},
-			canDelete : function(){
+			canDelete : function() {
 				return this.xGet("moneyExpense").canDelete();
 			}
 		});
@@ -63,7 +80,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 
