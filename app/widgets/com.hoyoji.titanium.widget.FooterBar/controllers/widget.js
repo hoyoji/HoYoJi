@@ -1,5 +1,11 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+var timeOutId = null;
+
+function hideSubFooterBar(subFooterBar){
+		subFooterBar.hide();
+}
+
 function createSubFooterBar(button, subButtons, subIds) {
 	var subFooterBarId = subIds[0]+"subFooterBar";
 	if(!$[subFooterBarId]){
@@ -18,24 +24,20 @@ function createSubFooterBar(button, subButtons, subIds) {
 			$[subFooterBarId].add(subButton);
 		}
 		
-		// button.addEventListener("singletap", function(e){
-			// $[subFooterBarId].hide();
-		// });
-		
 		$[subFooterBarId].addEventListener("singletap", function(e){
-			// $.$view.fireEvent("singletap", e)
 			$[subFooterBarId].hide();
 		});
-
-		// $[subFooterBarId].addEventListener("longpress", function(e){
-			// e.cancelBubble = true;
-			// $.$view.fireEvent("longpress", e);
-		// });
 		
 		$.$view.add($[subFooterBarId]);	
 	} else {
 		$[subFooterBarId].show();
 	}
+	if(timeOutId){
+		clearTimeout(timeOutId);
+	}
+	timeOutId = setTimeout(function(){
+		hideSubFooterBar($[subFooterBarId]);
+	}, 5000);
 }
 
 if($.$attrs.buttons){
