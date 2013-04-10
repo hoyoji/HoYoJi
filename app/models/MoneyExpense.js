@@ -115,6 +115,12 @@ exports.definition = {
 			getLocalAmount : function() {
 				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
 			},
+			getProjectName : function() {
+				return this.xGet("project").xGet("name");
+			},
+			getMoneyExpenseCategoryName : function(){
+				return this.xGet("moneyExpenseCategory").xGet("name");
+			},
 			// setAmount : function(amount){
 			// amount = amount || 0;
 			// if(this.xGet("moneyExpenseDetails").length > 0){

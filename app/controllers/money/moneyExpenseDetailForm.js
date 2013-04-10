@@ -24,7 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		var newDetailAmount = $.$model.xGet("amount");
 		var oldExpenseAmount = 0;
-		if ($.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").length < 0) {//没有details时，新增detail前expense的amount，计算currentBalance时要先加上
+		if ($.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").length < 1) {//没有details时，新增detail前expense的amount，计算currentBalance时要先加上
 			if ($.$model.xGet("moneyExpense").hasChanged("amount")) {
 				oldExpenseAmount = $.$model.xGet("moneyExpense").previous("amount");
 			} else {
@@ -37,7 +37,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				oldMoneyAccount.xAddToSave($);
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 			}
-		} else {
+		} else {//有details
 			oldExpenseAmount = $.$model.xGet("moneyExpense").xGet("amount");
 			if (!oldMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldDetailAmount - newDetailAmount);

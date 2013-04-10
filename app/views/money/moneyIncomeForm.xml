@@ -46,11 +46,15 @@
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="收入类型" hintText="请选择收入类型"
-			items="正常收入,预收金额"
-			values="Ordinary,PreIncome"
+			<View height="42">
+			<Label left="0" width="30%" height="Ti.UI.FILL">是否预收</Label>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher"
+			hightLight="false"
+			items="否,是"
+			values="Ordinary,PreExpense"
 			bindModel="$.$model"
 			bindAttribute="incomeType"/>
+			</View>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
