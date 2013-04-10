@@ -11,6 +11,7 @@ exports.animateHideTabBar = function() {
 	if (firstTimeOpen)
 		firstTimeOpen = false;
 
+	
 	$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
 	var animation = Titanium.UI.createAnimation();
@@ -26,7 +27,6 @@ exports.animateHideTabBar = function() {
 }
 
 exports.animateShowTabBar = function(){
-		currentFastSelectTab = currentTab;
 		if (!isExpanded) {
 				isExpanded = true;
 				$.widget.height = "47";
@@ -40,9 +40,9 @@ exports.animateShowTabBar = function(){
 }
 
 exports.getFastSelectTabIndex = function(){
-	if($.$attrs.hideFirstTab === "true"){
-		return currentFastSelectTab + 1;
-	}
+	// if($.$attrs.hideFirstTab === "true"){
+		// return currentFastSelectTab + 1;
+	// }
 	return currentFastSelectTab;
 }
 
@@ -71,14 +71,12 @@ function hightLightTab(e) {
 	if (e.source !== scrollableView) {
 		return;
 	}
-	var firstPage = $.$attrs.hideFirstTab === "true" ? 1 : 0;
-	var curPage = e.currentPage - firstPage;
+	// var firstPage = $.$attrs.hideFirstTab === "true" ? 1 : 0;
+	var curPage = e.currentPage; // - firstPage;
 	
 	if (curPage >= 0 && curPage <= $.tabs.getChildren().length) {
 		if (currentTab !== curPage) {
-			if(currentTab > 0){
-				$.tabs.getChildren()[currentTab].setBackgroundColor("white");
-			}
+			$.tabs.getChildren()[currentTab].setBackgroundColor("white");
 			$.tabs.getChildren()[curPage].setBackgroundColor("cyan");
 			currentTab = curPage;
 			hideTabBar(800);
@@ -98,16 +96,16 @@ exports.init = function(scView) {
 
 	var views = scrollableView.getViews();
 	var numberOfTabs;
-	if ($.$attrs.hideFirstTab === "true") {
-		numberOfTabs = views.length - 1;
-	} else {
+	// if ($.$attrs.hideFirstTab === "true") {
+		// numberOfTabs = views.length - 1;
+	// } else {
 		numberOfTabs = views.length;
-	}
+	// }
 	var tabWidth = 1 / numberOfTabs * 100 + "%";
 	$.hightlight.setWidth(tabWidth);
 	var i = 0;
 	views.map(function(view) {
-		if (!($.$attrs.hideFirstTab === "true" && i === 0)) {
+		// if (!($.$attrs.hideFirstTab === "true" && i === 0)) {
 			var label = Ti.UI.createLabel({
 				backgroundColor : 'white',
 				color : "black",
@@ -118,15 +116,16 @@ exports.init = function(scView) {
 				height : 42
 			});
 			$.tabs.add(label);
-		}
+		// }
 		i++;
 	});
 
-	if ($.$attrs.hideFirstTab === "true") {
-		currentTab = scrollableView.getCurrentPage() - 1;
-	} else {
+	// if ($.$attrs.hideFirstTab === "true") {
+		// currentTab = scrollableView.getCurrentPage() - 1;
+	// } else {
 		currentTab = scrollableView.getCurrentPage();
-	}
+	// }
+	currentFastSelectTab = currentTab;
 	if(currentTab > 0){
 		$.tabs.getChildren()[currentTab].setBackgroundColor("cyan");
 	}
@@ -138,15 +137,15 @@ exports.init = function(scView) {
 			return;
 		}
 
-		if (!($.$attrs.hideFirstTab === "true" && e.currentPageAsFloat < 1)) {
+		// if (!($.$attrs.hideFirstTab === "true" && e.currentPageAsFloat < 1)) {
 			exports.animateShowTabBar();
-		}
-		if ($.$attrs.hideFirstTab === "true") {
-			$.hightlight.setLeft((e.currentPageAsFloat - 1) * $.hightlight.getSize().width);
-		} else {
+		// }
+		// if ($.$attrs.hideFirstTab === "true") {
+			// $.hightlight.setLeft((e.currentPageAsFloat - 1) * $.hightlight.getSize().width);
+		// } else {
 			$.hightlight.setLeft(e.currentPageAsFloat * $.hightlight.getSize().width);
 			clearTimeout(hideTimeoutId);
-		}
+		// }
 	});
 	setTimeout(exports.animateHideTabBar, 1000);
 }
