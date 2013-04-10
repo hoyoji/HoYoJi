@@ -11,6 +11,7 @@ exports.animateHideTabBar = function() {
 	if (firstTimeOpen)
 		firstTimeOpen = false;
 
+	
 	$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
 	var animation = Titanium.UI.createAnimation();
@@ -26,7 +27,6 @@ exports.animateHideTabBar = function() {
 }
 
 exports.animateShowTabBar = function(){
-		currentFastSelectTab = currentTab;
 		if (!isExpanded) {
 				isExpanded = true;
 				$.widget.height = "47";
@@ -125,6 +125,7 @@ exports.init = function(scView) {
 	// } else {
 		currentTab = scrollableView.getCurrentPage();
 	// }
+	currentFastSelectTab = currentTab;
 	if(currentTab > 0){
 		$.tabs.getChildren()[currentTab].setBackgroundColor("cyan");
 	}
