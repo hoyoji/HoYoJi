@@ -1,5 +1,11 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+var timeOutId = null;
+
+function hideSubFooterBar(subFooterBar){
+		subFooterBar.hide();
+}
+
 function createSubFooterBar(button, subButtons, subIds) {
 	var subFooterBarId = subIds[0]+"subFooterBar";
 	if(!$[subFooterBarId]){
@@ -9,7 +15,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 				width : Ti.UI.FILL,
 				layout : "horizontal",
 				horizontalWrap : false,
-				zIndex : 1
+				zIndex : 2
 		});
 		
 		var width = (1/(subButtons.length-1) * 100) + "%"
@@ -18,24 +24,20 @@ function createSubFooterBar(button, subButtons, subIds) {
 			$[subFooterBarId].add(subButton);
 		}
 		
-		// button.addEventListener("singletap", function(e){
-			// $[subFooterBarId].hide();
-		// });
-		
 		$[subFooterBarId].addEventListener("singletap", function(e){
-			// $.$view.fireEvent("singletap", e)
 			$[subFooterBarId].hide();
 		});
-
-		// $[subFooterBarId].addEventListener("longpress", function(e){
-			// e.cancelBubble = true;
-			// $.$view.fireEvent("longpress", e);
-		// });
 		
 		$.$view.add($[subFooterBarId]);	
 	} else {
 		$[subFooterBarId].show();
 	}
+	if(timeOutId){
+		clearTimeout(timeOutId);
+	}
+	timeOutId = setTimeout(function(){
+		hideSubFooterBar($[subFooterBarId]);
+	}, 5000);
 }
 
 if($.$attrs.buttons){
@@ -44,7 +46,7 @@ if($.$attrs.buttons){
 	var width = (1/buttons.length * 100) + "%"
 	for(var i=0; i < buttons.length; i++){
 		var subButtons = buttons[i].split(";"), subIds, button;
-		if(subButtons.length > 0){
+		if(subButtons.length > 1){
 			subIds = ids[i].split(";");
 			button = Ti.UI.createButton({id : subIds[0], title : subButtons[0], width : width});
 			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
@@ -56,7 +58,13 @@ if($.$attrs.buttons){
 }
 
 var currentSlide = null;
+
+$.$view.addEventListener("touchstart", function(e){
+	e.cancelBubble = true;
+});
+
 $.$view.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
 	console.info("controll slideDown " + e.source.id);
 	if($.$attrs.controlSlideDown && $.getParentController()[e.source.id]){
 		if(currentSlide){

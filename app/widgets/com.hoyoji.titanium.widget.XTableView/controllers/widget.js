@@ -79,6 +79,7 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 			if (collapsibleSections[rowId]) {
 				exports.collapseSection(index, rowId);
 			}
+			
 			$.table.deleteRow(index);
 		}
 	}

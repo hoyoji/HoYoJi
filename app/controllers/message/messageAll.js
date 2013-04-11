@@ -48,7 +48,7 @@ var sendedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	fromUserId : Alloy.Models.User.id
 });
-sendedMsgCollection = sendedMsgCollection.xSetFilter({
+sendedMsgCollection.xSetFilter({
 	messageBox : Alloy.Models.User.xGet("messageBox"),
 	fromUser : Alloy.Models.User
 });
@@ -58,8 +58,7 @@ var receivedMessagesCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	toUserId : Alloy.Models.User.id
 });
-
-var receivedMessagescollection = receivedMessagesCollection.xCreateFilter(function(model){
+receivedMessagesCollection.xSetFilter(function(model){
 	return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
 });

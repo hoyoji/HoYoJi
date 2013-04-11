@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增转账" readModeTitle="转账详细" editModeTitle="修改转账"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 			bindModel="$.$model"
 			bindAttribute="date"/>
 			<Label>转出</Label>
@@ -20,7 +20,7 @@
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:transferOutOwnerUser"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="transferOutAmount" labelText="转出金额" hintText="请输入金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="转出金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="transferOutAmount"/>
 			<Label>转入</Label>
