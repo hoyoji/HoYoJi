@@ -230,6 +230,7 @@
 			function removeRow(row) {
 				if (row === $.$model) {
 					isRemoving = true;
+					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					function doRemoveRow(){
 						$.getParentController().off("endchangingrow", doRemoveRow);	
 						if($.getParentController().__changingRow){
@@ -252,7 +253,8 @@
 							animation.addEventListener('complete', function() {
 								$.$view.fireEvent("click", {
 									bubbles : true,
-									deleteRow : true
+									deleteRow : true,
+									sectionRowId : $.$model.xGet("id")
 								});
 							});
 							$.$view.animate(animation);
@@ -266,6 +268,11 @@
 				// Alloy.Globals.alloyAnimation.shake($.$view, 200);
 			// }
 			// $.$model.on("change", shakeMe);
+			$.onWindowOpenDo(function(){
+				$.parent.addEventListener("rowremoved", function(){
+					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
+				});
+			});
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);

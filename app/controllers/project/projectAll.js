@@ -13,12 +13,16 @@ $.getChildTitle = function() {
 }
 
 function onFooterbarTap (e) {
-	$.titleBar.setTitle(e.source.getTitle());
-	$.titleBar.bindXTable($[e.source.id]);
+	if(e.source.id === "newProject"){
+		Alloy.Globals.openWindow("project/projectForm",{$model : "Project"});
+	}else{
+		$.titleBar.setTitle(e.source.getTitle());
+		$.titleBar.bindXTable($[e.source.id]);
+	}
 }
 $.titleBar.bindXTable($.myProjectsTable);
 
-var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null, ownerUserId : Alloy.Models.User.id});
+var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null, ownerUser : Alloy.Models.User});
 var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
 });

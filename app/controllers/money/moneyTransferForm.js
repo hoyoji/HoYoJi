@@ -65,13 +65,13 @@ function setExchangeCurrencyRate(transferOut, transferIn) {
 	$.exchangeCurrencyRate.field.fireEvent("change");
 }
 
-$.transferOutAmount.field.addEventListener("change", updateForeignCurrencyAmount);
+$.amount.field.addEventListener("change", updateForeignCurrencyAmount);
 $.exchangeCurrencyRate.field.addEventListener("change", updateForeignCurrencyAmount);
 
 function updateForeignCurrencyAmount() {
 	if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
-		if ($.transferOutAmount.getValue() && $.exchangeCurrencyRate.getValue()) {
-			var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeCurrencyRate.getValue()).toUserCurrency();
+		if ($.amount.getValue() && $.exchangeCurrencyRate.getValue()) {
+			var foreignCurrencyAmount = ($.amount.getValue() / $.exchangeCurrencyRate.getValue()).toUserCurrency();
 			$.transferInAmount.setValue(foreignCurrencyAmount);
 			$.transferInAmount.field.fireEvent("change");
 		}
@@ -87,13 +87,13 @@ function transferToFriend() {
 		$.exchangeCurrencyRate.hide();
 		if ($.transferOutOwnerUser.getValue()) {
 			$.$model.xSet("transferOutAmount", 0);
-			$.transferOutAmount.hide();
+			$.amount.hide();
 			$.transferOut.setValue(null);
 			$.transferOut.field.fireEvent("change");
 		} else {
 			$.transferOut.setValue(Alloy.Models.User.xGet("activeMoneyAccount"));
 			$.transferOut.field.fireEvent("change");
-			$.transferOutAmount.show();
+			$.amount.show();
 		}
 		if ($.transferInOwnerUser.getValue()) {
 			$.$model.xSet("transferInAmount", 0);
@@ -114,9 +114,9 @@ function firstOpenWindow() {
 	if ($.transferOutOwnerUser.getValue() || $.transferInOwnerUser.getValue()) {
 		$.exchangeCurrencyRate.hide();
 		if ($.transferOutOwnerUser.getValue()) {
-			$.transferOutAmount.hide();
+			$.amount.hide();
 		} else {
-			$.transferOutAmount.show();
+			$.amount.show();
 		}
 		if ($.transferInOwnerUser.getValue()) {
 			$.transferInAmount.hide();

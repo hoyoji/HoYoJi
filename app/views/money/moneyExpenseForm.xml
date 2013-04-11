@@ -2,8 +2,8 @@
 	<View class="container" title="支出" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间"
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="42">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 			bindModel="$.$model"
 			bindAttribute="date"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="金额" hintText="请输入金额"
@@ -21,7 +21,6 @@
 			bindAttributeIsModel="name"
 			bindModelSelector="money/moneyExpenseCategoryAll"
 			bindModelSelectorParams="selectedProject:project"
-			/>
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 			bindModel="$.$model"

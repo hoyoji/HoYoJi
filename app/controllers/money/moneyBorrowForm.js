@@ -27,7 +27,7 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 		returnedAmount : 0
 	});
-
+	
 	$.setSaveableMode("add");
 	$.returnedAmount.hide();
 } else {

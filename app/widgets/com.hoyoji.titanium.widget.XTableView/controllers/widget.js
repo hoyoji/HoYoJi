@@ -7,6 +7,7 @@ $.$view.addEventListener("click", function(e) {
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
+		exports.collapseSection(e.index, e.sectionRowId);
 		$.table.deleteRow(e.index);
 		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked" + e.index);
 	} else if (e.expandSection === true) {
@@ -71,6 +72,9 @@ exports.expandSection = function(rowIndex, sectionRowId) {
 }
 
 exports.collapseSection = function(rowIndex, sectionRowId) {
+	if(!collapsibleSections[sectionRowId]){
+		return;
+	}
 	var index = rowIndex + 1;
 	var collections = collapsibleSections[sectionRowId].collections;
 	for (var c = 0; c < collections.length; c++) {
@@ -79,6 +83,8 @@ exports.collapseSection = function(rowIndex, sectionRowId) {
 			if (collapsibleSections[rowId]) {
 				exports.collapseSection(index, rowId);
 			}
+			//collections[c].remove(collections[c].at(i));
+			$.table.data[0].rows[index].fireEvent("rowremoved", {bubbles : false});
 			$.table.deleteRow(index);
 		}
 	}

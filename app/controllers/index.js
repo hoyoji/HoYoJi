@@ -17,5 +17,9 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 	// }
 // }
 
+if (Ti.UI.Android){
+  $.$view.setWindowSoftInputMode(Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN | Ti.UI.Android.SOFT_INPUT_ADJUST_PAN);
+}
+
 
 $.index.open();
