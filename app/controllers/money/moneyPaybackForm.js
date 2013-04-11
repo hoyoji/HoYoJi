@@ -115,7 +115,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 	var modelIsNew = $.$model.isNew();
 	$.saveModel(function(e) {
-		if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
+		if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 			Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 			Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 			Alloy.Models.User.save({
