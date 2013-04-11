@@ -17,7 +17,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
-
+$.localAmount.hide();
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyBorrow", {
 		date : (new Date()).toISOString(),
@@ -38,6 +38,9 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
+	$.friendAccount.hide();
+	$.localAmount.show();
+	$.amount.hide();
 } else {
 
 	$.onWindowOpenDo(function() {

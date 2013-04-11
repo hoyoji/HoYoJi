@@ -4,6 +4,7 @@ exports.definition = {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
+			localAmount : "REAL NOT NULL",
 			expenseType : "TEXT NOT NULL",
 			friendId : "TEXT",
 			friendAccountId : "TEXT",
@@ -111,9 +112,9 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getLocalAmount : function() {
-				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
-			},
+			// getLocalAmount : function() {
+				// return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
+			// },
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
 			},
@@ -121,20 +122,22 @@ exports.definition = {
 				return this.xGet("moneyExpenseCategory").xGet("name");
 			},
 			getAccountCurrency : function() {
-				var currencySymbol;
-				var accountCurrency = this.xGet("moneyAccount").xGet("currency");
-				var localCurrency = this.xGet("localCurrency");
-				if (accountCurrency === localCurrency) {
-					currencySymbol = null;
-				} else {
-					currencySymbol = accountCurrency.xGet("symbol");
+				var currencySymbol = null;
+				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
+					var localCurrency = this.xGet("localCurrency");
+					if (accountCurrency === localCurrency) {
+						currencySymbol = null;
+					} else {
+						currencySymbol = accountCurrency.xGet("symbol");
+					}
 				}
-                   return currencySymbol;
+				return currencySymbol;
 			},
 			getOwnerUser : function() {
 				var ownerUserSymbol;
 				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
-					ownerUserSymbol = null ;
+					ownerUserSymbol = null;
 				} else {
 					if (!this.__friends) {
 						var friends = Alloy.createCollection("Friend");
@@ -151,7 +154,7 @@ exports.definition = {
 					var friend = friends.at(0);
 					ownerUserSymbol = friend.getDisplayName();
 				}
-				
+
 				return ownerUserSymbol;
 			},
 			// setAmount : function(amount){
