@@ -16,3 +16,49 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
+$.onWindowOpenDo(function(){
+	
+	$.field.addEventListener("focus", function(e){
+		e.cancelBubble = true;
+	
+		if ($.saveableMode === "read") { 
+			// in readonly mode, android will still get focus, we need to surpress it
+			return;
+		} 
+			if ($.$attrs.bindAttributeIsModel) {
+				$.field.blur();
+			}
+			// $.field.fireEvent("singletap");
+			$.field.fireEvent("textfieldfocused", {
+				bubbles : true,
+				inputType : $.$attrs.inputType
+			});
+	});
+	
+	// $.field.addEventListener("singletap", function(e) {
+		// if(e.source !== $.field){
+			// $.field.blur();
+			// $.field.focus();
+		// }
+	// });
+
+});
+
+
+$.setEditable = function(editable) {
+	if (editable === false) {
+		$.field.setHintText("");
+	} else {
+		$.field.setHintText($.$attrs.hintText);
+	}
+
+	if (OS_ANDROID) {
+		if ($.$attrs.bindAttributeIsModel) {
+			$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+		}
+	}
+
+	$.field.setEditable(editable);
+}
+
+$.setSaveableMode($.saveableMode); 
