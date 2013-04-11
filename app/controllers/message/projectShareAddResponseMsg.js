@@ -1,6 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var operation = "";
+var projectShareAuthorizations = "";
 var onFooterbarTap = function(e) {
 	if (e.source.id === "agree") {
 		operation = "agree";
@@ -13,7 +14,25 @@ var onFooterbarTap = function(e) {
 	}
 }
 
+$.allAuthorization.addEventListener("click",function(e){
+	if($.showHideAuthorization.getVisible()){
+		$.showHideAuthorization.hide();
+		e.source.setTitle("打开详细权限");
+	}else{
+		$.showHideAuthorization.show();
+		e.source.setTitle("关闭详细权限");
+	}
+});
+
 $.onWindowOpenDo(function() {
+	$.showHideAuthorization.hide();
+	var projectShareData = JSON.parse($.$model.xGet("messageData"));
+	var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+	Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
+		if(collection.length > 0){
+			projectShareAuthorizations = collection.get(projectShareData.projectShareAuthorizationId);
+		}
+	});
 	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.save({messageState : "closed"}, {wait : true, patch : true});
 		$.footerBar.$view.hide();
