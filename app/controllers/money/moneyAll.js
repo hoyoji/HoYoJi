@@ -8,21 +8,21 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("货币设置", function() {
 		Alloy.Globals.openWindow("setting/currency/currencyAll");
 	}));
-	menuSection.add($.createContextMenuItem("新增支出", function() {
-		Alloy.Globals.openWindow("money/moneyExpenseForm");
-	}));
-	menuSection.add($.createContextMenuItem("新增收入", function() {
-		Alloy.Globals.openWindow("money/moneyIncomeForm");
-	}));
-	menuSection.add($.createContextMenuItem("新增转账", function() {
-		Alloy.Globals.openWindow("money/moneyTransferForm");
-	}));
-	menuSection.add($.createContextMenuItem("新增借入", function() {
-		Alloy.Globals.openWindow("money/moneyBorrowForm");
-	}));
-	menuSection.add($.createContextMenuItem("新增借出", function() {
-		Alloy.Globals.openWindow("money/moneyLendForm");
-	}));
+	// menuSection.add($.createContextMenuItem("新增支出", function() {
+		// Alloy.Globals.openWindow("money/moneyExpenseForm");
+	// }));
+	// menuSection.add($.createContextMenuItem("新增收入", function() {
+		// Alloy.Globals.openWindow("money/moneyIncomeForm");
+	// }));
+	// menuSection.add($.createContextMenuItem("新增转账", function() {
+		// Alloy.Globals.openWindow("money/moneyTransferForm");
+	// }));
+	// menuSection.add($.createContextMenuItem("新增借入", function() {
+		// Alloy.Globals.openWindow("money/moneyBorrowForm");
+	// }));
+	// menuSection.add($.createContextMenuItem("新增借出", function() {
+		// Alloy.Globals.openWindow("money/moneyLendForm");
+	// }));
 	return menuSection;
 }
 

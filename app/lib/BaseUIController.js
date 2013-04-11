@@ -42,9 +42,8 @@
 					$.__dirtyCount++;
 				},
 				becameClean : function() {
-					$.__dirtyCount--;
-					if ($.__dirtyCount < 0) {
-						alert("dirtyCount@becameClean 出错拉！！！");
+					if ($.__dirtyCount > 0) {
+						$.__dirtyCount--;
 					}
 					if ($.__dirtyCount === 0) {
 						console.info("becameClean " + $.$view.id);

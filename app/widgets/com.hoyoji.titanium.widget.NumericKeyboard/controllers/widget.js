@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var activeTextField, oldValue=0;
+var activeTextField, oldValue=0, confirmCB = null, openBottom = 0;
 
 exports.close = function() {
 	console.info("close NumericKeyboard");
@@ -19,7 +19,15 @@ var cancelTouchStart = function(e){
 		e.cancelBubble = true;
 }
 
-exports.open = function(textField) {
+exports.open = function(textField, saveCB, bottom) {
+	confirmCB = saveCB;
+	if(confirmCB){
+		$.submitButton.setTitle("保存");
+	} else {
+		$.submitButton.setTitle("确认");
+	}
+	openBottom = bottom ? bottom : 0;
+	
 	if (!activeTextField) {
 		activeTextField = textField;
 		activeTextField.$view.fireEvent("touchstart"); // close other pickers
@@ -28,7 +36,7 @@ exports.open = function(textField) {
 		function animateOpen(){
 			// $.widget.removeEventListener("postlayout", animateOpen);
 			var animation = Titanium.UI.createAnimation();
-			animation.bottom = 0;
+			animation.bottom = openBottom;
 			animation.duration = 300;
 			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 			$.widget.animate(animation);	
@@ -115,13 +123,13 @@ function operation(e) {
 		activeTextField.field.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
-		if(latestClickOp === ""){
-			e.source.setColor("blue");
-		}else if(latestClickOp !== e.source){
-			latestClickOp.setColor("black");
-			e.source.setColor("blue");
-		}
-		latestClickOp = e.source;
+	if(latestClickOp === ""){
+		e.source.setColor("blue");
+	}else if(latestClickOp !== e.source){
+		latestClickOp.setColor("black");
+		e.source.setColor("blue");
+	}
+	latestClickOp = e.source;
 }
 
 //小数点
@@ -153,8 +161,8 @@ function backspace() {
 		}
 	} else {
 		activeTextField.setValue("0");
-		activeTextField.field.fireEvent("change");
 	}
+	activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
@@ -177,5 +185,8 @@ function setOPColor(){
 function submitValue() {
 	// oldValue = $.number.getValue();
 	exports.close();
+	if(confirmCB){
+		confirmCB();
+	}
 }
 

@@ -13,8 +13,12 @@ $.getChildTitle = function() {
 }
 
 function onFooterbarTap (e) {
-	$.titleBar.setTitle(e.source.getTitle());
-	$.titleBar.bindXTable($[e.source.id]);
+	if(e.source.id === "newProject"){
+		Alloy.Globals.openWindow("project/projectForm",{$model : "Project"});
+	}else{
+		$.titleBar.setTitle(e.source.getTitle());
+		$.titleBar.bindXTable($[e.source.id]);
+	}
 }
 $.titleBar.bindXTable($.myProjectsTable);
 
