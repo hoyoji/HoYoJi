@@ -112,7 +112,7 @@ exports.definition = {
 						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 					});
 				}
-				console.info("xGet hasMany : " + key + collection.length);
+				console.info("xGet hasMany gg : " + type + " " + key + " " +  collection.length);
 
 				this.set(attr, collection, {
 					silent : true
