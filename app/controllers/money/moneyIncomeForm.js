@@ -14,10 +14,12 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+$.localAmount.hide();
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+		localAmount : 0,
 		exchangeCurrencyRate : 1,
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -42,6 +44,8 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
+	$.localAmount.show();
+	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
@@ -138,6 +142,8 @@ if ($.saveableMode === "read") {
 			});
 			exchange.xAddToSave($);
 		}
+
+$.$model.xSet("localAmount",($.$model.xGet("amount") * $.$model.xGet("exchangeCurrencyRate")).toUserCurrency());
 
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {

@@ -12,6 +12,8 @@ function onFooterbarTap(e) {
 				case "moneyTransferForm" : formName = "money/moneyTransferForm"; break;
 				case "moneyBorrowForm" : formName = "money/moneyBorrowForm"; break;
 				case "moneyLendForm" : formName = "money/moneyLendForm"; break;
+				case "moneyReturnForm" : formName = "money/moneyReturnForm"; break;
+				case "moneyPaybackForm" : formName = "money/moneyPaybackForm"; break;
 				default : return;
 			}
 

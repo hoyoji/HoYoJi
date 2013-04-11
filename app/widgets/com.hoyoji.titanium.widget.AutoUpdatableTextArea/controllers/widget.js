@@ -31,10 +31,10 @@ $.field.addEventListener("focus", function(e){
 	});
 });
 
-$.$view.addEventListener("singletap", function(e) {
-	$.field.focus();
-	
-});
+// $.$view.addEventListener("singletap", function(e) {
+	// $.field.focus();
+// 	
+// });
 
 $.setEditable = function(editable) {
 	if (editable === false) {
