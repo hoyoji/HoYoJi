@@ -9,6 +9,10 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
+						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="localAmount" labelText="本币金额" hintText=""
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel="$.$model"
+			bindAttribute="localAmount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 			bindModel="$.$model"
 			bindAttribute="project"
@@ -40,7 +44,7 @@
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="请选择时间"
 			bindModel="$.$model"
-			bindAttribute="repaymentDate"/>
+			bindAttribute="returnDate"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
