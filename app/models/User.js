@@ -93,7 +93,7 @@ exports.definition = {
 				}
 
 				var filter = {};
-				filter[key] = this;
+				//filter[key] = this;
 				collection.xSetFilter(filter);
 
 				console.info("xGet hasMany : " + type + collection.length);

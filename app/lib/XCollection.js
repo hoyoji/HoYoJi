@@ -130,9 +130,10 @@
 					}
 
 					console.info(model.hasChanged(f) + " __compareFilter " + f + " :: " + modelValue + " " + filterValue);
-					if (filterValue === "NOT NULL") {
-						return modelValue !== null;
-					} else if (modelValue !== filterValue) {
+					// if (filterValue === "NOT NULL") {
+						// return modelValue !== null;
+					// } else 
+					if (modelValue !== filterValue) {
 						return false;
 					}
 				}
@@ -142,14 +143,17 @@
 				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
 				if (_.isArray(filter)) {
 					filterStr = "main.id IN ('" + filter.join("','") + "')";
-				} else {
+				} else if(typeof filter === "string"){
+					filterStr = filter;
+				} 
+				else {
 					for (var f in filter) {
 						var value = filter[f]
 						if (filterStr) {
 							filterStr += " AND "
 						}
 						f = "main." + f;
-						if (_.isNull(value)) {
+						if (_.isNull(value) || value === undefined) {
 							filterStr += f + " IS NULL ";
 						} else if (_.isNumber(value)) {
 							filterStr += f + " = " + value + " ";
