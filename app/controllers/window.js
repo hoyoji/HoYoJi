@@ -6,7 +6,7 @@ exports.close = function(e) {
 	function animateClose() {
 		var animation = Titanium.UI.createAnimation();
 		animation.left = "100%";
-		animation.duration = 500;
+		animation.duration = 350;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		animation.addEventListener('complete', function() {
 			$.$view.close({
@@ -34,7 +34,7 @@ exports.open = function(contentController) {
 	
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";
-	animation.duration = 500;
+	animation.duration = 350;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	if(contentController){
 		animation.addEventListener("complete", function(){

@@ -1,5 +1,9 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+if($.$attrs.backButtonHidden === "true"){
+	$.backButton.hide();
+}
+
 var boundXTable = null;
 exports.bindXTable = function(xTable){
 	if(boundXTable){
@@ -17,6 +21,9 @@ function XTableNavigateDown(e){
 	$.title.hide();
 	$.childTableTitle.show();
 	$.tableNavButton.show();
+	if($.$attrs.backButtonHidden !== "true"){
+		$.backButton.hide();
+	}
 }
 
 function XTableNavigateUp(e){
@@ -29,24 +36,18 @@ function setUpChildTableTitle(childTableTitle){
 		$.title.hide();
 		$.childTableTitle.show();
 		$.tableNavButton.show();
+		if($.$attrs.backButtonHidden !== "true"){
+			$.backButton.hide();
+		}
 	} else {
 		$.childTableTitle.hide();
 		$.title.show();
 		$.tableNavButton.hide();
+		if($.$attrs.backButtonHidden !== "true"){
+			$.backButton.show();
+		}
 	}	
 }
-
-$.onWindowOpenDo(function(){
-	if($.getCurrentWindow().$attrs.selectorCallback){
-		$.$attrs.title = "选择" + ($.getCurrentWindow().$attrs.title || $.$attrs.title);
-		$.title.setText($.$attrs.title);
-		$.title.addEventListener("singletap", function(e){
-			e.cancelBubble = true;
-			$.getCurrentWindow().$attrs.selectorCallback(null);
-			$.getCurrentWindow().close();
-		});
-	}
-});
 
 $.tableNavButton.addEventListener('singletap', function(e) {
 	e.cancelBubble = true;
@@ -84,6 +85,9 @@ exports.cleanCB = function() {
 exports.saveStartCB = function() {
 	$.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
 	$.menuButton.setEnabled(false);
+	if($.$attrs.backButtonHidden !== "true"){
+		$.backButton.setEnabled(false);
+	}
 }
 
 exports.saveEndCB = function() {
@@ -92,6 +96,9 @@ exports.saveEndCB = function() {
 	console.info("Titlebar saveEndCB");
 	
 	$.menuButton.setEnabled(false);
+	if($.$attrs.backButtonHidden !== "true"){
+		$.backButton.setEnabled(true);
+	}
 }
 
 exports.saveErrorCB = function(msg) {
@@ -105,6 +112,9 @@ exports.saveErrorCB = function(msg) {
 		$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 	}
 	$.menuButton.setEnabled(true);
+	if($.$attrs.backButtonHidden !== "true"){
+		$.backButton.setEnabled(true);
+	}	
 }
 
 
@@ -172,7 +182,29 @@ exports.save = function(){
 
 exports.setSaveableMode($.$attrs.saveableMode || "read");
 
-$.onWindowOpenDo(function() {
+$.onWindowOpenDo(function(){
+	if($.getParentController().$attrs.backButtonHidden === "true"){
+		$.$attrs.backButtonHidden = $.getParentController().$attrs.backButtonHidden;
+		$.backButton.hide();
+	}
+	
+	if($.getCurrentWindow().$attrs.selectorCallback){
+		$.$attrs.title = "选择" + ($.getCurrentWindow().$attrs.title || $.$attrs.title);
+		$.title.setText($.$attrs.title);
+		// $.title.addEventListener("singletap", function(e){
+			// e.cancelBubble = true;
+			// $.getCurrentWindow().$attrs.selectorCallback(null);
+			// $.getCurrentWindow().close();
+		// });
+	}
+	
+	if($.$attrs.backButtonHidden !== "true"){
+		$.backButton.addEventListener("singletap", function(e){
+			e.cancelBubble = true;
+			$.getCurrentWindow().close();
+		});
+	}
+
 	$.widget.fireEvent("registerdirtycallback", {
 		bubbles : true,
 		onBecameDirtyCB : $.dirtyCB,
