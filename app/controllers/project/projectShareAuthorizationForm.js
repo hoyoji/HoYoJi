@@ -105,7 +105,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.AddRequest",
 					"messageState" : "new",
-					"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+$.$model.xGet("project").xGet("name")+"给您",
+					"messageTitle" : Alloy.Models.User.xGet("userName"),
 					"date" : date,
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"给您",
 					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
@@ -120,10 +120,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						fromUser : Alloy.Models.User,
 						type : "Project.Share.AddRequest",
 						messageState : "closed",
-						messageTitle : Alloy.Models.User.xGet("userName")+"分享项目"+$.$model.xGet("project").xGet("name")+"给您",
+						messageTitle : Alloy.Models.User.xGet("userName"),
 						date : date,
 						detail : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"给您",
-						messageBox : Alloy.Models.User.xGet("messageBox")
+						messageBox : Alloy.Models.User.xGet("messageBox"),
+						messageData : JSON.stringify({
+			                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+			                            projectShareAuthorizationId : $.$model.xGet("id"),
+			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+			                        })
 					}).xAddToSave($); 
 
 			        $.saveModel(saveEndCB, saveErrorCB);
@@ -173,7 +178,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
 						"messageState" : "new",
-						"messageTitle" : Alloy.Models.User.xGet("userName")+"分享项目"+$.$model.xGet("project").xGet("name")+"的子项目给您",
+						"messageTitle" : "共享项目",
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
@@ -210,7 +215,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
 						"messageState" : "noRead",
-						"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+$.$model.xGet("project").xGet("name")+"的子项目给您",
+						"messageTitle" : "共享项目",
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
@@ -257,10 +262,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
 						"messageState" : "noRead",
-						"messageTitle" : "项目"+$.$model.xGet("project").xGet("name")+"修改了的权限",
+						"messageTitle" : "共享项目",
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
-						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId")
+						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+						"messageData" : $.$model.xGet("messageData")
 			         },function(){
 				        $.saveModel(saveEndCB, saveErrorCB);
 	    			});
@@ -270,10 +276,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"fromUserId" : Alloy.Models.User.xGet("id"),
 						"type" : "Project.Share.Edit",
 						"messageState" : "noRead",
-						"messageTitle" : "项目"+$.$model.xGet("project").xGet("name")+"修改了的权限",
+						"messageTitle" : "共享项目",
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
-						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId")
+						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+						"messageData" : $.$model.xGet("messageData")
 			         },function(){
 				        $.saveModel(saveEndCB, saveErrorCB);
 	    			});

@@ -1,7 +1,10 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var operation = "";
-var projectShareAuthorizations = "";
+var projectShareData = JSON.parse($.$model.xGet("messageData"));
+$.projectShareAuthorizations = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+		id : projectShareData.projectShareAuthorizationId
+	});
 var onFooterbarTap = function(e) {
 	if (e.source.id === "agree") {
 		operation = "agree";
@@ -26,13 +29,6 @@ $.allAuthorization.addEventListener("click",function(e){
 
 $.onWindowOpenDo(function() {
 	$.showHideAuthorization.hide();
-	var projectShareData = JSON.parse($.$model.xGet("messageData"));
-	var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
-	Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
-		if(collection.length > 0){
-			projectShareAuthorizations = collection.get(projectShareData.projectShareAuthorizationId);
-		}
-	});
 	if ($.$model.xGet('messageState') === "noRead") {
 		$.$model.save({messageState : "closed"}, {wait : true, patch : true});
 		$.footerBar.$view.hide();
@@ -77,7 +73,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageTitle" : $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
 									"date" : date,
 									"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您分享的项目",
-									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId")
+									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+									"messageData" : $.$model.xGet("messageData")
 								}, function() {
 									$.$model.save({messageState : "closed"}, {wait : true, patch : true});
 									saveEndCB("您接受了 " + $.$model.xGet("fromUser").xGet("userName") + " 分享的项目");
