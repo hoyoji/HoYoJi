@@ -25,27 +25,22 @@ $.onWindowOpenDo(function(){
 			// in readonly mode, android will still get focus, we need to surpress it
 			return;
 		} 
-			if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
+			if ($.$attrs.bindAttributeIsModel) {
 				$.field.blur();
 			}
-			if($.$attrs.inputType === "NumericKeyboard"){
-				$.getCurrentWindow().numericKeyboard.open($);
-			}	
-			// if(OS_IOS){
-				$.field.fireEvent("singletap");
-			// }
+			// $.field.fireEvent("singletap");
 			$.field.fireEvent("textfieldfocused", {
 				bubbles : true,
 				inputType : $.$attrs.inputType
 			});
 	});
 	
-	$.$view.addEventListener("singletap", function(e) {
-		if(e.source !== $.field){
-			$.field.blur();
-			$.field.focus();
-		}
-	});
+	// $.field.addEventListener("singletap", function(e) {
+		// if(e.source !== $.field){
+			// $.field.blur();
+			// $.field.focus();
+		// }
+	// });
 
 });
 
@@ -58,7 +53,7 @@ $.setEditable = function(editable) {
 	}
 
 	if (OS_ANDROID) {
-		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
+		if ($.$attrs.bindAttributeIsModel) {
 			$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 		}
 	}

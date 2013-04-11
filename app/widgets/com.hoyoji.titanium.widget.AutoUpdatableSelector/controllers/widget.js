@@ -17,7 +17,7 @@ for (var i = 0; i < items.length; i++) {//根据items的长度动态创建rows
 };
 $.field.add(data);//把rows添加到picker
 
-$.$view.addEventListener("singletap", function(e){
+$.field.addEventListener("singletap", function(e){
 	$.getCurrentWindow().closeSoftKeyboard();
 	if(OS_IOS){
 		if(!$.__expanded){
@@ -49,6 +49,7 @@ $.getValue = function(e){
 		return selectedValue;
 	}
 }
+
 $.setValue = function(value) {
     $.__bindAttributeIsModel = value;
     $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));

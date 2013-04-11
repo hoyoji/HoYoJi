@@ -28,9 +28,9 @@ exports.open = function(contentController) {
 		animated : false
 	});
 	$.closeSoftKeyboard();
-	if(OS_ANDROID){
-		$.$view.focus();
-	}
+	// if(OS_ANDROID){
+		// $.$view.focus();
+	// }
 	
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";

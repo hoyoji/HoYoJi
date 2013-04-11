@@ -24,27 +24,6 @@ Alloy.Collections.instance("MoneyLend");
 Alloy.Collections.instance("MoneyPayback");
 
 exports.DataStore = {
-	NOTNULL : function(){
-		return " IS NOT NULL";
-	},
-	NE : function(value){
-		if(_.isNaN(value)){
-			return "<> '" + value + "'";
-		}
-		return "<> " + value;
-	},
-	LT : function(value){
-		if(_.isNaN(value)){
-			return "< '" + value + "'";
-		}
-		return "< " + value;
-	},
-	GT : function(value){
-		if(_.isNaN(value)){
-			return "> '" + value + "'";
-		}
-		return "> " + value;
-	},
 	initStore : function(){
 		for(var c in Alloy.Collections){
 			if(c === "instance") continue;
@@ -84,3 +63,4 @@ db.execute("COMMIT;");
 db.close();
 db = null;
 }());
+

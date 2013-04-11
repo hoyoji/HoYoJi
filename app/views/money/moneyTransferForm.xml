@@ -20,7 +20,7 @@
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:transferOutOwnerUser"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="amount" labelText="转出金额" hintText="请输入金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="transferOutAmount"/>
 			<Label>转入</Label>
@@ -37,10 +37,10 @@
 			bindModelSelector="setting/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:transferInOwnerUser"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeCurrencyRate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" id="transferInAmount" labelText="转入金额" hintText="请输入转入金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="transferInAmount" labelText="转入金额" hintText="请输入转入金额"
 			bindModel="$.$model"
 			bindAttribute="transferInAmount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"

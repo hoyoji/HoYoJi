@@ -112,6 +112,61 @@
 			}
 			return this;
 		}
+		sqlOR = function() {
+			var str = "(" + arguments[0];
+			for (var i = 1; i < arguments.length; i++) {
+				str += " OR " + arguments[i];
+			}
+			return str + ")";
+		}
+		sqlAND = function() {
+			var str = "(" + arguments[0];
+			for (var i = 1; i < arguments.length; i++) {
+				str += " AND " + arguments[i];
+			}
+			return str + ")";
+		}
+
+		String.prototype.sqlNE = function(value) {
+			if (value === null || value === undefined) {
+				return this + " IS NOT NULL";
+			} else if (_.isNumber(value)) {
+				return this + " <> " + value;
+			}
+			return this + " <> '" + value + "'";
+		}
+		String.prototype.sqlEQ = function(value) {
+			if (value === null || value === undefined) {
+				return this + " IS NULL";
+			} else if (_.isNumber(value)) {
+				return this + " = " + value;
+			}
+			return this + " = '" + value + "'";
+		}
+		String.prototype.sqlLT = function(value) {
+			if (_.isNumber(value)) {
+				return this + " < " + value;
+			}
+			return this + " < '" + value + "'";
+		}
+		String.prototype.sqlLE = function(value) {
+			if (_.isNumber(value)) {
+				return this + " <= " + value;
+			}
+			return this + " <= '" + value + "'";
+		}
+		String.prototype.sqlGT = function(value) {
+			if (_.isNumber(value)) {
+				return this + " > " + value;
+			}
+			return this + " > '" + value + "'";
+		}
+		String.prototype.sqlGE = function(value) {
+			if (_.isNumber(value)) {
+				return this + " >= " + value;
+			}
+			return this + " >= '" + value + "'";
+		}
 		// IOS doesn't support bind
 		if (!Function.prototype.bind) {
 			Function.prototype.bind = function(obj) {
@@ -167,126 +222,125 @@
 					return this;
 				}
 			});
-
-			var splice = Array.prototype.splice;
-			// _.extend(Backbone.Events.prototype, {
-				// trigger : function(events) {
-					// var event, node, calls, tail, args, all, rest;
-					// if (!( calls = this._callbacks))
-						// return this;
-					// all = calls.all;
-					// events = events.split(eventSplitter);
-					// rest = slice.call(arguments, 1);
-// 
-					// while ( event = events.shift()) {
-						// if ( node = calls[event]) {
-							// tail = node.tail;
-							// while (( node = node.next) !== tail) {
-								// node.callback.apply(node.context || this, rest);
-							// }
-						// }
-						// if ( node = all) {
-							// tail = node.tail;
-							// args = [event].concat(rest);
-							// while (( node = node.next) !== tail) {
-								// node.callback.apply(node.context || this, args);
-							// }
-						// }
-					// }
-// 
-					// return this;
-				// }
-			// });
-
-			_.extend(Backbone.Collection.prototype, {
-				remove : function(models, options) {
-					var i, l, index, model;
-					options || ( options = {});
-					models = _.isArray(models) ? models.slice() : [models];
-					for ( i = 0, l = models.length; i < l; i++) {
-						model = this.getByCid(models[i]) || this.get(models[i]);
-						if (!model)
-							continue;
-						delete this._byId[model.id];
-						delete this._byCid[model.cid];
-						index = this.indexOf(model);
-						this.models.splice(index, 1);
-						this.length--;
-						if (!options.silent) {
-							options.index = index;
-							model.trigger('remove', model, this, options);
-						}
-						this._removeReference(model);
-					}
-					return this;
-				},
-				_onModelEvent : function(event, model, collection, options) {
-					if ((event == 'add' || event == 'remove') && collection != this)
-						return;
-					if (event == 'destroy') {
-						this.remove(model, options);
-					}
-					if (model && event === 'change:' + model.idAttribute) {
-						delete this._byId[model.previous(model.idAttribute)];
-						this._byId[model.id] = model;
-					}
-					this.trigger.apply(this, arguments);
-				}
-				// add : function(models, options) {
-				// var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
-				// options || ( options = {});
-				// models = _.isArray(models) ? models.slice() : [models];
-				// for ( i = 0, length = models.length; i < length; i++) {
-				//
-				// if (!( model = models[i] = this._prepareModel(models[i], options))) {
-				// throw new Error("Can't add an invalid model to a collection");
-				// }
-				//
-				// cid = model.cid;
-				// id = model.id;
-				//
-				// console.log("adding models check dups " + id);
-				//
-				// if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
-				// dups.push(i);
-				// continue;
-				// }
-				// cids[cid] = ids[id] = model;
-				// }
-				//
-				// console.log("adding models dups " + dups.length);
-				//
-				// i = dups.length;
-				// while (i--) {
-				// models.splice(dups[i], 1);
-				// }
-				//
-				// console.log("adding models " + models.length);
-				//
-				// for ( i = 0, length = models.length; i < length; i++) {
-				// ( model = models[i]).on('all', this._onModelEvent, this);
-				// this._byCid[model.cid] = model;
-				// if (model.id != null)
-				// this._byId[model.id] = model;
-				// }
-				// this.length += length;
-				// index = options.at != null ? options.at : this.models.length;
-				// splice.apply(this.models, [index, 0].concat(models));
-				// if (this.comparator)
-				// this.sort({
-				// silent : true
-				// });
-				// if (options.silent)
-				// return this;
-				// for ( i = 0, length = this.models.length; i < length; i++) {
-				// if (!cids[( model = this.models[i]).cid])
-				// continue;
-				// options.index = i;
-				// model.trigger('add', model, this, options);
-				// }
-				// return this;
-				// }
-			});
-
 		}
+		// var splice = Array.prototype.splice;
+		// _.extend(Backbone.Events.prototype, {
+		// trigger : function(events) {
+		// var event, node, calls, tail, args, all, rest;
+		// if (!( calls = this._callbacks))
+		// return this;
+		// all = calls.all;
+		// events = events.split(eventSplitter);
+		// rest = slice.call(arguments, 1);
+		//
+		// while ( event = events.shift()) {
+		// if ( node = calls[event]) {
+		// tail = node.tail;
+		// while (( node = node.next) !== tail) {
+		// node.callback.apply(node.context || this, rest);
+		// }
+		// }
+		// if ( node = all) {
+		// tail = node.tail;
+		// args = [event].concat(rest);
+		// while (( node = node.next) !== tail) {
+		// node.callback.apply(node.context || this, args);
+		// }
+		// }
+		// }
+		//
+		// return this;
+		// }
+		// });
+
+		// _.extend(Backbone.Collection.prototype, {
+		// remove : function(models, options) {
+		// var i, l, index, model;
+		// options || ( options = {});
+		// models = _.isArray(models) ? models.slice() : [models];
+		// for ( i = 0, l = models.length; i < l; i++) {
+		// model = this.getByCid(models[i]) || this.get(models[i]);
+		// if (!model)
+		// continue;
+		// delete this._byId[model.id];
+		// delete this._byCid[model.cid];
+		// index = this.indexOf(model);
+		// this.models.splice(index, 1);
+		// this.length--;
+		// if (!options.silent) {
+		// options.index = index;
+		// model.trigger('remove', model, this, options);
+		// }
+		// this._removeReference(model);
+		// }
+		// return this;
+		// },
+		// _onModelEvent : function(event, model, collection, options) {
+		// if ((event == 'add' || event == 'remove') && collection != this)
+		// return;
+		// if (event == 'destroy') {
+		// this.remove(model, options);
+		// }
+		// if (model && event === 'change:' + model.idAttribute) {
+		// delete this._byId[model.previous(model.idAttribute)];
+		// this._byId[model.id] = model;
+		// }
+		// this.trigger.apply(this, arguments);
+		// }
+		// add : function(models, options) {
+		// var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
+		// options || ( options = {});
+		// models = _.isArray(models) ? models.slice() : [models];
+		// for ( i = 0, length = models.length; i < length; i++) {
+		//
+		// if (!( model = models[i] = this._prepareModel(models[i], options))) {
+		// throw new Error("Can't add an invalid model to a collection");
+		// }
+		//
+		// cid = model.cid;
+		// id = model.id;
+		//
+		// console.log("adding models check dups " + id);
+		//
+		// if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
+		// dups.push(i);
+		// continue;
+		// }
+		// cids[cid] = ids[id] = model;
+		// }
+		//
+		// console.log("adding models dups " + dups.length);
+		//
+		// i = dups.length;
+		// while (i--) {
+		// models.splice(dups[i], 1);
+		// }
+		//
+		// console.log("adding models " + models.length);
+		//
+		// for ( i = 0, length = models.length; i < length; i++) {
+		// ( model = models[i]).on('all', this._onModelEvent, this);
+		// this._byCid[model.cid] = model;
+		// if (model.id != null)
+		// this._byId[model.id] = model;
+		// }
+		// this.length += length;
+		// index = options.at != null ? options.at : this.models.length;
+		// splice.apply(this.models, [index, 0].concat(models));
+		// if (this.comparator)
+		// this.sort({
+		// silent : true
+		// });
+		// if (options.silent)
+		// return this;
+		// for ( i = 0, length = this.models.length; i < length; i++) {
+		// if (!cids[( model = this.models[i]).cid])
+		// continue;
+		// options.index = i;
+		// model.trigger('add', model, this, options);
+		// }
+		// return this;
+		// }
+		// });
+
 	}());
