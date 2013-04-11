@@ -126,9 +126,7 @@
 			}
 			return str + ")";
 		}
-		// Object.prototype.sqlNOTNULL = function(){
-		// return this + " IS NOT NULL";
-		// }
+
 		String.prototype.sqlNE = function(value) {
 			if (value === null || value === undefined) {
 				return this + " IS NOT NULL";

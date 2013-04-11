@@ -1,18 +1,13 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-if($.$attrs.inputType){
-	$.$attrs.inputType = "DateTimePicker"
-}
 
-if ($.$attrs.hintText) {
-	$.field.hintText = $.$attrs.hintText;
-}
+// if ($.$attrs.hintText) {
+	// $.field.setText($.$attrs.hintText);
+// }
 
-if (OS_ANDROID) {
-	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
-}
 
-function openDateTimePicker(){
+$.onWindowOpenDo(function(){
+	$.field.addEventListener("singletap", function(){
 		if ($.saveableMode === "read") {
 			return;
 		}
@@ -20,26 +15,20 @@ function openDateTimePicker(){
 			bubbles : true,
 			inputType : "DateTimePicker"
 		});
-		// if (OS_IOS) {
-			$.field.blur();
-			$.getCurrentWindow().dateTimePicker.open($, $.$attrs.inputType);
-		// }	
-}
-
-$.onWindowOpenDo(function(){
-	$.field.addEventListener("focus", openDateTimePicker);
-	$.$view.addEventListener("singletap", openDateTimePicker);
+		$.getCurrentWindow().closeSoftKeyboard();
+		$.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");		
+	});
 });
 
 
 $.setEditable = function(editable) {
-	if (editable === false) {
-		$.field.setHintText("");
-	} else {
-		$.field.setHintText($.$attrs.hintText);
-	}
+	// if (editable === false) {
+		// $.field.setHintText("");
+	// } else {
+		// $.field.setHintText($.$attrs.hintText);
+	// }
 
-	$.field.setEditable(editable);
+	// $.field.setEditable(editable);
 }
 
 var datetime = null;
@@ -54,6 +43,21 @@ $.getValue = function() {
 		return null;
 	}
 }
+
+$.setValue = function(value) {
+	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
+	$.__bindAttributeIsModel = value;
+	if ($.$attrs.bindAttributeIsModel && value) {
+		if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
+			value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
+		} else {
+			value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+		}
+	}
+	value = this.convertModelValue(value);
+	$.field.setText(value || "");
+}
+
 
 $.getDateTime = function(){
 	return datetime;
