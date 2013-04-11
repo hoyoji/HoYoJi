@@ -230,6 +230,7 @@
 			function removeRow(row) {
 				if (row === $.$model) {
 					isRemoving = true;
+					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					function doRemoveRow(){
 						$.getParentController().off("endchangingrow", doRemoveRow);	
 						if($.getParentController().__changingRow){

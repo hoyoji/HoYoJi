@@ -2,8 +2,9 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({headerTitle : "共享属性操作"});
-	menuSection.add($.createContextMenuItem("删除共享好友", function() {
+	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
+		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function(){
 		var subProjectShareAuthorizationIds = [];
 		$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 			var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -37,6 +38,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 			},function(){
 				
 			});	
+		});	
 	}, isSelectMode));
 	return menuSection;
 }
