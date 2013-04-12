@@ -29,13 +29,13 @@ $.$view.addEventListener("click", function(e) {
 	$.trigger("endchangingrow");
 });
 
-function addRowToSection(rowModel, collection, index) {
+function createRowView(rowModel, collection){
 	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
 		$collection : collection,
 		hasDetail : $.$attrs.hasDetail
 	});
-	var row = Ti.UI.createTableViewRow();
+	var row = Ti.UI.createTableViewRow({id : rowModel.xGet("id")});
 	rowViewController.setParent(row);
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
 		collapsibleSections[rowModel.xGet("id")] = {
@@ -43,6 +43,11 @@ function addRowToSection(rowModel, collection, index) {
 			collections : []
 		};
 	}
+	return row;
+}
+
+function addRowToSection(rowModel, collection, index) {
+	var row = createRowView(rowModel, collection);
 
 	if (index === undefined) {
 		$.table.appendRow(row);
@@ -207,7 +212,6 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 
 exports.navigateUp = function() {
 	var lastTable = $, parentTable;
-	console.info("navigating up... from " + $.backNavTitle);
 	while (lastTable.detailsTable) {
 		parentTable = lastTable;
 		lastTable = lastTable.detailsTable;
@@ -220,7 +224,6 @@ exports.navigateUp = function() {
 			bubbles : true,
 			childTableTitle : lastTable.previousBackNavTitle
 		});
-		console.info("removing lastTable ..." + lastTable.backNavTitle + " from its parentTable " + parentTable.backNavTitle);
 		parentTable.detailsTable = null;
 		lastTable.close();
 	}
@@ -230,19 +233,33 @@ exports.navigateUp = function() {
 var sortByField = null;
 exports.sort = function(fieldName, reverse){
 	sortByField = fieldName;
-	var data = [];
-	for(var c=0; c < collections.length; c++){
-		data.push(collections.models);
+	
+	var data = $.table.data;
+	
+	data = _.flatten(data, true);
+	data = _.pluck(data, "rows");
+	data = _.flatten(data, true);
+	data.reverse();
+	
+	// var data = _.flatten(collections);
+	// data = _.sortBy(data, fieldName);
+	// for(var c=0; c < collections.length; c++){
 		// for(var i=0; i < collections[c].length; i++){
-			// collections[c].at(c)
+			// var row = createRowView(collections[c].at(i), collections[c]);
+			// data.push(row);
+// 	
 		// }
-	}
-	data.sort(function(model){
-		if(reverse){
-			return model.xGet(fieldName);
-		}
-		return model.xGet(fieldName) ;
-	});
+	// }
+	// _.sortBy(data, fieldName);
+	// function(model){
+		// if(reverse){
+			// return model.xGet(fieldName);
+		// }
+		// return model.xGet(fieldName) ;
+	// }
+	// data.map(function(){
+// 		
+	// });
 	$.table.setData(data);
 }
 

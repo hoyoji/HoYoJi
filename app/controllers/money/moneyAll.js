@@ -26,6 +26,8 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+var sortReverse = false;
+
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
@@ -33,10 +35,13 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("report/transactionReport");
 	} else if (e.source.id === "dateTransactions") {
 		
-	}else if (e.source.id === "weekTransactions") {
+	} else if (e.source.id === "weekTransactions") {
 		
-	}else if (e.source.id === "monthTransactions") {
+	} else if (e.source.id === "monthTransactions") {
 		
+	} else if (e.source.id === "sort"){
+		$.moneysTable.sort("date");
+		sortReverse = true;
 	}
 }
 
