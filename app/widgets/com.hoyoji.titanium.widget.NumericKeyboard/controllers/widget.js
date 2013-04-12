@@ -76,7 +76,7 @@ function numPress(e) {
 		activeTextField.setValue(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		if (activeTextField.getValue() === "0") {
+		if (activeTextField.getValue() === "0" || !activeTextField.getValue()) {
 			activeTextField.setValue(e.source.getTitle());
 		} else {
 			var thisNum = activeTextField.getValue() + e.source.getTitle();

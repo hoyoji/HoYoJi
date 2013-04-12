@@ -6,14 +6,6 @@ Alloy.Globals.openingWindow = {};
 
 _.extend(Alloy.Globals, require("utils").Utils);
 
-Alloy.Globals.XModel = require("XModel").XModel;
-
-Alloy.Globals.XCollection = require("XCollection").XCollection;
-
-Alloy.Globals.Server = require("Server").Server;
-
-Alloy.Globals.DataStore = require("DataStore").DataStore;
-
 Alloy.Globals.extendsBaseUIController = require("BaseUIController").extends;
 
 Alloy.Globals.extendsBaseAutoUpdateController = require("BaseAutoUpdateController").extends;
@@ -25,5 +17,34 @@ Alloy.Globals.extendsBaseRowController = require("BaseRowController").extends;
 Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
 
 Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends;
+
+Alloy.Globals.XModel = require("XModel").XModel;
+
+Alloy.Globals.XCollection = require("XCollection").XCollection;
+
+Alloy.Globals.initStore = function() {
+    for (var c in Alloy.Collections) {
+        if (c === "instance") continue;
+        Alloy.Collections[c] = null;
+        delete Alloy.Collections[c];
+        Alloy.Collections.instance(c);
+    }
+    for (var m in Alloy.Models) {
+        if (m === "instance") continue;
+        Alloy.Models[m] = null;
+        delete Alloy.Models[m];
+        Alloy.Models.instance(m);
+    }
+};
+
+Alloy.Collections.instance("User");
+
+Alloy.Collections.instance("Project");
+
+Alloy.Collections.instance("MoneyExpenseCategory");
+
+Alloy.Collections.instance("MoneyIncomeCategory");
+
+Alloy.Collections.instance("FriendCategory");
 
 Alloy.createController("index");

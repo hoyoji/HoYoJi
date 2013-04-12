@@ -16,8 +16,8 @@ $.makeContextMenu = function() {
 }
 var oldAmount;
 var oldMoneyAccount;
-var isRateExist;
 
+$.ownerUser.hide();
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyBorrow", {
 		date : (new Date()).toISOString(),
@@ -27,7 +27,7 @@ if (!$.$model) {
 		project : Alloy.Models.User.xGet("activeProject"),
 		returnedAmount : 0
 	});
-	
+
 	$.setSaveableMode("add");
 	$.returnedAmount.hide();
 } else {
@@ -38,9 +38,15 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
+	$.friendAccount.hide();
+	$.localAmount.show();
+	$.ownerUser.show();
+	$.amount.hide();
 } else {
 
 	$.onWindowOpenDo(function() {
+		var isRateExist;
+		$.localAmount.hide();
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
@@ -121,7 +127,7 @@ if ($.saveableMode === "read") {
 		}
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
-			if ($.$model.isNew()) {//记住当前账户为下次打开时的默认账户
+			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 				Alloy.Models.User.save({

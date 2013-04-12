@@ -13,10 +13,10 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
 		date : (new Date()).toISOString(),
@@ -44,8 +44,14 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
+	$.friendAccount.hide();
+	$.localAmount.show();
+	$.ownerUser.show();
+	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
+		$.localAmount.hide();
+		$.ownerUser.hide();
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	});
 
@@ -138,6 +144,7 @@ if ($.saveableMode === "read") {
 			});
 			exchange.xAddToSave($);
 		}
+
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {

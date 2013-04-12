@@ -29,7 +29,7 @@
 					<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
 						<Button width="25%" onSingletap="decimal" title="." />
 						<Button width="25%" class="num" onSingletap="numPress" title="0" />
-						<Button width="25%" onSingletap="operation" title="=" />
+						<Button width="25%" onSingletap="operation" id="equalTo" title="=" />
 						<Button width="25%" onSingletap="operation" title="+" />
 					</View>
 				</View>

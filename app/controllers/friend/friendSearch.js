@@ -12,7 +12,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 // }
 
 $.searchButton.addEventListener("click", function(e){
-	console.info("搜索好友。。。");
+	$.userCollection.reset();
 	if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 0){
 		alert("no user found!");
 	};

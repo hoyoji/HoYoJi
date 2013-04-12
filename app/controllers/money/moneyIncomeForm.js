@@ -14,10 +14,12 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+		localAmount : 0,
 		exchangeCurrencyRate : 1,
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -42,8 +44,13 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
+	$.localAmount.show();
+	$.ownerUser.show();
+	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
+		$.localAmount.hide();
+		$.ownerUser.hide();
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
