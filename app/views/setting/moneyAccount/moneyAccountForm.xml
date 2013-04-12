@@ -13,7 +13,7 @@
 			bindAttributeIsModel="name"
 			bindModelSelector="setting/currency/currencyAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" inputType="NumericKeyboard" labelText="当前余额" hintText="请输入当前余额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
 			bindModel="$.$model"
 			bindAttribute="currentBalance"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="无备注"

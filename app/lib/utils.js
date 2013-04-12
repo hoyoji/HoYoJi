@@ -112,6 +112,47 @@
 			}
 			return this;
 		}
+		Date.prototype.getUTCTimeOfDate = function() {
+			return Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds(), this.getUTCMilliseconds());
+		}
+
+		Date.prototype.getUTCTimeOfDateStart = function() {
+			return (new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
+
+		Date.prototype.getUTCTimeOfDateEnd = function() {
+			return (new Date(this.getFullYear(), this.getMonth(), this.getDate(), 24, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
+
+		Date.prototype.getUTCTimeOfWeekStart = function() {
+			var first = this.getDate() - this.getDay();
+			// First day is the day of the month - the day of the week
+			var firstday = new Date(this.setDate(first));
+			return (new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate(), 0, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
+
+		Date.prototype.getUTCTimeOfWeekEnd = function() {
+			var first = this.getDate() - this.getDay();
+			// First day is the day of the month - the day of the week
+			var last = first + 6;
+			// last day is the first day + 6
+			var lastday = new Date(this.setDate(last));
+			return (new Date(lastday.getFullYear(), lastday.getMonth(), lastday.getDate(), 24, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
+
+		Date.prototype.getUTCTimeOfMonthStart = function() {
+			return (new Date(this.getFullYear(), this.getMonth(), 1, 0, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
+
+		Date.prototype.getUTCTimeOfMonthEnd = function() {
+			return (new Date(this.getFullYear(), this.getMonth() + 1, 0, 24, 0, 0));
+			// + hyj.timeZoneOffset;
+		}
 		sqlOR = function() {
 			var str = "(" + arguments[0];
 			for (var i = 1; i < arguments.length; i++) {
