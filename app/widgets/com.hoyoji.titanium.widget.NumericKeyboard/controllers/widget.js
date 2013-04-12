@@ -154,13 +154,13 @@ function backspace() {
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
-			activeTextField.setValue("0");
+			activeTextField.setValue("");
 		} else {
 			var rout = readout.substr(0, len - 1);
 			activeTextField.setValue(rout);
 		}
 	} else {
-		activeTextField.setValue("0");
+		activeTextField.setValue("");
 	}
 	activeTextField.field.fireEvent("change");
 	setOPColor();
@@ -192,34 +192,36 @@ function submitValue() {
 
 //提交触发=操作
 function equalToValue() {
-	var readout = activeTextField.getValue() + "";
-	var pendOp = pendingOp;
-	if (flagNewNum && pendOp !== "=");
-	else {
-		flagNewNum = true;
-		if ('+' === pendOp) {
-			accum += parseFloat(readout);
-		} else if ('-' === pendOp) {
-			if (readout.indexOf(".") !== -1) {
-				var num = readout.length - readout.indexOf(".") - 1;
-				accum = (accum - parseFloat(readout)).toFixed(num) - 0.0;
+	if(pendingOp !== "=" && pendingOp !== ""){
+		var readout = activeTextField.getValue() + "";
+		var pendOp = pendingOp;
+		if (flagNewNum && pendOp !== "=");
+		else {
+			flagNewNum = true;
+			if ('+' === pendOp) {
+				accum += parseFloat(readout);
+			} else if ('-' === pendOp) {
+				if (readout.indexOf(".") !== -1) {
+					var num = readout.length - readout.indexOf(".") - 1;
+					accum = (accum - parseFloat(readout)).toFixed(num) - 0.0;
+				} else {
+					accum = accum - parseFloat(readout);
+				}
+			} else if ('÷' === pendOp) {
+				if (parseFloat(readout) === 0) {
+					readout = 0;
+				} else {
+					accum /= parseFloat(readout);
+				}
+			} else if ('×' === pendOp) {
+				accum *= parseFloat(readout);
 			} else {
-				accum = accum - parseFloat(readout);
+				accum = parseFloat(readout);
 			}
-		} else if ('÷' === pendOp) {
-			if (parseFloat(readout) === 0) {
-				readout = 0;
-			} else {
-				accum /= parseFloat(readout);
-			}
-		} else if ('×' === pendOp) {
-			accum *= parseFloat(readout);
-		} else {
-			accum = parseFloat(readout);
+			accum = parseFloat(accum).toFixed(2) / 1;
+			activeTextField.setValue(accum + "");
+			activeTextField.field.fireEvent("change");
+			pendingOp = "=";
 		}
-		accum = parseFloat(accum).toFixed(2) / 1;
-		activeTextField.setValue(accum + "");
-		activeTextField.field.fireEvent("change");
-		pendingOp = "=";
 	}
 }
