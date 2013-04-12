@@ -228,7 +228,7 @@ exports.navigateUp = function() {
 
 
 var sortByField = null;
-exports.sort(fieldName, reverse){
+exports.sort = function(fieldName, reverse){
 	sortByField = fieldName;
 	var data = [];
 	for(var c=0; c < collections.length; c++){
