@@ -15,6 +15,7 @@ var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 $.localAmount.hide();
+$.ownerUser.hide();
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
@@ -45,6 +46,7 @@ if ($.saveableMode === "read") {
 	$.exchangeCurrencyRate.hide();
 	$.moneyAccount.hide();
 	$.localAmount.show();
+	$.ownerUser.show();
 	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
@@ -142,8 +144,6 @@ if ($.saveableMode === "read") {
 			});
 			exchange.xAddToSave($);
 		}
-
-$.$model.xSet("localAmount",($.$model.xGet("amount") * $.$model.xGet("exchangeCurrencyRate")).toUserCurrency());
 
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {

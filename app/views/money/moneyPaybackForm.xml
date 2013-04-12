@@ -3,16 +3,24 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增收款" readModeTitle="收款详细" editModeTitle="修改收款"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<View id="ownerUser" height="42">
+			<Label left="0" width="30%" height="Ti.UI.FILL">记账好友</Label>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
+			bindModel="$.$model"
+			bindAttribute="getOwnerUser()"/>
+			</View>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 			bindModel="$.$model"
 			bindAttribute="date"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="localAmount" labelText="本币金额" hintText=""
-			editModeEditability="noneditable" addModeEditability="noneditable"
+			<View id="localAmount" height="42">
+			<Label left="0" width="30%" height="Ti.UI.FILL">金额</Label>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  
 			bindModel="$.$model"
-			bindAttribute="localAmount"/>
+			bindAttribute="getLocalAmount()"/>
+			</View>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
