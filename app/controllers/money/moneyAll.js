@@ -31,6 +31,12 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("report/transactionReport");
+	} else if (e.source.id === "dateTransactions") {
+		
+	}else if (e.source.id === "weekTransactions") {
+		
+	}else if (e.source.id === "monthTransactions") {
+		
 	}
 }
 
