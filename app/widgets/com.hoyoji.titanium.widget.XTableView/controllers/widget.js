@@ -6,10 +6,8 @@ $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
-		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked");
 		exports.collapseSection(e.index, e.sectionRowId);
 		$.table.deleteRow(e.index);
-		console.info("deleteRow clickkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkked" + e.index);
 	} else if (e.expandSection === true) {
 		exports.expandSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -54,7 +52,6 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-	console.info("adding new row to XTable eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 	addRowToSection(rowModel, collection);
 }
 
@@ -186,7 +183,8 @@ exports.getLastTableTitle = function() {
 
 exports.createChildTable = function(theBackNavTitle, collections) {
 	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
-		top : "100%"
+		top : "100%",
+		hasDetail : $.$attrs.hasDetail
 	});
 	$.detailsTable.setParent($.$view);
 	// detailsTable.$view.setZIndex($.$view.getZIndex() ? $.$view.getZIndex() + 1 : 1);
@@ -225,3 +223,22 @@ exports.navigateUp = function() {
 		lastTable.close();
 	}
 }
+
+$.onWindowOpenDo(function(){
+	if($.getCurrentWindow().$attrs.selectorCallback){
+		// var model = Alloy.createModel($.getCurrentWindow().$attrs.selectModelType);
+		var titleLabel = Ti.UI.createLabel({
+			text : "无" + $.getCurrentWindow().$attrs.title,
+			height : 42,
+			width : Ti.UI.FILL
+		});
+		titleLabel.addEventListener("singletap", function(e){
+			e.cancelBubble = true;
+			$.getCurrentWindow().$attrs.selectorCallback(null);
+			$.getCurrentWindow().close();
+		});
+		var row = Ti.UI.createTableViewRow();
+		row.add(titleLabel);
+		$.table.insertRowBefore(0, row);
+	}
+});

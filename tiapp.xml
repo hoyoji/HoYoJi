@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <property name="acs-oauth-secret-production" type="string">Kz6bDDRQ2gt5jrR2Iod1yRaln3uUiStV</property>
-    <property name="acs-oauth-key-production" type="string">5T4rjO9Gv9mPzZJ8rf7Z9VtLxAo4uOA2</property>
-    <property name="acs-api-key-production" type="string">lDOlmmXAh01fA6eeOH4CAxOGFitDaTeR</property>
-    <property name="acs-oauth-secret-development" type="string">H2uIuHLPzovfc5solr9MLTriqorimE3o</property>
-    <property name="acs-oauth-key-development" type="string">a9BhcrDIdvWWF6fv9sCfuLFyuoiyfLWK</property>
-    <property name="acs-api-key-development" type="string">jGw6AhjhsndzITnLVsupUOlB0H4eP4Ln</property>
     <id>com.hoyoji.hoyoji</id>
     <name>HoYoJi</name>
     <version>1.0</version>

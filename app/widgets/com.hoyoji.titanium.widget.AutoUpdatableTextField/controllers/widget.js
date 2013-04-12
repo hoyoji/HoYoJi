@@ -16,34 +16,27 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
-$.onWindowOpenDo(function(){
-	
-	$.field.addEventListener("focus", function(e){
+// $.onWindowOpenDo(function() {
+
+	$.field.addEventListener("focus", function(e) {
 		e.cancelBubble = true;
-	
-		if ($.saveableMode === "read") { 
-			// in readonly mode, android will still get focus, we need to surpress it
+
+		if ($.saveableMode === "read") {
 			return;
-		} 
-			if ($.$attrs.bindAttributeIsModel) {
-				$.field.blur();
+		}
+		if ($.$attrs.bindAttributeIsModel) {
+			$.field.blur();
+			if(OS_IOS){
+				$.field.fireEvent("singletap");
 			}
-			// $.field.fireEvent("singletap");
-			$.field.fireEvent("textfieldfocused", {
-				bubbles : true,
-				inputType : $.$attrs.inputType
-			});
+		}
+		
+		$.field.fireEvent("textfieldfocused", {
+			bubbles : true,
+			inputType : $.$attrs.inputType
+		});
 	});
-	
-	// $.field.addEventListener("singletap", function(e) {
-		// if(e.source !== $.field){
-			// $.field.blur();
-			// $.field.focus();
-		// }
-	// });
-
-});
-
+// });
 
 $.setEditable = function(editable) {
 	if (editable === false) {
@@ -61,4 +54,4 @@ $.setEditable = function(editable) {
 	$.field.setEditable(editable);
 }
 
-$.setSaveableMode($.saveableMode); 
+$.setSaveableMode($.saveableMode);

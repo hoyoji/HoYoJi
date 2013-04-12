@@ -290,13 +290,12 @@
 							if(!model.startsWith("$.")){
 								resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
 							} else {
-									console.info("on window open ********************************************** " + $.$attrs.bindAttribute);
-									$.$view.fireEvent("resolvesaveablemodel", {
-										bubbles : true,
-										callback : function($) {
-											resolveBindModelFromSaveable($);
-										}
-									});
+								$.$view.fireEvent("resolvesaveablemodel", {
+									bubbles : true,
+									callback : function($) {
+										resolveBindModelFromSaveable($);
+									}
+								});
 							}
 						});
 					
