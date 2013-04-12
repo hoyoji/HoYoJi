@@ -5,8 +5,7 @@ var selectedBorrow = $.$attrs.selectedBorrow;
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
-$.localAmount.hide();
-$.ownerUser.hide();
+
 if (!$.$model) {
 	if (selectedBorrow) {
 		$.$model = Alloy.createModel("MoneyReturn", {
@@ -44,6 +43,10 @@ if ($.saveableMode === "read") {
 	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
+		$.localAmount.hide();
+		$.ownerUser.hide();
+		$.localAmount.setHeight(0);
+		$.ownerUser.setHeight(0);
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
@@ -124,15 +127,15 @@ if ($.saveableMode === "read") {
 			});
 			exchange.xAddToSave($);
 		}
-		
-		if (selectedBorrow) {			//更新已还款
+
+		if (selectedBorrow) {//更新已还款
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeCurrencyRate");
 			var returnRate = $.$model.xGet("exchangeCurrencyRate");
 			$.$model.xGet("moneyBorrow").xSet("returnedAmount", (returnedAmount + (oldAmount + newAmount) * returnRate / borrowRate).toUserCurrency());
 			$.$model.xGet("moneyBorrow").xAddToSave($);
 		}
-		
+
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户

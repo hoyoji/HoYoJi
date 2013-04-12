@@ -31,6 +31,12 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("report/transactionReport");
+	} else if (e.source.id === "dateTransactions") {
+		
+	}else if (e.source.id === "weekTransactions") {
+		
+	}else if (e.source.id === "monthTransactions") {
+		
 	}
 }
 
@@ -46,16 +52,17 @@ var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 });
 var moneyBorrows = Alloy.Models.User.xGet("moneyBorrows");
 var moneyLends = Alloy.Models.User.xGet("moneyLends");
-// var moneyReturns = Alloy.Models.User.xGet("moneyReturns").xCreateFilter({
-	// moneyBorrow : null
-// });
-// var moneyPaybacks = Alloy.Models.User.xGet("moneyPaybacks").xCreateFilter({
-	// moneyLend : null
-// });
+var moneyReturns = Alloy.Models.User.xGet("moneyReturns").xCreateFilter({
+	moneyBorrow : null
+});
+var moneyPaybacks = Alloy.Models.User.xGet("moneyPaybacks").xCreateFilter({
+	moneyLend : null
+});
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
 $.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
 $.moneysTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
 $.moneysTable.addCollection(moneyBorrows);
 $.moneysTable.addCollection(moneyLends);
-
+$.moneysTable.addCollection(moneyReturns,"money/moneyReturnRow");
+$.moneysTable.addCollection(moneyPaybacks,"money/moneyPaybackRow");
