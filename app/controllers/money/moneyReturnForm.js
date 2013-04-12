@@ -6,6 +6,7 @@ var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 $.localAmount.hide();
+$.ownerUser.hide();
 if (!$.$model) {
 	if (selectedBorrow) {
 		$.$model = Alloy.createModel("MoneyReturn", {
@@ -39,6 +40,7 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.hide();
 	$.friendAccount.hide();
 	$.localAmount.show();
+	$.ownerUser.show();
 	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {
