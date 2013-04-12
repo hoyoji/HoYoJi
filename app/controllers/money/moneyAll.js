@@ -9,21 +9,49 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("setting/currency/currencyAll");
 	}));
 	// menuSection.add($.createContextMenuItem("新增支出", function() {
-		// Alloy.Globals.openWindow("money/moneyExpenseForm");
+	// Alloy.Globals.openWindow("money/moneyExpenseForm");
 	// }));
 	// menuSection.add($.createContextMenuItem("新增收入", function() {
-		// Alloy.Globals.openWindow("money/moneyIncomeForm");
+	// Alloy.Globals.openWindow("money/moneyIncomeForm");
 	// }));
 	// menuSection.add($.createContextMenuItem("新增转账", function() {
-		// Alloy.Globals.openWindow("money/moneyTransferForm");
+	// Alloy.Globals.openWindow("money/moneyTransferForm");
 	// }));
 	// menuSection.add($.createContextMenuItem("新增借入", function() {
-		// Alloy.Globals.openWindow("money/moneyBorrowForm");
+	// Alloy.Globals.openWindow("money/moneyBorrowForm");
 	// }));
 	// menuSection.add($.createContextMenuItem("新增借出", function() {
-		// Alloy.Globals.openWindow("money/moneyLendForm");
+	// Alloy.Globals.openWindow("money/moneyLendForm");
 	// }));
 	return menuSection;
+}
+var d = new Date();
+
+function dateFilter(collections) {
+	var filterTimeFrom = d.getUTCTimeOfDateStart();
+	var filterTimeTo = d.getUTCTimeOfDateEnd();
+	collections.xSetFilter(function(model) {
+		return (model.xGet("date") < filterTimeTo && model.xGet("date") > filterTimeFrom);
+	});
+	collections.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom)));
+}
+
+function weekFilter(collections) {
+	var filterTimeFrom = d.getUTCTimeOfWeekStart();
+	var filterTimeTo = d.getUTCTimeOfWeekEnd();
+	collections.xSetFilter(function(model) {
+		return (model.xGet("date") < filterTimeTo && model.xGet("date") > filterTimeFrom);
+	});
+	collections.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom)));
+}
+
+function monthFilter(collections) {
+	var filterTimeFrom = d.getUTCTimeOfMonthStart();
+	var filterTimeTo = d.getUTCTimeOfMonthEnd();
+	collections.xSetFilter(function(model) {
+		return (model.xGet("date") < filterTimeTo && model.xGet("date") > filterTimeFrom);
+	});
+	collections.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom)));
 }
 
 function onFooterbarTap(e) {
@@ -32,11 +60,34 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("report/transactionReport");
 	} else if (e.source.id === "dateTransactions") {
-		
-	}else if (e.source.id === "weekTransactions") {
-		
-	}else if (e.source.id === "monthTransactions") {
-		
+		dateFilter(moneyIncomes);
+		dateFilter(moneyExpenses);
+		dateFilter(moneyTransferOuts);
+		dateFilter(moneyTransferIns);
+		dateFilter(moneyBorrows);
+		dateFilter(moneyLends);
+		dateFilter(moneyReturns);
+		dateFilter(moneyPaybacks);
+
+	} else if (e.source.id === "weekTransactions") {
+		weekFilter(moneyIncomes);
+		weekFilter(moneyExpenses);
+		weekFilter(moneyTransferOuts);
+		weekFilter(moneyTransferIns);
+		weekFilter(moneyBorrows);
+		weekFilter(moneyLends);
+		weekFilter(moneyReturns);
+		weekFilter(moneyPaybacks);
+
+	} else if (e.source.id === "monthTransactions") {
+		monthFilter(moneyIncomes);
+		monthFilter(moneyExpenses);
+		monthFilter(moneyTransferOuts);
+		monthFilter(moneyTransferIns);
+		monthFilter(moneyBorrows);
+		monthFilter(moneyLends);
+		monthFilter(moneyReturns);
+		monthFilter(moneyPaybacks);
 	}
 }
 
@@ -64,5 +115,5 @@ $.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
 $.moneysTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
 $.moneysTable.addCollection(moneyBorrows);
 $.moneysTable.addCollection(moneyLends);
-$.moneysTable.addCollection(moneyReturns,"money/moneyReturnRow");
-$.moneysTable.addCollection(moneyPaybacks,"money/moneyPaybackRow");
+$.moneysTable.addCollection(moneyReturns, "money/moneyReturnRow");
+$.moneysTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");

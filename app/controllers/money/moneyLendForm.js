@@ -16,8 +16,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
-$.localAmount.hide();
-$.ownerUser.hide();
+
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyLend", {
 		date : (new Date()).toISOString(),
