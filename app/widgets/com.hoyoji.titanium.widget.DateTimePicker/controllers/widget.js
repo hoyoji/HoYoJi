@@ -32,7 +32,7 @@ exports.close = function() {
 }
 
 var cancelTouchStart = function(e){
-		e.cancelBubble = true;
+	e.cancelBubble = true;
 }
 
 exports.open = function(textField) {//绑定textField

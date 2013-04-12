@@ -1,5 +1,5 @@
 ( function() {
-		guid = function() {
+		var guid = function() {
 			function S4() {
 				return ((1 + Math.random()) * 65536 | 0).toString(16).substring(1);
 			}
@@ -372,24 +372,26 @@
 			},
 			xFindInDb : function(filter) {
 				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
-
-				for (var f in filter) {
-					var value = filter[f]
-					if (filterStr) {
-						filterStr += " AND "
-					}
-					f = "main." + f;
-					if (_.isNull(value)) {
-						filterStr += f + " IS NULL ";
-					} else if (value === "NOT NULL") {
-						filterStr += f + " IS NOT NULL ";
-					} else if (_.isNumber(value)) {
-						filterStr += f + " = " + value + " ";
-					} else {
-						filterStr += f + " = '" + value + "' ";
+				if(typeof filter === "string"){
+					filterStr = filter;
+				} else {
+					for (var f in filter) {
+						var value = filter[f]
+						if (filterStr) {
+							filterStr += " AND "
+						}
+						f = "main." + f;
+						if (_.isNull(value) || value === undefined) {
+							filterStr += f + " IS NULL ";
+						// } else if (value === "NOT NULL") {
+							// filterStr += f + " IS NOT NULL ";
+						} else if (_.isNumber(value)) {
+							filterStr += f + " = " + value + " ";
+						} else {
+							filterStr += f + " = '" + value + "' ";
+						}
 					}
 				}
-
 				this.fetch({
 					query : query + filterStr
 				});

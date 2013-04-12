@@ -14,27 +14,30 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
-$.field.addEventListener("focus", function(e){
-	e.cancelBubble = true;
+	$.field.addEventListener("focus", function(e) {
+		e.cancelBubble = true;
 
-	if ($.saveableMode === "read") {
-		return;
-	} 
-	if(OS_IOS){
+		if ($.saveableMode === "read") {
+			return;
+		}
 		if ($.$attrs.bindAttributeIsModel) {
 			$.field.blur();
-		}	
-	}
-	$.field.fireEvent("textfieldfocused", {
-		bubbles : true,
-		inputType : $.$attrs.inputType
+			if(OS_IOS){
+				$.field.fireEvent("singletap");
+			}
+		}
+		
+		$.field.fireEvent("textfieldfocused", {
+			bubbles : true,
+			inputType : $.$attrs.inputType
+		});
 	});
-});
 
-$.$view.addEventListener("singletap", function(e) {
-	$.field.focus();
-	
-});
+
+// $.$view.addEventListener("singletap", function(e) {
+	// $.field.focus();
+// 	
+// });
 
 $.setEditable = function(editable) {
 	if (editable === false) {

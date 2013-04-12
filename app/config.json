@@ -10,6 +10,7 @@
         "com.hoyoji.titanium.widget.TitleBar": "1.0",
         "com.hoyoji.titanium.widget.ContextMenu": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableTextField": "1.0",
+        "com.hoyoji.titanium.widget.AutoUpdatableNumericField": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableTextArea": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableDateTimeField": "1.0",
         "com.hoyoji.titanium.widget.AutoUpdatableSelector": "1.0",

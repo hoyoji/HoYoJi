@@ -4,6 +4,7 @@ exports.definition = {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
+			localAmount : "REAL NOT NULL",
 			incomeType : "TEXT NOT NULL",
 			friendId : "TEXT",
 			friendAccountId : "TEXT",
@@ -14,7 +15,7 @@ exports.definition = {
 			exchangeCurrencyRate : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
+			lastSyncTime : "TEXT",
 			lastModifyTime : "TEXT"
 		},
 		hasMany : {
@@ -110,14 +111,50 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getLocalAmount : function() {
-				return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
-			},
+			// getLocalAmount : function() {
+				// return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
+			// },
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
 			},
-			getMoneyIncomeCategoryName : function(){
+			getMoneyIncomeCategoryName : function() {
 				return this.xGet("moneyIncomeCategory").xGet("name");
+			},
+			getAccountCurrency : function() {
+				var currencySymbol = null;
+				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
+					var localCurrency = this.xGet("localCurrency");
+					if (accountCurrency === localCurrency) {
+						currencySymbol = null;
+					} else {
+						currencySymbol = accountCurrency.xGet("symbol");
+					}
+				}
+				return currencySymbol;
+			},
+			getOwnerUser : function() {
+				var ownerUserSymbol;
+				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+					ownerUserSymbol = null;
+				} else {
+					if (!this.__friends) {
+						var friends = Alloy.createCollection("Friend");
+						friends.xSetFilter({
+							friendUser : this.xGet("ownerUser"),
+							ownerUser : Alloy.Models.User
+						});
+						friends.xSearchInDb({
+							friendUserId : this.xGet("ownerUser").xGet("id"),
+							ownerUserId : Alloy.Models.User.xGet("id")
+						});
+						this.__friends = friends;
+					}
+					var friend = friends.at(0);
+					ownerUserSymbol = friend.getDisplayName();
+				}
+
+				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");

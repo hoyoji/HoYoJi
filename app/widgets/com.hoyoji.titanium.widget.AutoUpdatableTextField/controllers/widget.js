@@ -16,39 +16,27 @@ if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
-$.onWindowOpenDo(function(){
-	
-	$.field.addEventListener("focus", function(e){
+// $.onWindowOpenDo(function() {
+
+	$.field.addEventListener("focus", function(e) {
 		e.cancelBubble = true;
-	
-		if ($.saveableMode === "read") { 
-			// in readonly mode, android will still get focus, we need to surpress it
+
+		if ($.saveableMode === "read") {
 			return;
-		} 
-			if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
-				$.field.blur();
-			}
-			if($.$attrs.inputType === "NumericKeyboard"){
-				$.getCurrentWindow().numericKeyboard.open($);
-			}	
-			// if(OS_IOS){
-				$.field.fireEvent("singletap");
-			// }
-			$.field.fireEvent("textfieldfocused", {
-				bubbles : true,
-				inputType : $.$attrs.inputType
-			});
-	});
-	
-	$.$view.addEventListener("singletap", function(e) {
-		if(e.source !== $.field){
-			$.field.blur();
-			$.field.focus();
 		}
+		if ($.$attrs.bindAttributeIsModel) {
+			$.field.blur();
+			if(OS_IOS){
+				$.field.fireEvent("singletap");
+			}
+		}
+		
+		$.field.fireEvent("textfieldfocused", {
+			bubbles : true,
+			inputType : $.$attrs.inputType
+		});
 	});
-
-});
-
+// });
 
 $.setEditable = function(editable) {
 	if (editable === false) {
@@ -58,7 +46,7 @@ $.setEditable = function(editable) {
 	}
 
 	if (OS_ANDROID) {
-		if ($.$attrs.bindAttributeIsModel || $.$attrs.inputType === "NumericKeyboard") {
+		if ($.$attrs.bindAttributeIsModel) {
 			$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 		}
 	}
@@ -66,4 +54,4 @@ $.setEditable = function(editable) {
 	$.field.setEditable(editable);
 }
 
-$.setSaveableMode($.saveableMode); 
+$.setSaveableMode($.saveableMode);

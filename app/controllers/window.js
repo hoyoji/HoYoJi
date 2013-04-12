@@ -6,7 +6,7 @@ exports.close = function(e) {
 	function animateClose() {
 		var animation = Titanium.UI.createAnimation();
 		animation.left = "100%";
-		animation.duration = 500;
+		animation.duration = 350;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		animation.addEventListener('complete', function() {
 			$.$view.close({
@@ -28,13 +28,13 @@ exports.open = function(contentController) {
 		animated : false
 	});
 	$.closeSoftKeyboard();
-	if(OS_ANDROID){
-		$.$view.focus();
-	}
+	// if(OS_ANDROID){
+		// $.$view.focus();
+	// }
 	
 	var animation = Titanium.UI.createAnimation();
 	animation.left = "0";
-	animation.duration = 500;
+	animation.duration = 350;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	if(contentController){
 		animation.addEventListener("complete", function(){

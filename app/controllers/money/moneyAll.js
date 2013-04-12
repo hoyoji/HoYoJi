@@ -46,6 +46,12 @@ var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 });
 var moneyBorrows = Alloy.Models.User.xGet("moneyBorrows");
 var moneyLends = Alloy.Models.User.xGet("moneyLends");
+// var moneyReturns = Alloy.Models.User.xGet("moneyReturns").xCreateFilter({
+	// moneyBorrow : null
+// });
+// var moneyPaybacks = Alloy.Models.User.xGet("moneyPaybacks").xCreateFilter({
+	// moneyLend : null
+// });
 $.moneysTable.addCollection(moneyIncomes);
 $.moneysTable.addCollection(moneyExpenses);
 $.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
