@@ -42,3 +42,15 @@ $.makeContextMenu = function(e, isSelectMode) {
 	}, isSelectMode));
 	return menuSection;
 }
+
+function setWaitForAccept(){
+	if($.$model.xGet("state") === "Wait"){
+		$.checkAccept.show();
+	} else {
+		$.checkAccept.hide();
+	}
+}
+
+$.onWindowOpenDo(function(){
+	setWaitForAccept();
+});

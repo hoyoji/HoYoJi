@@ -122,7 +122,7 @@ exports.definition = {
 			},
 			getOwnerUser : function() {
 				var ownerUserSymbol;
-				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+				if (!this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;
 				} else {
 					if (!this.__friends) {
