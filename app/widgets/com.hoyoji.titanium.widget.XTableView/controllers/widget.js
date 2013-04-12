@@ -113,7 +113,9 @@ $.onWindowCloseDo(clearCollections);
 
 exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
-	collections[_.indexOf(collections, collection)] = null;
+	var index = _.indexOf(collections, collection);
+	collections[index] = null;
+	collections.splice(index,1);
 }
 
 exports.getCollections = function() {
@@ -222,6 +224,26 @@ exports.navigateUp = function() {
 		parentTable.detailsTable = null;
 		lastTable.close();
 	}
+}
+
+
+var sortByField = null;
+exports.sort = function(fieldName, reverse){
+	sortByField = fieldName;
+	var data = [];
+	for(var c=0; c < collections.length; c++){
+		data.push(collections.models);
+		// for(var i=0; i < collections[c].length; i++){
+			// collections[c].at(c)
+		// }
+	}
+	data.sort(function(model){
+		if(reverse){
+			return model.xGet(fieldName);
+		}
+		return model.xGet(fieldName) ;
+	});
+	$.table.setData(data);
 }
 
 $.onWindowOpenDo(function(){

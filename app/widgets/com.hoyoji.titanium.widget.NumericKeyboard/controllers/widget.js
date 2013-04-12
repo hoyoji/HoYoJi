@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var activeTextField, oldValue=0, confirmCB = null, openBottom = 0;
+var activeTextField, oldValue="", confirmCB = null, openBottom = 0;
 
 exports.close = function() {
 	console.info("close NumericKeyboard");
@@ -50,8 +50,6 @@ exports.open = function(textField, saveCB, bottom) {
 	} else {
 		return;
 	}
-	
-	oldValue = activeTextField.getValue();
 }
 
 $.onWindowOpenDo(function(){
@@ -76,10 +74,11 @@ function numPress(e) {
 		activeTextField.setValue(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		if (activeTextField.getValue() === "0" || !activeTextField.getValue()) {
+		if (activeTextField.getValue() + oldValue === "0" || activeTextField.getValue() + oldValue === "") {
 			activeTextField.setValue(e.source.getTitle());
 		} else {
-			var thisNum = activeTextField.getValue() + e.source.getTitle();
+			var thisNum = activeTextField.getValue() + oldValue + e.source.getTitle();
+			oldValue = ""
 			activeTextField.setValue(thisNum);
 		}
 	}
@@ -89,7 +88,7 @@ function numPress(e) {
 
 //+-*/操作
 function operation(e) {
-	var readout = activeTextField.getValue();
+	var readout = activeTextField.getValue() + "";
 	if(activeTextField.getValue()===""){
 		readout = 0;
 	}
@@ -134,7 +133,7 @@ function operation(e) {
 
 //小数点
 function decimal() {
-	var curReadOut = activeTextField.getValue();
+	var curReadOut = activeTextField.getValue() + "";
 	if (flagNewNum) {
 		curReadOut = "0.";
 		flagNewNum = false;
@@ -143,6 +142,7 @@ function decimal() {
 			curReadOut += ".";
 		}
 	}
+	oldValue = "."
 	activeTextField.setValue(curReadOut);
 	activeTextField.field.fireEvent("change");
 	setOPColor();
@@ -150,7 +150,7 @@ function decimal() {
 
 //退格键
 function backspace() {
-	var readout = activeTextField.getValue();
+	var readout = activeTextField.getValue() + "";
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
@@ -183,10 +183,43 @@ function setOPColor(){
 }
 //提交
 function submitValue() {
-	// oldValue = $.number.getValue();
+	equalToValue();
 	exports.close();
 	if(confirmCB){
 		confirmCB();
 	}
 }
 
+//提交触发=操作
+function equalToValue() {
+	var readout = activeTextField.getValue() + "";
+	var pendOp = pendingOp;
+	if (flagNewNum && pendOp !== "=");
+	else {
+		flagNewNum = true;
+		if ('+' === pendOp) {
+			accum += parseFloat(readout);
+		} else if ('-' === pendOp) {
+			if (readout.indexOf(".") !== -1) {
+				var num = readout.length - readout.indexOf(".") - 1;
+				accum = (accum - parseFloat(readout)).toFixed(num) - 0.0;
+			} else {
+				accum = accum - parseFloat(readout);
+			}
+		} else if ('÷' === pendOp) {
+			if (parseFloat(readout) === 0) {
+				readout = 0;
+			} else {
+				accum /= parseFloat(readout);
+			}
+		} else if ('×' === pendOp) {
+			accum *= parseFloat(readout);
+		} else {
+			accum = parseFloat(readout);
+		}
+		accum = parseFloat(accum).toFixed(2) / 1;
+		activeTextField.setValue(accum + "");
+		activeTextField.field.fireEvent("change");
+		pendingOp = "=";
+	}
+}
