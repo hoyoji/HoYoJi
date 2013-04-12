@@ -17,6 +17,7 @@ var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 $.localAmount.hide();
+$.ownerUser.hide();
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyLend", {
 		date : (new Date()).toISOString(),
@@ -39,6 +40,7 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.hide();
 	$.friendAccount.hide();
 	$.localAmount.show();
+	$.ownerUser.show();
 	$.amount.hide();
 } else {
 	$.onWindowOpenDo(function() {

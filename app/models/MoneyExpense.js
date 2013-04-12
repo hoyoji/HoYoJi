@@ -4,7 +4,6 @@ exports.definition = {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
-			localAmount : "REAL NOT NULL",
 			expenseType : "TEXT NOT NULL",
 			friendId : "TEXT",
 			friendAccountId : "TEXT",
@@ -112,9 +111,9 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			// getLocalAmount : function() {
-				// return (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
-			// },
+			getLocalAmount : function() {
+				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
+			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
 			},
@@ -151,7 +150,7 @@ exports.definition = {
 						});
 						this.__friends = friends;
 					}
-					var friend = friends.at(0);
+					var friend = this.__friends.at(0);
 					ownerUserSymbol = friend.getDisplayName();
 				}
 
