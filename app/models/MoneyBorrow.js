@@ -122,7 +122,7 @@ exports.definition = {
 			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;
-				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+				if (!this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
 					var localCurrency = this.xGet("localCurrency");
 					if (accountCurrency === localCurrency) {
@@ -135,7 +135,7 @@ exports.definition = {
 			},
 			getOwnerUser : function() {
 				var ownerUserSymbol;
-				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
+				if (this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;
 				} else {
 					if (!this.__friends) {
