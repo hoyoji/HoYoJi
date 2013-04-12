@@ -52,6 +52,8 @@ if ($.saveableMode === "read") {
 	$.onWindowOpenDo(function() {
 		$.localAmount.hide();
 		$.ownerUser.hide();
+		$.localAmount.setHeight(0);
+		$.ownerUser.setHeight(0);
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 	});
 

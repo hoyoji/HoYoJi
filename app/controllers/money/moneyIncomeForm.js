@@ -51,6 +51,8 @@ if ($.saveableMode === "read") {
 	$.onWindowOpenDo(function() {
 		$.localAmount.hide();
 		$.ownerUser.hide();
+		$.localAmount.setHeight(0);
+		$.ownerUser.setHeight(0);
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
