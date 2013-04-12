@@ -55,6 +55,8 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("report/transactionReport");
 	} else if (e.source.id === "dateTransactions") {
+		$.titleBar.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
 		var d = new Date();
 		var filterTimeFrom = d.getUTCTimeOfDateStart().toISOString();
 		var filterTimeTo = d.getUTCTimeOfDateEnd().toISOString();
@@ -67,6 +69,8 @@ function onFooterbarTap(e) {
 		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
 		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
 	} else if (e.source.id === "weekTransactions") {
+		$.titleBar.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
 		var d = new Date();
 		var filterTimeFrom = d.getUTCTimeOfWeekStart().toISOString();
 		var filterTimeTo = d.getUTCTimeOfWeekEnd().toISOString();
@@ -79,6 +83,8 @@ function onFooterbarTap(e) {
 		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
 		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
 	} else if (e.source.id === "monthTransactions") {
+		$.titleBar.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
 		var d = new Date();
 		var filterTimeFrom = d.getUTCTimeOfMonthStart().toISOString();
 		var filterTimeTo = d.getUTCTimeOfMonthEnd().toISOString();
@@ -91,12 +97,12 @@ function onFooterbarTap(e) {
 		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
 		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
 	} else if (e.source.id === "sort"){
-		$.moneysTable.sort("date");
+		$.transactionsTable.sort("date");
 		sortReverse = true;
 	}
 }
 
-// $.titleBar.bindXTable($.moneysTable);
+// $.titleBar.bindXTable($.transactionsTable);
 
 // var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 // var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
@@ -136,11 +142,11 @@ timeFilter(moneyLends, filterTimeFrom, filterTimeTo);
 timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
 timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
 
-$.moneysTable.addCollection(moneyIncomes);
-$.moneysTable.addCollection(moneyExpenses);
-$.moneysTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
-$.moneysTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
-$.moneysTable.addCollection(moneyBorrows);
-$.moneysTable.addCollection(moneyLends);
-$.moneysTable.addCollection(moneyReturns, "money/moneyReturnRow");
-$.moneysTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
+$.transactionsTable.addCollection(moneyIncomes);
+$.transactionsTable.addCollection(moneyExpenses);
+$.transactionsTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
+$.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
+$.transactionsTable.addCollection(moneyBorrows);
+$.transactionsTable.addCollection(moneyLends);
+$.transactionsTable.addCollection(moneyReturns, "money/moneyReturnRow");
+$.transactionsTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");

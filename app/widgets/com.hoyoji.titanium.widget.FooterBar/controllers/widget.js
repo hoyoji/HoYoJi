@@ -22,6 +22,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 		for(var i=1; i < subButtons.length; i++){
 			var subButton = Ti.UI.createButton({id : subIds[i], title : subButtons[i], width : width});
 			$[subFooterBarId].add(subButton);
+			$[subIds[i]] = subButton;
 		}
 		
 		$[subFooterBarId].addEventListener("singletap", function(e){
@@ -50,9 +51,12 @@ if($.$attrs.buttons){
 			subIds = ids[i].split(";");
 			button = Ti.UI.createButton({id : subIds[0], title : subButtons[0], width : width});
 			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
+			$[subIds[0]] = button;
 		} else {
 			button = Ti.UI.createButton({id : ids[i], title : buttons[i], width : width});
+			$[ids[i]] = button;
 		}
+		
 		$.mainFooterBar.add(button);
 	}
 }
