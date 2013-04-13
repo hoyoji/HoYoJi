@@ -8,15 +8,18 @@
 			if(OS_ANDROID){
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			}
-			
+			$.$view.addEventListener("touchstart", function(e){
+				$.getCurrentWindow().closeSoftKeyboard();
+			});
+
 			_.extend($, {
 				close : function(){
-					$.closeSoftKeyboard();
+					//$.closeSoftKeyboard();
 					$.$view.close({animated : false});
 				},				
 				open : function(){
 					$.$view.open({animated : false});
-					$.closeSoftKeyboard();
+					//$.closeSoftKeyboard();
 				},
 				openContextMenu : function(e) {
 					if ($.contextMenu) {
@@ -91,16 +94,16 @@
 					});
 				}
 			});
-			$.$view.addEventListener("textfieldfocused", function(e){
-				if(e.inputType === "NumericKeyboard"){
-					if($.dateTimePicker) $.dateTimePicker.close();
-				} else if(e.inputType === "DateTimePicker"){
-					if($.numericKeyboard)	$.numericKeyboard.close();
-				} else {
-					if($.numericKeyboard)	$.numericKeyboard.close();
-					if($.dateTimePicker) $.dateTimePicker.close();
-				}
-			});
+			// $.$view.addEventListener("textfieldfocused", function(e){
+				// if(e.inputType === "NumericKeyboard"){
+					// if($.dateTimePicker) $.dateTimePicker.close();
+				// } else if(e.inputType === "DateTimePicker"){
+					// if($.numericKeyboard)	$.numericKeyboard.close();
+				// } else {
+					// if($.numericKeyboard)	$.numericKeyboard.close();
+					// if($.dateTimePicker) $.dateTimePicker.close();
+				// }
+			// });
 			$.$view.addEventListener("closewin", function(e) {
 				$.close();
 			});

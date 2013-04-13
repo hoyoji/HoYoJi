@@ -28,25 +28,29 @@ exports.open = function(textField, saveCB, bottom) {
 	}
 	openBottom = bottom ? bottom : 0;
 	
-	if (!activeTextField) {
+	// if (!activeTextField) {
+	if (activeTextField !== textField){	
 		activeTextField = textField;
-		activeTextField.$view.fireEvent("touchstart"); // close other pickers
+		// activeTextField.$view.fireEvent("touchstart"); // close other pickers
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		
-		function animateOpen(){
+		// function animateOpen(){
 			// $.widget.removeEventListener("postlayout", animateOpen);
 			var animation = Titanium.UI.createAnimation();
 			animation.bottom = openBottom;
 			animation.duration = 300;
 			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+			animation.addEventListener("complete", function(){
+				activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+			});
 			$.widget.animate(animation);	
-		}
+		// }
 		// $.widget.addEventListener("postlayout", animateOpen);
-		animateOpen();
-	} else if (activeTextField !== textField){
-		activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
-		activeTextField = textField;
-		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+		// animateOpen();
+	// } else if (activeTextField !== textField){
+		// activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+		// activeTextField = textField;
+		// activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 	} else {
 		return;
 	}

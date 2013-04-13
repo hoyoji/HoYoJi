@@ -26,10 +26,6 @@ var currentItemIndex = -1;
 		$.field.add(labels[i]);
 	}
 
-$.$view.addEventListener("singletap", function(e){
-	$.getCurrentWindow().closeSoftKeyboard();
-});
-
 $.field.addEventListener("singletap", function(e){
 	if(e.source === $.field){
 		return;
@@ -38,7 +34,6 @@ $.field.addEventListener("singletap", function(e){
 	 if(currentItemIndex >= 0){
 	    labels[currentItemIndex].setBackgroundColor("white");
 	 }
-	 console.info(currentItemIndex + " current index : " + e.source.getText());
      currentItemIndex = _.indexOf(labels, e.source);
 	e.source.setBackgroundColor("cyan");
     

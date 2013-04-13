@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var currentTab = 0;
-var currentFastSelectTab = null;
+// var currentFastSelectTab = null;
 var scrollableView = null;
 var isExpanded = true;
 var hideTimeoutId = null;
@@ -12,7 +12,7 @@ exports.animateHideTabBar = function() {
 		firstTimeOpen = false;
 
 	
-	$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
+	//$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
 	var animation = Titanium.UI.createAnimation();
 	animation.top = "-42";
@@ -39,27 +39,32 @@ exports.animateShowTabBar = function(){
 		}	
 }
 
-exports.getFastSelectTabIndex = function(){
-	// if($.$attrs.hideFirstTab === "true"){
-		// return currentFastSelectTab + 1;
+// exports.getFastSelectTabIndex = function(){
+	// // if($.$attrs.hideFirstTab === "true"){
+		// // return currentFastSelectTab + 1;
+	// // }
+	// return currentFastSelectTab;
+// }
+
+// exports.fastSelectTab = function(e){
+	// if (e.x < 0) {
+		// return;
 	// }
-	return currentFastSelectTab;
-}
+// 
+	// var position = Math.floor(e.x / ($.$view.getSize().width / $.tabs.getChildren().length));
+	// if (position < $.tabs.getChildren().length && currentFastSelectTab !== position) {
+		// if(currentFastSelectTab !== null){
+			// $.tabs.getChildren()[currentFastSelectTab].setHeight("42");
+		// }
+		// currentFastSelectTab = position;
+		// $.tabs.getChildren()[currentFastSelectTab].setHeight("60");
+	// }
+	// e.cancelBubble = true;	
+// }
 
-exports.fastSelectTab = function(e){
-	if (e.x < 0) {
-		return;
-	}
-
-	var position = Math.floor(e.x / ($.$view.getSize().width / $.tabs.getChildren().length));
-	if (position < $.tabs.getChildren().length && currentFastSelectTab !== position) {
-		if(currentFastSelectTab !== null){
-			$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
-		}
-		currentFastSelectTab = position;
-		$.tabs.getChildren()[currentFastSelectTab].setHeight("60");
-	}
-	e.cancelBubble = true;	
+function pullDown(){
+	exports.animateShowTabBar();
+	clearTimeout(hideTimeoutId);
 }
 
 function hideTabBar(timeout) {
@@ -76,8 +81,8 @@ function hightLightTab(e) {
 	
 	if (curPage >= 0 && curPage <= $.tabs.getChildren().length) {
 		if (currentTab !== curPage) {
-			$.tabs.getChildren()[currentTab].setBackgroundColor("white");
-			$.tabs.getChildren()[curPage].setBackgroundColor("cyan");
+			$.tabs.getChildren()[currentTab].setColor("black");
+			$.tabs.getChildren()[curPage].setColor("blue");
 			currentTab = curPage;
 			hideTabBar(800);
 		} else {
@@ -106,14 +111,16 @@ exports.init = function(scView) {
 	var i = 0;
 	views.map(function(view) {
 		// if (!($.$attrs.hideFirstTab === "true" && i === 0)) {
-			var label = Ti.UI.createLabel({
-				backgroundColor : 'white',
+			var label = Ti.UI.createButton({
 				color : "black",
-				text : view.title,
+				title : view.title,
 				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 				width : tabWidth,
 				top : 0,
 				height : 42
+			});
+			label.addEventListener("singletap", function(){
+				scrollableView.scrollToView(view);
 			});
 			$.tabs.add(label);
 		// }
@@ -125,10 +132,10 @@ exports.init = function(scView) {
 	// } else {
 		currentTab = scrollableView.getCurrentPage();
 	// }
-	currentFastSelectTab = currentTab;
-	if(currentTab > 0){
-		$.tabs.getChildren()[currentTab].setBackgroundColor("cyan");
-	}
+	// currentFastSelectTab = currentTab;
+	// if(currentTab > 0){
+		$.tabs.getChildren()[currentTab].setColor("blue");
+	// }
 	$.hightlight.setLeft(currentTab / numberOfTabs * 100 + "%");
 
 	scrollableView.addEventListener("scrollEnd", hightLightTab);

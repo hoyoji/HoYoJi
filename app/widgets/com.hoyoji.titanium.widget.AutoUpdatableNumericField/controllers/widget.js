@@ -12,11 +12,11 @@ $.onWindowOpenDo(function(){
 			return;
 		} 
 		
-		$.field.fireEvent("textfieldfocused", {
-			bubbles : true,
-			inputType : "NumericKeyboard"
-		});
-		$.getCurrentWindow().closeSoftKeyboard();
+		// $.field.fireEvent("textfieldfocused", {
+			// bubbles : true,
+			// inputType : "NumericKeyboard"
+		// });
+		// $.getCurrentWindow().closeSoftKeyboard();
 		$.getCurrentWindow().numericKeyboard.open($);
 	});
 

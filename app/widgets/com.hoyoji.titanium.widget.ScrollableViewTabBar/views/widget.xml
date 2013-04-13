@@ -3,6 +3,7 @@
 		<View width="Ti.UI.FILL" height="Ti.UI.SIZE" backgroundColor="white" top="0" zIndex="1">
 			<Label id="hightlight" class="hightlight" backgroundColor="cyan" top="0" width="20%" height="5"></Label>
 		</View>
-		<View id="tabs" class="tabs" width="Ti.UI.FILL" height="42" top="5" layout="horizontal" backgroundColor="black" zIndex="0"></View>
+		<View id="tabs" class="tabs" width="Ti.UI.FILL" height="42" top="5" layout="horizontal" backgroundColor="white" zIndex="0"></View>
 	</View>
+	<Button id="pullDown" onSingletap="pullDown" top="5" left="0" height="42" width="42" zIndex="100">下拉</Button>
 </Alloy>

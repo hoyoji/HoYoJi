@@ -60,7 +60,7 @@
 			/>
 			<View height="42">
 			<Label left="0" width="30%" height="Ti.UI.FILL">是否预收</Label>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher"  left="30%" width="Ti.UI.SIZE"
 			hightLight="false"
 			items="否,是"
 			values="Ordinary,PreExpense"

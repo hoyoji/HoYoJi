@@ -2,11 +2,11 @@
 	<Window class="container" backgroundColor="white">
 		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar"/>
 		<ScrollableView id="scrollableView" currentPage="2" showPagingControl="false" top="5">
-			<Require src="message/messageAll" backButtonHidden="true">
-			<Require src="friend/friendAll" backButtonHidden="true">
-			<Require src="home/home" backButtonHidden="true">
-			<Require src="money/moneyAll" backButtonHidden="true">
 			<Require src="project/projectAll" backButtonHidden="true">
+			<Require src="money/moneyAll" backButtonHidden="true">
+			<Require src="home/home" backButtonHidden="true">
+			<Require src="friend/friendAll" backButtonHidden="true">
+			<Require src="message/messageAll" backButtonHidden="true">
 		</ScrollableView>
 	</Window>
 </Alloy>

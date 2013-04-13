@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" sortByField="date" sortReverse="true" groupByField="date" bottom="42" top="42"/>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="查找,排序,日流水;日流水;周流水;月流水,账户,报表"
-		ids="search,sort,transactionsTable;dateTransactions;weekTransactions;monthTransactions,moneyAccount,report"/>
+		buttons="查找,排序,日流水;日流水;周流水;月流水,报表,账户"
+		ids="search,sort,transactionsTable;dateTransactions;weekTransactions;monthTransactions,report,moneyAccount"/>
 	</View>
 </Alloy>

@@ -7,6 +7,8 @@ function onFooterbarTap(e) {
 		Alloy.Globals.Server.sync();
 	} else if (e.source.id === "setting") {
 		Alloy.Globals.openWindow("setting/systemSetting");
+	} else if (e.source.id === "message") {
+		Alloy.Globals.openWindow("message/messageAll");
 	}
 }
 

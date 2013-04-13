@@ -36,18 +36,22 @@ var cancelTouchStart = function(e){
 }
 
 exports.open = function(textField) {//绑定textField
-	if(!activeTextField){
+	// if(!activeTextField){
+	if(activeTextField !== textField){
 		activeTextField = textField;
 		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 		var showDatePicker = Titanium.UI.createAnimation(); //打开时动画
 		showDatePicker.bottom = 0;
 		showDatePicker.duration = 300;
 		showDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		showDatePicker.addEventListener("complete", function(){
+			activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+		});
 		$.widget.animate(showDatePicker);
-	} else if (activeTextField !== textField){
-		activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
-		activeTextField = textField;
-		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+	// } else if (activeTextField !== textField){
+		// activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+		// activeTextField = textField;
+		// activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
 	} else {
 		return;
 	}

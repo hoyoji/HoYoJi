@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 exports.close = function(e) {
-	$.closeSoftKeyboard();
+	//$.closeSoftKeyboard();
 	
 	function animateClose() {
 		var animation = Titanium.UI.createAnimation();
@@ -27,7 +27,7 @@ exports.open = function(contentController) {
 	$.$view.open({
 		animated : false
 	});
-	$.closeSoftKeyboard();
+	//$.closeSoftKeyboard();
 	// if(OS_ANDROID){
 		// $.$view.focus();
 	// }

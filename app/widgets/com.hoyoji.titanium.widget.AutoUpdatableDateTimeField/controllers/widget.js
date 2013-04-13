@@ -11,11 +11,11 @@ $.onWindowOpenDo(function(){
 		if ($.saveableMode === "read") {
 			return;
 		}
-		$.field.fireEvent("textfieldfocused", {
-			bubbles : true,
-			inputType : "DateTimePicker"
-		});
-		$.getCurrentWindow().closeSoftKeyboard();
+		// $.field.fireEvent("textfieldfocused", {
+			// bubbles : true,
+			// inputType : "DateTimePicker"
+		// });
+		//$.getCurrentWindow().closeSoftKeyboard();
 		$.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");		
 	});
 });

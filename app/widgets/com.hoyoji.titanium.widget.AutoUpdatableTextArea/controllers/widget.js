@@ -27,10 +27,10 @@ if (OS_ANDROID) {
 			}
 		}
 		
-		$.field.fireEvent("textfieldfocused", {
-			bubbles : true,
-			inputType : $.$attrs.inputType
-		});
+		// $.field.fireEvent("textfieldfocused", {
+			// bubbles : true,
+			// inputType : $.$attrs.inputType
+		// });
 	});
 
 
