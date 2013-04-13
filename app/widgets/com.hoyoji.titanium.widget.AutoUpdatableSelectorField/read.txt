@@ -4,7 +4,7 @@ index。xml：
 <Alloy>
 	<Window class="container" layout="vertical">
 		<View height="Ti.UI.SIZE" layout="horizontal">
-		<Widget id="category" src="com.hoyoji.titanium.widget.AutoUpdatableSelector" items="支出，收入，转账，借入，借出，还款，收款" values="expense,income,transfer,borrow,lend,return,payback" labelText="记账类型"/>
+		<Widget id="category" src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" items="支出，收入，转账，借入，借出，还款，收款" values="expense,income,transfer,borrow,lend,return,payback" labelText="记账类型"/>
 		</View>
 	</Window>
 </Alloy>

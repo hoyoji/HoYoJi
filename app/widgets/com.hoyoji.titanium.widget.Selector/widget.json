@@ -1,6 +1,6 @@
 {
-	"id": "com.hoyoji.titanium.widget.AutoUpdatableSelector",
-	"name": "com.hoyoji.titanium.widget.AutoUpdatableSelector",
+	"id": "com.hoyoji.titanium.widget.Selector",
+	"name": "com.hoyoji.titanium.widget.Selector",
 	"description" : "",
 	"author": "",
 	"version": "1.0",

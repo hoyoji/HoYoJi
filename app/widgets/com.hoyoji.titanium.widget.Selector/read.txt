@@ -1,0 +1,17 @@
+调用该widget，需要传入items,values，js绑定model时传入 model和attribute；
+ex。
+index。xml：
+<Alloy>
+	<Window class="container" layout="vertical">
+		<View height="Ti.UI.SIZE" layout="horizontal">
+		<Widget id="category" src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" items="支出，收入，转账，借入，借出，还款，收款" values="expense,income,transfer,borrow,lend,return,payback" labelText="记账类型"/>
+		</View>
+	</Window>
+</Alloy>
+
+index.js：
+var categoryModel = Alloy.createModel("Category");
+$.category.bindModel(categoryModel,"category");
+
+$.index.open();
+

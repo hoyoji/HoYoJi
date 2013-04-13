@@ -24,7 +24,7 @@
 			values="Private,Friend,Public"
 			bindModel="$.$model"
 			bindAttribute="sharingType"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="账户类型" hintText="请选择账户类型"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"
 			items="现金，储蓄卡，信用卡，网上支付，借贷"
 			values="Cash,Deposit,Credit,Online,Loan"
 			bindModel="$.$model"

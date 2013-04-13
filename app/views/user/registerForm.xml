@@ -17,7 +17,7 @@
 			items="18,30,40,50,60"
 			bindModel="$.$model"
 			bindAttribute="age"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelector" labelText="生日" hintText="请输入生日"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="生日" hintText="请输入生日"
 			items="18世纪，19世纪，20世纪"
 			values="18-,19-,20-"
 			bindModel="$.$model"

@@ -46,7 +46,9 @@ exports.open = function(contentController) {
 
 exports.openWin = function(contentController, options) {
 	options = options || {};
-	// _.extend(options, {height : "90%", width : "90%"});
+	if(options.selectorCallback){
+		 _.extend(options, {height : "90%", width : "90%"});
+	}
 
 	_.extend($.$attrs, options);
 	var content = Alloy.createController(contentController, options);
