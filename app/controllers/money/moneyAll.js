@@ -47,7 +47,7 @@ function timeFilter(collection, filterTimeFrom, filterTimeTo, collectionName) {
 	// }
 }
 
-var sortReverse = false;
+var sortReverse = true;
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
@@ -97,8 +97,8 @@ function onFooterbarTap(e) {
 		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
 		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
 	} else if (e.source.id === "sort"){
-		$.transactionsTable.sort("date");
-		sortReverse = true;
+		sortReverse = !sortReverse;
+		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
 	}
 }
 

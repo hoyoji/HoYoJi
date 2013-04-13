@@ -46,10 +46,17 @@ $.onWindowOpenDo(function() {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;
 		if($.$attrs.dataType === "DateTime"){
 			d = new Date(value);
-			value = String.formatDate(d, "medium") + " " + String.formatTime(d, "medium");	
+			var dStr = String.formatDate(d, "medium");
+			if(dStr === String.formatDate(new Date(), "medium")){
+				dStr = "今天";
+			}
+			value = dStr + " " + String.formatTime(d, "medium");	
 		} else if($.$attrs.dataType === "Date"){
 			d = new Date(value);
-			value = String.formatDate(d, "medium");	
+			value = String.formatDate(d, "medium");
+			if(dStr === String.formatDate(new Date(), "medium")){
+				value = "今天";
+			}
 		} else if($.$attrs.dataType === "Time"){
 			d = new Date(value);
 			value = String.formatTime(d, "medium");	

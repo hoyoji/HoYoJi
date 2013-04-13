@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增收入分类" readModeTitle="收入分类" editModeTitle="修改收入分类"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="请选择上级分类"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
 			bindModel="$.$model"
 			bindAttribute="parentIncomeCategory"
 			bindAttributeIsModel="name"

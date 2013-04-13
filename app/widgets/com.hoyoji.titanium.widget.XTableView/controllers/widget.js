@@ -1,19 +1,22 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var collections = [], collapsibleSections = {};
+var collections = [], hasDetailSections = {};
+var sortByField = $.$attrs.sortByField, 
+	groupByField = $.$attrs.groupByField, 
+	sortReverse = $.$attrs.sortReverse === "true";
 
 $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
-		exports.collapseSection(e.index, e.sectionRowId);
+		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 		$.table.deleteRow(e.index);
 	} else if (e.expandSection === true) {
-		exports.expandSection(e.index, e.sectionRowId);
+		exports.expandHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
-		exports.collapseSection(e.index, e.sectionRowId);
+		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.addRowToSection) {
-		var section = collapsibleSections[e.sectionRowId];
+		var section = hasDetailSections[e.sectionRowId];
 		var rowModel, collection;
 		for (var i = 0; i < section.collections.length; i++) {
 			rowModel = section.collections[i].get(e.addRowToSection);
@@ -29,16 +32,18 @@ $.$view.addEventListener("click", function(e) {
 	$.trigger("endchangingrow");
 });
 
-function createRowView(rowModel, collection){
+function createRowView(rowModel, collection) {
 	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
 		$collection : collection,
 		hasDetail : $.$attrs.hasDetail
 	});
-	var row = Ti.UI.createTableViewRow({id : rowModel.xGet("id")});
+	var row = Ti.UI.createTableViewRow({
+		id : rowModel.xGet("id")
+	});
 	rowViewController.setParent(row);
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
-		collapsibleSections[rowModel.xGet("id")] = {
+		hasDetailSections[rowModel.xGet("id")] = {
 			parentRowController : rowViewController,
 			collections : []
 		};
@@ -46,11 +51,152 @@ function createRowView(rowModel, collection){
 	return row;
 }
 
+function findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize) {
+	if(!groupByField){
+		return {
+			insertBefore : true,
+			index : pos
+		};
+	}
+	var rowSectionValue = rowModel.xDeepGet(groupByField);
+	if (getSectionNameOfRowModel(rowSectionValue) !== sectionNameOfModel) {
+		// if (pos > 0) {
+			var previousRowModel;
+			if (r > 0) {
+				previousRowModel = findObject($.table.data[s].rows[r - previousHasDetailSize - 1].id);
+			} else if (s > 0) {
+				previousRowModel = findObject($.table.data[s - 1].rows[$.table.data[s - 1].rows.length - previousHasDetailSize - 1].id);
+			}
+			if (!previousRowModel) {// no previous section
+				return {
+					insertBefore : -1,
+					index : s,
+					sectionTitle : sectionNameOfModel
+				};
+			} else {
+				if (getSectionNameOfRowModel(previousRowModel.xDeepGet(groupByField)) !== sectionNameOfModel) {
+					return {
+						insertBefore : -1,
+						index : s,
+						sectionTitle : sectionNameOfModel
+					};
+				} else {
+					return {
+						insertBefore : false,
+						index : pos - 1
+					};
+				}
+			}
+		// } else {
+			// return {
+				// insertBefore : false,
+				// index : pos - 1
+			// };
+		// }
+	} else {
+		return {
+			insertBefore : true,
+			index : pos
+		};
+	}
+}
+
+function getHasDetailSectionSize(sectionRowId){
+	var size = 0;
+	if(hasDetailSections[sectionRowId] && hasDetailSections[sectionRowId].collections.length){
+		hasDetailSections[sectionRowId].collections.forEach(function(c){
+			size += c.length;
+		});
+	}
+	return size;
+}
+
+function findSortPos(model) {
+	var value = model.xDeepGet(sortByField), pos = -1, previousHasDetailSize = 0, sectionNameOfModel;
+	if(groupByField){
+		sectionNameOfModel = getSectionNameOfRowModel(model.xDeepGet(groupByField));
+	}
+	for (var s = 0; s < $.table.data.length; s++) {
+		for (var r = 0; r < $.table.data[s].rows.length; r++) {
+			pos++;
+			
+			var rowModel = findObject($.table.data[s].rows[r].id);
+			var rowValue = rowModel.xDeepGet(sortByField);
+			if (sortReverse) {
+				// 4,3,2,1
+				if (value > rowValue) {
+					return findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize);
+				}
+			} else {
+				// 1,2,3,4:6,7,8
+				if (value < rowValue) {
+					return findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize);
+				}
+			}
+			// skip all the hasDetail rows
+			previousHasDetailSize = getHasDetailSectionSize($.table.data[s].rows[r].id);
+			pos += previousHasDetailSize;
+			r += previousHasDetailSize;
+		}
+	}
+	
+	if(!groupByField){
+		return {
+			insertBefore : pos === -1,
+			index : pos
+		};		
+	} 
+	
+	if(pos === -1){
+		return {
+			insertBefore : -1,
+			index : 0,
+			sectionTitle : sectionNameOfModel
+		};
+	} else if(getSectionNameOfRowModel(rowModel.xDeepGet(groupByField)) !== sectionNameOfModel){
+		return {
+			insertBefore : -1,
+			index : s,
+			sectionTitle : sectionNameOfModel
+		};
+	} else {
+		return {
+			insertBefore : false,
+			index : pos
+		};		
+	}
+}
+
 function addRowToSection(rowModel, collection, index) {
 	var row = createRowView(rowModel, collection);
 
 	if (index === undefined) {
-		$.table.appendRow(row);
+		if (sortByField) {
+			var pos = findSortPos(rowModel);
+			if (pos === null) {
+				$.table.appendRow(row);
+			} else if (pos.insertBefore === -1) {
+				// need to create new section for this row
+				var section = Ti.UI.createTableViewSection({
+					headerTitle : pos.sectionTitle
+				});
+				section.add(row);
+				var data = $.table.data.slice(0);
+				data.splice(pos.index, 0, section);
+				$.table.setData(data);
+				// $.table.insertRowBefore(pos.index, row);
+			} else if (pos.insertBefore) {
+				if(pos.index === -1){
+					$.table.appendRow(row);
+				} else {
+					$.table.insertRowBefore(pos.index, row);
+				}
+			} else {
+				$.table.insertRowAfter(pos.index, row);
+			}
+		} else {
+			$.table.appendRow(row);
+		}
 	} else {
 		$.table.insertRowAfter(index, row);
 	}
@@ -60,37 +206,62 @@ function addRow(rowModel, collection) {
 	addRowToSection(rowModel, collection);
 }
 
-exports.expandSection = function(rowIndex, sectionRowId) {
+exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 	var index = rowIndex;
-	var parentController = collapsibleSections[sectionRowId].parentRowController;
+	var parentController = hasDetailSections[sectionRowId].parentRowController;
 	var collections = parentController.getDetailCollections();
 	for (var i = 0; i < collections.length; i++) {
 		for (var j = 0; j < collections[i].length; j++) {
 			addRowToSection(collections[i].at(j), collections[i], index);
 			index++;
 		}
-		collapsibleSections[sectionRowId].collections.push(collections[i]);
+		hasDetailSections[sectionRowId].collections.push(collections[i]);
 	}
 }
 
-exports.collapseSection = function(rowIndex, sectionRowId) {
-	if(!collapsibleSections[sectionRowId]){
+function getRowViewByRowIndex(index){
+	var sectionIndex = 0;
+	var sectionSize = $.table.data[sectionIndex].rows.length;
+	while(index > sectionSize){
+		sectionIndex++;
+		index -= sectionSize;
+		sectionSize = $.table.data[sectionIndex].rows.length;
+	}
+	return $.table.data[sectionIndex].rows[index];
+}
+
+exports.collapseHasDetailSection = function(rowIndex, sectionRowId) {
+	if (!hasDetailSections[sectionRowId]) {
 		return;
 	}
 	var index = rowIndex + 1;
-	var collections = collapsibleSections[sectionRowId].collections;
+	var collections = hasDetailSections[sectionRowId].collections;
 	for (var c = 0; c < collections.length; c++) {
 		for (var i = 0; i < collections[c].length; i++) {
 			var rowId = collections[c].at(i).xGet("id");
-			if (collapsibleSections[rowId]) {
-				exports.collapseSection(index, rowId);
+			if (hasDetailSections[rowId]) {
+				exports.collapseHasDetailSection(index, rowId);
 			}
-			//collections[c].remove(collections[c].at(i));
-			$.table.data[0].rows[index].fireEvent("rowremoved", {bubbles : false});
+	
+			getRowViewByRowIndex(index).fireEvent("rowremoved", {
+				bubbles : false
+			});
 			$.table.deleteRow(index);
 		}
 	}
-	collapsibleSections[sectionRowId].collections = [];
+	hasDetailSections[sectionRowId].collections = [];
+}
+
+function collapseAllHasDetailSections(){
+	var pos = -1;
+	for (var s = 0; s < $.table.data.length; s++) {
+		for (var r = 0; r < $.table.data[s].rows.length; r++) {
+			pos++;
+			if(hasDetailSections[$.table.data[s].rows[r].id] && hasDetailSections[$.table.data[s].rows[r].id].collections.length){
+				exports.collapseHasDetailSection(pos, hasDetailSections[$.table.data[s].rows[r].id]);
+			}
+		}
+	}
 }
 
 exports.addCollection = function(collection, rowView) {
@@ -120,7 +291,7 @@ exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
 	var index = _.indexOf(collections, collection);
 	collections[index] = null;
-	collections.splice(index,1);
+	collections.splice(index, 1);
 }
 
 exports.getCollections = function() {
@@ -191,7 +362,10 @@ exports.getLastTableTitle = function() {
 exports.createChildTable = function(theBackNavTitle, collections) {
 	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
 		top : "100%",
-		hasDetail : $.$attrs.hasDetail
+		hasDetail : $.$attrs.hasDetail,
+		sortByField : sortByField,
+		groupByField : groupByField,
+		sortReverse : sortReverse
 	});
 	$.detailsTable.setParent($.$view);
 	// detailsTable.$view.setZIndex($.$view.getZIndex() ? $.$view.getZIndex() + 1 : 1);
@@ -228,56 +402,87 @@ exports.navigateUp = function() {
 		lastTable.close();
 	}
 }
+function findObject(id) {
+	for (var c = 0; c < collections.length; c++) {
+		for (var i = 0; i < collections[c].length; i++) {
+			var o = collections[c].get(id);
+			if (o) {
+				return o;
+			}
+		}
+	}
+}
 
+function getSectionNameOfRowModel(sectionName) {
+	if (groupByField === "date" || groupByField.endsWith(".date")) {
+		sectionName = String.formatDate(new Date(sectionName), "medium");
+	}
+	return sectionName;
+}
 
-var sortByField = null;
-exports.sort = function(fieldName, reverse){
+exports.sort = function(fieldName, reverse, groupField) {
+	if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
+		return;
+	}
+
 	sortByField = fieldName;
+	sortReverse = reverse;
+	groupByField = groupField;
+	collapseAllHasDetailSections();
 	
 	var data = $.table.data;
-	
+
 	data = _.flatten(data, true);
 	data = _.pluck(data, "rows");
 	data = _.flatten(data, true);
-	data.reverse();
-	
-	// var data = _.flatten(collections);
-	// data = _.sortBy(data, fieldName);
-	// for(var c=0; c < collections.length; c++){
-		// for(var i=0; i < collections[c].length; i++){
-			// var row = createRowView(collections[c].at(i), collections[c]);
-			// data.push(row);
-// 	
-		// }
-	// }
-	// _.sortBy(data, fieldName);
-	// function(model){
-		// if(reverse){
-			// return model.xGet(fieldName);
-		// }
-		// return model.xGet(fieldName) ;
-	// }
-	// data.map(function(){
-// 		
-	// });
+	data.sort(function(a, b) {
+		a = findObject(a.id).xDeepGet(fieldName);
+		b = findObject(b.id).xDeepGet(fieldName);
+		if (a < b) {
+			return reverse ? 1 : -1;
+		} else if (a > b) {
+			return reverse ? -1 : 1;
+		}
+		return 0;
+	});
+	if(groupByField){
+		var sectionData = _.groupBy(data, function(item) {
+			return getSectionNameOfRowModel(findObject(item.id).xDeepGet(groupByField));
+		});
+		data = [];
+		for (var sectionTitle in sectionData) {
+			var section = Ti.UI.createTableViewSection({
+				headerTitle : sectionTitle
+			});
+			sectionData[sectionTitle].forEach(function(row) {
+				section.add(row);
+			})
+			data.push(section);
+		}
+	}
+
 	$.table.setData(data);
 }
 
-$.onWindowOpenDo(function(){
-	if($.getCurrentWindow().$attrs.selectorCallback){
+$.onWindowOpenDo(function() {
+	if ($.getCurrentWindow().$attrs.selectorCallback) {
 		// var model = Alloy.createModel($.getCurrentWindow().$attrs.selectModelType);
 		var titleLabel = Ti.UI.createLabel({
 			text : "无" + $.getCurrentWindow().$attrs.title,
 			height : 42,
 			width : Ti.UI.FILL
 		});
-		titleLabel.addEventListener("singletap", function(e){
+		titleLabel.addEventListener("singletap", function(e) {
 			e.cancelBubble = true;
 			$.getCurrentWindow().$attrs.selectorCallback(null);
 			$.getCurrentWindow().close();
 		});
 		var row = Ti.UI.createTableViewRow();
-		row.add(titleLabel);
-		$.table.insertRowBefore(0, row);
+		row.add(titleLabel);row.add(titleLabel);
+        if($.table.data.length > 0){
+            $.table.insertRowBefore(0, row);
+        } else {
+        	$.table.appendRow(row);
+        }
 	}
 });

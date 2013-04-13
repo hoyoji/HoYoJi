@@ -4,7 +4,7 @@
         <Widget src="com.hoyoji.titanium.widget.XTableView" id="sendedMessagesTable" bottom="42" top="42"/>
 		<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" id="newMessagesTable" bottom="42" top="42"/>
         <Widget src="com.hoyoji.titanium.widget.XTableView" id="oldMessagesTable" bottom="42" top="42"/> -->
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="receivedMessagesTable" bottom="42" top="42"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="receivedMessagesTable" sortByField="date" groupByField="date" bottom="42" top="42"/>
         <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
         	buttons="收件箱;未读消息;已读消息,发件箱"
         	ids="receivedMessagesTable;newMessagesTable;oldMessagesTable,sendedMessagesTable"/>

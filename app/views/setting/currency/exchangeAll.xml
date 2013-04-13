@@ -19,6 +19,6 @@
 			</View>
 		</View>
 		
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" bottom="0" top="84"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" sortByField="foreignCurrency.name" bottom="0" top="84"/>
 	</View>
 </Alloy>

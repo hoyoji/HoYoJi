@@ -311,6 +311,17 @@
 				}
 				return value;
 			},
+			xDeepGet : function(fields){
+				function xGetRecursive(object, path){
+					if(path.length > 1){
+						var p = path.shift();
+						object = object.xGet ? object.xGet(p) : object[p];
+						return xGetRecursive(object, path);
+					}
+					return object.xGet ? object.xGet(path[0]) : object[path[0]];
+				}
+				return xGetRecursive(this, fields.split("."));
+			},
 			xGetDescendents : function(attribute) {
 				var descendents = Alloy.createCollection(this.config.adapter.collection_name);
 
