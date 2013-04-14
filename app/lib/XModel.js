@@ -299,12 +299,13 @@
 						m.fetch({
 							query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
 						});
-						console.info("xGet fetch belongsTo from DB " + m.length);
-						if(m.length === 0){
-							m = null;
-						} else {
-							m = m.at(0);
-						}
+						// console.info("xGet fetch belongsTo from DB " + m.length);
+						// if(m.length === 0){
+							// m = null;
+						// } else {
+							// m = m.at(0);
+						// }
+						m = Alloy.Collections[table].get(fId);
 					}
 					this.attributes[attr] = m;
 					return m;
@@ -406,7 +407,8 @@
 				this.fetch({
 					query : query + filterStr
 				});
-				return this;
+				
+				return Alloy.Collections[table].get(this.xGet("id"));
 			},
 			toJSON : function(options) {
 				var attributes = _.clone(this.attributes);

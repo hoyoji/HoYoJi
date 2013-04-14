@@ -153,7 +153,7 @@ var showMsg = function(msg){
 					});
 					
 					$.msg.animate(animation);
-				}, 1500);
+				}, 1000);
 			});
 	
 	$.msg.setText(msg);

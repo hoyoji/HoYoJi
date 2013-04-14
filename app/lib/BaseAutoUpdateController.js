@@ -65,7 +65,7 @@
 					if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
 						value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
 					} else {
-						value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+						value = $.__bindAttributeIsModel.xGet ? $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel) : $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel];
 					}
 				}
 				value = this.convertModelValue(value);
@@ -163,7 +163,7 @@
 							var params = $.$attrs.bindModelSelectorParams.split(",");
 							for (var i = 0; i < params.length; i++) {
 								var param = params[i].split(":");
-								attributes[param[0]] = $.$attrs.bindModel.xGet(param[1]);
+								attributes[param[0]] = $.$attrs.bindModel.xGet ? $.$attrs.bindModel.xGet(param[1]) : $.$attrs.bindModel[param[1]];
 							}
 						}
 						attributes.title = $.label.getText();
@@ -178,7 +178,7 @@
 				$.$attrs.bindAttributeIsModel = bindAttributeIsModel;
 				$.$attrs.bindModelSelector = bindModelSelector;
 
-				console.info(" init autoupdateController ============= " + attribute + model.xGet(attribute));
+				console.info(" init autoupdateController ============= " + (model.xGet ? model.xGet(attribute) : model[attribute]));
 
 				var path = attribute.split(".");
 				if (path.length > 1) {
@@ -188,7 +188,7 @@
 					attribute = path[path.length - 1];
 				}
 
-				$.setValue(model.xGet(attribute));
+				$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 				var handleError = function(model, error) {
 					if (error[attribute]) {
@@ -198,7 +198,7 @@
 					}
 				}
 				var updateField = function(e) {
-					$.setValue(model.xGet(attribute));
+					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
@@ -211,45 +211,47 @@
 					}
 					hideErrorMsg();
 					if (bindAttributeIsModel) {
-						model.xSet(attribute, $.__bindAttributeIsModel);
+						model.xSet ? model.xSet(attribute, $.__bindAttributeIsModel) : model[attribute] = $.__bindAttributeIsModel;
 					} else {
 						var val = $.getValue(e);
-						if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
-							val = Number(val);
-							if (_.isNaN(val)) {
-								showErrorMsg("请输入数值");
-								return;
+						if(model.xSet){
+							if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
+								val = Number(val);
+								if (_.isNaN(val)) {
+									showErrorMsg("请输入数值");
+									return;
+								}
 							}
+							model.xSet(attribute, val);
+						} else {
+							model[attribute] = val;
 						}
-						model.xSet(attribute, val);
 						if($.$attrs.autoSave === "true"){
 							model._xSave();
 						}
 					}
-					// if(model.validate(model.attributes)){
-					// model.trigger("invalid");
-					// return;
-					// };
-					if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
-						$.becameClean();
-						return;
-					} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
-						$.becameDirty();
+					if(model.xGet){
+						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
+							$.becameClean();
+						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
+							$.becameDirty();
+						}	
 					}
 				}
-
-				model.on("error", handleError);
-				model.on("sync", updateField);
 				$.field.addEventListener("change", updateModel);
-
-				// clean up listener upon window close to prevent memory leak
-				$.onWindowCloseDo(function() {
-					if (!model.isNew() && model.hasChanged(attribute)) {
-						model.xSet(attribute, model.previous(attribute));
-					}
-					model.off(null, updateField);
-					model.off(null, handleError);
-				});
+				if(model.xGet){
+					model.on("error", handleError);
+					model.on("sync", updateField);
+	
+					// clean up listener upon window close to prevent memory leak
+					$.onWindowCloseDo(function() {
+						if (!model.isNew() && model.hasChanged(attribute)) {
+								model.xSet(attribute, model.previous(attribute));
+						}
+						model.off(null, updateField);
+						model.off(null, handleError);
+					});
+				}
 			}
 			if ($.$attrs.editable) {
 				$.setEditable($.$attrs.editable);
@@ -290,12 +292,14 @@
 							if(!model.startsWith("$.")){
 								resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
 							} else {
-								$.$view.fireEvent("resolvesaveablemodel", {
-									bubbles : true,
-									callback : function($) {
-										resolveBindModelFromSaveable($);
-									}
-								});
+								resolveBindModelFromSaveable($.getParentController());
+								
+								// $.$view.fireEvent("resolvesaveablemodel", {
+									// bubbles : true,
+									// callback : function($) {
+										// resolveBindModelFromSaveable($);
+									// }
+								// });
 							}
 						});
 					

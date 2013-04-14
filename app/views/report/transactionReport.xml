@@ -1,6 +1,0 @@
-<Alloy>
-	<View class="container" title="流水汇总">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="流水汇总"/>
-		
-	</View>
-</Alloy>
