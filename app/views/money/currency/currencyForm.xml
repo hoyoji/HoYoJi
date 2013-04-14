@@ -4,7 +4,7 @@
 		addModeTitle="新增币种" readModeTitle="币种详细" editModeTitle="修改币种"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" 
 		id="table" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种名称" hintText="请输入币种名称"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="币种名称" hintText="请输入币种名称"
 			bindModel="$.$model"
 			bindAttribute="name"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种符号" hintText="请输入币种符号"

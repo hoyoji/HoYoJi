@@ -12,4 +12,5 @@ if ($.$model.isNew()) {
 		project : $.$model
 	}).xAddToSave($);
 	$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
+	$.name.field.focus();
 }

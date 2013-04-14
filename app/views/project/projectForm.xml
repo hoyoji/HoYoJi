@@ -9,7 +9,7 @@
                 		bindAttributeIsModel="name"
                 		bindModelSelector="project/projectAll"
                 		/>
-                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目名称" hintText="请输入项目名称" 
+                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="项目名称" hintText="请输入项目名称" 
                 		bindModel="$.$model"
                 		bindAttribute="name"/>
            </ScrollView>

@@ -10,7 +10,7 @@
 			bindModelSelector="money/moneyIncomeCategoryAll"
 			bindModelSelectorParams="selectedProject:project"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类名称" hintText="请输入分类名称"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="分类名称" hintText="请输入分类名称"
 			bindModel="$.$model"
 			bindAttribute="name"/>
 		</ScrollView>
