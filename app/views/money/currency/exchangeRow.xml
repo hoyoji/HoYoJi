@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="42" openForm="setting/currency/exchangeForm">
+	<View class="container" height="42" openForm="money/currency/exchangeForm">
 		<View id="content" class="row-content" height="Ti.UI.FILL">
 			<View height="Ti.UI.SIZE" layout="horizontal" left="10">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" 

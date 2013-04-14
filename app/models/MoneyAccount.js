@@ -21,7 +21,7 @@ exports.definition = {
 			currency : {type : "Currency",attribute : "moneyAccounts"},
 			ownerUser : {type : "User", attribute : "moneyAccounts" }
 		},
-		rowView : "setting/moneyAccount/moneyAccountRow",
+		rowView : "money/moneyAccount/moneyAccountRow",
 		adapter: {
 			type : "hyjSql"
 		}
