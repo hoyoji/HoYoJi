@@ -89,6 +89,8 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "transactionsSearchTable") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.transactionsSearchTable.doSearch();
+	} else if (e.source.id === "transactionsTable") {
+		$.titleBar.setTitle(e.source.getTitle());
 	}
 }
 
