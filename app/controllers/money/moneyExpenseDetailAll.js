@@ -14,3 +14,9 @@ $.titleBar.bindXTable($.moneyExpenseDetailsTable);
 
 var collection = selectedExpense.xGet("moneyExpenseDetails");
 $.moneyExpenseDetailsTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addExpenseDetail"){
+		Alloy.Globals.openWindow("money/moneyExpenseDetailForm",{$model : "MoneyExpenseDetail",data:{moneyExpense : selectedExpense, ownerUser : Alloy.Models.User}});
+	}
+}

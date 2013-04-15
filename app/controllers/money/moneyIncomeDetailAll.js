@@ -14,3 +14,9 @@ $.titleBar.bindXTable($.moneyIncomeDetailsTable);
 
 var collection = selectedIncome.xGet("moneyIncomeDetails");
 $.moneyIncomeDetailsTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addIncomeDetail"){
+		Alloy.Globals.openWindow("money/moneyIncomeDetailForm",{$model : "MoneyIncomeDetail",data:{moneyIncome : selectedIncome, ownerUser : Alloy.Models.User}});
+	}
+}

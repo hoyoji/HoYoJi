@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" title="查找" backgroundColor="green">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="查找"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsSearchTable" sortByField="date" sortReverse="true" groupByField="date" bottom="42" top="42"/>
+	</View>
+</Alloy>
