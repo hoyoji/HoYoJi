@@ -6,12 +6,12 @@ function logout(){
 }
 
 // function openCurrency(){
-	// Alloy.Globals.openWindow("setting/currency/currencyAll");
+	// Alloy.Globals.openWindow("money/currency/currencyAll");
 // }
 // function openExchange(){
-	// Alloy.Globals.openWindow("setting/currency/exchangeAll");
+	// Alloy.Globals.openWindow("money/currency/exchangeAll");
 // }
 // function openMoneyAccount(){
-	// Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
+	// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 // }
 

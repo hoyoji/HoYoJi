@@ -4,10 +4,8 @@ exports.definition = {
 			id : "TEXT NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
 			transferOutAmount : "REAL NOT NULL",
-			transferOutOwnerUserId : "TEXT",
 			transferOutId : "TEXT NOT NULL",
 			transferInAmount : "REAL NOT NULL",
-			transferInOwnerUserId : "TEXT",
 			transferInId : "TEXT NOT NULL",
 			exchangeCurrencyRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -17,16 +15,8 @@ exports.definition = {
 			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
-			transferOutOwnerUser : {
-				type : "Friend",
-				attribute : null
-			},
 			transferOut : {
 				type : "MoneyAccount",
-				attribute : null
-			},
-			transferInOwnerUser : {
-				type : "Friend",
 				attribute : null
 			},
 			transferIn : {

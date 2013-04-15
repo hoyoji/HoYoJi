@@ -3,10 +3,10 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("汇率设置", function() {
-		Alloy.Globals.openWindow("setting/currency/exchangeAll");
+		Alloy.Globals.openWindow("money/currency/exchangeAll");
 	}));
 	menuSection.add($.createContextMenuItem("货币设置", function() {
-		Alloy.Globals.openWindow("setting/currency/currencyAll");
+		Alloy.Globals.openWindow("money/currency/currencyAll");
 	}));
 	return menuSection;
 }
@@ -49,7 +49,7 @@ function doAllTimeFilter(){
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
-		Alloy.Globals.openWindow("setting/moneyAccount/moneyAccountAll");
+		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("money/report/transactionReport", {queryOptions : timeFilter});
 	} else if (e.source.id === "dateTransactions") {

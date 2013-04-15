@@ -3,7 +3,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增账户" readModeTitle="账户详细" editModeTitle="修改账户"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户名称" hintText="请输入账户名称"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="账户名称" hintText="请输入账户名称"
 			bindModel="$.$model"
 			bindAttribute="name"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种" hintText="请选择币种"
@@ -11,7 +11,7 @@
 			bindModel="$.$model"
 			bindAttribute="currency"
 			bindAttributeIsModel="name"
-			bindModelSelector="setting/currency/currencyAll"
+			bindModelSelector="money/currency/currencyAll"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
 			bindModel="$.$model"

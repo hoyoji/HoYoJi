@@ -7,35 +7,21 @@
 			bindModel="$.$model"
 			bindAttribute="date"/>
 			<Label>转出</Label>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOutOwnerUser" labelText="好友" hintText="自己"
-			bindModel="$.$model"
-			bindAttribute="transferOutOwnerUser"
-			bindAttributeIsModel="getDisplayName()"
-			bindModelSelector="friend/friendAll"
-			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOut" labelText="转出账户" hintText="请选择转出账户"
 			bindModel="$.$model"
 			bindAttribute="transferOut"
 			bindAttributeIsModel="getAccountNameCurrency()"
-			bindModelSelector="setting/moneyAccount/moneyAccountAll"
-			bindModelSelectorParams="selectedFriend:transferOutOwnerUser"
+			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="transferOutAmount"/>
 			<Label>转入</Label>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferInOwnerUser" labelText="好友" hintText="自己"
-			bindModel="$.$model"
-			bindAttribute="transferInOwnerUser"
-			bindAttributeIsModel="getDisplayName()"
-			bindModelSelector="friend/friendAll"
-			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferIn" labelText="转入账户" hintText="请选择转入账户"
 			bindModel="$.$model"
 			bindAttribute="transferIn"
 			bindAttributeIsModel="getAccountNameCurrency()"
-			bindModelSelector="setting/moneyAccount/moneyAccountAll"
-			bindModelSelectorParams="selectedFriend:transferInOwnerUser"
+			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"

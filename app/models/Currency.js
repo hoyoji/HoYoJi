@@ -15,7 +15,7 @@ exports.definition = {
 		belongsTo : {
 			ownerUser : { type : "User", attribute : "currencies" }
 		},
-		rowView : "setting/currency/currencyRow",
+		rowView : "money/currency/currencyRow",
 		adapter: {
 			type : "hyjSql"
 		}

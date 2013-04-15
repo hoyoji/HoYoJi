@@ -4,7 +4,7 @@ var localCurrency = Alloy.Models.User.xGet("activeCurrency");
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增汇率", function() {
-		Alloy.Globals.openWindow("setting/currency/exchangeForm", {
+		Alloy.Globals.openWindow("money/currency/exchangeForm", {
 			$model : "Exchange",
 			data : {localCurrency : Alloy.Models.User.xGet("activeCurrency")}
 		});

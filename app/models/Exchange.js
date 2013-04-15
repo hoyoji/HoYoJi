@@ -24,7 +24,7 @@ exports.definition = {
 				attribute : "exchanges"
 			}
 		},
-		rowView : "setting/currency/exchangeRow",
+		rowView : "money/currency/exchangeRow",
 		adapter : {
 			type : "hyjSql"
 		}
