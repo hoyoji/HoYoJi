@@ -11,7 +11,7 @@ if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyReturn", {
 			date : (new Date()).toISOString(),
 			localCurrency : selectedBorrow.xGet("localCurrency"),
-			exchangeCurrencyRate : 1,
+			exchangeRate : 1,
 			moneyAccount : selectedBorrow.xGet("moneyAccount"),
 			moneyBorrow : selectedBorrow,
 			project : selectedBorrow.xGet("project"),
@@ -22,7 +22,7 @@ if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyReturn", {
 			date : (new Date()).toISOString(),
 			localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-			exchangeCurrencyRate : 1,
+			exchangeRate : 1,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			moneyBorrow : null,
 			project : Alloy.Models.User.xGet("activeProject"),
@@ -35,7 +35,7 @@ if (!$.$model) {
 
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
-	$.exchangeCurrencyRate.hide();
+	$.exchangeRate.hide();
 	$.moneyAccount.hide();
 	$.friendAccount.hide();
 	$.localAmount.show();
@@ -65,27 +65,27 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
-		var exchangeCurrencyRateValue;
+		var exchangeRateValue;
 		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
 			isRateExist = true;
-			exchangeCurrencyRateValue = 1;
-			$.exchangeCurrencyRate.hide();
+			exchangeRateValue = 1;
+			$.exchangeRate.hide();
 		} else {
 			var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
-				exchangeCurrencyRateValue = exchanges.at(0).xGet("rate");
+				exchangeRateValue = exchanges.at(0).xGet("rate");
 			} else {
 				isRateExist = false;
-				exchangeCurrencyRateValue = null;
+				exchangeRateValue = null;
 			}
-			$.exchangeCurrencyRate.show();
+			$.exchangeRate.show();
 		}
 		if (setToModel) {
-			model.xSet("exchangeCurrencyRate", exchangeCurrencyRateValue);
+			model.xSet("exchangeRate", exchangeRateValue);
 		} else {
-			$.exchangeCurrencyRate.setValue(exchangeCurrencyRateValue);
-			$.exchangeCurrencyRate.field.fireEvent("change");
+			$.exchangeRate.setValue(exchangeRateValue);
+			$.exchangeRate.field.fireEvent("change");
 		}
 	}
 
@@ -123,15 +123,15 @@ if ($.saveableMode === "read") {
 			var exchange = Alloy.createModel("Exchange", {
 				localCurrency : $.$model.xGet("localCurrency"),
 				foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-				rate : $.$model.xGet("exchangeCurrencyRate")
+				rate : $.$model.xGet("exchangeRate")
 			});
 			exchange.xAddToSave($);
 		}
 
 		if (selectedBorrow) {//更新已还款
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
-			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeCurrencyRate");
-			var returnRate = $.$model.xGet("exchangeCurrencyRate");
+			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
+			var returnRate = $.$model.xGet("exchangeRate");
 			$.$model.xGet("moneyBorrow").xSet("returnedAmount", (returnedAmount + (oldAmount + newAmount) * returnRate / borrowRate).toUserCurrency());
 			$.$model.xGet("moneyBorrow").xAddToSave($);
 		}

@@ -10,48 +10,49 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
-var d = new Date(), sortReverse = true,
-	timeFilter = {
-		dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-		dateTo : d.getUTCTimeOfDateEnd().toISOString()
-	};
+var d = new Date(), sortReverse = true, timeFilter = {
+	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+	dateTo : d.getUTCTimeOfDateEnd().toISOString()
+};
 
 function doTimeFilter(collection) {
 	// 先不考虑转给别人，或别人转给我。这个功能先不用测
 	// if(collectionName === "transferIn"){
-		// collection.xSetFilter(function(model) {
-			// return model.xGet("date") <= filterTimeTo && model.xGet("date") >= filterTimeFrom && model.xGet("transferInOwnerUser") === null;
-		// });
-		// collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom), "transferInOwnerUserId").sqlEQ(null));
+	// collection.xSetFilter(function(model) {
+	// return model.xGet("date") <= filterTimeTo && model.xGet("date") >= filterTimeFrom && model.xGet("transferInOwnerUser") === null;
+	// });
+	// collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom), "transferInOwnerUserId").sqlEQ(null));
 	// } else if(collectionName === "transferOut"){
-		// collection.xSetFilter(function(model) {
-			// return model.xGet("date") <= filterTimeTo && model.xGet("date") >= filterTimeFrom && model.xGet("transferOutOwnerUser") === null;
-		// });
-		// collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom), "transferOutOwnerUserId").sqlEQ(null));
+	// collection.xSetFilter(function(model) {
+	// return model.xGet("date") <= filterTimeTo && model.xGet("date") >= filterTimeFrom && model.xGet("transferOutOwnerUser") === null;
+	// });
+	// collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom), "transferOutOwnerUserId").sqlEQ(null));
 	// } else {
-		collection.xSetFilter(function(model) {
-			return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
-		});
-		collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
+	collection.xSetFilter(function(model) {
+		return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
+	});
+	collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
 	// }
 }
 
-function doAllTimeFilter(){
-		doTimeFilter(moneyIncomes);
-		doTimeFilter(moneyExpenses);
-		doTimeFilter(moneyTransferOuts);
-		doTimeFilter(moneyTransferIns);
-		doTimeFilter(moneyBorrows);
-		doTimeFilter(moneyLends);
-		doTimeFilter(moneyReturns);
-		doTimeFilter(moneyPaybacks);
+function doAllTimeFilter() {
+	doTimeFilter(moneyIncomes);
+	doTimeFilter(moneyExpenses);
+	doTimeFilter(moneyTransferOuts);
+	doTimeFilter(moneyTransferIns);
+	doTimeFilter(moneyBorrows);
+	doTimeFilter(moneyLends);
+	doTimeFilter(moneyReturns);
+	doTimeFilter(moneyPaybacks);
 }
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
-		Alloy.Globals.openWindow("money/report/transactionReport", {queryOptions : timeFilter});
+		Alloy.Globals.openWindow("money/report/transactionReport", {
+			queryOptions : timeFilter
+		});
 	} else if (e.source.id === "dateTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
@@ -79,9 +80,14 @@ function onFooterbarTap(e) {
 			dateTo : d.getUTCTimeOfMonthEnd().toISOString()
 		}
 		doAllTimeFilter();
-	} else if (e.source.id === "sort"){
+	} else if (e.source.id === "sort") {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
+	} else if (e.source.id === "transactionsSearchTable") {
+		$.titleBar.setTitle(e.source.getTitle());
+		Alloy.Globals.openWindow("money/moneyQuery", {
+			selectorCallback : doQuery
+		});
 	}
 }
 
@@ -90,18 +96,18 @@ function onFooterbarTap(e) {
 // var moneyIncomes = Alloy.Models.User.xGet("moneyIncomes");
 // var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
 // var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
-	// transferOutOwnerUser : null
+// transferOutOwnerUser : null
 // });
 // var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
-	// transferInOwnerUser : null
+// transferInOwnerUser : null
 // });
 // var moneyBorrows = Alloy.Models.User.xGet("moneyBorrows");
 // var moneyLends = Alloy.Models.User.xGet("moneyLends");
 // var moneyReturns = Alloy.Models.User.xGet("moneyReturns").xCreateFilter({
-	// moneyBorrow : null
+// moneyBorrow : null
 // });
 // var moneyPaybacks = Alloy.Models.User.xGet("moneyPaybacks").xCreateFilter({
-	// moneyLend : null
+// moneyLend : null
 // });
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");
@@ -123,3 +129,29 @@ $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
 $.transactionsTable.addCollection(moneyReturns, "money/moneyReturnRow");
 $.transactionsTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
+
+var date = new Date(), queryOptions = {
+	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
+	dateTo : date.getUTCTimeOfDateEnd().toISOString()
+};
+
+function doQuery(queryController) {
+	moneyExpenses.xSearchInDb(queryController.getQueryString());
+	moneyIncomes.xSearchInDb(queryController.getQueryString());
+	moneyTransferOuts.xSearchInDb(queryController.getQueryString());
+	moneyTransferIns.xSearchInDb(queryController.getQueryString());
+	moneyBorrows.xSearchInDb(queryController.getQueryString());
+	moneyLends.xSearchInDb(queryController.getQueryString());
+	moneyReturns.xSearchInDb(queryController.getQueryString());
+	moneyPaybacks.xSearchInDb(queryController.getQueryString());
+}
+
+$.transactionsSearchTable.addCollection(moneyIncomes);
+$.transactionsSearchTable.addCollection(moneyExpenses);
+$.transactionsSearchTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
+$.transactionsSearchTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
+$.transactionsSearchTable.addCollection(moneyBorrows);
+$.transactionsSearchTable.addCollection(moneyLends);
+$.transactionsSearchTable.addCollection(moneyReturns, "money/moneyReturnRow");
+$.transactionsSearchTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
+

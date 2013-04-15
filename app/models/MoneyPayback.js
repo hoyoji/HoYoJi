@@ -9,7 +9,7 @@ exports.definition = {
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
-			exchangeCurrencyRate : "REAL NOT NULL",
+			exchangeRate : "REAL NOT NULL",
 			interest : "REAL NOT　NULL",
 			remark : "TEXT",
 			moneyLendId : "TEXT",
@@ -71,18 +71,18 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
-				exchangeCurrencyRate : function(xValidateComplete) {
+				exchangeRate : function(xValidateComplete) {
 					var error;
-					if (isNaN(this.xGet("exchangeCurrencyRate"))) {
+					if (isNaN(this.xGet("exchangeRate"))) {
 						error = {
 							msg : "汇率只能为数字"
 						};
 					} else {
-						if (this.xGet("exchangeCurrencyRate") < 0) {
+						if (this.xGet("exchangeRate") < 0) {
 							error = {
 								msg : "汇率不能为负数"
 							};
-						} else if (this.xGet("exchangeCurrencyRate") === 0) {
+						} else if (this.xGet("exchangeRate") === 0) {
 							error = {
 								msg : "汇率不能为0"
 							};
@@ -105,7 +105,7 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-			return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeCurrencyRate")).toUserCurrency();
+			return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
 			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;
@@ -150,8 +150,8 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var moneyLend = this.xGet("moneyLend");
-				var lendRate = moneyLend.xGet("exchangeCurrencyRate");
-				var paybackRate = this.xGet("exchangeCurrencyRate");
+				var lendRate = moneyLend.xGet("exchangeRate");
+				var paybackRate = this.xGet("exchangeRate");
 
 				this._xDelete(xFinishCallback);
 				if (moneyLend) {
