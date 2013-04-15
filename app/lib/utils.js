@@ -49,6 +49,9 @@
 						}
 						scView.fireEvent("longpress", e);
 					});
+					view.addEventListener("touchstart", function(e) {
+						scView.fireEvent("touchstart", e);
+					});
 					view.addEventListener("becamedirty", function(e) {
 						scView.fireEvent("becamedirty", e);
 					});

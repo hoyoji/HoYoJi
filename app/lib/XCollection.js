@@ -43,7 +43,7 @@
 					if(this !== Alloy.Collections[this.config.adapter.collection_name]){
 						c.map(function(m) {
 							console.info("xFetch " + m.xGet("id"));
-							self.add(m);
+							self.add(Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id")));
 						});
 					}
 					//self.add(c);

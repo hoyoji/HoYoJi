@@ -10,7 +10,6 @@ var firstTimeOpen = true;
 exports.animateHideTabBar = function() {
 	if (firstTimeOpen)
 		firstTimeOpen = false;
-
 	
 	//$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
@@ -62,9 +61,20 @@ exports.animateShowTabBar = function(){
 	// e.cancelBubble = true;	
 // }
 
+function blockTouchStart(e){
+	e.cancelBubble = true;
+}
+
 function pullDown(){
 	exports.animateShowTabBar();
 	clearTimeout(hideTimeoutId);
+	// function hidePullDown(){
+		// $.$view.removeEventListener("touchstart", blockTouchStart);
+		// $.getCurrentWindow().$view.removeEventListener("touchstart", hidePullDown);
+		// exports.animateHideTabBar();
+	// }
+	// $.$view.addEventListener("touchstart", blockTouchStart);
+	// $.getCurrentWindow().$view.addEventListener("touchstart", hidePullDown);
 }
 
 function hideTabBar(timeout) {

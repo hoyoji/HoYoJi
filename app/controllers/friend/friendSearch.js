@@ -14,7 +14,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 $.searchButton.addEventListener("click", function(e){
 	$.userCollection.reset();
 	if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 0){
-		alert("no user found!");
+		alert("没有找到用户");
 	};
 	$.search.blur();
 });

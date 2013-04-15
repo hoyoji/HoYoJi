@@ -8,26 +8,15 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("货币设置", function() {
 		Alloy.Globals.openWindow("money/currency/currencyAll");
 	}));
-	// menuSection.add($.createContextMenuItem("新增支出", function() {
-	// Alloy.Globals.openWindow("money/moneyExpenseForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增收入", function() {
-	// Alloy.Globals.openWindow("money/moneyIncomeForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增转账", function() {
-	// Alloy.Globals.openWindow("money/moneyTransferForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增借入", function() {
-	// Alloy.Globals.openWindow("money/moneyBorrowForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增借出", function() {
-	// Alloy.Globals.openWindow("money/moneyLendForm");
-	// }));
 	return menuSection;
 }
-var d = new Date();
+var d = new Date(), sortReverse = true,
+	timeFilter = {
+		dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+		dateTo : d.getUTCTimeOfDateEnd().toISOString()
+	};
 
-function timeFilter(collection, filterTimeFrom, filterTimeTo, collectionName) {
+function doTimeFilter(collection) {
 	// 先不考虑转给别人，或别人转给我。这个功能先不用测
 	// if(collectionName === "transferIn"){
 		// collection.xSetFilter(function(model) {
@@ -41,61 +30,55 @@ function timeFilter(collection, filterTimeFrom, filterTimeTo, collectionName) {
 		// collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom), "transferOutOwnerUserId").sqlEQ(null));
 	// } else {
 		collection.xSetFilter(function(model) {
-			return (model.xGet("date") <= filterTimeTo && model.xGet("date") >= filterTimeFrom);
+			return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
 		});
-		collection.xSearchInDb(sqlAND("date".sqlLE(filterTimeTo), "date".sqlGE(filterTimeFrom)));
+		collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
 	// }
 }
 
-var sortReverse = true;
+function doAllTimeFilter(){
+		doTimeFilter(moneyIncomes);
+		doTimeFilter(moneyExpenses);
+		doTimeFilter(moneyTransferOuts);
+		doTimeFilter(moneyTransferIns);
+		doTimeFilter(moneyBorrows);
+		doTimeFilter(moneyLends);
+		doTimeFilter(moneyReturns);
+		doTimeFilter(moneyPaybacks);
+}
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
-		Alloy.Globals.openWindow("report/transactionReport");
+		Alloy.Globals.openWindow("money/report/transactionReport", {queryOptions : timeFilter});
 	} else if (e.source.id === "dateTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
-		var d = new Date();
-		var filterTimeFrom = d.getUTCTimeOfDateStart().toISOString();
-		var filterTimeTo = d.getUTCTimeOfDateEnd().toISOString();
-		timeFilter(moneyIncomes, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyExpenses, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferOuts, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferIns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyBorrows, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyLends, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
+		d = new Date();
+		timeFilter = {
+			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+			dateTo : d.getUTCTimeOfDateEnd().toISOString()
+		}
+		doAllTimeFilter();
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
-		var d = new Date();
-		var filterTimeFrom = d.getUTCTimeOfWeekStart().toISOString();
-		var filterTimeTo = d.getUTCTimeOfWeekEnd().toISOString();
-		timeFilter(moneyIncomes, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyExpenses, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferOuts, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferIns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyBorrows, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyLends, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
+		d = new Date();
+		timeFilter = {
+			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
+			dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+		}
+		doAllTimeFilter();
 	} else if (e.source.id === "monthTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
-		var d = new Date();
-		var filterTimeFrom = d.getUTCTimeOfMonthStart().toISOString();
-		var filterTimeTo = d.getUTCTimeOfMonthEnd().toISOString();
-		timeFilter(moneyIncomes, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyExpenses, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferOuts, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyTransferIns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyBorrows, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyLends, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
-		timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
+		d = new Date();
+		timeFilter = {
+			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
+			dateTo : d.getUTCTimeOfMonthEnd().toISOString()
+		}
+		doAllTimeFilter();
 	} else if (e.source.id === "sort"){
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
@@ -130,17 +113,7 @@ var moneyLends = Alloy.createCollection("moneyLend");
 var moneyReturns = Alloy.createCollection("moneyReturn");
 var moneyPaybacks = Alloy.createCollection("moneyPayback");
 
-var d = new Date();
-var filterTimeFrom = d.getUTCTimeOfDateStart().toISOString();
-var filterTimeTo = d.getUTCTimeOfDateEnd().toISOString();
-timeFilter(moneyIncomes, filterTimeFrom, filterTimeTo);
-timeFilter(moneyExpenses, filterTimeFrom, filterTimeTo);
-timeFilter(moneyTransferOuts, filterTimeFrom, filterTimeTo);
-timeFilter(moneyTransferIns, filterTimeFrom, filterTimeTo);
-timeFilter(moneyBorrows, filterTimeFrom, filterTimeTo);
-timeFilter(moneyLends, filterTimeFrom, filterTimeTo);
-timeFilter(moneyReturns, filterTimeFrom, filterTimeTo);
-timeFilter(moneyPaybacks, filterTimeFrom, filterTimeTo);
+doAllTimeFilter();
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);

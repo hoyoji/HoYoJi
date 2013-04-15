@@ -404,12 +404,12 @@ exports.navigateUp = function() {
 }
 function findObject(id) {
 	for (var c = 0; c < collections.length; c++) {
-		for (var i = 0; i < collections[c].length; i++) {
+		//for (var i = 0; i < collections[c].length; i++) {
 			var o = collections[c].get(id);
 			if (o) {
 				return o;
 			}
-		}
+		//}
 	}
 }
 
