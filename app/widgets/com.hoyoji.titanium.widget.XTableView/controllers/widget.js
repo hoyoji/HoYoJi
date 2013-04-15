@@ -336,26 +336,6 @@ exports.close = function() {
 	$.$view.animate(animation);
 }
 
-exports.slideDown = function(zIndex, top) {
-	if (top === undefined)
-		top = 42;
-
-	function animate() {
-		$.$view.removeEventListener("postlayout", animate);
-		var animation = Titanium.UI.createAnimation();
-		animation.top = top;
-		animation.duration = 500;
-		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-
-		$.$view.animate(animation);
-	}
-
-
-	$.$view.addEventListener("postlayout", animate);
-
-	$.$view.setTop("-100%");
-	$.$view.setZIndex(zIndex);
-}
 
 exports.open = function(top) {
 	if (top === undefined)

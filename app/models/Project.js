@@ -48,6 +48,31 @@ exports.definition = {
 					// xValidateComplete(error);
 				// }
 			},
+			xDelete : function(xFinishCallback) {
+				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
+					xFinishCallback({ msg :"不能删除当前激活的项目"});
+				}else if(this.xGet("moneyExpenses").length > 0){
+					xFinishCallback({ msg :"项目中的支出不为空，不能删除"});
+				}else if(this.xGet("moneyIncomes").length > 0){
+					xFinishCallback({ msg :"项目中的收入不为空，不能删除"});
+				}else if(this.xGet("moneyTransfers").length > 0){
+					xFinishCallback({ msg :"项目中的转账不为空，不能删除"});
+				}else if(this.xGet("moneyBorrows").length > 0){
+					xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
+				}else if(this.xGet("moneyReturns").length > 0){
+					xFinishCallback({ msg :"项目中的还款不为空，不能删除"});
+				}else if(this.xGet("moneyLends").length > 0){
+					xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
+				}else if(this.xGet("moneyPaybacks").length > 0){
+					xFinishCallback({ msg :"项目中的收款不为空，不能删除"});
+				}else if(this.xGet("moneyExpenseCategories").length > 0){
+					xFinishCallback({ msg :"项目中的支出分类不为空，不能删除"});
+				}else if(this.xGet("moneyIncomeCategories").length > 0){
+					xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
+				}else {
+					this._xDelete(xFinishCallback);
+				}
+			},
 			getSharedWithHerSubProjects : function(){
 				if(!this.__getSharedWIthHerSubProjectsFilter){
 					this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({

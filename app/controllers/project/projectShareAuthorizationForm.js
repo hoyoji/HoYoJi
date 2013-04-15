@@ -1,18 +1,4 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
-
-$.onWindowOpenDo(function(){
-	$.showHideAuthorization.hide();
-});
-
-$.allAuthorization.addEventListener("click",function(e){
-	if($.showHideAuthorization.getVisible()){
-		$.showHideAuthorization.hide();
-		e.source.setTitle("打开详细权限");
-	}else{
-		$.showHideAuthorization.show();
-		e.source.setTitle("关闭详细权限");
-	}
-});
 	
 $.onSave = function(saveEndCB, saveErrorCB) {
 	//支出明细的权限
@@ -61,7 +47,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendId : $.$model.xGet("friend").xGet("id")
 			});
-			if (projectShareAuthorization.xGet("id") 
+			if (projectShareAuthorization 
 				&& (projectShareAuthorization.xGet("state") === "Wait" || projectShareAuthorization.xGet("state") === "Accept")) {
 				saveErrorCB("好友已在共享列表,请重新选择好友！");
 			}else{
@@ -73,7 +59,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : subProject.xGet("id"),
 							friendId : $.$model.xGet("friend").xGet("id")
 						});
-						if (subProjectShareAuthorization.xGet("id") 
+						if (subProjectShareAuthorization
 							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -107,7 +93,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"messageState" : "new",
 					"messageTitle" : Alloy.Models.User.xGet("userName"),
 					"date" : date,
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"给您",
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"给您",
 					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
@@ -122,7 +108,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						messageState : "closed",
 						messageTitle : Alloy.Models.User.xGet("userName"),
 						date : date,
-						detail : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"给您",
+						detail : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"给您",
 						messageBox : Alloy.Models.User.xGet("messageBox"),
 						messageData : JSON.stringify({
 			                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
@@ -180,7 +166,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageState" : "new",
 						"messageTitle" : "共享项目",
 						"date" : date,
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 						"messageData" : JSON.stringify({
 				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
@@ -217,7 +203,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageState" : "noRead",
 						"messageTitle" : "共享项目",
 						"date" : date,
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
 						"messageData" : JSON.stringify({
 				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
