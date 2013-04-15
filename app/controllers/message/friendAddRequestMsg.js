@@ -30,5 +30,5 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 $.$model.xSet("detail", "请求将您添加为好友");
 
 // $.onWindowOpenDo(function(){
-	$.titleBar.dirtyCB();
+	// $.titleBar.dirtyCB();
 // });

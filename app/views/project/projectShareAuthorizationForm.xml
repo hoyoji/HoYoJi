@@ -16,19 +16,17 @@
 					bindModelSelector="friend/friendAll"
 				/>
 				<View height="42">
-					<Label left="0" width="20%">共享所有子项目</Label>
-					<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
+					<Label left="0" width="40%">共享所有子项目</Label>
+					<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 						hightLight="false"
-						items=" ,√"
+						items=" 否,是"
 						values="0,1"
 						bindModel="$.$model"
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
 				<View layout="vertical">
-					<Button left="0" id="allAuthorization" title="打开详细权限"/>
-					<View id="showHideAuthorization" layout="vertical">
 						<View height="42" layout="horizontal">
 							<Label width="20%">权限</Label>
 							<Label width="20%">自己</Label>
@@ -276,7 +274,6 @@
 									bindAttribute="projectShareMoneyIncomeCategoryDelete"/>
 							</View>
 						</View>
-					</View>
 				</View>
            </ScrollView>
 	</View>

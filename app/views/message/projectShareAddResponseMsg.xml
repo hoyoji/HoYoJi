@@ -18,9 +18,9 @@
 				
 				
 				<View layout="vertical">
-				<Button left="0" id="allAuthorization" title="打开详细权限"/>
+				<Button id="allAuthorization" title="打开详细权限"/>
 				<View id="showHideAuthorization" layout="vertical">
-					<View height="42">
+					<!-- <View height="42">
 						<Label left="0" width="20%">共享所有子项目</Label>
 						<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
@@ -30,16 +30,16 @@
 							bindModel="$.projectShareAuthorizations"
 							bindAttribute="shareAllSubProjects"/>
 						</View>
-					</View>
+					</View> -->
 					<View height="42" layout="horizontal">
-						<Label width="20%">权限</Label>
-						<Label width="20%">自己</Label>
-						<Label width="20%">增</Label>
-						<Label width="20%">改</Label>
-						<Label width="20%">删</Label>
+						<Label width="20%" color="black">权限</Label>
+						<Label width="20%" color="black">自己</Label>
+						<Label width="20%" color="black">增</Label>
+						<Label width="20%" color="black">改</Label>
+						<Label width="20%" color="black">删</Label>
 					</View>
-					<View layout="vertical">
-						<View height="42" layout="horizontal">
+					<View layout="vertical" id="projectShareAuthorizationDetails">
+						<!-- <View height="42" layout="horizontal">
 							<Label left="0" width="20%">支出</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
@@ -276,7 +276,7 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeCategoryDelete"/>
-						</View>
+						</View> -->
 					</View>
 				</View>
 			</View>
