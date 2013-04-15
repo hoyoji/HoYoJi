@@ -84,6 +84,7 @@ function onFooterbarTap(e) {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
 	} else if (e.source.id === "transactionsSearchTable") {
+		$.titleBar.setTitle(e.source.getTitle());
 		$.transactionsSearchTable.doSearch();
 	}
 }

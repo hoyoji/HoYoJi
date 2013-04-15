@@ -1,7 +1,6 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 exports.doSearch = function() {
-	$.titleBar.setTitle(e.source.getTitle());
 	Alloy.Globals.openWindow("money/moneyQuery", {
 		selectorCallback : doQuery
 	});
