@@ -1,11 +1,25 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var sumField = $.$attrs.sumField || "amount", value = 0, operation = $.$attrs.operation || "SUM", query,
-querySelect = "SELECT " + operation + "(main." + sumField + ") AS TOTAL FROM " + $.$attrs.modelType + " main ";
+var totalField = $.$attrs.totalField || "SUM(main.amount)", value = 0, query,
+querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main ";
 
 exports.query = function(queryStr){
 	var	queryStr = queryStr || $.$attrs.queryStr;
 	if(queryStr){
+		if(queryStr.startsWith("dateRange:")){
+			var d = new Date(), dStart, dEnd;
+			if(queryStr === "dateRange:date"){
+				dStart = d.getUTCTimeOfDateStart().toISOString();
+				dEnd =  d.getUTCTimeOfDateEnd().toISOString();
+			}else if(queryStr === "dateRange:week"){
+				dStart = d.getUTCTimeOfWeekStart().toISOString();
+				dEnd =  d.getUTCTimeOfWeekEnd().toISOString();
+			}else if(queryStr === "dateRange:month"){
+				dStart = d.getUTCTimeOfMonthStart().toISOString();
+				dEnd =  d.getUTCTimeOfMonthEnd().toISOString();
+			}
+			queryStr = " date >= '" + dStart + "' AND date <= '" + dEnd + "'";
+		}
 		query = querySelect + " WHERE " + queryStr;
 	} else {
 		query = querySelect;
