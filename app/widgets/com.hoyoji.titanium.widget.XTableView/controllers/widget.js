@@ -301,20 +301,57 @@ exports.addCollection = function(collection, rowView) {
 		addRow(row, collection);
 	});
 	collection.on("add", addRow);
+	collection.on("reset", resetCollection);
 }
 var clearCollections = function() {
 	for (var i = 0; i < collections.length; i++) {
 		if (collections[i]) {
+			//exports.removeCollection(collections[i], {previousModels : collections[i].models});
 			collections[i].off("add", addRow);
+			collections[i].off("reset", resetCollection);
 		}
 	}
 	collections = [];
+	$.table.setData([]);
 }
 
 $.onWindowCloseDo(clearCollections);
 
+exports.resetTable = function(){
+	for (var i = 0; i < collections.length; i++) {
+		collections[i].off("reset", resetCollection);
+		collections[i].reset();
+		collections[i].on("reset", resetCollection);
+	}
+	$.table.setData([]);
+}
+
+var resetCollection = function(collection, options) {
+	var data = $.table.data.slice(0);
+	options.previousModels.forEach(function(model){
+		for(var i = 0; i < data.length; i++){
+			for(var r = 0; r < data[i].rows.length; r++){
+				var row = data[i].rows[r];
+				if(row.id === model.xGet("id")){
+					var rows = data[i].rows.slice(0);
+					rows.splice(r,1);
+					data[i].rows = rows;
+					r --;
+				}
+			}
+			if(data[i].rows.length === 0){
+				data.splice(i, 1);
+				i--;
+			}
+		}
+	});
+	$.table.setData(data);
+}
+
 exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
+	collection.off("reset", exports.resetCollection);
+	resetCollection(collection, {previousModels : collection.models});
 	var index = _.indexOf(collections, collection);
 	collections[index] = null;
 	collections.splice(index, 1);
@@ -348,7 +385,6 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
-
 
 	$.$view.setTop("99%")
 	animate();
@@ -471,13 +507,14 @@ exports.sort = function(fieldName, reverse, groupField) {
 }
 
 $.onWindowOpenDo(function() {
-	if ($.getCurrentWindow().$attrs.selectorCallback) {
+	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
 		// var model = Alloy.createModel($.getCurrentWindow().$attrs.selectModelType);
 		var titleLabel = Ti.UI.createLabel({
 			text : "无" + $.getCurrentWindow().$attrs.title,
 			height : 42,
 			width : Ti.UI.FILL
 		});
+		
 		titleLabel.addEventListener("singletap", function(e) {
 			e.cancelBubble = true;
 			$.getCurrentWindow().$attrs.selectorCallback(null);
@@ -485,6 +522,9 @@ $.onWindowOpenDo(function() {
 		});
 		var row = Ti.UI.createTableViewRow();
 		row.add(titleLabel);row.add(titleLabel);
+		if(!$.getCurrentWindow().$attrs.selectedModel){
+			row.setBackgroundColor("pink");
+		}
         if($.table.data.length > 0){
             $.table.insertRowBefore(0, row);
         } else {

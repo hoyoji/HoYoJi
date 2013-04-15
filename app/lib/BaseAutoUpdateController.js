@@ -168,6 +168,14 @@
 						}
 						attributes.title = $.label.getText();
 						attributes.selectModelType = $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
+						attributes.selectedModel = $.__bindAttributeIsModel;
+						attributes.selectModelCanNotBeChild = 
+								$.$attrs.bindModel.config.hasMany 
+								&& $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute 
+								&& $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? 
+								$.$attrs.bindModel : null;
+						
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
