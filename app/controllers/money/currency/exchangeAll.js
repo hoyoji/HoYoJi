@@ -17,4 +17,9 @@ $.titleBar.bindXTable($.exchangesTable);
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")});
 $.exchangesTable.addCollection(collection);
 
+function onFooterbarTap(e){
+	if(e.source.id === "addExchange"){
+		Alloy.Globals.openWindow("money/currency/exchangeForm",{$model : "MoneyExpenseDetail",data:{localCurrency : Alloy.Models.User.xGet("activeCurrency")}});
+	}
+}
 

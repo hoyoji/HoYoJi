@@ -26,3 +26,17 @@ if ($.$attrs.selectedFriend) {
 	collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter({ownerUserId : Alloy.Models.User.xGet("id")});
 }
 $.moneyAccountsTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addMoneyAccount"){
+				Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
+			$model : "MoneyAccount",
+			data : {
+				currency : Alloy.Models.User.xGet("activeCurrency"),
+				currentBalance : 0,
+				sharingType : "Private",
+				accountType : "Cash"
+			}
+		});
+	}
+}

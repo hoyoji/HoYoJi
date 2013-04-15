@@ -2,5 +2,8 @@
 	<View class="container" title="我的账户" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的账户"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyAccountsTable" sortByField="name" bottom="42" top="42"/>
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
+        	buttons="新增账户"
+        	ids="addMoneyAccount"/>
 	</View>
 </Alloy>
