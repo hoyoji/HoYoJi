@@ -4,11 +4,11 @@
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="42" top="42">
 			<View height="42">
 				<Label left="5" width="30%">总收入</Label>
-				<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" right="5"/>
+				<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
 			</View>
 			<View height="42">
 				<Label left="5" width="30%">总支出</Label>
-				<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" right="5"/>
+				<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
 			</View>
 			<View height="42">
 				<Label left="5" width="30%">总借入</Label>

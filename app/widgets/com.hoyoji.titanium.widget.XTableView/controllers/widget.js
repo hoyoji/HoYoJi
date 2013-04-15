@@ -10,7 +10,14 @@ $.$view.addEventListener("click", function(e) {
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
+		var sectionIndex = getSectionIndexByRowIndex(e.index);
 		$.table.deleteRow(e.index);
+		if($.table.data[sectionIndex].rows.length === 0){
+			var data = $.table.data.slice(0);
+			data.splice(sectionIndex, 1);
+			$.table.setData(data);
+		}
+		
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -64,8 +71,17 @@ function findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previou
 			var previousRowModel;
 			if (r > 0) {
 				previousRowModel = findObject($.table.data[s].rows[r - previousHasDetailSize - 1].id);
-			} else if (s > 0) {
-				previousRowModel = findObject($.table.data[s - 1].rows[$.table.data[s - 1].rows.length - previousHasDetailSize - 1].id);
+			} else if ((s-1) >= 0) {
+				// find last row in previous sections
+				var previousSection = s-1;
+				var sectionLength = $.table.data[previousSection].rows.length;
+				while(previousSection > 0 &&  sectionLength === 0){
+					previousSection -- ;
+					sectionLength = $.table.data[previousSection].rows.length;
+				}
+				if(sectionLength > 0){
+					previousRowModel = findObject($.table.data[previousSection].rows[sectionLength - previousHasDetailSize - 1].id);
+				}
 			}
 			if (!previousRowModel) {// no previous section
 				return {
@@ -218,11 +234,21 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 		hasDetailSections[sectionRowId].collections.push(collections[i]);
 	}
 }
-
+function getSectionIndexByRowIndex(index){
+	var sectionIndex = 0;
+	var sectionSize = $.table.data[sectionIndex].rows.length;
+	while(index >= sectionSize){
+		sectionIndex++;
+		index -= sectionSize;
+		sectionSize = $.table.data[sectionIndex].rows.length;
+	}
+	return sectionIndex;
+	//return $.table.data[sectionIndex].rows[index];
+}
 function getRowViewByRowIndex(index){
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
-	while(index > sectionSize){
+	while(index >= sectionSize){
 		sectionIndex++;
 		index -= sectionSize;
 		sectionSize = $.table.data[sectionIndex].rows.length;

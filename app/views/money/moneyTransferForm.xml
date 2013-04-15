@@ -23,9 +23,9 @@
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeCurrencyRate" labelText="汇率" hintText="请输入汇率"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"
-			bindAttribute="exchangeCurrencyRate"/>
+			bindAttribute="exchangeRate"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="transferInAmount" labelText="转入金额" hintText="请输入转入金额"
 			bindModel="$.$model"
 			bindAttribute="transferInAmount"/>
