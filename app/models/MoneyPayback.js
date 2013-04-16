@@ -56,6 +56,17 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				// date : function(xValidateComplete) {
+					// var error;
+					// var moneyLend = this.xGet("moneyLend");
+					// if(moneyLend){
+						// if(this.xGet("date") < moneyLend.xGet("date")){
+							// error = {
+								// msg : "收款日期不能在借出日期（" + moneyLend.xGet("date") + "）之前"
+							// }
+						// }
+					// }
+				// },
 				amount : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
