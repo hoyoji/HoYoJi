@@ -1,7 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-// alert(Alloy.Models.User.xGet("messageBox").xGet("id"));
-
 	$.$model.xSet("fromUser", Alloy.Models.User);
 	
     $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
@@ -10,6 +8,8 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
     $.$model.xSet("messageTitle", "好友请求");
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	console.info("|||||||||||||||||||||||||||||||||||||||||||"+Alloy.Models.User.xGet("messageBox"));
+	console.info("|||||||||||||||||||||||||||||||||||||||||||222"+Alloy.Models.User.xGet("messageBoxId"));
 	var date = (new Date()).toISOString();
 	$.$model.xSet("date", date);
 	Alloy.Globals.Server.sendMsg({
