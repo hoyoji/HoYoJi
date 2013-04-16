@@ -504,10 +504,10 @@ exports.sort = function(fieldName, reverse, groupField) {
 
 
 function createSectionHeaderView(sectionTitle){
-	var section = Ti.UI.createTableViewSection();
 	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle});
-	//sectionHeader.setParent($.table);
-	section.setHeaderView(sectionHeader.$view);
+	var section = Ti.UI.createTableViewSection({
+		headerView : sectionHeader.$view
+	});
 	return section;
 }
 

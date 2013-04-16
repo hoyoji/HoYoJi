@@ -69,6 +69,9 @@ $.$view.addEventListener("touchstart", function(e){
 
 $.$view.addEventListener("singletap", function(e){
 	e.cancelBubble = true;
+	if(!e.source.getTitle){
+		return;
+	}
 	console.info("controll slideDown " + e.source.id);
 	if($.$attrs.controlSlideDown && $.getParentController()[e.source.id]){
 		if(currentSlide){
