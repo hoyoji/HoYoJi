@@ -33,11 +33,11 @@ $.field.addEventListener("singletap", function(e){
 });
 
 $.field.addEventListener("change", function(e){
-	// if(OS_IOS){
+	if(OS_IOS){
 		 if($.__setValueChangeEvent){
 	    	return; 	
 	     }
-	// }
+	}
 	console.info("Selector selected value : " + values[e.rowIndex]);
 	selectedValue = values[e.rowIndex];
 });

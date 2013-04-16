@@ -3,6 +3,17 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 // if (!$.$model.canEdit()) {
 // $.setSaveableMode("read");
 // } else {
+var selectedIncome = $.$attrs.selectedIncome;
+if (!$.$model) {
+	$.$model = Alloy.createModel("MoneyIncomeDetail", {
+		moneyIncome : selectedIncome,
+		ownerUser : Alloy.Models.User
+	});
+	$.setSaveableMode("add");
+}
+else{
+	$.setSaveableMode("edit");
+}
 var oldDetailAmount = $.$model.xGet("amount") || 0;
 
 $.onSave = function(saveEndCB, saveErrorCB) {
