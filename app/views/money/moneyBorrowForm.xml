@@ -53,7 +53,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="请选择时间"
 			bindModel="$.$model"
 			bindAttribute="returnDate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="returnedAmount"/>
