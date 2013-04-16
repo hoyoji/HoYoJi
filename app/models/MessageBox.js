@@ -30,18 +30,27 @@ exports.definition = {
 				newMessages.map(function(msg){
 					if(msg.xGet("type") === "System.Friend.AddResponse"){
 						msg.save({messageState : "noRead"}, {wait : true, patch : true});
-						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
+						var deleteFriendMsgLength = Alloy.createCollection("Message").xSearchInDb({
+								fromUserId : msg.xGet("fromUserId"),
+								toUserId : Alloy.Models.User.id,
+								type : "System.Friend.Delete",
+								messageState : "new"
+							}).length;
+						if(deleteFriendMsgLength === 0){
+							var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							}).length;
-						if (friendlength === 0) {
-							var friend = Alloy.createModel("Friend", {
-								ownerUser :　Alloy.Models.User,
-								friendUser : msg.xGet("fromUser"),
-								friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
-							});
-							friend.xSave();
+							if (friendlength === 0) {
+								var friend = Alloy.createModel("Friend", {
+									ownerUser :　Alloy.Models.User,
+									friendUser : msg.xGet("fromUser"),
+									friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+								});
+								friend.xSave();
+							}
 						}
+						
 					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
 						msg.save({messageState : "noRead"}, {wait : true, patch : true});
 						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
@@ -62,7 +71,7 @@ exports.definition = {
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							});
-					    if (friend.xGet("id")) {
+					    if (friend && friend.xGet("id")) {
 							friend._xDelete();
 						}
 					} 
