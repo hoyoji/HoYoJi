@@ -1,8 +1,18 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+var selectedExpense = $.$attrs.selectedExpense;
+if (!$.$model) {
+	$.$model = Alloy.createModel("MoneyExpenseDetail", {
+		moneyExpense : selectedExpense,
+		ownerUser : Alloy.Models.User
+	});
+	$.setSaveableMode("add");
+}
+else{
+	$.setSaveableMode("edit");
+}
 var oldDetailAmount = $.$model.xGet("amount") || 0;
 //detail的旧值
-
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var expenseAmount = 0;
 	if ($.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").length > 0) {//获取moneyExpenseAmount，如果有amount就等于amount 没有的话设成0
