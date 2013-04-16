@@ -98,6 +98,7 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+					this.transferIn();
 				},
 				transferIn : function(xValidateComplete) {
 					var error;
@@ -107,7 +108,11 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+					this.transferOut();
 				}
+			},
+			getProjectName : function() {
+				return this.xGet("project").xGet("name");
 			},
 			getTransferOut : function() {
 				var transferOut = this.xGet("transferOut");
@@ -118,10 +123,10 @@ exports.definition = {
 				return transferIn.xGet("name");
 			},
 			getTransferOutAmount : function() {
-				return this.xGet("transferOutAmount").toUserCurrency();
+				return this.xGet("transferOut").xGet("currency").xGet("symbol") + this.xGet("transferOutAmount").toUserCurrency();
 			},
 			getTransferInAmount : function() {
-				return this.xGet("transferInAmount").toUserCurrency();
+				return this.xGet("transferIn").xGet("currency").xGet("symbol") + this.xGet("transferInAmount").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback) {
 				var transferOutOwnerUser = this.xGet("transferOutOwnerUser");

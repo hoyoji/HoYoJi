@@ -115,6 +115,9 @@ exports.definition = {
 			getLocalAmount : function() {
 				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
 			},
+			getProjectName : function() {
+				return this.xGet("project").xGet("name");
+			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;
 				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
