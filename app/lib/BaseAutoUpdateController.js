@@ -134,7 +134,7 @@
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.error.animate(animation);
 			}
-			var hideErrorMsg = function() {
+			$.hideErrorMsg = function() {
 				if ($.__errorShowing) {
 					$.__errorShowing = false;
 					var animation = Titanium.UI.createAnimation();
@@ -144,9 +144,9 @@
 					$.error.animate(animation);
 				}
 			}
-			// $.error.addEventListener("singletap", hideErrorMsg);
+			// $.error.addEventListener("singletap", $.hideErrorMsg);
 			$.field.addEventListener("singletap", function(e) {
-				hideErrorMsg();
+				$.hideErrorMsg();
 				if ($.saveableMode === "read") {
 					return;
 				}
@@ -168,6 +168,14 @@
 						}
 						attributes.title = $.label.getText();
 						attributes.selectModelType = $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
+						attributes.selectedModel = $.__bindAttributeIsModel;
+						attributes.selectModelCanNotBeChild = 
+								$.$attrs.bindModel.config.hasMany 
+								&& $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute 
+								&& $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? 
+								$.$attrs.bindModel : null;
+						
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
@@ -194,7 +202,7 @@
 					if (error[attribute]) {
 						showErrorMsg(error[attribute].msg);
 					} else {
-						hideErrorMsg();
+						$.hideErrorMsg();
 					}
 				}
 				var updateField = function(e) {
@@ -209,7 +217,7 @@
 						$.__setValueChangeEvent = false;
 						return;
 					}
-					hideErrorMsg();
+					$.hideErrorMsg();
 					if (bindAttributeIsModel) {
 						model.xSet ? model.xSet(attribute, $.__bindAttributeIsModel) : model[attribute] = $.__bindAttributeIsModel;
 					} else {

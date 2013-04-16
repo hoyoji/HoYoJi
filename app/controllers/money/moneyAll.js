@@ -56,6 +56,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "dateTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
@@ -65,6 +66,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
@@ -74,6 +76,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "monthTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
@@ -86,6 +89,8 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "transactionsSearchTable") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.transactionsSearchTable.doSearch();
+	} else if (e.source.id === "transactionsTable") {
+		$.titleBar.setTitle(e.source.getTitle());
 	}
 }
 

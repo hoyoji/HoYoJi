@@ -86,16 +86,16 @@ function numPress(e) {
 			activeTextField.setValue(thisNum);
 		}
 	}
-	setOPColor();
 	activeTextField.field.fireEvent("change");
+	setOPColor();
 }
 
 //+-*/操作
 function operation(e) {
 	var readout = activeTextField.getValue() + "";
-	if(activeTextField.getValue()===""){
-		readout = 0;
-	}
+	// if(activeTextField.getValue()===""){
+		// readout = 0;
+	// }
 	var pendOp = pendingOp;
 	if (flagNewNum && pendOp !== "=");
 	else {
@@ -174,8 +174,9 @@ function backspace() {
 function clear(e) {
 	accum = 0;
 	pendingOp = "";
-	activeTextField.setValue("0");
+	activeTextField.setValue("");
 	flagNewNum = true;
+	activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 

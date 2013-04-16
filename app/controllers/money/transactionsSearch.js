@@ -1,14 +1,14 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+var queryOptions = {};
+
 exports.doSearch = function() {
 	Alloy.Globals.openWindow("money/moneyQuery", {
-		selectorCallback : doQuery
+		selectorCallback : doQuery,
+		queryOptions : queryOptions
 	});
 }
-var date = new Date(), queryOptions = {
-	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString()
-};
+
 
 var searchMoneyExpenses = Alloy.createCollection("moneyExpense");
 var searchMoneyIncomes = Alloy.createCollection("moneyIncome");
@@ -30,6 +30,17 @@ $.transactionsSearchTable.addCollection(searchMoneyPaybacks, "money/moneyPayback
 
 function doQuery(queryController) {
 	queryOptions = queryController.queryOptions;
+	
+	$.transactionsSearchTable.resetTable(); // clear all the table rows and reset all the collections
+	// searchMoneyExpenses.reset();
+	// searchMoneyIncomes.reset();
+	// searchMoneyTransferOuts.reset();
+	// searchMoneyTransferIns.reset();
+	// searchMoneyBorrows.reset();
+	// searchMoneyLends.reset();
+	// searchMoneyReturns.reset();
+	// searchMoneyPaybacks.reset();
+	
 	searchMoneyExpenses.xSearchInDb(queryController.getQueryString());
 	searchMoneyIncomes.xSearchInDb(queryController.getQueryString());
 	searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString());
@@ -38,5 +49,4 @@ function doQuery(queryController) {
 	searchMoneyLends.xSearchInDb(queryController.getQueryString());
 	searchMoneyReturns.xSearchInDb(queryController.getQueryString());
 	searchMoneyPaybacks.xSearchInDb(queryController.getQueryString());
-
 }

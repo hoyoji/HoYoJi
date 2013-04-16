@@ -10,6 +10,21 @@
 //
 // Alloy.Globals.someGlobalFunction = function(){};
 
+
+// Alloy.createWidget = function(id, name, args) {
+	// var newWidget = new (require("alloy/widgets/" + id + "/controllers/" + (name || "widget")))(args);
+	// newWidget.__parentController = this;
+	// return newWidget;
+// };
+// 
+// Alloy.createController = function(name, args) {
+	// var newController = new (require("alloy/controllers/" + name))(args);
+	// newController.__parentController = this;
+    // return newController;
+// };
+
+
+
 Alloy.Globals.MenuSections = [];
 Alloy.Globals.openingWindow = {};
 
