@@ -4,7 +4,7 @@
 			<Label width="Ti.UI.FILL" height="10" borderRadius="5" top="-5" backgroundColor="#f1fbfb"/>
 		</View> -->
 		<View width="Ti.UI.FILL" height="25" bottom="0">
-			<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" height="30" borderRadius="5" bottom="-5" backgroundColor="#d8fafa" shadowColor="black"/>
+			<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
 		</View>
 	</View>
 </Alloy>
