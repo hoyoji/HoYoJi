@@ -1,6 +1,7 @@
 <Alloy>
 	<View class="container" title="主页">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"/>
+			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"/>
 		<View top="42" height="Ti.UI.SIZE">
 			<View height="42" width="50%" left="0">
 				<Label left="5">当日收入</Label>

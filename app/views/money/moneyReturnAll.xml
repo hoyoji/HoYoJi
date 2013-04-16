@@ -1,5 +1,6 @@
 <Alloy>
 	<View class="container" title="还款明细" backgroundColor="cyan">
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="还款明细"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneysTable" bottom="0" top="42"/>
 	</View>

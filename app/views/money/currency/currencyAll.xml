@@ -1,6 +1,7 @@
 <Alloy>
 	<View class="container" title="货币" backgroundColor="cyan">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="货币"/>
+				<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="货币"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="currenciesTable" sortByField="name" bottom="42" top="42"/>
 	</View>
 </Alloy>

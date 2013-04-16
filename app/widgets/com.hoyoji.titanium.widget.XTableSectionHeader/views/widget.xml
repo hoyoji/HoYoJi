@@ -1,0 +1,10 @@
+<Alloy>
+	<View height="35" backgroundColor="#e7f5f5">
+		<!-- <View width="Ti.UI.FILL" height="5" top="0">
+			<Label width="Ti.UI.FILL" height="10" borderRadius="5" top="-5" backgroundColor="#f1fbfb"/>
+		</View> -->
+		<View width="Ti.UI.FILL" height="25" bottom="0">
+			<Label id="headerTitle" width="Ti.UI.FILL" height="30" borderRadius="5" bottom="-5" backgroundColor="#d8fafa" shadowColor="black"/>
+		</View>
+	</View>
+</Alloy>

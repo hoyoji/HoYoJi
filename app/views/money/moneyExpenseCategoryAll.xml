@@ -1,5 +1,6 @@
 <Alloy>
 	<View class="container" title="支出分类" backgroundColor="cyan">
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="支出分类"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyExpenseCategoriesTable" sortByField="name" bottom="42" top="42"/>
 	</View>

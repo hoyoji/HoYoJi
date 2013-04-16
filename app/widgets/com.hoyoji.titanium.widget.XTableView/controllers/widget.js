@@ -193,9 +193,7 @@ function addRowToSection(rowModel, collection, index) {
 				$.table.appendRow(row);
 			} else if (pos.insertBefore === -1) {
 				// need to create new section for this row
-				var section = Ti.UI.createTableViewSection({
-					headerTitle : pos.sectionTitle
-				});
+				var section = createSectionHeaderView(pos.sectionTitle);
 				section.add(row);
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
@@ -493,9 +491,7 @@ exports.sort = function(fieldName, reverse, groupField) {
 		});
 		data = [];
 		for (var sectionTitle in sectionData) {
-			var section = Ti.UI.createTableViewSection({
-				headerTitle : sectionTitle
-			});
+			var section = createSectionHeaderView(sectionTitle);
 			sectionData[sectionTitle].forEach(function(row) {
 				section.add(row);
 			})
@@ -504,6 +500,15 @@ exports.sort = function(fieldName, reverse, groupField) {
 	}
 
 	$.table.setData(data);
+}
+
+
+function createSectionHeaderView(sectionTitle){
+	var section = Ti.UI.createTableViewSection();
+	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle});
+	//sectionHeader.setParent($.table);
+	section.setHeaderView(sectionHeader.$view);
+	return section;
 }
 
 $.onWindowOpenDo(function() {

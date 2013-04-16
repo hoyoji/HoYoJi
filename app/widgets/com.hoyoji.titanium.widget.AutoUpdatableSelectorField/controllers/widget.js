@@ -18,7 +18,7 @@ for (var i = 0; i < items.length; i++) {//根据items的长度动态创建rows
 $.field.add(data);//把rows添加到picker
 
 $.field.addEventListener("singletap", function(e){
-	$.getCurrentWindow().closeSoftKeyboard();
+	// $.getCurrentWindow().closeSoftKeyboard();
 	if(OS_IOS){
 		if(!$.__expanded){
 			$.widget.setHeight(215);
