@@ -252,7 +252,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-						"messageData" : $.$model.xGet("messageData")
+						"messageData" : JSON.stringify({
+				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+				                            projectShareAuthorizationId : $.$model.xGet("id")
+				                        })
 			         },function(){
 				        $.saveModel(saveEndCB, saveErrorCB);
 	    			});
@@ -266,7 +269,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"date" : date,
 						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
 						"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-						"messageData" : $.$model.xGet("messageData")
+						"messageData" : JSON.stringify({
+				                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+				                            projectShareAuthorizationId : $.$model.xGet("id")
+				                        })
 			         },function(){
 				        $.saveModel(saveEndCB, saveErrorCB);
 	    			});
