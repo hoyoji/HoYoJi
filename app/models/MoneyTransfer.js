@@ -98,7 +98,6 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
-					this.transferIn();
 				},
 				transferIn : function(xValidateComplete) {
 					var error;
@@ -108,7 +107,6 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
-					this.transferOut();
 				}
 			},
 			getProjectName : function() {

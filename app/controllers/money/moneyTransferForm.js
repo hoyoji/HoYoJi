@@ -20,19 +20,19 @@ var oldTransferIn = $.$model.xGet("transferIn");
 // var oldTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 
 $.onWindowOpenDo(function() {
-	setexchangeRate($.$model.xGet("transferOut"), $.$model.xGet("transferIn"));
+	setExchangeRate($.$model.xGet("transferOut"), $.$model.xGet("transferIn"));
 	updateForeignCurrencyAmount();
 	// firstOpenWindow();
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 });
 
 var createRate;
-$.transferOut.field.addEventListener("change", updateexchangeRate);
-$.transferIn.field.addEventListener("change", updateexchangeRate);
-function updateexchangeRate(transferOut, transferIn) {
+$.transferOut.field.addEventListener("change", updateExchangeRate);
+$.transferIn.field.addEventListener("change", updateExchangeRate);
+function updateExchangeRate(transferOut, transferIn) {
 	// if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
 		if ($.transferOut.getValue() && $.transferIn.getValue()) {
-			setexchangeRate($.transferOut.getValue(), $.transferIn.getValue());
+			setExchangeRate($.transferOut.getValue(), $.transferIn.getValue());
 		} else {
 			$.exchangeRate.hide();
 			$.transferInAmount.hide();
@@ -42,7 +42,7 @@ function updateexchangeRate(transferOut, transferIn) {
 	// }
 }
 
-function setexchangeRate(transferOut, transferIn) {
+function setExchangeRate(transferOut, transferIn) {
 	var exchangeRateValue;
 	if (transferOut.xGet("currency").xGet("code") === transferIn.xGet("currency").xGet("code")) {
 		createRate = false;
@@ -78,6 +78,13 @@ function updateForeignCurrencyAmount() {
 	// }
 }
 
+$.transferOut.$view.addEventListener("singletap",function(){
+	$.transferIn.hideErrorMsg();
+});
+$.transferIn.$view.addEventListener("singletap",function(){
+	$.transferOut.hideErrorMsg();
+});
+
 // $.transferOutOwnerUser.field.addEventListener("change", transferToFriend);
 // $.transferInOwnerUser.field.addEventListener("change", transferToFriend);
 //
@@ -106,7 +113,7 @@ function updateForeignCurrencyAmount() {
 // $.transferInAmount.show();
 // }
 // } else {
-// updateexchangeRate();
+// updateExchangeRate();
 // }
 // }
 
