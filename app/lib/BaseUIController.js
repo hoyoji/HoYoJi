@@ -79,13 +79,31 @@
 						throw Error("cannot call getParentController before parentController is ready!");
 					}
 					return $.__parentController;
+				},
+				slideDown : function(zIndex, top) {
+					if (top === undefined)
+						top = 42;
+				
+					function animate() {
+						$.$view.removeEventListener("postlayout", animate);
+						var animation = Titanium.UI.createAnimation();
+						animation.top = top;
+						animation.duration = 500;
+						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+				
+						$.$view.animate(animation);
+					}
+				
+				
+					$.$view.addEventListener("postlayout", animate);
+				
+					$.$view.setTop("-100%");
+					$.$view.setZIndex(zIndex);
 				}
 			});
 
 			$.$view.addEventListener("registerwindowevent", function(e){
-				console.info($.$view.id + " 111 ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
 				if(e.windowEvent === "detectwindow" && e.source !== $.$view){
-				console.info($.$view.id + " ======== hijack registerwindowevent " + e.windowEvent + " from " + e.source.id);
 					if(e.parentWindowCallback){
 						e.parentWindowCallback($);
 						e.parentWindowCallback = null;
@@ -102,13 +120,11 @@
 			
 			function detectWindow(e){
 				$.$view.removeEventListener("postlayout", detectWindow);
-				console.info("detectWindow firing registerwindowevent from " + e.source.id);
 				$.$view.fireEvent("registerwindowevent",
 					{ 	bubbles : true,
 						source : $.$view,
 						windowEvent : "detectwindow", 
 						parentWindowCallback : function(parentController){
-							console.info("++++++++++++++ got parent echo @ " + $.$view.id);
 							if(!$.__parentController){
 								$.__parentController = parentController;
 								// if($.__currentWindow){
@@ -118,7 +134,6 @@
 						},
 						windowPreListenCallback : function(e, winController){
 							//Ti.App.removeEventListener("winopen", detectWindow);
-							console.info("++++++++++++++ got window echo @ " + $.$view.id);
 							if(!$.__currentWindow){
 								$.__currentWindow = winController;
 								// if($.__currentParent){

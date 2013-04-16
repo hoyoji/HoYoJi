@@ -56,6 +56,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "dateTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
@@ -65,6 +66,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
@@ -74,6 +76,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "monthTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
@@ -85,9 +88,9 @@ function onFooterbarTap(e) {
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
 	} else if (e.source.id === "transactionsSearchTable") {
 		$.titleBar.setTitle(e.source.getTitle());
-		Alloy.Globals.openWindow("money/moneyQuery", {
-			selectorCallback : doQuery
-		});
+		$.transactionsSearchTable.doSearch();
+	} else if (e.source.id === "transactionsTable") {
+		$.titleBar.setTitle(e.source.getTitle());
 	}
 }
 
@@ -112,8 +115,8 @@ function onFooterbarTap(e) {
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");
 var moneyExpenses = Alloy.createCollection("moneyExpense");
-var moneyTransferOuts = Alloy.createCollection("moneyTransfer")
-var moneyTransferIns = Alloy.createCollection("moneyTransfer")
+var moneyTransferOuts = Alloy.createCollection("moneyTransfer");
+var moneyTransferIns = Alloy.createCollection("moneyTransfer");
 var moneyBorrows = Alloy.createCollection("moneyBorrow");
 var moneyLends = Alloy.createCollection("moneyLend");
 var moneyReturns = Alloy.createCollection("moneyReturn");
@@ -129,29 +132,4 @@ $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
 $.transactionsTable.addCollection(moneyReturns, "money/moneyReturnRow");
 $.transactionsTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
-
-var date = new Date(), queryOptions = {
-	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString()
-};
-
-function doQuery(queryController) {
-	moneyExpenses.xSearchInDb(queryController.getQueryString());
-	moneyIncomes.xSearchInDb(queryController.getQueryString());
-	moneyTransferOuts.xSearchInDb(queryController.getQueryString());
-	moneyTransferIns.xSearchInDb(queryController.getQueryString());
-	moneyBorrows.xSearchInDb(queryController.getQueryString());
-	moneyLends.xSearchInDb(queryController.getQueryString());
-	moneyReturns.xSearchInDb(queryController.getQueryString());
-	moneyPaybacks.xSearchInDb(queryController.getQueryString());
-}
-
-$.transactionsSearchTable.addCollection(moneyIncomes);
-$.transactionsSearchTable.addCollection(moneyExpenses);
-$.transactionsSearchTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
-$.transactionsSearchTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
-$.transactionsSearchTable.addCollection(moneyBorrows);
-$.transactionsSearchTable.addCollection(moneyLends);
-$.transactionsSearchTable.addCollection(moneyReturns, "money/moneyReturnRow");
-$.transactionsSearchTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
 

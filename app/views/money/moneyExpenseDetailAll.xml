@@ -2,5 +2,8 @@
 	<View class="container" title="支出明细" backgroundColor="cyan">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="支出明细"/>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyExpenseDetailsTable" bottom="0" top="42"/>
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
+        buttons="新增支出明细"
+        ids="addExpenseDetail"/>
 	</View>
 </Alloy>
