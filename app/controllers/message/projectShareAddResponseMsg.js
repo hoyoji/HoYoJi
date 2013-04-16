@@ -431,7 +431,7 @@ function loadAuthorizationDetails(successCB) {
 					}
 				});
 			} else {
-				createProjectShareAuthorizationDetails(projectShareAuthorization);
+				createProjectShareAuthorizationDetails(_projectShareAuthorization);
 			}
 		}
 		successCB();
