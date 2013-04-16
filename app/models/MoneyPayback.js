@@ -60,13 +60,21 @@ exports.definition = {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
 						error = {
-							msg : "金额只能为数字"
+							msg : "请输入金额"
 						};
 					} else {
 						if (this.xGet("amount") < 0) {
 							error = {
 								msg : "金额不能为负数"
 							};
+						}
+					}
+					if (this.xGet("moneyLend")) {
+						var paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").xGet("paybackedAmount");
+						if (this.xGet("amount") > paybackRequireAmount) {
+							error = {
+								msg : "收款金额不能大于当前借出的应收款金额（"+ paybackRequireAmount +"）"
+							}
 						}
 					}
 					xValidateComplete(error);
@@ -105,7 +113,7 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-			return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
 			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;

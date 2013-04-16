@@ -14,5 +14,5 @@ $.titleBar.bindXTable($.moneyPaybacksTable);
 
 var moneyPaybacks = selectedLend.xGet("moneyPaybacks");
 var interests = selectedLend.xGet("moneyPaybacks");
-$.moneyPaybacksTable.addCollection(moneyPaybacks,"money/moneyPaybackRow");
-$.moneyPaybacksTable.addCollection(interests,"money/moneyPaybackInterestRow");
+$.moneyPaybacksTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
+$.moneyPaybacksTable.addCollection(interests, "money/moneyPaybackInterestRow");
