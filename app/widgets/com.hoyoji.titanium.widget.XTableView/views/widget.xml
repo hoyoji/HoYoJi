@@ -1,6 +1,6 @@
 <Alloy>
-	<View class="container" backgroundColor="white" height="Ti.UI.FILL" width="Ti.UI.FILL">
-		<TableView id="table" height="Ti.UI.FILL" width="Ti.UI.FILL" borderWidth="1" borderColor="red" allowSelection="false">
+	<View class="container" backgroundColor="#e7f5f5" height="Ti.UI.FILL" width="Ti.UI.FILL" >
+		<TableView id="table" left="10" right="10" top="0" bottom="10" allowSelection="false" borderRadius="5" separatorColor="transparent" backgroundColor="#e7f5f5" >
         </TableView>
 	</View>
 </Alloy>

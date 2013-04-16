@@ -48,6 +48,7 @@ exports.definition = {
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				if (this.xGet("moneyIncome").isNew()) {
+					this.xGet("moneyIncome").xSet("amount",this.xGet("moneyIncome").xGet("amount") - this.xGet("amount"));
 					this.xGet("moneyIncome").trigger("xchange:amount", this.xGet("moneyIncome"));
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
 					xFinishCallback();

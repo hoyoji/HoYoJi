@@ -56,17 +56,36 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				// date : function(xValidateComplete) {
+					// var error;
+					// var moneyLend = this.xGet("moneyLend");
+					// if(moneyLend){
+						// if(this.xGet("date") < moneyLend.xGet("date")){
+							// error = {
+								// msg : "收款日期不能在借出日期（" + moneyLend.xGet("date") + "）之前"
+							// }
+						// }
+					// }
+				// },
 				amount : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
 						error = {
-							msg : "金额只能为数字"
+							msg : "请输入金额"
 						};
 					} else {
 						if (this.xGet("amount") < 0) {
 							error = {
 								msg : "金额不能为负数"
 							};
+						}
+					}
+					if (this.xGet("moneyLend")) {
+						var paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").xGet("paybackedAmount");
+						if (this.xGet("amount") > paybackRequireAmount) {
+							error = {
+								msg : "收款金额不能大于当前借出的应收款金额（"+ paybackRequireAmount +"）"
+							}
 						}
 					}
 					xValidateComplete(error);
@@ -105,7 +124,10 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-			return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+			},
+			getProjectName : function() {
+				return this.xGet("project").xGet("name");
 			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;
