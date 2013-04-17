@@ -47,7 +47,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendId : $.$model.xGet("friend").xGet("id")
 			});
-			if (projectShareAuthorization 
+			if (projectShareAuthorization && projectShareAuthorization.xGet("id")
 				&& (projectShareAuthorization.xGet("state") === "Wait" || projectShareAuthorization.xGet("state") === "Accept")) {
 				saveErrorCB("好友已在共享列表,请重新选择好友！");
 			}else{
@@ -59,7 +59,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : subProject.xGet("id"),
 							friendId : $.$model.xGet("friend").xGet("id")
 						});
-						if (subProjectShareAuthorization
+						if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id")
 							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -133,7 +133,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : subProject.xGet("id"),
 							friendId : $.$model.xGet("friend").xGet("id")
 						});
-						if (subProjectShareAuthorization.xGet("id")
+						if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id")
 							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -186,7 +186,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : subProject.xGet("id"),
 								friendId : $.$model.xGet("friendId")
 							});
-						if(subProjectShareAuthorization.xGet("id") 
+						if(subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") 
 							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 							// subProjectShareAuthorization._xDelete();
@@ -226,7 +226,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									friendId : $.$model.xGet("friendId")
 								});
 							subProjectShareAuthorizations.map(function(subProjectShareAuthorization){
-								if(subProjectShareAuthorization.xGet("id") 
+								if(subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") 
 								&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
 									var data = {
 										shareType : $.$model.xGet("shareType"),

@@ -29,6 +29,7 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
+				
 				if(this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")){
 					this.xGet("project").xSet("defaultExpenseCategoryId",null);
 					this.xGet("project").xSave();
