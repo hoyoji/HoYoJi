@@ -156,11 +156,17 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback) {
-				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
-				moneyAccount.xSave();
+				if (this.xGet("moneyIncomeDetails").length > 0) {
+					xFinishCallback({
+						msg : "当前收入的明细不为空，不能删除"
+					})
+				} else {
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					this._xDelete(xFinishCallback);
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+					moneyAccount.xSave();
+				}
 			}
 		});
 		return Model;
