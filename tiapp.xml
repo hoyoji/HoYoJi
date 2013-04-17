@@ -41,9 +41,7 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules>
-        <module platform="android" version="1.0">ti.physicalSizeCategory</module>
-    </modules>
+    <modules/>
     <deployment-targets>
         <target device="tizen">false</target>
         <target device="blackberry">false</target>
@@ -52,8 +50,8 @@
         <target device="iphone">true</target>
         <target device="mobileweb">true</target>
     </deployment-targets>
-    <sdk-version>3.0.2.GA</sdk-version>
+    <sdk-version>3.1.0.GA</sdk-version>
     <plugins>
-        <plugin version="1.0">ti.alloy</plugin>
+        <plugin version="1.1">ti.alloy</plugin>
     </plugins>
 </ti:app>
