@@ -10,7 +10,8 @@ exports.definition = {
 			lastModifyTime : "TEXT"
 		},
 		hasMany : {
-			subIncomeCategories : { type : "MoneyIncomeCategory", attribute : "parentIncomeCategory" }
+			subIncomeCategories : { type : "MoneyIncomeCategory", attribute : "parentIncomeCategory" },
+			moneyIncomes : { type : "MoneyIncome", attribute : "moneyIncomeCategory" }
 		},
 		belongsTo : {
 			project : { type : "Project", attribute : "moneyIncomeCategories" },
@@ -29,11 +30,17 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
-				if(this.xGet("id") === this.xGet("project").xGet("defaultIncomeCategoryId")){
-					this.xGet("project").xSet("defaultIncomeCategoryId",null);
-					this.xGet("project").xSave();
+				if(this.xGet("moneyIncomes").length > 0){
+					xFinishCallback({ msg :"分类下收入不为空，不能删除"});
+				}else if(this.xGet("subIncomeCategories").length > 0){
+					xFinishCallback({ msg :"分类下下级分类不为空，不能删除"});
+				}else{
+					if(this.xGet("id") === this.xGet("project").xGet("defaultIncomeCategoryId")){
+						this.xGet("project").xSet("defaultIncomeCategoryId",null);
+						this.xGet("project").xSave();
+					}
+					this._xDelete(xFinishCallback);
 				}
-				this._xDelete(xFinishCallback);
 			}
 		});
 		

@@ -10,7 +10,8 @@ exports.definition = {
 			lastModifyTime : "TEXT"
 		},
 		hasMany : {
-			subExpenseCategories : { type : "MoneyExpenseCategory", attribute : "parentExpenseCategory" }
+			subExpenseCategories : { type : "MoneyExpenseCategory", attribute : "parentExpenseCategory" },
+			moneyExpenses : { type : "MoneyExpense", attribute : "moneyExpenseCategory" }
 		},
 		belongsTo : {
 			project : { type : "Project", attribute : "moneyExpenseCategories" },
@@ -29,11 +30,17 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			xDelete : function(xFinishCallback) {
-				if(this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")){
-					this.xGet("project").xSet("defaultExpenseCategoryId",null);
-					this.xGet("project").xSave();
+				if(this.xGet("moneyExpenses").length > 0){
+					xFinishCallback({ msg :"分类下支出不为空，不能删除"});
+				}else if(this.xGet("subExpenseCategories").length > 0){
+					xFinishCallback({ msg :"分类下下级分类不为空，不能删除"});
+				}else{
+					if(this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")){
+						this.xGet("project").xSet("defaultExpenseCategoryId",null);
+						this.xGet("project").xSave();
+					}
+					this._xDelete(xFinishCallback);
 				}
-				this._xDelete(xFinishCallback);
 			}
 		});
 		
