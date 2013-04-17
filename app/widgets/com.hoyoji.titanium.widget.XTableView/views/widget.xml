@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" backgroundColor="#e7f5f5" height="Ti.UI.FILL" width="Ti.UI.FILL" >
-		<TableView id="table" left="10" right="10" top="0" bottom="10" allowSelection="false" borderRadius="5" separatorColor="transparent" backgroundColor="#e7f5f5" >
+		<TableView id="table" left="7" right="10" top="10" bottom="10" allowSelection="false" borderRadius="5" separatorColor="transparent" backgroundColor="#e7f5f5" separatorStyle="Ti.UI.iPhone.TableViewSeparatorStyle.NONE">
         </TableView>
 	</View>
 </Alloy>
