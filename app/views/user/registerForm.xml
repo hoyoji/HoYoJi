@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+	<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="注册用户" readModeTitle="用户资料" editModeTitle="修改用户"/>
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">

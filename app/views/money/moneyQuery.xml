@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" saveableContainer="true">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
 			<View height="42" top="0">
 				<Button left="10" onSingletap="close">返回</Button>
 				<Label>请输入查询条件</Label>

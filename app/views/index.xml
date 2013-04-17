@@ -1,5 +1,6 @@
 <Alloy>
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/> -->
 		<TextField id="__hiddenTextField" platform="android" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS" top="-100"/>
 		<View layout="vertical" top="0">
 			<Require src="user/login" />

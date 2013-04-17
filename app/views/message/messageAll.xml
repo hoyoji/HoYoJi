@@ -1,6 +1,6 @@
 <Alloy>
-	<View class="container" title="消息" backgroundColor="cyan">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+	<View class="container" title="消息">
+	<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收件箱"/>
         <Widget src="com.hoyoji.titanium.widget.XTableView" id="sendedMessagesTable" bottom="42" top="42"/>
 		<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" id="newMessagesTable" bottom="42" top="42"/>
