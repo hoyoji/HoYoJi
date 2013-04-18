@@ -20,7 +20,7 @@ exports.definition = {
 		belongsTo : {
 			friend : {
 				type : "Friend",
-				attribute : null
+				attribute : "moneyReturns"
 			},
 			friendAccount : {
 				type : "MoneyAccount",
@@ -28,7 +28,7 @@ exports.definition = {
 			},
 			moneyAccount : {
 				type : "MoneyAccount",
-				attribute : null
+				attribute : "moneyReturns"
 			},
 			project : {
 				type : "Project",
@@ -111,6 +111,16 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+				},
+				project : function(xValidateComplete) {
+					var error;
+					var project = this.xGet("project");
+					if (!project) {
+						error = {
+							msg : "项目不能为空"
+						};
+					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {
@@ -161,12 +171,12 @@ exports.definition = {
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
-				var moneyBorrow = this.xGet("moneyBorrow");
-				var borrowRate = moneyBorrow.xGet("exchangeRate");
 				var returnRate = this.xGet("exchangeRate");
 
 				this._xDelete(xFinishCallback);
-				if (moneyBorrow) {
+				if (this.xGet("moneyBorrow")) {
+					var moneyBorrow = this.xGet("moneyBorrow");
+					var borrowRate = moneyBorrow.xGet("exchangeRate");
 					moneyBorrow.xSet("returnedAmount", moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
 					moneyBorrow.xSave();
 				}

@@ -20,7 +20,7 @@ exports.definition = {
 		belongsTo : {
 			friend : {
 				type : "Friend",
-				attribute : null
+				attribute : "moneyPaybacks"
 			},
 			friendAccount : {
 				type : "MoneyAccount",
@@ -28,7 +28,7 @@ exports.definition = {
 			},
 			moneyAccount : {
 				type : "MoneyAccount",
-				attribute : null
+				attribute : "moneyPaybacks"
 			},
 			project : {
 				type : "Project",
@@ -57,15 +57,15 @@ exports.definition = {
 			// extended functions and properties go here
 			validators : {
 				// date : function(xValidateComplete) {
-					// var error;
-					// var moneyLend = this.xGet("moneyLend");
-					// if(moneyLend){
-						// if(this.xGet("date") < moneyLend.xGet("date")){
-							// error = {
-								// msg : "收款日期不能在借出日期（" + moneyLend.xGet("date") + "）之前"
-							// }
-						// }
-					// }
+				// var error;
+				// var moneyLend = this.xGet("moneyLend");
+				// if(moneyLend){
+				// if(this.xGet("date") < moneyLend.xGet("date")){
+				// error = {
+				// msg : "收款日期不能在借出日期（" + moneyLend.xGet("date") + "）之前"
+				// }
+				// }
+				// }
 				// },
 				amount : function(xValidateComplete) {
 					var error;
@@ -84,7 +84,7 @@ exports.definition = {
 						var paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").xGet("paybackedAmount");
 						if (this.xGet("amount") > paybackRequireAmount) {
 							error = {
-								msg : "收款金额不能大于当前借出的应收款金额（"+ paybackRequireAmount +"）"
+								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
 							}
 						}
 					}
@@ -119,6 +119,16 @@ exports.definition = {
 								msg : "请选择与账户相同币种的债务人账户"
 							};
 						}
+					}
+					xValidateComplete(error);
+				},
+				project : function(xValidateComplete) {
+					var error;
+					var project = this.xGet("project");
+					if (!project) {
+						error = {
+							msg : "项目不能为空"
+						};
 					}
 					xValidateComplete(error);
 				}
@@ -171,12 +181,12 @@ exports.definition = {
 			xDelete : function(xFinishCallback) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
-				var moneyLend = this.xGet("moneyLend");
-				var lendRate = moneyLend.xGet("exchangeRate");
 				var paybackRate = this.xGet("exchangeRate");
 
 				this._xDelete(xFinishCallback);
-				if (moneyLend) {
+				if (this.xGet("moneyLend")) {
+					var moneyLend = this.xGet("moneyLend");
+					var lendRate = moneyLend.xGet("exchangeRate");
 					moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate);
 					moneyLend.xSave();
 				}

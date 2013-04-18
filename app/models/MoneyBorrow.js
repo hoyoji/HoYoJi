@@ -26,7 +26,7 @@ exports.definition = {
 		belongsTo : {
 			friend : {
 				type : "Friend",
-				attribute : null
+				attribute : "moneyBorrows"
 			},
 			friendAccount : {
 				type : "MoneyAccount",
@@ -34,7 +34,7 @@ exports.definition = {
 			},
 			moneyAccount : {
 				type : "MoneyAccount",
-				attribute : null
+				attribute : "moneyBorrows"
 			},
 			project : {
 				type : "Project",
@@ -115,6 +115,16 @@ exports.definition = {
 						};
 					}
 					xValidateComplete(error);
+				},
+				project : function(xValidateComplete) {
+					var error;
+					var project = this.xGet("project");
+					if (!project) {
+						error = {
+							msg : "项目不能为空"
+						};
+					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {
@@ -160,11 +170,16 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback) {
+				if(this.xGet("moneyReturns").length > 0){
+					xFinishCallback({ msg :"当前借入的还款明细不为空，不能删除"})
+				}
+				else{
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				this._xDelete(xFinishCallback);
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 				moneyAccount.xSave();
+			}
 			}
 		});
 		return Model;
