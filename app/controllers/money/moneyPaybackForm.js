@@ -110,6 +110,7 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 		var newInterest = $.$model.xGet("interest");
+		var moneyLend = $.$model.xGet("moneyLend");
 
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount - oldInterest + newInterest);
@@ -132,8 +133,8 @@ if ($.saveableMode === "read") {
 			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
 			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
 			var paybackRate = $.$model.xGet("exchangeRate");
-			$.$model.xGet("moneyLend").xSet("paybackedAmount", paybackedAmount + (oldAmount + newAmount) * paybackRate / lendRate);
-			$.$model.xGet("moneyLend").xAddToSave($);
+			moneyLend.xSet("paybackedAmount", paybackedAmount + (oldAmount + newAmount) * paybackRate / lendRate);
+			moneyLend.xAddToSave($);
 		}
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
@@ -152,6 +153,7 @@ if ($.saveableMode === "read") {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			moneyLend.xSet("paybackedAmount", moneyLend.previous("paybackedAmount"));
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
