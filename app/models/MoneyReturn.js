@@ -71,7 +71,7 @@ exports.definition = {
 					}
 
 					if (this.xGet("moneyBorrow")) {
-						var returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").xGet("returnedAmount");
+						var returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount");
 						if (this.xGet("amount") > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
