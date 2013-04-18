@@ -118,6 +118,7 @@ exports.definition = {
 							msg : "项目不能为空"
 						};
 					}
+					xValidateComplete(error);
 				},
 				moneyExpenseCategory : function(xValidateComplete) {
 					var error;
@@ -127,6 +128,7 @@ exports.definition = {
 							msg : "分类不能为空"
 						};
 					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {

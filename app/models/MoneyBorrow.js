@@ -124,6 +124,7 @@ exports.definition = {
 							msg : "项目不能为空"
 						};
 					}
+					xValidateComplete(error);
 				}
 			},
 			getLocalAmount : function() {
