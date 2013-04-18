@@ -1,5 +1,5 @@
 <Alloy>
-	<View height="42">
+	<View class="container" height="42">
 		<Label id="error" top="42"/>
 		<Label id="label" left="0" width="30%" height="Ti.UI.FILL"/>
 		<View id="field" right="0" height="Ti.UI.FILL" width="70%" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false" />
