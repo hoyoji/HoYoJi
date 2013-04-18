@@ -42,6 +42,8 @@ exports.definition = {
 					xFinishCallback({ msg :"不能删除系统默认好友分类"});
 				}else if(this.xGet("friends").length > 0){
 					xFinishCallback({ msg :"分类中有好友，不能删除"});
+				}else if(this.xGet("subFriendCategories").length > 0){
+					xFinishCallback({ msg :"分类中有下级分类，不能删除"});
 				}else{
 					this._xDelete(xFinishCallback);
 				}

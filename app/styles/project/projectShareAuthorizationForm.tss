@@ -1,3 +1,8 @@
 ".container": {
 	backgroundColor: "white"
 }
+"Label" : {
+	textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	color : "black",
+	fontSize : 12
+}

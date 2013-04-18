@@ -5,6 +5,11 @@ var sortByField = $.$attrs.sortByField,
 	groupByField = $.$attrs.groupByField, 
 	sortReverse = $.$attrs.sortReverse === "true";
 
+if($.$attrs.groupByField){
+	var tableFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
+	$.table.setFooterView(tableFooter.$view);
+}
+
 $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
@@ -193,7 +198,7 @@ function addRowToSection(rowModel, collection, index) {
 				$.table.appendRow(row);
 			} else if (pos.insertBefore === -1) {
 				// need to create new section for this row
-				var section = createSectionHeaderView(pos.sectionTitle);
+				var section = createSection(pos.sectionTitle, pos.index);
 				section.add(row);
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
@@ -374,7 +379,7 @@ exports.close = function() {
 
 exports.open = function(top) {
 	if (top === undefined)
-		top = 42;
+		top = 55;
 	function animate() {
 		var animation = Titanium.UI.createAnimation();
 		animation.top = top;
@@ -490,24 +495,39 @@ exports.sort = function(fieldName, reverse, groupField) {
 			return getSectionNameOfRowModel(findObject(item.id).xDeepGet(groupByField));
 		});
 		data = [];
+		var sectionIndex = 0;
 		for (var sectionTitle in sectionData) {
-			var section = createSectionHeaderView(sectionTitle);
+			var section = createSection(sectionTitle, sectionIndex);
 			sectionData[sectionTitle].forEach(function(row) {
 				section.add(row);
 			})
 			data.push(section);
+			sectionIndex++;
 		}
 	}
-
 	$.table.setData(data);
 }
 
 
-function createSectionHeaderView(sectionTitle){
-	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle});
-	var section = Ti.UI.createTableViewSection({
-		headerView : sectionHeader.$view
-	});
+function createSection(sectionTitle, sectionIndex){
+	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex}),
+		section;
+	
+	if(OS_IOS){
+		var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
+		section = Ti.UI.createTableViewSection({
+			headerView : sectionHeader.$view,
+			footerView : sectionFooter.$view
+		});
+			
+	} else {
+		section = Ti.UI.createTableViewSection({
+			headerView : Ti.UI.createLabel({text : sectionTitle, width : Ti.UI.FILL, height : 10, backgroundColor : "green"}),
+			footerView : Ti.UI.createLabel({text : sectionTitle, width : Ti.UI.FILL, height : 10, backgroundColor : "green"})
+		});
+	}
+	
+	
 	return section;
 }
 

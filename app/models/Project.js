@@ -47,6 +47,15 @@ exports.definition = {
 					// }
 					// xValidateComplete(error);
 				// }
+				parentProject : function(xValidateComplete) {
+					var error;
+					if (this.xGet("parentProject") && (this.xGet("parentProject").xGet("ownerUserId") !== Alloy.Models.User.id)) {
+						error = {
+							msg : "共享项目不能作为本地项目的上级"
+						};
+					}
+					xValidateComplete(error);
+				}
 			},
 			xDelete : function(xFinishCallback) {
 				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
