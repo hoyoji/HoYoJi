@@ -17,6 +17,32 @@ exports.definition = {
 		defaults : {
 			currentBalance : 0
 		},
+		hasMany : {
+			moneyExpenses : {
+				type : "MoneyExpense",
+				attribute : "moneyAccount"
+			},
+			moneyIncomes : {
+				type : "MoneyIncome",
+				attribute : "moneyAccount"
+			},
+			moneyBorrows : {
+				type : "MoneyBorrow",
+				attribute : "moneyAccount"
+			},
+			moneyLends : {
+				type : "MoneyLend",
+				attribute : "moneyAccount"
+			},
+			moneyPayback : {
+				type : "MoneyPayback",
+				attribute : "moneyAccount"
+			},
+			moneyReturns : {
+				type : "MoneyReturn",
+				attribute : "moneyAccount"
+			}
+		},
 		belongsTo : {
 			currency : {type : "Currency",attribute : "moneyAccounts"},
 			ownerUser : {type : "User", attribute : "moneyAccounts" }
@@ -33,7 +59,13 @@ exports.definition = {
 				var error;
 				if(Alloy.Models.User.xGet("activeMoneyAccount") === this){
 					error = { msg : "默认账户不能删除"};
-				} else {
+				} 
+				else if(this.xGet("moneyExpenses").length > 0 || this.xGet("moneyIncomes").length > 0 || this.xGet("moneyBorrows").length > 0 || this.xGet("moneyLends").length > 0 || this.xGet("moneyPaybacks").length > 0 || this.xGet("moneyReturns").length > 0 ){
+						xFinishCallback({
+						msg : "账务中有数据与当前账户有关，不能删除"
+					});
+				}
+				else {
 						this._xDelete(xFinishCallback);
 						return;
 				}

@@ -28,6 +28,30 @@ exports.definition = {
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
 				attribute : "friend"
+			},
+			moneyExpenses : {
+				type : "MoneyExpense",
+				attribute : "friend"
+			},
+			moneyIncomes : {
+				type : "MoneyIncome",
+				attribute : "friend"
+			},
+			moneyBorrows : {
+				type : "MoneyBorrow",
+				attribute : "friend"
+			},
+			moneyLends : {
+				type : "MoneyLend",
+				attribute : "friend"
+			},
+			moneyPayback : {
+				type : "MoneyPayback",
+				attribute : "friend"
+			},
+			moneyReturns : {
+				type : "MoneyReturn",
+				attribute : "friend"
 			}
 		},
 		rowView : "friend/friendRow",
@@ -111,7 +135,13 @@ exports.definition = {
 					xFinishCallback({
 						msg : "您们之间有分享项目,请移除共享再删除"
 					});
-				} else {
+				} 
+				else if(this.xGet("moneyExpenses").length > 0 || this.xGet("moneyIncomes").length > 0 || this.xGet("moneyBorrows").length > 0 || this.xGet("moneyLends").length > 0 || this.xGet("moneyPaybacks").length > 0 || this.xGet("moneyReturns").length > 0 ){
+						xFinishCallback({
+						msg : "账务中有数据与当前好友有关，不能删除"
+					});
+				}
+				else {
 					var friendProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 						ownerUserId : this.xGet("friendUserId")
 					});
