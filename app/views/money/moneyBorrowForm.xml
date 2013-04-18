@@ -3,7 +3,8 @@
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增借入" readModeTitle="借入详细" editModeTitle="修改借入"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 			<View id="ownerUser" height="42">
 			<Label left="0" width="30%" height="Ti.UI.FILL">记账好友</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
@@ -61,6 +62,6 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
-		</ScrollView>
+		</ScrollView></View>
 	</View>
 </Alloy>

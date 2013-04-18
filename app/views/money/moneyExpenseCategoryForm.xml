@@ -3,7 +3,8 @@
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增支出分类" readModeTitle="查看支出分类" editModeTitle="修改支出分类"/>
-			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
 					bindModel="$.$model"
 					bindAttribute="parentExpenseCategory"
@@ -15,5 +16,6 @@
                 		bindModel="$.$model"
                 		bindAttribute="name"/>
            </ScrollView>
+           </View>
 	</View>
 </Alloy>

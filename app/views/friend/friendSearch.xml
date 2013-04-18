@@ -1,9 +1,10 @@
 <Alloy>
 	<Collection id="userCollection" src="User" instance="true"/>
 	<View class="container" title="添加好友" backgroundColor="white">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+	<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加好友"/>
-		<View top="42" height="Ti.UI.SIZE">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View top="0" height="Ti.UI.SIZE">
 		 <SearchBar id="search" barColor="#000" showCancel="false" height="42" hintText="请输入好友账户名" left="0" width="80%"/>
 		 <Button id="searchButton" title="查找" height="42" right="0" width="20%" />
 		</View>
@@ -12,6 +13,6 @@
 				<Require src="user/userRow"/>
 			</TableViewRow>
 		</TableView>
-
+	</View>
 	</View>
 </Alloy>

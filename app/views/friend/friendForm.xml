@@ -1,9 +1,10 @@
 <Alloy>
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+			<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增好友资料" readModeTitle="查看好友资料" editModeTitle="修改好友资料"/>
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<View id="body" top="49" bottom="65" left="10" right="10">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="好友" editModeEditability="noneditable"
 						bindModel="$.$model"
 						bindAttribute="friendUser"
@@ -22,5 +23,6 @@
                 		bindModel="$.$model"
                 		bindAttribute="remark"/>
              </ScrollView>
+             </View>
 	</View>
 </Alloy>

@@ -2,7 +2,8 @@
 	<View class="container" title="设置">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="设置"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
             <View height="42">
 				<Button right="10" left="10" onSingletap="logout">退出登录</Button>
         	</View>
@@ -24,5 +25,5 @@
 				<Button right="10" left="10" onSingletap="openExchange">汇率设置</Button>
         	</View> -->
         </ScrollView>
-	</View>
+	</View></View>
 </Alloy>

@@ -2,7 +2,8 @@
 	<View class="container" title="我的账户" backgroundColor="cyan">
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的账户"/>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyAccountsTable" sortByField="name" bottom="42" top="42"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyAccountsTable" sortByField="name" bottom="0" top="0"/></View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
         	buttons="新增账户"
         	ids="addMoneyAccount"/>

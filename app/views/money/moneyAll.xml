@@ -1,10 +1,12 @@
 <Alloy>
 	<View class="container" title="账务" backgroundColor="#f1fbfb">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水" top="5" left="10" right="10"/>
-		<Require id="transactionsSearchTable" src="money/transactionsSearch" top="49" bottom="65" left="10" right="10"/>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" sortByField="date" sortReverse="true" groupByField="date" top="49" bottom="65" left="10" right="10"/>
-		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" controlSlideDown="true" bottom="3" left="10" right="10"
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+			<Require id="transactionsSearchTable" src="money/transactionsSearch"/>
+			<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" sortByField="date" sortReverse="true" groupByField="date"/>
+		</View>
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" controlSlideDown="true"
 		buttons="查找,排序,日流水;日流水;周流水;月流水,报表,账户"
 		ids="transactionsSearchTable,sort,transactionsTable;dateTransactions;weekTransactions;monthTransactions,report,moneyAccount"/>
 	</View>

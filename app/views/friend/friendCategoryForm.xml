@@ -1,9 +1,10 @@
 <Alloy>
 	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+			<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增好友分类" readModeTitle="好友分类" editModeTitle="修改好友分类"/>
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+			<View id="body" top="49" bottom="65" left="10" right="10">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
                 	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="请选择上级分类" 
                 		bindModel="$.$model"
                 		bindAttribute="parentFriendCategory"
@@ -14,5 +15,6 @@
                 		bindModel="$.$model"
                 		bindAttribute="name"/>
              </ScrollView>
+             </View>
 	</View>
 </Alloy>
