@@ -1,7 +1,8 @@
 <Alloy>
 	<View class="container" height="42">
-		<Label id="error" top="42"/>
-		<Label id="label" left="0" width="30%" height="Ti.UI.FILL"/>
+		<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
+	 	<Label id="error" left="3" top="42"/>
+		<Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
 		<View id="field" right="0" height="Ti.UI.FILL" width="70%" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false" />
 	</View>
 </Alloy>
