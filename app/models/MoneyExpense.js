@@ -109,6 +109,24 @@ exports.definition = {
 						}
 					}
 					xValidateComplete(error);
+				},
+				project : function(xValidateComplete) {
+					var error;
+					var project = this.xGet("project");
+					if (!project) {
+						error = {
+							msg : "项目不能为空"
+						};
+					}
+				},
+				moneyExpenseCategory : function(xValidateComplete) {
+					var error;
+					var moneyExpenseCategory = this.xGet("moneyExpenseCategory");
+					if (!moneyExpenseCategory) {
+						error = {
+							msg : "分类不能为空"
+						};
+					}
 				}
 			},
 			getLocalAmount : function() {
@@ -167,16 +185,17 @@ exports.definition = {
 			// this.xSet("amount", amount);
 			// },
 			xDelete : function(xFinishCallback) {
-				if(this.xGet("moneyExpenseDetails").length > 0){
-					xFinishCallback({ msg :"当前支出的明细不为空，不能删除"})
+				if (this.xGet("moneyExpenseDetails").length > 0) {
+					xFinishCallback({
+						msg : "当前支出的明细不为空，不能删除"
+					})
+				} else {
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					this._xDelete(xFinishCallback);
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
+					moneyAccount.xSave();
 				}
-				else{
-				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
-				moneyAccount.xSave();
-			}
 			}
 		});
 

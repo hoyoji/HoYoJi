@@ -115,6 +115,15 @@ exports.definition = {
 						};
 					}
 					xValidateComplete(error);
+				},
+				project : function(xValidateComplete) {
+					var error;
+					var project = this.xGet("project");
+					if (!project) {
+						error = {
+							msg : "项目不能为空"
+						};
+					}
 				}
 			},
 			getLocalAmount : function() {
