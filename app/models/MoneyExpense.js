@@ -188,7 +188,7 @@ exports.definition = {
 				if (this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
-					})
+					});
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
