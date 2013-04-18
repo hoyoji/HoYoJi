@@ -41,6 +41,7 @@ if (OS_ANDROID) {
 $.setEditable = function(editable) {
 	if (editable === false) {
 		$.field.setHintText("");
+		$.field.addEventListener("singletap", function(e){e.cancelBubble = true});
 	} else {
 		$.field.setHintText($.$attrs.hintText);
 	}

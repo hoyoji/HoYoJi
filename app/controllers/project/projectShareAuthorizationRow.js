@@ -11,7 +11,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 					projectId : subProject.xGet("id"),
 					friendId : $.$model.xGet("friendId")
 				});
-			if(subProjectShareAuthorization.xGet("id")){
+			if(subProjectShareAuthorization && subProjectShareAuthorization.xGet("id")){
 				subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 				// subProjectShareAuthorization._xDelete();
 				subProjectShareAuthorization.xSet("state" , "Delete");
