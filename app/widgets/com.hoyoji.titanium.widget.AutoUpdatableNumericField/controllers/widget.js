@@ -1,20 +1,20 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
 // exports.setHintText = function(hintText){
-	// if(!$.field.getText()){
-		// $.field.setText(hintText || "");
-	// }
+// if(!$.field.getText()){
+// $.field.setText(hintText || "");
+// }
 // }
 
-$.onWindowOpenDo(function(){
+$.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {
-		if ($.saveableMode === "read") { 
+		if ($.saveableMode === "read") {
 			return;
-		} 
-		
+		}
+
 		// $.field.fireEvent("textfieldfocused", {
-			// bubbles : true,
-			// inputType : "NumericKeyboard"
+		// bubbles : true,
+		// inputType : "NumericKeyboard"
 		// });
 		// $.getCurrentWindow().closeSoftKeyboard();
 		$.getCurrentWindow().numericKeyboard.open($);
@@ -44,12 +44,12 @@ $.getValue = function() {
 
 $.setEditable = function(editable) {
 	// if (editable === false) {
-		// exports.setHintText("无" + $.label.getText());
+	// exports.setHintText("无" + $.label.getText());
 	// } else {
-		// exports.setHintText($.$attrs.hintText);
+	// exports.setHintText($.$attrs.hintText);
 	// }
-//  
+	//
 	// // $.field.setEditable(editable);
 }
 
-$.setSaveableMode($.saveableMode); 
+$.setSaveableMode($.saveableMode);
