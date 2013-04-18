@@ -4,5 +4,8 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="还款明细"/>
 		<View id="body" top="49" bottom="65" left="10" right="10">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyReturnsTable" bottom="0" top="0"/>
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+			buttons="新增还款"
+			ids="addMoneyReturn"/>
 	</View></View>
 </Alloy>
