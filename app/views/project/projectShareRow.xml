@@ -1,15 +1,8 @@
 <Alloy>
-<<<<<<< HEAD
-	<View class="container" height="42" hasChild="getSharedWithHerSubProjects():project/projectShareRow">
-		<View id="content" class="row-content" height="Ti.UI.FILL">
-			<View layout="horizontal" horizontalWrap="false" left="10" width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
-=======
 	<View class="container" height="42" openForm="project/projectForm" hasChild="getSharedWithHerSubProjects():project/projectShareRow">
 			<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 			<View id="content" class="row-content" left="3" height="Ti.UI.FILL">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
->>>>>>> c664cfc1b70c8168ebce4b21dfe5e30cfe91f8ea
 				bindModel = "$.$model.project"
 				bindAttribute = "name"
 				/>
