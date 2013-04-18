@@ -6,8 +6,7 @@
 				bindModel = "$.$model.project"
 				bindAttribute = "name"
 				/>
+				<Label id="checkAccept" visible="false" color="black" right="15">等待接受</Label>
 			</View>
-			<Label id="checkAccept" visible="false" color="black" right="15">等待接受</Label>
-		</View>
 	</View>
 </Alloy>
