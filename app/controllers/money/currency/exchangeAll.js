@@ -19,7 +19,7 @@ $.exchangesTable.addCollection(collection);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addExchange"){
-		Alloy.Globals.openWindow("money/currency/exchangeForm",{$model : "MoneyExpenseDetail",data:{localCurrency : Alloy.Models.User.xGet("activeCurrency")}});
+		Alloy.Globals.openWindow("money/currency/exchangeForm",{$model : "Exchange",data:{localCurrency : Alloy.Models.User.xGet("activeCurrency")}});
 	}
 }
 
