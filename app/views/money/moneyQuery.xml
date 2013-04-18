@@ -1,12 +1,13 @@
 <Alloy>
 	<View class="container" saveableContainer="true">
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
-			<View height="42" top="0">
+			<View height="30" top="5" left="10" right="10">
 				<Button left="10" onSingletap="close">返回</Button>
 				<Label>请输入查询条件</Label>
 				<Button right="10" onSingletap="doQuery">查询</Button>
 			</View>
-			<ScrollView layout="vertical" backgroundColor="white" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+			<ScrollView layout="vertical" backgroundColor="white" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="开始时间" hintText="无开始时间" id="dateFrom"
 				bindModel="$.queryOptions"
 				bindAttribute="dateFrom" />
@@ -55,5 +56,6 @@
 					bindAttribute="expenseType"/>
 				</View> -->
 			</ScrollView>
+			</View>
 	</View>
 </Alloy>

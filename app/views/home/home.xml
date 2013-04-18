@@ -2,7 +2,8 @@
 	<View class="container" title="主页">
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"/>
-		<View top="42" height="Ti.UI.SIZE">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View top="0" height="Ti.UI.SIZE">
 			<View height="42" width="50%" left="0">
 				<Label left="5">当日收入</Label>
 				<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" right="5"/>
@@ -12,7 +13,7 @@
 				<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" right="5"/>
 			</View>
 		</View>
-		
+		</View>
         <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
         	buttons="同步,记一笔,设置"
         	ids="sync,moneyAddNew,setting"/>

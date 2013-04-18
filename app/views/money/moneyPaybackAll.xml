@@ -2,6 +2,8 @@
 	<View class="container" title="收款明细" backgroundColor="cyan">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收款明细"/>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyPaybacksTable" bottom="0" top="42"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyPaybacksTable" bottom="0" top="0"/>
+		</View>
 	</View>
 </Alloy>

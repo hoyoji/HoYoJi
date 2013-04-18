@@ -1,7 +1,9 @@
 <Alloy>
 	<View class="container" title="共享属性" backgroundColor="cyan">
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="共享项目"/>
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-		<Widget id="myProjectShareAuthorizationsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="42" top="42"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="共享项目"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<Widget id="myProjectShareAuthorizationsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="0" top="0"/>
+		</View>
 	</View>
 </Alloy>

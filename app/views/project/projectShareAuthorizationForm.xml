@@ -3,7 +3,8 @@
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增共享好友" readModeTitle="查看共享属性" editModeTitle="修改共享属性"/>
-			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" editModeEditability="noneditable"
             		bindModel="$.$model"
             		bindAttribute="project"
@@ -277,5 +278,6 @@
 						</View>
 				</View>
            </ScrollView>
+           </View>
 	</View>
 </Alloy>

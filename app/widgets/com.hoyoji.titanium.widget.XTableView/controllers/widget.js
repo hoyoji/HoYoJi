@@ -411,7 +411,7 @@ exports.close = function() {
 
 exports.open = function(top) {
 	if (top === undefined)
-		top = 55;
+		top = 0;
 	function animate() {
 		var animation = Titanium.UI.createAnimation();
 		animation.top = top;
@@ -446,7 +446,7 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	});
 	$.detailsTable.setParent($.$view);
 	// detailsTable.$view.setZIndex($.$view.getZIndex() ? $.$view.getZIndex() + 1 : 1);
-	$.detailsTable.open(0);
+	$.detailsTable.open();
 
 	$.$view.fireEvent("navigatedown", {
 		bubbles : true,

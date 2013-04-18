@@ -3,7 +3,8 @@
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="好友请求" readModeTitle="好友请求" editModeTitle="好友请求" editModeMenuButtonTitle="同意"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="42">
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间"
 					bindModel = "$.$model"
 					bindAttribute = "date"
@@ -17,6 +18,7 @@
 					bindModel="$.$model"
 					bindAttribute="detail"/>
 		</ScrollView>
+		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
         	buttons="忽略,拒绝,加为好友"
         	ids="ignore,reject,addFriend"/>

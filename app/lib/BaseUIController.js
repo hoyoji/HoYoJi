@@ -82,7 +82,7 @@
 				},
 				slideDown : function(zIndex, top) {
 					if (top === undefined)
-						top = 42;
+						top = 0;
 				
 					function animate() {
 						$.$view.removeEventListener("postlayout", animate);

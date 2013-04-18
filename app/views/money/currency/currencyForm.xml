@@ -3,8 +3,9 @@
 			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增币种" readModeTitle="币种详细" editModeTitle="修改币种"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" 
-		id="table" class="table-edit" bottom="0" top="42">
+		id="table" class="table-edit" bottom="0" top="0">
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="币种名称" hintText="请输入币种名称"
 			bindModel="$.$model"
 			bindAttribute="name"/>
@@ -14,6 +15,6 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种代号" hintText="请输入币种代号"
 			bindModel="$.$model"
 			bindAttribute="code"/>
-		</ScrollView>
+		</ScrollView></View>
 	</View>
 </Alloy>

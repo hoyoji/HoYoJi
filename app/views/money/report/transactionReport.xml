@@ -1,8 +1,9 @@
 <Alloy>
 	<View class="container" title="流水汇总">
 				<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="流水汇总"/>
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="42" top="42">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="流水汇总"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 			<View height="42">
 				<Label left="5" width="30%">总收入</Label>
 				<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
@@ -31,7 +32,7 @@
 				<Label left="5" width="30%">结余</Label>
 				<Label id="totalBalance" right="5">0.00</Label>
 			</View>	
-		</ScrollView>
+		</ScrollView></View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="查询"
 		ids="transactionsSummuryQuery"/>

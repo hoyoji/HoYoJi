@@ -2,10 +2,12 @@
 	<View class="container" title="消息">
 	<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收件箱"/>
-        <Widget src="com.hoyoji.titanium.widget.XTableView" id="sendedMessagesTable" bottom="42" top="42"/>
+		<View id="body" top="49" bottom="65" left="10" right="10">
+        <Widget src="com.hoyoji.titanium.widget.XTableView" id="sendedMessagesTable" bottom="0" top="0"/>
 		<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" id="newMessagesTable" bottom="42" top="42"/>
         <Widget src="com.hoyoji.titanium.widget.XTableView" id="oldMessagesTable" bottom="42" top="42"/> -->
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="receivedMessagesTable" sortByField="date" groupByField="date" bottom="42" top="42"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="receivedMessagesTable" sortByField="date" groupByField="date" bottom="0" top="0"/>
+		</View>
         <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
         	buttons="收件箱;未读消息;已读消息,发件箱"
         	ids="receivedMessagesTable;newMessagesTable;oldMessagesTable,sendedMessagesTable"/>
