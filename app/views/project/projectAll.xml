@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" title="项目">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的项目"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 		<Widget id="sharedWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="0" top="0" hasDetail=""/>
