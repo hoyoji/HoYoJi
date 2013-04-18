@@ -1,11 +1,12 @@
 <Alloy>
-	<View height="15" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
+	<View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
 		<!-- <View width="Ti.UI.FILL" height="5" top="0">
 			<Label width="Ti.UI.FILL" height="10" borderRadius="5" top="-5" backgroundColor="#f1fbfb"/>
 		</View> -->
-		<View width="10" height="10" left="0" top="-4" backgroundImage="/images/rowBottomLeftShadow.png"/>
-		<View width="Ti.UI.FILL" height="5" left="3" top="0" zIndex="1">
-			<View width="Ti.UI.FILL" left="5" height="5" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
+		<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
+			<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
+			<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+			<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 		</View>
 	</View>
 </Alloy>

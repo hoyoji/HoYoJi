@@ -379,7 +379,7 @@ exports.close = function() {
 
 exports.open = function(top) {
 	if (top === undefined)
-		top = 45;
+		top = 55;
 	function animate() {
 		var animation = Titanium.UI.createAnimation();
 		animation.top = top;
@@ -505,19 +505,29 @@ exports.sort = function(fieldName, reverse, groupField) {
 			sectionIndex++;
 		}
 	}
-
 	$.table.setData(data);
 }
 
 
 function createSection(sectionTitle, sectionIndex){
-	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex});
-		// sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
+	var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex}),
+		section;
 	
-	var section = Ti.UI.createTableViewSection({
-		headerView : sectionHeader.$view
-		//footerView : Ti.UI.createView({height : 10, backgroundColor : "pink"})
-	});
+	if(OS_IOS){
+		var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
+		section = Ti.UI.createTableViewSection({
+			headerView : sectionHeader.$view,
+			footerView : sectionFooter.$view
+		});
+			
+	} else {
+		section = Ti.UI.createTableViewSection({
+			headerView : Ti.UI.createLabel({text : sectionTitle, width : Ti.UI.FILL, height : 10, backgroundColor : "green"}),
+			footerView : Ti.UI.createLabel({text : sectionTitle, width : Ti.UI.FILL, height : 10, backgroundColor : "green"})
+		});
+	}
+	
+	
 	return section;
 }
 
