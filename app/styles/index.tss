@@ -1,8 +1,8 @@
 ".container": {
-	backgroundColor:"white"
+	backgroundColor:"#e7f5f5"
 },
+
 "Label": {
 	width: Ti.UI.SIZE,
-	height: Ti.UI.SIZE,
-	color: "#000"
+	height: Ti.UI.SIZE
 } 
