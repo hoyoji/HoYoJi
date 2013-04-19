@@ -113,14 +113,14 @@ function onFooterbarTap(e) {
 // moneyLend : null
 // });
 
-var moneyIncomes = Alloy.createCollection("moneyIncome").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
-var moneyExpenses = Alloy.createCollection("moneyExpense").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
+var moneyIncomes = Alloy.createCollection("moneyIncome");
+var moneyExpenses = Alloy.createCollection("moneyExpense");
 var moneyTransferOuts = Alloy.createCollection("moneyTransfer");
 var moneyTransferIns = Alloy.createCollection("moneyTransfer");
-var moneyBorrows = Alloy.createCollection("moneyBorrow").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
-var moneyLends = Alloy.createCollection("moneyLend").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
-var moneyReturns = Alloy.createCollection("moneyReturn").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
-var moneyPaybacks = Alloy.createCollection("moneyPayback").xSearchInDb({localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")});
+var moneyBorrows = Alloy.createCollection("moneyBorrow");
+var moneyLends = Alloy.createCollection("moneyLend");
+var moneyReturns = Alloy.createCollection("moneyReturn");
+var moneyPaybacks = Alloy.createCollection("moneyPayback");
 
 doAllTimeFilter();
 

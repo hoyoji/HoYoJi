@@ -204,6 +204,7 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
+				var interest = this.xGet("interest");
 
 				this._xDelete(xFinishCallback);
 				if (this.xGet("moneyLend")) {
@@ -212,7 +213,7 @@ exports.definition = {
 					moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate);
 					moneyLend.xSave();
 				}
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount - interest);
 				moneyAccount.xSave();
 			}
 		});
