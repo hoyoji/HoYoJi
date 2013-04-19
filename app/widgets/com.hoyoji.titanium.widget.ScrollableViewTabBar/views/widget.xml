@@ -6,8 +6,8 @@
 		</View>
 		<View id="tabsContainer" width="Ti.UI.FILL" height="62" top="5" zIndex="0" backgroundColor="#e7f5f5">
 			<View width="Ti.UI.FILL" height="7"  top="0" left="9" right="9" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/topShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
-			<View width="11" height="Ti.UI.FILL" top="0" left="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/leftShadowBar.png" backgroundImageRepeat="true" zIndex="101"/>
-			<View width="13" height="Ti.UI.FILL" top="0" right="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/rightShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+			<View width="11" height="Ti.UI.FILL" top="0" left="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/leftShadowBar.png" backgroundImageRepeat="true" zIndex="102"/>
+			<View width="13" height="Ti.UI.FILL" top="0" right="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/rightShadowBar.png" backgroundImageRepeat="true"  zIndex="102"/>
 			<View width="Ti.UI.FILL" height="20" top="42" left="0" right="0" backgroundImage="ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
 			<View id="tabs" height="32" top="7" left="10" right="10" layout="horizontal" zIndex="0"/>
 		</View>
