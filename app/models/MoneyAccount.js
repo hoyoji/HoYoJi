@@ -71,6 +71,7 @@ exports.definition = {
 							};
 						}
 					}
+					xFinishCallback(error);
 				}
 			},
 			xDelete : function(xFinishCallback) {
