@@ -10,14 +10,16 @@ function createSubFooterBar(button, subButtons, subIds) {
 	var subFooterBarId = subIds[0]+"subFooterBar";
 	if(!$[subFooterBarId]){
 		$[subFooterBarId] = Ti.UI.createView({
-				top : 10,
-				bottom : 10,
-				left : 10,
-				right : 10,
+				top : 3,
+				bottom : 3,
+				left : 5,
+				right : 5,
+				width : Ti.UI.FILL,
 				layout : "horizontal",
 				horizontalWrap : false,
 				zIndex : 2
 		});
+		$.$view.add($[subFooterBarId]);	
 		
 		var width = (1/(subButtons.length-1) * 100) + "%"
 		var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + subButtons.length + ".png");
@@ -38,7 +40,6 @@ function createSubFooterBar(button, subButtons, subIds) {
 			$[subFooterBarId].hide();
 		});
 		
-		$.$view.add($[subFooterBarId]);	
 	} else {
 		$[subFooterBarId].show();
 	}
@@ -53,7 +54,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 if($.$attrs.buttons){
 	var buttons = $.$attrs.buttons.split(",");
 	var ids = $.$attrs.ids.split(",");
-	var width = (1/buttons.length * 100) + "%"
+	var width = (1/buttons.length * 100) + "%";
 	var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + buttons.length + ".png");
 	var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + buttons.length + ".png");
 	for(var i=0; i < buttons.length; i++){
