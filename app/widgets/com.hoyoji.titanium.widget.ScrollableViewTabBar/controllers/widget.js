@@ -127,7 +127,7 @@ exports.init = function(scView) {
 				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 				width : tabWidth,
 				top : 0,
-				height : Ti.UI.FILL
+				height : 32
 			});
 			label.addEventListener("singletap", function(){
 				scrollableView.scrollToView(view);
