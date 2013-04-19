@@ -95,6 +95,21 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
+				interest : function(xValidateComplete){
+					var error;
+					if (isNaN(this.xGet("interest"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("interest") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
 				exchangeRate : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("exchangeRate"))) {
