@@ -75,12 +75,27 @@ exports.definition = {
 						if (this.isNew()) {
 							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount");
 						} else {
-							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount") + this.xGet("moneyBorrow").previous("amount");
+							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount") + this.previous("amount");
 						}
 						if (this.xGet("amount") > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
 							}
+						}
+					}
+					xValidateComplete(error);
+				},
+				interest : function(xValidateComplete){
+					var error;
+					if (isNaN(this.xGet("interest"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("interest") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
 						}
 					}
 					xValidateComplete(error);

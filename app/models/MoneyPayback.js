@@ -85,12 +85,27 @@ exports.definition = {
 						if (this.isNew()) {
 							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.xGet("moneyLend").previous("amount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.previous("amount");
 						}
 						if (this.xGet("amount") > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
 							}
+						}
+					}
+					xValidateComplete(error);
+				},
+				interest : function(xValidateComplete){
+					var error;
+					if (isNaN(this.xGet("interest"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("interest") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
 						}
 					}
 					xValidateComplete(error);
