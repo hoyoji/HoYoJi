@@ -14,3 +14,9 @@ $.titleBar.bindXTable($.moneyExpenseCategoriesTable);
 
 var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter({parentExpenseCategory : null});
 $.moneyExpenseCategoriesTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addExpenseCategory"){
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm",{$model : "MoneyExpenseCategory", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
+	}
+}

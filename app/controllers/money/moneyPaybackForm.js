@@ -129,7 +129,7 @@ if ($.saveableMode === "read") {
 			exchange.xAddToSave($);
 		}
 
-		if (selectedLend) {//更新已收款
+		if (moneyLend) {//更新已收款
 			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
 			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
 			var paybackRate = $.$model.xGet("exchangeRate");
