@@ -28,7 +28,7 @@ exports.animateHideTabBar = function() {
 exports.animateShowTabBar = function(){
 		if (!isExpanded) {
 				isExpanded = true;
-				$.widget.height = "47";
+				$.widget.height = "67";
 				var animation = Titanium.UI.createAnimation();
 				animation.top = "5";
 				animation.duration = 500;
