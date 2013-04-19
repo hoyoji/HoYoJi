@@ -133,7 +133,7 @@ if ($.saveableMode === "read") {
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
-			moneyBorrow.xSet("returnedAmount", (returnedAmount + (oldAmount + newAmount) * returnRate / borrowRate));
+			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
 			moneyBorrow.xAddToSave($);
 		}
 

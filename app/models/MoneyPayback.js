@@ -85,7 +85,7 @@ exports.definition = {
 						if (this.isNew()) {
 							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.xGet("moneyLend").previous("amount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.previous("amount");
 						}
 						if (this.xGet("amount") > paybackRequireAmount) {
 							error = {
