@@ -1,3 +1,3 @@
 <Alloy>
-		<Picker id="field" visible="false" useSpinner="true" backgroundColor="white" height="Ti.UI.FILL" type="Titanium.UI.PICKER_TYPE_PLAIN" selectionIndicator="true" width="Ti.UI.FILL"/>
+		<Picker id="field" visible="false" useSpinner="true"  height="Ti.UI.FILL" type="Titanium.UI.PICKER_TYPE_PLAIN" selectionIndicator="true" width="Ti.UI.FILL"/>
 </Alloy>

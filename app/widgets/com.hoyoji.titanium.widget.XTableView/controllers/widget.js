@@ -548,14 +548,14 @@ function createSection(sectionTitle, sectionIndex){
 		// var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex});
 		// var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
 
-		var sectionHeader = Ti.UI.createView({id : sectionIndex, height : 35, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
+		var sectionHeader = Ti.UI.createView({id : sectionIndex, height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
 		view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
 		sectionHeader.add(view1);
 		view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
 		view2.add(Ti.UI.createLabel({text : sectionTitle, textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
 		sectionHeader.add(view2);
 
-		var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
+		var sectionFooter = Ti.UI.createView({height:17,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
 		var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
 		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
 		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));

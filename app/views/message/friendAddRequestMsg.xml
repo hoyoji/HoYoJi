@@ -1,9 +1,9 @@
 <Alloy>
-	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%" >
+	<View class="container" saveableContainer="true"  width="100%" height="100%" >
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="发送好友请求" readModeTitle="查看好友请求" editModeTitle="修改好友请求" addModeMenuButtonTitle="发送" editModeMenuButtonTitle="重发"/>
-		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View id="body" top="67" bottom="70" left="15" right="15">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
                 		bindModel="$.$model"

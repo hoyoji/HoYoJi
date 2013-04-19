@@ -2,7 +2,7 @@
 	color: '#000',
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
-}
+},
 
 "#error": {
 	color: 'red',
@@ -14,4 +14,8 @@
 	width: "60%",
 	right : 0,
 	zIndex : 1
+},
+
+".container": {
+	backgroundColor: "#f1fbfb"
 }

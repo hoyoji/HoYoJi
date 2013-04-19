@@ -1,10 +1,10 @@
 <Alloy>
-		<View class="title-bar" width="Ti.UI.FILL" height="30" top="0" zIndex="100"  backgroundColor="#f1fbfb" top="5" left="10" right="10">
+		<View class="title-bar" width="Ti.UI.FILL" height="32" zIndex="100"  backgroundColor="#e7f5f5" top="5" left="10" right="10">
 			<Label id="msg" width="Ti.UI.FILL" height="30" top="-30" zIndex="100" color="white" backgroundColor="#40000000" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
-			<Button id="backButton" left="5" top="2" height="26">返回</Button>
-			<Button id="tableNavButton" left="5" top="2" height="26" visible="false">上一级</Button>
+			<Button id="backButton" left="5" top="3" height="28" width="45" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/backButtonShadow.png"></Button>
+			<Button id="tableNavButton" left="5" top="3" height="28" width="45" visible="false" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/backButtonShadow.png"></Button>
 			<Label id="title" color="black"></Label>
 			<Label id="childTableTitle" color="black" visible="false"></Label>
-			<Button id="menuButton" right="5" top="2" height="26">菜单</Button>
+			<Button id="menuButton" right="5" top="3" height="28" width="28" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/menuButtonShadow.png"></Button>
 		</View>
 </Alloy>

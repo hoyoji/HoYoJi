@@ -1,5 +1,5 @@
 <Alloy>
-	<View  bottom="0" height="42" width="Ti.UI.FILL" zIndex="100" backgroundColor="#e7f5f5">
-		<View id="mainFooterBar" bottom="10" top="10" left="10" right="10" layout="horizontal" horizontalWrap="false" backgroundColor="#e7f5f5"></View>
+	<View  bottom="3" left="10" right="10" height="44" width="Ti.UI.FILL" zIndex="100" backgroundColor="#e7f5f5">
+		<View id="mainFooterBar" bottom="3" top="3" left="5" right="5" layout="horizontal" horizontalWrap="false" backgroundColor="#e7f5f5"></View>
 	</View>
 </Alloy>
