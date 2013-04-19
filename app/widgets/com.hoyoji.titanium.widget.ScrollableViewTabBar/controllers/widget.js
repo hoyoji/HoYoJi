@@ -14,7 +14,7 @@ exports.animateHideTabBar = function() {
 	//$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
 	var animation = Titanium.UI.createAnimation();
-	animation.top = "-42";
+	animation.top = "-57";
 	animation.duration = 500;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener('complete', function() {
