@@ -53,7 +53,7 @@
 
 			$.convertModelValue = function(value) {
 				if ( typeof value === "number") {
-					return value.toString();
+					return value.toUserCurrency();
 				}
 				return value;
 			}

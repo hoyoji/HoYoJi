@@ -1,9 +1,16 @@
 <Alloy>
-	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="47" backgroundColor="#00000000" zIndex="101">
-		<View width="Ti.UI.FILL" height="Ti.UI.SIZE" backgroundColor="white" top="0" zIndex="1">
-			<Label id="hightlight" class="hightlight" backgroundColor="cyan" top="0" width="20%" height="5"></Label>
+	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="67" backgroundColor="#00000000" zIndex="103">
+
+		<View left="10" right="10" height="Ti.UI.SIZE"  top="0" zIndex="1" backgroundColor="#f1fbfb">
+			<Label id="hightlight" class="hightlight"  top="0" width="20%" height="5" backgroundColor="cyan"></Label>
 		</View>
-		<View id="tabs" class="tabs" width="Ti.UI.FILL" height="42" top="5" layout="horizontal" backgroundColor="white" zIndex="0"></View>
+		<View id="tabsContainer" width="Ti.UI.FILL" height="62" top="5" zIndex="0" backgroundColor="#e7f5f5">
+			<View height="7"  top="0" left="9" right="9" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/topShadowBar.png" backgroundImageRepeat="true"  zIndex="103"/>
+			<View width="11" height="Ti.UI.FILL" top="0" left="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/leftShadowBar.png" backgroundImageRepeat="true" zIndex="102"/>
+			<View width="13" height="Ti.UI.FILL" top="0" right="0" bottom="19" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/rightShadowBar.png" backgroundImageRepeat="true"  zIndex="102"/>
+			<View height="20" bottom="0" left="0" right="0" backgroundImage="/ScrollableViewTabBarImages/com.hoyoji.titanium.widget.ScrollableViewTabBar/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+			<View id="tabs" height="32" top="8" left="10" right="10" layout="horizontal" zIndex="0"/>
+		</View>
 	</View>
-	<Button id="pullDown" onSingletap="pullDown" top="5" left="0" height="42" width="42" zIndex="100">下拉</Button>
+	<Button id="pullDown" onSingletap="pullDown" top="5" left="0" height="42" width="42" zIndex="100" visible="false">下拉</Button>
 </Alloy>

@@ -69,5 +69,5 @@ function calculateTotalBalance(){
 			- $.moneyReturnTotal.getValue()
 			- $.moneyLendTotal.getValue()
 			+ $.moneyPaybackTotal.getValue();
-	$.totalBalance.setText(totalBalance.toString());
+	$.totalBalance.setText(totalBalance.toUserCurrency());
 }

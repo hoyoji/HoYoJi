@@ -45,6 +45,9 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getAmount : function(){
+				return this.xGet("moneyIncome").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
+			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				if (this.xGet("moneyIncome").isNew()) {

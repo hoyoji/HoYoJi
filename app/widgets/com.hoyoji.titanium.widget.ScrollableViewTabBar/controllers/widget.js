@@ -14,7 +14,7 @@ exports.animateHideTabBar = function() {
 	//$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 			
 	var animation = Titanium.UI.createAnimation();
-	animation.top = "-42";
+	animation.top = "-57";
 	animation.duration = 500;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener('complete', function() {
@@ -22,19 +22,19 @@ exports.animateHideTabBar = function() {
 		isExpanded = false;
 	});
 
-	$.tabs.animate(animation);
+	$.tabsContainer.animate(animation);
 }
 
 exports.animateShowTabBar = function(){
 		if (!isExpanded) {
 				isExpanded = true;
-				$.widget.height = "47";
+				$.widget.height = "67";
 				var animation = Titanium.UI.createAnimation();
 				animation.top = "5";
 				animation.duration = 500;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	
-				$.tabs.animate(animation);
+				$.tabsContainer.animate(animation);
 		}	
 }
 
@@ -127,7 +127,7 @@ exports.init = function(scView) {
 				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 				width : tabWidth,
 				top : 0,
-				height : 42
+				height : 32
 			});
 			label.addEventListener("singletap", function(){
 				scrollableView.scrollToView(view);

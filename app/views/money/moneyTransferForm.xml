@@ -1,9 +1,9 @@
 <Alloy>
-	<View class="container" title="转账" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+	<View class="container" title="转账" saveableContainer="true"  width="100%" height="100%">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增转账" readModeTitle="转账详细" editModeTitle="修改转账"/>
-		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View id="body" top="67" bottom="70" left="15" right="15">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 			bindModel="$.$model"

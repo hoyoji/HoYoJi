@@ -1,9 +1,9 @@
 <Alloy>
-	<View class="container" saveableContainer="true" backgroundColor="white" width="100%" height="100%">
+	<View class="container" saveableContainer="true"  width="100%" height="100%">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 				 addModeTitle="新增支出分类" readModeTitle="查看支出分类" editModeTitle="修改支出分类"/>
-		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View id="body" top="67" bottom="70" left="15" right="15">
 			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
 					bindModel="$.$model"

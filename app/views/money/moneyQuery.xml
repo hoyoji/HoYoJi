@@ -6,8 +6,8 @@
 				<Label>请输入查询条件</Label>
 				<Button right="10" onSingletap="doQuery">查询</Button>
 			</View>
-		<View id="body" top="49" bottom="65" left="10" right="10">
-			<ScrollView layout="vertical" backgroundColor="white" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
+		<View id="body" top="67" bottom="70" left="15" right="15">
+			<ScrollView layout="vertical"  scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="开始时间" hintText="无开始时间" id="dateFrom"
 				bindModel="$.queryOptions"
 				bindAttribute="dateFrom" />

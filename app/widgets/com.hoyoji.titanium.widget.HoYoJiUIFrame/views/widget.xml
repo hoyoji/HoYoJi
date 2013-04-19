@@ -1,8 +1,8 @@
 <Alloy>
-		<View width="11" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/leftShadowBar.png" backgroundImageRepeat="true" zIndex="101"/>
-		<View width="13" height="Ti.UI.FILL" top="0" right="0" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/rightShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
-		<View id="headerBar" width="Ti.UI.FILL" height="25" top="35" left="9" right="9" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
-		<View id="footerBar" width="Ti.UI.FILL" height="25" bottom="40" left="9" right="9" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
-		<View width="Ti.UI.FILL" height="7"  top="0" left="9" right="9" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/topShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
-		<View width="Ti.UI.FILL" height="3"  bottom="0" left="9" right="9" backgroundImage="/shadow/com.hoyoji.titanium.widget.HoYoJiUIFrame/bottomShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+		<View width="11" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/leftShadowBar.png" backgroundImageRepeat="true" zIndex="101"/>
+		<View width="13" height="Ti.UI.FILL" top="0" right="0" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/rightShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+		<View id="headerBar" width="Ti.UI.FILL" height="20" top="37" left="9" right="9" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+		<View id="footerBar" width="Ti.UI.FILL" height="20" bottom="45" left="9" right="9" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/middleShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+		<View width="Ti.UI.FILL" height="7"  top="0" left="9" right="9" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/topShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
+		<View width="Ti.UI.FILL" height="5"  bottom="0" left="9" right="9" backgroundImage="/HoYoJiUIFrameImages/com.hoyoji.titanium.widget.HoYoJiUIFrame/bottomShadowBar.png" backgroundImageRepeat="true"  zIndex="101"/>
 </Alloy>

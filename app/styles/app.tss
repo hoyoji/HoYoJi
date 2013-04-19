@@ -1,0 +1,15 @@
+".container": {
+	backgroundColor: "#e7f5f5"
+},
+
+"Label" : {
+	color : "black"
+},
+
+"TextField" : {
+	backgroundColor : "#f1fbfb"
+},
+
+"TextArea"  : {
+	backgroundColor : "#f1fbfb"
+}

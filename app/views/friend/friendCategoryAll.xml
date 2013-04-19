@@ -1,8 +1,8 @@
 <Alloy>
-	<View class="container" title="好友分类" backgroundColor="cyan">
+	<View class="container" title="好友分类" >
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友分类"/>
-		<View id="body" top="49" bottom="65" left="10" right="10">
+		<View id="body" top="67" bottom="70" left="15" right="15">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" sortByField="name" bottom="0" top="0" hasDetail=""/>
 		</View>
 	</View>
