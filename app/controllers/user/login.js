@@ -1,4 +1,4 @@
-//Alloy.Globals.extendsBaseFormController($, arguments[0]);
+Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 function doLogin(e){
 	Alloy.Models.instance("User").xFindInDb({userName : $.userName.getValue()});

@@ -1,9 +1,11 @@
 <Alloy>
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
-		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/> -->
 		<TextField id="__hiddenTextField" platform="android" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS" top="-100"/>
-		<View layout="vertical" top="0">
-			<Require src="user/login" />
-        </View>
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/>
+		<View id="body" top="15" bottom="5" left="15" right="15">
+        	<ImageView image="/images/loginImage.png" top="0"/>
+			<Require src="user/login" top="110" />
+	        <ImageView image="/images/thirdPartiesLoginImage.png" top="310"/>
+		</View>
      </Window>
 </Alloy>
