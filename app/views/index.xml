@@ -1,7 +1,7 @@
 <Alloy>
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
 		<TextField id="__hiddenTextField" platform="android" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS" top="-100"/>
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/> -->
 		<View id="body" top="15" bottom="5" left="15" right="15">
         	<ImageView image="/images/loginImage.png" top="0"/>
 			<Require src="user/login" top="110" />
