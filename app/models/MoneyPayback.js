@@ -81,7 +81,12 @@ exports.definition = {
 						}
 					}
 					if (this.xGet("moneyLend")) {
-						var paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.xGet("moneyLend").previous("amount");
+						var paybackRequireAmount;
+						if (this.isNew()) {
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
+						} else {
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.xGet("moneyLend").previous("amount");
+						}
 						if (this.xGet("amount") > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
