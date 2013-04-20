@@ -90,6 +90,11 @@ function numPress(e) {
 	setOPColor();
 }
 
+function doubleClickNumPress(e){
+	numPress(e);
+	numPress(e);
+}
+
 //+-*/操作
 function operation(e) {
 	var readout = activeTextField.getValue() + "";
@@ -168,6 +173,11 @@ function backspace() {
 	}
 	activeTextField.field.fireEvent("change");
 	setOPColor();
+}
+
+function doubleClickBackspace(e){
+	backspace(e);
+	backspace(e);
 }
 
 //清除

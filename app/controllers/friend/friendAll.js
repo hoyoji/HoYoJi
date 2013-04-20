@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
-	if(!sourceModel || sourceModel.config.collection_name === "FriendCategory"){
+	if(!sourceModel || sourceModel.config.adapter.collection_name === "FriendCategory"){
 		menuSection.add($.createContextMenuItem("新增好友分类", function() {
 		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", data : { parentFriendCategory : sourceModel }});
 		}));
