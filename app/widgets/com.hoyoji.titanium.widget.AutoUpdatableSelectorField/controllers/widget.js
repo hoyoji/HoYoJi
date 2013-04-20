@@ -4,7 +4,7 @@ if(OS_IOS){
 	$.field.setSelectionIndicator(false);
 }
 
-var items = $.$attrs.items.split("，");//从input widget获取items转为array
+var items = $.$attrs.items.split(",");//从input widget获取items转为array
 var values = items;
 if($.$attrs.values){
 	values = $.$attrs.values.split(",");//从input widget获取values转为array

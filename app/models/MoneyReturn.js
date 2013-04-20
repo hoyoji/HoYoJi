@@ -56,6 +56,19 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				date : function(xValidateComplete) {
+					var error;
+					if (this.xGet("moneyBorrow")) {
+						var moneyBorrow = this.xGet("moneyBorrow");
+						if (this.xGet("date") < moneyBorrow.xGet("date")) {
+							error = {
+								msg : "还款日不能在借入日之前（" + moneyBorrow.xGet("date") + "）"
+							}
+						}
+					}
+					xValidateComplete(error);
+				},
+
 				amount : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
@@ -85,7 +98,7 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
-				interest : function(xValidateComplete){
+				interest : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("interest"))) {
 						error = {
@@ -192,6 +205,7 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var returnRate = this.xGet("exchangeRate");
+				var interest = this.xGet("interest");
 
 				this._xDelete(xFinishCallback);
 				if (this.xGet("moneyBorrow")) {
@@ -200,7 +214,7 @@ exports.definition = {
 					moneyBorrow.xSet("returnedAmount", moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
 					moneyBorrow.xSave();
 				}
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount + interest);
 				moneyAccount.xSave();
 			}
 		});

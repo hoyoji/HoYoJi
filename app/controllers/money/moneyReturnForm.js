@@ -129,7 +129,7 @@ if ($.saveableMode === "read") {
 			exchange.xAddToSave($);
 		}
 
-		if (selectedBorrow) {//更新已还款
+		if (moneyBorrow) {//更新已还款
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
