@@ -124,7 +124,7 @@
 					}
 				}
 			}
-			var showErrorMsg = function(msg) {
+			$.showErrorMsg = function(msg) {
 				$.error.setText(msg);
 				$.__errorShowing = true;
 
@@ -200,7 +200,7 @@
 
 				var handleError = function(model, error) {
 					if (error[attribute]) {
-						showErrorMsg(error[attribute].msg);
+						$.showErrorMsg(error[attribute].msg);
 					} else {
 						$.hideErrorMsg();
 					}
@@ -226,7 +226,7 @@
 							if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
 								val = Number(val);
 								if (_.isNaN(val)) {
-									showErrorMsg("请输入数值");
+									$.showErrorMsg("请输入数值");
 									return;
 								}
 							}

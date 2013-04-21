@@ -40,18 +40,24 @@
 				collection.xSearchInDb(filter);
 				xFinishedCallback(collection);
 			},
-			createData : function(data, xFinishedCallback, xErrorCallback){
+			postData : function(data, xFinishedCallback, xErrorCallback, target){
 				data = JSON.stringify(data);
 				console.info(data);
-				var url = dataUrl + "createData";
+				var url = dataUrl + target || "postData";
 				var xhr = Ti.Network.createHTTPClient({
 					onload : function(e) {
-						console.info("Server.createData success : " + JSON.stringify(this.responseText));
-						xFinishedCallback();
+						console.info("Server.registerUser response : " + this.responseText);
+						if(this.responseText){
+							xErrorCallback(JSON.parse(this.responseText));	
+						} else {
+							xFinishedCallback();
+						}
 					},
 					onerror : function(e) {
-						console.info("Server.createData error : " + JSON.stringify(this.responseText));
-						xErrorCallback(e);
+						console.info("Server.registerUser error : " + JSON.stringify(e));
+						//if(e.code === 1){
+							xErrorCallback({ __summury : {msg : "连接服务器出错 " + e.code}});
+						//}
 					},
 					timeout : 5000 /* in milliseconds */
 				});
@@ -65,7 +71,7 @@
 						alert(JSON.stringify(this.responseText));
 					},
 					onerror : function(e) {
-						alert(e.error);
+						alert(JSON.stringify(e));
 					},
 					timeout : 5000 /* in milliseconds */
 				});
