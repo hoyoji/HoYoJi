@@ -129,11 +129,11 @@ if ($.saveableMode === "read") {
 			exchange.xAddToSave($);
 		}
 
-		if (selectedLend) {//更新已收款
+		if (moneyLend) {//更新已收款
 			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
 			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
 			var paybackRate = $.$model.xGet("exchangeRate");
-			moneyLend.xSet("paybackedAmount", paybackedAmount + (oldAmount + newAmount) * paybackRate / lendRate);
+			moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
 			moneyLend.xAddToSave($);
 		}
 		var modelIsNew = $.$model.isNew();

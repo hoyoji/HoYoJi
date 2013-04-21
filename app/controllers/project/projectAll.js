@@ -2,9 +2,11 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
-	menuSection.add($.createContextMenuItem("新增项目", function() {
-		Alloy.Globals.openWindow("project/projectForm", {$model : "Project", data : { parentProject : sourceModel }});
-	}));
+	if(!sourceModel || sourceModel.config.adapter.collection_name === "Project"){
+		menuSection.add($.createContextMenuItem("新增项目", function() {
+			Alloy.Globals.openWindow("project/projectForm", {$model : "Project", data : { parentProject : sourceModel }});
+		}));
+	}
 	return menuSection;
 }
 

@@ -109,7 +109,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						fromUser : Alloy.Models.User,
 						type : "Project.Share.AddRequest",
 						messageState : "closed",
-						messageTitle : Alloy.Models.User.xGet("userName"),
+						messageTitle : "共享项目请求",
 						date : date,
 						detail : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"给您",
 						messageBox : Alloy.Models.User.xGet("messageBox"),
@@ -246,39 +246,48 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 							});
 						});
-						Alloy.Globals.Server.sendMsg({
-							"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
-							"fromUserId" : Alloy.Models.User.xGet("id"),
-							"type" : "Project.Share.Edit",
-							"messageState" : "noRead",
-							"messageTitle" : "共享项目",
-							"date" : date,
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
-							"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-							"messageData" : JSON.stringify({
-					                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-					                            projectShareAuthorizationId : $.$model.xGet("id")
-					                        })
-				         },function(){
-					        $.saveModel(saveEndCB, saveErrorCB);
-		    			});
+						if($.$model.xGet("state") === "Accept"){
+							Alloy.Globals.Server.sendMsg({
+								"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+								"fromUserId" : Alloy.Models.User.xGet("id"),
+								"type" : "Project.Share.Edit",
+								"messageState" : "noRead",
+								"messageTitle" : "共享项目",
+								"date" : date,
+								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
+								"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+								"messageData" : JSON.stringify({
+						                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+						                            projectShareAuthorizationId : $.$model.xGet("id")
+						                        })
+					         },function(){
+						        $.saveModel(saveEndCB, saveErrorCB);
+			    			});
+						}else{
+							$.saveModel(saveEndCB, saveErrorCB);
+						}
+							
 					}else{
-						Alloy.Globals.Server.sendMsg({
-							"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
-							"fromUserId" : Alloy.Models.User.xGet("id"),
-							"type" : "Project.Share.Edit",
-							"messageState" : "noRead",
-							"messageTitle" : "共享项目",
-							"date" : date,
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
-							"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-							"messageData" : JSON.stringify({
-					                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-					                            projectShareAuthorizationId : $.$model.xGet("id")
-					                        })
-				         },function(){
-					        $.saveModel(saveEndCB, saveErrorCB);
-		    			});
+						if($.$model.xGet("state") === "Accept"){
+							Alloy.Globals.Server.sendMsg({
+								"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+								"fromUserId" : Alloy.Models.User.xGet("id"),
+								"type" : "Project.Share.Edit",
+								"messageState" : "noRead",
+								"messageTitle" : "共享项目",
+								"date" : date,
+								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") +"的权限",
+								"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+								"messageData" : JSON.stringify({
+						                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+						                            projectShareAuthorizationId : $.$model.xGet("id")
+						                        })
+					         },function(){
+						        $.saveModel(saveEndCB, saveErrorCB);
+			    			});
+			    		}else{
+			    			$.saveModel(saveEndCB, saveErrorCB);
+			    		}
 					}
 				}
 			}

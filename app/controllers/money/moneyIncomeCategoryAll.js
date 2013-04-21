@@ -14,3 +14,9 @@ $.titleBar.bindXTable($.moneyIncomeCategoriesTable);
 
 var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter({parentIncomeCategory : null});
 $.moneyIncomeCategoriesTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addIncomeCategory"){
+		Alloy.Globals.openWindow("money/moneyIncomeCategoryForm",{$model : "MoneyIncomeCategory", data : {project : selectedProject, parentIncomeCategory : sourceModel}});
+	}
+}

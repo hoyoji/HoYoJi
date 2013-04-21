@@ -56,17 +56,19 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
-				// date : function(xValidateComplete) {
-				// var error;
-				// var moneyLend = this.xGet("moneyLend");
-				// if(moneyLend){
-				// if(this.xGet("date") < moneyLend.xGet("date")){
-				// error = {
-				// msg : "收款日期不能在借出日期（" + moneyLend.xGet("date") + "）之前"
-				// }
-				// }
-				// }
-				// },
+				date : function(xValidateComplete) {
+					var error;
+					if (this.xGet("moneyLend")) {
+						var moneyLend = this.xGet("moneyLend");
+						if (this.xGet("date") < moneyLend.xGet("date")) {
+							error = {
+								msg : "收款日不能在借出日之前（" + moneyLend.xGet("date") + "）"
+							}
+						}
+					}
+					xValidateComplete(error);
+				},
+
 				amount : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
@@ -85,12 +87,27 @@ exports.definition = {
 						if (this.isNew()) {
 							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.xGet("moneyLend").previous("amount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.previous("amount");
 						}
 						if (this.xGet("amount") > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
 							}
+						}
+					}
+					xValidateComplete(error);
+				},
+				interest : function(xValidateComplete) {
+					var error;
+					if (isNaN(this.xGet("interest"))) {
+						error = {
+							msg : "金额只能为数字"
+						};
+					} else {
+						if (this.xGet("interest") < 0) {
+							error = {
+								msg : "金额不能为负数"
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -187,6 +204,7 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
+				var interest = this.xGet("interest");
 
 				this._xDelete(xFinishCallback);
 				if (this.xGet("moneyLend")) {
@@ -195,7 +213,7 @@ exports.definition = {
 					moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate);
 					moneyLend.xSave();
 				}
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount - interest);
 				moneyAccount.xSave();
 			}
 		});
