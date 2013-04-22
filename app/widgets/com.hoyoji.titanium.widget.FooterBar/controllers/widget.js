@@ -2,97 +2,156 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var timeOutId = null;
 
-function hideSubFooterBar(subFooterBar){
-		subFooterBar.hide();
+function hideSubFooterBar(subFooterBar) {
+	subFooterBar.hide();
 }
 
 function createSubFooterBar(button, subButtons, subIds) {
-	var subFooterBarId = subIds[0]+"subFooterBar";
-	if(!$[subFooterBarId]){
+	var subFooterBarId = subIds[0] + "subFooterBar";
+	if (!$[subFooterBarId]) {
 		$[subFooterBarId] = Ti.UI.createView({
-				top : 3,
-				bottom : 3,
-				left : 5,
-				right : 5,
-				width : Ti.UI.FILL,
-				layout : "horizontal",
-				horizontalWrap : false,
-				zIndex : 2
+			top : 3,
+			bottom : 3,
+			left : 5,
+			right : 5,
+			layout : "horizontal",
+			horizontalWrap : false,
+			zIndex : 2
 		});
-		$.$view.add($[subFooterBarId]);	
-		
-		var width = (1/(subButtons.length-1) * 100) + "%"
+		$.$view.add($[subFooterBarId]);
+
+		var width = (1 / (subButtons.length - 1) * 100) + "%", subButton;
 		var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + subButtons.length + ".png");
 		var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + subButtons.length + ".png");
-		for(var i=1; i < subButtons.length; i++){
-			var subButton = Ti.UI.createButton({id : subIds[i], title : subButtons[i], borderRadius : 0, color : 'black', height : Ti.UI.FILL, backgroundImage : backgroundImage});
+		for (var i = 1; i < subButtons.length; i++) {
+			var imgPath;
+			if(OS_IOS){
+				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + "@2x.png" : "";
+			} else {
+				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + ".png" : "";
+			}
+			var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
+			if(imgPath && f.exists()){
+				subButton = Ti.UI.createButton({
+					id : subIds[i],
+					borderRadius : 0,
+					height : Ti.UI.FILL,
+					width : width,
+					backgroundImage : backgroundImage,
+					image : imgPath
+				});
+			} else {
+				subButton = Ti.UI.createButton({
+					id : subIds[i],
+					title : subButtons[i],
+					color : "black",
+					borderRadius : 0,
+					height : Ti.UI.FILL,
+					width : width,
+					backgroundImage : backgroundImage
+				});
+			}
+			f = null;
 			$[subFooterBarId].add(subButton);
 			$[subIds[i]] = subButton;
-			subButton.addEventListener("touchstart",function(button){
-					button.setBackgroundImage(backgroundImageNormal);
+			subButton.addEventListener("touchstart", function(button) {
+				button.setBackgroundImage(backgroundImageNormal);
 			}.bind(null, subButton));
-			subButton.addEventListener("touchend",function(button){
+			subButton.addEventListener("touchend", function(button) {
 				button.setBackgroundImage(backgroundImage);
 			}.bind(null, subButton));
 		}
-		
-		$[subFooterBarId].addEventListener("singletap", function(e){
+
+		$[subFooterBarId].addEventListener("singletap", function(e) {
 			$[subFooterBarId].hide();
 		});
-		
+
 	} else {
 		$[subFooterBarId].show();
 	}
-	if(timeOutId){
+	if (timeOutId) {
 		clearTimeout(timeOutId);
 	}
-	timeOutId = setTimeout(function(){
+	timeOutId = setTimeout(function() {
 		hideSubFooterBar($[subFooterBarId]);
 	}, 5000);
 }
 
-if($.$attrs.buttons){
+if ($.$attrs.buttons) {
 	var buttons = $.$attrs.buttons.split(",");
 	var ids = $.$attrs.ids.split(",");
-	var width = (1/buttons.length * 100) + "%";
+	var width = (1 / buttons.length * 100) + "%";
 	var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + buttons.length + ".png");
 	var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + buttons.length + ".png");
-	for(var i=0; i < buttons.length; i++){
-		var subButtons = buttons[i].split(";"), subIds, button;
-		if(subButtons.length > 1){
+	for (var i = 0; i < buttons.length; i++) {
+		var subButtons = buttons[i].split(";"), subIds, button, buttonId, buttonTitle;
+		if (subButtons.length > 1) {
 			subIds = ids[i].split(";");
-			button = Ti.UI.createButton({id : subIds[0], title : subButtons[0], width : width, borderRadius : 0, color : 'black', height : Ti.UI.FILL, backgroundImage : backgroundImage});
-			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
-			$[subIds[0]] = button;
+			buttonId = subIds[0];
+			buttonTitle = subButtons[0];
 		} else {
-			button = Ti.UI.createButton({id : ids[i], title : buttons[i], borderRadius : 0, color : 'black', width : width, height : Ti.UI.FILL, backgroundImage : backgroundImage});
-			$[ids[i]] = button;
+			buttonTitle = buttons[i];
+			buttonId = ids[i];
 		}
-		button.addEventListener("touchstart",function(button){
-				button.setBackgroundImage(backgroundImageNormal);
+		var imgPath;
+		if(OS_IOS){
+			imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId + "@2x.png" : "";
+		} else {
+			imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId + ".png" : "";
+		}
+		var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
+		if(imgPath && f.exists()){
+			button = Ti.UI.createButton({
+				id : buttonId,
+				borderRadius : 0,
+				width : width,
+				height : Ti.UI.FILL,
+				backgroundImage : backgroundImage,
+				image : imgPath
+			});
+		} else {
+			button = Ti.UI.createButton({
+				id : buttonId,
+				title : buttonTitle,
+				color : "black",
+				borderRadius : 0,
+				width : width,
+				height : Ti.UI.FILL,
+				backgroundImage : backgroundImage
+			});
+		}
+		f = null;
+		$[buttonId] = button;
+
+		if (subButtons.length > 1) {
+			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
+		}
+
+		button.addEventListener("touchstart", function(button) {
+			button.setBackgroundImage(backgroundImageNormal);
 		}.bind(null, button));
-		button.addEventListener("touchend",function(button){
+		button.addEventListener("touchend", function(button) {
 			button.setBackgroundImage(backgroundImage);
 		}.bind(null, button));
-		
+
 		$.mainFooterBar.add(button);
 	}
 }
 
 var currentSlide = null;
 
-$.$view.addEventListener("touchstart", function(e){
+$.$view.addEventListener("touchstart", function(e) {
 	e.cancelBubble = true;
 });
 
-$.$view.addEventListener("singletap", function(e){
+$.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	if(!e.source.getTitle){
+	if (!e.source.getTitle) {
 		return;
 	}
 	console.info("controll slideDown " + e.source.id);
-	if($.$attrs.controlSlideDown && $.getParentController()[e.source.id]){
-		if(currentSlide){
+	if ($.$attrs.controlSlideDown && $.getParentController()[e.source.id]) {
+		if (currentSlide) {
 			currentSlide.$view.setZIndex(-1);
 		}
 		console.info("controll slideDown " + e.source.id);
@@ -102,7 +161,7 @@ $.$view.addEventListener("singletap", function(e){
 	$.trigger("singletap", e);
 });
 
-$.$view.addEventListener("longpress", function(e){
+$.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
 	$.trigger("longpress", e);
 });

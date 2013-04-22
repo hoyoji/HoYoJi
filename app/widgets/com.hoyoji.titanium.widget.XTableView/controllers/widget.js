@@ -7,40 +7,40 @@ var sortByField = $.$attrs.sortByField,
 
 
 
-if(OS_ANDROID){
-	if($.$attrs.groupByField){
-		// <View height="45" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-		// <View width="5" height="25" left="1" bottom="0" backgroundImage="/images/rowTopLeftShadow.png" zIndex="0" />
-		// <View width="Ti.UI.FILL" height="25" left="3" bottom="0" zIndex="1">
-		// 		<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
-		// </View>
-		// </View>
-		var sectionHeader = Ti.UI.createView({height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
-		view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
-		sectionHeader.add(view1);
-		view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
-		view2.add(Ti.UI.createLabel({ textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
-		sectionHeader.add(view2);
-
-		// <View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-		// <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
-			// <View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-			// <View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
-			// <View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
-		// </View>
-		// </View>
-		var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
-		var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
-		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
-		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
-		fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
-		sectionFooter.add(fView1);
-
-		
-		$.table.setHeaderView(sectionHeader);
-		$.table.setFooterView(sectionFooter);
-	}
-}
+// if(OS_ANDROID){
+	// if($.$attrs.groupByField){
+		// // <View height="45" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
+		// // <View width="5" height="25" left="1" bottom="0" backgroundImage="/images/rowTopLeftShadow.png" zIndex="0" />
+		// // <View width="Ti.UI.FILL" height="25" left="3" bottom="0" zIndex="1">
+		// // 		<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
+		// // </View>
+		// // </View>
+		// var sectionHeader = Ti.UI.createView({height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
+		// view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
+		// sectionHeader.add(view1);
+		// view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
+		// view2.add(Ti.UI.createLabel({ textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
+		// sectionHeader.add(view2);
+// 
+		// // <View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
+		// // <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
+			// // <View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
+			// // <View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+			// // <View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
+		// // </View>
+		// // </View>
+		// var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
+		// var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
+		// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
+		// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
+		// fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
+		// sectionFooter.add(fView1);
+// 
+// 		
+		// $.table.setHeaderView(sectionHeader);
+		// $.table.setFooterView(sectionFooter);
+	// }
+// }
 
 $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;

@@ -413,7 +413,6 @@
 			},
 			toJSON : function(options) {
 				var attributes = _.clone(this.attributes);
-				attributes.__dataType = this.config.adapter.collection_name;
 				for (var obj in attributes) {
 						if(this.config.belongsTo && this.config.belongsTo[obj]){
 							if(attributes[obj]){
@@ -424,9 +423,11 @@
 							delete attributes[obj];
 						} else if(this.config.hasMany && this.config.hasMany[obj]){
 							delete attributes[obj];
-						} 
+						} else if(!this.config.columns[obj]){
+							delete attributes[obj];
+						}
 				}
-			
+				attributes.__dataType = this.config.adapter.collection_name;
 				return attributes;
 			},
 			canEdit : function(){
