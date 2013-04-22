@@ -17,22 +17,22 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 // var noReadMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	// toUserId : Alloy.Models.User.id,
-	// messageState : "noRead"
+	// messageState : "unread"
 // });
 // noReadMsgCollection = noReadMsgCollection.xSetFilter({
 	// messageBox : Alloy.Models.User.xGet("messageBox"),
 	// toUser : Alloy.Models.User,
-	// messageState : "noRead"
+	// messageState : "unread"
 // });
 // var readedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	// toUserId : Alloy.Models.User.id,
-	// messageState : "readed"
+	// messageState : "read"
 // });
 // readedMsgCollection = readedMsgCollection.xSetFilter({
 	// messageBox : Alloy.Models.User.xGet("messageBox"),
 	// toUser : Alloy.Models.User,
-	// messageState : "readed"
+	// messageState : "read"
 // });
 // var closedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
@@ -78,26 +78,26 @@ function onFooterbarTap (e) {
 	} else if (e.source.id === "newMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "noRead")
+					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "unread")
 					&& model.xGet("toUserId") === Alloy.Models.User.id)
 		});
 		receivedMessagesCollection.xSearchInDb(
 			sqlAND(
 				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
-				sqlOR("messageState".sqlEQ("new"), "messageState".sqlEQ("noRead")),
+				sqlOR("messageState".sqlEQ("new"), "messageState".sqlEQ("unread")),
 				"toUserId".sqlEQ(Alloy.Models.User.id)
 			)
 		);
 	} else if (e.source.id === "oldMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-					&& (model.xGet("messageState") === "readed" || model.xGet("messageState") === "closed")
+					&& (model.xGet("messageState") === "read" || model.xGet("messageState") === "closed")
 					&& model.xGet("toUserId") === Alloy.Models.User.id)
 		});
 		receivedMessagesCollection.xSearchInDb(
 			sqlAND(
 				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
-				sqlOR("messageState".sqlEQ("readed"), "messageState".sqlEQ("closed")),
+				sqlOR("messageState".sqlEQ("read"), "messageState".sqlEQ("closed")),
 				"toUserId".sqlEQ(Alloy.Models.User.id)
 			)
 		);

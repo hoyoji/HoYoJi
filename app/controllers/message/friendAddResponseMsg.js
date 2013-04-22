@@ -25,7 +25,7 @@ $.onWindowOpenDo(function() {
 			$.footerBar.$view.hide();
 		}		
 	}
-	if ($.$model.xGet('messageState') === "noRead") {
+	if ($.$model.xGet('messageState') === "unread") {
 		$.$model.xSet('messageState', "closed");
 		$.$model.xSave();
 		$.footerBar.$view.hide();
@@ -34,7 +34,7 @@ $.onWindowOpenDo(function() {
 		$.footerBar.$view.hide();
 	}
 	if ($.$model.xGet('messageState') === "new") {
-		$.$model.xSet('messageState', "readed");
+		$.$model.xSet('messageState', "read");
 		$.$model.xSave();
 	}
 });
@@ -57,7 +57,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				messageState : "new"
 			})
 			messages.map(function(message) {
-				message.xSet("messageState", "noRead");
+				message.xSet("messageState", "unread");
 				message.xSave();
 			});
 		}
@@ -99,7 +99,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 				"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 				"type" : "System.Friend.Reject",
-				"messageState" : "noRead",
+				"messageState" : "unread",
 				"messageTitle" : "系统消息",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝您的好友请求",

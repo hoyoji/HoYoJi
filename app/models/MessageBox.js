@@ -29,7 +29,7 @@ exports.definition = {
 				})
 				newMessages.map(function(msg){
 					if(msg.xGet("type") === "System.Friend.AddResponse"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						msg.save({messageState : "unread"}, {wait : true, patch : true});
 						var deleteFriendMsgLength = Alloy.createCollection("Message").xSearchInDb({
 								fromUserId : msg.xGet("fromUserId"),
 								toUserId : Alloy.Models.User.id,
@@ -52,7 +52,7 @@ exports.definition = {
 						}
 						
 					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						msg.save({messageState : "unread"}, {wait : true, patch : true});
 						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -66,7 +66,7 @@ exports.definition = {
 							friend.xSave();
 						}
 					} else if(msg.xGet("type") === "System.Friend.Delete"){
-						msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						msg.save({messageState : "unread"}, {wait : true, patch : true});
 						var friend = Alloy.createModel("Friend").xFindInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
@@ -76,7 +76,7 @@ exports.definition = {
 						}
 					} 
 					// else if(msg.xGet("type") === "Project.Share.Reject"){
-						// msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						// msg.save({messageState : "unread"}, {wait : true, patch : true});
 						// var projectShareData = JSON.parse(msg.xGet("messageData"));
 						// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							// id : projectShareData.projectShareAuthorizationId
@@ -109,7 +109,7 @@ exports.definition = {
 												subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 											}
 										});
-										msg.save({messageState : "noRead"}, {wait : true, patch : true});
+										msg.save({messageState : "unread"}, {wait : true, patch : true});
 											// Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareData.subProjectShareAuthorizationIds, function(collection){
 												// collection.map(function(projectShareAuthorization){
 													// projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
@@ -130,7 +130,7 @@ exports.definition = {
 						// }
 					} 
 					// else if(msg.xGet("type") === "Project.Share.Delete"){
-						// msg.save({messageState : "noRead"}, {wait : true, patch : true});
+						// msg.save({messageState : "unread"}, {wait : true, patch : true});
 						// var projectShareData = JSON.parse(msg.xGet("messageData"));
 						// var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
 						// var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb(projectShareIds);
