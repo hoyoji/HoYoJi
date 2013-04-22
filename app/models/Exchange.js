@@ -91,6 +91,9 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				}
+			},
+			getForeignCurrency : function(){
+				return this.xGet("foreignCurrency").xGet("name");
 			}
 		});
 		return Model;

@@ -4,8 +4,8 @@
 			<View id="content" class="row-content" left="3" height="Ti.UI.FILL">
 			<View height="Ti.UI.SIZE" layout="horizontal" left="10">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" 
-				bindModel="$.$model.foreignCurrency"
-				bindAttribute="name"
+				bindModel="$.$model"
+				bindAttribute="getForeignCurrency()"
 				/>
 				<!-- <Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0"  width="Ti.UI.SIZE" height="42" 
 				bindModel="$.$model.foreignCurrency"
