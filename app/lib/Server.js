@@ -1,5 +1,5 @@
 ( function() {
-		var dataUrl = "http://localhost/data/";
+		var dataUrl = "http://money.app100697798.twsapp.com/";
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				var msg = Alloy.createModel("Message");
@@ -20,6 +20,39 @@
 				}
 				
 				xFinishedCallback(collection);
+			},
+			getData : function(data, xFinishedCallback, xErrorCallback, target) {
+				data = JSON.stringify(data);
+				console.info(data);
+				var url = dataUrl + (target || "getData") + ".php";
+				var xhr = Ti.Network.createHTTPClient({
+					onload : function(e) {
+						console.info("Server.getData response : " + this.responseText);
+						if(this.responseText){
+							var returnedData = JSON.parse(this.responseText);
+							if(returnedData.__summury){
+								xErrorCallback(returnedData);	
+							} else {
+								xFinishedCallback(returnedData);
+							}
+						} else {
+							xFinishedCallback();
+						}
+					},
+					onerror : function(e) {
+						console.info("Server.getData error : " + JSON.stringify(e));
+						//if(e.code === 1){
+							xErrorCallback({ __summury : {msg : "连接服务器出错 " + e.code}});
+						//}
+					},
+					timeout : 5000 /* in milliseconds */
+				});
+				if(target){
+					xhr.open("GET", url);
+				} else {
+					xhr.open("POST", url);
+				}
+				xhr.send(data);
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				this.searchData(modelName, filter, function(collection){
@@ -43,18 +76,23 @@
 			postData : function(data, xFinishedCallback, xErrorCallback, target){
 				data = JSON.stringify(data);
 				console.info(data);
-				var url = dataUrl + target || "postData";
+				var url = dataUrl + (target || "postData") + ".php";
 				var xhr = Ti.Network.createHTTPClient({
 					onload : function(e) {
-						console.info("Server.registerUser response : " + this.responseText);
+						console.info("Server.postData response : " + this.responseText);
 						if(this.responseText){
-							xErrorCallback(JSON.parse(this.responseText));	
+							var returnedData = JSON.parse(this.responseText);
+							if(returnedData.__summury){
+								xErrorCallback(returnedData);	
+							} else {
+								xFinishedCallback(returnedData);
+							}
 						} else {
 							xFinishedCallback();
 						}
 					},
 					onerror : function(e) {
-						console.info("Server.registerUser error : " + JSON.stringify(e));
+						console.info("Server.postData error : " + JSON.stringify(e));
 						//if(e.code === 1){
 							xErrorCallback({ __summury : {msg : "连接服务器出错 " + e.code}});
 						//}

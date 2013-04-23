@@ -55,7 +55,9 @@
 									if (error.__summury) {
 										errMsg = error.__summury.msg;
 									}
-									xErrorCallback(errMsg);
+									if(xErrorCallback){
+										xErrorCallback(errMsg);
+									}
 								}
 							});
 						}
@@ -88,7 +90,9 @@
 						var successCB = function() {
 							$.$model.off("sync", successCB);
 							$.$model.off("error", errorCB);
-							saveEndCB();
+							if(saveEndCB){
+								saveEndCB();
+							}
 						}
 						var errorCB = function(model, error) {
 							hasError = true;
@@ -101,7 +105,9 @@
 							db.execute("ROLLBACK;");
 							db.close();
 							dbTrans.trigger("rollback");
-							saveErrorCB(errMsg);
+							if(saveErrorCB){
+								saveErrorCB(errMsg);
+							}
 						}
 
 						$.$model.on("sync", successCB);

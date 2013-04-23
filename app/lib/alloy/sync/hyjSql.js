@@ -148,6 +148,8 @@ function Sync(method, model, opts) {
 					ownerUserId = model.xGet("id");
 				} else if (model.xGet("ownerUserId")) {
 					ownerUserId = model.xGet("ownerUserId");
+				} else {
+					ownerUserId = "0";
 				}
 				names.push("_creatorId");
 				values.push(ownerUserId);
@@ -175,7 +177,7 @@ function Sync(method, model, opts) {
 				}
 
 				db.execute(sqlInsert, values);
-				if (model.id === null) {
+				if (!model.id) {
 					var rs = db.execute(sqlId);
 					if (rs.isValidRow()) {
 						model.id = rs.field(0);
