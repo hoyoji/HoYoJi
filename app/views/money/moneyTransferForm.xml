@@ -8,7 +8,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 			bindModel="$.$model"
 			bindAttribute="date"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="transferOutAmount" labelText="转出金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="transferOutAmount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOut" labelText="转出账户" hintText="请选择转出账户"
