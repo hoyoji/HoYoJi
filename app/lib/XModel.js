@@ -1,5 +1,5 @@
 ( function() {
-		var guid = function() {
+		guid = function() {
 			function S4() {
 				return ((1 + Math.random()) * 65536 | 0).toString(16).substring(1);
 			}
@@ -65,8 +65,8 @@
 			},
 			_xSave : function(options){
 				for (var belongsTo in this.config.belongsTo) {
-					if (this.isNew() || this.hasChanged(belongsTo)) {
-						var belongsToModel = this.xGet(belongsTo);
+					var belongsToModel = this.xGet(belongsTo);
+					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
 						if (belongsToModel) {
 							this.set(belongsTo + "Id", belongsToModel.xGet("id"), {
 								silent : true
