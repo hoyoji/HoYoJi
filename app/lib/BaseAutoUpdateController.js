@@ -149,6 +149,10 @@
 				$.hideErrorMsg();
 				if ($.saveableMode === "read") {
 					return;
+				}else if($.saveableMode === "edit" && $.$attrs.editModeEditability === "noneditable"){
+					return;
+				}else if($.saveableMode === "add" && $.$attrs.addModeEditability === "noneditable"){
+					return;
 				}
 				if ($.$attrs.bindAttributeIsModel) {
 					// open bindModelSelector

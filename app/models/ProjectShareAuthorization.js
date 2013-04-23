@@ -187,7 +187,7 @@ exports.definition = {
 					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
-					"messageState" : "noRead",
+					"messageState" : "unread",
 					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+this.xGet("project").xGet("name")+"及子项目给您",
 					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + this.xGet("project").xGet("name") +"及子项目给您",
