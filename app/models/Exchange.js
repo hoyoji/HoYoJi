@@ -7,7 +7,7 @@ exports.definition = {
 			rate : "REAL NOT NULL",
 			autoUpdate : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
+			lastSyncTime : "TEXT",
 			lastModifyTime : "TEXT"
 		},
 		belongsTo : {
@@ -30,46 +30,51 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
 				foreignCurrency : function(xValidateComplete) {
 					var error;
 					var localCurrency = this.xGet("localCurrency");
 					var foreignCurrency = this.xGet("foreignCurrency");
-					if (localCurrency.xGet("id") === foreignCurrency.xGet("id")) {
+					if (!foreignCurrency) {
 						error = {
-							msg : "本币和外币不能相同，请重新选择！"
-						};
-					}
-
-					var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-						localCurrency : localCurrency,
-						foreignCurrency : foreignCurrency
-					});
-					// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-					// localCurrency : foreignCurrency,
-					// foreignCurrency : localCurrency
-					// });
-					// if(currencyPositive.length>0 || currencyNegative.length>0){
-					if (this.isNew()) {
-						if (currencyPositive.length > 0) {
-							error = {
-								msg : "新增失败，汇率已存在"
-							};
+							msg : "外币不能为空"
 						}
 					} else {
-							if(currencyPositive.length > 0 && this.xGet("id") !== currencyPositive.at(0).xGet("id")){
+						if (localCurrency.xGet("id") === foreignCurrency.xGet("id")) {
+							error = {
+								msg : "本币和外币不能相同，请重新选择！"
+							};
+						}
+
+						var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+							localCurrency : localCurrency,
+							foreignCurrency : foreignCurrency
+						});
+						// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+						// localCurrency : foreignCurrency,
+						// foreignCurrency : localCurrency
+						// });
+						// if(currencyPositive.length>0 || currencyNegative.length>0){
+						if (this.isNew()) {
+							if (currencyPositive.length > 0) {
+								error = {
+									msg : "新增失败，汇率已存在"
+								};
+							}
+						} else {
+							if (currencyPositive.length > 0 && this.xGet("id") !== currencyPositive.at(0).xGet("id")) {
 								error = {
 									msg : "修改失败，币种已存在"
 								};
-							}
-							else if(currencyPositive.length > 1 && this.xGet("id") === currencyPositive.at(0).xGet("id")){
+							} else if (currencyPositive.length > 1 && this.xGet("id") === currencyPositive.at(0).xGet("id")) {
 								error = {
 									msg : "修改失败，币种已存在"
 								};
 							}
 						}
+					}
 					xValidateComplete(error);
 				},
 				rate : function(xValidateComplete) {
@@ -91,12 +96,15 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				}
+			},
+			getForeignCurrency : function() {
+				return this.xGet("foreignCurrency").xGet("name");
 			}
 		});
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 

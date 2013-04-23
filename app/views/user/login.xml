@@ -6,8 +6,12 @@
 				<Label id="headerTitle" text="  登录" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
 			</View>
 		</View>
-		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII"/>
-		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"/>
+		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII"
+			bindModel="$.$model"
+			bindAttribute="userName"/>
+		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"
+			bindModel="$.$model"
+			bindAttribute="password"/>
 		<!-- <TextField top="84" height="42" id="date1" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<TextField top="126" height="42" id="date2" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<TextField top="168" height="42" id="date3" borderWidth="1" width="Ti.UI.FILL"></TextField>

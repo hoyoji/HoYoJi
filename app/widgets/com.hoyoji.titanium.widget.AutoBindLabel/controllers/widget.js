@@ -61,9 +61,9 @@ $.onWindowOpenDo(function() {
 			d = new Date(value);
 			value = String.formatTime(d, "medium");	
 		}
-		// if ( typeof value === "number") {
-			// value = value.toUserCurrency();
-		// }		
+		if ( typeof value === "number") {
+			value = value.toUserCurrency();
+		}		
 		$.label.setText(value);
 	}
 
