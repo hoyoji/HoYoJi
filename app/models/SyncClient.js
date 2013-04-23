@@ -2,10 +2,9 @@ exports.definition = {
 	config: {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
-		    name: "TEXT NOT NULL",
-		    dbVersion: "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    collectionName: "TEXT NOT NULL",
+		    recordId: "TEXT NOT NULL",
+		    operation : "TEXT"
 		},
 		adapter: {
 			type : "hyjSql"

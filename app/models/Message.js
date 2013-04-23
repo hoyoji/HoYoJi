@@ -1,7 +1,7 @@
 exports.definition = {
 	config : {
 		columns : {
-			id : "TEXT NOT NULL PRIMARY KEY",
+			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			messageState : "TEXT NOT NULL", //new, read, closed
         	date : "TEXT NOT NULL",
         	messageTitle : "TEXT",
