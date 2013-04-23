@@ -84,8 +84,8 @@ exports.definition = {
 					}
 					if (this.xGet("moneyLend")) {
 						var paybackRequireAmount;
-						var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
-						var paybackRate = $.$model.xGet("exchangeRate");
+						var lendRate = this.xGet("moneyLend").xGet("exchangeRate");
+						var paybackRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
 							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
