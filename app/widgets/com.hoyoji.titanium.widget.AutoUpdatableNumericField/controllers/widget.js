@@ -32,6 +32,11 @@ $.setValue = function(value) {
 		}
 	}
 	value = this.convertModelValue(value);
+	if(value){
+		$.hintText.hide();
+	}else{
+		$.hintText.show();
+	}
 	$.field.setText(value || "");
 }
 
