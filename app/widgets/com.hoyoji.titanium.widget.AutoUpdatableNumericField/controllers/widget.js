@@ -19,6 +19,12 @@ $.onWindowOpenDo(function() {
 		// $.getCurrentWindow().closeSoftKeyboard();
 		$.getCurrentWindow().numericKeyboard.open($);
 	});
+	$.hintText.addEventListener("singletap", function(e) {
+		if ($.saveableMode === "read") {
+			return;
+		}
+		$.getCurrentWindow().numericKeyboard.open($);
+	});
 
 });
 
