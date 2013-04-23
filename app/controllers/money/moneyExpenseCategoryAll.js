@@ -17,6 +17,6 @@ $.moneyExpenseCategoriesTable.addCollection(collection);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addExpenseCategory"){
-		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm",{$model : "MoneyExpenseCategory", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm",{$model : "MoneyExpenseCategory", data : {project : selectedProject}});
 	}
 }

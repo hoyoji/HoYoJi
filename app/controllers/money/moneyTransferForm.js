@@ -6,7 +6,6 @@ if (!$.$model) {
 		transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
 		transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
 		exchangeRate : 1,
-		transferOutAmount : 0,
 		transferInAmount : 0,
 		project : Alloy.Models.User.xGet("activeProject"),
 	});

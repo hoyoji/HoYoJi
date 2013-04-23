@@ -19,6 +19,12 @@ $.onWindowOpenDo(function() {
 		// $.getCurrentWindow().closeSoftKeyboard();
 		$.getCurrentWindow().numericKeyboard.open($);
 	});
+	$.hintText.addEventListener("singletap", function(e) {
+		if ($.saveableMode === "read") {
+			return;
+		}
+		$.getCurrentWindow().numericKeyboard.open($);
+	});
 
 });
 
@@ -32,6 +38,11 @@ $.setValue = function(value) {
 		}
 	}
 	value = this.convertModelValue(value);
+	if(value){
+		$.hintText.hide();
+	}else{
+		$.hintText.show();
+	}
 	$.field.setText(value || "");
 }
 

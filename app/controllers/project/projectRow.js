@@ -1,14 +1,14 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
-$.onRowTap = function(e){
-	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
-		Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
-		return false;
-	}else{
-		Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
-		return false;
-	}
-}
+// $.onRowTap = function(e){
+	// if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+		// Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
+		// return false;
+	// }else{
+		// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
+		// return false;
+	// }
+// }
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
@@ -90,6 +90,17 @@ $.makeContextMenu = function(e, isSelectMode) {
 			}
 		}); 
 	},projectIsSharedToMe));
+	
+	menuSection.add($.createContextMenuItem("修改项目", function() {
+		if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+			Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
+			return false;
+		}else{
+			Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
+			return false;
+		}
+	}));
+	
 	menuSection.add(
 		$.createContextMenuItem("删除项目", 
 			function() {

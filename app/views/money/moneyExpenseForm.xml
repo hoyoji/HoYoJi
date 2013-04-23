@@ -5,8 +5,8 @@
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
-			<View id="ownerUser" height="42">
-			<Label left="0" width="30%" height="Ti.UI.FILL">记账好友</Label>
+			<View id="ownerUser" height="42" blackgroundColor="#f1fbfb">
+			<Label left="3" width="30%" height="Ti.UI.FILL">记账好友</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
 			bindModel="$.$model"
 			bindAttribute="getOwnerUser()"/>
@@ -17,9 +17,10 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<View id="localAmount" height="42">
-			<Label left="0" width="30%" height="Ti.UI.FILL">金额</Label>
+			<View id="localAmount" height="42" blackgroundColor="#f1fbfb">
+			<Label left="3" width="30%" height="Ti.UI.FILL">金额</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  
+			hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="getLocalAmount()"/>
 			</View>
@@ -59,8 +60,8 @@
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"
 			/>
-			<View height="42">
-			<Label left="0" width="30%" height="Ti.UI.FILL">是否预支</Label>
+			<View height="42" blackgroundColor="#f1fbfb">
+			<Label left="3" width="30%" height="Ti.UI.FILL">是否预支</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
 			hightLight="false"
 			items="否,是"

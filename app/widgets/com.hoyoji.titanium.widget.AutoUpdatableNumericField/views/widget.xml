@@ -4,6 +4,6 @@
 	 <Label id="error" left="3" top="42"/>
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
      <Label id="field" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" />
-     <Label id="hintTextLabel" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" />
+     <Label id="hintText" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" text="请输入金额"/>
 	</View>
 </Alloy>

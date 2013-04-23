@@ -85,14 +85,14 @@ exports.definition = {
 
 					if (this.xGet("moneyBorrow")) {
 						var returnRequireAmount;
-						var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
-			            var returnRate = $.$model.xGet("exchangeRate");
+						var borrowRate = this.xGet("moneyBorrow").xGet("exchangeRate");
+			            var returnRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
 							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount");
 						} else {
 							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount") + this.previous("amount");
 						}
-						if (this.xGet("amount")* returnRate / borrowRatesss > returnRequireAmount) {
+						if (this.xGet("amount")* returnRate / borrowRate > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
 							}
