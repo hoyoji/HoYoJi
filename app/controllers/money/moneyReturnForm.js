@@ -121,12 +121,14 @@ if ($.saveableMode === "read") {
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
-			var exchange = Alloy.createModel("Exchange", {
-				localCurrency : $.$model.xGet("localCurrency"),
-				foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-				rate : $.$model.xGet("exchangeRate")
-			});
-			exchange.xAddToSave($);
+			if ($.$model.xGet("exchangeRate")) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrency : $.$model.xGet("localCurrency"),
+					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					rate : $.$model.xGet("exchangeRate")
+				});
+				exchange.xAddToSave($);
+			}
 		}
 
 		if (moneyBorrow) {//更新已还款
