@@ -20,6 +20,7 @@
 			<View id="localAmount" height="42">
 			<Label left="0" width="30%" height="Ti.UI.FILL">金额</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  
+			hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="getLocalAmount()"/>
 			</View>

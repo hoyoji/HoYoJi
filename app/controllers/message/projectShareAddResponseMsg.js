@@ -487,7 +487,7 @@ function loadAuthorizationDetails(successCB) {
 
 $.onWindowOpenDo(function() {
 	$.showHideAuthorization.hide();
-	if ($.$model.xGet('messageState') === "noRead") {
+	if ($.$model.xGet('messageState') === "unread") {
 		$.$model.save({
 			messageState : "closed"
 		}, {
@@ -503,7 +503,7 @@ $.onWindowOpenDo(function() {
 $.onWindowCloseDo(function() {
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({
-			messageState : "readed"
+			messageState : "read"
 		}, {
 			wait : true,
 			patch : true
@@ -546,7 +546,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 					"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 					"type" : "Project.Share.Accept",
-					"messageState" : "noRead",
+					"messageState" : "unread",
 					"messageTitle" : "共享项目回复",
 					"date" : date,
 					"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
@@ -601,7 +601,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 					"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 					"type" : "Project.Share.Reject",
-					"messageState" : "noRead",
+					"messageState" : "unread",
 					"messageTitle" : "共享项目回复",
 					"date" : date,
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
