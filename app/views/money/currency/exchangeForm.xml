@@ -1,15 +1,15 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" heigth="100%">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
-			addModeTitle="新增汇率" readModeTitle="汇率详细" editModeTitle="修改汇率"/>
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="新增汇率" readModeTitle="汇率详细" editModeTitle="修改汇率"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true"
 			id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="本币币种" hintText="请选择本币币种"
 				addModeEditability="noneditable"
-                editModeEditability="noneditable"
-                bindModel="$.$model"
+				editModeEditability="noneditable"
+				bindModel="$.$model"
 				bindAttribute="localCurrency"
 				bindAttributeIsModel="name"
 				/>
@@ -20,11 +20,18 @@
 				bindModelSelector="money/currency/currencyAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="汇率" hintText="请输入汇率"
-			    bindModel="$.$model"
-			    bindAttribute="rate"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="是否自动更新"
 				bindModel="$.$model"
-				bindAttribute="autoUpdate"/>
-			</ScrollView></View>
+				bindAttribute="rate"/>
+				<View height="42">
+					<Label left="0" width="30%" height="Ti.UI.FILL">是否自动更新</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
+					hightLight="false"
+					items="否,是"
+					values="false,true"
+					bindModel="$.$model"
+					bindAttribute="autoUpdate"/>
+				</View>
+			</ScrollView>
+		</View>
 	</View>
 </Alloy>
