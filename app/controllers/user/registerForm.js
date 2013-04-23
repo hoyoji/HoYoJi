@@ -46,12 +46,12 @@ $.onSave = function(saveEndCB, saveErrorCB){
 			Alloy.Globals.Server.postData(data,function(e){
 				$.saveModel(saveEndCB, saveErrorCB);
 			}, function(e){
-				// $.$model.__xValidationErrorCount = 1;
-				// $.$model.__xValidationError = e;
-				// $.$model.trigger("error", $.$model, $.$model.__xValidationError);
+				$.$model.__xValidationErrorCount = 1;
+				$.$model.__xValidationError = e;
+				$.$model.trigger("error", $.$model, $.$model.__xValidationError);
 				// saveErrorCB(e.__summury.msg);
 			//	alert("连接服务器出错, 注册不成功");
-				$.saveModel(saveEndCB, saveErrorCB);
+				// $.saveModel(saveEndCB, saveErrorCB);
 			}, "registerUser");		
 		}
 	});
