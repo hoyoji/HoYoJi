@@ -78,6 +78,7 @@ function doLogin(e) {
 					delete model.id;
 					model.xAddToSave($);
 				});
+				$.$model.xSet("ownerUser", Alloy.Models.User);
 				$.saveModel(function() {
 					openMainWindow();
 				}, function(e) {
