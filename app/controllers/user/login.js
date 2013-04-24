@@ -22,6 +22,7 @@ function doLogin(e) {
 
 	// 如果我们能在本地找到该用户， 我们先检查该用户的密码正不正确， 如果密码不正确，我们则到服务器上验证
 	if (Alloy.Models.User.id) {
+		$.$model.xSet("ownerUser", Alloy.Models.User);
 		$.saveModel(); 
 		if (Alloy.Models.User.xGet("password") === $.$model.xGet("password")) {
 			openMainWindow();
@@ -42,7 +43,7 @@ function doLogin(e) {
 				openMainWindow();
 			}, function(e) {
 				// 服务器无法连接，或验证该密码错误，用户登录失败
-				loginFail(e.__summury.msg);
+				loginFail(e.__summary.msg);
 			}, "login");
 		}
 	} else {
@@ -85,11 +86,11 @@ function doLogin(e) {
 				});
 			}, function(e) {
 				// 无法连接服务器，登录失败
-				loginFail(e.__summury.msg);
+				loginFail(e.__summary.msg);
 			});
 		}, function(e) {
 			// 用户验证错误或无法连接服务器，登录失败
-			loginFail(e.__summury.msg);
+			loginFail(e.__summary.msg);
 		}, "login");
 	}
 }
@@ -105,6 +106,7 @@ function openMainWindow(){
 function loginFail(msg){
 	$.password.field.setValue("");
 	$.$model.xSet("password", null);
+	$.$model.xSet("ownerUser", null);
 	Alloy.Models.User = null;
 	delete Alloy.Models.User;
 	alert(msg);

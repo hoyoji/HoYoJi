@@ -11,8 +11,8 @@ exports.definition = {
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-			lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		defaults : {
 			currentBalance : 0

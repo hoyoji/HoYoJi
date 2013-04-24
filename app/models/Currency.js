@@ -6,8 +6,8 @@ exports.definition = {
 		    symbol: "TEXT NOT NULL",
 		    code : "TEXT NOT NULL",
 		    ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		hasMany : {
 			moneyAccounts : { type : "MoneyAccount", attribute : "currency"},

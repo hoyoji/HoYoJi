@@ -14,8 +14,8 @@ exports.definition = {
 			remark : "TEXT",
 			moneyLendId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-			lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		belongsTo : {
 			friend : {

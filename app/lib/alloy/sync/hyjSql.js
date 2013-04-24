@@ -99,7 +99,7 @@ function Sync(method, model, opts) {
 			resp = function() {
 				// if(!Alloy.Models.User &&
 				// (model.config.adapter.collection_name !== "User" || model.config.adapter.collection_name !== "Login")){
-				// model.trigger("error", { __summury : { msg : "请登录，再操作"}});
+				// model.trigger("error", { __summary : { msg : "请登录，再操作"}});
 				// return;
 				// }
 				
@@ -152,7 +152,8 @@ function Sync(method, model, opts) {
 					ownerUserId = "0";
 				}
 				names.push("_creatorId");
-				values.push(ownerUserId);
+				var _creatorId = Alloy.Models.User ? Alloy.Models.User.xGet("id") : '0';
+				values.push(_creatorId);
 				q.push("?");
 
 				var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
@@ -165,7 +166,7 @@ function Sync(method, model, opts) {
 					console.info(sqlCheckPermission);
 					var r = db.execute(sqlCheckPermission); 
 					if(r.rowCount === 0){
-						error = { __summury : { msg : "没有新增权限"}};
+						error = { __summary : { msg : "没有新增权限"}};
 						delete model.id;
 						delete opts.wait;
 						if(!opts.dbTrans){
@@ -188,6 +189,12 @@ function Sync(method, model, opts) {
 					} else
 						Ti.API.warn("Unable to get ID from database for model: " + model.attributes);
 				}
+				
+				// 只有本地创建的记录我们才在ClientSyncTable里添加新增记录， 本地创佳的记录 lastServerUpdateTime 都为空， 服务器获取下来的则不为空
+				if(!model.xGet("lastServerUpdateTime") && _creatorId !== "0"){
+					db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('"+guid()+"','"+model.id+"','"+model.config.adapter.collection_name+"','create','"+ownerUserId+"','"+_creatorId+"')");
+				}
+				
 				if(!opts.dbTrans){
 					db.execute("COMMIT;");
 					db.close();
@@ -233,7 +240,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "MoneyAccount") {
-				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.remark, main.accountNumber, main.accountType, main.bankAddress, main.ownerUserId, main._creatorId, main.currentBalance");
+				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash");
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'" 
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
@@ -241,7 +248,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 				
-				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, null, null, null FROM MoneyAccount main ";
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, null, null, null, main.lastServerUpdateTime, main.serverRecordHash FROM MoneyAccount main ";
 				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
 				if (qs.length > 1) {
 					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";
@@ -355,7 +362,7 @@ function Sync(method, model, opts) {
 				console.info(sqlCheckPermission);
 				var r = db.execute(sqlCheckPermission); 
 				if(r.rowCount === 0){
-					error = { __summury : { msg : "没有修改权限"}};
+					error = { __summary : { msg : "没有修改权限"}};
 					delete opts.wait;
 					if(!opts.dbTrans){
 						db.execute("ROLLBACK;");
@@ -369,7 +376,7 @@ function Sync(method, model, opts) {
 				console.info(sqlCheckPermission2);
 				var r = db.execute(sqlCheckPermission2); 
 				if(r.rowCount === 0){
-					error = { __summury : { msg : "没有修改权限"}};
+					error = { __summary : { msg : "没有修改权限"}};
 					delete opts.wait;
 					if(!opts.dbTrans){
 						db.execute("ROLLBACK;");
@@ -381,9 +388,13 @@ function Sync(method, model, opts) {
 
 			db.execute(sql, values);
 			if(db.rowsAffected === 0){
-				error = { __summury : { msg : "没有修改权限"}};
+				error = { __summary : { msg : "没有修改权限"}};
 				delete opts.wait;
 			} else {
+				var r = db.execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'"); 
+				if(r.rowCount === 0){
+					db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('"+guid()+"','"+model.id+"','"+model.config.adapter.collection_name+"','update','"+ownerUserId+"','"+ownerUserId+"')");
+				}
 				resp = model.attributes;
 			}
 			if(!opts.dbTrans){
@@ -431,8 +442,20 @@ function Sync(method, model, opts) {
 			}
 			db.execute(sql, model.id);
 			if(db.rowsAffected === 0){
-				error = { __summury : { msg : "没有删除权限"}};
+				error = { __summary : { msg : "没有删除权限"}};
 			} else {
+				var r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'"); 
+				if(r.rowCount > 0){
+					db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
+				} else {
+					r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
+					if(r.rowCount > 0){
+						db.execute("Update ClientSyncTable SET operation = 'delete' WHERE recordId = '" + model.id + "'");
+					} else {
+						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + ownerUserId + "','" + ownerUserId + "')");
+					} 
+				}
+				
 				model.id = null;
 				resp = model.attributes;
 			}
@@ -458,7 +481,7 @@ function Sync(method, model, opts) {
 				function rollbackTrans(){
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					//error = { __summury : { msg : "没有删除权限"}};
+					//error = { __summary : { msg : "没有删除权限"}};
 					//_.isFunction(opts.error) && opts.error(model, error);
 				}
 				opts.dbTrans.on("commit", commitTrans);
