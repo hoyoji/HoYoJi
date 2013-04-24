@@ -69,7 +69,7 @@ $.exchangeRate.field.addEventListener("change", updateForeignCurrencyAmount);
 
 function updateForeignCurrencyAmount() {
 	// if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
-		if ($.transferOutAmout.getValue() && $.exchangeRate.getValue()) {
+		if ($.transferOutAmount.getValue() && $.exchangeRate.getValue()) {
 			var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeRate.getValue()).toUserCurrency();
 			$.transferInAmount.setValue(foreignCurrencyAmount);
 			$.transferInAmount.field.fireEvent("change");
