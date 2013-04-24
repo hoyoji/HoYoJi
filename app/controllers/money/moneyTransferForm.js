@@ -64,13 +64,18 @@ function setExchangeRate(transferOut, transferIn) {
 	$.exchangeRate.field.fireEvent("change");
 }
 
-$.transferOutAmount.field.addEventListener("change", updateForeignCurrencyAmount);
+$.amount.field.addEventListener("change", updateForeignCurrencyAmount);
 $.exchangeRate.field.addEventListener("change", updateForeignCurrencyAmount);
 
 function updateForeignCurrencyAmount() {
 	// if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
+<<<<<<< HEAD
 		if ($.transferOutAmount.getValue() && $.exchangeRate.getValue()) {
 			var foreignCurrencyAmount = ($.transferOutAmount.getValue() / $.exchangeRate.getValue()).toUserCurrency();
+=======
+		if ($.amount.getValue() && $.exchangeRate.getValue()) {
+			var foreignCurrencyAmount = ($.amount.getValue() / $.exchangeRate.getValue()).toUserCurrency();
+>>>>>>> 79e1cb0478303f2ab7e768f73afaca4daa6cc7fa
 			$.transferInAmount.setValue(foreignCurrencyAmount);
 			$.transferInAmount.field.fireEvent("change");
 		}

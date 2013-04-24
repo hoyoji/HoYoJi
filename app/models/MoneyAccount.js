@@ -1,7 +1,7 @@
 exports.definition = {
 	config : {
 		columns : {
-			id : "TEXT NOT NULL PRIMARY KEY",
+			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			currencyId : "TEXT NOT NULL",
 			currentBalance : "REAL NOT NULL",
@@ -119,7 +119,7 @@ exports.definition = {
 			},
 			getCurrentBalance : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
-					return this.xGet("currentBalance").toUserCurrency();
+					return this.xGet("currentBalance");
 				}
 			}
 		});

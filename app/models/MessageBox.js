@@ -1,7 +1,7 @@
 exports.definition = {
 	config : {
 		columns : {
-			id : "TEXT NOT NULL PRIMARY KEY",
+			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			ownerUserId : "TEXT NOT NULL",
 		    lastSyncTime : "TEXT",
 		    lastSyncTime : "TEXT",

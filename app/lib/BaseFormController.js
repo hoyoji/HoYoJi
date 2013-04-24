@@ -19,26 +19,28 @@
 						}
 						if ($.titleBar && !$.titleBar.$attrs.saveableMode) {
 							$.titleBar.setSaveableMode($.saveableMode);
-						}	
-					}	
+						}
+					}
 				},
 				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans) {
 					var mydb, myDbTrans;
-					if(!dbTrans){
+					if (!dbTrans) {
 						mydb = Ti.Database.open("hoyoji");
 						mydb.execute("BEGIN;");
-						
-						myDbTrans = {db : mydb};
+
+						myDbTrans = {
+							db : mydb
+						};
 						_.extend(myDbTrans, Backbone.Events);
 					} else {
 						myDbTrans = dbTrans;
 						mydb = dbTrans.db;
 					}
 					var i = 0, hasError;
-					for (i = 0; i < $.__saveCollection.length; i++) {
+					for ( i = 0; i < $.__saveCollection.length; i++) {
 						if ($.__saveCollection[i].isNew() || $.__saveCollection[i].hasChanged()) {
 							// $.__saveCollection[i].once("sync", function() {
-								// $.saveCollection(xCompleteCallback, xErrorCallback, myDbTrans);
+							// $.saveCollection(xCompleteCallback, xErrorCallback, myDbTrans);
 							// });
 
 							$.__saveCollection[i]._xSave({
@@ -46,25 +48,26 @@
 								error : function(model, error) {
 									$.__saveCollection = [];
 									// if(!dbTrans){
-										mydb.execute("ROLLBACK;");
-										mydb.close();
-										myDbTrans.trigger("rollback");
+									mydb.execute("ROLLBACK;");
+									mydb.close();
+									myDbTrans.trigger("rollback");
 									// }
 									hasError = true;
 									var errMsg;
 									if (error.__summury) {
 										errMsg = error.__summury.msg;
 									}
-									if(xErrorCallback){
+									if (xErrorCallback) {
 										xErrorCallback(errMsg);
 									}
 								}
 							});
 						}
-						if(hasError) return;
+						if (hasError)
+							return;
 					}
 					$.__saveCollection = [];
-					if(!dbTrans){
+					if (!dbTrans) {
 						mydb.execute("COMMIT;");
 						mydb.close();
 						myDbTrans.trigger("commit");
@@ -73,81 +76,98 @@
 				},
 				saveModel : function(saveEndCB, saveErrorCB) {
 					if ($.$model) {
-						
-						var db = Ti.Database.open("hoyoji");
-						var dbTrans = {db : db};
-						_.extend(dbTrans, Backbone.Events);
-						
-						db.execute("BEGIN;");
-						
-						// if (!$.$model.isNew()) {
-						// if this is a addnew action, reset the id if there is any error during sync operation
-						// var clearModelId = function() {
-						// $.$model.xSet("id", null);
-						// }
-						// }
-						var hasError;
-						var successCB = function() {
-							$.$model.off("sync", successCB);
-							$.$model.off("error", errorCB);
-							if(saveEndCB){
-								saveEndCB();
+						$.$model.xValidate(function() {
+							if ($.$model.__xValidationErrorCount > 0) {
+								$.$model.__xValidationError.__summury = {
+									msg : "验证错误"
+								};
+								$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+								saveErrorCB($.$model.__xValidationError.__summury.msg);
+								return;
 							}
-						}
-						var errorCB = function(model, error) {
-							hasError = true;
-							$.$model.off("sync", successCB);
-							$.$model.off("error", errorCB);
-							var errMsg;
-							if (error.__summury) {
-								errMsg = error.__summury.msg;
+
+							var db = Ti.Database.open("hoyoji");
+							var dbTrans = {
+								db : db
+							};
+							_.extend(dbTrans, Backbone.Events);
+
+							db.execute("BEGIN;");
+
+							// if (!$.$model.isNew()) {
+							// if this is a addnew action, reset the id if there is any error during sync operation
+							// var clearModelId = function() {
+							// $.$model.xSet("id", null);
+							// }
+							// }
+							var hasError;
+							var successCB = function() {
+								$.$model.off("sync", successCB);
+								$.$model.off("error", errorCB);
+								if (saveEndCB) {
+									saveEndCB();
+								}
 							}
-							db.execute("ROLLBACK;");
-							db.close();
-							dbTrans.trigger("rollback");
-							if(saveErrorCB){
-								saveErrorCB(errMsg);
+							var errorCB = function(model, error) {
+								hasError = true;
+								$.$model.off("sync", successCB);
+								$.$model.off("error", errorCB);
+								var errMsg;
+								if (error.__summury) {
+									errMsg = error.__summury.msg;
+								}
+								db.execute("ROLLBACK;");
+								db.close();
+								dbTrans.trigger("rollback");
+								if (saveErrorCB) {
+									saveErrorCB(errMsg);
+								}
 							}
-						}
 
-						$.$model.on("sync", successCB);
-						$.$model.on("error", errorCB);
+							$.$model.on("sync", successCB);
+							$.$model.on("error", errorCB);
 
-						// try to catch the database error
-						// try{
+							// try to catch the database error
+							// try{
 
-						$.saveCollection(function() {
-							$.$model.xSave({dbTrans : dbTrans, commit : true});
-							// if(!hasError){
+							// $.$model.xSave({dbTrans : dbTrans, commit : true});
+
+							$.saveCollection(function() {
+								$.$model._xSave({
+									dbTrans : dbTrans,
+									commit : true
+								});
+								// if(!hasError){
 								// db.execute("COMMIT;");
 								// db.close();
 								// dbTrans.trigger("commit");
-							// }
-						}, saveErrorCB, dbTrans);
+								// }
+							}, saveErrorCB, dbTrans);
 
-						// } catch (err) {
-						// if (_.isFunction(clearModelId)) {
-						// clearModelId();
-						// }
-						// throw Error("Error in saving model");
-						// }
+							// } catch (err) {
+							// if (_.isFunction(clearModelId)) {
+							// clearModelId();
+							// }
+							// throw Error("Error in saving model");
+							// }
+						});
 					}
 				}
 			});
-			
-			if($.$model) {
+
+			if ($.$model) {
 				var saveableMode = "read";
-				if($.$model.canEdit()){
-					if($.$model.isNew()){
+				if ($.$model.canEdit()) {
+					if ($.$model.isNew()) {
 						saveableMode = "add";
 					} else {
 						saveableMode = "edit";
 					}
 				}
-				
+
 				$.setSaveableMode($.$attrs.saveableMode || $.$view.saveableMode || saveableMode);
 			}
-	
+
 			$.onWindowOpenDo(function() {
 				$.$view.fireEvent("registersaveablecallback", {
 					bubbles : true,

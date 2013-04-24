@@ -4,55 +4,63 @@ $.$model = Alloy.createModel("Login");
 $.setSaveableMode("add");
 
 function doLogin(e) {
+	// make new login ID every time user tries to login
 	delete $.$model.id;
 	$.$model.attributes.id = guid();
 	$.$model.xSet("date", (new Date()).toISOString());
-	if ($.$model.xGet("password")) {
-		$.$model.xSet("password", Ti.Utils.sha1($.$model.xGet("password")));
-	}
-	var loginData = {
-		userName : $.$model.xGet("userName"),
-		password : $.$model.xGet("password")
-	};
+
+	// encrypt the password
+	if (!$.$model.xGet("password")) {
+		$.password.showErrorMsg("请输入密码");
+		return;
+	} 
+	$.$model.xSet("password", Ti.Utils.sha1($.$model.xGet("password")));
+	
 	Alloy.Models.instance("User").xFindInDb({
 		userName : $.$model.xGet("userName")
 	});
+
+	// 如果我们能在本地找到该用户， 我们先检查该用户的密码正不正确， 如果密码不正确，我们则到服务器上验证
 	if (Alloy.Models.User.id) {
-		$.saveModel();
+		$.saveModel(); 
 		if (Alloy.Models.User.xGet("password") === $.$model.xGet("password")) {
-			if (!Alloy.Globals.mainWindow) {
-				Alloy.createController("mainWindow").open();
-			}
+			openMainWindow();
 		} else {
 			// 密码不对，到服务器上验证密码
-			Alloy.Globals.Server.postData(loginData, function(data) {
+			// 这里最好是用户连续输错三次密码才到服务器上验证，并且要征求用户意见
+			Alloy.Globals.Server.postData({
+				userName : $.$model.xGet("userName"),
+				password : $.$model.xGet("password")
+			}, function(data) {
+				// 服务器验证改密码正确，我们将其保存到本地
 				Alloy.Models.User.save({
 					"password" : $.$model.xGet("password")
 				}, {
 					patch : true,
 					wait : true
 				});
-				if (!Alloy.Globals.mainWindow) {
-					Alloy.createController("mainWindow").open();
-				}
+				openMainWindow();
 			}, function(e) {
-				Alloy.Models.User = null;
-				delete Alloy.Models.User;
-				alert(e.__summury.msg);
+				// 服务器无法连接，或验证该密码错误，用户登录失败
+				loginFail(e.__summury.msg);
 			}, "login");
 		}
 	} else {
 		//用户不存在，到服务器上下载用户资料
-		Alloy.Globals.Server.postData(loginData, function(data) {
-			data.password = $.$model.xGet("password");
-			var userId = data.id;
-			delete data.id;
+		Alloy.Globals.Server.postData({
+			userName : $.$model.xGet("userName"),
+			password : $.$model.xGet("password")
+		}, function(data) {
+			// 密码验证通过，将该用户的资料保存到本地数据库
+			data.password = $.$model.xGet("password"); // 由于服务气不会反回密码，我们将用户输入的正确密码保存
 			Alloy.Models.User.set(data);
-			Alloy.Models.User.attributes.id = userId;
+			delete Alloy.Models.User.id; // 将用户id删除，我们才能将该用户资料当成新的记录保存到数据库
 			Alloy.Models.User.xAddToSave($);
+			
+			// 下载一些用户必须的资料
 			var belongsToes = [];
 			for (var belongsTo in Alloy.Models.User.config.belongsTo) {
-				if (belongsTo !== "activeCurrency") {
+				if (belongsTo !== "activeCurrency") { // Currency 应该在本地就有了
 					belongsToes.push({
 						id : Alloy.Models.User.xGet(belongsTo + "Id"),
 						__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type
@@ -60,44 +68,46 @@ function doLogin(e) {
 				}
 			}
 			Alloy.Globals.Server.getData(belongsToes, function(data) {
+				// 将数据保存到本地数据库
 				data = _.flatten(data);
 				data.forEach(function(model) {
 					var modelType = model.__dataType;
 					delete model.__dataType;
-					var id = model.id;
-					delete model.id;
 					model = Alloy.createModel(modelType, model);
-					model.attributes.id = id;
+					delete model.id;
 					model.xAddToSave($);
-					Alloy.Models.User.xSet(modelType, model);
 				});
-				$.$model.xSet("lastModifyTime", null);
-				$.$model.xSet("lastSyncTime", null);
 				$.saveModel(function() {
-					if (!Alloy.Globals.mainWindow) {
-						Alloy.createController("mainWindow").open();
-					}
+					openMainWindow();
 				}, function(e) {
-					Alloy.Models.User = null;
-					delete Alloy.Models.User;
-					alert(e);
+					// 保存倒数据库时出错，登录失败
+					loginFail(e);
 				});
 			}, function(e) {
-				Alloy.Models.User = null;
-				delete Alloy.Models.User;
-				alert(e.__summury.msg);
+				// 无法连接服务器，登录失败
+				loginFail(e.__summury.msg);
 			});
-
 		}, function(e) {
-			Alloy.Models.User = null;
-			delete Alloy.Models.User;
-			alert(e.__summury.msg);
+			// 用户验证错误或无法连接服务器，登录失败
+			loginFail(e.__summury.msg);
 		}, "login");
 	}
-	// else {
-	// alert(e.__summury.msg);
-	// }
+}
 
+function openMainWindow(){
+	$.password.field.setValue("");
+	$.$model.xSet("password", null);
+	if (!Alloy.Globals.mainWindow) {
+		Alloy.createController("mainWindow").open();
+	}
+}
+
+function loginFail(msg){
+	$.password.field.setValue("");
+	$.$model.xSet("password", null);
+	Alloy.Models.User = null;
+	delete Alloy.Models.User;
+	alert(msg);
 }
 
 function openRegister(e) {
