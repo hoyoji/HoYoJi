@@ -22,41 +22,7 @@
 				xFinishedCallback(collection);
 			},
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
-				data = JSON.stringify(data);
-				console.info(data);
-				var url = dataUrl + (target || "getData") + ".php";
-				var xhr = Ti.Network.createHTTPClient({
-					onload : function(e) {
-						console.info("Server.getData response : " + this.responseText);
-						if(this.responseText){
-							var returnedData = JSON.parse(this.responseText);
-							if(returnedData.__summary){
-								xErrorCallback(returnedData);	
-							} else {
-								xFinishedCallback(returnedData);
-							}
-						} else {
-							xFinishedCallback();
-						}
-					},
-					onerror : function(e) {
-						console.info("Server.getData error : " + JSON.stringify(e));
-						//if(e.code === 1){
-							xErrorCallback({ __summary : {msg : "连接服务器出错 " + e.code}});
-						//}
-					},
-					timeout : 5000 /* in milliseconds */
-				});
-				if(target){
-					xhr.open("GET", url);
-				} else {
-					xhr.open("POST", url);
-				}
-				if(Alloy.Models.User){
-					var auth = Alloy.Models.User.xGet("userName") + ":" + Alloy.Models.User.xGet("password");
-					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth));
-				}
-				xhr.send(data);
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				this.searchData(modelName, filter, function(collection){
@@ -111,20 +77,23 @@
 				xhr.send(data);
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {
-				//this.syncPull();
-				this.syncPush(function(){
-					var db = Ti.Database.open("hoyoji");
-					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
-					db.close();
-					db = null;
-					alert("sync finished");
-				}, function(e){
-					alert("sync error : " + e.__summary.msg);
-				});			
+				this.syncPull();
+				// this.syncPush(function(data){
+					// Alloy.Models.User.save({"lastSyncTime" : data.lastSyncTime}, {patch : true, wait : true});
+					// var db = Ti.Database.open("hoyoji");
+					// db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
+					// db.close();
+					// db = null;
+					// alert("sync finished");
+				// }, function(e){
+					// alert("sync error : " + e.__summary.msg);
+				// });			
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback){
-				getData(Alloy.Models.User.xGet("lastSyncTime"), function(data){
-					Alloy.Models.User.save({"lastSyncTime" : data.lastSyncTime}, {patch : true, wait : true});
+				this.getData(Alloy.Models.User.xGet("lastSyncTime"), function(data){
+					
+					
+					
 				}, function(e){
 					alert("sync error " + e.__summary.msg);
 				}, "syncPull");
@@ -134,16 +103,15 @@
 					data = [];
 				clientSyncRecords.fetch({query : "SELECT * FROM ClientSyncTable main"});
 				clientSyncRecords.forEach(function(record){
-					var recordModel;
-					if(record.get("operation") === "delete"){
-						recordModel = {id : record.get("id")};
-					} else {
-						recordModel = Alloy.createModel(record.get("tableName")).xFindInDb({id : record.get("recordId")});
-					}
 					var obj = {
-						operation : record.get("operation"),
-						recordData : recordModel.toJSON() 
+						operation : record.get("operation")
 					};
+					if(record.get("operation") === "delete"){
+						obj.recordData = {id : record.get("id")};
+					} else {
+						obj.recordData = Alloy.createModel(record.get("tableName")).xFindInDb({id : record.get("recordId")}).toJSON();
+					}
+					
 					obj.recordData.__dataType = record.get("tableName");
 					data.push(obj);
 				});
@@ -151,24 +119,7 @@
 					xFinishedCallback();
 					return;
 				}
-				// data = JSON.stringify(data);
 				this.postData(data, xFinishedCallback, xErrorCallback, "syncPush");
-				// var url = dataUrl + "syncPush";
-				// var xhr = Ti.Network.createHTTPClient({
-					// onload : function(e) {
-						// alert(JSON.stringify(this.responseText));
-					// },
-					// onerror : function(e) {
-						// alert(JSON.stringify(e));
-					// },
-					// timeout : 5000 /* in milliseconds */
-				// });
-				// xhr.open("POST", url);
-				// if(Alloy.Models.User){
-					// var auth = Alloy.Models.User.xGet("userName") + ":" + Alloy.Models.User.xGet("password");
-					// xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth));
-				// }				
-				// xhr.send(data);
 			}
 		}
 	}());
