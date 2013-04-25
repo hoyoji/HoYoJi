@@ -6,8 +6,8 @@ exports.definition = {
 		    parentIncomeCategoryId: "TEXT",
 		    projectId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		hasMany : {
 			subIncomeCategories : { type : "MoneyIncomeCategory", attribute : "parentIncomeCategory" },

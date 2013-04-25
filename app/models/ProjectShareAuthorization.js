@@ -8,8 +8,8 @@ exports.definition = {
 			friendId : "TEXT NOT NULL",
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 	        projectId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT",
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT",
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			

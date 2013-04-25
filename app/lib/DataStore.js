@@ -23,6 +23,7 @@ Alloy.Collections.instance("MoneyBorrow");
 Alloy.Collections.instance("MoneyReturn");
 Alloy.Collections.instance("MoneyLend");
 Alloy.Collections.instance("MoneyPayback");
+Alloy.Collections.instance("ClientSyncTable");
 
 exports.DataStore = {
 	initStore : function(){

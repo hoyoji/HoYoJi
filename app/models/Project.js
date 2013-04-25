@@ -7,8 +7,8 @@ exports.definition = {
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		   },
 		// defaults : {
 			// name : "",

@@ -7,8 +7,8 @@ exports.definition = {
 			friendUserId : "TEXT NOT NULL",
 			friendCategoryId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		belongsTo : {
 			friendCategory : {

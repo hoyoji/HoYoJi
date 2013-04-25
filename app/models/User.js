@@ -11,12 +11,12 @@ exports.definition = {
 			newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
+		    isMerchant : "INTEGER NOT NULL",
 			age : "INTEGER NOT NULL",
 			birthday : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-		    lastModifyTime : "TEXT",
-		    defaultTransactionDisplayType : "TEXT NOT NULL",
-		    isMerchant : "INTEGER NOT NULL"
+		    serverRecordHash : "TEXT",
+		    lastServerUpdateTime : "TEXT",
+		    defaultTransactionDisplayType : "TEXT NOT NULL"
 		},
 		defaults : {
 			newFriendAuthentication : "required",
@@ -35,7 +35,8 @@ exports.definition = {
 	    	moneyBorrows : {type : "MoneyBorrow", attribute : "ownerUser"},
 	    	moneyReturns : {type : "MoneyReturn", attribute : "ownerUser"},
 	    	moneyLends : {type : "MoneyLend", attribute : "ownerUser"},
-			moneyPaybacks : {type : "MoneyPayback", attribute : "ownerUser"}
+			moneyPaybacks : {type : "MoneyPayback", attribute : "ownerUser"},
+			logins : {type : "Login", attribute : "ownerUser"}
 		},
 		belongsTo : {
 			activeProject : {type : "Project", attribute : null},
