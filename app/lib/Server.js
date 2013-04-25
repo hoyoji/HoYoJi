@@ -114,44 +114,49 @@
 						wait : true
 					});
 					data = _.flatten(data.data);
-					var insertSql = "INSERT INTO Currency (id, name, symbol, code, ownerUserId, _creatorId) VALUES (?,?,?,?,?,?)";
 					var db = Ti.Database.open("hoyoji");
 					db.execute("BEGIN;");
 					data.forEach(function(record) {
-						var values, attrs, sql, rs, dataType = record.__dataType;
+						var rs, dataType = record.__dataType;
 						delete record.__dataType;
-
 						if (record.__dataType === "ServerSyncDeletedRecords") {
-							sql = "DELETE FROM " + dataType + " WHERE id = ?";
-							db.execute(sql, [record.id]);
-							// 如果该记录在本地也已被删除， 也没有必要将该删除同步到服务器
-							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-							db.execute(sql, [record.id]);
+							this._syncDeleteLocal(record, dataType, db);
 						} else {
-							sql = "SELECT * FROM " + dataType + " WHERE id = ?";
+							// 该记录是在服务器上新增的或被修改的。
+							// 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
+							// 否则，检查看该记录在不在本地表里面, 如果不再我们将其添加进来
+							sql = "SELECT * FROM ClientSyncTable WHERE recordId = ?";
 							rs = db.execute(sql, [record.id]);
-							if (rs.rowCount === 0) {
-								attrs = _.keys(record);
-								values = _.values(record);
-								questionMarks = attrs.map(function() {
-									return "?";
-								});
-								sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
-								db.execute(sql, values);
+							if (rs.rowCount > 0) {
+								rs.close()
+								// 该记录同时被本地被修改过
+								// 如果该记录是被本地删除，那么我们什么也不做，让其将服务器上的该记录也被删除
+								// 如果该记录是被本地修改过，那我们也什么不错，让其覆盖服务器上的记录
+								var model = Alloy.createModel(dataType);
+								model.xFindInDb({id : record.id});
+								model._resolveConflicts(record);
 							} else {
-								var id = record.id;
-								delete record.id;
-								values = [];
-								attrs = [];
-								for (var attr in record) {
-									attrs.push(attr + "=?");
-									values.push(record[attr]);
+								rs.close();
+								// 否则，检查看该记录在不在本地表里面, 如果不在我们将其添加进来
+								sql = "SELECT * FROM " + dataType + " WHERE id = ?";
+								rs = db.execute(sql, [record.id]);
+								
+								if (rs.rowCount === 0) {
+									this._syncInsertLocal(record, dataType, db);
+								} else {
+									// 本地记录未被修改过，直接更新本地记录
+									this._syncUpdateLocal(record, dataType, db);
 								}
-								values.push(id);
-								sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
-								db.execute(sql, values);
+								
+								var o = {}, fc = 0;
+								fc = _.isFunction(rs.fieldCount) ? rs.fieldCount() : rs.fieldCount;
+								_.times(fc, function(c) {
+									var fn = rs.fieldName(c);
+									o[fn] = rs.fieldByName(fn);
+								});
+								var model = Alloy.createModel(dataType, record);
+								model._resolveConflicts(record);
 							}
-							rs.close();
 							rs = null;
 						}
 					});
@@ -162,6 +167,34 @@
 				}, function(e) {
 					xErrorCallback(e);
 				}, "syncPull");
+			},
+			_syncInsertLocal : function(record, dataType, db) {
+				// 该记录不在本地表里面, 我们将其添加进来
+				var attrs = _.keys(record), values = _.values(record), 
+				questionMarks = attrs.map(function() {
+											return "?";
+										}), 
+				sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
+				db.execute(sql, values);
+			},
+			_syncDeleteLocal : function(record, dataType, db) {
+				var sql = "DELETE FROM " + dataType + " WHERE id = ?";
+				db.execute(sql, [record.id]);
+				// 如果该记录在本地也已被删除， 也没有必要将该删除同步到服务器
+				sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+				db.execute(sql, [record.id]);
+			},
+			_syncUpdateLocal : function(record, dataType, db) {
+				var sql, id = record.id, values = [], attrs = [];
+				delete record.id;
+				for (var attr in record) {
+					attrs.push(attr + "=?");
+					values.push(record[attr]);
+				}
+				values.push(id);
+				sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
+				db.execute(sql, values);
+				record.id = id;
 			},
 			syncPush : function(xFinishedCallback, xErrorCallback) {
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"), data = [];
@@ -185,7 +218,7 @@
 					obj.recordData.__dataType = record.get("tableName");
 					data.push(obj);
 				});
-				
+
 				this.postData(data, function(data) {
 					var db = Ti.Database.open("hoyoji");
 					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
