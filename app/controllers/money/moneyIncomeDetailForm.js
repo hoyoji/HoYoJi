@@ -24,6 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 	$.$model.xGet("moneyIncome").xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 	$.$model.trigger("xchange:amount", $.$model);
+	$.$model.trigger("xchange:name", $.$model);
 
 	if (!$.$model.xGet("moneyIncome").isNew()) {
 		var newMoneyAccount = $.$model.xGet("moneyIncome").xGet("moneyAccount");

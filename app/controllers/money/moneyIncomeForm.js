@@ -42,17 +42,22 @@ if (!$.$model) {
 }
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
-	$.exchangeRate.hide();
-	$.moneyAccount.hide();
-	$.localAmount.show();
-	$.ownerUser.show();
-	$.amount.hide();
+	// $.exchangeRate.hide();
+	// $.moneyAccount.hide();
+	// $.localAmount.show();
+	// $.ownerUser.show();
+	// $.amount.hide();
+	
+	$.localAmount.setHeight(42);
+	$.ownerUser.setHeight(42);
+	$.amount.$view.setHeight(0);
+	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		$.localAmount.hide();
-		$.ownerUser.hide();
-		$.localAmount.setHeight(0);
-		$.ownerUser.setHeight(0);
+		// $.localAmount.hide();
+		// $.ownerUser.hide();
+		// $.localAmount.setHeight(0);
+		// $.ownerUser.setHeight(0);
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
@@ -74,7 +79,7 @@ if ($.saveableMode === "read") {
 		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
 			isRateExist = true;
 			exchangeRateValue = 1;
-			$.exchangeRate.hide();
+			$.exchangeRate.$view.setHeight(0);
 		} else {
 			var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
 			if (exchanges.length) {
@@ -84,7 +89,7 @@ if ($.saveableMode === "read") {
 				isRateExist = false;
 				exchangeRateValue = null;
 			}
-			$.exchangeRate.show();
+			$.exchangeRate.$view.setHeight(42);
 		}
 		if (setToModel) {
 			model.xSet("exchangeRate", exchangeRateValue);
@@ -105,16 +110,16 @@ if ($.saveableMode === "read") {
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
-			$.friendAccount.show();
+			$.friendAccount.$view.setHeight(42);
 			$.friendAccount.setValue("");
 			$.friendAccount.field.fireEvent("change");
 		} else {
-			$.friendAccount.hide();
+			$.friendAccount.$view.setHeight(0);
 			$.friendAccount.setValue("");
 		}
 	});
 	if (!$.friend.getValue()) {
-		$.friendAccount.hide();
+		$.friendAccount.$view.setHeight(0);
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
