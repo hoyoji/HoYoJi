@@ -53,7 +53,9 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
+		if($.$model.isNew()){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		}
 	});
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);

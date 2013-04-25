@@ -60,6 +60,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newMoneyAccount.xAddToSave($);
 		$.$model.xGet("moneyExpense").xAddToSave($);
 		$.saveModel(saveEndCB, function(e) {
+			$.$model.xGet("moneyExpense").xSet("amount", $.$model.xGet("moneyExpense").previous("amount"));
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			if(oldMoneyAccount){
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
