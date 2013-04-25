@@ -4,7 +4,7 @@ exports.definition = {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
 		    name: "TEXT NOT NULL",
 		    dbVersion: "TEXT NOT NULL",
-			lastServerUpdateTime : "TEXT"
+			lastServerUpdateTime : "INTEGER"
 		},
 		adapter: {
 			type : "hyjSql"

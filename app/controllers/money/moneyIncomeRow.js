@@ -9,6 +9,6 @@ $.makeContextMenu = function() {
 	}));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		$.deleteModel();
-	}));
+	},!$.$model.canDelete()));
 	return menuSection;
 }

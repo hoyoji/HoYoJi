@@ -15,7 +15,8 @@ exports.definition = {
 			age : "INTEGER NOT NULL",
 			birthday : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-		    lastServerUpdateTime : "TEXT",
+		    lastServerUpdateTime : "INTEGER",
+		    lastSyncTime : "INTEGER",
 		    defaultTransactionDisplayType : "TEXT NOT NULL"
 		},
 		defaults : {

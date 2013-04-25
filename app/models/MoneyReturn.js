@@ -15,7 +15,7 @@ exports.definition = {
 			moneyBorrowId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "TEXT"
+			lastServerUpdateTime : "INTEGER"
 		},
 		belongsTo : {
 			friend : {
