@@ -58,17 +58,33 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			validators : {
+				date : function(xValidateComplete) {
+					var error;
+					for(i=0;i<this.xGet("moneyReturns").length;i++){
+						if(this.xGet("date")>this.xGet("moneyReturns").at(i).xGet("date")){
+							error = {
+								msg : "借入时间不能大于明细的还款时间，请重新输入"
+							};
+						}
+					}
+					xValidateComplete(error);
+				},
 				amount : function(xValidateComplete) {
 					var error;
 					if (isNaN(this.xGet("amount"))) {
 						error = {
-							msg : "金额只能为数字"
+							msg : "请输入金额"
 						};
 					} else {
 						if (this.xGet("amount") < 0) {
 							error = {
 								msg : "金额不能为负数"
 							};
+						}
+						else if(this.xGet("amount") < this.xGet("returnedAmount")) {
+							error = {
+								msg : "借入金额小于已还款金额 ，请重新输入"
+							}
 						}
 					}
 					xValidateComplete(error);

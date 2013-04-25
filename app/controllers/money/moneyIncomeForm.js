@@ -60,6 +60,10 @@ if ($.saveableMode === "read") {
 		// $.ownerUser.setHeight(0);
 		if($.$model.isNew()){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		}else{
+			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+				$.exchangeRate.$view.setHeight(42);
+			}
 		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
