@@ -165,13 +165,16 @@ if ($.saveableMode === "read") {
 				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 				//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
-				Alloy.Models.User.save({
-					activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
-					activeProjectId : $.$model.xGet("project").xGet("id")
-				}, {
-					patch : true,
-					wait : true
-				});
+				if(Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") 
+					|| Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project") ){
+					Alloy.Models.User.save({
+						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
+						activeProjectId : $.$model.xGet("project").xGet("id")
+					}, {
+						patch : true,
+						wait : true
+					});	
+				}
 			}
 			saveEndCB(e)
 		}, function(e) {

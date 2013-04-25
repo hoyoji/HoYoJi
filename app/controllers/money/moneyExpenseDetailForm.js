@@ -7,8 +7,7 @@ if (!$.$model) {
 		ownerUser : Alloy.Models.User
 	});
 	$.setSaveableMode("add");
-}
-else{
+} else {
 	$.setSaveableMode("edit");
 }
 var oldDetailAmount = $.$model.xGet("amount") || 0;
@@ -60,7 +59,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		newMoneyAccount.xAddToSave($);
 		$.$model.xGet("moneyExpense").xAddToSave($);
-		$.saveModel(saveEndCB, saveErrorCB);
+		$.saveModel(saveEndCB, function(e) {
+			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+			if(oldMoneyAccount){
+			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			}
+			saveErrorCB(e);
+		});
 
 	} else {//新增时，不自动保存，把amount传回expenseForm
 		saveEndCB();

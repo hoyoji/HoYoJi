@@ -138,13 +138,16 @@ if ($.saveableMode === "read") {
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-				Alloy.Models.User.save({
-					activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
-					activeProjectId : $.$model.xGet("project").xGet("id")
-				}, {
-					patch : true,
-					wait : true
-				});
+				if(Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") 
+					|| Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project") ){
+					Alloy.Models.User.save({
+						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
+						activeProjectId : $.$model.xGet("project").xGet("id")
+					}, {
+						patch : true,
+						wait : true
+					});	
+				}
 			}
 			saveEndCB(e);
 		}, function(e) {
