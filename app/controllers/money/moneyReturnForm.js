@@ -153,7 +153,9 @@ if ($.saveableMode === "read") {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			if(moneyBorrow){
 			moneyBorrow.xSet("returnedAmount", moneyBorrow.previous("returnedAmount"));
+			}
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
