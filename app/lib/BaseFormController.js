@@ -54,8 +54,8 @@
 									// }
 									hasError = true;
 									var errMsg;
-									if (error.__summury) {
-										errMsg = error.__summury.msg;
+									if (error.__summary) {
+										errMsg = error.__summary.msg;
 									}
 									if (xErrorCallback) {
 										xErrorCallback(errMsg);
@@ -78,11 +78,11 @@
 					if ($.$model) {
 						$.$model.xValidate(function() {
 							if ($.$model.__xValidationErrorCount > 0) {
-								$.$model.__xValidationError.__summury = {
+								$.$model.__xValidationError.__summary = {
 									msg : "验证错误"
 								};
 								$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-								saveErrorCB($.$model.__xValidationError.__summury.msg);
+								saveErrorCB($.$model.__xValidationError.__summary.msg);
 								return;
 							}
 
@@ -113,8 +113,8 @@
 								$.$model.off("sync", successCB);
 								$.$model.off("error", errorCB);
 								var errMsg;
-								if (error.__summury) {
-									errMsg = error.__summury.msg;
+								if (error.__summary) {
+									errMsg = error.__summary.msg;
 								}
 								db.execute("ROLLBACK;");
 								db.close();

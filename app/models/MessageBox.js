@@ -3,9 +3,8 @@ exports.definition = {
 		columns : {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null }

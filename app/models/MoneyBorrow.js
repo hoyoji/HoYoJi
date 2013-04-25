@@ -14,8 +14,8 @@ exports.definition = {
 			returnedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-			lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		hasMany : {
 			moneyReturns : {

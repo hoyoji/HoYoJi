@@ -4,10 +4,12 @@ exports.definition = {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
 		    date : "TEXT NOT NULL",
 		    userName: "TEXT NOT NULL",
-		    password: "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT",
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT",
 			ownerUserId : "TEXT"
+		},
+		belongsTo : {
+			ownerUser : {type : "User", attribute : "logins"}
 		},
 		adapter: {
 			type : "hyjSql"

@@ -14,8 +14,8 @@ exports.definition = {
 			paybackedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-			lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		hasMany : {
 			moneyPaybacks : {
