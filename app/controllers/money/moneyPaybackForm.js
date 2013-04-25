@@ -41,7 +41,13 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
+		if($.$model.isNew()){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		}else{
+			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+				$.exchangeRate.$view.setHeight(42);
+			}
+		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
@@ -110,11 +116,17 @@ if ($.saveableMode === "read") {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount - oldInterest + newInterest);
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount - oldInterest);
-			oldMoneyAccount.xAddToSave($);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount + newInterest);
-			newMoneyAccount.xAddToSave($);
 		}
 
+		if (moneyLend) {//更新已收款
+			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
+			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
+			var paybackRate = $.$model.xGet("exchangeRate");
+			moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
+			moneyLend.xAddToSave($);
+		}
+		
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
@@ -125,16 +137,11 @@ if ($.saveableMode === "read") {
 				exchange.xAddToSave($);
 			}
 		}
-
-		if (moneyLend) {//更新已收款
-			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
-			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
-			var paybackRate = $.$model.xGet("exchangeRate");
-			moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
-			moneyLend.xAddToSave($);
-		}
+		
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
+			moneyLend.trigger("xchange:currentBalance",moneyLend);
+			
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
