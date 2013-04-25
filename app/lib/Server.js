@@ -123,14 +123,23 @@
 				});			
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback){
-				
+				getData(Alloy.Models.User.xGet("lastSyncTime"), function(data){
+					Alloy.Models.User.save({"lastSyncTime" : data.lastSyncTime}, {patch : true, wait : true});
+				}, function(e){
+					alert("sync error " + e.__summary.msg);
+				}, "syncPull");
 			},
 			syncPush : function(xFinishedCallback, xErrorCallback){
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"),
 					data = [];
 				clientSyncRecords.fetch({query : "SELECT * FROM ClientSyncTable main"});
 				clientSyncRecords.forEach(function(record){
-					var recordModel = Alloy.createModel(record.get("tableName")).xFindInDb({id : record.get("recordId")});
+					var recordModel;
+					if(record.get("operation") === "delete"){
+						recordModel = {id : record.get("id")};
+					} else {
+						recordModel = Alloy.createModel(record.get("tableName")).xFindInDb({id : record.get("recordId")});
+					}
 					var obj = {
 						operation : record.get("operation"),
 						recordData : recordModel.toJSON() 
