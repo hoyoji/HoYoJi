@@ -47,7 +47,7 @@ if ($.saveableMode === "read") {
 	// $.localAmount.show();
 	// $.ownerUser.show();
 	// $.amount.hide();
-	
+
 	$.localAmount.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
@@ -128,13 +128,14 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
-		} else {//账户改变时
-			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+		if ($.$model.isNew() || $.$model.xGet("moneyIncomeDetail").length === 0) {
+			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+			} else {//账户改变时
+				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+			}
 		}
-
 		if ($.$model.isNew()) {
 			// save all income details
 			$.$model.xGet("moneyIncomeDetails").map(function(item) {
@@ -165,15 +166,14 @@ if ($.saveableMode === "read") {
 				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 				//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
-				if(Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") 
-					|| Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project") ){
+				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
 					Alloy.Models.User.save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")
 					}, {
 						patch : true,
 						wait : true
-					});	
+					});
 				}
 			}
 			saveEndCB(e)
