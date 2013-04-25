@@ -30,7 +30,7 @@ if (!$.$model) {
 
 	$.setSaveableMode("add");
 } else {
-	$.returnedAmount.setHeight(42);
+	$.returnedAmount.$view.setHeight(42);
 }
 
 if ($.saveableMode === "read") {
