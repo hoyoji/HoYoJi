@@ -2,23 +2,24 @@ exports.definition = {
 	config: {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
-		    collectionName: "TEXT NOT NULL",
-		    recordId: "TEXT NOT NULL",
-		    operation : "TEXT"
+		    recordId: "TEXT UNIQUE NOT NULL",
+		    tableName: "TEXT NOT NULL",
+		    operation : "TEXT",
+		    ownerUserId : "TEXT NOT NULL"
 		},
 		adapter: {
 			type : "hyjSql"
 		}
 	},		
 	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, {
 			// extended functions and properties go here
 		});
 		
 		return Model;
 	},
 	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, {
 			// extended functions and properties go here
 		});
 		

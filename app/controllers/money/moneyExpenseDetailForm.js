@@ -7,8 +7,7 @@ if (!$.$model) {
 		ownerUser : Alloy.Models.User
 	});
 	$.setSaveableMode("add");
-}
-else{
+} else {
 	$.setSaveableMode("edit");
 }
 var oldDetailAmount = $.$model.xGet("amount") || 0;
@@ -22,6 +21,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	$.$model.xGet("moneyExpense").xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
 	//增改的时候计算amount
 	$.$model.trigger("xchange:amount", $.$model);
+	$.$model.trigger("xchange:name", $.$model);
 	//通知moneyExpenseDetailAll,更新页面
 
 	if (!$.$model.xGet("moneyExpense").isNew()) {//如果是修改时，detail更改后自动保存amount
@@ -59,7 +59,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		newMoneyAccount.xAddToSave($);
 		$.$model.xGet("moneyExpense").xAddToSave($);
-		$.saveModel(saveEndCB, saveErrorCB);
+		$.saveModel(saveEndCB, function(e) {
+			$.$model.xGet("moneyExpense").xSet("amount", $.$model.xGet("moneyExpense").previous("amount"));
+			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+			if(oldMoneyAccount){
+			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			}
+			saveErrorCB(e);
+		});
 
 	} else {//新增时，不自动保存，把amount传回expenseForm
 		saveEndCB();

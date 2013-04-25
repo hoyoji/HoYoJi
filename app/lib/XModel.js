@@ -99,7 +99,7 @@
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
-						self.__xValidationError.__summury = {
+						self.__xValidationError.__summary = {
 							msg : "验证错误"
 						};
 						for (var e in self.__xValidationError) {
@@ -374,7 +374,7 @@
 						this.off("destroy", delSuccess);
 						this.off("error", delFail);
 						if (xFinishCallback) {
-							xFinishCallback(error.__summury);
+							xFinishCallback(error.__summary);
 						}
 					}
 					this.on("destroy", delSuccess);

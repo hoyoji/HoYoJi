@@ -26,19 +26,20 @@ $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCateg
 
 $.onSave = function(saveEndCB, saveErrorCB){
 	$.$model.xValidate(function() {
+		// 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
 		if ($.$model.__xValidationErrorCount > 0) {
-			$.$model.__xValidationError.__summury = {
+			$.$model.__xValidationError.__summary = {
 				msg : "验证错误"
 			};
 			for (var e in $.$model.__xValidationError) {
 				console.info(e + " : " + $.$model.__xValidationError[e].msg);
 			}
 			$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-			saveErrorCB($.$model.__xValidationError.__summury.msg);
+			saveErrorCB($.$model.__xValidationError.__summary.msg);
 		} else {
+			// 把用户注册时创建的资料发到服务器上进行注册
 			var userData = $.$model.toJSON();
 			userData.password = Ti.Utils.sha1($.$model.xGet("password"));
-	//		userData.password2 = Ti.Utils.sha1($.$model.xGet("password2"));
 			var data = [userData];
 			for (var i = 0; i < $.__saveCollection.length; i++) {
 				data.push($.__saveCollection[i].toJSON());
@@ -46,12 +47,16 @@ $.onSave = function(saveEndCB, saveErrorCB){
 			Alloy.Globals.Server.postData(data,function(e){
 				$.saveModel(saveEndCB, saveErrorCB);
 			}, function(e){
+				// 连接服务器出错或用户名已经存在，注册不成功
 				$.$model.__xValidationErrorCount = 1;
 				$.$model.__xValidationError = e;
 				$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-				// saveErrorCB(e.__summury.msg);
-			//	alert("连接服务器出错, 注册不成功");
-				// $.saveModel(saveEndCB, saveErrorCB);
+				
+				$.password.field.setValue("");
+				$.password2.field.setValue("");
+				$.$model.xSet("password", null);
+				$.$model.xSet("password2", null);
+				saveErrorCB(e.__summary.msg);
 			}, "registerUser");		
 		}
 	});

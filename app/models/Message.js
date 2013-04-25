@@ -12,8 +12,8 @@ exports.definition = {
 			toUserId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-		    lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		belongsTo : {
 			messageBox : { type : "MessageBox", attribute : "messages" },

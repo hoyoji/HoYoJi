@@ -7,8 +7,8 @@ exports.definition = {
 			rate : "REAL NOT NULL",
 			autoUpdate : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-			lastSyncTime : "TEXT",
-			lastModifyTime : "TEXT"
+		    serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT"
 		},
 		belongsTo : {
 			localCurrency : {

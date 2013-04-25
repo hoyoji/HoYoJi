@@ -5,7 +5,7 @@
 		addModeTitle="新增借入" readModeTitle="借入详细" editModeTitle="修改借入"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-			<View id="ownerUser" height="42">
+			<View id="ownerUser" height="0" backgroundColor="#f1fbfb">
 			<Label left="0" width="30%" height="Ti.UI.FILL">记账好友</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
 			bindModel="$.$model"
@@ -17,7 +17,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<View id="localAmount" height="42">
+			<View id="localAmount" height="0" backgroundColor="#f1fbfb">
 			<Label left="0" width="30%" height="Ti.UI.FILL">金额</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  
 			bindModel="$.$model"
@@ -35,7 +35,7 @@
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeRate"/>
 			<!-- <Button id="updateRate">更新本地汇率</Button> -->
@@ -45,7 +45,7 @@
 			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="债权人账户" hintText="请选择债权人账户"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="债权人账户" hintText="请选择债权人账户"
 			bindModel="$.$model"
 			bindAttribute="friendAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
@@ -55,7 +55,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="请选择时间"
 			bindModel="$.$model"
 			bindAttribute="returnDate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="returnedAmount" labelText="已还金额" hintText="请输入已收金额"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="returnedAmount"/>
