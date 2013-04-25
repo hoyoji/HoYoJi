@@ -24,6 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 	$.$model.xGet("moneyIncome").xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 	$.$model.trigger("xchange:amount", $.$model);
+	$.$model.trigger("xchange:name", $.$model);
 
 	if (!$.$model.xGet("moneyIncome").isNew()) {
 		var newMoneyAccount = $.$model.xGet("moneyIncome").xGet("moneyAccount");
@@ -60,7 +61,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		newMoneyAccount.xAddToSave($);
 		$.$model.xGet("moneyIncome").xAddToSave($);
-		$.saveModel(saveEndCB, saveErrorCB);
+		$.saveModel(saveEndCB, function(e) {
+			$.$model.xGet("moneyIncome").xSet("amount", $.$model.xGet("moneyIncome").previous("amount"));
+			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+			if(oldMoneyAccount){
+			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			}
+			saveErrorCB(e);
+		});
 	} else {
 		saveEndCB();
 		$.$model.xGet("moneyIncome").trigger("xchange:amount", $.$model.xGet("moneyIncome"));

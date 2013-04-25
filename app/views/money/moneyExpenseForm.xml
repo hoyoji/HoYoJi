@@ -5,7 +5,7 @@
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
-			<View id="ownerUser" height="42" blackgroundColor="#f1fbfb">
+			<View id="ownerUser" height="0" backgroundColor="#f1fbfb">
 			<Label left="3" width="30%" height="Ti.UI.FILL">记账好友</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
 			bindModel="$.$model"
@@ -17,7 +17,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 			bindModel="$.$model"
 			bindAttribute="amount"/>
-			<View id="localAmount" height="42" blackgroundColor="#f1fbfb">
+			<View id="localAmount" height="0" backgroundColor="#f1fbfb">
 			<Label left="3" width="30%" height="Ti.UI.FILL">金额</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  
 			hintText="请输入金额"
@@ -43,24 +43,24 @@
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeRate"/>
 			<!-- <Button id="updateRate">更新本地汇率</Button> -->
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friend" labelText="商家" hintText="无商家"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="friend" labelText="商家" hintText="无商家"
 			bindModel="$.$model"
 			bindAttribute="friend"
 			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>			
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="商家账户" hintText="无商家账户"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="商家账户" hintText="无商家账户"
 			bindModel="$.$model"
 			bindAttribute="friendAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"
 			/>
-			<View height="42" blackgroundColor="#f1fbfb">
+			<View height="42" backgroundColor="#f1fbfb">
 			<Label left="3" width="30%" height="Ti.UI.FILL">是否预支</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
 			hightLight="false"

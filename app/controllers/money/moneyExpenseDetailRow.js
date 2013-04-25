@@ -16,3 +16,6 @@ $.makeContextMenu = function() {
 $.$model.on("xchange:amount", function(){
 	$.amount.refresh();
 });
+$.$model.on("xchange:name", function(){
+	$.name.refresh();
+});

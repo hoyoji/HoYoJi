@@ -26,7 +26,8 @@
         "com.hoyoji.titanium.widget.SlideDownController": "1.0",
         "com.hoyoji.titanium.widget.XTableSectionHeader": "1.0",
         "com.hoyoji.titanium.widget.XTableSectionFooter": "1.0",
-        "com.hoyoji.titanium.widget.HoYoJiUIFrame": "1.0"
+        "com.hoyoji.titanium.widget.HoYoJiUIFrame": "1.0",
+        "com.hoyoji.titanium.widget.XButton": "1.0"
     },
     "UI": {
         "DefaultRowHeight": 42

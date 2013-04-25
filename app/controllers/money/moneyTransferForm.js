@@ -33,8 +33,8 @@ function updateExchangeRate(transferOut, transferIn) {
 		if ($.transferOut.getValue() && $.transferIn.getValue()) {
 			setExchangeRate($.transferOut.getValue(), $.transferIn.getValue());
 		} else {
-			$.exchangeRate.hide();
-			$.transferInAmount.hide();
+			$.exchangeRate.$view.setHeight(0);
+			$.transferInAmount.$view.setHeight(0);
 			$.exchangeRate.setValue(1);
 			$.exchangeRate.field.fireEvent("change");
 		}
@@ -46,8 +46,8 @@ function setExchangeRate(transferOut, transferIn) {
 	if (transferOut.xGet("currency").xGet("code") === transferIn.xGet("currency").xGet("code")) {
 		createRate = false;
 		exchangeRateValue = 1;
-		$.exchangeRate.hide();
-		$.transferInAmount.hide();
+		$.exchangeRate.$view.setHeight(0);
+		$.transferInAmount.$view.setHeight(0);
 	} else {
 		var exchanges = transferOut.xGet("currency").getExchanges(transferIn.xGet("currency"));
 		if (exchanges.length) {
@@ -57,8 +57,8 @@ function setExchangeRate(transferOut, transferIn) {
 			createRate = true;
 			exchangeRateValue = null;
 		}
-		$.exchangeRate.show();
-		$.transferInAmount.show();
+		$.exchangeRate.$view.setHeight(42);
+		$.transferInAmount.$view.setHeight(42);
 	}
 	$.exchangeRate.setValue(exchangeRateValue);
 	$.exchangeRate.field.fireEvent("change");
@@ -69,8 +69,9 @@ $.exchangeRate.field.addEventListener("change", updateForeignCurrencyAmount);
 
 function updateForeignCurrencyAmount() {
 	// if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
-		if ($.amount.getValue() && $.exchangeRate.getValue()) {
-			var foreignCurrencyAmount = ($.amount.getValue() / $.exchangeRate.getValue()).toUserCurrency();
+		var transferInAmount = $.amount.getValue() || 0;
+		if ($.exchangeRate.getValue()) {
+			var foreignCurrencyAmount = transferInAmount / $.exchangeRate.getValue();
 			$.transferInAmount.setValue(foreignCurrencyAmount);
 			$.transferInAmount.field.fireEvent("change");
 		}
