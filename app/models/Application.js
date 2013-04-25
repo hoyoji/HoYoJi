@@ -5,7 +5,7 @@ exports.definition = {
 		    name: "TEXT NOT NULL",
 		    dbVersion: "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "TEXT"
+			lastServerUpdateTime : "INTEGER"
 		},
 		adapter: {
 			type : "hyjSql"

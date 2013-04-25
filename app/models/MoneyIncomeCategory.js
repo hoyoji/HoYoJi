@@ -7,7 +7,7 @@ exports.definition = {
 		    projectId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "TEXT"
+			lastServerUpdateTime : "INTEGER"
 		},
 		hasMany : {
 			subIncomeCategories : { type : "MoneyIncomeCategory", attribute : "parentIncomeCategory" },
