@@ -8,7 +8,7 @@
 				bindAttribute = "name"
 				/>
 			</View>
-			<View layout="horizontal" horizontalWrap="false" left="45%"  width="Ti.UI.SIZE">
+			<View layout="horizontal" horizontalWrap="false" left="50%"  width="Ti.UI.SIZE">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
 				bindAttribute = "code"

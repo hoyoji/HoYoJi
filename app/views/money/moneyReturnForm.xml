@@ -39,23 +39,23 @@
 			bindModel="$.$model"
 			bindAttribute="exchangeRate"/>
 			<!-- <Button id="updateRate">更新本地汇率</Button> -->
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friend" labelText="债权人" hintText="请选择债权人"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friend" labelText="债权人" hintText="无债权人"
 			bindModel="$.$model"
 			bindAttribute="friend"
 			bindAttributeIsModel="getDisplayName()"
 			bindModelSelector="friend/friendAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="债权人账户" hintText="请选择债权人账户"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="债权人账户" hintText="无债权人账户"
 			bindModel="$.$model"
 			bindAttribute="friendAccount"
 			bindAttributeIsModel="getAccountNameCurrency()"
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			bindModelSelectorParams="selectedFriend:friend"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="interest" labelText="利息" hintText="请输入利息"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="interest" labelText="利息" hintText="无利息"
 			bindModel="$.$model"
 			bindAttribute="interest"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
 		</ScrollView></View>
