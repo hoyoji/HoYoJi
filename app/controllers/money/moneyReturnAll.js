@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyReturnForm", {
 			selectedBorrow : selectedBorrow
 		});
-	},!selectedBorrow.canMoneyReturnAddNew()));
+	}));
 	return menuSection;
 }
 
@@ -21,11 +21,11 @@ var interests = selectedBorrow.xGet("moneyReturns").xCreateFilter(function(model
 $.moneyReturnsTable.addCollection(moneyReturns, "money/moneyReturnRow");
 $.moneyReturnsTable.addCollection(interests, "money/moneyReturnInterestRow");
 
-$.onWindowOpenDo(function() {
-	if (!selectedBorrow.canMoneyReturnAddNew()) {
-		$.footerBar.$view.hide();
-	}
-});
+// $.onWindowOpenDo(function() {
+	// if (!selectedBorrow.canMoneyReturnAddNew()) {
+		// $.footerBar.$view.hide();
+	// }
+// });
 
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyReturn") {
