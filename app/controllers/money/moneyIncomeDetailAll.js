@@ -16,7 +16,7 @@ var collection = selectedIncome.xGet("moneyIncomeDetails");
 $.moneyIncomeDetailsTable.addCollection(collection);
 
 $.onWindowOpenDo(function() {
-	if (!selectedExpense.canAddNew()) {
+	if (!selectedIncome.canAddNew()) {
 		$.footerBar.$view.hide();
 	}
 });
