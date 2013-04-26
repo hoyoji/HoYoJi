@@ -139,6 +139,9 @@ if ($.saveableMode === "read") {
 		
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
+			if(moneyBorrow){
+			moneyBorrow.trigger("xchange:currentBalance",moneyBorrow);
+			}
 			if(oldMoneyAccount){//通知借入Form 账户余额以改变
 				oldMoneyAccount.trigger("xchange:currentBalance",oldMoneyAccount);
 			}

@@ -197,6 +197,17 @@ exports.definition = {
 					moneyAccount.xSave();
 				}
 			}
+			// canMoneyPaybackAddNew : function(){
+				// if(this.xGet("ownerUser") !== Alloy.Models.User){
+					// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+					// if(projectShareAuthorization.xGet("projectShareMoneyPaybackAddNew")){
+						// return true;		
+					// } else {
+						// return false;
+					// }
+				// }
+				// return this.xGet("ownerUser") === Alloy.Models.User;
+			// }
 		});
 		return Model;
 	},

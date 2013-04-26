@@ -14,7 +14,7 @@ exports.definition = {
 			returnedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		hasMany : {
@@ -60,8 +60,8 @@ exports.definition = {
 			validators : {
 				date : function(xValidateComplete) {
 					var error;
-					for(i=0;i<this.xGet("moneyReturns").length;i++){
-						if(this.xGet("date")>this.xGet("moneyReturns").at(i).xGet("date")){
+					for ( i = 0; i < this.xGet("moneyReturns").length; i++) {
+						if (this.xGet("date") > this.xGet("moneyReturns").at(i).xGet("date")) {
 							error = {
 								msg : "借入时间不能大于明细的还款时间，请重新输入"
 							};
@@ -80,8 +80,7 @@ exports.definition = {
 							error = {
 								msg : "金额不能为负数"
 							};
-						}
-						else if(this.xGet("amount") < this.xGet("returnedAmount")) {
+						} else if (this.xGet("amount") < this.xGet("returnedAmount")) {
 							error = {
 								msg : "借入金额小于已还款金额 ，请重新输入"
 							}
@@ -144,7 +143,7 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-			return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -186,17 +185,29 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback) {
-				if(this.xGet("moneyReturns").length > 0){
-					xFinishCallback({ msg :"当前借入的还款明细不为空，不能删除"})
+				if (this.xGet("moneyReturns").length > 0) {
+					xFinishCallback({
+						msg : "当前借入的还款明细不为空，不能删除"
+					})
+				} else {
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					this._xDelete(xFinishCallback);
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
+					moneyAccount.xSave();
 				}
-				else{
-				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				this._xDelete(xFinishCallback);
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
-				moneyAccount.xSave();
 			}
-			}
+			// canMoneyReturnAddNew : function() {
+				// if (this.xGet("ownerUser") !== Alloy.Models.User) {
+					// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+					// if (projectShareAuthorization.xGet("projectShareMoneyReturnAddNew")) {
+						// return true;
+					// } else {
+						// return false;
+					// }
+				// }
+				// return this.xGet("ownerUser") === Alloy.Models.User;
+			// }
 		});
 		return Model;
 	},

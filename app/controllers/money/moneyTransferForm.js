@@ -205,12 +205,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (oldTransferIn) {
 		oldTransferIn.xAddToSave($);
 	}
-	if (newTransferOut) {
 		newTransferOut.xAddToSave($);
-	}
-	if (newTransferIn) {
 		newTransferIn.xAddToSave($);
-	}
+
 	if (createRate) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
@@ -230,5 +227,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 		}
 		saveEndCB(e);
-	}, saveErrorCB);
+	}, function(e){
+		if(oldTransferOut){
+			oldTransferOut.xSet("currentBalance", oldTransferOut.previous("currentBalance"));
+		}
+		if(oldTransferIn) {
+			oldTransferIn.xSet("currentBalance", oldTransferIn.previous("currentBalance"));
+		}
+		newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
+		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
+		saveErrorCB(e);
+	});
 }

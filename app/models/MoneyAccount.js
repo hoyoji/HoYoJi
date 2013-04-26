@@ -81,29 +81,29 @@ exports.definition = {
 						msg : "默认账户不能删除"
 					};
 				} else if (this.xGet("moneyExpenses") && this.xGet("moneyExpenses").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关支出，不能删除"
-					});
+					};
 				} else if (this.xGet("moneyIncomes") && this.xGet("moneyIncomes").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关收入，不能删除"
-					});
+					};
 				} else if (this.xGet("moneyBorrows") && this.xGet("moneyBorrows").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关借入，不能删除"
-					});
+					};
 				} else if (this.xGet("moneyLends") && this.xGet("moneyLends").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关借出，不能删除"
-					});
+					};
 				} else if (this.xGet("moneyPaybacks") && this.xGet("moneyPaybacks").length > 0 || this.xGet("moneyReturns").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关收款，不能删除"
-					});
+					};
 				} else if (this.xGet("moneyReturns") && this.xGet("moneyReturns").length > 0) {
-					xFinishCallback({
+					error = {
 						msg : "当前账户有相关还款，不能删除"
-					});
+					};
 				} else {
 					this._xDelete(xFinishCallback);
 					return;

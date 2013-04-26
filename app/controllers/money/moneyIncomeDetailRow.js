@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 		$.createContextMenuItem("删除收入明细", 
 			function() {
 				$.deleteModel();
-			}));
+			},!$.$model.canDelete()));
 	
 	return menuSection;
 }

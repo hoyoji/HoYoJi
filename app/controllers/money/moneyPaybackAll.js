@@ -21,6 +21,12 @@ var interests = selectedLend.xGet("moneyPaybacks").xCreateFilter(function(model)
 $.moneyPaybacksTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
 $.moneyPaybacksTable.addCollection(interests, "money/moneyPaybackInterestRow");
 
+// $.onWindowOpenDo(function() {
+	// if (!selectedLend.canMoneyPaybackAddNew()) {
+		// $.footerBar.$view.hide();
+	// }
+// });
+
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyPayback") {
 		Alloy.Globals.openWindow("money/moneyPaybackForm", {

@@ -7,7 +7,7 @@ exports.definition = {
 			moneyExpenseId : "TEXT NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		belongsTo : {
@@ -45,13 +45,17 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getAmount : function(){
-				return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
+			getAmount : function() {
+				if (this.xGet("ownerUser") === Alloy.Models.User) {
+					return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
+				} else {
+					return this.xGet("moneyExpense").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();
+				}
 			},
 			xDelete : function(xFinishCallback) {
 				var self = this;
 				if (this.xGet("moneyExpense").isNew()) {
-					this.xGet("moneyExpense").xSet("amount",this.xGet("moneyExpense").xGet("amount") - this.xGet("amount"));
+					this.xGet("moneyExpense").xSet("amount", this.xGet("moneyExpense").xGet("amount") - this.xGet("amount"));
 					this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();

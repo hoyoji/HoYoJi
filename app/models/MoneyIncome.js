@@ -187,6 +187,19 @@ exports.definition = {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 					moneyAccount.xSave();
 				}
+			},
+			canAddNew : function(){
+				if(this.xGet("project")){
+					if(this.xGet("project").xGet("ownerUser") !== Alloy.Models.User){
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if(this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyIncomeDetailAddNew")){
+							return true;		
+						} else {
+							return false;
+						}
+					}
+				}
+				return this.xGet("ownerUser") === Alloy.Models.User;
 			}
 		});
 		return Model;

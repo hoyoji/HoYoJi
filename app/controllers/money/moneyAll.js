@@ -2,11 +2,11 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection();
-	menuSection.add($.createContextMenuItem("汇率设置", function() {
-		Alloy.Globals.openWindow("money/currency/exchangeAll");
-	}));
 	menuSection.add($.createContextMenuItem("货币设置", function() {
 		Alloy.Globals.openWindow("money/currency/currencyAll");
+	}));
+	menuSection.add($.createContextMenuItem("汇率设置", function() {
+		Alloy.Globals.openWindow("money/currency/exchangeAll");
 	}));
 	return menuSection;
 }
