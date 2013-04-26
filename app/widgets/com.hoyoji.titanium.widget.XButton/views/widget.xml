@@ -1,3 +1,6 @@
 <Alloy>
-	<Label>I'm the default widget</Label>
+	<View id="buttonView" height="42">
+		<View id="imageView">
+		</View>
+	</View>
 </Alloy>
