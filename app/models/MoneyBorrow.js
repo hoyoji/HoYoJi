@@ -196,18 +196,18 @@ exports.definition = {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 					moneyAccount.xSave();
 				}
-			},
-			canMoneyReturnAddNew : function() {
-				if (this.xGet("ownerUser") !== Alloy.Models.User) {
-					var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
-					if (projectShareAuthorization.xGet("projectShareMoneyReturnAddNew")) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-				return this.xGet("ownerUser") === Alloy.Models.User;
 			}
+			// canMoneyReturnAddNew : function() {
+				// if (this.xGet("ownerUser") !== Alloy.Models.User) {
+					// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+					// if (projectShareAuthorization.xGet("projectShareMoneyReturnAddNew")) {
+						// return true;
+					// } else {
+						// return false;
+					// }
+				// }
+				// return this.xGet("ownerUser") === Alloy.Models.User;
+			// }
 		});
 		return Model;
 	},

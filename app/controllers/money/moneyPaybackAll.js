@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyPaybackForm", {
 			selectedLend : selectedLend
 		});
-	},!selectedLend.canMoneyPaybackAddNew()));
+	}));
 	return menuSection;
 }
 
@@ -21,11 +21,11 @@ var interests = selectedLend.xGet("moneyPaybacks").xCreateFilter(function(model)
 $.moneyPaybacksTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
 $.moneyPaybacksTable.addCollection(interests, "money/moneyPaybackInterestRow");
 
-$.onWindowOpenDo(function() {
-	if (!selectedLend.canMoneyPaybackAddNew()) {
-		$.footerBar.$view.hide();
-	}
-});
+// $.onWindowOpenDo(function() {
+	// if (!selectedLend.canMoneyPaybackAddNew()) {
+		// $.footerBar.$view.hide();
+	// }
+// });
 
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyPayback") {
