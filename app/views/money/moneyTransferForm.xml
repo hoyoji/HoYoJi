@@ -18,7 +18,6 @@
 			bindModelSelector="money/moneyAccount/moneyAccountAll"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferIn" labelText="转入账户" hintText="请选择转入账户"
-			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="transferIn"
 			bindAttributeIsModel="getAccountNameCurrency()"
@@ -28,6 +27,7 @@
 			bindModel="$.$model"
 			bindAttribute="exchangeRate"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额" hintText="请输入转入金额"
+			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="transferInAmount"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
