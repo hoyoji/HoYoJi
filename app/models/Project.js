@@ -120,6 +120,28 @@ exports.definition = {
 			},
 			canDelete : function(){
 				return this.xGet("ownerUser") === Alloy.Models.User;
+			},
+			canExpenseCategoryAddNew : function(){
+				if(this.xGet("ownerUser") !== Alloy.Models.User){
+					var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+					if(projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryAddNew")){
+						return true;		
+					} else {
+						return false;
+					}
+				}
+				return this.xGet("ownerUser") === Alloy.Models.User;
+			},
+			canIncomeCategoryAddNew : function(){
+				if(this.xGet("ownerUser") !== Alloy.Models.User){
+					var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+					if(projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryAddNew")){
+						return true;		
+					} else {
+						return false;
+					}
+				}
+				return this.xGet("ownerUser") === Alloy.Models.User;
 			}
 		});
 		return Model;

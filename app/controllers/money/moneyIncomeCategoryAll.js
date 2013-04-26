@@ -6,7 +6,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增收入分类", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeCategoryForm", {$model : "MoneyIncomeCategory", data : {project : selectedProject, parentIncomeCategory : sourceModel}});
-	}));
+	},!selectedProject.canIncomeCategoryAddNew()));
 	return menuSection;
 }
 
@@ -14,6 +14,12 @@ $.titleBar.bindXTable($.moneyIncomeCategoriesTable);
 
 var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter({parentIncomeCategory : null});
 $.moneyIncomeCategoriesTable.addCollection(collection);
+
+$.onWindowOpenDo(function() {
+	if (!selectedProject.canIncomeCategoryAddNew()) {
+		$.footerBar.$view.hide();
+	}
+});
 
 function onFooterbarTap(e){
 	if(e.source.id === "addIncomeCategory"){
