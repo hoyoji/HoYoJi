@@ -6,7 +6,7 @@ exports.definition = {
 			currencyId : "TEXT NOT NULL",
 			currentBalance : "REAL NOT NULL",
 			remark : "TEXT",
-			sharingType : "TEXT　NOT NULL",
+			sharingType : "TEXT NOT NULL",
 			accountType : "TEXT NOT NULL",
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",

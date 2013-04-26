@@ -106,61 +106,78 @@
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback) {
 				this.getData(Alloy.Models.User.xGet("lastSyncTime"), function(data) {
+					var lastSyncTime = data.lastSyncTime;
+					data = _.flatten(data.data);
+					
+					var db = Ti.Database.open("hoyoji");
+					var dbTrans = { db : db };
+					_.extend(dbTrans, Backbone.Events);
+				
+					db.execute("BEGIN;");
+					
 					Alloy.Models.User.save({
-						"lastSyncTime" : data.lastSyncTime
+						"lastSyncTime" : lastSyncTime
 					}, {
 						noSyncUpdate : true,
 						patch : true,
-						wait : true
-					});
-					data = _.flatten(data.data);
-					var db = Ti.Database.open("hoyoji");
-					db.execute("BEGIN;");
+						dbTrans : dbTrans
+					});				
+				
 					data.forEach(function(record) {
-						var rs, dataType = record.__dataType;
+						var sql, rs, dataType = record.__dataType;
 						delete record.__dataType;
 						if (record.__dataType === "ServerSyncDeletedRecords") {
-							this._syncDeleteLocal(record, dataType, db);
+							var id = record.id;
+							var model = Alloy.createModel(dataType)
+							model.xFindInDb({
+								id : id
+							});
+							if (!model.isNew()) {
+								model.syncDelete(record, dataType, dbTrans);
+							}
+							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
+							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+							db.execute(sql, [id]);
 						} else {
 							// 该记录是在服务器上新增的或被修改的。
-							// 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
-							// 否则，检查看该记录在不在本地表里面, 如果不再我们将其添加进来
+							// 1. 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
+							// 2. 否则，检查看该记录在不在本地表里面, 如果不再我们将其添加进来
 							sql = "SELECT * FROM ClientSyncTable WHERE recordId = ?";
 							rs = db.execute(sql, [record.id]);
 							if (rs.rowCount > 0) {
+								var operation = rs.fieldByName("operation");
 								rs.close()
-								// 该记录同时被本地被修改过
-								// 如果该记录是被本地删除，那么我们什么也不做，让其将服务器上的该记录也被删除
-								// 如果该记录是被本地修改过，那我们也什么不错，让其覆盖服务器上的记录
-								var model = Alloy.createModel(dataType);
-								model.xFindInDb({id : record.id});
-								model._resolveConflicts(record);
+								// 该记录同时在本地和服务器被修改过
+								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
+								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
+								if(operation === "update"){
+									var model = Alloy.createModel(dataType)
+									model.xFindInDb({
+										id : record.id
+									});
+									model.syncUpdateConflict(record, dbTrans);
+								}
 							} else {
 								rs.close();
-								// 否则，检查看该记录在不在本地表里面, 如果不在我们将其添加进来
-								sql = "SELECT * FROM " + dataType + " WHERE id = ?";
-								rs = db.execute(sql, [record.id]);
-								
-								if (rs.rowCount === 0) {
-									this._syncInsertLocal(record, dataType, db);
-								} else {
-									// 本地记录未被修改过，直接更新本地记录
-									this._syncUpdateLocal(record, dataType, db);
-								}
-								
-								var o = {}, fc = 0;
-								fc = _.isFunction(rs.fieldCount) ? rs.fieldCount() : rs.fieldCount;
-								_.times(fc, function(c) {
-									var fn = rs.fieldName(c);
-									o[fn] = rs.fieldByName(fn);
+								// 该记录在本地未被修改，在服务器上修改过。
+								// 1. 检查看该记录在不在本地表里面, 如果不在我们将其添加进来
+								// 2. 如果该记录已经存在本地表里，我们将其合并
+								var model = Alloy.createModel(dataType)
+								model.xFindInDb({
+									id : record.id
 								});
-								var model = Alloy.createModel(dataType, record);
-								model._resolveConflicts(record);
+								if (model.isNew()) {
+									// 没有找到该记录
+									model.syncAddNew(record, dbTrans);
+								} else {
+									model.syncUpdate(record, dbTrans);
+								}
 							}
 							rs = null;
 						}
 					});
 					db.execute("COMMIT;");
+					dbTrans.trigger("commit");
 					db.close();
 					db = null;
 					xFinishedCallback();
@@ -168,34 +185,29 @@
 					xErrorCallback(e);
 				}, "syncPull");
 			},
-			_syncInsertLocal : function(record, dataType, db) {
-				// 该记录不在本地表里面, 我们将其添加进来
-				var attrs = _.keys(record), values = _.values(record), 
-				questionMarks = attrs.map(function() {
-											return "?";
-										}), 
-				sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
-				db.execute(sql, values);
-			},
-			_syncDeleteLocal : function(record, dataType, db) {
-				var sql = "DELETE FROM " + dataType + " WHERE id = ?";
-				db.execute(sql, [record.id]);
-				// 如果该记录在本地也已被删除， 也没有必要将该删除同步到服务器
-				sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-				db.execute(sql, [record.id]);
-			},
-			_syncUpdateLocal : function(record, dataType, db) {
-				var sql, id = record.id, values = [], attrs = [];
-				delete record.id;
-				for (var attr in record) {
-					attrs.push(attr + "=?");
-					values.push(record[attr]);
-				}
-				values.push(id);
-				sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
-				db.execute(sql, values);
-				record.id = id;
-			},
+			// _syncInsertLocal : function(record, dataType, db) {
+				// // 该记录不在本地表里面, 我们将其添加进来
+				// var attrs = _.keys(record), values = _.values(record), questionMarks = attrs.map(function() {
+					// return "?";
+				// }), sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
+				// db.execute(sql, values);
+			// },
+			// _syncDeleteLocal : function(record, dataType, db) {
+				// var sql = "DELETE FROM " + dataType + " WHERE id = ?";
+				// db.execute(sql, [record.id]);
+			// },
+			// _syncUpdateLocal : function(record, dataType, db) {
+				// var sql, id = record.id, values = [], attrs = [];
+				// delete record.id;
+				// for (var attr in record) {
+					// attrs.push(attr + "=?");
+					// values.push(record[attr]);
+				// }
+				// values.push(id);
+				// sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
+				// db.execute(sql, values);
+				// record.id = id;
+			// },
 			syncPush : function(xFinishedCallback, xErrorCallback) {
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"), data = [];
 				clientSyncRecords.fetch({

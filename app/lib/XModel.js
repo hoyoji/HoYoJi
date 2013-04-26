@@ -43,6 +43,9 @@
 				});
 			},
 			__initializeExistingModel : function() {
+				if(this.isNew()){
+					return;
+				}
 				// keep the relations in sync
 				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
 
@@ -352,7 +355,7 @@
 				getAncestors(this.xGet(attribute));
 				return ancestors;
 			},
-			_xDelete : function(xFinishCallback) {
+			_xDelete : function(xFinishCallback, options) {
 				var error;
 				for (var hasMany in this.config.hasMany) {
 					if (this.xGet(hasMany).length > 0) {
@@ -379,7 +382,9 @@
 					}
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
-					this.destroy({wait : true});
+					options = options || {};
+					options.wait = true;
+					this.destroy(options);
 				}
 				return this;
 			},
@@ -463,12 +468,28 @@
 					return this.xGet("project").xGet("ownerUser") === Alloy.Models.User;
 				}
 			},
-			_resolveConflicts : function(record, type){
+			_syncAddNew : function(record, dbTrans){
+				this.xSet(record);
+				delete this.id;
+				this.save(null, { dbTrans : dbTrans, noSyncUpdate : true});
+			},
+			syncAddNew : function(record, dbTrans){
 				// 检查所有 belongsTo 有没有被删除
 				
-				if(this.resolveConflicts){
-					this.resolveConflicts(record, type);
-				}	
+				this._syncAddNew(record, dbTrans);
+			},
+			_syncUpdate : function(record, dbTrans){
+				//delete record.id;
+				this.save(record, { dbTrans : dbTrans, noSyncUpdate : true, patch : true });
+			},
+			syncUpdate : function(record, dbTrans){
+				this._syncUpdate(record, dbTrans);
+			},
+			syncDelete : function(record, dbTrans){
+				this.xDelete ? this.xDelete(function(){},{dbTrans : dbTrans}) : this._xDelete(function(){},{dbTrans : dbTrans});
+			},
+			syncUpdateConflict : function(record, dbTrans){
+				// 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
 			}
 		}
 	}());
