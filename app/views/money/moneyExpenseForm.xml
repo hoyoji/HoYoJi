@@ -69,7 +69,7 @@
 			bindModel="$.$model"
 			bindAttribute="expenseType"/>
 			</View>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="无备注"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
 		</ScrollView>
