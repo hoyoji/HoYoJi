@@ -26,7 +26,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
 			bindModel="$.$model"
 			bindAttribute="exchangeRate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额" hintText="请输入转入金额"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额" 
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="transferInAmount"/>
@@ -36,7 +36,7 @@
 			bindAttributeIsModel="name"
 			bindModelSelector="project/projectAll"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="请输入备注"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 			bindModel="$.$model"
 			bindAttribute="remark"/>
 		</ScrollView></View>
