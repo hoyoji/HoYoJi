@@ -6,6 +6,6 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("删除收款", function() {
 		$.deleteModel();
-	}));
+	},!$.$model.canDelete()));
 	return menuSection;
 }
