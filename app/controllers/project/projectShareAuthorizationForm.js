@@ -56,7 +56,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendId : $.$model.xGet("friend").xGet("id")
 			});
-			if (projectShareAuthorization && projectShareAuthorization.xGet("id")
+			if (projectShareAuthorization && projectShareAuthorization.id
 				&& (projectShareAuthorization.xGet("state") === "Wait" || projectShareAuthorization.xGet("state") === "Accept")) {
 				saveErrorCB("好友已在共享列表,请重新选择好友！");
 			}else{
@@ -68,7 +68,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : subProject.xGet("id"),
 							friendId : $.$model.xGet("friend").xGet("id")
 						});
-						if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id")
+						if (subProjectShareAuthorization && subProjectShareAuthorization.id
 							&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 							// subProjectShareAuthorization.xSet("state", "Wait");
 							// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -142,7 +142,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : subProject.xGet("id"),
 								friendId : $.$model.xGet("friend").xGet("id")
 							});
-							if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id")
+							if (subProjectShareAuthorization && subProjectShareAuthorization.id
 								&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 								// subProjectShareAuthorization.xSet("state", "Wait");
 								// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -195,7 +195,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									projectId : subProject.xGet("id"),
 									friendId : $.$model.xGet("friendId")
 								});
-							if(subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") 
+							if(subProjectShareAuthorization && subProjectShareAuthorization.id 
 								&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
 								// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								// subProjectShareAuthorization._xDelete();

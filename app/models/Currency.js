@@ -53,7 +53,7 @@ exports.definition = {
 				
 				}
 			},
-			xDelete : function(xFinishCallback){
+			xDelete : function(xFinishCallback, options){
 				var error;
 				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
 					localCurrency : this
@@ -67,7 +67,7 @@ exports.definition = {
 				else if(currencyPositive.length>0){
 					error = { msg : "删除失败，请先删除相关汇率"};
 				 } else {
-					this._xDelete(xFinishCallback);
+					this._xDelete(xFinishCallback, options);
 					return;
 				}
 				

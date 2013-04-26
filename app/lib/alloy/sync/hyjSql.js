@@ -448,7 +448,7 @@ function Sync(method, model, opts) {
 						if (r.rowCount > 0) {
 							db.execute("Update ClientSyncTable SET operation = 'delete' WHERE recordId = '" + model.id + "'");
 						} else {
-							db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + ownerUserId + "','" + ownerUserId + "')");
+							db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
 						}
 					}
 				}

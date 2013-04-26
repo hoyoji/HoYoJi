@@ -126,14 +126,14 @@ exports.definition = {
 			getTransferInAmount : function() {
 				return this.xGet("transferIn").xGet("currency").xGet("symbol") + this.xGet("transferInAmount").toUserCurrency();
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var transferOutOwnerUser = this.xGet("transferOutOwnerUser");
 				var transferInOwnerUser = this.xGet("transferInOwnerUser");
 				var transferOut = this.xGet("transferOut");
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
-				this._xDelete(xFinishCallback);
+				this._xDelete(xFinishCallback, options);
 				if (!transferOutOwnerUser) {
 					transferOut.xSet("currentBalance", transferOut.xGet("currentBalance") + transferOutAmount);
 					transferOut.xSave();

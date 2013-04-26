@@ -126,14 +126,13 @@
 					data.forEach(function(record) {
 						var sql, rs, dataType = record.__dataType;
 						delete record.__dataType;
-						if (record.__dataType === "ServerSyncDeletedRecords") {
-							var id = record.id;
-							var model = Alloy.createModel(dataType)
-							model.xFindInDb({
+						if (dataType === "ServerSyncDeletedRecords") {
+							var id = record.recordId;
+							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
 							});
 							if (!model.isNew()) {
-								model.syncDelete(record, dataType, dbTrans);
+								model.syncDelete(record, dbTrans);
 							}
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
@@ -151,8 +150,7 @@
 								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
 								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
 								if(operation === "update"){
-									var model = Alloy.createModel(dataType)
-									model.xFindInDb({
+									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
 									});
 									model.syncUpdateConflict(record, dbTrans);
@@ -162,8 +160,7 @@
 								// 该记录在本地未被修改，在服务器上修改过。
 								// 1. 检查看该记录在不在本地表里面, 如果不在我们将其添加进来
 								// 2. 如果该记录已经存在本地表里，我们将其合并
-								var model = Alloy.createModel(dataType)
-								model.xFindInDb({
+								var model = Alloy.createModel(dataType).xFindInDb({
 									id : record.id
 								});
 								if (model.isNew()) {
@@ -219,7 +216,7 @@
 					};
 					if (record.get("operation") === "delete") {
 						obj.recordData = {
-							id : record.get("id")
+							id : record.get("recordId")
 						};
 					} else {
 						obj.recordData = Alloy.createModel(record.get("tableName")).xFindInDb({
