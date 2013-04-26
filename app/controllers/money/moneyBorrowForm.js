@@ -33,6 +33,16 @@ if (!$.$model) {
 	$.returnedAmount.$view.setHeight(42);
 }
 
+ function updateAccountBalance() {
+ 	$.moneyAccount.field.fireEvent("change");
+ }
+
+$.$model.on("xchange:currentBalance", updateAccountBalance);
+	$.onWindowCloseDo(function() {
+		$.$model.off("xchange:currentBalance", updateAccountBalance);
+	});
+
+
 if ($.saveableMode === "read") {
 	$.localAmount.setHeight(42);
 	$.ownerUser.setHeight(42);
