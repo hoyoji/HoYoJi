@@ -1,11 +1,12 @@
 <Alloy>
-	<View class="container" title="还款明细" >
+	<View class="container" title="还款明细">
 		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="还款明细"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyReturnsTable" bottom="0" top="0"/>
+			<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyReturnsTable" bottom="0" top="0"/>
+		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-			buttons="新增还款"
-			ids="addMoneyReturn"/>
-	</View></View>
+		buttons="新增还款"
+		ids="addMoneyReturn"/>
+	</View>
 </Alloy>

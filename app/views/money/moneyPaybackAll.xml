@@ -4,9 +4,9 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收款明细"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyPaybacksTable" bottom="0" top="0"/>
-			<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-			buttons="新增收款"
-			ids="addMoneyPayback"/>
 		</View>
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+		buttons="新增收款"
+		ids="addMoneyPayback"/>
 	</View>
 </Alloy>
