@@ -8,12 +8,15 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
     else{
         $.$model.xSet("projectShareMoneyExpenseDetailOwnerDataOnly", 0);
     }
-    if($.$model.xGet("projectShareMoneyExpenseAddNew") || $.$model.xGet("projectShareMoneyExpenseEdit")){
+    if($.$model.xGet("projectShareMoneyExpenseEdit")){
         $.$model.xSet("projectShareMoneyExpenseDetailAddNew", 1);
         $.$model.xSet("projectShareMoneyExpenseDetailEdit", 1);
         $.$model.xSet("projectShareMoneyExpenseDetailDelete", 1);
-    }
-    else{
+    }else if($.$model.xGet("projectShareMoneyExpenseAddNew")){
+    	$.$model.xSet("projectShareMoneyExpenseDetailAddNew", 1);
+        $.$model.xSet("projectShareMoneyExpenseDetailEdit", 0);
+        $.$model.xSet("projectShareMoneyExpenseDetailDelete", 0);
+    }else{
         $.$model.xSet("projectShareMoneyExpenseDetailAddNew", 0);
         $.$model.xSet("projectShareMoneyExpenseDetailEdit", 0);
         $.$model.xSet("projectShareMoneyExpenseDetailDelete", 0);
@@ -25,12 +28,15 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
     else{
         $.$model.xSet("projectShareMoneyIncomeDetailOwnerDataOnly", 0);
     }
-    if($.$model.xGet("projectShareMoneyIncomeAddNew") || $.$model.xGet("projectShareMoneyIncomeEdit")){
+    if($.$model.xGet("projectShareMoneyIncomeEdit")){
         $.$model.xSet("projectShareMoneyIncomeDetailAddNew", 1);
         $.$model.xSet("projectShareMoneyIncomeDetailEdit", 1);
         $.$model.xSet("projectShareMoneyIncomeDetailDelete", 1);
-    }
-    else{
+    }else if($.$model.xGet("projectShareMoneyIncomeAddNew")){
+    	$.$model.xSet("projectShareMoneyIncomeDetailAddNew", 1);
+        $.$model.xSet("projectShareMoneyIncomeDetailEdit", 0);
+        $.$model.xSet("projectShareMoneyIncomeDetailDelete", 0);
+    }else{
         $.$model.xSet("projectShareMoneyIncomeDetailAddNew", 0);
         $.$model.xSet("projectShareMoneyIncomeDetailEdit", 0);
         $.$model.xSet("projectShareMoneyIncomeDetailDelete", 0);
