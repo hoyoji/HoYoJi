@@ -390,7 +390,7 @@ function Sync(method, model, opts) {
 			if(db.rowsAffected === 0){
 				error = { __summary : { msg : "没有修改权限"}};
 				delete opts.wait;
-			} else {
+			} else if(!opts.noSyncUpdate){
 				var r = db.execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'"); 
 				if(r.rowCount === 0){
 					db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('"+guid()+"','"+model.id+"','"+model.config.adapter.collection_name+"','update','"+ownerUserId+"','"+ownerUserId+"')");

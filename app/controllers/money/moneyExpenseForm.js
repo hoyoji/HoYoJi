@@ -55,6 +55,10 @@ if ($.saveableMode === "read") {
 	$.onWindowOpenDo(function() {
 		if($.$model.isNew()){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		}else{
+			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+				$.exchangeRate.$view.setHeight(42);
+			}
 		}
 	});
 

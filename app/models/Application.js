@@ -3,9 +3,7 @@ exports.definition = {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
 		    name: "TEXT NOT NULL",
-		    dbVersion: "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "TEXT"
+		    dbVersion: "TEXT NOT NULL"
 		},
 		adapter: {
 			type : "hyjSql"

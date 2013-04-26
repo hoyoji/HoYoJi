@@ -462,6 +462,13 @@
 				} else {
 					return this.xGet("project").xGet("ownerUser") === Alloy.Models.User;
 				}
+			},
+			_resolveConflicts : function(record, type){
+				// 检查所有 belongsTo 有没有被删除
+				
+				if(this.resolveConflicts){
+					this.resolveConflicts(record, type);
+				}	
 			}
 		}
 	}());

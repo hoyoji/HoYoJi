@@ -33,6 +33,16 @@ if (!$.$model) {
 	$.returnedAmount.$view.setHeight(42);
 }
 
+ function updateAccountBalance() {
+ 	$.moneyAccount.field.fireEvent("change");
+ }
+
+$.$model.on("xchange:currentBalance", updateAccountBalance);
+	$.onWindowCloseDo(function() {
+		$.$model.off("xchange:currentBalance", updateAccountBalance);
+	});
+
+
 if ($.saveableMode === "read") {
 	$.localAmount.setHeight(42);
 	$.ownerUser.setHeight(42);
@@ -40,7 +50,13 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
+		if($.$model.isNew()){
 		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		}else{
+			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+				$.exchangeRate.$view.setHeight(42);
+			}
+		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
@@ -106,7 +122,6 @@ if ($.saveableMode === "read") {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-			oldMoneyAccount.xAddToSave($);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 		}
 

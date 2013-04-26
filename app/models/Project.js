@@ -8,7 +8,7 @@ exports.definition = {
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "TEXT"
+			lastServerUpdateTime : "INTEGER"
 		   },
 		// defaults : {
 			// name : "",

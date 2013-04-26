@@ -22,7 +22,7 @@
 						}
 					}
 				},
-				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans) {
+				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans, options) {
 					var mydb, myDbTrans;
 					if (!dbTrans) {
 						mydb = Ti.Database.open("hoyoji");
@@ -74,7 +74,7 @@
 					}
 					xCompleteCallback();
 				},
-				saveModel : function(saveEndCB, saveErrorCB) {
+				saveModel : function(saveEndCB, saveErrorCB, options) {
 					if ($.$model) {
 						$.$model.xValidate(function() {
 							if ($.$model.__xValidationErrorCount > 0) {
@@ -142,7 +142,7 @@
 								// db.close();
 								// dbTrans.trigger("commit");
 								// }
-							}, saveErrorCB, dbTrans);
+							}, saveErrorCB, dbTrans, options);
 
 							// } catch (err) {
 							// if (_.isFunction(clearModelId)) {

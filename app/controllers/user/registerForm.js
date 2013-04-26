@@ -44,7 +44,8 @@ $.onSave = function(saveEndCB, saveErrorCB){
 			for (var i = 0; i < $.__saveCollection.length; i++) {
 				data.push($.__saveCollection[i].toJSON());
 			}
-			Alloy.Globals.Server.postData(data,function(e){
+			Alloy.Globals.Server.postData(data,function(returnedData){
+				$.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
 				$.saveModel(saveEndCB, saveErrorCB);
 			}, function(e){
 				// 连接服务器出错或用户名已经存在，注册不成功
