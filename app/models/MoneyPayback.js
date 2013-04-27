@@ -14,7 +14,7 @@ exports.definition = {
 			remark : "TEXT",
 			moneyLendId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		belongsTo : {
@@ -91,7 +91,7 @@ exports.definition = {
 						} else {
 							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.previous("amount");
 						}
-						if (this.xGet("amount")* paybackRate / lendRate > paybackRequireAmount) {
+						if (this.xGet("amount") * paybackRate / lendRate > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
 							}
@@ -208,15 +208,25 @@ exports.definition = {
 				var paybackRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 
-				this._xDelete(xFinishCallback, options);
-				if (this.xGet("moneyLend")) {
-					var moneyLend = this.xGet("moneyLend");
-					var lendRate = moneyLend.xGet("exchangeRate");
-					moneyLend.xSet("paybackedAmount", moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate);
-					moneyLend.xSave();
-				}
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount - interest);
-				moneyAccount.xSave();
+				this._xDelete(function(error) {
+					if (!error) {
+						var saveOptions = _.extend({}, options);
+						saveOptions.patch = true;
+						moneyAccount.save({
+							currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
+						}, saveOptions);
+						
+						if (this.xGet("moneyLend")) {
+							var moneyLend = this.xGet("moneyLend");
+							var lendRate = moneyLend.xGet("exchangeRate");
+							moneyLend.save({
+								paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
+							}, saveOptions);
+						}
+
+					}
+					xFinishCallback(error);
+				}, options);
 			}
 		});
 		return Model;
