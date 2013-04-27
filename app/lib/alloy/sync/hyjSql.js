@@ -464,9 +464,9 @@ function Sync(method, model, opts) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
 				db.close();
+				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch");
-				opts.dbTrans.trigger("commit");
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
