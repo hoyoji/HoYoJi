@@ -134,7 +134,7 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if ($.$model.isNew() || $.$model.xGet("moneyIncomeDetail").length === 0) {
+		if ($.$model.isNew() || $.$model.xGet("moneyIncomeDetails").length === 0) {
 			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 			} else {//账户改变时

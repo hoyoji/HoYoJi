@@ -46,7 +46,6 @@
 							$.__saveCollection[i]._xSave(_.extend({
 								dbTrans : myDbTrans,
 								error : function(model, error) {
-									$.__saveCollection = [];
 									// if(!dbTrans){
 									mydb.execute("ROLLBACK;");
 									mydb.close();
@@ -63,8 +62,10 @@
 								}
 							}, options));
 						}
-						if (hasError)
+						if (hasError){
+							$.__saveCollection = [];
 							return;
+						}
 					}
 					$.__saveCollection = [];
 					if (!dbTrans) {

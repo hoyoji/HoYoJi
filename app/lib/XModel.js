@@ -50,7 +50,7 @@
 				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
 
 				// Keep every model to its store collection
-				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name);
+				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
 				if (this.collection !== storeCollection) {
 					storeCollection.add(this);
 					this.collection = storeCollection;
@@ -159,7 +159,7 @@
 								};
 								continue;
 							}
-						} else if (fieldValue === undefined || fieldValue === null) {
+						} else if (fieldValue === undefined || fieldValue === null || fieldValue === "") {
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {
 								msg : "不能为空"
@@ -390,6 +390,7 @@
 					options.wait = true;
 					this.destroy(options);
 				}
+				xFinishCallback(error);
 				return this;
 			},
 			xFindInDb : function(filter) {
