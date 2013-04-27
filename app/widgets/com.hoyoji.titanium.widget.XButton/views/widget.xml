@@ -1,5 +1,6 @@
 <Alloy>
 	<View id="buttonView" height="42" width="84" backgroundColor="#e7f5f5">
-		<ImageView id="imageView"/>
+		<ImageView id="imageView" width="Ti.UI.SIZE"/>
+		<Button id="button" width="Ti.UI.FILL" backgroundColor="#ffffff"/>
 	</View>
 </Alloy>

@@ -143,12 +143,6 @@ if ($.saveableMode === "read") {
 			if(moneyBorrow && oldAccountHasChanged){
 				moneyBorrow.trigger("xchange:moneyAccount.currentBalance",moneyBorrow);
 			}
-			// if(oldMoneyAccount){//通知借入Form 账户余额以改变
-				// oldMoneyAccount.trigger("xchange:currentBalance",oldMoneyAccount);
-			// }
-			// if(newMoneyAccount) {
-				// newMoneyAccount.trigger("xchange:currentBalance",newMoneyAccount);
-			// }
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));

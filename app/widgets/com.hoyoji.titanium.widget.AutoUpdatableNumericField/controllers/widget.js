@@ -10,6 +10,14 @@ $.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {
 		if ($.saveableMode === "read") {
 			return;
+		} else if ($.saveableMode === "edit") {
+			if ($.$attrs.editModeEditability === "noneditable") {
+				return;
+			}
+		} else if ($.saveableMode === "add") {
+			if ($.$attrs.addModeEditability === "noneditable") {
+				return;
+			}
 		}
 
 		// $.field.fireEvent("textfieldfocused", {
@@ -38,9 +46,9 @@ $.setValue = function(value) {
 		}
 	}
 	value = this.convertModelValue(value);
-	if(value){
+	if (value) {
 		$.hintText.hide();
-	}else{
+	} else {
 		$.hintText.show();
 	}
 	$.field.setText(value || "");
