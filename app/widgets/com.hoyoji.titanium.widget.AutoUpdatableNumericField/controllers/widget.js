@@ -58,6 +58,9 @@ $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
 		return $.__bindAttributeIsModel;
 	}
+	if($.field.getText() === ""){
+		return null;
+	}
 	return Number($.field.getText());
 }
 

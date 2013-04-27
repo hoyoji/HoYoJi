@@ -209,7 +209,7 @@
 						$.hideErrorMsg();
 					}
 				}
-				var updateField = function(e) {
+				$.updateField = function(e) {
 					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 					if ($.__dirtyCount > 0) {
@@ -228,10 +228,12 @@
 						var val = $.getValue(e);
 						if(model.xSet){
 							if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
-								val = Number(val);
-								if (_.isNaN(val)) {
-									$.showErrorMsg("请输入数值");
-									return;
+								if(val){
+									val = Number(val);
+									if (_.isNaN(val)) {
+										$.showErrorMsg("请输入数值");
+										return;
+									}	
 								}
 							}
 							model.xSet(attribute, val);
@@ -245,7 +247,7 @@
 					if(model.xGet){
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
-						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
+						} else if (model.hasChanged(attribute) && model.previous(attribute) != $.__bindAttributeIsModel && $.__dirtyCount === 0) {
 							$.becameDirty();
 						}	
 					}
@@ -253,14 +255,14 @@
 				$.field.addEventListener("change", updateModel);
 				if(model.xGet){
 					model.on("error", handleError);
-					model.on("sync", updateField);
+					model.on("sync", $.updateField);
 	
 					// clean up listener upon window close to prevent memory leak
 					$.onWindowCloseDo(function() {
 						if (!model.isNew() && model.hasChanged(attribute)) {
 								model.xSet(attribute, model.previous(attribute));
 						}
-						model.off(null, updateField);
+						model.off(null, $.updateField);
 						model.off(null, handleError);
 					});
 				}

@@ -17,12 +17,12 @@
 					}
 					this.on("sync", function() {
 						for (var belongsTo in self.config.belongsTo) {
-							if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
+							//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
 								self.attributes[belongsTo] = null;
 								delete self.attributes[belongsTo];
 								delete self._previousAttributes[belongsTo];
 								delete self.changed[belongsTo];
-							}
+							//}
 						}
 					});
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
@@ -159,7 +159,7 @@
 								};
 								continue;
 							}
-						} else if (fieldValue === undefined || fieldValue === null) {
+						} else if (fieldValue === undefined || fieldValue === null || fieldValue === "") {
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {
 								msg : "不能为空"
@@ -390,6 +390,7 @@
 					options.wait = true;
 					this.destroy(options);
 				}
+				xFinishCallback(error);
 				return this;
 			},
 			xFindInDb : function(filter) {

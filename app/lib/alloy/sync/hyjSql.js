@@ -84,7 +84,9 @@ function Migrator(config, transactionDb) {
 	};
 }
 
-var projectPermissionTables = ["Project", "ProjectPreExpenseBalance", "ProjectPreIncomeBalance", "MoneyPreIncome", "MoneyPreExpense", "ProjectDeposit", "ProjectDepositeReturn", "MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "MoneyLend", "MoneyPayback", "MoneyBorrow", "MoneyReturn", "MoneyTransfer"];
+var projectPermissionTables = ["Project", "ProjectPreExpenseBalance", "ProjectPreIncomeBalance", "MoneyPreIncome", "MoneyPreExpense", "ProjectDeposit", "ProjectDepositeReturn", 
+						"MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", 
+						"MoneyLend", "MoneyPayback", "MoneyBorrow", "MoneyReturn" /*, "MoneyTransfer"*/];
 
 function Sync(method, model, opts) {
 	var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
@@ -464,9 +466,9 @@ function Sync(method, model, opts) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
 				db.close();
+				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch");
-				opts.dbTrans.trigger("commit");
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
