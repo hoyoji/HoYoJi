@@ -247,7 +247,7 @@
 					if(model.xGet){
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
-						} else if (model.hasChanged(attribute) && model.previous(attribute) != $.__bindAttributeIsModel && $.__dirtyCount === 0) {
+						} else if (model.hasChanged(attribute) && model.previous(attribute) != model.xGet(attribute) && $.__dirtyCount === 0) {
 							$.becameDirty();
 						}	
 					}
