@@ -11,7 +11,7 @@ exports.definition = {
 			projectId : "TEXT NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		belongsTo : {
@@ -133,15 +133,20 @@ exports.definition = {
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
-				this._xDelete(xFinishCallback, options);
-				if (!transferOutOwnerUser) {
-					transferOut.xSet("currentBalance", transferOut.xGet("currentBalance") + transferOutAmount);
-					transferOut.xSave();
-				}
-				if (!transferInOwnerUser) {
-					transferIn.xSet("currentBalance", transferIn.xGet("currentBalance") - transferInAmount);
-					transferIn.xSave();
-				}
+
+				this._xDelete(function(error) {
+					if (!error) {
+						var saveOptions = _.extend({}, options);
+						saveOptions.patch = true;
+						transferOut.save({
+							currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+						}, saveOptions);
+						transferIn.save({
+							currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+						}, saveOptions);
+					}
+					xFinishCallback(error);
+				}, options);
 			}
 		});
 		return Model;

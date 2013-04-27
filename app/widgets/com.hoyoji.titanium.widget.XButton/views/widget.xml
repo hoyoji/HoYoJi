@@ -1,5 +1,5 @@
 <Alloy>
-	<View id="buttonView" height="42">
+	<View id="buttonView" height="42" width="84">
 		<View id="imageView">
 		</View>
 	</View>

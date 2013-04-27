@@ -14,7 +14,7 @@ exports.definition = {
 			remark : "TEXT",
 			moneyBorrowId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		belongsTo : {
@@ -86,13 +86,13 @@ exports.definition = {
 					if (this.xGet("moneyBorrow")) {
 						var returnRequireAmount;
 						var borrowRate = this.xGet("moneyBorrow").xGet("exchangeRate");
-			            var returnRate = this.xGet("exchangeRate");
+						var returnRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
 							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount");
 						} else {
 							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount") + this.previous("amount");
 						}
-						if (this.xGet("amount")* returnRate / borrowRate > returnRequireAmount) {
+						if (this.xGet("amount") * returnRate / borrowRate > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
 							}
@@ -209,15 +209,24 @@ exports.definition = {
 				var returnRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 
-				this._xDelete(xFinishCallback, options);
-				if (this.xGet("moneyBorrow")) {
-					var moneyBorrow = this.xGet("moneyBorrow");
-					var borrowRate = moneyBorrow.xGet("exchangeRate");
-					moneyBorrow.xSet("returnedAmount", moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate);
-					moneyBorrow.xSave();
-				}
-				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount + interest);
-				moneyAccount.xSave();
+				this._xDelete(function(error) {
+					if (!error) {
+						var saveOptions = _.extend({}, options);
+						saveOptions.patch = true;
+						moneyAccount.save({
+							currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
+						}, saveOptions);
+
+						if (this.xGet("moneyBorrow")) {
+							var moneyBorrow = this.xGet("moneyBorrow");
+							var borrowRate = moneyBorrow.xGet("exchangeRate");
+							moneyBorrow.save({
+								returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate
+							}, saveOptions);
+						}
+					}
+					xFinishCallback(error);
+				}, options);
 			}
 		});
 		return Model;
