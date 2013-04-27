@@ -192,7 +192,6 @@ exports.definition = {
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
-					this._xDelete(xFinishCallback, options);
 					this._xDelete(function(error){
 						if(!error){
 							var saveOptions = _.extend({}, options);
