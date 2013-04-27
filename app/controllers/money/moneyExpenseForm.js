@@ -128,7 +128,7 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if ($.$model.isNew() || $.$model.xGet("moneyExpenseDetail").length === 0) {//新增时 或者 修改时且没有明细 计算账户余额
+		if ($.$model.isNew() || $.$model.xGet("moneyExpenseDetails").length === 0) {//新增时 或者 修改时且没有明细 计算账户余额
 			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 			} else {
