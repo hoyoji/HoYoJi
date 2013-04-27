@@ -48,7 +48,7 @@
 				if ($.$attrs.bindAttributeIsModel) {
 					return $.__bindAttributeIsModel;
 				}
-				return $.field.getValue();
+				return Alloy.Globals.alloyString.trim($.field.getValue()）;
 			}
 
 			$.convertModelValue = function(value) {
@@ -225,7 +225,7 @@
 					if (bindAttributeIsModel) {
 						model.xSet ? model.xSet(attribute, $.__bindAttributeIsModel) : model[attribute] = $.__bindAttributeIsModel;
 					} else {
-						var val = $.getValue(e);
+						var val = $.getValue();
 						if(model.xSet){
 							if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
 								if(val){
