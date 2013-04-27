@@ -1,5 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.onWindowOpenDo(function() {
+	$.name.field.focus();
+});
+
 if ($.$model.isNew()) {
 	var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 		name : "日常收入",
@@ -12,5 +16,4 @@ if ($.$model.isNew()) {
 		project : $.$model
 	}).xAddToSave($);
 	$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
-	$.name.field.focus();
 }
