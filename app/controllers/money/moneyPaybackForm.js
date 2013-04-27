@@ -139,9 +139,10 @@ if ($.saveableMode === "read") {
 		}
 		
 		var modelIsNew = $.$model.isNew();
+		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
 		$.saveModel(function(e) {
-			if(moneyLend){
-			moneyLend.trigger("xchange:currentBalance",moneyLend);
+			if(moneyLend && oldAccountHasChanged){
+				moneyLend.trigger("xchange:moneyAccount.currentBalance",moneyLend);
 			}
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
