@@ -16,7 +16,6 @@
 				}
 			}
 
-
 			$.getChildCollections = function() {
 				if (!childrenCollections) {
 					var children = hasChild ? hasChild.split(",") : [];
@@ -127,11 +126,11 @@
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
 					e.cancelBubble = true;
-					
-					if($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model){
+
+					if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model) {
 						showErrorMsg("该记录的下级不能作为" + $.getCurrentWindow().$attrs.title);
 						return;
-					}	
+					}
 
 					$.getParentController().createChildTable($.getChildTitle(), $.getChildCollections());
 				});
@@ -242,38 +241,53 @@
 					});
 				});
 			}
+			
+			// var rowHasRendered = false;
+			// $.parent.addEventListener("postlayout", function(){
+				// rowHasRendered = true;
+			// })
+// 			
 			var isRemoving = false;
 			function removeRow(row) {
 				if (row === $.$model) {
 					isRemoving = true;
 					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					function doRemoveRow() {
-						$.getParentController().off("endchangingrow", doRemoveRow);
-						if ($.getParentController().__changingRow) {
-							console.info("row is changing, we waiting ");
-							$.getParentController().on("endchangingrow", doRemoveRow);
-						} else {
-							$.getParentController().__changingRow = true;
-
-							var animation = Titanium.UI.createAnimation();
-							animation.duration = 500;
-							animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-
-							if ($.$model.id) {
-								animation.left = "-100%";
+						if (rowHasRendered) {
+							$.getParentController().off("endchangingrow", doRemoveRow);
+							if ($.getParentController().__changingRow) {
+								console.info("row is changing, we waiting ");
+								$.getParentController().on("endchangingrow", doRemoveRow);
 							} else {
-								animation.opacity = "0.5";
-								animation.height = 0;
-								animation.width = 0;
-							}
-							animation.addEventListener('complete', function() {
-								$.$view.fireEvent("click", {
-									bubbles : true,
-									deleteRow : true,
-									sectionRowId : $.$model.xGet("id")
+								$.getParentController().__changingRow = true;
+
+								var animation = Titanium.UI.createAnimation();
+								animation.duration = 500;
+								animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+
+								if ($.$model.id) {
+									animation.left = "-100%";
+								} else {
+									animation.opacity = "0.5";
+									animation.height = 0;
+									animation.width = 0;
+								}
+								animation.addEventListener('complete', function() {
+									$.$view.fireEvent("click", {
+										bubbles : true,
+										deleteRow : true,
+										sectionRowId : $.$model.xGet("id"),
+										rowHasRendered : true
+									});
 								});
+								$.$view.animate(animation);
+							}
+						} else {
+							$.$view.fireEvent("click", {
+								bubbles : true,
+								deleteRow : true,
+								sectionRowId : $.$model.xGet("id")
 							});
-							$.$view.animate(animation);
 						}
 					}
 
@@ -315,11 +329,11 @@
 				if ($.getCurrentWindow().$attrs.selectorCallback) {
 					console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
 					if ($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name) {
-						if($.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model){
+						if ($.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model) {
 							showErrorMsg("该记录不能作为" + $.getCurrentWindow().$attrs.title);
 							return;
 						}
-						
+
 						$.getCurrentWindow().$attrs.selectorCallback($.$model);
 						$.getCurrentWindow().close();
 					}

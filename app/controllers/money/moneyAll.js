@@ -54,7 +54,7 @@ function onFooterbarTap(e) {
 			queryOptions : timeFilter
 		});
 	} else if (e.source.id === "dateTransactions") {
-		$.titleBar.setTitle(e.source.getTitle());
+		$.titleBar.setTitle("日流水");
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
@@ -65,7 +65,7 @@ function onFooterbarTap(e) {
 		doAllTimeFilter();
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
-		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
+		$.footerBar.transactionsTable.setTitle("周流水");
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
@@ -74,7 +74,7 @@ function onFooterbarTap(e) {
 		}
 		doAllTimeFilter();
 	} else if (e.source.id === "monthTransactions") {
-		$.titleBar.setTitle(e.source.getTitle());
+		$.titleBar.setTitle("月流水");
 		$.footerBar.transactionsTable.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
@@ -87,7 +87,7 @@ function onFooterbarTap(e) {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
 	} else if (e.source.id === "transactionsSearchTable") {
-		$.titleBar.setTitle(e.source.getTitle());
+		$.titleBar.setTitle("查找");
 		$.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {
 		$.titleBar.setTitle(e.source.getTitle());
