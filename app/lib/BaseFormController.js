@@ -62,9 +62,10 @@
 								}
 							}, options));
 						}
-						if (hasError)
+						if (hasError){
 							$.__saveCollection = [];
 							return;
+						}
 					}
 					$.__saveCollection = [];
 					if (!dbTrans) {
