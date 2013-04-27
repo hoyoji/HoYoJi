@@ -16,7 +16,7 @@ function doLogin(e) {
 	// encrypt the password
 	$.$model.xSet("password", Ti.Utils.sha1($.$model.xGet("password")));
 	
-	Alloy.Models.User = Alloy.Models.instance("User").xFindInDb({
+	Alloy.Models.User = Alloy.createModel("User").xFindInDb({
 		userName : $.$model.xGet("userName")
 	});
 
@@ -53,7 +53,7 @@ function doLogin(e) {
 			password : $.$model.xGet("password")
 		}, function(data) {
 			// 密码验证通过，将该用户的资料保存到本地数据库
-			data.password = $.password.getValue(); // 由于服务气不会反回密码，我们将用户输入的正确密码保存
+			data.password = $.password.getValue(); // 由于服务器不会反回密码，我们将用户输入的正确密码保存
 			Alloy.Models.User.set(data);
 			delete Alloy.Models.User.id; // 将用户id删除，我们才能将该用户资料当成新的记录保存到数据库
 			Alloy.Models.User.xAddToSave($);
@@ -72,10 +72,12 @@ function doLogin(e) {
 				// 将数据保存到本地数据库
 				data = _.flatten(data);
 				data.forEach(function(model) {
-					var modelType = model.__dataType;
-					delete model.__dataType;
-					model = Alloy.createModel(modelType, model);
-					delete model.id;
+                    var modelType = model.__dataType,
+                    	id = model.id;
+                    delete model.id;
+                    delete model.__dataType;
+                    model = Alloy.createModel(modelType, model);
+                    model.attributes["id"] = id;
 					model.xAddToSave($);
 				});
 				$.$model.xSet("ownerUser", Alloy.Models.User);
