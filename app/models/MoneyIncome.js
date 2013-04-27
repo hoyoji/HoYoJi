@@ -187,7 +187,7 @@ exports.definition = {
 						if(!error){
 							var saveOptions = _.extend({}, options);
 							saveOptions.patch = true;
-							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
+							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") - amount}, saveOptions);
 						}
 						xFinishCallback(error);
 					}, options);
