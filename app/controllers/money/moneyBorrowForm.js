@@ -34,13 +34,13 @@ if (!$.$model) {
 }
 
  function updateAccountBalance() {
- 	$.moneyAccount.field.fireEvent("change");
+ 	$.moneyAccount.updateField();
  }
 
-$.$model.on("xchange:currentBalance", updateAccountBalance);
-	$.onWindowCloseDo(function() {
-		$.$model.off("xchange:currentBalance", updateAccountBalance);
-	});
+$.$model.on("xchange:moneyAccount.currentBalance", updateAccountBalance);
+$.onWindowCloseDo(function() {
+		$.$model.off("xchange:moneyAccount.currentBalance", updateAccountBalance);
+});
 
 
 if ($.saveableMode === "read") {
