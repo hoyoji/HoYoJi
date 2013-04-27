@@ -200,6 +200,7 @@ exports.definition = {
 							saveOptions.patch = true;
 							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
 						}
+						xFinishCallback(error);
 					}, options);
 				}
 			},
