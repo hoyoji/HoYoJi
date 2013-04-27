@@ -467,7 +467,7 @@ function loadAuthorizationDetails(successCB) {
 			_projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 				id : projectShareData.projectShareAuthorizationId
 			});
-			if (!_projectShareAuthorization.xGet("id")) {
+			if (!_projectShareAuthorization.id) {
 				Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
 					if (collection.length > 0) {
 						projectShareAuthorization = collection.at(0);

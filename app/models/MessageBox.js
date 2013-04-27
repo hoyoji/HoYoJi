@@ -80,7 +80,7 @@ exports.definition = {
 						// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							// id : projectShareData.projectShareAuthorizationId
 						// });
-						// if (projectShareAuthorization.xGet("id")){
+						// if (projectShareAuthorization.id){
 							// projectShareAuthorization._xDelete();
 						// }
 						// if(projectShareData.shareAllSubProjects){
@@ -88,7 +88,7 @@ exports.definition = {
 								// var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 									// id : subProjectShareAuthorizationId
 								// });
-								// if (subProjectShareAuthorization.xGet("id")){
+								// if (subProjectShareAuthorization.id){
 									// subProjectShareAuthorization._xDelete();
 								// }
 							// });

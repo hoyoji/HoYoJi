@@ -186,7 +186,7 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				if (this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
@@ -194,9 +194,14 @@ exports.definition = {
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
-					this._xDelete(xFinishCallback);
-					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
-					moneyAccount.xSave();
+					this._xDelete(function(error){
+						if(!error){
+							var saveOptions = _.extend({}, options)
+							saveOptions.patch = true;
+							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
+						}
+						xFinishCallback(error);
+					}, options);
 				}
 			},
 			canAddNew : function(){

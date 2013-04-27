@@ -43,7 +43,7 @@
 							// $.saveCollection(xCompleteCallback, xErrorCallback, myDbTrans);
 							// });
 
-							$.__saveCollection[i]._xSave({
+							$.__saveCollection[i]._xSave(_.extend({
 								dbTrans : myDbTrans,
 								error : function(model, error) {
 									$.__saveCollection = [];
@@ -61,7 +61,7 @@
 										xErrorCallback(errMsg);
 									}
 								}
-							});
+							}, options));
 						}
 						if (hasError)
 							return;
@@ -131,12 +131,12 @@
 							// try{
 
 							// $.$model.xSave({dbTrans : dbTrans, commit : true});
-
+							
 							$.saveCollection(function() {
-								$.$model._xSave({
+								$.$model._xSave(_.extend({
 									dbTrans : dbTrans,
 									commit : true
-								});
+								}, options));
 								// if(!hasError){
 								// db.execute("COMMIT;");
 								// db.close();

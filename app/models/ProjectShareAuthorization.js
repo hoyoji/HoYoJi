@@ -178,7 +178,7 @@ exports.definition = {
 							projectId : subProject.xGet("id"),
 							friendId : self.xGet("friendId")
 						});
-					if(subProjectShareAuthorization.xGet("id")){
+					if(subProjectShareAuthorization.id){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 						subProjectShareAuthorization._xDelete();
 					}

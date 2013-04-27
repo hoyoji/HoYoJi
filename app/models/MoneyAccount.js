@@ -6,7 +6,7 @@ exports.definition = {
 			currencyId : "TEXT NOT NULL",
 			currentBalance : "REAL NOT NULL",
 			remark : "TEXT",
-			sharingType : "TEXT　NOT NULL",
+			sharingType : "TEXT NOT NULL",
 			accountType : "TEXT NOT NULL",
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",
@@ -74,7 +74,7 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var error;
 				if (Alloy.Models.User.xGet("activeMoneyAccount") === this) {
 					error = {
@@ -105,7 +105,7 @@ exports.definition = {
 						msg : "当前账户有相关还款，不能删除"
 					};
 				} else {
-					this._xDelete(xFinishCallback);
+					this._xDelete(xFinishCallback, options);
 					return;
 				}
 				xFinishCallback(error);
@@ -121,6 +121,10 @@ exports.definition = {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("currentBalance");
 				}
+			},
+			syncUpdate : function(record, dbTrans){
+				delete record.currentBalance; // 我们不能将帐户余额同步下来
+				this._syncUpdate(record, dbTrans);
 			}
 		});
 

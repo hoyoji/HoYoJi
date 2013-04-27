@@ -16,7 +16,7 @@ function doLogin(e) {
 	// encrypt the password
 	$.$model.xSet("password", Ti.Utils.sha1($.$model.xGet("password")));
 	
-	Alloy.Models.instance("User").xFindInDb({
+	Alloy.Models.User = Alloy.Models.instance("User").xFindInDb({
 		userName : $.$model.xGet("userName")
 	});
 

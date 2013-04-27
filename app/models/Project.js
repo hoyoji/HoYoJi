@@ -57,7 +57,7 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除当前激活的项目"});
 				}else if(this.xGet("moneyExpenses").length > 0){
@@ -79,7 +79,7 @@ exports.definition = {
 				}else if(this.xGet("moneyIncomeCategories").length > 0){
 					xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
 				}else {
-					this._xDelete(xFinishCallback);
+					this._xDelete(xFinishCallback, options);
 				}
 			},
 			getSharedWithHerSubProjects : function(){

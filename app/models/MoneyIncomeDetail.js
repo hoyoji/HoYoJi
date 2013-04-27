@@ -52,7 +52,7 @@ exports.definition = {
 					return this.xGet("moneyIncome").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyIncome").xGet("exchangeRate")).toUserCurrency();
 				}
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				if (this.xGet("moneyIncome").isNew()) {
 					this.xGet("moneyIncome").xSet("amount", this.xGet("moneyIncome").xGet("amount") - this.xGet("amount"));
@@ -60,7 +60,7 @@ exports.definition = {
 					this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
 					xFinishCallback();
 				} else {
-					this._xDelete(function(error) {
+					this._xDelete(function(error, options) {
 						if (!error) {
 							var amount = self.xGet("amount");
 							var moneyAccount = self.xGet("moneyIncome").xGet("moneyAccount");

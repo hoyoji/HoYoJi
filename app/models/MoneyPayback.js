@@ -202,13 +202,13 @@ exports.definition = {
 			getInterest : function() {
 				return this.xGet("interest").toUserCurrency();
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 
-				this._xDelete(xFinishCallback);
+				this._xDelete(xFinishCallback, options);
 				if (this.xGet("moneyLend")) {
 					var moneyLend = this.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");

@@ -29,7 +29,7 @@ exports.definition = {
 	extendModel: function(Model) {		
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				if(this.xGet("moneyExpenses").length > 0){
 					xFinishCallback({ msg :"分类下支出不为空，不能删除"});
 				}else if(this.xGet("subExpenseCategories").length > 0){
@@ -39,7 +39,7 @@ exports.definition = {
 						this.xGet("project").xSet("defaultExpenseCategoryId",null);
 						this.xGet("project").xSave();
 					}
-					this._xDelete(xFinishCallback);
+					this._xDelete(xFinishCallback, options);
 				}
 			}
 		});

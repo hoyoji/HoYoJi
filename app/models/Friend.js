@@ -125,7 +125,7 @@ exports.definition = {
 				return this.__sharedAccounts;
 			},
 
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 					ownerUserId : Alloy.Models.User.id,
@@ -160,7 +160,7 @@ exports.definition = {
 							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 							"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId")
 						}, function() {
-							self._xDelete(xFinishCallback);
+							self._xDelete(xFinishCallback, options);
 						});
 					}
 				}

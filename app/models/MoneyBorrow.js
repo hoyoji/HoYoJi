@@ -184,7 +184,7 @@ exports.definition = {
 
 				return ownerUserSymbol;
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				if (this.xGet("moneyReturns").length > 0) {
 					xFinishCallback({
 						msg : "当前借入的还款明细不为空，不能删除"
@@ -192,7 +192,7 @@ exports.definition = {
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
-					this._xDelete(xFinishCallback);
+					this._xDelete(xFinishCallback, options);
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
 					moneyAccount.xSave();
 				}
