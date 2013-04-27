@@ -196,7 +196,7 @@ exports.definition = {
 					var amount = this.xGet("amount");
 					this._xDelete(function(error){
 						if(!error){
-							var saveOptions = _.extend({}, options)
+							var saveOptions = _.extend({}, options);
 							saveOptions.patch = true;
 							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
 						}

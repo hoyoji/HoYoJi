@@ -182,10 +182,15 @@ exports.definition = {
 					})
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					this._xDelete(xFinishCallback, options);
-					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - amount);
-					moneyAccount.xSave();
+					var amount = this.xGet("amount");					
+					this._xDelete(function(error){
+						if(!error){
+							var saveOptions = _.extend({}, options);
+							saveOptions.patch = true;
+							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") - amount}, saveOptions);
+						}
+						xFinishCallback(error);
+					}, options);
 				}
 			},
 			canAddNew : function(){
