@@ -172,7 +172,9 @@ function findSortPos(model) {
 	for (var s = 0; s < $.table.data.length; s++) {
 		for (var r = 0; r < $.table.data[s].rows.length; r++) {
 			pos++;
-			
+			if(!$.table.data[s].rows[r].id){
+				continue;
+			}
 			var rowModel = findObject($.table.data[s].rows[r].id);
 			var rowValue = rowModel.xDeepGet(sortByField);
 			if (sortReverse) {
