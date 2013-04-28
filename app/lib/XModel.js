@@ -389,8 +389,9 @@
 					options = options || {};
 					options.wait = true;
 					this.destroy(options);
+				} else {
+					xFinishCallback(error);
 				}
-				xFinishCallback(error);
 				return this;
 			},
 			xFindInDb : function(filter) {
