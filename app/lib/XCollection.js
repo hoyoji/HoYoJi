@@ -47,8 +47,11 @@
 					if(this !== Alloy.Collections[this.config.adapter.collection_name]){
 						c.map(function(m) {
 							console.info("xFetch " + m.xGet("id"));
-							xFetchMatchFilter ++;
-							self.add(Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id")));
+							if(!self.get(model)){
+								var model = Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id"));
+								xFetchMatchFilterAdded.push(model);
+								self.add(model);
+							}
 						});
 					}
 					//self.add(c);
