@@ -5,6 +5,5 @@
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
      <Label id="field" right="80" height="Ti.UI.FILL" width="40%" borderRadius="0" />
      <Label id="hintText" right="80" height="Ti.UI.FILL" width="40%" borderRadius="0" color="gray" text="请点击输入"/>
-     <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
 	</View>
 </Alloy>

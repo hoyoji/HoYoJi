@@ -280,6 +280,18 @@
 					$.label.setText($.$attrs.labelText);
 				}
 			}
+			
+			if($.$attrs.showRightButton){
+				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
+				$.rightButton = Ti.UI.createButton({
+					title : $.$attrs.showRightButton,
+					right : 5,
+					width : 40,
+					height : 38
+				});
+				$.$view.add($.rightButton);
+			}
+
 
 			// $.setSaveableMode($.saveableMode);
 

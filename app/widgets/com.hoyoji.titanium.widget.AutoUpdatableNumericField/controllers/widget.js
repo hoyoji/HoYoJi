@@ -6,8 +6,14 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 // }
 // }
 if($.$attrs.showRightButton){
-	$.rightButton.setHeight(35);
-	$.rightButton.setWidth(80);
+	// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
+	$.rightButton = Ti.UI.createButton({
+		title : $.$attrs.showRightButton,
+		right : 5,
+		width : 40,
+		height : 38
+	});
+	$.$view.add($.rightButton);
 }
 
 $.onWindowOpenDo(function() {
