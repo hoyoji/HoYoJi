@@ -17,7 +17,7 @@ $.moneyIncomeCategoriesTable.addCollection(collection);
 
 $.onWindowOpenDo(function() {
 	if (!selectedProject.canIncomeCategoryAddNew()) {
-		$.footerBar.$view.hide();
+		$.footerBar.addIncomeCategory.setEnabled(false);
 	}
 });
 

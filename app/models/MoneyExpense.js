@@ -216,6 +216,28 @@ exports.definition = {
 					}
 				}
 				return this.xGet("ownerUser") === Alloy.Models.User;
+			},
+			syncAddNew : function(record, dbTrans) {
+				// 更新账户余额
+				// 1. 如果账户也是新增的
+				// 2. 账户已经存在
+				
+				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
+				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
+					dbTrans : dbTrans,
+					patch : true
+				});
+				
+				this._syncAddNew(record, dbTrans);
+			},
+			syncUpdate : function(record, dbTrans) {
+				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
+				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount, {
+					dbTrans : dbTrans,
+					patch : true
+				});
+			
+				this._syncUpdate(record, dbTrans);
 			}
 		});
 

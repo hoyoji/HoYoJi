@@ -24,7 +24,9 @@ function onFooterbarTap (e) {
 }
 $.titleBar.bindXTable($.myProjectsTable);
 
-var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter({parentProject : null, ownerUser : Alloy.Models.User});
+var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
+	return model.xGet("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id;
+});
 var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
 });
