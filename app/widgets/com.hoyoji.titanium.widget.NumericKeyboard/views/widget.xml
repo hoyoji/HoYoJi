@@ -15,7 +15,7 @@
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="5" />
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="6" />
 					<Button onSingletap="operation" onDoubletap="operation" title="×" />
-					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" title="←" />
+					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" />
 				</View>
 			</View>
 			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="50%">
