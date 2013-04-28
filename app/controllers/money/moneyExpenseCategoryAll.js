@@ -17,7 +17,7 @@ $.moneyExpenseCategoriesTable.addCollection(collection);
 
 $.onWindowOpenDo(function() {
 	if (!selectedProject.canExpenseCategoryAddNew()) {
-		$.footerBar.$view.hide();
+		$.footerBar.addExpenseCategory.setEnabled(false);
 	}
 });
 
