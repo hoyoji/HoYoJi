@@ -48,7 +48,7 @@
 				if ($.$attrs.bindAttributeIsModel) {
 					return $.__bindAttributeIsModel;
 				}
-				return $.field.getValue();
+				return Alloy.Globals.alloyString.trim($.field.getValue());
 			}
 
 			$.convertModelValue = function(value) {

@@ -47,14 +47,26 @@ $.$view.addEventListener("click", function(e) {
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
+		
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
-		$.table.deleteRow(e.index);
-		if($.table.data[sectionIndex].rows.length === 0){
-			var data = $.table.data.slice(0);
-			data.splice(sectionIndex, 1);
+		var data = $.table.data.slice(0);
+		if(e.rowHasRendered){
+			$.table.deleteRow(e.index);
+			// remove the section header
+			if($.table.data[sectionIndex].rows.length === 0){
+				data.splice(sectionIndex, 1);
+				$.table.setData(data);
+			}
+		} else {
+			var rows = data[sectionIndex].rows.slice(0);
+			rows.splice(e.index,1);
+			data[sectionIndex].rows = rows;
+			// remove the section header
+			if($.table.data[sectionIndex].rows.length === 0){
+				data.splice(sectionIndex, 1);
+			}
 			$.table.setData(data);
 		}
-		
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -80,10 +92,12 @@ function createRowView(rowModel, collection) {
 	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
 		$collection : collection,
-		hasDetail : $.$attrs.hasDetail
+		hasDetail : $.$attrs.hasDetail,
+		containingTable : $
 	});
 	var row = Ti.UI.createTableViewRow({
-		id : rowModel.xGet("id")
+		id : rowModel.xGet("id"),
+		className : collection.__rowView || rowModel.config.rowView
 	});
 	rowViewController.setParent(row);
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
@@ -172,7 +186,9 @@ function findSortPos(model) {
 	for (var s = 0; s < $.table.data.length; s++) {
 		for (var r = 0; r < $.table.data[s].rows.length; r++) {
 			pos++;
-			
+			if(!$.table.data[s].rows[r].id){
+				continue;
+			}
 			var rowModel = findObject($.table.data[s].rows[r].id);
 			var rowValue = rowModel.xDeepGet(sortByField);
 			if (sortReverse) {
@@ -272,7 +288,7 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 function getSectionIndexByRowIndex(index){
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
-	while(index >= sectionSize){
+	while(index >= sectionSize && sectionIndex+1 < $.table.data.length){
 		sectionIndex++;
 		index -= sectionSize;
 		sectionSize = $.table.data[sectionIndex].rows.length;
@@ -283,7 +299,7 @@ function getSectionIndexByRowIndex(index){
 function getRowViewByRowIndex(index){
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
-	while(index >= sectionSize){
+	while(index >= sectionSize && sectionIndex+1 < $.table.data.length){
 		sectionIndex++;
 		index -= sectionSize;
 		sectionSize = $.table.data[sectionIndex].rows.length;
