@@ -127,8 +127,6 @@ exports.definition = {
 				return this.xGet("transferIn").xGet("currency").xGet("symbol") + this.xGet("transferInAmount").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback, options) {
-				var transferOutOwnerUser = this.xGet("transferOutOwnerUser");
-				var transferInOwnerUser = this.xGet("transferInOwnerUser");
 				var transferOut = this.xGet("transferOut");
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
