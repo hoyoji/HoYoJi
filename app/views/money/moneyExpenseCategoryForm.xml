@@ -1,21 +1,21 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
-				 addModeTitle="新增支出分类" readModeTitle="查看支出分类" editModeTitle="修改支出分类"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-			  <ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
-					bindModel="$.$model"
-					bindAttribute="parentExpenseCategory"
-					bindAttributeIsModel="name"
-					bindModelSelector="money/moneyExpenseCategoryAll"
-					bindModelSelectorParams="selectedProject:project"
-					/>
-                	<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="分类名称" hintText="请输入分类名称" 
-                		bindModel="$.$model"
-                		bindAttribute="name"/>
-           </ScrollView>
-           </View>
+		addModeTitle="新增支出分类" readModeTitle="查看支出分类" editModeTitle="修改支出分类"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
+				bindModel="$.$model"
+				bindAttribute="parentExpenseCategory"
+				bindAttributeIsModel="name"
+				bindModelSelector="money/moneyExpenseCategoryAll"
+				bindModelSelectorParams="selectedProject:project"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="分类名称" hintText="请输入分类名称"
+				bindModel="$.$model"
+				bindAttribute="name"/>
+			</ScrollView>
+		</View>
 	</View>
 </Alloy>

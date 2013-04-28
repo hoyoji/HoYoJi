@@ -1,42 +1,43 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增账户" readModeTitle="账户详细" editModeTitle="修改账户"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="账户名称" hintText="请输入账户名称"
-			bindModel="$.$model"
-			bindAttribute="name"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种" hintText="请选择币种"
-			editModeEditability="noneditable"
-			bindModel="$.$model"
-			bindAttribute="currency"
-			bindAttributeIsModel="name"
-			bindModelSelector="money/currency/currencyAll"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
-			bindModel="$.$model"
-			bindAttribute="currentBalance"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
-			bindModel="$.$model"
-			bindAttribute="remark"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="资料公开" hintText="请选择资料公开类型"
-			items="个人,好友,公众"
-			values="Private,Friend,Public"
-			bindModel="$.$model"
-			bindAttribute="sharingType"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"
-			items="现金,储蓄卡,信用卡,网上支付,借贷"
-			values="Cash,Deposit,Credit,Online,Loan"
-			bindModel="$.$model"
-			bindAttribute="accountType"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账号" hintText="添加账号"
-			bindModel="$.$model"
-			bindAttribute="accountNumber"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="开户地址" hintText="添加开户地址"
-			bindModel="$.$model"
-			bindAttribute="bankAddress"/>
-		</ScrollView></View>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="账户名称" hintText="请输入账户名称"
+				bindModel="$.$model"
+				bindAttribute="name"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种" hintText="请选择币种"
+				editModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="currency"
+				bindAttributeIsModel="name"
+				bindModelSelector="money/currency/currencyAll"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
+				bindModel="$.$model"
+				bindAttribute="currentBalance"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
+				bindModel="$.$model"
+				bindAttribute="remark"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="资料公开" hintText="请选择资料公开类型"
+				items="个人,好友,公众"
+				values="Private,Friend,Public"
+				bindModel="$.$model"
+				bindAttribute="sharingType"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"
+				items="现金,储蓄卡,信用卡,网上支付,借贷"
+				values="Cash,Deposit,Credit,Online,Loan"
+				bindModel="$.$model"
+				bindAttribute="accountType"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账号" hintText="添加账号"
+				bindModel="$.$model"
+				bindAttribute="accountNumber"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="开户地址" hintText="添加开户地址"
+				bindModel="$.$model"
+				bindAttribute="bankAddress"/>
+			</ScrollView>
+		</View>
 	</View>
 </Alloy>
