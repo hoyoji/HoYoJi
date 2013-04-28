@@ -1,26 +1,26 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="好友请求" readModeTitle="好友请求" editModeTitle="好友请求" editModeMenuButtonTitle="同意"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间"
-					bindModel = "$.$model"
-					bindAttribute = "date"
+				bindModel = "$.$model"
+				bindAttribute = "date"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
-                		bindModel="$.$model"
-                		bindAttribute="fromUser"
-                		bindAttributeIsModel="userName"
-                		/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友"
+				bindModel="$.$model"
+				bindAttribute="fromUser"
+				bindAttributeIsModel="userName"
+				/>
 				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求信息" height="84" width="Ti.UI.FILL"
-					bindModel="$.$model"
-					bindAttribute="detail"/>
-		</ScrollView>
+				bindModel="$.$model"
+				bindAttribute="detail"/>
+			</ScrollView>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-        	buttons="忽略,拒绝,加为好友"
-        	ids="ignore,reject,addFriend"/>
+		buttons="忽略,拒绝,加为好友"
+		ids="ignore,reject,addFriend"/>
 	</View>
 </Alloy>

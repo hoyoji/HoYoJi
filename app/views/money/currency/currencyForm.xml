@@ -1,20 +1,21 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
-	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增币种" readModeTitle="币种详细" editModeTitle="修改币种"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" 
-		id="table" class="table-edit" bottom="0" top="0">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="币种名称" hintText="请输入币种名称"
-			bindModel="$.$model"
-			bindAttribute="name"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种符号" hintText="请输入币种符号"
-			bindModel="$.$model"
-			bindAttribute="symbol"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种代号" hintText="请输入币种代号"
-			bindModel="$.$model"
-			bindAttribute="code"/>
-		</ScrollView></View>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true"
+			id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="币种名称" hintText="请输入币种名称"
+				bindModel="$.$model"
+				bindAttribute="name"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种符号" hintText="请输入币种符号"
+				bindModel="$.$model"
+				bindAttribute="symbol"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="币种代号" hintText="请输入币种代号"
+				bindModel="$.$model"
+				bindAttribute="code"/>
+			</ScrollView>
+		</View>
 	</View>
 </Alloy>
