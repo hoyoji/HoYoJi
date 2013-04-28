@@ -15,6 +15,7 @@
 					bindModel="User"
 					bindAttribute="newFriendAuthentication"/>
 				</View>
+				<Widget id="titleBar" src="com.hoyoji.titanium.widget.XButton" title="设置"/>
 				<!-- <View height="42">
 				<Button right="10" left="10" onSingletap="openMoneyAccount">账户设置</Button>
 				</View>
