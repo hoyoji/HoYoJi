@@ -184,6 +184,7 @@
 				});
 				enableOpenDetailButton();
 			}
+			
 			function showErrorMsg(msg) {
 				if (!errorLabel) {
 					errorLabel = Ti.UI.createLabel({
@@ -228,7 +229,6 @@
 				errorLabel.animate(animation);
 			}
 
-
 			$.deleteModel = function() {
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
@@ -242,18 +242,21 @@
 				});
 			}
 			
-			var rowHasRendered = false;
-			$.$view.addEventListener("postlayout", function(){
-				rowHasRendered = true;
-			})
- 			
+			// var rowHasRendered = false;
+			// $.$view.addEventListener("postlayout", function(){
+				// rowHasRendered = true;
+			// })
+//  			
 			var isRemoving = false;
-			function removeRow(row) {
+			function removeRow(row, collection) {
+				if(collection.isFetching || collection.isFiltering){
+					return;
+				}
 				if (row === $.$model) {
 					isRemoving = true;
 					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					function doRemoveRow() {
-						if (rowHasRendered) {
+						if ($.__currentWindow) {
 							$.getParentController().off("endchangingrow", doRemoveRow);
 							if ($.getParentController().__changingRow) {
 								console.info("row is changing, we waiting ");
@@ -307,9 +310,37 @@
 					$.$view.setBackgroundColor("pink");
 				}
 			});
+			
+			// var collectionFetching = false;
+			// function collectionFetchStart(){
+				// collectionFetching = true;
+			// }
+			// function collectionFetchEnd(){
+				// collectionFetching = false;
+			// }
+			// $.$attrs.$collection && $.$attrs.$collection.on("xFetchStart", collectionFetchStart);
+			// $.$attrs.$collection && $.$attrs.$collection.on("xFetchEnd", collectionFetchEnd);
+// 			
+			// var collectionFiltering = false;
+			// function collectionFilterStart(){
+				// collectionFetching = true;
+			// }
+			// function collectionFilterEnd(){
+				// collectionFetching = false;
+			// }
+			// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterStart", collectionFilterStart);
+			// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterEnd", collectionFilterEnd);
+			
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
+			
+				// $.$attrs.$collection && $.$attrs.$collection.off("xFetchStart", collectionFetchStart);
+				// $.$attrs.$collection && $.$attrs.$collection.off("xFetchStart", collectionFetchEnd);
+// 				
+				// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterStart", collectionFilterStart);
+				// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterEnd", collectionFilterEnd);
+				
 				// $.$model.off("change", shakeMe);
 			});
 
