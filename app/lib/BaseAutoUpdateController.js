@@ -248,7 +248,9 @@
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
 						} else if (model.hasChanged(attribute) && model.previous(attribute) != model.xGet(attribute) && $.__dirtyCount === 0) {
-							$.becameDirty();
+							// if (bindAttributeIsModel && model.xGet("id") !== model.previous(attribute + "Id")) {
+								$.becameDirty();
+							// }
 						}	
 					}
 				}
@@ -278,6 +280,19 @@
 					$.label.setText($.$attrs.labelText);
 				}
 			}
+			
+			if($.$attrs.showRightButton){
+				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
+				$.rightButton = Ti.UI.createButton({
+					title : $.$attrs.showRightButton,
+					right : 0,
+					width : 40,
+					height : 38
+				});
+				$.field.setRight(40);
+				$.$view.add($.rightButton); 
+			}
+
 
 			// $.setSaveableMode($.saveableMode);
 

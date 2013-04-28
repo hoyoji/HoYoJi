@@ -5,10 +5,6 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 // $.field.setText(hintText || "");
 // }
 // }
-if($.$attrs.showRightButton){
-	$.rightButton.setHeight(35);
-	$.rightButton.setWidth(80);
-}
 
 $.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {
