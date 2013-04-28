@@ -64,7 +64,7 @@ exports.definition = {
 			validators : {
 				currency : function(xValidateComplete) {
 					var error;
-					if (!this.isNew()) {
+					if (!this.isNew() && this.previous("currency")) {
 						if (this.xGet("currency") !== this.previous("currency")) {
 							error = {
 								msg : "账户币种不可以修改"

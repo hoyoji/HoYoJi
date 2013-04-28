@@ -81,7 +81,7 @@ function numPress(e) {
 		if (activeTextField.getValue() + oldValue === "0" || activeTextField.getValue() + oldValue === "") {
 			activeTextField.setValue(e.source.getTitle());
 		} else {
-			var thisNum = activeTextField.getValue() + oldValue + e.source.getTitle();
+			var thisNum = (activeTextField.getValue() || "") + oldValue + e.source.getTitle();
 			oldValue = ""
 			activeTextField.setValue(thisNum);
 		}

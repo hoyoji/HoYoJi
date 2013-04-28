@@ -1,13 +1,13 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var selectedBorrow = $.$attrs.selectedBorrow;
 
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 
 if (!$.$model) {
-	if (selectedBorrow) {
+	if ($.$attrs.selectedBorrow) {
+		var selectedBorrow = $.$attrs.selectedBorrow;
 		$.$model = Alloy.createModel("MoneyReturn", {
 			date : (new Date()).toISOString(),
 			localCurrency : selectedBorrow.xGet("localCurrency"),
@@ -41,7 +41,7 @@ if ($.saveableMode === "read") {
 } else {
 	$.onWindowOpenDo(function() {
 		if($.$model.isNew()){
-		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		}else{
 			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
 				$.exchangeRate.$view.setHeight(42);
@@ -138,15 +138,10 @@ if ($.saveableMode === "read") {
 		}
 		
 		var modelIsNew = $.$model.isNew();
+		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
 		$.saveModel(function(e) {
-			if(moneyBorrow){
-			moneyBorrow.trigger("xchange:currentBalance",moneyBorrow);
-			}
-			if(oldMoneyAccount){//通知借入Form 账户余额以改变
-				oldMoneyAccount.trigger("xchange:currentBalance",oldMoneyAccount);
-			}
-			if(newMoneyAccount) {
-				newMoneyAccount.trigger("xchange:currentBalance",newMoneyAccount);
+			if(moneyBorrow && oldAccountHasChanged){
+				moneyBorrow.trigger("xchange:moneyAccount.currentBalance",moneyBorrow);
 			}
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));

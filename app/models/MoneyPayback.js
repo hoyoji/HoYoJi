@@ -203,6 +203,7 @@ exports.definition = {
 				return this.xGet("interest").toUserCurrency();
 			},
 			xDelete : function(xFinishCallback, options) {
+				var self = this;
 				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
@@ -216,8 +217,8 @@ exports.definition = {
 							currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
 						}, saveOptions);
 						
-						if (this.xGet("moneyLend")) {
-							var moneyLend = this.xGet("moneyLend");
+						if (self.xGet("moneyLend")) {
+							var moneyLend = self.xGet("moneyLend");
 							var lendRate = moneyLend.xGet("exchangeRate");
 							moneyLend.save({
 								paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate

@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增支出明细" readModeTitle="支出明细" editModeTitle="修改支出明细"/>
 		<View id="body" top="67" bottom="70" left="15" right="15">

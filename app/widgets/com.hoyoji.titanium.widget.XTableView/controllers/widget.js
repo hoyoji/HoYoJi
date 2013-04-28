@@ -1,45 +1,41 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var collections = [], hasDetailSections = {};
-var sortByField = $.$attrs.sortByField, 
-	groupByField = $.$attrs.groupByField, 
-	sortReverse = $.$attrs.sortReverse === "true";
-
-
+var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true";
 
 // if(OS_ANDROID){
-	// if($.$attrs.groupByField){
-		// // <View height="45" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-		// // <View width="5" height="25" left="1" bottom="0" backgroundImage="/images/rowTopLeftShadow.png" zIndex="0" />
-		// // <View width="Ti.UI.FILL" height="25" left="3" bottom="0" zIndex="1">
-		// // 		<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
-		// // </View>
-		// // </View>
-		// var sectionHeader = Ti.UI.createView({height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
-		// view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
-		// sectionHeader.add(view1);
-		// view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
-		// view2.add(Ti.UI.createLabel({ textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
-		// sectionHeader.add(view2);
-// 
-		// // <View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-		// // <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
-			// // <View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-			// // <View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
-			// // <View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
-		// // </View>
-		// // </View>
-		// var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
-		// var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
-		// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
-		// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
-		// fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
-		// sectionFooter.add(fView1);
-// 
-// 		
-		// $.table.setHeaderView(sectionHeader);
-		// $.table.setFooterView(sectionFooter);
-	// }
+// if($.$attrs.groupByField){
+// // <View height="45" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
+// // <View width="5" height="25" left="1" bottom="0" backgroundImage="/images/rowTopLeftShadow.png" zIndex="0" />
+// // <View width="Ti.UI.FILL" height="25" left="3" bottom="0" zIndex="1">
+// // 		<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
+// // </View>
+// // </View>
+// var sectionHeader = Ti.UI.createView({height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
+// view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
+// sectionHeader.add(view1);
+// view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
+// view2.add(Ti.UI.createLabel({ textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
+// sectionHeader.add(view2);
+//
+// // <View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
+// // <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
+// // <View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
+// // <View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+// // <View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
+// // </View>
+// // </View>
+// var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
+// var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
+// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
+// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
+// fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
+// sectionFooter.add(fView1);
+//
+//
+// $.table.setHeaderView(sectionHeader);
+// $.table.setFooterView(sectionFooter);
+// }
 // }
 
 $.$view.addEventListener("click", function(e) {
@@ -47,14 +43,26 @@ $.$view.addEventListener("click", function(e) {
 	e.cancelBubble = true;
 	if (e.deleteRow === true) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
+
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
-		$.table.deleteRow(e.index);
-		if($.table.data[sectionIndex].rows.length === 0){
-			var data = $.table.data.slice(0);
-			data.splice(sectionIndex, 1);
+		var data = $.table.data.slice(0);
+		if (e.rowHasRendered) {
+			$.table.deleteRow(e.index);
+			// remove the section header
+			if ($.table.data[sectionIndex].rows.length === 0) {
+				data.splice(sectionIndex, 1);
+				$.table.setData(data);
+			}
+		} else {
+			var rows = data[sectionIndex].rows.slice(0);
+			rows.splice(e.index, 1);
+			data[sectionIndex].rows = rows;
+			// remove the section header
+			if ($.table.data[sectionIndex].rows.length === 0) {
+				data.splice(sectionIndex, 1);
+			}
 			$.table.setData(data);
 		}
-		
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -80,10 +88,13 @@ function createRowView(rowModel, collection) {
 	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 		$model : rowModel,
 		$collection : collection,
-		hasDetail : $.$attrs.hasDetail
+		hasDetail : $.$attrs.hasDetail,
+		containingTable : $
 	});
 	var row = Ti.UI.createTableViewRow({
-		id : rowModel.xGet("id")
+		id : rowModel.xGet("id"),
+		//className : (collection.__rowView || rowModel.config.rowView).replace("/", ""),
+		collectionId : collection.id
 	});
 	rowViewController.setParent(row);
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
@@ -96,7 +107,7 @@ function createRowView(rowModel, collection) {
 }
 
 function findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize) {
-	if(!groupByField){
+	if (!groupByField) {
 		return {
 			insertBefore : true,
 			index : pos
@@ -105,46 +116,46 @@ function findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previou
 	var rowSectionValue = rowModel.xDeepGet(groupByField);
 	if (getSectionNameOfRowModel(rowSectionValue) !== sectionNameOfModel) {
 		// if (pos > 0) {
-			var previousRowModel;
-			if (r > 0) {
-				previousRowModel = findObject($.table.data[s].rows[r - previousHasDetailSize - 1].id);
-			} else if ((s-1) >= 0) {
-				// find last row in previous sections
-				var previousSection = s-1;
-				var sectionLength = $.table.data[previousSection].rows.length;
-				while(previousSection > 0 &&  sectionLength === 0){
-					previousSection -- ;
-					sectionLength = $.table.data[previousSection].rows.length;
-				}
-				if(sectionLength > 0){
-					previousRowModel = findObject($.table.data[previousSection].rows[sectionLength - previousHasDetailSize - 1].id);
-				}
+		var previousRowModel;
+		if (r > 0) {
+			previousRowModel = findObject($.table.data[s].rows[r - previousHasDetailSize - 1].id);
+		} else if ((s - 1) >= 0) {
+			// find last row in previous sections
+			var previousSection = s - 1;
+			var sectionLength = $.table.data[previousSection].rows.length;
+			while (previousSection > 0 && sectionLength === 0) {
+				previousSection--;
+				sectionLength = $.table.data[previousSection].rows.length;
 			}
-			if (!previousRowModel) {// no previous section
+			if (sectionLength > 0) {
+				previousRowModel = findObject($.table.data[previousSection].rows[sectionLength - previousHasDetailSize - 1].id);
+			}
+		}
+		if (!previousRowModel) {// no previous section
+			return {
+				insertBefore : -1,
+				index : s,
+				sectionTitle : sectionNameOfModel
+			};
+		} else {
+			if (getSectionNameOfRowModel(previousRowModel.xDeepGet(groupByField)) !== sectionNameOfModel) {
 				return {
 					insertBefore : -1,
 					index : s,
 					sectionTitle : sectionNameOfModel
 				};
 			} else {
-				if (getSectionNameOfRowModel(previousRowModel.xDeepGet(groupByField)) !== sectionNameOfModel) {
-					return {
-						insertBefore : -1,
-						index : s,
-						sectionTitle : sectionNameOfModel
-					};
-				} else {
-					return {
-						insertBefore : false,
-						index : pos - 1
-					};
-				}
+				return {
+					insertBefore : false,
+					index : pos - 1
+				};
 			}
+		}
 		// } else {
-			// return {
-				// insertBefore : false,
-				// index : pos - 1
-			// };
+		// return {
+		// insertBefore : false,
+		// index : pos - 1
+		// };
 		// }
 	} else {
 		return {
@@ -154,10 +165,10 @@ function findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previou
 	}
 }
 
-function getHasDetailSectionSize(sectionRowId){
+function getHasDetailSectionSize(sectionRowId) {
 	var size = 0;
-	if(hasDetailSections[sectionRowId] && hasDetailSections[sectionRowId].collections.length){
-		hasDetailSections[sectionRowId].collections.forEach(function(c){
+	if (hasDetailSections[sectionRowId] && hasDetailSections[sectionRowId].collections.length) {
+		hasDetailSections[sectionRowId].collections.forEach(function(c) {
 			size += c.length;
 		});
 	}
@@ -166,13 +177,15 @@ function getHasDetailSectionSize(sectionRowId){
 
 function findSortPos(model) {
 	var value = model.xDeepGet(sortByField), pos = -1, previousHasDetailSize = 0, sectionNameOfModel;
-	if(groupByField){
+	if (groupByField) {
 		sectionNameOfModel = getSectionNameOfRowModel(model.xDeepGet(groupByField));
 	}
 	for (var s = 0; s < $.table.data.length; s++) {
 		for (var r = 0; r < $.table.data[s].rows.length; r++) {
 			pos++;
-			
+			if (!$.table.data[s].rows[r].id) {
+				continue;
+			}
 			var rowModel = findObject($.table.data[s].rows[r].id);
 			var rowValue = rowModel.xDeepGet(sortByField);
 			if (sortReverse) {
@@ -192,21 +205,21 @@ function findSortPos(model) {
 			r += previousHasDetailSize;
 		}
 	}
-	
-	if(!groupByField){
+
+	if (!groupByField) {
 		return {
 			insertBefore : pos === -1,
 			index : pos
-		};		
-	} 
-	
-	if(pos === -1){
+		};
+	}
+
+	if (pos === -1) {
 		return {
 			insertBefore : -1,
 			index : 0,
 			sectionTitle : sectionNameOfModel
 		};
-	} else if(getSectionNameOfRowModel(rowModel.xDeepGet(groupByField)) !== sectionNameOfModel){
+	} else if (getSectionNameOfRowModel(rowModel.xDeepGet(groupByField)) !== sectionNameOfModel) {
 		return {
 			insertBefore : -1,
 			index : s,
@@ -216,7 +229,7 @@ function findSortPos(model) {
 		return {
 			insertBefore : false,
 			index : pos
-		};		
+		};
 	}
 }
 
@@ -237,7 +250,7 @@ function addRowToSection(rowModel, collection, index) {
 				$.table.setData(data);
 				// $.table.insertRowBefore(pos.index, row);
 			} else if (pos.insertBefore) {
-				if(pos.index === -1){
+				if (pos.index === -1) {
 					$.table.appendRow(row);
 				} else {
 					$.table.insertRowBefore(pos.index, row);
@@ -254,6 +267,9 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
+	if (collection.isFetching || collection.isFiltering) {
+		return;
+	}
 	addRowToSection(rowModel, collection);
 }
 
@@ -269,10 +285,10 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 		hasDetailSections[sectionRowId].collections.push(collections[i]);
 	}
 }
-function getSectionIndexByRowIndex(index){
+function getSectionIndexByRowIndex(index) {
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
-	while(index >= sectionSize){
+	while (index >= sectionSize && sectionIndex + 1 < $.table.data.length) {
 		sectionIndex++;
 		index -= sectionSize;
 		sectionSize = $.table.data[sectionIndex].rows.length;
@@ -280,10 +296,11 @@ function getSectionIndexByRowIndex(index){
 	return sectionIndex;
 	//return $.table.data[sectionIndex].rows[index];
 }
-function getRowViewByRowIndex(index){
+
+function getRowViewByRowIndex(index) {
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
-	while(index >= sectionSize){
+	while (index >= sectionSize && sectionIndex + 1 < $.table.data.length) {
 		sectionIndex++;
 		index -= sectionSize;
 		sectionSize = $.table.data[sectionIndex].rows.length;
@@ -303,7 +320,7 @@ exports.collapseHasDetailSection = function(rowIndex, sectionRowId) {
 			if (hasDetailSections[rowId]) {
 				exports.collapseHasDetailSection(index, rowId);
 			}
-	
+
 			getRowViewByRowIndex(index).fireEvent("rowremoved", {
 				bubbles : false
 			});
@@ -312,13 +329,12 @@ exports.collapseHasDetailSection = function(rowIndex, sectionRowId) {
 	}
 	hasDetailSections[sectionRowId].collections = [];
 }
-
-function collapseAllHasDetailSections(){
+function collapseAllHasDetailSections() {
 	var pos = -1;
 	for (var s = 0; s < $.table.data.length; s++) {
 		for (var r = 0; r < $.table.data[s].rows.length; r++) {
 			pos++;
-			if(hasDetailSections[$.table.data[s].rows[r].id] && hasDetailSections[$.table.data[s].rows[r].id].collections.length){
+			if (hasDetailSections[$.table.data[s].rows[r].id] && hasDetailSections[$.table.data[s].rows[r].id].collections.length) {
 				exports.collapseHasDetailSection(pos, hasDetailSections[$.table.data[s].rows[r].id]);
 			}
 		}
@@ -330,13 +346,29 @@ exports.addCollection = function(collection, rowView) {
 	if (rowView) {
 		collection.__rowView = rowView;
 	}
+	if(!collection.id){
+		collection.id = guid();
+	}
 	collections.push(collection);
 
-	collection.map(function(row) {
-		addRow(row, collection);
-	});
+	// collection.map(function(row) {
+		// addRow(row, collection);
+	// });
+	if(collection.length > 0){
+		var newRows = [];
+		collection.forEach(function(item){
+			newRows.push(createRowView(item, collection));
+		});
+		$.sort(null,null,null,true, newRows);
+	} 
+	// else {
+		// addRow(collection.at(0), collection);
+	// }
 	collection.on("add", addRow);
 	collection.on("reset", resetCollection);
+	
+	collection.on("xFetchEnd", refreshCollection);
+	collection.on("xSetFilterEnd", refreshCollection);
 }
 var clearCollections = function() {
 	for (var i = 0; i < collections.length; i++) {
@@ -344,15 +376,32 @@ var clearCollections = function() {
 			//exports.removeCollection(collections[i], {previousModels : collections[i].models});
 			collections[i].off("add", addRow);
 			collections[i].off("reset", resetCollection);
+			collections[i].off("xFetchEnd", refreshCollection);
+			collections[i].off("xSetFilterEnd", refreshCollection);
 		}
 	}
 	collections = [];
 	$.table.setData([]);
 }
 
-$.onWindowCloseDo(clearCollections);
+function refreshCollection(collection, appendRows, removedRows) {
+	var newRows;
+	if(appendRows.length > 0){
+		newRows = [];
+		appendRows.forEach(function(item){
+			newRows.push(createRowView(item, collection));
+		});
+	}
+	if(appendRows.length > 0 || (removedRows && removedRows.length > 0)){
+		$.sort(null,null,null,true, newRows, removedRows, collection.id);
+	}
+}
 
-exports.resetTable = function(){
+$.onWindowCloseDo(function(){
+	clearCollections();
+});
+
+exports.resetTable = function() {
 	for (var i = 0; i < collections.length; i++) {
 		collections[i].off("reset", resetCollection);
 		collections[i].reset();
@@ -360,21 +409,20 @@ exports.resetTable = function(){
 	}
 	$.table.setData([]);
 }
-
 var resetCollection = function(collection, options) {
 	var data = $.table.data.slice(0);
-	options.previousModels.forEach(function(model){
-		for(var i = 0; i < data.length; i++){
-			for(var r = 0; r < data[i].rows.length; r++){
+	options.previousModels.forEach(function(model) {
+		for (var i = 0; i < data.length; i++) {
+			for (var r = 0; r < data[i].rows.length; r++) {
 				var row = data[i].rows[r];
-				if(row.id === model.xGet("id")){
+				if (row.id === model.xGet("id")) {
 					var rows = data[i].rows.slice(0);
-					rows.splice(r,1);
+					rows.splice(r, 1);
 					data[i].rows = rows;
-					r --;
+					r--;
 				}
 			}
-			if(data[i].rows.length === 0){
+			if (data[i].rows.length === 0) {
 				data.splice(i, 1);
 				i--;
 			}
@@ -386,7 +434,9 @@ var resetCollection = function(collection, options) {
 exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
 	collection.off("reset", exports.resetCollection);
-	resetCollection(collection, {previousModels : collection.models});
+	resetCollection(collection, {
+		previousModels : collection.models
+	});
 	var index = _.indexOf(collections, collection);
 	collections[index] = null;
 	collections.splice(index, 1);
@@ -408,7 +458,6 @@ exports.close = function() {
 	$.$view.animate(animation);
 }
 
-
 exports.open = function(top) {
 	if (top === undefined)
 		top = 0;
@@ -420,6 +469,7 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
+
 
 	$.$view.setTop("99%")
 	animate();
@@ -482,10 +532,10 @@ exports.navigateUp = function() {
 function findObject(id) {
 	for (var c = 0; c < collections.length; c++) {
 		//for (var i = 0; i < collections[c].length; i++) {
-			var o = collections[c].get(id);
-			if (o) {
-				return o;
-			}
+		var o = collections[c].get(id);
+		if (o) {
+			return o;
+		}
 		//}
 	}
 }
@@ -497,32 +547,54 @@ function getSectionNameOfRowModel(sectionName) {
 	return sectionName;
 }
 
-exports.sort = function(fieldName, reverse, groupField) {
-	if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
-		return;
-	}
-
-	sortByField = fieldName;
-	sortReverse = reverse;
-	groupByField = groupField;
-	collapseAllHasDetailSections();
+exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
+	if(!refresh){
+		if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
+			return;
+		}
 	
+		sortByField = fieldName;
+		sortReverse = reverse;
+		groupByField = groupField;
+	}
+	collapseAllHasDetailSections();
+
 	var data = $.table.data;
 
 	data = _.flatten(data, true);
 	data = _.pluck(data, "rows");
 	data = _.flatten(data, true);
+	if(appendRows && appendRows.length > 0){
+		appendRows.forEach(function(row){
+			data.push(row)
+		});
+	}
+	if(removedRows && removedRows.length > 0){
+		data = _.filter(data, function(row){
+			for(var i = 0; i < removedRows.length; i++){
+				if(row.id === removedRows[i].id){
+					if(collectionId){
+						return row.collectionId !== collectionId;
+					} else {
+						return false;
+					}
+				}
+			}
+			return true;
+		});
+	}
+	
 	data.sort(function(a, b) {
-		a = findObject(a.id).xDeepGet(fieldName);
-		b = findObject(b.id).xDeepGet(fieldName);
+		a = findObject(a.id).xDeepGet(sortByField);
+		b = findObject(b.id).xDeepGet(sortByField);
 		if (a < b) {
-			return reverse ? 1 : -1;
+			return sortReverse ? 1 : -1;
 		} else if (a > b) {
-			return reverse ? -1 : 1;
+			return sortReverse ? -1 : 1;
 		}
 		return 0;
 	});
-	if(groupByField){
+	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
 			return getSectionNameOfRowModel(findObject(item.id).xDeepGet(groupByField));
 		});
@@ -539,41 +611,97 @@ exports.sort = function(fieldName, reverse, groupField) {
 	}
 	$.table.setData(data);
 }
-
-
-function createSection(sectionTitle, sectionIndex){
+function createSection(sectionTitle, sectionIndex) {
 	var section;
-	
-	if(OS_IOS){
+
+	if (OS_IOS) {
 		// var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex});
 		// var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
 
-		var sectionHeader = Ti.UI.createView({id : sectionIndex, height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
-		view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
+		var sectionHeader = Ti.UI.createView({
+			id : sectionIndex,
+			height : 25,
+			width : Ti.UI.FILL,
+			backgroundColor : "#e7f5f5"
+		});
+		view1 = Ti.UI.createView({
+			width : 5,
+			height : 25,
+			left : 1,
+			bottom : 0,
+			backgroundImage : "/images/rowTopLeftShadow.png",
+			zIndex : 0
+		});
 		sectionHeader.add(view1);
-		view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
-		view2.add(Ti.UI.createLabel({text : sectionTitle, textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
+		view2 = Ti.UI.createView({
+			width : Ti.UI.FILL,
+			height : 25,
+			left : 3,
+			bottom : 0,
+			zIndex : 1
+		});
+		view2.add(Ti.UI.createLabel({
+			text : sectionTitle,
+			textAlign : Ti.UI.TEXTALIGNMENT_LEFT,
+			width : Ti.UI.FILL,
+			left : 0,
+			height : 30,
+			bottom : -5,
+			borderRadius : 5,
+			backgroundColor : "#d8fafa"
+		}));
 		sectionHeader.add(view2);
 
-		var sectionFooter = Ti.UI.createView({height:17,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
-		var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
-		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
-		fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
-		fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
+		var sectionFooter = Ti.UI.createView({
+			height : 17,
+			width : Ti.UI.FILL,
+			backgroundColor : "#e7f5f5"
+		});
+		var fView1 = Ti.UI.createView({
+			width : Ti.UI.FILL,
+			height : 10,
+			left : 0,
+			top : 0
+		});
+		fView1.add(Ti.UI.createView({
+			width : Ti.UI.FILL,
+			left : 0,
+			height : 10,
+			top : 0,
+			borderRadius : 5,
+			backgroundColor : "#f1fbfb",
+			backgroundImage : "/images/sectionBottomShadow.png"
+		}));
+		fView1.add(Ti.UI.createView({
+			width : Ti.UI.FILL,
+			left : 0,
+			height : 14,
+			top : -7,
+			borderRadius : 5,
+			backgroundColor : "#f1fbfb",
+			zIndex : 0
+		}));
+		fView1.add(Ti.UI.createView({
+			width : 10,
+			left : 0,
+			height : 10,
+			top : 1,
+			backgroundImage : "/images/rowBottomLeftShadow.png",
+			zIndex : 1
+		}));
 		sectionFooter.add(fView1);
 
 		section = Ti.UI.createTableViewSection({
 			headerView : sectionHeader,
 			footerView : sectionFooter
 		});
-			
+
 	} else {
 		section = Ti.UI.createTableViewSection({
 			headerTitle : sectionTitle
 		});
 	}
-	
-	
+
 	return section;
 }
 
@@ -585,21 +713,22 @@ $.onWindowOpenDo(function() {
 			height : 42,
 			width : Ti.UI.FILL
 		});
-		
+
 		titleLabel.addEventListener("singletap", function(e) {
 			e.cancelBubble = true;
 			$.getCurrentWindow().$attrs.selectorCallback(null);
 			$.getCurrentWindow().close();
 		});
 		var row = Ti.UI.createTableViewRow();
-		row.add(titleLabel);row.add(titleLabel);
-		if(!$.getCurrentWindow().$attrs.selectedModel){
+		row.add(titleLabel);
+		row.add(titleLabel);
+		if (!$.getCurrentWindow().$attrs.selectedModel) {
 			row.setBackgroundColor("pink");
 		}
-        if($.table.data.length > 0){
-            $.table.insertRowBefore(0, row);
-        } else {
-        	$.table.appendRow(row);
-        }
+		if ($.table.data.length > 0) {
+			$.table.insertRowBefore(0, row);
+		} else {
+			$.table.appendRow(row);
+		}
 	}
 });
