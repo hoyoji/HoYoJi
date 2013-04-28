@@ -209,7 +209,7 @@
 						$.hideErrorMsg();
 					}
 				}
-				var updateField = function(e) {
+				$.updateField = function(e) {
 					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 					if ($.__dirtyCount > 0) {
@@ -253,14 +253,14 @@
 				$.field.addEventListener("change", updateModel);
 				if(model.xGet){
 					model.on("error", handleError);
-					model.on("sync", updateField);
+					model.on("sync", $.updateField);
 	
 					// clean up listener upon window close to prevent memory leak
 					$.onWindowCloseDo(function() {
 						if (!model.isNew() && model.hasChanged(attribute)) {
 								model.xSet(attribute, model.previous(attribute));
 						}
-						model.off(null, updateField);
+						model.off(null, $.updateField);
 						model.off(null, handleError);
 					});
 				}
