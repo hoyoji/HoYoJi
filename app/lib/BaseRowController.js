@@ -242,11 +242,11 @@
 				});
 			}
 			
-			// var rowHasRendered = false;
-			// $.parent.addEventListener("postlayout", function(){
-				// rowHasRendered = true;
-			// })
-// 			
+			var rowHasRendered = false;
+			$.$view.addEventListener("postlayout", function(){
+				rowHasRendered = true;
+			})
+ 			
 			var isRemoving = false;
 			function removeRow(row) {
 				if (row === $.$model) {
