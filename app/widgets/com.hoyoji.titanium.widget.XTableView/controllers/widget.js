@@ -584,16 +584,18 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		});
 	}
 	
-	data.sort(function(a, b) {
-		a = findObject(a.id).xDeepGet(sortByField);
-		b = findObject(b.id).xDeepGet(sortByField);
-		if (a < b) {
-			return sortReverse ? 1 : -1;
-		} else if (a > b) {
-			return sortReverse ? -1 : 1;
-		}
-		return 0;
-	});
+	if(sortByField){
+		data.sort(function(a, b) {
+			a = findObject(a.id).xDeepGet(sortByField);
+			b = findObject(b.id).xDeepGet(sortByField);
+			if (a < b) {
+				return sortReverse ? 1 : -1;
+			} else if (a > b) {
+				return sortReverse ? -1 : 1;
+			}
+			return 0;
+		});
+	}
 	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
 			return getSectionNameOfRowModel(findObject(item.id).xDeepGet(groupByField));
