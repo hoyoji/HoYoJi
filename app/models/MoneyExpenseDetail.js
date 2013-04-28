@@ -82,6 +82,32 @@ exports.definition = {
 			},
 			canDelete : function() {
 				return this.xGet("moneyExpense").canDelete();
+			},
+			syncAddNew : function(record, dbTrans) {
+				// 更新账户余额
+				// 1. 如果支出也是新增的
+				// 2. 支出已经存在
+				
+				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({id : record.moneyExpenseId});
+				moneyExpense.save("amount", moneyExpense.xGet("amount") + record.amount, {
+					dbTrans : dbTrans,
+					patch : true
+				});
+				
+				this._syncAddNew(record, dbTrans);
+			},
+			syncUpdate : function(record, dbTrans) {
+				// 更新账户余额
+				// 1. 如果支出也是新增的
+				// 2. 支出已经存在
+				
+				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({id : record.moneyExpenseId});
+				moneyExpense.save("amount", moneyExpense.xGet("amount") + record.amount, {
+					dbTrans : dbTrans,
+					patch : true
+				});
+				
+				this._syncAddNew(record, dbTrans);
 			}
 		});
 
