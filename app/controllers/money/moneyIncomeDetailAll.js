@@ -17,7 +17,7 @@ $.moneyIncomeDetailsTable.addCollection(collection);
 
 $.onWindowOpenDo(function() {
 	if (!selectedIncome.canAddNew()) {
-		$.footerBar.$view.hide();
+		$.footerBar.addIncomeDetail.setEnabled(false);
 	}
 });
 
