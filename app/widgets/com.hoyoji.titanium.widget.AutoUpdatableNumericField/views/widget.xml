@@ -3,7 +3,7 @@
      <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 	 <Label id="error" left="3" top="42"/>
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
-     <Label id="field" right="0" height="Ti.UI.FILL" width="40%" borderRadius="0" />
-     <Label id="hintText" right="0" height="Ti.UI.FILL" width="40%" borderRadius="0" color="gray" text="请点击输入"/>
+     <Label id="field" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" />
+     <Label id="hintText" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" color="gray" text="请点击输入"/>
 	</View>
 </Alloy>
