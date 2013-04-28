@@ -191,11 +191,35 @@
 								var model = Alloy.createModel(dataType).xFindInDb({
 									id : record.id
 								});
-								if (model.isNew()) {
-									// 没有找到该记录
-									model.syncAddNew(record, dbTrans);
+								
+								// 检查belongsTo, 如果任何belongsTo已被删除，我们不将该记录同步下来
+								var belongsToDeleted = false;
+								sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'delete'";
+								for(var belongsTo in model.belongsTo){
+									if(model.belongsTo[belongsTo].attribute){
+										rs = db.execute(sql, [record.id]);
+										if (rs.rowCount > 0) {
+											belongsToDeleted = true;
+											break;
+										}
+										rs.close();
+									}
+								}
+								if(belongsToDeleted) {
+									// 如果该model是新的，我们要通知服务器删除该记录
+									if (model.isNew() && record.id === Alloy.Models.User.id) {
+										db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+									}
 								} else {
-									model.syncUpdate(record, dbTrans);
+									if (model.isNew()) {
+										// 没有找到该记录
+										model.syncAddNew(record, dbTrans);
+										model._syncAddNew(record,dbTrans);
+									} else {
+										// 该记录已存在本地，我们更新
+										model.syncUpdate(record, dbTrans);
+										model._syncUpdate(record, dbTrans);
+									}	
 								}
 							}
 							rs = null;

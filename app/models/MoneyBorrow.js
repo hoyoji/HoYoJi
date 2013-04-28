@@ -215,16 +215,16 @@ exports.definition = {
 			// }
 			syncAddNew : function(record, dbTrans) {
 				// 更新账户余额
-				// 1. 如果账户也是新增的
+				// 2. 如果账户也是新增的,我们不用更新账户余额，直接拿服务器上的余额即可
 				// 2. 账户已经存在
 				
 				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
-				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-					dbTrans : dbTrans,
-					patch : true
-				});
-				
-				this._syncAddNew(record, dbTrans);
+				if(moneyAccount.id){
+					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
@@ -232,8 +232,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-			
-				this._syncUpdate(record, dbTrans);
 			}
 		});
 		return Model;

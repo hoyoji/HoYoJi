@@ -152,18 +152,20 @@ exports.definition = {
 				// 2. 账户已经存在
 				
 				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferInId});
-				moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
-					dbTrans : dbTrans,
-					patch : true
-				});
+				if(moneyAccountIn.id){
+					moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+				}
 				
 				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferOutId});
-				moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
-					dbTrans : dbTrans,
-					patch : true
-				});
-				
-				this._syncAddNew(record, dbTrans);
+				if(moneyAccountOut.id){
+					moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferInId});
@@ -177,7 +179,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				this._syncUpdate(record, dbTrans);
 			}
 		});
 		return Model;

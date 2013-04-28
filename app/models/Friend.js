@@ -151,6 +151,7 @@ exports.definition = {
 						});
 					} else {
 						Alloy.Globals.Server.sendMsg({
+							id : guid(),
 							"toUserId" : this.xGet("friendUserId"),
 							"fromUserId" : Alloy.Models.User.id,
 							"type" : "System.Friend.Delete",
@@ -161,6 +162,8 @@ exports.definition = {
 							"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId")
 						}, function() {
 							self._xDelete(xFinishCallback, options);
+						}, function(e){
+							alert(e.__summary.msg);
 						});
 					}
 				}

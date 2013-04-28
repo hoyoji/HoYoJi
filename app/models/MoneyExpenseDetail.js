@@ -93,8 +93,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				
-				this._syncAddNew(record, dbTrans);
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 更新账户余额
@@ -106,8 +104,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				
-				this._syncAddNew(record, dbTrans);
 			}
 		});
 

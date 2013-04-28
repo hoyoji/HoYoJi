@@ -383,7 +383,6 @@
 						}
 					}
 
-
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
 					options = options || {};
@@ -493,9 +492,6 @@
 				});
 			},
 			syncAddNew : function(record, dbTrans) {
-				// 检查所有 belongsTo 有没有被删除
-
-				this._syncAddNew(record, dbTrans);
 			},
 			_syncUpdate : function(record, dbTrans) {
 				//delete record.id;
@@ -506,7 +502,6 @@
 				});
 			},
 			syncUpdate : function(record, dbTrans) {
-				this._syncUpdate(record, dbTrans);
 			},
 			syncDelete : function(record, dbTrans) {
 				this.xDelete ? this.xDelete(function() {

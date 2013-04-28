@@ -125,8 +125,8 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans){
-				delete record.currentBalance; // 我们不能将帐户余额同步下来
-				this._syncUpdate(record, dbTrans);
+				 // 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
+				delete record.currentBalance;
 			}
 		});
 

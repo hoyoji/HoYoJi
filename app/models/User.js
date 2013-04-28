@@ -124,7 +124,6 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans){
 				delete record.lastSyncTime;
-				this._syncUpdate(record, dbTrans);
 			}
 		});
 		return Model;

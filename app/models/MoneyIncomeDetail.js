@@ -91,8 +91,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				
-				this._syncAddNew(record, dbTrans);
 			},
 			syncUpdate : function(record, dbTrans) {
 				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({id : record.moneyIncomeId});
@@ -100,8 +98,6 @@ exports.definition = {
 					dbTrans : dbTrans,
 					patch : true
 				});
-			
-				this._syncUpdate(record, dbTrans);
 			}
 		});
 		return Model;

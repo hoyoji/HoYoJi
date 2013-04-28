@@ -184,6 +184,7 @@ exports.definition = {
 					}
 				});
 				Alloy.Globals.Server.sendMsg({
+					id : guid(),
 					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
@@ -199,8 +200,8 @@ exports.definition = {
 			                        })
 			         },function(){
 				        self._xDelete(xFinishCallback);
-	    			},function(){
-	    				xFinishCallback({ msg :"删除出错,请重试"});
+	    			},function(e){
+	    				xFinishCallback({ msg :"删除出错,请重试 : " + e.__summary.msg});
 	    			});	
 			},
 			canEdit : function(){
