@@ -1,44 +1,45 @@
 <Alloy>
 	<View class="container" title="转账" saveableContainer="true"  width="100%" height="100%">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增转账" readModeTitle="转账详细" editModeTitle="修改转账"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
-			bindModel="$.$model"
-			bindAttribute="date"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
-			bindModel="$.$model"
-			bindAttribute="transferOutAmount"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOut" labelText="转出账户" hintText="请选择转出账户"
-			bindModel="$.$model"
-			bindAttribute="transferOut"
-			bindAttributeIsModel="getAccountNameCurrency()"
-			bindModelSelector="money/moneyAccount/moneyAccountAll"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferIn" labelText="转入账户" hintText="请选择转入账户"
-			bindModel="$.$model"
-			bindAttribute="transferIn"
-			bindAttributeIsModel="getAccountNameCurrency()"
-			bindModelSelector="money/moneyAccount/moneyAccountAll"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
-			bindModel="$.$model"
-			bindAttribute="exchangeRate"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额" 
-			editModeEditability="noneditable" addModeEditability="noneditable"
-			bindModel="$.$model"
-			bindAttribute="transferInAmount"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
-			bindModel="$.$model"
-			bindAttribute="project"
-			bindAttributeIsModel="name"
-			bindModelSelector="project/projectAll"
-			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
-			bindModel="$.$model"
-			bindAttribute="remark"/>
-		</ScrollView></View>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
+				bindModel="$.$model"
+				bindAttribute="date"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
+				bindModel="$.$model"
+				bindAttribute="transferOutAmount"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOut" labelText="转出账户" hintText="请选择转出账户"
+				bindModel="$.$model"
+				bindAttribute="transferOut"
+				bindAttributeIsModel="getAccountNameCurrency()"
+				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferIn" labelText="转入账户" hintText="请选择转入账户"
+				bindModel="$.$model"
+				bindAttribute="transferIn"
+				bindAttributeIsModel="getAccountNameCurrency()"
+				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
+				bindModel="$.$model"
+				bindAttribute="exchangeRate"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额"
+				editModeEditability="noneditable" addModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="transferInAmount"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+				bindModel="$.$model"
+				bindAttribute="project"
+				bindAttributeIsModel="name"
+				bindModelSelector="project/projectAll"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
+				bindModel="$.$model"
+				bindAttribute="remark"/>
+			</ScrollView>
+		</View>
 	</View>
 </Alloy>

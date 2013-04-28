@@ -1,48 +1,46 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
 		addModeTitle="分享请求" readModeTitle="分享请求" editModeTitle="分享请求" editModeMenuButtonTitle="同意"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间" 
-					bindModel = "$.$model"
-					bindAttribute = "date"
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间"
+				bindModel = "$.$model"
+				bindAttribute = "date"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
-                		bindModel="$.$model"
-                		bindAttribute="toUser"
-                		bindAttributeIsModel="userName"
-                		/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友"
+				bindModel="$.$model"
+				bindAttribute="toUser"
+				bindAttributeIsModel="userName"
+				/>
 				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84" width="Ti.UI.FILL"
-					bindModel="$.$model"
-					bindAttribute="detail"/>
-				
-				
+				bindModel="$.$model"
+				bindAttribute="detail"/>
 				<View layout="vertical">
-				<Button left="0" id="allAuthorization" title="打开详细权限"/>
-				<View id="showHideAuthorization" layout="vertical">
-					<View height="42">
-						<Label left="0" width="20%">共享所有子项目</Label>
-						<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
-							hightLight="false"
-							items=" ,√"
-							values="0,1"
-							bindModel="$.projectShareAuthorizations"
-							bindAttribute="shareAllSubProjects"/>
+					<Button left="0" id="allAuthorization" title="打开详细权限"/>
+					<View id="showHideAuthorization" layout="vertical">
+						<View height="42">
+							<Label left="0" width="20%">共享所有子项目</Label>
+							<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
+								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								hightLight="false"
+								items=" ,√"
+								values="0,1"
+								bindModel="$.projectShareAuthorizations"
+								bindAttribute="shareAllSubProjects"/>
+							</View>
 						</View>
-					</View>
-					<View height="42" layout="horizontal">
-						<Label width="20%">权限</Label>
-						<Label width="20%">自己</Label>
-						<Label width="20%">增</Label>
-						<Label width="20%">改</Label>
-						<Label width="20%">删</Label>
-					</View>
-					<View layout="vertical">
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">支出</Label>
+							<Label width="20%">权限</Label>
+							<Label width="20%">自己</Label>
+							<Label width="20%">增</Label>
+							<Label width="20%">改</Label>
+							<Label width="20%">删</Label>
+						</View>
+						<View layout="vertical">
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">支出</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -67,9 +65,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收入</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">收入</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -94,10 +92,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeDelete"/>
-						</View>
-						
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">转账</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">转账</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -122,9 +119,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyTransferDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">借入</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">借入</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -149,9 +146,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyBorrowDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">借出</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">借出</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -176,9 +173,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyLendDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">还款</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">还款</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -203,9 +200,9 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyReturnDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收款</Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">收款</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -230,14 +227,10 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyPaybackDelete"/>
-						</View>
-						
-						
-						
-						
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">支出分类</Label>
-							<Label width="20%"></Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">支出分类</Label>
+								<Label width="20%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -256,10 +249,10 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseCategoryDelete"/>
-						</View>
-						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收入分类</Label>
-							<Label width="20%"></Label>
+							</View>
+							<View height="42" layout="horizontal">
+								<Label left="0" width="20%">收入分类</Label>
+								<Label width="20%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
 								items=" ,√"
@@ -278,11 +271,11 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeCategoryDelete"/>
+							</View>
 						</View>
 					</View>
 				</View>
-			</View>
-		</ScrollView>
+			</ScrollView>
 		</View>
 	</View>
 </Alloy>

@@ -1,26 +1,26 @@
 <Alloy>
 	<View class="container" title="我的汇率" >
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的汇率"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
-		<View id="localCurrencyView" height="42"  top="0" left="5" backgroundColor="#f1fbfb">
-			<View width="Ti.UI.SIZE" left="5" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
-				<Label color="black" width="Ti.UI.SIZE">本币：</Label>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencyName"
-				bindModel = "User"
-				bindAttribute = "activeCurrency.name"
-				/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+			<View id="localCurrencyView" height="42"  top="0" left="5" backgroundColor="#f1fbfb">
+				<View width="Ti.UI.SIZE" left="5" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
+					<Label color="black" width="Ti.UI.SIZE">本币：</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencyName"
+					bindModel = "User"
+					bindAttribute = "activeCurrency.name"
+					/>
+				</View>
+				<View width="Ti.UI.SIZE" right="8" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
+					<Label color="black" width="Ti.UI.SIZE">换算金额：</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencySymbol"
+					bindModel = "User"
+					bindAttribute = "activeCurrency.symbol"
+					/>
+					<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
+				</View>
 			</View>
-			<View width="Ti.UI.SIZE" right="8" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
-				<Label color="black" width="Ti.UI.SIZE">换算金额：</Label>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencySymbol"
-				bindModel = "User"
-				bindAttribute = "activeCurrency.symbol"
-				/>
-				<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
-			</View>
-		</View>
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" sortByField="foreignCurrency.name" bottom="0" top="42"/>
+			<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" sortByField="foreignCurrency.name" bottom="0" top="42"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="新增汇率"

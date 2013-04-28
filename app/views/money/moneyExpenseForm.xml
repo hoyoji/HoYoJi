@@ -1,9 +1,9 @@
 <Alloy>
 	<View class="container" title="支出" saveableContainer="true"  width="100%" height="100%">
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<View id="ownerUser" height="0" backgroundColor="#f1fbfb">
 					<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>

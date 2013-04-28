@@ -1,11 +1,12 @@
 <Alloy>
 	<View class="container" title="支出分类" >
-		<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/>
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="支出分类"/>
-		<View id="body" top="67" bottom="70" left="15" right="15">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyExpenseCategoriesTable" sortByField="name" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="新增支出分类"
 		ids="addExpenseCategory"/>
-	</View></Alloy>
+	</View>
+</Alloy>
