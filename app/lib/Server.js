@@ -2,14 +2,16 @@
 		var dataUrl = "http://2.money.app100697798.twsapp.com/";
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
-				var msg = Alloy.createModel("Message");
+				//var msg = Alloy.createModel("Message");
 				msgJSON.ownerUserId = msgJSON.toUserId;
-				msg.save(msgJSON, {
-					patch : true,
-					wait : true,
-					success : xFinishedCallback,
-					error : xErrorCallback
-				});
+				msgJSON.__dataType = "Message";
+				this.postData([msgJSON], xFinishedCallback, xErrorCallback);
+				// msg.save(msgJSON, {
+					// patch : true,
+					// wait : true,
+					// success : xFinishedCallback,
+					// error : xErrorCallback
+				// });
 			},
 			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);
@@ -35,16 +37,16 @@
 					xFinishedCallback(collection);
 				}, xErrorCallback);
 			},
-			updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
-				xFinishedCallback(collection);
-			},
-			deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
-				xFinishedCallback(collection);
-			},
+			// updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				// var collection = Alloy.createCollection(modelName);
+				// collection.xSearchInDb(filter);
+				// xFinishedCallback(collection);
+			// },
+			// deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				// var collection = Alloy.createCollection(modelName);
+				// collection.xSearchInDb(filter);
+				// xFinishedCallback(collection);
+			// },
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);

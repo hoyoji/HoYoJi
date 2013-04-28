@@ -24,6 +24,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	},function(){
         $.saveModel(saveEndCB, saveErrorCB);
     	alert("发送成功，请等待回复");         
+    }, function(e){
+    	alert(e);
     });
 }
 
