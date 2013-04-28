@@ -29,7 +29,11 @@
 				//options.update = true;
 				//options.remove = false;
 
-				var self = this;
+				var self = this, numberAdded = 0;
+				
+				this.trigger("xFetchStart");
+				this.isFetching = true;
+				xFetchMatchFilterAdded = [];
 				if (this.__filterCollection) {
 					this.__filterCollection.xFetch(options);
 				} else {
@@ -43,6 +47,7 @@
 					if(this !== Alloy.Collections[this.config.adapter.collection_name]){
 						c.map(function(m) {
 							console.info("xFetch " + m.xGet("id"));
+							xFetchMatchFilter ++;
 							self.add(Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id")));
 						});
 					}
@@ -53,12 +58,20 @@
 
 					//this.fetch(options);
 				}
+				this.isFetching = false;
+				this.trigger("xFetchEnd", this, xFetchMatchFilterAdded);
 				return this;
 			},
+			xFetchMatchFilterAdded : [],
+			isFetching : false,
+			isFiltering : false,
 			__addModel : function(model) {
 				if (this.__compareFilter(model)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
-					this.add(model);
+					if(!this.get(model)){
+						xFetchMatchFilterAdded.push(model);
+						this.add(model);
+					}
 				}
 			},
 			__changeModel : function(model) {
@@ -91,14 +104,25 @@
 				// self.map(function(m) {
 					// console.info(" --------- " + m.xGet("id"));
 				// });
+				var filterAdded = [], filterRemoved = [];
+				this.trigger("xSetFilterStart");
+				this.isFiltering = true;
 				this.__filterCollection.map(function(model) {
 					if (self.__compareFilter(model)) {
-						self.add(model);
+						if(!self.get(model)){
+							self.add(model);
+							filterAdded.push(model);
+						}
 						console.info("__filter match, adding model to collection ");
 					} else {
-						self.remove(model);
+						if(self.get(model)){
+							filterRemoved.push(model);
+							self.remove(model);
+						}
 					}
 				});
+				this.isFiltering = false;
+				this.trigger("xSetFilterEnd", this, filterAdded, filterRemoved);
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.models.length);
 				
 
