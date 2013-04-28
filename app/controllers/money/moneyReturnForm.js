@@ -6,7 +6,7 @@ var oldMoneyAccount;
 var isRateExist;
 
 if (!$.$model) {
-	if (selectedBorrow) {
+	if ($.$attrs.selectedBorrow) {
 		var selectedBorrow = $.$attrs.selectedBorrow;
 		$.$model = Alloy.createModel("MoneyReturn", {
 			date : (new Date()).toISOString(),
