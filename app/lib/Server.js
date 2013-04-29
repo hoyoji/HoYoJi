@@ -152,7 +152,7 @@
 					});
 
 					data.forEach(function(record) {
-						var sql, rs, dataType = record.__dataType;
+						var sql, rs, dataType = record.__dataType, asyncCount = 0;
 						delete record.__dataType;
 						if (dataType === "ServerSyncDeletedRecords") {
 							var id = record.recordId;
@@ -195,8 +195,8 @@
 								// 检查belongsTo, 如果任何belongsTo已被删除，我们不将该记录同步下来
 								var belongsToDeleted = false;
 								sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'delete'";
-								for(var belongsTo in model.belongsTo){
-									if(model.belongsTo[belongsTo].attribute){
+								for(var belongsTo in model.config.belongsTo){
+									if(model.config.belongsTo[belongsTo].attribute){
 										rs = db.execute(sql, [record.id]);
 										if (rs.rowCount > 0) {
 											belongsToDeleted = true;

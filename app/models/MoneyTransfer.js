@@ -131,17 +131,18 @@ exports.definition = {
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
-
-				this._xDelete(function(error) {
-					if (!error) {
 						var saveOptions = _.extend({}, options);
 						saveOptions.patch = true;
+						saveOptions.wait = true;
 						transferOut.save({
 							currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
 						}, saveOptions);
 						transferIn.save({
 							currentBalance : transferIn.xGet("currentBalance") - transferInAmount
 						}, saveOptions);
+
+				this._xDelete(function(error, options) {
+					if (!error) {
 					}
 					xFinishCallback(error);
 				}, options);

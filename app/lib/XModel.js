@@ -18,10 +18,10 @@
 					this.on("sync", function() {
 						for (var belongsTo in self.config.belongsTo) {
 							//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
-								self.attributes[belongsTo] = null;
-								delete self.attributes[belongsTo];
-								delete self._previousAttributes[belongsTo];
-								delete self.changed[belongsTo];
+							self.attributes[belongsTo] = null;
+							delete self.attributes[belongsTo];
+							delete self._previousAttributes[belongsTo];
+							delete self.changed[belongsTo];
 							//}
 						}
 					});
@@ -383,6 +383,7 @@
 						}
 					}
 
+
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
 					options = options || {};
@@ -503,12 +504,10 @@
 			},
 			syncUpdate : function(record, dbTrans) {
 			},
-			syncDelete : function(record, dbTrans) {
-				this.xDelete ? this.xDelete(function() {
-				}, {
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				this.xDelete ? this.xDelete(xFinishedCallback, {
 					dbTrans : dbTrans
-				}) : this._xDelete(function() {
-				}, {
+				}) : this._xDelete(xFinishedCallback, {
 					dbTrans : dbTrans
 				});
 			},

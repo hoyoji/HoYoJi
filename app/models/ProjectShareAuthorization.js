@@ -199,7 +199,7 @@ exports.definition = {
 			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 			                        })
 			         },function(){
-				        self._xDelete(xFinishCallback);
+				        self._xDelete(xFinishCallback, options);
 	    			},function(e){
 	    				xFinishCallback({ msg :"删除出错,请重试 : " + e.__summary.msg});
 	    			});	

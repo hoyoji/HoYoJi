@@ -61,7 +61,7 @@ function doLogin(e) {
 			// 下载一些用户必须的资料
 			var belongsToes = [];
 			for (var belongsTo in Alloy.Models.User.config.belongsTo) {
-				if (belongsTo !== "activeCurrency") { // Currency 应该在本地就有了
+				if (belongsTo !== "activeCurrency" && belongsTo !== "MoneyAccount") { // Currency 应该在本地就有了
 					belongsToes.push({
 						id : Alloy.Models.User.xGet(belongsTo + "Id"),
 						__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type

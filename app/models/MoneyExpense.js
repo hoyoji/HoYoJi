@@ -14,7 +14,7 @@ exports.definition = {
 			exchangeRate : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		hasMany : {
@@ -188,28 +188,36 @@ exports.definition = {
 			// },
 			xDelete : function(xFinishCallback, options) {
 				if (this.xGet("moneyExpenseDetails").length > 0) {
-					xFinishCallback({
+					xFinishCallback && xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
 					});
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
-					this._xDelete(function(error){
-						if(!error){
-							var saveOptions = _.extend({}, options);
-							saveOptions.patch = true;
-							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
-						}
-						xFinishCallback(error);
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+					saveOptions.wait = true;
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+
+					this._xDelete(function(error, options) {
+						// if(!error){
+						// var saveOptions = _.extend({}, options);
+						// saveOptions.patch = true;
+						// moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
+						// }
+						xFinishCallback && xFinishCallback(error);
 					}, options);
+
 				}
 			},
-			canAddNew : function(){
-				if(this.xGet("project")){
-					if(this.xGet("project").xGet("ownerUser") !== Alloy.Models.User){
+			canAddNew : function() {
+				if (this.xGet("project")) {
+					if (this.xGet("project").xGet("ownerUser") !== Alloy.Models.User) {
 						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
-						if(this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyExpenseDetailAddNew")){
-							return true;		
+						if (this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyExpenseDetailAddNew")) {
+							return true;
 						} else {
 							return false;
 						}
@@ -221,9 +229,11 @@ exports.definition = {
 				// 更新账户余额
 				// 2. 如果账户也是新增的,我们不用更新账户余额，直接拿服务器上的余额即可
 				// 3. 如果账户已经存在本地，我们更新该余额
-				
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
-				if(moneyAccount.id){
+
+				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.moneyAccountId
+				});
+				if (moneyAccount.id) {
 					// 3. 如果账户已经存在本地，我们更新该余额
 					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
 						dbTrans : dbTrans,
@@ -232,7 +242,9 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
+				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.moneyAccountId
+				});
 				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount, {
 					dbTrans : dbTrans,
 					patch : true

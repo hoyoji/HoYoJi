@@ -35,13 +35,14 @@ exports.definition = {
 				// }else if(this.xGet("subIncomeCategories").length > 0){
 					// xFinishCallback({ msg :"分类下下级分类不为空，不能删除"});
 				// }else{
-					this._xDelete(function(error){
-						if(!error){
 							if(this.xGet("id") === this.xGet("project").xGet("defaultIncomeCategoryId")){
 								var saveOptions = _.extend({}, options);
 								saveOptions.patch = true;
+								saveOptions.wait = true;
 								this.xGet("project").save({ defaultIncomeCategoryId : null}, saveOptions);
 							}
+					this._xDelete(function(error, options){
+						if(!error){
 						}
 						xFinishCallback(error);	
 					}, options);

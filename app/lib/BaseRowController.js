@@ -233,12 +233,21 @@
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
 					var deleteFunc = $.$model.xDelete || $.$model._xDelete;
+					var db = Ti.Database.open("hoyoji");
+					var dbTrans = {
+						db : db
+					};
 					deleteFunc.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
 							showErrorMsg(error.msg);
 						}
-					});
+					}, {dbTrans : dbTrans});
+					
+					db.execute("COMMIT;");
+					dbTrans.trigger("commit");
+					db.close();
+					db = null;
 				});
 			}
 			

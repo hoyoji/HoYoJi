@@ -462,6 +462,9 @@ function Sync(method, model, opts) {
 			}
 	}
 	if (resp) {
+		if(method !== "read"){
+				resp = null;
+		}
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
@@ -483,7 +486,6 @@ function Sync(method, model, opts) {
 					//error = { __summary : { msg : "没有删除权限"}};
 					//_.isFunction(opts.error) && opts.error(model, error);
 				}
-
 
 				opts.dbTrans.on("commit", commitTrans);
 				opts.dbTrans.on("rollback", rollbackTrans);
