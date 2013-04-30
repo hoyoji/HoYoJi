@@ -11,7 +11,7 @@ exports.definition = {
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		defaults : {
@@ -98,8 +98,8 @@ exports.definition = {
 					return this.xGet("currentBalance");
 				}
 			},
-			syncUpdate : function(record, dbTrans){
-				 // 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
+			syncUpdate : function(record, dbTrans) {
+				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				delete record.currentBalance;
 			}
 		});

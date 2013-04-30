@@ -62,7 +62,6 @@ exports.definition = {
 				} else {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					saveOptions.wait = true;
 
 					var amount = self.xGet("amount");
 					var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");

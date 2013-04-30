@@ -209,22 +209,21 @@ exports.definition = {
 				var paybackRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 				var saveOptions = _.extend({}, options);
-						saveOptions.patch = true;
-						saveOptions.wait = true;
-						moneyAccount.save({
-							currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
-						}, saveOptions);
-						
-						if (self.xGet("moneyLend")) {
-							var moneyLend = self.xGet("moneyLend");
-							var lendRate = moneyLend.xGet("exchangeRate");
-							moneyLend.save({
-								paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
-							}, saveOptions);
-						}
+				saveOptions.patch = true;
+				moneyAccount.save({
+					currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
+				}, saveOptions);
+
+				if (self.xGet("moneyLend")) {
+					var moneyLend = self.xGet("moneyLend");
+					var lendRate = moneyLend.xGet("exchangeRate");
+					moneyLend.save({
+						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
+					}, saveOptions);
+				}
 				this._xDelete(function(error, options) {
 					if (!error) {
-						
+
 					}
 					xFinishCallback(error);
 				}, options);

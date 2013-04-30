@@ -50,7 +50,6 @@ exports.definition = {
 				if (this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")) {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					saveOptions.wait = true;
 					this.xGet("project").save({
 						defaultExpenseCategoryId : null
 					}, saveOptions);

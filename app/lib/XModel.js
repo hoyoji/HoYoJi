@@ -383,7 +383,6 @@
 						}
 					}
 
-
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
 					options = options || {};
@@ -491,6 +490,7 @@
 					dbTrans : dbTrans,
 					noSyncUpdate : true
 				});
+				console.info("_syncAddNew : " + record.id);
 			},
 			syncAddNew : function(record, dbTrans) {
 			},

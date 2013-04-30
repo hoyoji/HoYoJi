@@ -170,7 +170,7 @@ exports.definition = {
 				}
 				return this.__getSharedWIthHerSubProjectsFilter;
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var subProjectShareAuthorizationIds = [];
 				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
@@ -180,7 +180,7 @@ exports.definition = {
 						});
 					if(subProjectShareAuthorization.id){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						subProjectShareAuthorization._xDelete();
+						subProjectShareAuthorization._xDelete(xFinishCallback, options);
 					}
 				});
 				Alloy.Globals.Server.sendMsg({
