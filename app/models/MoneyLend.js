@@ -14,7 +14,7 @@ exports.definition = {
 			paybackedAmount : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		hasMany : {
@@ -192,35 +192,38 @@ exports.definition = {
 				} else {
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
-							var saveOptions = _.extend({}, options);
-							saveOptions.patch = true;
-							saveOptions.wait = true;
-							moneyAccount.save({currentBalance : moneyAccount.xGet("currentBalance") + amount}, saveOptions);
-					this._xDelete(function(error, options){
-						if(!error){
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+					this._xDelete(function(error, options) {
+						if (!error) {
 						}
 						xFinishCallback(error);
 					}, options);
 				}
 			},
 			// canMoneyPaybackAddNew : function(){
-				// if(this.xGet("ownerUser") !== Alloy.Models.User){
-					// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
-					// if(projectShareAuthorization.xGet("projectShareMoneyPaybackAddNew")){
-						// return true;		
-					// } else {
-						// return false;
-					// }
-				// }
-				// return this.xGet("ownerUser") === Alloy.Models.User;
+			// if(this.xGet("ownerUser") !== Alloy.Models.User){
+			// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);
+			// if(projectShareAuthorization.xGet("projectShareMoneyPaybackAddNew")){
+			// return true;
+			// } else {
+			// return false;
+			// }
+			// }
+			// return this.xGet("ownerUser") === Alloy.Models.User;
 			// }
 			syncAddNew : function(record, dbTrans) {
 				// 更新账户余额
 				// 1. 如果账户也是新增的
 				// 2. 账户已经存在
-				
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
-				if(moneyAccount.id){
+
+				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.moneyAccountId
+				});
+				if (moneyAccount.id) {
 					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
 						dbTrans : dbTrans,
 						patch : true
@@ -228,12 +231,31 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({id : record.moneyAccountId});
-				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount, {
+var oldMoneyAccountBalance;
+				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : this.xGet("moneyAccountId")
+				});
+				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
+				} else {
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;	
+				}
+				oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 					dbTrans : dbTrans,
 					patch : true
 				});
-			}			
+				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.moneyAccountId
+					});
+					if (newMoneyAccount.id) {
+						newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
+				}
+			}
 		});
 		return Model;
 	},
