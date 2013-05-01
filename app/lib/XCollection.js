@@ -35,7 +35,7 @@
                 }
 			},
 			xClearFilter : function(){
-				if (!this.__filterCollection) {
+				if (this.__filterCollection) {
 					this.__filterCollection.off("add", this.__addModelFunc);
 					this.__filterCollection.off("remove", this.__removeModelFunc);
 					this.__filterCollection.off("sync", this.__changeModelFunc);
