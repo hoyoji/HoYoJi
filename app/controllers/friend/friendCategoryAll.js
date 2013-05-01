@@ -10,5 +10,5 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.friendCategoriesTable);
 
-var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null});
+var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null}, $);
 $.friendCategoriesTable.addCollection(collection);

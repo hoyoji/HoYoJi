@@ -15,6 +15,16 @@
 					if (Alloy.Models.User) {
 						this.xSet("ownerUser", Alloy.Models.User);
 					}
+					
+					// need to clear all the hasMany filters on model destroy
+					this.on("destroy", function(){
+						for (var key in this.config.hasMany) {
+							if(this.get(key)){
+								this.get(key).xClearFilter();
+							}
+						}
+					});
+					
 					this.on("sync", function() {
 						for (var belongsTo in self.config.belongsTo) {
 							//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
@@ -57,6 +67,11 @@
 				}
 
 				for (var key in this.config.hasMany) {
+					// need to also clear hasMany filter
+					if(this.get(key)){
+						this.get(key).xClearFilter();
+					}
+					
 					this.attributes[key] = null;
 					delete this.attributes[key];
 					delete this._previousAttributes[key];
@@ -505,10 +520,13 @@
 			syncUpdate : function(record, dbTrans) {
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				
 				this.xDelete ? this.xDelete(xFinishedCallback, {
-					dbTrans : dbTrans
+					dbTrans : dbTrans,
+					noSyncUpdate : true
 				}) : this._xDelete(xFinishedCallback, {
-					dbTrans : dbTrans
+					dbTrans : dbTrans,
+					noSyncUpdate : true
 				});
 			},
 			syncUpdateConflict : function(record, dbTrans) {

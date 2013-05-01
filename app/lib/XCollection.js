@@ -12,17 +12,35 @@
 					// this.xSetFilter(options.filter);
 				// }
 			},
-			xCreateFilter : function(filter) {
+			xCreateFilter : function(filter, winController) {
 				var c = Alloy.createCollection(this.config.adapter.collection_name);
 				c.__filterCollection = this;
-
-                c.__filterCollection.on("add", this.__addModel.bind(c));
-                c.__filterCollection.on("remove", this.__removeModel.bind(c));
-                c.__filterCollection.on("sync", this.__changeModel.bind(c));
-            				
+				
+				this.__xSetFilterOnCollection(c, winController);
+				
 				c.xSetFilter(filter);
 				return c;
 			},
+			__xSetFilterOnCollection : function(c, winController){
+				this.__addModelFunc = this.__addModel.bind(c);
+				this.__removeModelFunc = this.__removeModel.bind(c);
+				this.__changeModelFunc = this.__changeModel.bind(c);
+                c.__filterCollection.on("add", this.__addModelFunc);
+                c.__filterCollection.on("remove", this.__removeModelFunc);
+                c.__filterCollection.on("sync", this.__changeModelFunc);
+                if(winController){
+					winController.onWindowCloseDo(function(){
+						this.xClearFilter();
+					}.bind(this));		
+                }
+			},
+			xClearFilter : function(){
+				if (!this.__filterCollection) {
+					this.__filterCollection.off("add", this.__addModelFunc);
+					this.__filterCollection.off("remove", this.__removeModelFunc);
+					this.__filterCollection.off("sync", this.__changeModelFunc);
+				}
+			},			
 			xFetch : function(options) {
 				options = options || {};
 				//options.add = true;
@@ -92,15 +110,13 @@
 					this.remove(model);
 				}
 			},
-			xSetFilter : function(filter) {
+			xSetFilter : function(filter, winController) {
 				var self = this;
 
 				this.__filter = filter;
 				if (!this.__filterCollection) {
 					this.__filterCollection = Alloy.Collections[this.config.adapter.collection_name];
-					this.__filterCollection.on("add", this.__addModel.bind(this));
-					this.__filterCollection.on("remove", this.__removeModel.bind(this));
-					this.__filterCollection.on("sync", this.__changeModel.bind(this));
+					this.__xSetFilterOnCollection(this, winController);
 				}
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
 				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);

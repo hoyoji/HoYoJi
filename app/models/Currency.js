@@ -29,7 +29,7 @@ exports.definition = {
 					if(Alloy.Models.User){
 						var oldCurrencys = Alloy.Models.User.xGet("currencies").xCreateFilter({
 							name : this.xGet("name")
-						});
+						}, $);
 						if (this.isNew()) {
 							if (oldCurrencys.length > 0) {
 								error = {

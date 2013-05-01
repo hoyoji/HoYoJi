@@ -23,7 +23,7 @@ if ($.$attrs.selectedFriend) {
 	console.info("++++++++++hello"+$.$attrs.selectedFriend.xGet("id"));
 	collection = $.$attrs.selectedFriend.getSharedAccounts();
 } else {
-	collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter({ownerUserId : Alloy.Models.User.xGet("id")});
+	collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter({ownerUserId : Alloy.Models.User.xGet("id")}, $);
 }
 $.moneyAccountsTable.addCollection(collection);
 

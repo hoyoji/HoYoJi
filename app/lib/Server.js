@@ -159,11 +159,18 @@
 							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
 							});
-							if (!model.isNew()) {
-								model.syncDelete(record, dbTrans);
-							}
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+							if (!model.isNew()) {
+								// 我们要将该记录的所有hasMany一并删除
+								for(var hasMany in model.hasMany){
+									model.xGet("hasMany").forEach(function(item){
+										item.syncDelete(null, dbTrans);
+										db.execute(sql, [item.xGet("id")]);
+									});
+								}
+								model.syncDelete(record, dbTrans);
+							}
 							db.execute(sql, [id]);
 						} else {
 							// 该记录是在服务器上新增的或被修改的。

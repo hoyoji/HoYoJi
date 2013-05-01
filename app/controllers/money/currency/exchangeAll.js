@@ -14,7 +14,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.exchangesTable);
 
-var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")});
+var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")}, $);
 $.exchangesTable.addCollection(collection);
 
 function onFooterbarTap(e){
