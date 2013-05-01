@@ -231,14 +231,14 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-var oldMoneyAccountBalance;
+				var oldMoneyAccountBalance;
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : this.xGet("moneyAccountId")
 				});
 				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
 				} else {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;	
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
 				}
 				oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 					dbTrans : dbTrans,
