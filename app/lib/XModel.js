@@ -373,12 +373,14 @@
 			},
 			_xDelete : function(xFinishCallback, options) {
 				var error;
-				for (var hasMany in this.config.hasMany) {
-					if (this.xGet(hasMany).length > 0) {
-						error = {
-							msg : "包含有相关联的子数据，删除失败"
-						};
-						break;
+				if(options.syncFromServer !== true){
+					for (var hasMany in this.config.hasMany) {
+						if (this.xGet(hasMany).length > 0) {
+							error = {
+								msg : "包含有相关联的子数据，删除失败"
+							};
+							break;
+						}
 					}
 				}
 				if (!error) {
@@ -503,7 +505,7 @@
 				delete this.id;
 				this.save(null, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true
+					syncFromServer : true
 				});
 				console.info("_syncAddNew : " + record.id);
 			},
@@ -513,7 +515,7 @@
 				//delete record.id;
 				this.save(record, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true,
+					syncFromServer : true,
 					patch : true
 				});
 			},
@@ -523,10 +525,10 @@
 				
 				this.xDelete ? this.xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true
+					syncFromServer : true
 				}) : this._xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true
+					syncFromServer : true
 				});
 			},
 			syncUpdateConflict : function(record, dbTrans) {

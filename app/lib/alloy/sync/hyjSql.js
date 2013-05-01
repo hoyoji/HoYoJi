@@ -123,7 +123,7 @@ function Sync(method, model, opts) {
 				}
 				var ownerUserId;
 				var sqlCheckPermission;
-				if (!opts.noSyncUpdate) {
+				if (!opts.syncFromServer) {
 					if (Alloy.Models.User) {
 						ownerUserId = Alloy.Models.User.xGet("id");
 						if (_.indexOf(projectPermissionTables, table) > -1) {
@@ -194,7 +194,7 @@ function Sync(method, model, opts) {
 				}
 
 				// 只有本地创建的记录我们才在ClientSyncTable里添加新增记录， 本地创佳的记录 lastServerUpdateTime 都为空， 服务器获取下来的则不为空
-				if (!opts.noSyncUpdate) {
+				if (!opts.syncFromServer) {
 					if (!model.xGet("lastServerUpdateTime") && _creatorId !== "0") {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','create','" + ownerUserId + "','" + _creatorId + "')");
 					}
@@ -306,7 +306,7 @@ function Sync(method, model, opts) {
 
 			var sqlCheckPermission, sqlCheckPermission2;
 
-			if (!opts.noSyncUpdate) {
+			if (!opts.syncFromServer) {
 				var ownerUserId = Alloy.Models.User.xGet("id");
 				if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project") {
 					// if(table === "Project"){
@@ -394,7 +394,7 @@ function Sync(method, model, opts) {
 				};
 				delete opts.wait;
 			} else {
-				if (!opts.noSyncUpdate) {
+				if (!opts.syncFromServer) {
 					var r = db.execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
 					if (r.rowCount === 0) {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','update','" + ownerUserId + "','" + ownerUserId + "')");
@@ -410,7 +410,7 @@ function Sync(method, model, opts) {
 		case "delete":
 			var sql = "DELETE FROM " + table + " WHERE " + model.idAttribute + "=?";
 
-			if (!opts.noSyncUpdate) {
+			if (!opts.syncFromServer) {
 				if (_.indexOf(projectPermissionTables, table) > -1 && table !== "Project") {
 					if (table === "MoneyIncomeDetail") {
 						sql += ' AND id = (SELECT p.id FROM ' + table + ' p JOIN MoneyIncome mi ON mi.id = p.moneyIncomeId JOIN Project prj ON prj.id = mi.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + Alloy.Models.User.xGet("id") + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" ' + 'AND (prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShare' + table + 'Edit = 1 OR joinedtable.projectShare' + table + 'Delete = 1)))';
@@ -441,7 +441,7 @@ function Sync(method, model, opts) {
 					}
 				};
 			} else {
-				if (!opts.noSyncUpdate) {
+				if (!opts.syncFromServer) {
 					var r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'");
 					if (r.rowCount > 0) {
 						db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");

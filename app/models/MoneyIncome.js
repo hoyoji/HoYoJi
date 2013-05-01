@@ -176,7 +176,8 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (this.xGet("moneyIncomeDetails").length > 0) {
+				if (options.syncFromServer !== true 
+					&& this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前收入的明细不为空，不能删除"
 					})

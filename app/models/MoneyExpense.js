@@ -187,7 +187,8 @@ exports.definition = {
 			// this.xSet("amount", amount);
 			// },
 			xDelete : function(xFinishCallback, options) {
-				if (this.xGet("moneyExpenseDetails").length > 0) {
+				if (options.syncFromServer !== true 
+					&& this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback && xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
 					});

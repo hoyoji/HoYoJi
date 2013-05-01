@@ -146,7 +146,7 @@
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
 					}, {
-						noSyncUpdate : true,
+						syncFromServer : true,
 						patch : true,
 						dbTrans : dbTrans
 					});
@@ -163,8 +163,8 @@
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 							if (!model.isNew()) {
 								// 我们要将该记录的所有hasMany一并删除
-								for(var hasMany in model.hasMany){
-									model.xGet("hasMany").forEach(function(item){
+								for(var hasMany in model.config.hasMany){
+									model.xGet(hasMany).forEach(function(item){
 										item.syncDelete(null, dbTrans);
 										db.execute(sql, [item.xGet("id")]);
 									});

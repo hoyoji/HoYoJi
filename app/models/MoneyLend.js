@@ -185,7 +185,8 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (this.xGet("moneyPaybacks").length > 0) {
+				if (options.syncFromServer !== true 
+					&& this.xGet("moneyPaybacks").length > 0) {
 					xFinishCallback({
 						msg : "当前借出的收款明细不为空，不能删除"
 					})
