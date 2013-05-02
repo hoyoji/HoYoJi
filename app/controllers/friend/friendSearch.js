@@ -19,7 +19,7 @@ $.searchButton.addEventListener("click", function(e){
 			var id = userData.id;
 			delete userData.id;
 			var user = Alloy.createModel("User", userData);
-			user.attributes.id = id;
+			user.attributes["id"] = id;
 			
 			$.userCollection.add(user);
 		});
