@@ -175,7 +175,13 @@ exports.definition = {
 						});
 					}
 				}
-			}
+			},
+			syncAddNew : function(record, dbTrans) {
+				var friendUser = Alloy.createModel("User").xFindInDb({id : this.xGet("friendUserId")});
+				if(!friendUser.id){
+					
+				}
+			}		
 		});
 
 		return Model;
