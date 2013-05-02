@@ -96,6 +96,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					});
 				}
 				Alloy.Globals.Server.sendMsg({
+					id : guid(),
 					"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.AddRequest",
@@ -128,6 +129,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 			        $.saveModel(saveEndCB, saveErrorCB);
 			    	saveEndCB("发送成功，请等待回复");
+			    }, function(e){
+			    	alert(e.__summary.msg);
 			    });
 			}
 	   }else{
@@ -169,6 +172,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						if(subProjectShareAuthorizationIds.length){
 							Alloy.Globals.Server.sendMsg({
+							id : guid(),
 							"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 							"fromUserId" : Alloy.Models.User.xGet("id"),
 							"type" : "Project.Share.Edit",
@@ -184,6 +188,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					                        })
 					         },function(){
 						        $.saveModel(saveEndCB, saveErrorCB);
+			    			}, function(e){
+			    				alert(e.__summary.msg);
 			    			});
 						}else{
 							$.saveModel(saveEndCB, saveErrorCB);
@@ -206,6 +212,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						if(subProjectShareAuthorizationIds.length){
 							Alloy.Globals.Server.sendMsg({
+							id : guid(),
 							"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 							"fromUserId" : Alloy.Models.User.xGet("id"),
 							"type" : "Project.Share.Edit",
@@ -221,6 +228,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					                        })
 					         },function(){
 						        $.saveModel(saveEndCB, saveErrorCB);
+			    			}, function(e){
+			    				alert(e.__summary.msg);
 			    			});
 						}else{
 							$.saveModel(saveEndCB, saveErrorCB);
@@ -254,6 +263,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						if($.$model.xGet("state") === "Accept"){
 							Alloy.Globals.Server.sendMsg({
+								id : guid(),
 								"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 								"fromUserId" : Alloy.Models.User.xGet("id"),
 								"type" : "Project.Share.Edit",
@@ -268,6 +278,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						                        })
 					         },function(){
 						        $.saveModel(saveEndCB, saveErrorCB);
+			    			}, function(e){
+			    				alert(e.__summary.msg);
 			    			});
 						}else{
 							$.saveModel(saveEndCB, saveErrorCB);
@@ -276,6 +288,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}else{
 						if($.$model.xGet("state") === "Accept"){
 							Alloy.Globals.Server.sendMsg({
+								id : guid(),
 								"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
 								"fromUserId" : Alloy.Models.User.xGet("id"),
 								"type" : "Project.Share.Edit",
@@ -290,6 +303,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						                        })
 					         },function(){
 						        $.saveModel(saveEndCB, saveErrorCB);
+			    			}, function(e){
+			    				alert(e.__summary.msg);
 			    			});
 			    		}else{
 			    			$.saveModel(saveEndCB, saveErrorCB);

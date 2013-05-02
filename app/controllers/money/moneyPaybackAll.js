@@ -17,7 +17,7 @@ $.titleBar.bindXTable($.moneyPaybacksTable);
 var moneyPaybacks = selectedLend.xGet("moneyPaybacks");
 var interests = selectedLend.xGet("moneyPaybacks").xCreateFilter(function(model){
 	return model.xGet("interest") !== 0;
-});
+}, $);
 $.moneyPaybacksTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
 $.moneyPaybacksTable.addCollection(interests, "money/moneyPaybackInterestRow");
 

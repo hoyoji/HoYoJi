@@ -170,7 +170,7 @@ exports.definition = {
 				}
 				return this.__getSharedWIthHerSubProjectsFilter;
 			},
-			xDelete : function(xFinishCallback) {
+			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var subProjectShareAuthorizationIds = [];
 				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
@@ -180,10 +180,11 @@ exports.definition = {
 						});
 					if(subProjectShareAuthorization.id){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						subProjectShareAuthorization._xDelete();
+						subProjectShareAuthorization._xDelete(xFinishCallback, options);
 					}
 				});
 				Alloy.Globals.Server.sendMsg({
+					id : guid(),
 					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
@@ -198,9 +199,9 @@ exports.definition = {
 			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 			                        })
 			         },function(){
-				        self._xDelete(xFinishCallback);
-	    			},function(){
-	    				xFinishCallback({ msg :"删除出错,请重试"});
+				        self._xDelete(xFinishCallback, options);
+	    			},function(e){
+	    				xFinishCallback({ msg :"删除出错,请重试 : " + e.__summary.msg});
 	    			});	
 			},
 			canEdit : function(){

@@ -72,5 +72,5 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
 
-var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter({project : selectedProject});
+var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter({project : selectedProject}, $);
 $.myProjectShareAuthorizationsTable.addCollection(collection);

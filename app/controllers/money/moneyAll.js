@@ -100,18 +100,18 @@ function onFooterbarTap(e) {
 // var moneyExpenses = Alloy.Models.User.xGet("moneyExpenses");
 // var moneyTransferOuts = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 // transferOutOwnerUser : null
-// });
+// }, $);
 // var moneyTransferIns = Alloy.Models.User.xGet("moneyTransfers").xCreateFilter({
 // transferInOwnerUser : null
-// });
+// }, $);
 // var moneyBorrows = Alloy.Models.User.xGet("moneyBorrows");
 // var moneyLends = Alloy.Models.User.xGet("moneyLends");
 // var moneyReturns = Alloy.Models.User.xGet("moneyReturns").xCreateFilter({
 // moneyBorrow : null
-// });
+// }, $);
 // var moneyPaybacks = Alloy.Models.User.xGet("moneyPaybacks").xCreateFilter({
 // moneyLend : null
-// });
+// }, $);
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");
 var moneyExpenses = Alloy.createCollection("moneyExpense");
@@ -123,6 +123,17 @@ var moneyReturns = Alloy.createCollection("moneyReturn");
 var moneyPaybacks = Alloy.createCollection("moneyPayback");
 
 doAllTimeFilter();
+
+$.onWindowCloseDo(function(){
+	moneyIncomes.xClearFilter();
+	moneyExpenses.xClearFilter();
+	moneyTransferOuts.xClearFilter();
+	moneyTransferIns.xClearFilter();
+	moneyBorrows.xClearFilter();
+	moneyLends.xClearFilter();
+	moneyReturns.xClearFilter();
+	moneyPaybacks.xClearFilter();
+});
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);

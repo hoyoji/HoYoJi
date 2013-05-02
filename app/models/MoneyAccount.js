@@ -11,7 +11,7 @@ exports.definition = {
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		defaults : {
@@ -76,37 +76,13 @@ exports.definition = {
 			},
 			xDelete : function(xFinishCallback, options) {
 				var error;
-				if (Alloy.Models.User.xGet("activeMoneyAccount") === this) {
+				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除 
+				if (options.syncFromServer !== true 
+					&& Alloy.Models.User.xGet("activeMoneyAccount") === this) {
 					error = {
 						msg : "默认账户不能删除"
 					};
-				} 
-				// else if (this.xGet("moneyExpenses") && this.xGet("moneyExpenses").length > 0) {
-					// error = {
-						// msg : "当前账户有相关支出，不能删除"
-					// };
-				// } else if (this.xGet("moneyIncomes") && this.xGet("moneyIncomes").length > 0) {
-					// error = {
-						// msg : "当前账户有相关收入，不能删除"
-					// };
-				// } else if (this.xGet("moneyBorrows") && this.xGet("moneyBorrows").length > 0) {
-					// error = {
-						// msg : "当前账户有相关借入，不能删除"
-					// };
-				// } else if (this.xGet("moneyLends") && this.xGet("moneyLends").length > 0) {
-					// error = {
-						// msg : "当前账户有相关借出，不能删除"
-					// };
-				// } else if (this.xGet("moneyPaybacks") && this.xGet("moneyPaybacks").length > 0 || this.xGet("moneyReturns").length > 0) {
-					// error = {
-						// msg : "当前账户有相关收款，不能删除"
-					// };
-				// } else if (this.xGet("moneyReturns") && this.xGet("moneyReturns").length > 0) {
-					// error = {
-						// msg : "当前账户有相关还款，不能删除"
-					// };
-				// } 
-				else {
+				} else {
 					this._xDelete(xFinishCallback, options);
 					return;
 				}
@@ -124,9 +100,9 @@ exports.definition = {
 					return this.xGet("currentBalance");
 				}
 			},
-			syncUpdate : function(record, dbTrans){
-				delete record.currentBalance; // 我们不能将帐户余额同步下来
-				this._syncUpdate(record, dbTrans);
+			syncUpdate : function(record, dbTrans) {
+				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
+				delete record.currentBalance;
 			}
 		});
 

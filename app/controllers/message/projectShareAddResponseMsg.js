@@ -543,6 +543,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 
 				Alloy.Globals.Server.sendMsg({
+					id : guid(),
 					"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 					"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 					"type" : "Project.Share.Accept",
@@ -561,8 +562,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					});
 					saveEndCB("您接受了 " + $.$model.xGet("fromUser").xGet("userName") + " 分享的项目");
 					return;
-				}, function() {
-					saveErrorCB("接受分享项目失败,请重新发送");
+				}, function(e) {
+					saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
 					return;
 				});
 			} else {
@@ -598,6 +599,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 
 				Alloy.Globals.Server.sendMsg({
+					id : guid(),
 					"toUserId" : $.$model.xGet("fromUser").xGet("id"),
 					"fromUserId" : $.$model.xGet("toUser").xGet("id"),
 					"type" : "Project.Share.Reject",
@@ -616,8 +618,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					});
 					saveEndCB("您拒绝了" + $.$model.xGet("fromUser").xGet("userName") + "分享的项目");
 					return;
-				}, function() {
-					saveErrorCB("拒绝分享项目失败,请重新发送");
+				}, function(e) {
+					saveErrorCB("拒绝分享项目失败,请重新发送 : " + e.__summary.msg);
 					return;
 				});
 

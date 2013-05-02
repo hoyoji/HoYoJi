@@ -60,18 +60,22 @@ exports.definition = {
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();
 				} else {
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+
+					var amount = self.xGet("amount");
+					var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+
+					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
+					self.xGet("moneyExpense").save({
+						amount : expenseAmount - amount
+					}, saveOptions);
 
 					this._xDelete(function(error, options) {
 						if (!error) {
-							var amount = self.xGet("amount");
-
-							var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
-							moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + amount);
-							moneyAccount._xSave();
-
-							var expenseAmount = self.xGet("moneyExpense").xGet("amount");
-							self.xGet("moneyExpense").xSet("amount", expenseAmount - amount);
-							self.xGet("moneyExpense")._xSave();
 						}
 						xFinishCallback(error);
 					});
@@ -87,27 +91,39 @@ exports.definition = {
 				// 更新账户余额
 				// 1. 如果支出也是新增的
 				// 2. 支出已经存在
-				
-				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({id : record.moneyExpenseId});
-				moneyExpense.save("amount", moneyExpense.xGet("amount") + record.amount, {
-					dbTrans : dbTrans,
-					patch : true
+
+				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+					id : record.moneyExpenseId
 				});
-				
-				this._syncAddNew(record, dbTrans);
+				if (moneyExpense.id) {
+					// 支出已在本地存在
+					var newExpenseAmount, oldExpenseAmount = moneyExpense.xGet("amount");
+
+					if (moneyExpense.xGet("moneyExpenseDetails").length === 0) {
+						newExpenseAmount = record.amount;
+					} else {
+						newExpenseAmount = oldExpenseAmount + record.amount;
+					}
+					moneyExpense.save("amount", newExpenseAmount, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+					// 我们还要更新本地账户余额
+
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 更新账户余额
 				// 1. 如果支出也是新增的
 				// 2. 支出已经存在
-				
-				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({id : record.moneyExpenseId});
+
+				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+					id : record.moneyExpenseId
+				});
 				moneyExpense.save("amount", moneyExpense.xGet("amount") + record.amount, {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				
-				this._syncAddNew(record, dbTrans);
 			}
 		});
 

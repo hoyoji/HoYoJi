@@ -12,7 +12,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.moneyExpenseCategoriesTable);
 
-var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter({parentExpenseCategory : null});
+var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter({parentExpenseCategory : null}, $);
 $.moneyExpenseCategoriesTable.addCollection(collection);
 
 $.onWindowOpenDo(function() {

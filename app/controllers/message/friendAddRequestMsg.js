@@ -13,6 +13,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var date = (new Date()).toISOString();
 	$.$model.xSet("date", date);
 	Alloy.Globals.Server.sendMsg({
+		id : guid(),
 		"toUserId" : $.$model.xGet("toUser").xGet("id"),
 		"fromUserId" : $.$model.xGet("fromUser").xGet("id"),
 		"type" : "System.Friend.AddRequest",
@@ -24,6 +25,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	},function(){
         $.saveModel(saveEndCB, saveErrorCB);
     	alert("发送成功，请等待回复");         
+    }, function(e){
+    	alert(e.__summary.msg);
     });
 }
 

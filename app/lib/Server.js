@@ -2,14 +2,16 @@
 		var dataUrl = "http://2.money.app100697798.twsapp.com/";
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
-				var msg = Alloy.createModel("Message");
+				//var msg = Alloy.createModel("Message");
 				msgJSON.ownerUserId = msgJSON.toUserId;
-				msg.save(msgJSON, {
-					patch : true,
-					wait : true,
-					success : xFinishedCallback,
-					error : xErrorCallback
-				});
+				msgJSON.__dataType = "Message";
+				this.postData([msgJSON], xFinishedCallback, xErrorCallback);
+				// msg.save(msgJSON, {
+				// patch : true,
+				// wait : true,
+				// success : xFinishedCallback,
+				// error : xErrorCallback
+				// });
 			},
 			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				var collection = Alloy.createCollection(modelName);
@@ -31,20 +33,44 @@
 					// collection.map(function(item){
 					// item.save({wait : true});
 					// });
+					if (collection.length > 0) {
+						xFinishedCallback(collection);
+						return;
+					}
 
-					xFinishedCallback(collection);
+					var requestData = [];
+					filter.forEach(function(id) {
+						requestData.push({
+							__dataType : modelName,
+							id : id
+						});
+					})
+					Alloy.Globals.Server.getData(requestData, function(data) {
+						var returnCollection = Alloy.createCollection(modelName);
+						data.forEach(function(record) {
+							var modelData = record[0];
+							var id = modelData.id;
+							delete modelData.id;
+							var model = Alloy.createModel(modelData.__dataType, modelData);
+							model.attributes.id = id;
+							model.save();
+							returnCollection.push(model);
+						});
+						xFinishedCallback(returnCollection);
+					}, xErrorCallback);
+
 				}, xErrorCallback);
 			},
-			updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
-				xFinishedCallback(collection);
-			},
-			deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				var collection = Alloy.createCollection(modelName);
-				collection.xSearchInDb(filter);
-				xFinishedCallback(collection);
-			},
+			// updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+			// var collection = Alloy.createCollection(modelName);
+			// collection.xSearchInDb(filter);
+			// xFinishedCallback(collection);
+			// },
+			// deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+			// var collection = Alloy.createCollection(modelName);
+			// collection.xSearchInDb(filter);
+			// xFinishedCallback(collection);
+			// },
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);
@@ -108,34 +134,43 @@
 				this.getData(Alloy.Models.User.xGet("lastSyncTime"), function(data) {
 					var lastSyncTime = data.lastSyncTime;
 					data = _.flatten(data.data);
-					
+
 					var db = Ti.Database.open("hoyoji");
-					var dbTrans = { db : db };
+					var dbTrans = {
+						db : db
+					};
 					_.extend(dbTrans, Backbone.Events);
-				
+
 					db.execute("BEGIN;");
-					
+
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
 					}, {
-						noSyncUpdate : true,
+						syncFromServer : true,
 						patch : true,
 						dbTrans : dbTrans
-					});				
-				
+					});
+
 					data.forEach(function(record) {
-						var sql, rs, dataType = record.__dataType;
+						var sql, rs, dataType = record.__dataType, asyncCount = 0;
 						delete record.__dataType;
 						if (dataType === "ServerSyncDeletedRecords") {
 							var id = record.recordId;
 							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
 							});
-							if (!model.isNew()) {
-								model.syncDelete(record, dbTrans);
-							}
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+							if (!model.isNew()) {
+								// 我们要将该记录的所有hasMany一并删除
+								for(var hasMany in model.config.hasMany){
+									model.xGet(hasMany).forEach(function(item){
+										item.syncDelete(null, dbTrans);
+										db.execute(sql, [item.xGet("id")]);
+									});
+								}
+								model.syncDelete(record, dbTrans);
+							}
 							db.execute(sql, [id]);
 						} else {
 							// 该记录是在服务器上新增的或被修改的。
@@ -149,7 +184,7 @@
 								// 该记录同时在本地和服务器被修改过
 								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
 								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
-								if(operation === "update"){
+								if (operation === "update") {
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
 									});
@@ -163,11 +198,35 @@
 								var model = Alloy.createModel(dataType).xFindInDb({
 									id : record.id
 								});
-								if (model.isNew()) {
-									// 没有找到该记录
-									model.syncAddNew(record, dbTrans);
+								
+								// 检查belongsTo, 如果任何belongsTo已被删除，我们不将该记录同步下来
+								var belongsToDeleted = false;
+								sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'delete'";
+								for(var belongsTo in model.config.belongsTo){
+									if(model.config.belongsTo[belongsTo].attribute){
+										rs = db.execute(sql, [record.id]);
+										if (rs.rowCount > 0) {
+											belongsToDeleted = true;
+											break;
+										}
+										rs.close();
+									}
+								}
+								if(belongsToDeleted) {
+									// 如果该model是新的，我们要通知服务器删除该记录
+									if (model.isNew() && record.id === Alloy.Models.User.id) {
+										db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+									}
 								} else {
-									model.syncUpdate(record, dbTrans);
+									if (model.isNew()) {
+										// 没有找到该记录
+										model.syncAddNew(record, dbTrans);
+										model._syncAddNew(record,dbTrans);
+									} else {
+										// 该记录已存在本地，我们更新
+										model.syncUpdate(record, dbTrans);
+										model._syncUpdate(record, dbTrans);
+									}	
 								}
 							}
 							rs = null;
@@ -183,27 +242,27 @@
 				}, "syncPull");
 			},
 			// _syncInsertLocal : function(record, dataType, db) {
-				// // 该记录不在本地表里面, 我们将其添加进来
-				// var attrs = _.keys(record), values = _.values(record), questionMarks = attrs.map(function() {
-					// return "?";
-				// }), sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
-				// db.execute(sql, values);
+			// // 该记录不在本地表里面, 我们将其添加进来
+			// var attrs = _.keys(record), values = _.values(record), questionMarks = attrs.map(function() {
+			// return "?";
+			// }), sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
+			// db.execute(sql, values);
 			// },
 			// _syncDeleteLocal : function(record, dataType, db) {
-				// var sql = "DELETE FROM " + dataType + " WHERE id = ?";
-				// db.execute(sql, [record.id]);
+			// var sql = "DELETE FROM " + dataType + " WHERE id = ?";
+			// db.execute(sql, [record.id]);
 			// },
 			// _syncUpdateLocal : function(record, dataType, db) {
-				// var sql, id = record.id, values = [], attrs = [];
-				// delete record.id;
-				// for (var attr in record) {
-					// attrs.push(attr + "=?");
-					// values.push(record[attr]);
-				// }
-				// values.push(id);
-				// sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
-				// db.execute(sql, values);
-				// record.id = id;
+			// var sql, id = record.id, values = [], attrs = [];
+			// delete record.id;
+			// for (var attr in record) {
+			// attrs.push(attr + "=?");
+			// values.push(record[attr]);
+			// }
+			// values.push(id);
+			// sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
+			// db.execute(sql, values);
+			// record.id = id;
 			// },
 			syncPush : function(xFinishedCallback, xErrorCallback) {
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"), data = [];

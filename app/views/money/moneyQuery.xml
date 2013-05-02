@@ -1,12 +1,12 @@
 <Alloy>
 	<View class="container" saveableContainer="true">
-			<Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/>
-			<View height="30" top="5" left="10" right="10">
-				<Button left="10" onSingletap="close">返回</Button>
-				<Label>请输入查询条件</Label>
-				<Button right="10" onSingletap="doQuery">查询</Button>
-			</View>
-		<View id="body" top="67" bottom="70" left="15" right="15">
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
+		<View height="30" top="5" left="10" right="10">
+			<Button left="10" onSingletap="close">返回</Button>
+			<Label>请输入查询条件</Label>
+			<Button right="10" onSingletap="doQuery">查询</Button>
+		</View>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
 			<ScrollView layout="vertical"  scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="开始时间" hintText="无开始时间" id="dateFrom"
 				bindModel="$.queryOptions"
@@ -47,15 +47,15 @@
 				bindModelSelectorParams="selectedFriend:friend"
 				/>
 				<View height="42">
-					<Label left="0" width="30%" height="Ti.UI.FILL">是否预支</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
-					hightLight="false"
-					items="否,是"
-					values="Ordinary,PreExpense"
-					bindModel="$.queryOptions"
-					bindAttribute="expenseType"/>
+				<Label left="0" width="30%" height="Ti.UI.FILL">是否预支</Label>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
+				hightLight="false"
+				items="否,是"
+				values="Ordinary,PreExpense"
+				bindModel="$.queryOptions"
+				bindAttribute="expenseType"/>
 				</View> -->
 			</ScrollView>
-			</View>
+		</View>
 	</View>
 </Alloy>

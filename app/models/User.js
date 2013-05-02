@@ -123,8 +123,8 @@ exports.definition = {
 				return collection;				
 			},
 			syncUpdate : function(record, dbTrans){
+				// last sync time 在每台手机上都不一样，所以我们不将其同步下来
 				delete record.lastSyncTime;
-				this._syncUpdate(record, dbTrans);
 			}
 		});
 		return Model;
