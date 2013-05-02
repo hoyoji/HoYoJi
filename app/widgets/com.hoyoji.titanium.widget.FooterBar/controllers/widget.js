@@ -84,7 +84,7 @@ if ($.$attrs.buttons) {
 	var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + buttons.length + ".png");
 	var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + buttons.length + ".png");
 	for (var i = 0; i < buttons.length; i++) {
-		var subButtons = buttons[i].split(";"), subIds, button, buttonId, buttonTitle;
+		var subButtons = buttons[i].split(";"), subIds, buttonWidget, button, buttonId, buttonTitle;
 		if (subButtons.length > 1) {
 			subIds = ids[i].split(";");
 			buttonId = subIds[0];
@@ -101,7 +101,7 @@ if ($.$attrs.buttons) {
 		}
 		var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
 		if(imgPath && f.exists()){
-			button = Ti.UI.createButton({
+			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				id : buttonId,
 				borderRadius : 0,
 				width : width,
@@ -109,8 +109,16 @@ if ($.$attrs.buttons) {
 				backgroundImage : backgroundImage,
 				image : imgPath
 			});
+			// button = Ti.UI.createButton({
+				// id : buttonId,
+				// borderRadius : 0,
+				// width : width,
+				// height : Ti.UI.FILL,
+				// backgroundImage : backgroundImage,
+				// image : imgPath
+			// });
 		} else {
-			button = Ti.UI.createButton({
+			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				id : buttonId,
 				title : buttonTitle,
 				color : "black",
@@ -118,23 +126,33 @@ if ($.$attrs.buttons) {
 				width : width,
 				height : Ti.UI.FILL,
 				backgroundImage : backgroundImage
-			});
+			});			
+			// button = Ti.UI.createButton({
+				// id : buttonId,
+				// title : buttonTitle,
+				// color : "black",
+				// borderRadius : 0,
+				// width : width,
+				// height : Ti.UI.FILL,
+				// backgroundImage : backgroundImage
+			// });
 		}
 		f = null;
-		$[buttonId] = button;
-
+		$[buttonId] = buttonWidget;
+		buttonWidget.button;
 		if (subButtons.length > 1) {
-			button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
+			buttonWidget.button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
 		}
 
-		button.addEventListener("touchstart", function(button) {
-			button.setBackgroundImage(backgroundImageNormal);
-		}.bind(null, button));
-		button.addEventListener("touchend", function(button) {
-			button.setBackgroundImage(backgroundImage);
-		}.bind(null, button));
+		// button.addEventListener("touchstart", function(button) {
+			// button.setBackgroundImage(backgroundImageNormal);
+		// }.bind(null, button));
+		// button.addEventListener("touchend", function(button) {
+			// button.setBackgroundImage(backgroundImage);
+		// }.bind(null, button));
 
-		$.mainFooterBar.add(button);
+		buttonWidget.setParent($.mainFooterBar);
+		// $.mainFooterBar.add(button);
 	}
 }
 
