@@ -16,7 +16,8 @@ function createSubFooterBar(button, subButtons, subIds) {
 			right : 5,
 			layout : "horizontal",
 			horizontalWrap : false,
-			zIndex : 2
+			zIndex : 2,
+			backgroundColor : "white"
 		});
 		$.$view.add($[subFooterBarId]);
 
@@ -32,7 +33,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 			}
 			var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
 			if(imgPath && f.exists()){
-				subButton = Ti.UI.createButton({
+				subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					id : subIds[i],
 					borderRadius : 0,
 					height : Ti.UI.FILL,
@@ -41,7 +42,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 					image : imgPath
 				});
 			} else {
-				subButton = Ti.UI.createButton({
+				subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					id : subIds[i],
 					title : subButtons[i],
 					color : "black",
@@ -52,14 +53,14 @@ function createSubFooterBar(button, subButtons, subIds) {
 				});
 			}
 			f = null;
-			$[subFooterBarId].add(subButton);
-			$[subIds[i]] = subButton;
-			subButton.addEventListener("touchstart", function(button) {
-				button.setBackgroundImage(backgroundImageNormal);
-			}.bind(null, subButton));
-			subButton.addEventListener("touchend", function(button) {
-				button.setBackgroundImage(backgroundImage);
-			}.bind(null, subButton));
+			subButtonWidget.setParent($[subFooterBarId]);
+			$[subIds[i]] = subButtonWidget;
+			// subButton.addEventListener("touchstart", function(button) {
+				// button.setBackgroundImage(backgroundImageNormal);
+			// }.bind(null, subButton));
+			// subButton.addEventListener("touchend", function(button) {
+				// button.setBackgroundImage(backgroundImage);
+			// }.bind(null, subButton));
 		}
 
 		$[subFooterBarId].addEventListener("singletap", function(e) {
