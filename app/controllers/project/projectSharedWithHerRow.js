@@ -57,10 +57,10 @@ $.makeContextMenu = function(e, isSelectMode) {
 		        projectShareMoneyIncomeCategoryEdit : 1,
 		        projectShareMoneyIncomeCategoryDelete : 1,
 		        
-		        projectShareMoneyTransferOwnerDataOnly : 0,
-		        projectShareMoneyTransferAddNew : 1,
-		        projectShareMoneyTransferEdit : 1,
-		        projectShareMoneyTransferDelete : 1,
+		        // projectShareMoneyTransferOwnerDataOnly : 0,
+		        // projectShareMoneyTransferAddNew : 1,
+		        // projectShareMoneyTransferEdit : 1,
+		        // projectShareMoneyTransferDelete : 1,
 		        
 		        projectShareMoneyLendOwnerDataOnly : 0,
 		        projectShareMoneyLendAddNew : 1,

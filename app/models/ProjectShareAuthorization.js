@@ -41,10 +41,10 @@ exports.definition = {
 	        projectShareMoneyIncomeCategoryEdit : "INTEGER NOT NULL",
 	        projectShareMoneyIncomeCategoryDelete : "INTEGER NOT NULL",
 	        
-	        projectShareMoneyTransferOwnerDataOnly : "INTEGER NOT NULL",
-	        projectShareMoneyTransferAddNew : "INTEGER NOT NULL",
-	        projectShareMoneyTransferEdit : "INTEGER NOT NULL",
-	        projectShareMoneyTransferDelete : "INTEGER NOT NULL",
+	        // projectShareMoneyTransferOwnerDataOnly : "INTEGER NOT NULL",
+	        // projectShareMoneyTransferAddNew : "INTEGER NOT NULL",
+	        // projectShareMoneyTransferEdit : "INTEGER NOT NULL",
+	        // projectShareMoneyTransferDelete : "INTEGER NOT NULL",
 	        
 	        projectShareMoneyLendOwnerDataOnly : "INTEGER NOT NULL",
 	        projectShareMoneyLendAddNew : "INTEGER NOT NULL",
@@ -97,10 +97,10 @@ exports.definition = {
 	        projectShareMoneyIncomeCategoryEdit : 1,
 	        projectShareMoneyIncomeCategoryDelete : 1,
 	        
-	        projectShareMoneyTransferOwnerDataOnly : 0,
-	        projectShareMoneyTransferAddNew : 1,
-	        projectShareMoneyTransferEdit : 1,
-	        projectShareMoneyTransferDelete : 1,
+	        // projectShareMoneyTransferOwnerDataOnly : 0,
+	        // projectShareMoneyTransferAddNew : 1,
+	        // projectShareMoneyTransferEdit : 1,
+	        // projectShareMoneyTransferDelete : 1,
 	        
 	        projectShareMoneyLendOwnerDataOnly : 0,
 	        projectShareMoneyLendAddNew : 1,

@@ -122,52 +122,52 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 	authorizationDetailRow2.add(projectShareMoneyIncomeEditAuthorizationLabel);
 	authorizationDetailRow2.add(projectShareMoneyIncomeDeleteAuthorizationLabel);
 
-	//创建转账权限
-	var authorizationDetailRow3 = Titanium.UI.createView({
-		layout : "horizontal",
-		horizontalWrap : false,
-		height : "42"
-	});
-	var projectShareMoneyTransferAuthorizationLabel = Ti.UI.createLabel({
-		text : "转账",
-		height : 42,
-		color : "black",
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "20%"
-	});
-	var projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		text : projectShareAuthorization.xGet("projectShareMoneyTransferOwnerDataOnly") ? "√" : "",
-		height : 42,
-		color : "black",
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "20%"
-	});
-	var projectShareMoneyTransferAddNewAuthorizationLabel = Ti.UI.createLabel({
-		text : projectShareAuthorization.xGet("projectShareMoneyTransferAddNew") ? "√" : "",
-		height : 42,
-		color : "black",
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "20%"
-	});
-	var projectShareMoneyTransferEditAuthorizationLabel = Ti.UI.createLabel({
-		text : projectShareAuthorization.xGet("projectShareMoneyTransferEdit") ? "√" : "",
-		height : 42,
-		color : "black",
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "20%"
-	});
-	var projectShareMoneyTransferDeleteAuthorizationLabel = Ti.UI.createLabel({
-		text : projectShareAuthorization.xGet("projectShareMoneyTransferDelete") ? "√" : "",
-		height : 42,
-		color : "black",
-		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "20%"
-	});
-	authorizationDetailRow3.add(projectShareMoneyTransferAuthorizationLabel);
-	authorizationDetailRow3.add(projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel);
-	authorizationDetailRow3.add(projectShareMoneyTransferAddNewAuthorizationLabel);
-	authorizationDetailRow3.add(projectShareMoneyTransferEditAuthorizationLabel);
-	authorizationDetailRow3.add(projectShareMoneyTransferDeleteAuthorizationLabel);
+	// //创建转账权限
+	// var authorizationDetailRow3 = Titanium.UI.createView({
+		// layout : "horizontal",
+		// horizontalWrap : false,
+		// height : "42"
+	// });
+	// var projectShareMoneyTransferAuthorizationLabel = Ti.UI.createLabel({
+		// text : "转账",
+		// height : 42,
+		// color : "black",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// width : "20%"
+	// });
+	// var projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		// text : projectShareAuthorization.xGet("projectShareMoneyTransferOwnerDataOnly") ? "√" : "",
+		// height : 42,
+		// color : "black",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// width : "20%"
+	// });
+	// var projectShareMoneyTransferAddNewAuthorizationLabel = Ti.UI.createLabel({
+		// text : projectShareAuthorization.xGet("projectShareMoneyTransferAddNew") ? "√" : "",
+		// height : 42,
+		// color : "black",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// width : "20%"
+	// });
+	// var projectShareMoneyTransferEditAuthorizationLabel = Ti.UI.createLabel({
+		// text : projectShareAuthorization.xGet("projectShareMoneyTransferEdit") ? "√" : "",
+		// height : 42,
+		// color : "black",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// width : "20%"
+	// });
+	// var projectShareMoneyTransferDeleteAuthorizationLabel = Ti.UI.createLabel({
+		// text : projectShareAuthorization.xGet("projectShareMoneyTransferDelete") ? "√" : "",
+		// height : 42,
+		// color : "black",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// width : "20%"
+	// });
+	// authorizationDetailRow3.add(projectShareMoneyTransferAuthorizationLabel);
+	// authorizationDetailRow3.add(projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel);
+	// authorizationDetailRow3.add(projectShareMoneyTransferAddNewAuthorizationLabel);
+	// authorizationDetailRow3.add(projectShareMoneyTransferEditAuthorizationLabel);
+	// authorizationDetailRow3.add(projectShareMoneyTransferDeleteAuthorizationLabel);
 
 	//创建借入权限
 	var authorizationDetailRow4 = Titanium.UI.createView({

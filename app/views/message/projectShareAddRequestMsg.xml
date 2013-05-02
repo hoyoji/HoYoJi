@@ -93,7 +93,7 @@
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeDelete"/>
 							</View>
-							<View height="42" layout="horizontal">
+							<!-- <View height="42" layout="horizontal">
 								<Label left="0" width="20%">转账</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								hightLight="false"
@@ -119,7 +119,7 @@
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyTransferDelete"/>
-							</View>
+							</View> -->
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">借入</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
