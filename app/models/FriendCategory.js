@@ -38,7 +38,8 @@ exports.definition = {
 				// }
 			},
 			xDelete : function(xFinishCallback, options) {
-				if(Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){
+				if(options.syncFromServer !== true 
+					&& Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除系统默认好友分类"});
 				}
 				// else if(this.xGet("friends").length > 0){

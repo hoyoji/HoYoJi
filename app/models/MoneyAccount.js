@@ -11,7 +11,7 @@ exports.definition = {
 			accountNumber : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER"
 		},
 		defaults : {
@@ -76,7 +76,9 @@ exports.definition = {
 			},
 			xDelete : function(xFinishCallback, options) {
 				var error;
-				if (Alloy.Models.User.xGet("activeMoneyAccount") === this) {
+				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除 
+				if (options.syncFromServer !== true 
+					&& Alloy.Models.User.xGet("activeMoneyAccount") === this) {
 					error = {
 						msg : "默认账户不能删除"
 					};
@@ -98,8 +100,8 @@ exports.definition = {
 					return this.xGet("currentBalance");
 				}
 			},
-			syncUpdate : function(record, dbTrans){
-				 // 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
+			syncUpdate : function(record, dbTrans) {
+				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				delete record.currentBalance;
 			}
 		});

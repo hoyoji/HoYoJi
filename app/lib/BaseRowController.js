@@ -237,12 +237,14 @@
 					var dbTrans = {
 						db : db
 					};
+					_.extend(dbTrans, Backbone.Events);
+					db.execute("BEGIN;");
 					deleteFunc.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
 							showErrorMsg(error.msg);
 						}
-					}, {dbTrans : dbTrans});
+					}, {dbTrans : dbTrans, wait : true});
 					
 					db.execute("COMMIT;");
 					dbTrans.trigger("commit");

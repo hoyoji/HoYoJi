@@ -4,6 +4,18 @@ $.$model = Alloy.createModel("Login");
 $.setSaveableMode("add");
 
 function doLogin(e) {
+	
+	// var moneyAccount = Alloy.createModel("moneyAccount");
+	// moneyAccount.on("all", function(eventName){
+		// console.info("eventName : " + eventName);
+	// });
+	// moneyAccount.xSet({id : guid(), name : "test account", currentBalance : 0, currencyId : guid(), sharingType : "ad", accountType : "ddd", ownerUserId : guid()});
+	// delete moneyAccount.id;
+	// moneyAccount.save(null);
+	// console.info(moneyAccount.xGet("id"));
+// 	
+	// return;
+
 	// make new login ID every time user tries to login
 	delete $.$model.id;
 	$.$model.attributes.id = guid();
@@ -61,7 +73,7 @@ function doLogin(e) {
 			// 下载一些用户必须的资料
 			var belongsToes = [];
 			for (var belongsTo in Alloy.Models.User.config.belongsTo) {
-				if (belongsTo !== "activeCurrency" && belongsTo !== "MoneyAccount") { // Currency 应该在本地就有了
+				if (belongsTo !== "activeCurrency") { // Currency 应该在本地就有了
 					belongsToes.push({
 						id : Alloy.Models.User.xGet(belongsTo + "Id"),
 						__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type
@@ -73,9 +85,13 @@ function doLogin(e) {
 				data = _.flatten(data);
 				data.forEach(function(model) {
                     var modelType = model.__dataType,
-                    	id = model.id;
+                    id = model.id;
                     delete model.id;
                     delete model.__dataType;
+                    // 把默认账户余额设成0，因为我们还没下载任何账务资料
+                    if(modelType === "MoneyAccount"){
+						model.currentBalance = 0;
+                    }
                     model = Alloy.createModel(modelType, model);
                     model.attributes["id"] = id;
 					model.xAddToSave($);

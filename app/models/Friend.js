@@ -131,23 +131,31 @@ exports.definition = {
 					ownerUserId : Alloy.Models.User.id,
 					friendId : this.xGet("id")
 				});
-				if (projectShareAuthorizations.length > 0) {
+				if (options.syncFromServer !== true 
+					&& projectShareAuthorizations.length > 0) {
 					xFinishCallback({
-						msg : "您们之间有分享项目,请移除共享再删除"
+						msg : "您与该好友有共享项目,请移除共享再删除"
 					});
 				} 
-				else if(this.xGet("moneyExpenses").length > 0 || this.xGet("moneyIncomes").length > 0 || this.xGet("moneyBorrows").length > 0 || this.xGet("moneyLends").length > 0 || this.xGet("moneyPaybacks").length > 0 || this.xGet("moneyReturns").length > 0 ){
-						xFinishCallback({
-						msg : "账务中有数据与当前好友有关，不能删除"
-					});
-				}
+				// else if(options.syncFromServer !== true 
+					// && （this.xGet("moneyExpenses").length > 0 
+						// || this.xGet("moneyIncomes").length > 0 
+						// || this.xGet("moneyBorrows").length > 0 
+						// || this.xGet("moneyLends").length > 0 
+						// || this.xGet("moneyPaybacks").length > 0 
+						// || this.xGet("moneyReturns").length > 0 ）){
+						// xFinishCallback({
+						// msg : "账务中有数据与当前好友有关，不能删除"
+					// });
+				// }
 				else {
 					var friendProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 						ownerUserId : this.xGet("friendUserId")
 					});
-					if (friendProjectShareAuthorizations.length > 0) {
+					if (options.syncFromServer !== true 
+						&& friendProjectShareAuthorizations.length > 0) {
 						xFinishCallback({
-							msg : "您们之间有分享项目,请移除共享再删除"
+							msg : "您与该好友有共享项目,请移除共享再删除"
 						});
 					} else {
 						Alloy.Globals.Server.sendMsg({

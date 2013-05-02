@@ -62,7 +62,7 @@ if ($.saveableMode === "read") {
 		}
 	});
 
-	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
+	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	oldAmount = $.$model.xGet("amount") || 0;
 
 	function updateExchangeRate(e) {
@@ -129,11 +129,12 @@ if ($.saveableMode === "read") {
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 		if ($.$model.isNew() || $.$model.xGet("moneyExpenseDetails").length === 0) {//新增时 或者 修改时且没有明细 计算账户余额
-			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {
+			if (oldMoneyAccount === newMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 			} else {
 				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+				oldMoneyAccount.xAddToSave($);
 			}
 		}
 

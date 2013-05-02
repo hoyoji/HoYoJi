@@ -15,6 +15,16 @@
 					if (Alloy.Models.User) {
 						this.xSet("ownerUser", Alloy.Models.User);
 					}
+					
+					// need to clear all the hasMany filters on model destroy
+					this.on("destroy", function(){
+						for (var key in this.config.hasMany) {
+							if(this.get(key)){
+								this.get(key).xClearFilter();
+							}
+						}
+					});
+					
 					this.on("sync", function() {
 						for (var belongsTo in self.config.belongsTo) {
 							//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
@@ -57,6 +67,11 @@
 				}
 
 				for (var key in this.config.hasMany) {
+					// need to also clear hasMany filter
+					if(this.get(key)){
+						this.get(key).xClearFilter();
+					}
+					
 					this.attributes[key] = null;
 					delete this.attributes[key];
 					delete this._previousAttributes[key];
@@ -358,12 +373,14 @@
 			},
 			_xDelete : function(xFinishCallback, options) {
 				var error;
-				for (var hasMany in this.config.hasMany) {
-					if (this.xGet(hasMany).length > 0) {
-						error = {
-							msg : "包含有相关联的子数据，删除失败"
-						};
-						break;
+				if(options.syncFromServer !== true){
+					for (var hasMany in this.config.hasMany) {
+						if (this.xGet(hasMany).length > 0) {
+							error = {
+								msg : "包含有相关联的子数据，删除失败"
+							};
+							break;
+						}
 					}
 				}
 				if (!error) {
@@ -382,7 +399,6 @@
 							xFinishCallback(error.__summary);
 						}
 					}
-
 
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
@@ -489,8 +505,9 @@
 				delete this.id;
 				this.save(null, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true
+					syncFromServer : true
 				});
+				console.info("_syncAddNew : " + record.id);
 			},
 			syncAddNew : function(record, dbTrans) {
 			},
@@ -498,17 +515,20 @@
 				//delete record.id;
 				this.save(record, {
 					dbTrans : dbTrans,
-					noSyncUpdate : true,
+					syncFromServer : true,
 					patch : true
 				});
 			},
 			syncUpdate : function(record, dbTrans) {
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				
 				this.xDelete ? this.xDelete(xFinishedCallback, {
-					dbTrans : dbTrans
+					dbTrans : dbTrans,
+					syncFromServer : true
 				}) : this._xDelete(xFinishedCallback, {
-					dbTrans : dbTrans
+					dbTrans : dbTrans,
+					syncFromServer : true
 				});
 			},
 			syncUpdateConflict : function(record, dbTrans) {

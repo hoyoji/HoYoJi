@@ -26,16 +26,15 @@ $.titleBar.bindXTable($.myProjectsTable);
 
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	return model.xGet("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id;
-});
+}, $);
 var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
-});
+}, $);
 // var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	// return model.xGet("projectShareAuthorizations").length > 0 
 			// && model.xGet("ownerUserId") === Alloy.Models.User.id;
-// });
+// }, $);
 $.myProjectsTable.addCollection(myProjectsTableCollection);
 $.sharedWithMeTable.addCollection(sharedWithMeTableCollection);
 // $.sharedWithHerTable.addCollection(sharedWithHerTableCollection, "project/projectSharedWithHerRow");
-
 

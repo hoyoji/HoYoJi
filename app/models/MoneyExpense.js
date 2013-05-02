@@ -187,7 +187,8 @@ exports.definition = {
 			// this.xSet("amount", amount);
 			// },
 			xDelete : function(xFinishCallback, options) {
-				if (this.xGet("moneyExpenseDetails").length > 0) {
+				if (options.syncFromServer !== true 
+					&& this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback && xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
 					});
@@ -196,7 +197,6 @@ exports.definition = {
 					var amount = this.xGet("amount");
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					saveOptions.wait = true;
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
@@ -242,13 +242,30 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.moneyAccountId
+				var oldMoneyAccountBalance;
+				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : this.xGet("moneyAccountId")
 				});
-				moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount, {
+				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
+				} else {
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;	
+				}
+				oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 					dbTrans : dbTrans,
 					patch : true
 				});
+				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.moneyAccountId
+					});
+					if (newMoneyAccount.id) {
+						newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
+				}
 			}
 		});
 

@@ -14,9 +14,8 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 }
 $.titleBar.bindXTable($.friendCategoriesTable);
 
-var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null});
+var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null}, $);
 $.friendCategoriesTable.addCollection(collection);
-
 function onFooterbarTap(e){
 	if(e.source.id === "addFriend"){
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});

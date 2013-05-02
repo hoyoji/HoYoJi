@@ -17,7 +17,7 @@ $.titleBar.bindXTable($.moneyReturnsTable);
 var moneyReturns = selectedBorrow.xGet("moneyReturns");
 var interests = selectedBorrow.xGet("moneyReturns").xCreateFilter(function(model){
 	return model.xGet("interest") !== 0;
-});
+}, $);
 $.moneyReturnsTable.addCollection(moneyReturns, "money/moneyReturnRow");
 $.moneyReturnsTable.addCollection(interests, "money/moneyReturnInterestRow");
 

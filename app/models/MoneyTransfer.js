@@ -131,15 +131,14 @@ exports.definition = {
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
-						var saveOptions = _.extend({}, options);
-						saveOptions.patch = true;
-						saveOptions.wait = true;
-						transferOut.save({
-							currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
-						}, saveOptions);
-						transferIn.save({
-							currentBalance : transferIn.xGet("currentBalance") - transferInAmount
-						}, saveOptions);
+				var saveOptions = _.extend({}, options);
+				saveOptions.patch = true;
+				transferOut.save({
+					currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+				}, saveOptions);
+				transferIn.save({
+					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+				}, saveOptions);
 
 				this._xDelete(function(error, options) {
 					if (!error) {
@@ -151,17 +150,21 @@ exports.definition = {
 				// 更新账户余额
 				// 1. 如果账户也是新增的
 				// 2. 账户已经存在
-				
-				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferInId});
-				if(moneyAccountIn.id){
+
+				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.transferInId
+				});
+				if (moneyAccountIn.id) {
 					moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
 						dbTrans : dbTrans,
 						patch : true
 					});
 				}
-				
-				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferOutId});
-				if(moneyAccountOut.id){
+
+				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.transferOutId
+				});
+				if (moneyAccountOut.id) {
 					moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
 						dbTrans : dbTrans,
 						patch : true
@@ -169,13 +172,17 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferInId});
+				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.transferInId
+				});
 				moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount") + record.transferInAmount, {
 					dbTrans : dbTrans,
 					patch : true
 				});
-				
-				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({id : record.transferOutId});
+
+				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
+					id : record.transferOutId
+				});
 				moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount") - record.transferOutAmount, {
 					dbTrans : dbTrans,
 					patch : true
