@@ -13,22 +13,20 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.searchButton.addEventListener("click", function(e){
 	$.userCollection.reset();
-	
-	Alloy.Globals.Server.getData([{__dataType : "User", userName : $.search.getValue()}], function(data){
-		data[0].forEach(function(userData){
-			var id = userData.id;
-			delete userData.id;
-			var user = Alloy.createModel("User", userData);
-			user.attributes["id"] = id;
-			
-			$.userCollection.add(user);
+	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
+		Alloy.Globals.Server.getData([{__dataType : "User", userName : $.search.getValue()}], function(data){
+			data[0].forEach(function(userData){
+				var id = userData.id;
+				delete userData.id;
+				var user = Alloy.createModel("User", userData);
+				user.attributes["id"] = id;
+				$.userCollection.add(user);
+			});
+		}, function(e){
+			alert(e.__summary.msg);
 		});
-	}, function(e){
-		alert(e.__summary.msg);
-	});
+	// }
 
-	// if($.userCollection.xSearchInDb([]{userName : $.search.getValue()}).length === 0){
-		// alert("没有找到用户");
-	// };
+	
 	$.search.blur();
 });
