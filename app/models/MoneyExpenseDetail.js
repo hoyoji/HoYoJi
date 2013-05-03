@@ -114,7 +114,7 @@ exports.definition = {
 				});
 				// 该支出明细在服务器上被改变了，我们将其变动缓存到 __syncAmount 里，等更新 moneyExpense 的时候会将该值替换本地的值
 				var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-				moneyExpense.__syncAmount = oldExpenseAmount + this.xGet("amount") - record.amount
+				moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount") + record.amount
 			}
 		});
 
