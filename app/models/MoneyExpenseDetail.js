@@ -97,33 +97,23 @@ exports.definition = {
 				});
 				if (moneyExpense.id) {
 					// 支出已在本地存在
-					var newExpenseAmount, oldExpenseAmount = moneyExpense.xGet("amount");
-
-					if (moneyExpense.xGet("moneyExpenseDetails").length === 0) {
-						newExpenseAmount = record.amount;
-					} else {
-						newExpenseAmount = oldExpenseAmount + record.amount;
+					if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
+						var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+						moneyExpense.__syncAmount = oldExpenseAmount + record.amount
+						// moneyExpense.save("amount", moneyExpense.__syncAmount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
 					}
-					moneyExpense.save("amount", newExpenseAmount, {
-						dbTrans : dbTrans,
-						patch : true
-					});
-					// 我们还要更新本地账户余额
-
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				// 更新账户余额
-				// 1. 如果支出也是新增的
-				// 2. 支出已经存在
-
 				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
 					id : record.moneyExpenseId
 				});
-				moneyExpense.save("amount", moneyExpense.xGet("amount") + record.amount, {
-					dbTrans : dbTrans,
-					patch : true
-				});
+				// 该支出明细在服务器上被改变了，我们将其变动缓存到 __syncAmount 里，等更新 moneyExpense 的时候会将该值替换本地的值
+				var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+				moneyExpense.__syncAmount = oldExpenseAmount + this.xGet("amount") - record.amount
 			}
 		});
 

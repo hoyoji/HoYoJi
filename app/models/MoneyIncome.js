@@ -225,6 +225,12 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
+				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
+				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
+				if(this.xGet("moneyExpenseDetails").length > 0){
+					record.amount = this.__syncAmount;
+				}
+				// 先更新老账户余额				
 				var oldMoneyAccountBalance;
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : this.xGet("moneyAccountId")
