@@ -56,9 +56,12 @@
 							var modelData = record[0];
 							var id = modelData.id;
 							delete modelData.id;
-							var model = Alloy.createModel(modelData.__dataType, modelData);
-							model.attributes.id = id;
-							model.save();
+							var model = Alloy.createModel(modelData.__dataType).xFindInDb({id : id});
+							model.xSet(modelData);	
+							if(!model.id){
+								model.attributes.id = id;
+							}
+							model.save(null, {silent : true});
 							returnCollection.push(model);
 						});
 						xFinishedCallback(returnCollection);
