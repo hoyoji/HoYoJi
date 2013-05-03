@@ -55,9 +55,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		ownerUserId : Alloy.Models.User.id
 	}], function(data) {
 		if (data[0].length > 0) {
-			addFriend();
-		} else {
 			saveErrorCB($.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
+		} else {
+			addFriend();
 		}
 	}, function(e) {
 		alert(e.__summary.msg);
