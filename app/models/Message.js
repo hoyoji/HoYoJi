@@ -34,7 +34,18 @@ exports.definition = {
 	extendModel : function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
-			}
+			},
+			syncAddNew : function(record, dbTrans) {
+				var self = this;
+				var fromUser = Alloy.createModel("User").xFindInDb({id : record.fromUserId});
+				if(!fromUser.id){
+					Alloy.Globals.Server.loadData("User", [record.fromUserId], function(collection) {
+						if (collection.length > 0) {
+							successCB();
+						}
+					});
+				}
+			}	
 		});
 		return Model;
 	},

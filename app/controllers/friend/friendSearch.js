@@ -24,7 +24,7 @@ $.searchButton.addEventListener("click", function(e){
 			$.userCollection.add(user);
 		});
 	}, function(e){
-		alert(e);		
+		alert(e.__summary.msg);
 	});
 
 	// if($.userCollection.xSearchInDb([]{userName : $.search.getValue()}).length === 0){
