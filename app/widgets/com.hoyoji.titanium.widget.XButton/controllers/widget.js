@@ -15,7 +15,7 @@ if($.$attrs.height){
 if($.$attrs.title){
 	$.button.setTitle($.$attrs.title);
 }
-if($.$attrs.borderRadius){
+if($.$attrs.color){
 	$.button.setColor($.$attrs.color);
 }
 if($.$attrs.backgroundImage){
@@ -23,7 +23,7 @@ if($.$attrs.backgroundImage){
 }
 if($.$attrs.image){
 	$.imageView.setImage($.$attrs.image);
-	$.button.setBackgroundImage("transparent");
+	// $.button.setBackgroundImage("transparent");
 }
 
 $.button.addEventListener("singletap", function(e) {

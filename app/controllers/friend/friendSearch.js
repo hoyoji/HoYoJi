@@ -19,12 +19,12 @@ $.searchButton.addEventListener("click", function(e){
 			var id = userData.id;
 			delete userData.id;
 			var user = Alloy.createModel("User", userData);
-			user.attributes.id = id;
+			user.attributes["id"] = id;
 			
 			$.userCollection.add(user);
 		});
 	}, function(e){
-		alert(e);		
+		alert(e.__summary.msg);
 	});
 
 	// if($.userCollection.xSearchInDb([]{userName : $.search.getValue()}).length === 0){
