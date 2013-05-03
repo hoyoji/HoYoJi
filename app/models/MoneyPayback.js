@@ -101,14 +101,14 @@ exports.definition = {
 				},
 				interest : function(xValidateComplete) {
 					var error;
-					if (isNaN(this.xGet("interest"))) {
+					if (isNaN(this.xGet("interest")) || this.xGet("interest") === null) {
 						error = {
-							msg : "金额只能为数字"
+							msg : "请输入利息"
 						};
 					} else {
 						if (this.xGet("interest") < 0) {
 							error = {
-								msg : "金额不能为负数"
+								msg : "利息不能小于0"
 							};
 						}
 					}
@@ -118,16 +118,12 @@ exports.definition = {
 					var error;
 					if (isNaN(this.xGet("exchangeRate"))) {
 						error = {
-							msg : "汇率只能为数字"
+							msg : "请输入汇率"
 						};
 					} else {
-						if (this.xGet("exchangeRate") < 0) {
+						if (this.xGet("exchangeRate") < 0 || this.xGet("exchangeRate") === 0) {
 							error = {
-								msg : "汇率不能为负数"
-							};
-						} else if (this.xGet("exchangeRate") === 0) {
-							error = {
-								msg : "汇率不能为0"
+								msg : "汇率不能小于或等于0"
 							};
 						}
 					}

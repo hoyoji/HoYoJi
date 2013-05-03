@@ -39,12 +39,17 @@
 					}
 
 					var requestData = [];
-					filter.forEach(function(id) {
-						requestData.push({
-							__dataType : modelName,
-							id : id
-						});
-					})
+					filter.forEach(function(filter) {
+						if(_.isObject(filter)) {
+							filter.__dataType = modelName;
+						} else {
+							filter = {
+								__dataType : modelName,
+								id : filter
+							}
+						}
+						requestData.push(filter);
+					});
 					Alloy.Globals.Server.getData(requestData, function(data) {
 						var returnCollection = Alloy.createCollection(modelName);
 						data.forEach(function(record) {

@@ -177,11 +177,16 @@ exports.definition = {
 				}
 			},
 			syncAddNew : function(record, dbTrans) {
-				var friendUser = Alloy.createModel("User").xFindInDb({id : this.xGet("friendUserId")});
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({id : record.friendUserId});
 				if(!friendUser.id){
-					
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+							successCB();
+						}
+					});
 				}
-			}		
+			}
 		});
 
 		return Model;
