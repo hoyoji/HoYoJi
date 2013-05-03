@@ -9,8 +9,6 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	$.$model.xGet("toUser").xAddToSave($);
-	console.info("|||||||||||||||||||||||||||||||||||||||||||"+Alloy.Models.User.xGet("messageBox"));
-	console.info("|||||||||||||||||||||||||||||||||||||||||||222"+Alloy.Models.User.xGet("messageBoxId"));
 	var date = (new Date()).toISOString();
 	$.$model.xSet("date", date);
 	Alloy.Globals.Server.sendMsg({
