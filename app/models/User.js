@@ -17,7 +17,8 @@ exports.definition = {
 		    serverRecordHash : "TEXT",
 		    lastServerUpdateTime : "INTEGER",
 		    lastSyncTime : "INTEGER",
-		    defaultTransactionDisplayType : "TEXT NOT NULL"
+		    defaultTransactionDisplayType : "TEXT NOT NULL",
+			lastClientUpdateTime : "INTEGER"
 		},
 		defaults : {
 			newFriendAuthentication : "required",
