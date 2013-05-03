@@ -476,10 +476,10 @@ function Sync(method, model, opts) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
 				db.close();
-				if(method !== "read"){
-					model.changed = {};
-					model._previousAttributes = {};
-				}
+				// if(method !== "read"){
+					// model.changed = {};
+					// // model._previousAttributes = {};
+				// }
 				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch");
@@ -487,10 +487,10 @@ function Sync(method, model, opts) {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					if(method !== "read"){
-						model.changed = {};
-						model._previousAttributes = {};
-					}
+					// if(method !== "read"){
+						// model.changed = {};
+						// // model._previousAttributes = {};
+					// }
 					_.isFunction(opts.success) && opts.success(resp);
 					method === "read" && model.trigger("fetch");
 					
