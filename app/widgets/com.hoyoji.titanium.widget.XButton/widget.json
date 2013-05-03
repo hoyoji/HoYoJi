@@ -1,6 +1,6 @@
 {
-	"id": "com.hoyoji.titanium.widget.XButtonView",
-	"name": "com.hoyoji.titanium.widget.XButtonView",
+	"id": "com.hoyoji.titanium.widget.XButton",
+	"name": "com.hoyoji.titanium.widget.XButton",
 	"description" : "",
 	"author": "",
 	"version": "1.0",
