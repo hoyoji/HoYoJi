@@ -469,9 +469,9 @@ function Sync(method, model, opts) {
 			}
 	}
 	if (resp) {
-		// if(method !== "read"){
-				// resp = null;
-		// }
+		if(method !== "read"){
+				resp = null;
+		}
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");

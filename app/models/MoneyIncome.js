@@ -230,6 +230,7 @@ exports.definition = {
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
 				if(this.xGet("moneyExpenseDetails").length > 0){
 					record.amount = this.__syncAmount;
+					delete this.__syncAmount;
 				}
 				// 先更新老账户余额				
 				var oldMoneyAccountBalance;
