@@ -52,7 +52,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	Alloy.Globals.Server.getData([{
 		__dataType : "Friend",
 		friendUserId : $.$model.xGet("fromUserId"),
-		friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
+		ownerUserId : Alloy.Models.User.id
 	}], function(data) {
 		if (data[0].length > 0) {
 			addFriend();
