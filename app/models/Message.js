@@ -13,7 +13,8 @@ exports.definition = {
 			messageBoxId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER"
+			lastServerUpdateTime : "INTEGER",
+			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
 			messageBox : { type : "MessageBox", attribute : "messages" },

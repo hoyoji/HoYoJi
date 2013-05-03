@@ -6,7 +6,8 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentFriendCategoryId : "TEXT",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER"
+			lastServerUpdateTime : "INTEGER",
+			lastClientUpdateTime : "INTEGER"
 		},
 		// defaults : {
 			// name : "",

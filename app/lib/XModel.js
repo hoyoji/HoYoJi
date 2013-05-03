@@ -539,7 +539,19 @@
 				});
 			},
 			syncUpdateConflict : function(record, dbTrans) {
-				// 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					delete record.id;
+					this.save(record, {
+						dbTrans : dbTrans,
+						syncFromServer : true,
+						patch : true
+					});
+					
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				}
+				// 让本地修改覆盖服务器上的记录
 			}
 		}
 	}());
