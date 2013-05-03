@@ -206,7 +206,8 @@ function addFriend() {
 			}, function() {
 				var friend = Alloy.createModel("Friend", {
 					friendUser : friendUser,
-					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"),
+					ownerUser : Alloy.Models.User
 				});
 				var successCB = function() {
 					friend.off("sync", successCB);
@@ -221,11 +222,9 @@ function addFriend() {
 				}
 				friend.on("sync", successCB);
 				friend.on("error", errorCB);
-				
-				Alloy.Globals.Server.postData([{
-					__dataType : "Friend",
-					id : friend.xGet("id")
-				}], function(data) {
+							
+				Alloy.Globals.Server.postData(
+					[friend.toJSON()], function(data) {
 					$.$model.xSet('messageState', "closed");
 					friend.xSave();
 				}, function(e) {
