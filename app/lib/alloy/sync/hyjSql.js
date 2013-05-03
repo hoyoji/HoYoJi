@@ -469,9 +469,9 @@ function Sync(method, model, opts) {
 			}
 	}
 	if (resp) {
-		if(method !== "read"){
-				resp = null;
-		}
+		// if(method !== "read"){
+				// resp = null;
+		// }
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
@@ -508,10 +508,10 @@ function Sync(method, model, opts) {
 			}
 
 		} else {
-			if(method !== "read"){
-				model.changed = {};
-				model._previousAttributes = {};
-			}
+			// if(method !== "read"){
+				// model.changed = {};
+				// model._previousAttributes = {};
+			// }
 			_.isFunction(opts.success) && opts.success(resp);
 			method === "read" && model.trigger("fetch");
 		}

@@ -24,7 +24,8 @@ if ($.$attrs.backgroundImage) {
 if ($.$attrs.image) {
 	$.imageView.setImage($.$attrs.image);
 	// $.button.setBackgroundImage("transparent");
-} else {
+}
+
 	var backgroundImage;
 	var backgroundImageShadow;
 	if (OS_IOS) {
@@ -42,7 +43,6 @@ if ($.$attrs.image) {
 	buttonView.addEventListener("touchend", function(buttonView) {
 		buttonView.setBackgroundImage(backgroundImage);
 	}.bind(null, buttonView));
-}
 
 $.button.addEventListener("singletap", function(e) {
 	$.trigger("singletap", {

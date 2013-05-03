@@ -25,21 +25,24 @@
 						}
 					});
 					
-					// this.on("sync", function() {
-						// for (var belongsTo in self.config.belongsTo) {
-							// //if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
-							// self.attributes[belongsTo] = null;
-							// delete self.attributes[belongsTo];
-							// delete self._previousAttributes[belongsTo];
-							// delete self.changed[belongsTo];
-							// //}
-						// }
-					// });
 					this.once("sync fetch", this.__initializeExistingModel.bind(this));
 				} else {
 					this.__initializeExistingModel();
 				}
-
+				this.on("sync", function() {
+					for (var belongsTo in this.config.belongsTo) {
+						//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
+						this.attributes[belongsTo] = null;
+						delete this.attributes[belongsTo];
+						//}
+					}
+					
+					this._previousAttributes = _.clone(this.attributes)
+					this.changed = {};
+				    this._silent = {};
+				    this._pending = {};						
+				}.bind(this));
+				
 				// revert the belongsTo ID changes on error
 				this.on("error", function() {
 					for (var belongsTo in self.config.belongsTo) {
@@ -76,17 +79,17 @@
 					delete this.attributes[key];
 				}
 				
-				for (var belongsTo in this.config.belongsTo) {
-					//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
-					this.attributes[belongsTo] = null;
-					delete this.attributes[belongsTo];
-					//}
-				}
-				
-				this._previousAttributes = _.clone(this.attributes)
-				this.changed = {};
-			    this._silent = {};
-			    this._pending = {};
+				// for (var belongsTo in this.config.belongsTo) {
+					// //if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
+					// this.attributes[belongsTo] = null;
+					// delete this.attributes[belongsTo];
+					// //}
+				// }
+// 				
+				// this._previousAttributes = _.clone(this.attributes)
+				// this.changed = {};
+			    // this._silent = {};
+			    // this._pending = {};
 			},
 			_xSave : function(options) {
 				for (var belongsTo in this.config.belongsTo) {
