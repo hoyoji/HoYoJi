@@ -1,10 +1,15 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onRowTap = function(e) {
-	var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-		friendUserId : $.$model.xGet("id"),
-		ownerUserId : Alloy.Models.User.id
-	}).length;
+	Alloy.Globals.Server.getData([{__dataType : "Friend", friendUserId : $.$model.xGet("id") , ownerUserId : Alloy.Models.User.id}], function(data){
+		sendAddFriendMessage(data[0].length);
+	}, function(e){
+		alert(e.__summary.msg);
+	});
+	return false;
+}
+
+function sendAddFriendMessage(friendlength){
 	if ($.$model.xGet("id") === Alloy.Models.User.id) {
 		alert("不能添加自己为好友！");
 	} else if (friendlength > 0) {
@@ -40,8 +45,6 @@ $.onRowTap = function(e) {
 			});
 		}
 	}
-	return false;
-
 }
 // $.onWindowOpenDo(function(){
 // $.$model.on("change", function(){

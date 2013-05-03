@@ -6,7 +6,8 @@ exports.definition = {
 		    userName: "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
-			ownerUserId : "TEXT"
+			ownerUserId : "TEXT",
+			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
 			ownerUser : {type : "User", attribute : "logins"}

@@ -4,7 +4,8 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER"
+			lastServerUpdateTime : "INTEGER",
+			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null }
