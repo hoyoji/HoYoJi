@@ -104,7 +104,7 @@ function Sync(method, model, opts) {
 				// }
 
 				var attrObj = {};
-				if (!model.id)
+				if (!model.id){
 					if (model.idAttribute === ALLOY_ID_DEFAULT) {
 						model.id = util.guid();
 						attrObj[model.idAttribute] = model.id;
@@ -115,6 +115,10 @@ function Sync(method, model, opts) {
 						var tmpM = model.get(model.idAttribute);
 						model.id = tmpM !== null && typeof tmpM != "undefined" ? tmpM : null;
 					}
+				}
+				if(model.config.columns["lastClientUpdateTime"]){
+					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+				}
 				var names = [], values = [], q = [];
 				for (var k in columns) {
 					names.push(k);
@@ -294,6 +298,9 @@ function Sync(method, model, opts) {
 			len === 1 ? resp = values[0] : resp = values;
 			break;
 		case "update":
+			if(model.config.columns["lastClientUpdateTime"]){
+					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+			}
 			var names = [], values = [], q = [];
 			for (var k in columns) {
 				names.push(k + "=?");

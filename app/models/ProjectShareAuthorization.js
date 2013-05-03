@@ -10,6 +10,7 @@ exports.definition = {
 	        projectId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
+			lastClientUpdateTime : "INTEGER",
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			
