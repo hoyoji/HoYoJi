@@ -80,9 +80,10 @@ exports.definition = {
 				// // }else if(this.xGet("moneyIncomeCategories").length > 0){
 					// // xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
 				// // }else {
+					var self = this;
 					this._xDelete(function(error){
 						if(!error){
-							if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
+							if(Alloy.Models.User.xGet("activeProjectId") === self.xGet("id")){
 								Alloy.Models.User.xSet("activeProject", null);
 								Alloy.Models.User.save("activeProjectId", null, options);
 							}
