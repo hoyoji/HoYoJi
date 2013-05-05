@@ -23,7 +23,13 @@ if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }
 if ($.$attrs.image) {
-	$.imageView.setImage($.$attrs.image);
+	var imgPath;
+	//if(Ti.Platform.displayCaps.density === "high" || Ti.Platform.displayCaps.density === "medium"){
+		imgPath = $.$attrs.image + "@2x.png";
+	//} else {
+	//	imgPath = $.$attrs.image + ".png";
+	//}
+	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
 
