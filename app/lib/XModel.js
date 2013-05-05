@@ -383,6 +383,7 @@
 			},
 			_xDelete : function(xFinishCallback, options) {
 				var error;
+				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
 						if (this.xGet(hasMany).length > 0) {
@@ -531,8 +532,7 @@
 			},
 			syncUpdate : function(record, dbTrans) {
 			},
-			syncDelete : function(record, dbTrans, xFinishedCallback) {
-				
+			_syncDelete : function(record, dbTrans, xFinishedCallback) {
 				this.xDelete ? this.xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
 					syncFromServer : true
@@ -540,6 +540,8 @@
 					dbTrans : dbTrans,
 					syncFromServer : true
 				});
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条

@@ -191,9 +191,9 @@ exports.definition = {
 						currentBalance : moneyAccount.xGet("currentBalance") - amount
 					}, saveOptions);
 					this._xDelete(function(error, options) {
-						if (!error) {
+						if (xFinishCallback) {
+							xFinishCallback(error);
 						}
-						xFinishCallback(error);
 					}, options);
 				}
 			},
@@ -257,6 +257,38 @@ exports.definition = {
 						});
 					}
 				}
+			},
+			syncUpdateConflict : function(record, dbTrans) {
+				delete record.id;
+				if(this.xGet("moneyIncomeDetails").length > 0 && this.__syncAmount){
+					this.syncUpdate(record, dbTrans);
+					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
+						this.save({amount : record.amount}, {
+								dbTrans : dbTrans,
+								syncFromServer : true,
+								patch : true
+						});
+					}
+				}
+				
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					this.save(record, {
+						dbTrans : dbTrans,
+						syncFromServer : true,
+						patch : true
+					});
+					
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					this.save({amount : record.amount}, {
+						dbTrans : dbTrans,
+						syncFromServer : true,
+						patch : true
+					});
+				}
+				// 让本地修改覆盖服务器上的记录
 			}
 		});
 		return Model;

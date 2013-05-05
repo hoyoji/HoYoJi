@@ -178,6 +178,7 @@
 									});
 								}
 								model.syncDelete(record, dbTrans);
+								model._syncDelete(record,dbTrans);
 							}
 							db.execute(sql, [id]);
 						} else {
