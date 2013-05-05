@@ -4,7 +4,7 @@ if ($.$attrs.id) {
 	$.button.id = $.$attrs.id;
 }
 if ($.$attrs.borderRadius) {
-	$.button.setBorderRadius($.$attrs.borderRadius);
+	$.$view.setBorderRadius($.$attrs.borderRadius);
 }
 if ($.$attrs.width) {
 	$.$view.setWidth($.$attrs.width);
@@ -14,12 +14,13 @@ if ($.$attrs.height) {
 }
 if ($.$attrs.title) {
 	$.button.setTitle($.$attrs.title);
+	$.title.setText($.$attrs.title);
 }
 if ($.$attrs.color) {
-	$.button.setColor($.$attrs.color);
+	$.$view.setColor($.$attrs.color);
 }
 if ($.$attrs.backgroundImage) {
-	$.button.setBackgroundImage($.$attrs.backgroundImage);
+	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }
 if ($.$attrs.image) {
 	$.imageView.setImage($.$attrs.image);
@@ -53,11 +54,12 @@ $.button.addEventListener("singletap", function(e) {
 });
 
 exports.setTitle = function(title) {
+	$.title.setText(title);
 	$.button.setTitle(title);
 }
 
 exports.getTitle = function() {
-	return $.button.getTitle();
+	return $.title.getText();
 }
 
 exports.fireEvent = function(eventName, options) {

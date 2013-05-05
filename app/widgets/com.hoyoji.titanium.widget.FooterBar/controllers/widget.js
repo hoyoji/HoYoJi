@@ -102,6 +102,7 @@ if ($.$attrs.buttons) {
 		if(imgPath && f.exists()){
 			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				id : buttonId,
+				title : buttonTitle,
 				borderRadius : 0,
 				width : width,
 				height : Ti.UI.FILL,
