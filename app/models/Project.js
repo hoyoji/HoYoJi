@@ -58,7 +58,7 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			// xDelete : function(xFinishCallback, options) {
+			xDelete : function(xFinishCallback, options) {
 				// // if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
 					// // xFinishCallback({ msg :"不能删除当前激活的项目"});
 				// // }else if(this.xGet("moneyExpenses").length > 0){
@@ -80,9 +80,17 @@ exports.definition = {
 				// // }else if(this.xGet("moneyIncomeCategories").length > 0){
 					// // xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
 				// // }else {
-					// this._xDelete(xFinishCallback, options);
+					this._xDelete(function(error){
+						if(!error){
+							if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
+								Alloy.Models.User.xSet("activeProject", null);
+								Alloy.Models.User.save("activeProjectId", null, options);
+							}
+						}
+						xFinishCallback(error);
+					}, options);
 				// // }
-			// },
+			},
 			getSharedWithHerSubProjects : function(){
 				if(!this.__getSharedWIthHerSubProjectsFilter){
 					this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({
