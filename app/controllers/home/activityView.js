@@ -1,31 +1,27 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var d = new Date(), 
-timeFilter = {
-	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-	dateTo : d.getUTCTimeOfDateEnd().toISOString()
-};
+var d = new Date();
 
-function doTimeFilter(collection, timeFilter) {
+function doTimeFilter(collection) {
 	collection.xSetFilter(function(model) {
-		return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
+		return model.xGet("lastClientUpdateTime") > d.getTime();
 	});
-	collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
+	// collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
 }
 
-exports.doFilter = function (filter) {
-	doTimeFilter(moneyIncomes, filter);
-	doTimeFilter(moneyExpenses, filter);
-	doTimeFilter(moneyTransferOuts, filter);
-	doTimeFilter(moneyTransferIns, filter);
-	doTimeFilter(moneyBorrows, filter);
-	doTimeFilter(moneyLends, filter);
-	doTimeFilter(moneyReturns, filter);
-	doTimeFilter(moneyPaybacks, filter);
+exports.doFilter = function () {
+	doTimeFilter(moneyIncomes);
+	doTimeFilter(moneyExpenses);
+	doTimeFilter(moneyTransferOuts);
+	doTimeFilter(moneyTransferIns);
+	doTimeFilter(moneyBorrows);
+	doTimeFilter(moneyLends);
+	doTimeFilter(moneyReturns);
+	doTimeFilter(moneyPaybacks);
 }
 
 exports.sort = function(sortField, sortReverse, groupByField){
-	$.transactionsTable.sort(sortField, sortReverse, groupByField);
+	$.transactionsTable.sort(sortField, sortReverse);
 }
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");
@@ -37,8 +33,6 @@ var moneyLends = Alloy.createCollection("moneyLend");
 var moneyReturns = Alloy.createCollection("moneyReturn");
 var moneyPaybacks = Alloy.createCollection("moneyPayback");
 
-exports.doFilter(timeFilter);
-
 $.onWindowCloseDo(function(){
 	moneyIncomes.xClearFilter();
 	moneyExpenses.xClearFilter();
@@ -49,6 +43,8 @@ $.onWindowCloseDo(function(){
 	moneyReturns.xClearFilter();
 	moneyPaybacks.xClearFilter();
 });
+
+exports.doFilter();
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);

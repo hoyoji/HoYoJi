@@ -121,7 +121,7 @@ exports.init = function(scView) {
 	var i = 0;
 	views.map(function(view) {
 		// if (!($.$attrs.hideFirstTab === "true" && i === 0)) {
-			var label = Ti.UI.createButton({
+			var label = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				color : "black",
 				title : view.title,
 				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -129,10 +129,11 @@ exports.init = function(scView) {
 				top : 0,
 				height : 32
 			});
-			label.addEventListener("singletap", function(){
+			label.$view.addEventListener("singletap", function(){
 				scrollableView.scrollToView(view);
 			});
-			$.tabs.add(label);
+			label.setParent($.tabs);
+			// $.tabs.add(label);
 		// }
 		i++;
 	});

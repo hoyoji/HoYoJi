@@ -63,10 +63,12 @@ exports.setTitle = function(title){
 exports.dirtyCB = function() {
 	if($.saveableMode === "edit"){
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(true);
 		Alloy.Globals.alloyAnimation.flash($.menuButton);
 	} else if($.saveableMode === "add"){
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(true);
 		Alloy.Globals.alloyAnimation.flash($.menuButton);
 	}
@@ -75,9 +77,11 @@ exports.dirtyCB = function() {
 exports.cleanCB = function() {
 	if($.saveableMode === "edit"){
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(false);
 	} else if($.saveableMode === "add"){
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(false);
 	}
 }
@@ -106,10 +110,13 @@ exports.saveErrorCB = function(msg) {
 	console.info("Titlebar saveErrorCB");
 	if($.saveableMode === "read"){
 		//$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
+		$.menuButton.setImage(WPATH("/images/menuButton"));
 	} else if($.saveableMode === "edit"){
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 	} else if($.saveableMode === "add"){
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 	}
 	$.menuButton.setEnabled(true);
 	if($.$attrs.backButtonHidden !== "true"){
@@ -123,14 +130,17 @@ exports.setSaveableMode = function(mode) {
 	if ($.saveableMode === "add") {
 		$.title.setText($.$attrs.addModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "edit") {
 		$.title.setText($.$attrs.editModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "read") {
 		$.title.setText($.$attrs.readModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
+		$.menuButton.setImage(WPATH("/images/menuButton"));
 		$.menuButton.setEnabled(true);
 	} else {
 		alert("$.we.should.not.be.here.! " + mode);

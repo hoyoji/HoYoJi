@@ -1,10 +1,12 @@
 <Alloy>
-		<View class="title-bar" width="Ti.UI.FILL" height="42" zIndex="100"  backgroundColor="#e7f5f5" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/titleBarBackground.png" top="0">
+		<View class="title-bar" width="Ti.UI.FILL" height="42" zIndex="100"  backgroundColor="#e7f5f5" backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/titleBarBackground.png" top="0">
 			<Label id="msg" width="Ti.UI.FILL" height="30" top="-30" zIndex="100" color="white" backgroundColor="#40000000" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
-			<Button id="backButton" left="5" top="3" height="28" width="45" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/backButtonShadow.png"></Button>
-			<Button id="tableNavButton" left="5" top="3" height="28" width="45" visible="false" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/backButtonShadow.png"></Button>
+			<Button id="backButton" left="5" top="3" height="28" width="45" backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/backButton.png"></Button>
+			<Button id="tableNavButton" left="5" top="3" height="28" width="45" visible="false" backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/backButton.png"></Button>
 			<Label id="title" color="white"></Label>
 			<Label id="childTableTitle" color="black" visible="false"></Label>
-			<Button id="menuButton" right="5" top="3" height="28" width="28" backgroundImage="/TitleBarImages/com.hoyoji.titanium.widget.TitleBar/menuButtonShadow_green.png"></Button>
+			<Widget src="com.hoyoji.titanium.widget.XButton" id="menuButton" 
+				right="15" height="Ti.UI.FILL" width="42" 
+				image="/images/com.hoyoji.titanium.widget.TitleBar/menuButton"/>
 		</View>
 </Alloy>

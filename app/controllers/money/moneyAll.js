@@ -10,7 +10,10 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
-var d = new Date(), sortReverse = true;
+var d = new Date(), sortReverse = true, timeFilter = {
+	dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
+	dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+};
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
@@ -59,3 +62,5 @@ function onFooterbarTap(e) {
 		$.titleBar.setTitle(e.source.getTitle());
 	}
 }
+
+$.transactionsTable.doFilter(timeFilter);
