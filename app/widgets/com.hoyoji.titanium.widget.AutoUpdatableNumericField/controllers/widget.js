@@ -5,6 +5,12 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 // $.field.setText(hintText || "");
 // }
 // }
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+}
+if($.$attrs.fieldColor){
+	$.field.setColor($.$attrs.fieldColor);
+}
 
 $.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {

@@ -1,3 +1,18 @@
 ".container": {
 	backgroundColor: "#e7f5f5"
 }
+
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 18,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+}
+
+"Widget": {
+	color: '#042c37'
+}
+
