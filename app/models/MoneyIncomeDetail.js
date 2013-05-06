@@ -76,10 +76,10 @@ exports.definition = {
 					}, saveOptions);
 
 					this._xDelete(function(error, options) {
-						if (!error) {
+						if (xFinishCallback) {
+							xFinishCallback(error);
 						}
-						xFinishCallback(error);
-					});
+					}, options);
 				}
 			},
 			canEdit : function() {
@@ -115,6 +115,23 @@ exports.definition = {
 				var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
 				moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
 			}
+			// ,
+			// syncDelete : function(record, dbTrans, xFinishedCallback) {
+				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+					// id : record.moneyIncomeId
+				// });
+				// if (moneyIncome.id) {
+					// // 支出已在本地存在
+					// if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
+						// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+						// moneyIncome.__syncAmount = oldIncomeAmount + record.amount
+						// // moneyIncome.save("amount", moneyIncome.__syncAmount, {
+							// // dbTrans : dbTrans,
+							// // patch : true
+						// // });
+					// }
+				// }
+			// }			
 		});
 		return Model;
 	},

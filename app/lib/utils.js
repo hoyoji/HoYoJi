@@ -321,6 +321,40 @@
 		// return this;
 		// }
 		// });
+		var f = _, g = Backbone;
+		_.extend(Backbone.Model.prototype, {
+			save : function(a, b, c) {
+			var d, e;
+			f.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
+			c = c ? f.clone(c) : {};
+			if (c.wait) {
+				if (!this._validate(d, c))
+					return !1;
+				e = f.clone(this.attributes)
+			}
+			a = f.extend({}, c, {
+				silent : !0
+			});
+			if (d && !this.set(d, c.wait ? a : c))
+				return !1;
+			var h = this, i = c.success;
+			c.success = function(a, b, e) {
+				b = h.parse(a, e);
+				if (c.wait) {
+					delete c.wait;
+					b = f.extend(d || {}, b)
+				}
+				if (!h.set(b, c))
+					return false;
+				i ? i(h, a) : h.trigger("sync", h, a, c)
+			};
+			c.error = g.wrapError(c.error, h, c);
+			b = this.isNew() ? "create" : "update";
+			b = (this.sync || g.sync).call(this, b, this, c);
+			c.wait && this.set(e, a);
+			return b
+		}
+		});
 
 		_.extend(Backbone.Collection.prototype, {
 			reset : function(models, options) {

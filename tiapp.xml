@@ -41,10 +41,7 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules>
-        <module platform="iphone">ti.imagefactory</module>
-        <module platform="android">ti.imagefactory</module>
-    </modules>
+    <modules/>
     <deployment-targets>
         <target device="tizen">false</target>
         <target device="blackberry">false</target>
