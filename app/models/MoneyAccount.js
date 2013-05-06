@@ -65,21 +65,18 @@ exports.definition = {
 			validators : {
 				currency : function(xValidateComplete) {
 					var error;
-					if (!this.isNew() && this.previous("currency")) {
-						if (this.xGet("currency") !== this.previous("currency")) {
-							error = {
-								msg : "账户币种不可以修改"
-							};
-						}
+					if (!this.isNew() && this.hasChanged("currency")) {
+						error = {
+							msg : "账户币种不可以修改"
+						};
 					}
 					xValidateComplete(error);
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
 				var error;
-				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除 
-				if (options.syncFromServer !== true 
-					&& Alloy.Models.User.xGet("activeMoneyAccount") === this) {
+				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除
+				if (options.syncFromServer !== true && Alloy.Models.User.xGet("activeMoneyAccount") === this) {
 					error = {
 						msg : "默认账户不能删除"
 					};

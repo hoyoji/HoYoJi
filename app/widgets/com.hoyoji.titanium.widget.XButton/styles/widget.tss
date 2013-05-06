@@ -7,3 +7,14 @@
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
 }
+
+"#title": {
+	color: 'white',
+	font: {
+		fontSize: 10,
+		fontWeight: 'normal'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	bottom: 3
+}
