@@ -320,9 +320,9 @@ function Sync(method, model, opts) {
 					// // 检查上级项目的共享中有没有允许我修改子项目的权限
 					// } else
 					if (table === "MoneyIncomeDetail") {
-						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN MoneyIncome mi ON mi.id = p.moneyIncomeId JOIN Project prj ON prj.id = mi.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + 'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1 OR joinedtable.projectShare' + table + 'AddNew = 1)) ';
+						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN MoneyIncome mi ON mi.id = p.moneyIncomeId JOIN Project prj ON prj.id = mi.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + 'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1)) ';
 					} else if (table === "MoneyExpenseDetail") {
-						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN MoneyExpense mi ON mi.id = p.moneyExpenseId JOIN Project prj ON prj.id = mi.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + 'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1 OR joinedtable.projectShare' + table + 'AddNew = 1)) ';
+						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN MoneyExpense mi ON mi.id = p.moneyExpenseId JOIN Project prj ON prj.id = mi.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + 'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1)) ';
 					} else if (table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN Project prj ON prj.id = p.projectId LEFT JOIN (ProjectShareAuthorization pst JOIN friend f ON pst.state = "Accept" AND pst.friendId = f.id AND friendUserId = "' + ownerUserId + '") joinedtable ON prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + 'AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectId IS NOT NULL)) ';
 					} else {
@@ -476,10 +476,10 @@ function Sync(method, model, opts) {
 			if (opts.commit === true) {
 				db.execute("COMMIT;");
 				db.close();
-				if(method !== "read"){
-					model.changed = {};
-					model._previousAttributes = {};
-				}
+				// if(method !== "read"){
+					// model.changed = {};
+					// // model._previousAttributes = {};
+				// }
 				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch");
@@ -487,10 +487,10 @@ function Sync(method, model, opts) {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					if(method !== "read"){
-						model.changed = {};
-						model._previousAttributes = {};
-					}
+					// if(method !== "read"){
+						// model.changed = {};
+						// // model._previousAttributes = {};
+					// }
 					_.isFunction(opts.success) && opts.success(resp);
 					method === "read" && model.trigger("fetch");
 					
@@ -508,10 +508,10 @@ function Sync(method, model, opts) {
 			}
 
 		} else {
-			if(method !== "read"){
-				model.changed = {};
-				model._previousAttributes = {};
-			}
+			// if(method !== "read"){
+				// model.changed = {};
+				// model._previousAttributes = {};
+			// }
 			_.isFunction(opts.success) && opts.success(resp);
 			method === "read" && model.trigger("fetch");
 		}

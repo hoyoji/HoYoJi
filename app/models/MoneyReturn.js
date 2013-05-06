@@ -221,9 +221,9 @@ exports.definition = {
 				}
 
 				this._xDelete(function(error, options) {
-					if (!error) {
+					if (xFinishCallback) {
+							xFinishCallback(error);
 					}
-					xFinishCallback(error);
 				}, options);
 			}
 		});

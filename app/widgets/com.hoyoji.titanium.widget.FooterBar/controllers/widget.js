@@ -25,32 +25,33 @@ function createSubFooterBar(button, subButtons, subIds) {
 		// var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + subButtons.length + ".png");
 		for (var i = 1; i < subButtons.length; i++) {
 			var imgPath;
-			if(OS_IOS){
-				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + "@2x.png" : "";
-			} else {
-				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + ".png" : "";
-			}
-			var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
-			if(imgPath && f.exists()){
+			// if(OS_IOS){
+				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] : "";
+			// } else {
+				// imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + ".png" : "";
+			// }
+			// var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
+			// if(imgPath && f.exists()){
 				subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					id : subIds[i],
+					title : subButtons[i],
 					borderRadius : 0,
 					height : Ti.UI.FILL,
 					width : width,
 					// backgroundImage : backgroundImage,
 					image : imgPath
 				});
-			} else {
-				subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-					id : subIds[i],
-					title : subButtons[i],
-					borderRadius : 0,
-					height : Ti.UI.FILL,
-					width : width
-					// backgroundImage : backgroundImage
-				});
-			}
-			f = null;
+			// } else {
+				// subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+					// id : subIds[i],
+					// title : subButtons[i],
+					// borderRadius : 0,
+					// height : Ti.UI.FILL,
+					// width : width
+					// // backgroundImage : backgroundImage
+				// });
+			// }
+			// f = null;
 			subButtonWidget.setParent($[subFooterBarId]);
 			$[subIds[i]] = subButtonWidget;
 			// subButton.addEventListener("touchstart", function(button) {
@@ -93,15 +94,12 @@ if ($.$attrs.buttons) {
 			buttonId = ids[i];
 		}
 		var imgPath;
-		if(OS_IOS){
-			imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId + "@2x.png" : "";
-		} else {
-			imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId + ".png" : "";
-		}
-		var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
-		if(imgPath && f.exists()){
+		imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId : "";
+		// var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
+		// if(imgPath && f.exists()){
 			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				id : buttonId,
+				title : buttonTitle,
 				borderRadius : 0,
 				width : width,
 				height : Ti.UI.FILL,
@@ -116,15 +114,15 @@ if ($.$attrs.buttons) {
 				// backgroundImage : backgroundImage,
 				// image : imgPath
 			// });
-		} else {
-			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-				id : buttonId,
-				title : buttonTitle,
-				borderRadius : 0,
-				width : width,
-				height : Ti.UI.FILL,
+		// } else {
+			// buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+				// id : buttonId,
+				// title : buttonTitle,
+				// borderRadius : 0,
+				// width : width,
+				// height : Ti.UI.FILL,
 				// backgroundImage : backgroundImage
-			});			
+			// });			
 			// button = Ti.UI.createButton({
 				// id : buttonId,
 				// title : buttonTitle,
@@ -134,8 +132,8 @@ if ($.$attrs.buttons) {
 				// height : Ti.UI.FILL,
 				// backgroundImage : backgroundImage
 			// });
-		}
-		f = null;
+		// }
+		// f = null;
 		$[buttonId] = buttonWidget;
 		buttonWidget.button;
 		if (subButtons.length > 1) {

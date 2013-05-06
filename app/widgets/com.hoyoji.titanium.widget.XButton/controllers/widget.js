@@ -4,7 +4,7 @@ if ($.$attrs.id) {
 	$.button.id = $.$attrs.id;
 }
 if ($.$attrs.borderRadius) {
-	$.button.setBorderRadius($.$attrs.borderRadius);
+	$.$view.setBorderRadius($.$attrs.borderRadius);
 }
 if ($.$attrs.width) {
 	$.$view.setWidth($.$attrs.width);
@@ -14,17 +14,25 @@ if ($.$attrs.height) {
 }
 if ($.$attrs.title) {
 	$.button.setTitle($.$attrs.title);
+	$.title.setText($.$attrs.title);
 }
 if ($.$attrs.color) {
-	$.button.setColor($.$attrs.color);
+	$.$view.setColor($.$attrs.color);
 }
 if ($.$attrs.backgroundImage) {
-	$.button.setBackgroundImage($.$attrs.backgroundImage);
+	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }
 if ($.$attrs.image) {
-	$.imageView.setImage($.$attrs.image);
+	var imgPath;
+	//if(Ti.Platform.displayCaps.density === "high" || Ti.Platform.displayCaps.density === "medium"){
+	imgPath = $.$attrs.image + "@2x.png";
+	//} else {
+	//	imgPath = $.$attrs.image + ".png";
+	//}
+	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
+
 if ($.$attrs.top) {
 	$.$view.setTop($.$attrs.top);
 }
@@ -47,6 +55,14 @@ buttonView.addEventListener("touchend", function(buttonView) {
 	buttonView.setBackgroundImage(backgroundImage);
 }.bind(null, buttonView));
 
+var buttonView = $.$view;
+buttonView.addEventListener("touchstart", function(buttonView) {
+	buttonView.setBackgroundImage(backgroundImageShadow);
+}.bind(null, buttonView));
+buttonView.addEventListener("touchend", function(buttonView) {
+	buttonView.setBackgroundImage(backgroundImage);
+}.bind(null, buttonView));
+
 $.button.addEventListener("singletap", function(e) {
 	$.trigger("singletap", {
 		source : $.button
@@ -56,11 +72,12 @@ $.button.addEventListener("singletap", function(e) {
 });
 
 exports.setTitle = function(title) {
+	$.title.setText(title);
 	$.button.setTitle(title);
 }
 
 exports.getTitle = function() {
-	return $.button.getTitle();
+	return $.title.getText();
 }
 
 exports.fireEvent = function(eventName, options) {
