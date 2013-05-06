@@ -2,7 +2,7 @@
 	<View class="container" title="主页">
 			<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 		<View top="0" height="Ti.UI.SIZE">
 			<View height="42" width="50%" left="0">
 				<Label left="5">当日收入</Label>
@@ -15,7 +15,7 @@
 		</View>
 		</View>
         <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-        	buttons="同步,记一笔,设置"
+        	buttons="同步,记一笔,设置" imagesFolder="/images/home"
         	ids="sync,moneyAddNew,setting"/>
 	</View>
 </Alloy>

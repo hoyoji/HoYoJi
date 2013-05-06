@@ -2,7 +2,7 @@
 	<View class="container" title="项目">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的项目"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<Widget id="sharedWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="0" top="0" hasDetail=""/>
 			<Widget id="myProjectsTable" src="com.hoyoji.titanium.widget.XTableView" sortByField="name" bottom="0" top="0"/>
 		</View>

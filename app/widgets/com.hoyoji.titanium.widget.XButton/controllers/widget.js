@@ -14,10 +14,12 @@ if ($.$attrs.height) {
 }
 if ($.$attrs.title) {
 	$.button.setTitle($.$attrs.title);
-	$.title.setText($.$attrs.title);
+	if ($.$attrs.nonTitle !== true) {
+		$.title.setText($.$attrs.title);
+	}
 }
 if ($.$attrs.color) {
-	$.$view.setColor($.$attrs.color);
+	$.button.setColor($.$attrs.color);
 }
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
@@ -26,7 +28,7 @@ if ($.$attrs.image) {
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
 	imgPath = $.$attrs.image + ".png";
-	if(OS_IOS){
+	if (OS_IOS) {
 		imgPath = $.$attrs.image + "@2x.png";
 	}
 	$.imageView.setImage(imgPath);

@@ -2,7 +2,7 @@
 	<View class="container" title="消息">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收件箱"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="sendedMessagesTable" bottom="0" top="0"/>
 			<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" id="newMessagesTable" bottom="42" top="42"/>
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="oldMessagesTable" bottom="42" top="42"/> -->
