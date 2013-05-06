@@ -18,3 +18,18 @@
 	width: Ti.UI.SIZE,
 	bottom: 2
 }
+
+"#bubbleCount" : {
+	 visible : false,
+	 color : "white",
+	 width : 15,
+	 height : 15,
+	 top : 0,
+	 right : 0,
+	 textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	 font: {
+		fontSize: 9,
+		fontWeight: 'normal'
+	 },
+	 backgroundImage : WPATH("images/bubbleCount@2x.png")
+}

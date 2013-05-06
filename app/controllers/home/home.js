@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.footerBar.sync.setBubbleCount(99);
+
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		Alloy.Globals.openWindow("money/moneyAddNew");

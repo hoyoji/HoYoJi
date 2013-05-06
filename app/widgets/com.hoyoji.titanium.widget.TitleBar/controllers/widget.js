@@ -1,8 +1,21 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+exports.setImage = function(image){
+	var imgPath = image + ".png";
+	if(OS_IOS){
+		imgPath = image + "@2x.png";
+	} 
+	$.imageView.setImage(imgPath);
+}
+
 if($.$attrs.backButtonHidden === "true"){
 	$.backButton.hide();
 }
+
+// if($.$attrs.image){
+	// exports.setImage($.$attrs.image);
+// }
+
 
 var boundXTable = null;
 exports.bindXTable = function(xTable){

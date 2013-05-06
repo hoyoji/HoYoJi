@@ -23,6 +23,16 @@ exports.setEnabled = function(b){
 	$.button.setEnabled(b);
 }
 
+exports.setBubbleCount = function(count){
+	if(count > 0){
+		$.bubbleCount.show();
+	} else {
+		$.bubbleCount.hide();
+	}
+	
+	$.bubbleCount.setText(count);
+}
+
 exports.setImage = function(imagePath){
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
