@@ -1,7 +1,13 @@
 <Alloy>
+<<<<<<< HEAD
 	<View id="buttonView" height="42" width="84" >
 		<!-- backgroundImage="/images/com.hoyoji.titanium.widget.XButton/buttonBackground.png"> -->
 		<ImageView id="imageView" zIndex="1"/>
+=======
+	<View id="buttonView" height="44" width="84" 
+		backgroundImage="/images/com.hoyoji.titanium.widget.XButton/buttonBackground.png">
+		<ImageView id="imageView" zIndex="1" top="2"/>
+>>>>>>> bb39e8a564b644400290dbb39b008fa9dac857f1
 		<Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL" color="white"
 			backgroundColor="transparent" backgroundImage="none" zIndex="2" color="transparent"/>
 		<Label id="title"/>

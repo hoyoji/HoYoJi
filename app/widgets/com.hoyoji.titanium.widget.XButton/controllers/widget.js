@@ -50,7 +50,7 @@ if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
 if ($.$attrs.color) {
-	$.$view.setColor($.$attrs.color);
+	$.button.setColor($.$attrs.color);
 }
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
@@ -76,6 +76,7 @@ if ($.$attrs.image) {
 	buttonView.addEventListener("touchend", function(buttonView) {
 		buttonView.setBackgroundImage("none");
 	}.bind(null, buttonView));
+
 
 $.button.addEventListener("singletap", function(e) {
 	$.trigger("singletap", {

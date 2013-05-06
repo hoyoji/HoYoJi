@@ -128,54 +128,52 @@ exports.definition = {
 
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
-				var projectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+				Alloy.Globals.Server.getData([{
+					__dataType : "ProjectShareAuthorization",
 					ownerUserId : Alloy.Models.User.id,
+					state : "Accept",
 					friendId : this.xGet("id")
-				});
-				if (options.syncFromServer !== true 
-					&& projectShareAuthorizations.length > 0) {
-					xFinishCallback({
-						msg : "您与该好友有共享项目,请移除共享再删除"
-					});
-				} 
-				// else if(options.syncFromServer !== true 
-					// && （this.xGet("moneyExpenses").length > 0 
-						// || this.xGet("moneyIncomes").length > 0 
-						// || this.xGet("moneyBorrows").length > 0 
-						// || this.xGet("moneyLends").length > 0 
-						// || this.xGet("moneyPaybacks").length > 0 
-						// || this.xGet("moneyReturns").length > 0 ）){
-						// xFinishCallback({
-						// msg : "账务中有数据与当前好友有关，不能删除"
-					// });
-				// }
-				else {
-					var friendProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-						ownerUserId : this.xGet("friendUserId")
-					});
-					if (options.syncFromServer !== true 
-						&& friendProjectShareAuthorizations.length > 0) {
+				}], function(data) {
+					if (options.syncFromServer !== true && data[0].length > 0) {
 						xFinishCallback({
 							msg : "您与该好友有共享项目,请移除共享再删除"
 						});
 					} else {
-						Alloy.Globals.Server.sendMsg({
-							id : guid(),
-							"toUserId" : this.xGet("friendUserId"),
-							"fromUserId" : Alloy.Models.User.id,
-							"type" : "System.Friend.Delete",
-							"messageState" : "new",
-							"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-							"date" : (new Date()).toISOString(),
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-							"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId")
-						}, function() {
-							self._xDelete(xFinishCallback, options);
-						}, function(e){
+						Alloy.Globals.Server.getData([{
+							__dataType : "ProjectShareAuthorization",
+							state : "Accept",
+							ownerUserId : self.xGet("friendUserId")
+						}], function(data) {
+							if (options.syncFromServer !== true && data[0].length > 0) {
+								xFinishCallback({
+									msg : "您与该好友有共享项目,请移除共享再删除"
+								});
+							} else {
+								Alloy.Globals.Server.sendMsg({
+									id : guid(),
+									"toUserId" : self.xGet("friendUserId"),
+									"fromUserId" : Alloy.Models.User.id,
+									"type" : "System.Friend.Delete",
+									"messageState" : "new",
+									"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+									"date" : (new Date()).toISOString(),
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+									"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
+								}, function() {
+									self._xDelete(xFinishCallback, options);
+								}, function(e){
+									alert(e.__summary.msg);
+								});
+							}
+						}, function(e) {
 							alert(e.__summary.msg);
 						});
 					}
-				}
+				}, function(e) {
+					alert(e.__summary.msg);
+				});
+				
+				
 			},
 			syncAddNew : function(record, dbTrans) {
 				var self = this;

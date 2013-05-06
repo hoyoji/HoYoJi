@@ -1,12 +1,12 @@
 <Alloy>
 	<Window class="container" >
-		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar"/>
+		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar" imagesFolder="/images/mainWindow"/>
 		<ScrollableView id="scrollableView" currentPage="2" showPagingControl="false" top="5">
-			<Require src="project/projectAll" backButtonHidden="true">
-			<Require src="money/moneyAll" backButtonHidden="true">
-			<Require src="home/home" backButtonHidden="true">
-			<Require src="friend/friendAll" backButtonHidden="true">
-			<Require src="message/messageAll" backButtonHidden="true">
+			<Require src="project/projectAll" backButtonHidden="true" id="projectAll">
+			<Require src="money/moneyAll" backButtonHidden="true" id="moneyAll">
+			<Require src="home/home" backButtonHidden="true" id="home">
+			<Require src="friend/friendAll" backButtonHidden="true" id="friendAll">
+			<Require src="message/messageAll" backButtonHidden="true" id="messageAll">
 		</ScrollableView>
 	</Window>
 </Alloy>

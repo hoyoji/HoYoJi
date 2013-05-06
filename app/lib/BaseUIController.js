@@ -30,6 +30,7 @@
 			if ($.$attrs.right) {
 				$.$view.setRight($.$attrs.right);
 			}
+			
 			if ($.$attrs.id){
 				$.$view.id = $.$attrs.id;
 			}
