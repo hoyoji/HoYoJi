@@ -33,3 +33,17 @@ $.makeContextMenu = function() {
 	// }));
 	return menuSection;
 }
+
+function refreshSyncCount(){
+	var config = Alloy.createModel("ClientSyncTable").config,
+	Model = Alloy.M("ClientSyncTable", {config : config}),
+	model = new Model({TOTAL : 0});
+	var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main ";
+	model.fetch({query : query});
+	$.footerBar.sync.setBubbleCount(model.get("TOTAL") || 0);
+}
+refreshSyncCount();
+Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
+$.onWindowCloseDo(function(){
+	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
+});

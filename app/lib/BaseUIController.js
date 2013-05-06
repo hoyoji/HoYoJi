@@ -30,12 +30,25 @@
 			if ($.$attrs.right) {
 				$.$view.setRight($.$attrs.right);
 			}
-			if($.$attrs.id){
+			
+			if ($.$attrs.id){
 				$.$view.id = $.$attrs.id;
 			}
-						
+			if ($.$attrs.visible){
+				$.$view.setVisible($.$attrs.visible);
+			}
+			
 			_.extend($, {
 				__dirtyCount : 0,
+				show : function(){
+					$.$view.show();
+				},
+				hide : function(){
+					$.$view.hide();
+				},
+				animate : function(animation){
+					$.$view.animate(animation);
+				},						
 				becameDirty : function() {
 					if ($.__dirtyCount === 0) {
 						$.$view.fireEvent("becamedirty", {
