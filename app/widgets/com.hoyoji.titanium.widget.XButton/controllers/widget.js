@@ -1,9 +1,5 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-exports.animate = function(animation){
-	$.$view.animate(animation);
-}
-
 exports.setTitle = function(title) {
 	$.title.setText(title);
 	$.button.setTitle(title);
