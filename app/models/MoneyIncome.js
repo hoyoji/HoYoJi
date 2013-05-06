@@ -228,7 +228,7 @@ exports.definition = {
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
-				if(this.xGet("moneyExpenseDetails").length > 0){
+				if(this.xGet("moneyIncomeDetails").length > 0){
 					record.amount = this.__syncAmount;
 					delete this.__syncAmount;
 				}
@@ -281,13 +281,7 @@ exports.definition = {
 					
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
-				} else {
-					this.save({amount : record.amount}, {
-						dbTrans : dbTrans,
-						syncFromServer : true,
-						patch : true
-					});
-				}
+				} 
 				// 让本地修改覆盖服务器上的记录
 			}
 		});
