@@ -24,11 +24,11 @@ if ($.$attrs.backgroundImage) {
 }
 if ($.$attrs.image) {
 	var imgPath;
-	//if(Ti.Platform.displayCaps.density === "high" || Ti.Platform.displayCaps.density === "medium"){
-	imgPath = $.$attrs.image + "@2x.png";
-	//} else {
-	//	imgPath = $.$attrs.image + ".png";
-	//}
+	//if(Ti.Platform.displayCaps.density === "high"){
+	imgPath = $.$attrs.image + ".png";
+	if(OS_IOS){
+		imgPath = $.$attrs.image + "@2x.png";
+	}
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
