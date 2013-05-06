@@ -16,5 +16,5 @@
 	},
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE,
-	bottom: 3
+	bottom: 2
 }
