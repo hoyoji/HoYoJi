@@ -14,7 +14,7 @@ exports.animateHideTabBar = function() {
 	//$.tabs.getChildren()[currentFastSelectTab].setHeight("42");
 
 	var animation = Titanium.UI.createAnimation();
-	animation.top = "-57";
+	animation.top = "-42";
 	animation.duration = 500;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener('complete', function() {
@@ -28,7 +28,7 @@ exports.animateHideTabBar = function() {
 exports.animateShowTabBar = function() {
 	if (!isExpanded) {
 		isExpanded = true;
-		$.widget.height = "67";
+		$.widget.height = "47";
 		var animation = Titanium.UI.createAnimation();
 		animation.top = "5";
 		animation.duration = 500;
@@ -124,14 +124,9 @@ exports.init = function(scView) {
 		imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + view.id : "";
 		// if (!($.$attrs.hideFirstTab === "true" && i === 0)) {
 		var label = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-			// color : "black",
-			title : view.title,
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : tabWidth,
-			top : 0,
-			height : 32,
-			image : imgPath,
-			nonTitle : true
+			image : imgPath
 		});
 		label.addEventListener("singletap", function() {
 			scrollableView.scrollToView(view);
