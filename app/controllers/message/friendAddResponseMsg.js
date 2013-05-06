@@ -57,7 +57,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (data[0].length > 0) {
 			saveErrorCB($.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
 		} else {
-			addFriend();
+			addFriend(saveEndCB, saveErrorCB);
 		}
 	}, function(e) {
 		alert(e.__summary.msg);
@@ -160,7 +160,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// }
 
 }
-function addFriend() {
+function addFriend(saveEndCB, saveErrorCB) {
 	var setOtherRequestMsgToRead = function() {
 		var messages = Alloy.createCollection("Message").xSearchInDb({
 			fromUserId : $.$model.xGet("fromUserId"),
