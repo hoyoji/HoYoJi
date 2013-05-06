@@ -24,25 +24,28 @@ if ($.$attrs.backgroundImage) {
 if ($.$attrs.image) {
 	$.imageView.setImage($.$attrs.image);
 	// $.button.setBackgroundImage("transparent");
-} else {
-	var backgroundImage;
-	var backgroundImageShadow;
-	if (OS_IOS) {
-		backgroundImage = WPATH("/images/buttonBackground@2x.png");
-		backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
-	} else {
-		backgroundImage = WPATH("/images/buttonBackground.png");
-		backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
-	}
-
-	var buttonView = $.$view;
-	buttonView.addEventListener("touchstart", function(buttonView) {
-		buttonView.setBackgroundImage(backgroundImageShadow);
-	}.bind(null, buttonView));
-	buttonView.addEventListener("touchend", function(buttonView) {
-		buttonView.setBackgroundImage(backgroundImage);
-	}.bind(null, buttonView));
 }
+if ($.$attrs.top) {
+	$.$view.setTop($.$attrs.top);
+}
+
+var backgroundImage;
+var backgroundImageShadow;
+if (OS_IOS) {
+	backgroundImage = WPATH("/images/buttonBackground@2x.png");
+	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
+} else {
+	backgroundImage = WPATH("/images/buttonBackground.png");
+	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
+}
+
+var buttonView = $.$view;
+buttonView.addEventListener("touchstart", function(buttonView) {
+	buttonView.setBackgroundImage(backgroundImageShadow);
+}.bind(null, buttonView));
+buttonView.addEventListener("touchend", function(buttonView) {
+	buttonView.setBackgroundImage(backgroundImage);
+}.bind(null, buttonView));
 
 $.button.addEventListener("singletap", function(e) {
 	$.trigger("singletap", {

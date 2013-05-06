@@ -6,7 +6,7 @@
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" sortByField="name" bottom="0" top="0"/> 
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-        	buttons="添加好友" imagesFolder="/images/friend"
+        	buttons="添加好友" imagesFolder="/images/friend/friendAll"
         	ids="addFriend"/>
 	</View>
 </Alloy>
