@@ -454,6 +454,7 @@ function Sync(method, model, opts) {
 					var r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'");
 					if (r.rowCount > 0) {
 						db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
+						Ti.App.fireEvent("updateSyncCount");
 					} else {
 						r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
 						if (r.rowCount > 0) {
