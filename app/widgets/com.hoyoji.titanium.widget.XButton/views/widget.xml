@@ -1,7 +1,7 @@
 <Alloy>
 	<View id="buttonView" height="44" width="84" 
 		backgroundImage="/images/com.hoyoji.titanium.widget.XButton/buttonBackground.png">
-		<ImageView id="imageView" height="28" zIndex="1" top="2"/>
+		<ImageView id="imageView" zIndex="1" top="2"/>
 		<Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL" color="white"
 			backgroundColor="transparent" backgroundImage="none" zIndex="2" color="transparent"/>
 		<Label id="title"/>
