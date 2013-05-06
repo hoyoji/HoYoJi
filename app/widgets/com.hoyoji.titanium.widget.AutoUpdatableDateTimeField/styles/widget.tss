@@ -4,6 +4,13 @@
 	width: Ti.UI.SIZE
 },
 
+"#label" : {
+	font: {
+	fontSize: 18,
+	fontWeight: 'bold'
+	}
+},
+
 "#error": {
 	color: 'red',
 	font: {
