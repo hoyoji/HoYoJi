@@ -100,7 +100,7 @@ exports.definition = {
 					// 支出已在本地存在
 					if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
 						var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-						moneyIncome.__syncAmount = oldIncomeAmount - record.amount
+						moneyIncome.__syncAmount = oldIncomeAmount + record.amount
 						// moneyIncome.save("amount", moneyIncome.__syncAmount, {
 							// dbTrans : dbTrans,
 							// patch : true
