@@ -41,7 +41,7 @@
 					this.changed = {};
 				    this._silent = {};
 				    this._pending = {};						
-				}.bind(this));
+				}, this);
 				
 				// revert the belongsTo ID changes on error
 				this.on("error", function() {

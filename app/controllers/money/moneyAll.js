@@ -11,8 +11,8 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 var d = new Date(), sortReverse = true, timeFilter = {
-	dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
-	dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+	dateTo : d.getUTCTimeOfDateEnd().toISOString()
 };
 
 function onFooterbarTap(e) {
