@@ -1,10 +1,6 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var d = new Date(), 
-timeFilter = {
-	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-	dateTo : d.getUTCTimeOfDateEnd().toISOString()
-};
+var d = new Date();
 
 function doTimeFilter(collection, timeFilter) {
 	collection.xSetFilter(function(model) {
@@ -37,7 +33,7 @@ var moneyLends = Alloy.createCollection("moneyLend");
 var moneyReturns = Alloy.createCollection("moneyReturn");
 var moneyPaybacks = Alloy.createCollection("moneyPayback");
 
-exports.doFilter(timeFilter);
+// exports.doFilter(timeFilter);
 
 $.onWindowCloseDo(function(){
 	moneyIncomes.xClearFilter();

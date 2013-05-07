@@ -1,5 +1,10 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+	$.field.setColor($.$attrs.color);
+}
+
 var items = null;
 var values = null;
 var labels = [];

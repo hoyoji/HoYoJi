@@ -1,12 +1,13 @@
 <Alloy>
 	<View class="container" title="好友">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友" 
+			 image="/images/mainWindow/friendAll"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" sortByField="name" bottom="0" top="0"/> 
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-        	buttons="添加好友" imagesFolder="/images/friend"
+        	buttons="添加好友" imagesFolder="/images/friend/friendAll"
         	ids="addFriend"/>
 	</View>
 </Alloy>

@@ -1,5 +1,9 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
+if($.$attrs.color){
+	$.field.setColor($.$attrs.color);
+}
+
 var backgroundColors = ["white", "cyan"];
 var currentItemIndex = 0;
 var items = $.$attrs.items.split(",");

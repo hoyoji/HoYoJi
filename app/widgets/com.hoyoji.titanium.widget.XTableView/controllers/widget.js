@@ -366,6 +366,7 @@ exports.addCollection = function(collection, rowView) {
 	// }
 	collection.on("add", addRow);
 	collection.on("reset", resetCollection);
+	collection.on("sync", refreshCollectionOnChange);
 	
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
@@ -376,6 +377,7 @@ var clearCollections = function() {
 			//exports.removeCollection(collections[i], {previousModels : collections[i].models});
 			collections[i].off("add", addRow);
 			collections[i].off("reset", resetCollection);
+			collections[i].off("sync", refreshCollectionOnChange);
 			collections[i].off("xFetchEnd", refreshCollection);
 			collections[i].off("xSetFilterEnd", refreshCollection);
 		}
@@ -384,15 +386,19 @@ var clearCollections = function() {
 	$.table.setData([]);
 }
 
+function refreshCollectionOnChange(){
+		$.sort(null,null,null,true);
+}
+
 function refreshCollection(collection, appendRows, removedRows) {
 	var newRows;
-	if(appendRows.length > 0){
+	if(appendRows && appendRows.length > 0){
 		newRows = [];
 		appendRows.forEach(function(item){
 			newRows.push(createRowView(item, collection));
 		});
 	}
-	if(appendRows.length > 0 || (removedRows && removedRows.length > 0)){
+	if((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)){
 		$.sort(null,null,null,true, newRows, removedRows, collection.id);
 	}
 }

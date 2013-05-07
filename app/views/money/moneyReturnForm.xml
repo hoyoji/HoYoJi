@@ -3,12 +3,12 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增还款" readModeTitle="还款详细" editModeTitle="修改还款"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<View id="ownerUser" height="0" backgroundColor="#f1fbfb">
 					<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
-					<Label left="6" width="30%" height="Ti.UI.FILL">记账好友</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己"
+					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">记账好友</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己" right="0" width="70%"
 					bindModel="$.$model"
 					bindAttribute="getOwnerUser()"/>
 				</View>
@@ -20,8 +20,8 @@
 				bindAttribute="amount"/>
 				<View id="localAmount" height="0" backgroundColor="#f1fbfb">
 					<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
-					<Label left="6" width="30%" height="Ti.UI.FILL">金额</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"
+					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
 					bindModel="$.$model"
 					bindAttribute="getLocalAmount()"/>
 				</View>

@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Require id="moneyExpenseForm" src="money/moneyExpenseForm" top="0" bottom="42"/>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" openSubMenu="singletap"
-		buttons="支出,收入,转账,借贷;借入;借出;还款;收款,项目;充值;支出"
+		buttons="支出,收入,转账,借贷;借入;借出;还款;收款,项目;充值;支出" imagesFolder="/images/money/moneyAddNew"
 		ids="moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,project;projectDepositeForm;projectExpenseForm"/>
 	</View>
 </Alloy>

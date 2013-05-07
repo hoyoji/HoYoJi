@@ -1,5 +1,10 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+	$.field.setColor($.$attrs.color);
+}
+
 if(OS_IOS){
 	$.field.setSelectionIndicator(false);
 }
