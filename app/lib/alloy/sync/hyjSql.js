@@ -486,7 +486,7 @@ function Sync(method, model, opts) {
 				// }
 				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
-				method === "read" && model.trigger("fetch");
+				method === "read" && model.trigger("fetch", model);
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
@@ -496,7 +496,7 @@ function Sync(method, model, opts) {
 						// // model._previousAttributes = {};
 					// }
 					_.isFunction(opts.success) && opts.success(resp);
-					method === "read" && model.trigger("fetch");
+					method === "read" && model.trigger("fetch", model);
 					
 				}
 
@@ -517,7 +517,7 @@ function Sync(method, model, opts) {
 				// model._previousAttributes = {};
 			// }
 			_.isFunction(opts.success) && opts.success(resp);
-			method === "read" && model.trigger("fetch");
+			method === "read" && model.trigger("fetch", model);
 		}
 	} else
 		_.isFunction(opts.error) && opts.error(model, error);
