@@ -1,3 +1,27 @@
 ".container": {
 	backgroundColor: "#f1fbfb"
 }
+
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 18,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+}
+
+".firstRow": {
+	color: "#bfbfbf",
+	font: {
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
+
+".secondRow": {
+	font: {
+		fontWeight: 'bolder'
+	}
+}

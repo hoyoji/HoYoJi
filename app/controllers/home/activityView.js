@@ -3,8 +3,9 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var d = new Date();
 
 function doTimeFilter(collection) {
-	collection.xSetFilter(function(model) {
-		return model.xGet("lastClientUpdateTime") > d.getTime();
+	collection.xSetFilter(function(model, options) {
+		options = options || {};
+		return !options.syncFromServer && model.xGet("lastClientUpdateTime") > d.getTime();
 	});
 	// collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
 }

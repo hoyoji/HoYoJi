@@ -2,7 +2,7 @@
 	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
 		<TextField id="__hiddenTextField" platform="android" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS" top="-100"/>
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/> -->
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
+		<View id="body" top="30" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
         	<ImageView image="/images/loginImage.png" top="0"/>
 			<Require src="user/login" top="110" />
 	        <ImageView image="/images/thirdPartiesLoginImage.png" top="310"/>

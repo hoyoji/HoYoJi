@@ -1,10 +1,10 @@
 <Alloy>
 	<View class="container" saveableContainer="true">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
-			<Widget src="com.hoyoji.titanium.widget.XButton" left="10" width="60" onSingletap="close" title="返回"/>
+		<View height="30" top="5" left="10" right="10" backgroundImage="/images/doQueryBackground.png">
+			<Widget src="com.hoyoji.titanium.widget.XButton" left="10" width="60" onSingletap="close" image="/images/backButton"/>
 			<Label color="white">请输入查询条件</Label>
-			<Widget src="com.hoyoji.titanium.widget.XButton" right="10" width="60" onSingletap="doQuery" title="查询"/>
+			<Widget src="com.hoyoji.titanium.widget.XButton" right="10" width="60" onSingletap="doQuery" image="/images/money/moneyAll/transactionsSearchTable"/>
 		</View>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical"  scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
