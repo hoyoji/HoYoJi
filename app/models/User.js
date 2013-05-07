@@ -117,10 +117,12 @@ exports.definition = {
 				}
 				console.info("xGet hasMany gg : " + type + " " + key + " " +  collection.length);
 
-				this.set(attr, collection, {
-					silent : true
-				});
+				this.attributes[attr] = collection;
+				// this.set(attr, collection, {
+					// silent : true
+				// });
 
+				this._previousAttributes[attr] = collection;
 				return collection;				
 			},
 			syncUpdate : function(record, dbTrans){

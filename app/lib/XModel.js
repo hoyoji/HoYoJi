@@ -65,8 +65,9 @@
 				// Keep every model to its store collection
 				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
 				if (this.collection !== storeCollection) {
-					storeCollection.add(this, options);
 					this.collection = storeCollection;
+					options = options ? {syncFromServer : options.syncFromServer} : null;
+					storeCollection.add(this, options);
 				}
 
 				for (var key in this.config.hasMany) {
@@ -92,6 +93,11 @@
 			    // this._pending = {};
 			},
 			_xSave : function(options) {
+				options = _.extend({}, options, {
+					wait : true,
+					silent : true
+				});
+				
 				for (var belongsTo in this.config.belongsTo) {
 					var belongsToModel = this.xGet(belongsTo);
 					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
@@ -116,9 +122,7 @@
 			},
 			xSave : function(options) {
 				var self = this;
-				options = _.extend({}, options, {
-					wait : true
-				});
+				
 				if (this.__xValidateCount) {
 					throw Error("Model is still pending for xValidation to be completed! Can not call xSave again!!");
 					return;
@@ -301,10 +305,12 @@
 				});
 				console.info("xGet hasMany : " + key + collection.length);
 
-				this.set(attr, collection, {
-					silent : true
-				});
+				this.attributes[attr] = collection;
+				// this.set(attr, collection, {
+					// silent : true
+				// });
 
+				this._previousAttributes[attr] = collection;
 				return collection;
 			},
 			xGet : function(attr) {
@@ -337,9 +343,19 @@
 						console.info("--------" + m);
 					}
 					this.attributes[attr] = m;
+					// this.set(attr, m, {
+						// silent : true
+					// });
+					this._previousAttributes[attr] = m;
 					return m;
 				}
 				return value;
+			},
+			xPrevious : function(f){
+				if (this.hasChanged(f)) {
+					return this.previous(f);
+				}
+				return this.xGet(f);
 			},
 			xDeepGet : function(fields) {
 				function xGetRecursive(object, path) {

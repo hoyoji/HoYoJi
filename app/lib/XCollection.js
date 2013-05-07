@@ -16,29 +16,27 @@
 				var c = Alloy.createCollection(this.config.adapter.collection_name);
 				c.__filterCollection = this;
 				
-				this.__xSetFilterOnCollection(c, winController);
+				c.__xSetFilterOnCollection(winController);
 				
 				c.xSetFilter(filter);
 				return c;
 			},
-			__xSetFilterOnCollection : function(c, winController){
-				// this.__addModelFunc = this.__addModel.bind(c);
-				// this.__removeModelFunc = this.__removeModel.bind(c);
-				// this.__changeModelFunc = this.__changeModel.bind(c);
-                c.__filterCollection.on("add", this.__addModel, c);
-                c.__filterCollection.on("remove", this.__removeModel, c);
-                c.__filterCollection.on("sync", this.__changeModel, c);
+			__xSetFilterOnCollection : function(winController){
+				var self = this;
+                this.__filterCollection.on("add", this.__addModel, this);
+                this.__filterCollection.on("remove", this.__removeModel, this);
+                this.__filterCollection.on("sync", this.__changeModel, this);
                 if(winController){
 					winController.onWindowCloseDo(function(){
-						c.xClearFilter();
+						self.xClearFilter();
 					});		
                 }
 			},
 			xClearFilter : function(){
 				if (this.__filterCollection) {
-					this.__filterCollection.off("add", this.__addModel);
-					this.__filterCollection.off("remove", this.__removeModel);
-					this.__filterCollection.off("sync", this.__changeModel);
+					this.__filterCollection.off("add", this.__addModel, this);
+					this.__filterCollection.off("remove", this.__removeModel, this);
+					this.__filterCollection.off("sync", this.__changeModel, this);
 				}
 			},			
 			xFetch : function(options) {
@@ -116,7 +114,7 @@
 				this.__filter = filter;
 				if (!this.__filterCollection) {
 					this.__filterCollection = Alloy.Collections[this.config.adapter.collection_name];
-					this.__xSetFilterOnCollection(this, winController);
+					this.__xSetFilterOnCollection(winController);
 				}
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
 				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);

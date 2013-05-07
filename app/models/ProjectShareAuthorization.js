@@ -160,9 +160,9 @@ exports.definition = {
 				if(!this.__getSharedWIthHerSubProjectsFilter){
 					this.__getSharedWIthHerSubProjectsFilter = this.xGet("friend").xGet("projectShareAuthorizations").xCreateFilter(function(model){
 						found = false;
-						self.xGet("project").xGet("subProjects").map(function(subProject){
-							if (model.xGet("project").xGet("id") ===  subProject.xGet("id")
-								&& (model.xGet("state") === "Wait" || model.xGet("state") === "Accept")){
+						self.xPrevious("project").xGet("subProjects").map(function(subProject){
+							if (model.xPrevious("project").xGet("id") ===  subProject.xGet("id")
+								&& (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept")){
 								found = true;
 							}
 						});

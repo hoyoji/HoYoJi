@@ -25,10 +25,10 @@ function onFooterbarTap (e) {
 $.titleBar.bindXTable($.myProjectsTable);
 
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
-	return model.xGet("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id;
+	return model.xPrevious("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id;
 }, $);
 var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
-	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
+	return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xPrevious("parentProject");
 }, $);
 // var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 	// return model.xGet("projectShareAuthorizations").length > 0 

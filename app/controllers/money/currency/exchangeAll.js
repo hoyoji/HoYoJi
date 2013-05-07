@@ -12,7 +12,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.exchangesTable);
+// $.titleBar.bindXTable($.exchangesTable);
 
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")}, $);
 $.exchangesTable.addCollection(collection);

@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
-$.titleBar.bindXTable($.moneyIncomeDetailsTable);
+// $.titleBar.bindXTable($.moneyIncomeDetailsTable);
 
 var collection = selectedIncome.xGet("moneyIncomeDetails");
 $.moneyIncomeDetailsTable.addCollection(collection);
