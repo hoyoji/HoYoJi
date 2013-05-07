@@ -1,0 +1,21 @@
+<Alloy>
+	<View class="container" saveableContainer="true"  width="100%" height="100%" >
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="发送账务给好友" readModeTitle="发送账务给好友" addModeMenuButtonTitle="发送"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
+						editModeEditability="noneditable"
+                		bindModel="$.friend"
+                		bindAttribute="friendUser"
+                		bindAttributeIsModel="userName"
+                		bindModelSelector="friend/friendAll"
+                		/> -->
+				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="请求消息" height="84" width="Ti.UI.FILL" hintText="请输入请求消息"
+				bindModel="$.$model"
+				bindAttribute="detail"/>
+		</ScrollView>
+		</View>
+	</View>
+</Alloy>
