@@ -69,16 +69,9 @@
 
 				}, xErrorCallback);
 			},
-			// updateData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-			// var collection = Alloy.createCollection(modelName);
-			// collection.xSearchInDb(filter);
-			// xFinishedCallback(collection);
-			// },
-			// deleteData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-			// var collection = Alloy.createCollection(modelName);
-			// collection.xSearchInDb(filter);
-			// xFinishedCallback(collection);
-			// },
+			putData : function(data, xFinishedCallback, xErrorCallback, target) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
+			},
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);

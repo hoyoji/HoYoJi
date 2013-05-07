@@ -78,12 +78,12 @@ exports.dirtyCB = function() {
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
 		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(true);
-		Alloy.Globals.alloyAnimation.flash($.menuButton);
+		// Alloy.Globals.alloyAnimation.flash($.menuButton);
 	} else if($.saveableMode === "add"){
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 		$.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(true);
-		Alloy.Globals.alloyAnimation.flash($.menuButton);
+		// Alloy.Globals.alloyAnimation.flash($.menuButton);
 	}
 }
 

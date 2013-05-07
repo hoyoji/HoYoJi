@@ -86,8 +86,8 @@
 			xFetchMatchFilterAdded : [],
 			isFetching : false,
 			isFiltering : false,
-			__addModel : function(model) {
-				if (this.__compareFilter(model)) {
+			__addModel : function(model, resp, options) {
+				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
@@ -95,8 +95,8 @@
 					}
 				}
 			},
-			__changeModel : function(model) {
-				if (this.__compareFilter(model)) {
+			__changeModel : function(model, resp, options) {
+				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
@@ -104,8 +104,8 @@
 					this.remove(model);
 				}
 			},
-			__removeModel : function(model) {
-				if (!this.__compareFilter(model)) {
+			__removeModel : function(model, resp, options) {
+				if (!this.__compareFilter(model, options)) {
 					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
@@ -152,9 +152,9 @@
 				// });
 				return this;
 			},
-			__compareFilter : function(model) {
+			__compareFilter : function(model, options) {
 				if (_.isFunction(this.__filter)) {
-					return this.__filter(model);
+					return this.__filter(model, options);
 				}
 				for (var f in this.__filter) {
 					var modelValue = model.xGet(f), filterValue = this.__filter[f];

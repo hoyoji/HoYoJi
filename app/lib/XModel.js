@@ -55,7 +55,7 @@
 					}
 				});
 			},
-			__initializeExistingModel : function() {
+			__initializeExistingModel : function(model, resp, options) {
 				if (this.isNew()) {
 					return;
 				}
@@ -65,7 +65,7 @@
 				// Keep every model to its store collection
 				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
 				if (this.collection !== storeCollection) {
-					storeCollection.add(this);
+					storeCollection.add(this, resp, options);
 					this.collection = storeCollection;
 				}
 
