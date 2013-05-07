@@ -25,7 +25,7 @@
 						}
 					});
 					
-					this.once("sync fetch", this.__initializeExistingModel.bind(this));
+					this.once("sync fetch", this.__initializeExistingModel, this);
 				} else {
 					this.__initializeExistingModel();
 				}
@@ -65,7 +65,7 @@
 				// Keep every model to its store collection
 				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
 				if (this.collection !== storeCollection) {
-					storeCollection.add(this, resp, options);
+					storeCollection.add(this, options);
 					this.collection = storeCollection;
 				}
 

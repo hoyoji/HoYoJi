@@ -22,23 +22,23 @@
 				return c;
 			},
 			__xSetFilterOnCollection : function(c, winController){
-				this.__addModelFunc = this.__addModel.bind(c);
-				this.__removeModelFunc = this.__removeModel.bind(c);
-				this.__changeModelFunc = this.__changeModel.bind(c);
-                c.__filterCollection.on("add", this.__addModelFunc);
-                c.__filterCollection.on("remove", this.__removeModelFunc);
-                c.__filterCollection.on("sync", this.__changeModelFunc);
+				// this.__addModelFunc = this.__addModel.bind(c);
+				// this.__removeModelFunc = this.__removeModel.bind(c);
+				// this.__changeModelFunc = this.__changeModel.bind(c);
+                c.__filterCollection.on("add", this.__addModel, c);
+                c.__filterCollection.on("remove", this.__removeModel, c);
+                c.__filterCollection.on("sync", this.__changeModel, c);
                 if(winController){
 					winController.onWindowCloseDo(function(){
-						this.xClearFilter();
-					}.bind(this));		
+						c.xClearFilter();
+					});		
                 }
 			},
 			xClearFilter : function(){
 				if (this.__filterCollection) {
-					this.__filterCollection.off("add", this.__addModelFunc);
-					this.__filterCollection.off("remove", this.__removeModelFunc);
-					this.__filterCollection.off("sync", this.__changeModelFunc);
+					this.__filterCollection.off("add", this.__addModel);
+					this.__filterCollection.off("remove", this.__removeModel);
+					this.__filterCollection.off("sync", this.__changeModel);
 				}
 			},			
 			xFetch : function(options) {
@@ -86,7 +86,7 @@
 			xFetchMatchFilterAdded : [],
 			isFetching : false,
 			isFiltering : false,
-			__addModel : function(model, resp, options) {
+			__addModel : function(model, collection, options) {
 				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
@@ -95,7 +95,7 @@
 					}
 				}
 			},
-			__changeModel : function(model, resp, options) {
+			__changeModel : function(model, collection, options) {
 				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
@@ -104,7 +104,7 @@
 					this.remove(model);
 				}
 			},
-			__removeModel : function(model, resp, options) {
+			__removeModel : function(model, collection, options) {
 				if (!this.__compareFilter(model, options)) {
 					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
