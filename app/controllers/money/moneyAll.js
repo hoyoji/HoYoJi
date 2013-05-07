@@ -10,7 +10,10 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
-var d = new Date(), sortReverse = true;
+var d = new Date(), sortReverse = true, timeFilter = {
+	dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
+	dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+};
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
@@ -22,6 +25,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "dateTransactions") {
 		$.titleBar.setTitle("日流水");
 		$.footerBar.transactionsTable.setTitle("日流水");
+		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/dateTransactions");
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
@@ -32,6 +36,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle("周流水");
+		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/weekTransactions");
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
@@ -42,6 +47,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "monthTransactions") {
 		$.titleBar.setTitle("月流水");
 		$.footerBar.transactionsTable.setTitle("月流水");
+		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/monthTransactions");
 		$.footerBar.transactionsTable.fireEvent("singletap");
 		d = new Date();
 		timeFilter = {
@@ -59,3 +65,5 @@ function onFooterbarTap(e) {
 		$.titleBar.setTitle(e.source.getTitle());
 	}
 }
+
+$.transactionsTable.doFilter(timeFilter);

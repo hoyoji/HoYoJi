@@ -11,3 +11,24 @@
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
 }
+
+"Widget": {
+	color: '#042c37'
+}
+
+"#friendUserLable": {
+	color: '#042c37'
+}
+
+"#localAmountLabel": {
+	color: 'red'
+}
+
+"#amount": {
+	color: '#042c37',
+	fieldColor: "red"
+}
+
+"#expenseTypeLabel": {
+	color: '#042c37'
+}

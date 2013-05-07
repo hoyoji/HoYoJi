@@ -1,10 +1,11 @@
 <Alloy>
 	<View class="container" title="账务">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"
+		image="/images/mainWindow/moneyAll"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<Require id="transactionsSearchTable" src="money/transactionsSearch"/>
-			<Require id="transactionsTable" src="money/transactionsView" sortByField="date" sortReverse="true" groupByField="date"/>
+			<Require id="transactionsTable" src="money/transactionsView"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" controlSlideDown="true"
 		buttons="查找,排序,日流水;日流水;周流水;月流水,报表,账户" imagesFolder="/images/money/moneyAll"

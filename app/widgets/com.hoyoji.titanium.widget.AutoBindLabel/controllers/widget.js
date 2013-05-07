@@ -1,5 +1,8 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+}
 
 $.onWindowOpenDo(function() {
 	var model = $.$attrs.bindModel || $.$model;

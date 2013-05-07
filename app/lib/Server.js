@@ -181,6 +181,7 @@
 								model._syncDelete(record,dbTrans);
 							}
 							db.execute(sql, [id]);
+							Ti.App.fireEvent("updateSyncCount");
 						} else {
 							// 该记录是在服务器上新增的或被修改的。
 							// 1. 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
@@ -225,6 +226,7 @@
 									// 如果该model是新的，我们要通知服务器删除该记录
 									if (model.isNew() && record.id === Alloy.Models.User.id) {
 										db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+										Ti.App.fireEvent("updateSyncCount");
 									}
 								} else {
 									if (model.isNew()) {
@@ -301,6 +303,7 @@
 					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
 					db.close();
 					db = null;
+					Ti.App.fireEvent("updateSyncCount");
 					xFinishedCallback();
 				}, xErrorCallback, "syncPush");
 			}

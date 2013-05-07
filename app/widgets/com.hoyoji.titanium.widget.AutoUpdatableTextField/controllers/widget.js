@@ -9,6 +9,10 @@ if ($.$attrs.passwordMask === "true") {
 if ($.$attrs.keyboardType) {
 	$.field.setKeyboardType($.$attrs.keyboardType);
 }
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+	$.field.setColor($.$attrs.color);
+}
 if (OS_IOS) {
 	$.field.setAutocapitalization(false);
 }
