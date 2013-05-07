@@ -15,3 +15,17 @@
 "#localAmountLabel": {
 	color: 'red'
 }
+
+".firstRow": {
+	color: "#bfbfbf",
+	font: {
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
+
+".secondRow": {
+	font: {
+		fontWeight: 'bolder'
+	}
+}
