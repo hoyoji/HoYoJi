@@ -20,6 +20,7 @@ exports.definition = {
 			messageBox : { type : "MessageBox", attribute : "messages" },
 			fromUser : { type : "User", attribute : null },
 			toUser : { type : "User", attribute : null },
+			friend : { type : "Friend", attribute : null },
 			ownerUser : {
 				type : "User",
 				attribute : "moneyIncomes"
