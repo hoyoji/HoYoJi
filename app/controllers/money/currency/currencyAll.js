@@ -10,7 +10,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 	// return menuSection;
 // }
 
-$.titleBar.bindXTable($.currenciesTable);
+// $.titleBar.bindXTable($.currenciesTable);
 
 var collection = Alloy.Models.User.xGet("currencies");
 $.currenciesTable.addCollection(collection);

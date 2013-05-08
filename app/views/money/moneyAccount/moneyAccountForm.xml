@@ -13,8 +13,7 @@
 				bindModel="$.$model"
 				bindAttribute="currency"
 				bindAttributeIsModel="name"
-				bindModelSelector="money/currency/currencyAll"
-				/>
+				bindModelSelector="money/currency/currencyAll"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
 				bindModel="$.$model"
 				bindAttribute="currentBalance"/>

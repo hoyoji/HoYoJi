@@ -70,7 +70,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 	// return menuSection;
 // }
 
-$.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
+// $.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
 
 var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter({project : selectedProject}, $);
 $.myProjectShareAuthorizationsTable.addCollection(collection);

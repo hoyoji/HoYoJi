@@ -16,29 +16,27 @@
 				var c = Alloy.createCollection(this.config.adapter.collection_name);
 				c.__filterCollection = this;
 				
-				this.__xSetFilterOnCollection(c, winController);
+				c.__xSetFilterOnCollection(winController);
 				
 				c.xSetFilter(filter);
 				return c;
 			},
-			__xSetFilterOnCollection : function(c, winController){
-				this.__addModelFunc = this.__addModel.bind(c);
-				this.__removeModelFunc = this.__removeModel.bind(c);
-				this.__changeModelFunc = this.__changeModel.bind(c);
-                c.__filterCollection.on("add", this.__addModelFunc);
-                c.__filterCollection.on("remove", this.__removeModelFunc);
-                c.__filterCollection.on("sync", this.__changeModelFunc);
+			__xSetFilterOnCollection : function(winController){
+				var self = this;
+                this.__filterCollection.on("add", this.__addModel, this);
+                this.__filterCollection.on("remove", this.__removeModel, this);
+                this.__filterCollection.on("sync", this.__changeModel, this);
                 if(winController){
 					winController.onWindowCloseDo(function(){
-						this.xClearFilter();
-					}.bind(this));		
+						self.xClearFilter();
+					});		
                 }
 			},
 			xClearFilter : function(){
 				if (this.__filterCollection) {
-					this.__filterCollection.off("add", this.__addModelFunc);
-					this.__filterCollection.off("remove", this.__removeModelFunc);
-					this.__filterCollection.off("sync", this.__changeModelFunc);
+					this.__filterCollection.off("add", this.__addModel, this);
+					this.__filterCollection.off("remove", this.__removeModel, this);
+					this.__filterCollection.off("sync", this.__changeModel, this);
 				}
 			},			
 			xFetch : function(options) {
@@ -86,8 +84,8 @@
 			xFetchMatchFilterAdded : [],
 			isFetching : false,
 			isFiltering : false,
-			__addModel : function(model) {
-				if (this.__compareFilter(model)) {
+			__addModel : function(model, collection, options) {
+				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
@@ -95,8 +93,8 @@
 					}
 				}
 			},
-			__changeModel : function(model) {
-				if (this.__compareFilter(model)) {
+			__changeModel : function(model, collection, options) {
+				if (this.__compareFilter(model, options)) {
 					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
@@ -104,8 +102,8 @@
 					this.remove(model);
 				}
 			},
-			__removeModel : function(model) {
-				if (!this.__compareFilter(model)) {
+			__removeModel : function(model, collection, options) {
+				if (!this.__compareFilter(model, options)) {
 					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
@@ -116,7 +114,7 @@
 				this.__filter = filter;
 				if (!this.__filterCollection) {
 					this.__filterCollection = Alloy.Collections[this.config.adapter.collection_name];
-					this.__xSetFilterOnCollection(this, winController);
+					this.__xSetFilterOnCollection(winController);
 				}
 				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
 				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);
@@ -152,9 +150,9 @@
 				// });
 				return this;
 			},
-			__compareFilter : function(model) {
+			__compareFilter : function(model, options) {
 				if (_.isFunction(this.__filter)) {
-					return this.__filter(model);
+					return this.__filter(model, options);
 				}
 				for (var f in this.__filter) {
 					var modelValue = model.xGet(f), filterValue = this.__filter[f];

@@ -1,7 +1,5 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var d = new Date();
-
 function doTimeFilter(collection, timeFilter) {
 	collection.xSetFilter(function(model) {
 		return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
