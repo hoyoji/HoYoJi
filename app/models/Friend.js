@@ -166,11 +166,10 @@ exports.definition = {
 									}, function(e) {
 										alert(e.__summary.msg);
 									});
-									self._xDelete(xFinishCallback, options);
-									xFinishCallback({
-										msg : "删除好友成功"
-									});
-									
+									self._xDelete(function(error){
+										error = error || { msg : "删除好友成功" };
+										xFinishCallback(error);
+									}, options);
 								}, function(e){
 									alert(e.__summary.msg);
 								});
