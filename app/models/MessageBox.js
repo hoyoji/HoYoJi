@@ -86,7 +86,7 @@ exports.definition = {
 							alert(e.__summary.msg);
 						});
 						
-					} else if(msg.xGet("type") === "System.Friend.Delete")
+					} else if(msg.xGet("type") === "System.Friend.Delete"){
 						var friend = Alloy.createModel("Friend").xFindInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
