@@ -240,9 +240,9 @@
 						}
 					});
 					db.execute("COMMIT;");
-					dbTrans.trigger("commit");
 					db.close();
 					db = null;
+					dbTrans.trigger("commit");
 					xFinishedCallback();
 				}, function(e) {
 					xErrorCallback(e);
@@ -316,9 +316,9 @@
 					
 					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
 					db.execute("COMMIT;")
-					dbTrans.trigger("commit");
 					db.close();
 					db = null;
+					dbTrans.trigger("commit");
 					Ti.App.fireEvent("updateSyncCount");
 					xFinishedCallback();
 				}, xErrorCallback, "syncPush");

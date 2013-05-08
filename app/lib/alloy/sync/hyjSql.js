@@ -483,7 +483,6 @@ function Sync(method, model, opts) {
 				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch", model);
-				Ti.App.fireEvent("updateSyncCount");
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
@@ -494,7 +493,7 @@ function Sync(method, model, opts) {
 					// }
 					_.isFunction(opts.success) && opts.success(resp);
 					method === "read" && model.trigger("fetch", model);
-					
+					Ti.App.fireEvent("updateSyncCount");
 				}
 
 				function rollbackTrans() {
