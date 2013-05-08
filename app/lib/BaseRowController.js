@@ -247,9 +247,9 @@
 					}, {dbTrans : dbTrans, wait : true});
 					
 					db.execute("COMMIT;");
-					dbTrans.trigger("commit");
 					db.close();
 					db = null;
+					dbTrans.trigger("commit");
 				});
 			}
 			
