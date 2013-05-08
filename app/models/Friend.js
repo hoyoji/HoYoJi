@@ -155,17 +155,20 @@ exports.definition = {
 									"fromUserId" : Alloy.Models.User.id,
 									"type" : "System.Friend.Delete",
 									"messageState" : "new",
-									"messageTitle" : Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+									"messageTitle" : Alloy.Models.User.xGet("userName"),
 									"date" : (new Date()).toISOString(),
 									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 									"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
 								}, function() {
 									
 									Alloy.Globals.Server.deleteData(
-									[{__dataType : "Friend", id : self.xGet("id")}], function(data) {
-										self._xDelete(xFinishCallback, options);
+									[{__dataType : "Friend", id : self.xGet("id")}], function() {
 									}, function(e) {
 										alert(e.__summary.msg);
+									});
+									self._xDelete(xFinishCallback, options);
+									xFinishCallback({
+										msg : "删除好友成功"
 									});
 									
 								}, function(e){
@@ -179,8 +182,6 @@ exports.definition = {
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-				
-				
 			},
 			syncAddNew : function(record, dbTrans) {
 				var self = this;
