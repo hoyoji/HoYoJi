@@ -243,13 +243,15 @@
 						if (error) {
 							// alert(error.msg);
 							showErrorMsg(error.msg);
+							db.execute("COMMIT;");
+						} else {
+							db.execute("ROLLBACK;");
 						}
+						db.close();
+						db = null;
+						dbTrans.trigger("commit");
 					}, {dbTrans : dbTrans, wait : true});
 					
-					db.execute("COMMIT;");
-					db.close();
-					db = null;
-					dbTrans.trigger("commit");
 				});
 			}
 			
