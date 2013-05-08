@@ -72,6 +72,9 @@
 			putData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
 			},
+			deleteData : function(data, xFinishedCallback, xErrorCallback, target) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "deleteData");
+			},			
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);
