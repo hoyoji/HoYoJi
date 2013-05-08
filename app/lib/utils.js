@@ -115,6 +115,11 @@
 			}
 			return this;
 		}
+		
+		Date.prototype.getTimeStamp = function(){
+			return Math.floor(this.getTime() / 1000);
+		}
+		
 		Date.prototype.getUTCTimeOfDate = function() {
 			return Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds(), this.getUTCMilliseconds());
 		}

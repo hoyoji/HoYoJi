@@ -27,7 +27,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 				"fromUserId" : Alloy.Models.User.xGet("id"),
 				"type" : "Project.Share.Delete",
 				"messageState" : "unread",
-				"messageTitle" : Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "及子项目给您",
+				"messageTitle" : Alloy.Models.User.xGet("userName"),
 				"date" : (new Date()).toISOString(),
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "及子项目给您",
 				"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),

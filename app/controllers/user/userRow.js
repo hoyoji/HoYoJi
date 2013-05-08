@@ -33,10 +33,14 @@ function sendAddFriendMessage(friendlength){
 					friendUser : $.$model,
 					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				});
-				friend.xSave({
+				Alloy.Globals.Server.postData(
+				[friend.toJSON()], function(data) {
+					friend.xSave();
+					alert("不需要用户验证,可以直接添加");
+				}, function(e) {
+					alert(e.__summary.msg);
 				});
 			});
-			alert("不需要用户验证,可以直接添加");
 		} else {
 			var newMessage = Alloy.createModel("Message");
 			newMessage.xSet("toUser", $.$model);

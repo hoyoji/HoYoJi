@@ -147,6 +147,7 @@
 			// $.error.addEventListener("singletap", $.hideErrorMsg);
 			$.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
+				$.trigger("singletap");
 				if ($.saveableMode === "read") {
 					return;
 				}else if($.saveableMode === "edit" && $.$attrs.editModeEditability === "noneditable"){

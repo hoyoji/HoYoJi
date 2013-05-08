@@ -117,7 +117,7 @@ function Sync(method, model, opts) {
 					}
 				}
 				if(model.config.columns["lastClientUpdateTime"]){
-					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+					model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
 				}
 				var names = [], values = [], q = [];
 				for (var k in columns) {
@@ -299,7 +299,7 @@ function Sync(method, model, opts) {
 			break;
 		case "update":
 			if(model.config.columns["lastClientUpdateTime"]){
-					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+					model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
 			}
 			var names = [], values = [], q = [];
 			for (var k in columns) {

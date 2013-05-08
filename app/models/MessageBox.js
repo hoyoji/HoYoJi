@@ -29,7 +29,6 @@ exports.definition = {
 				})
 				newMessages.map(function(msg){
 					if(msg.xGet("type") === "System.Friend.AddResponse"){
-						msg.save({messageState : "unread"}, {wait : true, patch : true});
 						var deleteFriendMsgLength = Alloy.createCollection("Message").xSearchInDb({
 								fromUserId : msg.xGet("fromUserId"),
 								toUserId : Alloy.Models.User.id,
@@ -37,42 +36,87 @@ exports.definition = {
 								messageState : "new"
 							}).length;
 						if(deleteFriendMsgLength === 0){
-							var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-							friendUserId : msg.xGet("fromUserId"),
-							ownerUserId : Alloy.Models.User.id
-							}).length;
-							if (friendlength === 0) {
+							Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
+								friendUserId : msg.xGet("fromUserId"),
+								ownerUserId : Alloy.Models.User.id
+							}], function(data) {
+								if (data[0].length = 0) {
+									var friend = Alloy.createModel("Friend", {
+										ownerUser :　Alloy.Models.User,
+										friendUser : msg.xGet("fromUser"),
+										friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+									});
+									
+									Alloy.Globals.Server.postData(
+									[friend.toJSON()], function(data) {
+										msg.save({messageState : "unread"}, {wait : true, patch : true});
+										friend.xSave({syncFromServer : true});
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								}
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}
+						
+					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
+						Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
+								friendUserId : msg.xGet("fromUserId"),
+								ownerUserId : Alloy.Models.User.id
+						}], function(data) {
+							if (data[0].length = 0) {
 								var friend = Alloy.createModel("Friend", {
 									ownerUser :　Alloy.Models.User,
 									friendUser : msg.xGet("fromUser"),
 									friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 								});
-								friend.xSave();
+								
+								Alloy.Globals.Server.postData(
+								[friend.toJSON()], function(data) {
+									friend.xSave({syncFromServer : true});
+									msg.save({messageState : "unread"}, {wait : true, patch : true});
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
 							}
-						}
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
 						
-					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
-						msg.save({messageState : "unread"}, {wait : true, patch : true});
-						var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-							friendUserId : msg.xGet("fromUserId"),
-							ownerUserId : Alloy.Models.User.id
-							}).length;
-						if (friendlength===0) {
-							var friend = Alloy.createModel("Friend", {
-								ownerUser :　Alloy.Models.User,
-								friendUser : msg.xGet("fromUser"),
-								friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
-							});
-							friend.xSave();
-						}
 					} else if(msg.xGet("type") === "System.Friend.Delete"){
-						msg.save({messageState : "unread"}, {wait : true, patch : true});
 						var friend = Alloy.createModel("Friend").xFindInDb({
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							});
 					    if (friend && friend.xGet("id")) {
-							friend._xDelete();
+							Alloy.Globals.Server.deleteData(
+							[{__dataType : "Friend", id : friend.xGet("id")}], function(data) {
+								friend._xDelete({syncFromServer : true});
+								msg.save({messageState : "unread"}, {wait : true, patch : true});
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}else{
+							Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
+								friendUserId : msg.xGet("fromUserId"),
+								ownerUserId : Alloy.Models.User.id
+							}], function(data) {
+								if (data[0].length > 0) {
+									Alloy.Globals.Server.deleteData(
+									[{__dataType : "Friend", id : data[0][0].xGet("id")}], function(data) {
+										msg.save({messageState : "unread"}, {wait : true, patch : true});
+										data[0][0]._xDelete({syncFromServer : true});
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								}
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
 						}
 					} 
 					// else if(msg.xGet("type") === "Project.Share.Reject"){
