@@ -9,6 +9,12 @@ $.makeContextMenu = function() {
 			selectedExpense : $.$model
 		});
 	}));
+	menuSection.add($.createContextMenuItem("发送给好友", function() {
+		Alloy.Globals.openWindow("message/accountShare", {
+			$model : "Message",
+			selectedAccount : $.$model
+		});
+	}));
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		$.deleteModel();
 	}, !$.$model.canDelete()));
