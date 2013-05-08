@@ -13,3 +13,10 @@
 "TextArea"  : {
 	backgroundColor : "#f1fbfb"
 }
+
+".rowMainTitle" : {
+	font: {
+		fontSize : 28,
+		fontWeight: 'bold'
+	}
+}
