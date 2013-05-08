@@ -134,7 +134,7 @@ exports.definition = {
 					state : "Accept",
 					friendId : this.xGet("id")
 				}], function(data) {
-					if (options.syncFromServer !== true && data[0].length > 0) {
+					if (data[0].length > 0) {
 						xFinishCallback({
 							msg : "您与该好友有共享项目,请移除共享再删除"
 						});
@@ -144,7 +144,7 @@ exports.definition = {
 							state : "Accept",
 							ownerUserId : self.xGet("friendUserId")
 						}], function(data) {
-							if (options.syncFromServer !== true && data[0].length > 0) {
+							if (data[0].length > 0) {
 								xFinishCallback({
 									msg : "您与该好友有共享项目,请移除共享再删除"
 								});
@@ -160,7 +160,14 @@ exports.definition = {
 									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 									"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
 								}, function() {
-									self._xDelete(xFinishCallback, options);
+									
+									Alloy.Globals.Server.deleteData(
+									[{__dataType : "Friend", id : self.xGet("id")}], function(data) {
+										self._xDelete(xFinishCallback, options);
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+									
 								}, function(e){
 									alert(e.__summary.msg);
 								});
