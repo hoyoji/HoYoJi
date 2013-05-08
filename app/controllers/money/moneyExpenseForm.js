@@ -28,17 +28,17 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null
 	});
 	$.setSaveableMode("add");
-	function updateAmount() {
-		$.amount.setValue($.$model.xGet("amount"));
-		$.amount.field.fireEvent("change");
-	}
-
-
-	$.$model.on("xchange:amount", updateAmount);
-	$.onWindowCloseDo(function() {
-		$.$model.off("xchange:amount", updateAmount);
-	});
 }
+
+function updateAmount() {
+	$.amount.setValue($.$model.xGet("amount"));
+	$.amount.field.fireEvent("change");
+}
+
+$.$model.on("xchange:amount", updateAmount);
+$.onWindowCloseDo(function() {
+	$.$model.off("xchange:amount", updateAmount);
+});
 
 if ($.saveableMode === "read") {
 	// $.exchangeRate.hide();
@@ -53,10 +53,10 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		if($.$model.isNew()){
-		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
-		}else{
-			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+		if ($.$model.isNew()) {
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		} else {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -136,6 +136,14 @@ if ($.saveableMode === "read") {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 				oldMoneyAccount.xAddToSave($);
 			}
+		}
+		if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
+			var oldAccount = $.$model.previous("moneyAccount");
+			var newAccount = $.$model.xGet("moneyAccount");
+			oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xGet("amount"));
+			newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+			oldAccount.xAddToSave($);
+			newAccount.xAddToSave($);
 		}
 
 		if ($.$model.isNew()) {
