@@ -13,11 +13,11 @@
 }
 
 "#localAmountLabel": {
-	color: 'green'
+	color: '#329600'
 }
 
 ".firstRow": {
-	color: "#bfbfbf",
+	color: "#a7a7a7",
 	font: {
 		fontSize: 12,
 		fontWeight: 'normal'
