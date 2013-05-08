@@ -242,10 +242,10 @@
 					deleteFunc.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
-							showErrorMsg(error.msg);
-							db.execute("COMMIT;");
-						} else {
 							db.execute("ROLLBACK;");
+							showErrorMsg(error.msg);
+						} else {
+							db.execute("COMMIT;");
 						}
 						db.close();
 						db = null;
