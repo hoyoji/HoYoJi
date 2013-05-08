@@ -22,6 +22,7 @@
 
 ".secondRow": {
 	font: {
-		fontWeight: 'bolder'
+	    fontSize: 20,
+		fontWeight: 'bold'
 	}
 }
