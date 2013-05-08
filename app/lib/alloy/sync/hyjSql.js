@@ -117,7 +117,7 @@ function Sync(method, model, opts) {
 					}
 				}
 				if(model.config.columns["lastClientUpdateTime"]){
-					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+					model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
 				}
 				var names = [], values = [], q = [];
 				for (var k in columns) {
@@ -201,7 +201,6 @@ function Sync(method, model, opts) {
 				if (!opts.syncFromServer) {
 					if (!model.xGet("lastServerUpdateTime") && _creatorId !== "0") {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','create','" + ownerUserId + "','" + _creatorId + "')");
-						Ti.App.fireEvent("updateSyncCount");
 					}
 				}
 
@@ -300,7 +299,7 @@ function Sync(method, model, opts) {
 			break;
 		case "update":
 			if(model.config.columns["lastClientUpdateTime"]){
-					model.attributes.lastClientUpdateTime = (new Date()).getTime();
+					model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
 			}
 			var names = [], values = [], q = [];
 			for (var k in columns) {
@@ -406,7 +405,6 @@ function Sync(method, model, opts) {
 					var r = db.execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
 					if (r.rowCount === 0) {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','update','" + ownerUserId + "','" + ownerUserId + "')");
-						Ti.App.fireEvent("updateSyncCount");
 					}
 				}
 				resp = model.attributes;
@@ -454,14 +452,12 @@ function Sync(method, model, opts) {
 					var r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'");
 					if (r.rowCount > 0) {
 						db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
-						Ti.App.fireEvent("updateSyncCount");
 					} else {
 						r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
 						if (r.rowCount > 0) {
 							db.execute("Update ClientSyncTable SET operation = 'delete' WHERE recordId = '" + model.id + "'");
 						} else {
 							db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
-							Ti.App.fireEvent("updateSyncCount");
 						}
 					}
 				}
@@ -487,6 +483,7 @@ function Sync(method, model, opts) {
 				opts.dbTrans.trigger("commit");
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch", model);
+				Ti.App.fireEvent("updateSyncCount");
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
@@ -517,7 +514,11 @@ function Sync(method, model, opts) {
 				// model._previousAttributes = {};
 			// }
 			_.isFunction(opts.success) && opts.success(resp);
-			method === "read" && model.trigger("fetch", model);
+			if(method === "read"){
+				model.trigger("fetch", model);
+			} else {
+			 	Ti.App.fireEvent("updateSyncCount");	
+			}
 		}
 	} else
 		_.isFunction(opts.error) && opts.error(model, error);

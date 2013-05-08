@@ -592,8 +592,14 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	
 	if(sortByField){
 		data.sort(function(a, b) {
-			a = findObject(a.id).xDeepGet(sortByField);
-			b = findObject(b.id).xDeepGet(sortByField);
+			a = findObject(a.id);
+			b = findObject(b.id);
+			if(!a || !b){
+				return 0;
+			}
+			
+			a = a.xDeepGet(sortByField);
+			b = b.xDeepGet(sortByField);
 			if (a < b) {
 				return sortReverse ? 1 : -1;
 			} else if (a > b) {

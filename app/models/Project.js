@@ -92,18 +92,18 @@ exports.definition = {
 					}, options);
 				// // }
 			},
-			getSharedWithHerSubProjects : function(){
-				if(!this.__getSharedWIthHerSubProjectsFilter){
-					this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({
-					// ....
-					});
-				}
-				return this.__getSharedWIthHerSubProjectsFilter;
-			},
+			// getSharedWithHerSubProjects : function(){
+				// if(!this.__getSharedWIthHerSubProjectsFilter){
+					// this.__getSharedWIthHerSubProjectsFilter = this.xGet("subProjects").xCreateFilter({
+					// // ....
+					// });
+				// }
+				// return this.__getSharedWIthHerSubProjectsFilter;
+			// },
 			getSharedWithHerFriends : function(){
 				if(!this.__getSharedWithHerFriendsFilter){
 					this.__getSharedWithHerFriendsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
-						return model.xGet("state") === "Wait" || model.xGet("state") === "Accept";
+						return model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept";
 					});
 				}
 				return this.__getSharedWithHerFriendsFilter;

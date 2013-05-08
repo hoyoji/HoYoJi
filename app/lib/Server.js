@@ -72,6 +72,9 @@
 			putData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
 			},
+			deleteData : function(data, xFinishedCallback, xErrorCallback, target) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "deleteData");
+			},			
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);
@@ -293,7 +296,27 @@
 
 				this.postData(data, function(data) {
 					var db = Ti.Database.open("hoyoji");
+					
+					var dbTrans = {
+						db : db
+					};
+					_.extend(dbTrans, Backbone.Events);
+
+					db.execute("BEGIN;");
+
+					var lastSyncTime = data.lastSyncTime;
+					Alloy.Models.User.save({
+						"lastSyncTime" : lastSyncTime
+					}, {
+						syncFromServer : true,
+						patch : true,
+						dbTrans : dbTrans
+					});
+
+					
 					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
+					db.execute("COMMIT;")
+					dbTrans.trigger("commit");
 					db.close();
 					db = null;
 					Ti.App.fireEvent("updateSyncCount");

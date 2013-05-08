@@ -38,7 +38,7 @@ function refreshSyncCount(){
 	var config = Alloy.createModel("ClientSyncTable").config,
 	Model = Alloy.M("ClientSyncTable", {config : config}),
 	model = new Model({TOTAL : 0});
-	var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main ";
+	var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main WHERE tableName <> 'Login'";
 	model.fetch({query : query});
 	$.footerBar.sync.setBubbleCount(model.get("TOTAL") || 0);
 }

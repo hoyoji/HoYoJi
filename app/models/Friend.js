@@ -79,18 +79,18 @@ exports.definition = {
 				if(!this.__getSharedWithHerProjectsFilter){
 					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
 						found = false;
-							if(model.xGet("state") === "Wait" || model.xGet("state") === "Accept"){
-								if (!model.xGet("project").xGet("parentProject")){
+							if(model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept"){
+								if (!model.xPrevious("project").xPrevious("parentProject")){
 									found = true;
 								}else{
 									var parentProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-										projectId : model.xGet("project").xGet("parentProject").xGet("id"),
-										friendId : model.xGet("friendId")
+										projectId : model.xPrevious("project").xPrevious("parentProject").xGet("id"),
+										friendId : model.xPrevious("friendId")
 									});
 									if(parentProjectShareAuthorizations.length > 0){
 										found = true;
 										for(var i=0 ; i<parentProjectShareAuthorizations.length ; i++){
-											if(parentProjectShareAuthorizations.at(i).xGet("state") === "Wait" || parentProjectShareAuthorizations.at(i).xGet("state") === "Accept"){
+											if(parentProjectShareAuthorizations.at(i).xPrevious("state") === "Wait" || parentProjectShareAuthorizations.at(i).xPrevious("state") === "Accept"){
 											 	found = false;
 											 	break;
 											 }
