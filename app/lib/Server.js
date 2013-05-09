@@ -139,13 +139,8 @@
 					var lastSyncTime = data.lastSyncTime;
 					data = _.flatten(data.data);
 
-					var db = Ti.Database.open("hoyoji");
-					var dbTrans = {
-						db : db
-					};
-					_.extend(dbTrans, Backbone.Events);
-
-					db.execute("BEGIN;");
+					var dbTrans = Alloy.Globals.DataStore.createTransaction();
+					dbTrans.begin();
 
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
@@ -170,20 +165,20 @@
 								for(var hasMany in model.config.hasMany){
 									model.xGet(hasMany).forEach(function(item){
 										item.syncDelete(null, dbTrans);
-										db.execute(sql, [item.xGet("id")]);
+										dbTrans.db.execute(sql, [item.xGet("id")]);
 									});
 								}
 								model.syncDelete(record, dbTrans);
 								model._syncDelete(record,dbTrans);
 							}
-							db.execute(sql, [id]);
+							dbTrans.db.execute(sql, [id]);
 							Ti.App.fireEvent("updateSyncCount");
 						} else {
 							// 该记录是在服务器上新增的或被修改的。
 							// 1. 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
 							// 2. 否则，检查看该记录在不在本地表里面, 如果不再我们将其添加进来
 							sql = "SELECT * FROM ClientSyncTable WHERE recordId = ?";
-							rs = db.execute(sql, [record.id]);
+							rs = dbTrans.db.execute(sql, [record.id]);
 							if (rs.rowCount > 0) {
 								var operation = rs.fieldByName("operation");
 								rs.close()
@@ -210,7 +205,7 @@
 								sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'delete'";
 								for(var belongsTo in model.config.belongsTo){
 									if(model.config.belongsTo[belongsTo].attribute){
-										rs = db.execute(sql, [record.id]);
+										rs = dbTrans.db.execute(sql, [record.id]);
 										if (rs.rowCount > 0) {
 											belongsToDeleted = true;
 											break;
@@ -221,7 +216,7 @@
 								if(belongsToDeleted) {
 									// 如果该model是新的，我们要通知服务器删除该记录
 									if (model.isNew() && record.id === Alloy.Models.User.id) {
-										db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+										dbTrans.db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
 										Ti.App.fireEvent("updateSyncCount");
 									}
 								} else {
@@ -239,38 +234,12 @@
 							rs = null;
 						}
 					});
-					db.execute("COMMIT;");
-					db.close();
-					db = null;
-					dbTrans.trigger("commit");
+					dbTrans.commit();
 					xFinishedCallback();
 				}, function(e) {
 					xErrorCallback(e);
 				}, "syncPull");
 			},
-			// _syncInsertLocal : function(record, dataType, db) {
-			// // 该记录不在本地表里面, 我们将其添加进来
-			// var attrs = _.keys(record), values = _.values(record), questionMarks = attrs.map(function() {
-			// return "?";
-			// }), sql = "INSERT INTO " + dataType + "(" + attrs.join(",") + ") VALUES(" + questionMarks.join(",") + ")";
-			// db.execute(sql, values);
-			// },
-			// _syncDeleteLocal : function(record, dataType, db) {
-			// var sql = "DELETE FROM " + dataType + " WHERE id = ?";
-			// db.execute(sql, [record.id]);
-			// },
-			// _syncUpdateLocal : function(record, dataType, db) {
-			// var sql, id = record.id, values = [], attrs = [];
-			// delete record.id;
-			// for (var attr in record) {
-			// attrs.push(attr + "=?");
-			// values.push(record[attr]);
-			// }
-			// values.push(id);
-			// sql = "UPDATE " + dataType + " SET " + attrs.join(",") + " WHERE id = ?";
-			// db.execute(sql, values);
-			// record.id = id;
-			// },
 			syncPush : function(xFinishedCallback, xErrorCallback) {
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"), data = [];
 				clientSyncRecords.fetch({
@@ -295,14 +264,8 @@
 				});
 
 				this.postData(data, function(data) {
-					var db = Ti.Database.open("hoyoji");
-					
-					var dbTrans = {
-						db : db
-					};
-					_.extend(dbTrans, Backbone.Events);
-
-					db.execute("BEGIN;");
+					var dbTrans = Alloy.Globals.DataStore.createTransaction();
+					dbTrans.begin();
 
 					var lastSyncTime = data.lastSyncTime;
 					Alloy.Models.User.save({
@@ -314,11 +277,8 @@
 					});
 
 					
-					db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
-					db.execute("COMMIT;")
-					db.close();
-					db = null;
-					dbTrans.trigger("commit");
+					dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
+					dbTrans.commit();
 					Ti.App.fireEvent("updateSyncCount");
 					xFinishedCallback();
 				}, xErrorCallback, "syncPush");

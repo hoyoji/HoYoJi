@@ -36,25 +36,29 @@ exports.definition = {
 								messageState : "new"
 							}).length;
 						if(deleteFriendMsgLength === 0){
-							var friendLength = Alloy.createCollection("Friend").xSearchInDb({
+							Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
-							}).length;
-						    if (friendLength === 0) {
-					    		var friend = Alloy.createModel("Friend", {
-									ownerUser :　Alloy.Models.User,
-									friendUser : msg.xGet("fromUser"),
-									friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
-								});
-								
-								Alloy.Globals.Server.postData(
-								[friend.toJSON()], function(data) {
-									msg.save({messageState : "unread"}, {wait : true, patch : true});
-									friend.xSave({syncFromServer : true});
-								}, function(e) {
-									alert(e.__summary.msg);
-								});
-						    }
+							}], function(data) {
+								if (data[0].length === 0) {
+									var friend = Alloy.createModel("Friend", {
+										ownerUser :　Alloy.Models.User,
+										friendUser : msg.xGet("fromUser"),
+										friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+									});
+									
+									Alloy.Globals.Server.postData(
+									[friend.toJSON()], function(data) {
+										msg.save({messageState : "unread"}, {wait : true, patch : true});
+										friend.xSave({syncFromServer : true});
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								}
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
 						}
 						
 					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
@@ -63,7 +67,7 @@ exports.definition = {
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 						}], function(data) {
-							if (data[0].length = 0) {
+							if (data[0].length === 0) {
 								var friend = Alloy.createModel("Friend", {
 									ownerUser :　Alloy.Models.User,
 									friendUser : msg.xGet("fromUser"),
