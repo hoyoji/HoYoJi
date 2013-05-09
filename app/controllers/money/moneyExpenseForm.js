@@ -137,7 +137,8 @@ if ($.saveableMode === "read") {
 				oldMoneyAccount.xAddToSave($);
 			}
 		}
-		if ($.$model.xGet("moneyExpenseDetails").length && $.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
+		else{
+		if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
 			var oldAccount = $.$model.previous("moneyAccount");
 			var newAccount = $.$model.xGet("moneyAccount");
 			oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xGet("amount"));
@@ -145,7 +146,7 @@ if ($.saveableMode === "read") {
 			oldAccount.xAddToSave($);
 			newAccount.xAddToSave($);
 		}
-
+}
 		if ($.$model.isNew()) {
 			// save all expense details
 			$.$model.xGet("moneyExpenseDetails").map(function(item) {
