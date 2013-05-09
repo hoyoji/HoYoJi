@@ -115,11 +115,11 @@ exports.definition = {
 			},
 			getTransferOut : function() {
 				var transferOut = this.xGet("transferOut");
-				return transferOut.xGet("name");
+				return transferOut.xGet("name") + "转出";
 			},
 			getTransferIn : function() {
 				var transferIn = this.xGet("transferIn");
-				return transferIn.xGet("name");
+				return "转入" + transferIn.xGet("name");
 			},
 			getTransferOutAmount : function() {
 				return this.xGet("transferOut").xGet("currency").xGet("symbol") + this.xGet("transferOutAmount").toUserCurrency();
