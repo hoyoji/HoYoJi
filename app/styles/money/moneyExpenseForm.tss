@@ -21,12 +21,12 @@
 }
 
 "#localAmountLabel": {
-	color: 'red'
+	color: '#c80032'
 }
 
 "#amount": {
 	color: '#042c37',
-	fieldColor: "red"
+	fieldColor: "#c80032"
 }
 
 "#expenseTypeLabel": {

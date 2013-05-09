@@ -143,7 +143,7 @@ if ($.saveableMode === "read") {
 			}
 		}
 		
-		if ($.$model.hasChanged("moneyAccount")) {
+		if ($.$model.xGet("moneyIncomeDetails").length && $.$model.hasChanged("moneyAccount")) {
 			var oldAccount = $.$model.previous("moneyAccount");
 			var newAccount = $.$model.xGet("moneyAccount");
 			oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.xGet("amount"));

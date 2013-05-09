@@ -198,7 +198,7 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			getInterest : function() {
-				return this.xGet("interest").toUserCurrency();
+				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate")).toUserCurrency();
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
