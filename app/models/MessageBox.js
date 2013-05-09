@@ -36,7 +36,8 @@ exports.definition = {
 								messageState : "new"
 							}).length;
 						if(deleteFriendMsgLength === 0){
-							var friendLength = Alloy.createCollection("Friend").xSearchInDb({
+							Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 							}], function(data) {
