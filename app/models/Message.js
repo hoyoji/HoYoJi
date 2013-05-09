@@ -43,7 +43,7 @@ exports.definition = {
 				if(!fromUser.id){
 					Alloy.Globals.Server.loadData("User", [record.fromUserId], function(collection) {
 						if (collection.length > 0) {
-							successCB();
+							
 						}
 					});
 				}

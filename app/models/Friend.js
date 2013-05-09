@@ -7,7 +7,7 @@ exports.definition = {
 			friendUserId : "TEXT NOT NULL",
 			friendCategoryId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
 		},
@@ -61,7 +61,7 @@ exports.definition = {
 		}
 	},
 	extendModel : function(Model) {
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			validators : {
 				friendCategory : function(xValidateComplete) {
 					var error;
@@ -73,33 +73,33 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getSharedWithHerProjects : function(){
+			getSharedWithHerProjects : function() {
 				var self = this;
 				var found = false;
-				if(!this.__getSharedWithHerProjectsFilter){
-					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model){
+				if (!this.__getSharedWithHerProjectsFilter) {
+					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model) {
 						found = false;
-							if(model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept"){
-								if (!model.xPrevious("project").xPrevious("parentProject")){
+						if (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept") {
+							if (!model.xPrevious("project").xPrevious("parentProject")) {
+								found = true;
+							} else {
+								var parentProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+									projectId : model.xPrevious("project").xPrevious("parentProject").xGet("id"),
+									friendId : model.xPrevious("friendId")
+								});
+								if (parentProjectShareAuthorizations.length > 0) {
 									found = true;
-								}else{
-									var parentProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-										projectId : model.xPrevious("project").xPrevious("parentProject").xGet("id"),
-										friendId : model.xPrevious("friendId")
-									});
-									if(parentProjectShareAuthorizations.length > 0){
-										found = true;
-										for(var i=0 ; i<parentProjectShareAuthorizations.length ; i++){
-											if(parentProjectShareAuthorizations.at(i).xPrevious("state") === "Wait" || parentProjectShareAuthorizations.at(i).xPrevious("state") === "Accept"){
-											 	found = false;
-											 	break;
-											 }
+									for (var i = 0; i < parentProjectShareAuthorizations.length; i++) {
+										if (parentProjectShareAuthorizations.at(i).xPrevious("state") === "Wait" || parentProjectShareAuthorizations.at(i).xPrevious("state") === "Accept") {
+											found = false;
+											break;
 										}
-									}else{
-										found = true;
 									}
+								} else {
+									found = true;
 								}
 							}
+						}
 						return found;
 					});
 				}
@@ -128,64 +128,73 @@ exports.definition = {
 
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
+				if (options.dbTrans) {
+					options.dbTrans.xCommitStart();
+				}
 				Alloy.Globals.Server.getData([{
 					__dataType : "ProjectShareAuthorization",
 					ownerUserId : Alloy.Models.User.id,
 					state : "Accept",
 					friendId : this.xGet("id")
+				}, {
+					__dataType : "ProjectShareAuthorization",
+					state : "Accept",
+					ownerUserId : self.xGet("friendUserId")
 				}], function(data) {
 					if (data[0].length > 0) {
 						xFinishCallback({
 							msg : "您与该好友有共享项目,请移除共享再删除"
 						});
+					} else if (data[1].length > 0) {
+						xFinishCallback({
+							msg : "您与该好友有共享项目,请移除共享再删除"
+						});
 					} else {
-						Alloy.Globals.Server.getData([{
-							__dataType : "ProjectShareAuthorization",
-							state : "Accept",
-							ownerUserId : self.xGet("friendUserId")
-						}], function(data) {
-							if (data[0].length > 0) {
-								xFinishCallback({
-									msg : "您与该好友有共享项目,请移除共享再删除"
-								});
-							} else {
-								Alloy.Globals.Server.sendMsg({
-									id : guid(),
-									"toUserId" : self.xGet("friendUserId"),
-									"fromUserId" : Alloy.Models.User.id,
-									"type" : "System.Friend.Delete",
-									"messageState" : "new",
-									"messageTitle" : Alloy.Models.User.xGet("userName"),
-									"date" : (new Date()).toISOString(),
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-									"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
-								}, function() {
-									
-									Alloy.Globals.Server.deleteData(
-									[{__dataType : "Friend", id : self.xGet("id")}], function() {
-									}, function(e) {
-										alert(e.__summary.msg);
-									});
-									self._xDelete(function(error){
-										error = error || { msg : "删除好友成功" };
-										xFinishCallback(error);
-									}, options);
-								}, function(e){
-									alert(e.__summary.msg);
-								});
-							}
+						Alloy.Globals.Server.sendMsg({
+							id : guid(),
+							"toUserId" : self.xGet("friendUserId"),
+							"fromUserId" : Alloy.Models.User.id,
+							"type" : "System.Friend.Delete",
+							"messageState" : "new",
+							"messageTitle" : Alloy.Models.User.xGet("userName"),
+							"date" : (new Date()).toISOString(),
+							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+							"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
+						}, function() {
+							Alloy.Globals.Server.deleteData([{
+								__dataType : "Friend",
+								id : self.xGet("id")
+							}], function() {
+								
+								var delSuccess = self._xDelete(function(error){
+									xFinishCallback(error);
+								}, options);
+								
+								if (delSuccess && options.dbTrans) {
+									options.dbTrans.xCommitEnd();
+								}
+								
+							}, function(e) {
+								alert(e.__summary.msg);
+								xFinishCallback(e.__summary);
+							});
+							
 						}, function(e) {
 							alert(e.__summary.msg);
+							xFinishCallback(e.__summary);
 						});
 					}
 				}, function(e) {
 					alert(e.__summary.msg);
+					xFinishCallback(e.__summary);
 				});
 			},
 			syncAddNew : function(record, dbTrans) {
 				var self = this;
-				var friendUser = Alloy.createModel("User").xFindInDb({id : record.friendUserId});
-				if(!friendUser.id){
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				if (!friendUser.id) {
 					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
 						if (collection.length > 0) {
 							successCB();
@@ -198,7 +207,7 @@ exports.definition = {
 		return Model;
 	},
 	extendCollection : function(Collection) {
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
 		return Collection;

@@ -474,13 +474,7 @@ function Sync(method, model, opts) {
 		}
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
-				db.execute("COMMIT;");
-				db.close();
-				// if(method !== "read"){
-					// model.changed = {};
-					// // model._previousAttributes = {};
-				// }
-				opts.dbTrans.trigger("commit");
+				opts.dbTrans.commit();
 				_.isFunction(opts.success) && opts.success(resp);
 				method === "read" && model.trigger("fetch", model);
 			} else {
