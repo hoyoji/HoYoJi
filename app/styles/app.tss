@@ -16,7 +16,7 @@
 
 ".rowMainTitle" : {
 	font: {
-		fontSize : 28,
+		fontSize : 20,
 		fontWeight: 'bold'
 	}
 }

@@ -36,8 +36,7 @@ exports.definition = {
 								messageState : "new"
 							}).length;
 						if(deleteFriendMsgLength === 0){
-							Alloy.Globals.Server.getData([{
-								__dataType : "Friend",
+							var friendLength = Alloy.createCollection("Friend").xSearchInDb({
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 							}], function(data) {
@@ -87,19 +86,19 @@ exports.definition = {
 						});
 						
 					} else if(msg.xGet("type") === "System.Friend.Delete"){
-						// var friend = Alloy.createModel("Friend").xFindInDb({
-							// friendUserId : msg.xGet("fromUserId"),
-							// ownerUserId : Alloy.Models.User.id
-							// });
-					    // if (friend && friend.xGet("id")) {
-							// Alloy.Globals.Server.deleteData(
-							// [{__dataType : "Friend", id : friend.xGet("id")}], function(data) {
-								// friend._xDelete({syncFromServer : true});
-								// msg.save({messageState : "unread"}, {wait : true, patch : true});
-							// }, function(e) {
-								// alert(e.__summary.msg);
-							// });
-						// }else{
+						var friend = Alloy.createModel("Friend").xFindInDb({
+							friendUserId : msg.xGet("fromUserId"),
+							ownerUserId : Alloy.Models.User.id
+							});
+					    if (friend && friend.xGet("id")) {
+							Alloy.Globals.Server.deleteData(
+							[{__dataType : "Friend", id : friend.xGet("id")}], function(data) {
+								friend._xDelete();
+								msg.save({messageState : "unread"}, {wait : true, patch : true});
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}else{
 							Alloy.Globals.Server.getData([{
 								__dataType : "Friend",
 								friendUserId : msg.xGet("fromUserId"),
@@ -107,14 +106,14 @@ exports.definition = {
 							}], function(data) {
 								if (data[0].length > 0) {
 									Alloy.Globals.Server.deleteData(
-									[{__dataType : "Friend", id : data[0][0].xGet("id")}], function(data) {
-										var friend = Alloy.createModel("Friend").xFindInDb({
-											friendUserId : msg.xGet("fromUserId"),
-											ownerUserId : Alloy.Models.User.id
-											});
-									    if (friend && friend.xGet("id")) {
-												friend._xDelete({syncFromServer : true});
-										}
+									[{__dataType : "Friend", id : data[0][0].id}], function(data) {
+										// var friend = Alloy.createModel("Friend").xFindInDb({
+											// friendUserId : msg.xGet("fromUserId"),
+											// ownerUserId : Alloy.Models.User.id
+											// });
+									    // if (friend && friend.xGet("id")) {
+												// friend._xDelete();
+										// }
 										msg.save({messageState : "unread"}, {wait : true, patch : true});
 									}, function(e) {
 										alert(e.__summary.msg);
@@ -123,7 +122,7 @@ exports.definition = {
 							}, function(e) {
 								alert(e.__summary.msg);
 							});
-						// }
+						}
 					} 
 					// else if(msg.xGet("type") === "Project.Share.Reject"){
 						// msg.save({messageState : "unread"}, {wait : true, patch : true});
