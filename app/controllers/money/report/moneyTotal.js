@@ -33,7 +33,7 @@ exports.refresh = function(){
 	model = new Model({TOTAL : 0});
 	
 	model.fetch({query : query});
-	var value = model.get("TOTAL") || 0;
+	value = model.get("TOTAL") || 0;
 	$.moneyTotal.setText(value.toUserCurrency());
 }
 
