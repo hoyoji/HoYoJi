@@ -58,10 +58,10 @@ if ($.saveableMode === "read") {
 		// $.ownerUser.hide();
 		// $.localAmount.setHeight(0);
 		// $.ownerUser.setHeight(0);
-		if($.$model.isNew()){
-		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
-		}else{
-			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+		if ($.$model.isNew()) {
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		} else {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -141,17 +141,16 @@ if ($.saveableMode === "read") {
 				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 			}
+		} else {
+			if ($.$model.hasChanged("moneyAccount")) {
+				var oldAccount = $.$model.previous("moneyAccount");
+				var newAccount = $.$model.xGet("moneyAccount");
+				oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+				newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
+				oldAccount.xAddToSave($);
+				newAccount.xAddToSave($);
+			}
 		}
-		
-		if ($.$model.xGet("moneyIncomeDetails").length && $.$model.hasChanged("moneyAccount")) {
-			var oldAccount = $.$model.previous("moneyAccount");
-			var newAccount = $.$model.xGet("moneyAccount");
-			oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.xGet("amount"));
-			newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
-			oldAccount.xAddToSave($);
-			newAccount.xAddToSave($);
-		}
-		
 		if ($.$model.isNew()) {
 			// save all income details
 			$.$model.xGet("moneyIncomeDetails").map(function(item) {
