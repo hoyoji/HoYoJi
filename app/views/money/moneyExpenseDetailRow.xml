@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" height="42" openForm="money/moneyExpenseDetailForm">
-		<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
+		<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 		<View id="content" class="row-content" left="3" height="Ti.UI.FILL">
 			<Widget id="name" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
 			bindModel = "$.$model"
