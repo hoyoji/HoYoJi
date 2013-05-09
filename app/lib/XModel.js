@@ -432,7 +432,7 @@
 					options = options || {};
 					options.wait = true;
 					this.destroy(options);
-				} else {
+				} else if (xFinishCallback) {
 					xFinishCallback(error);
 				}
 				return this;

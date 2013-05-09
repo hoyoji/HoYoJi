@@ -239,22 +239,23 @@
 					};
 					_.extend(dbTrans, Backbone.Events);
 					db.execute("BEGIN;");
+					
+					var options = {dbTrans : dbTrans, wait : true};
 					deleteFunc.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
-							db.execute("ROLLBACK;");
-							db.close();
-							db = null;
-							dbTrans.trigger("rollback");
 							showErrorMsg(error.msg);
-						} else {
-							db.execute("COMMIT;");
-							db.close();
-							db = null;
-							dbTrans.trigger("commit");
 						}
-					}, {dbTrans : dbTrans, wait : true});
-					
+					}, options);
+					options.xCommitCB = function(){
+						db.execute("COMMIT;");
+						db.close();
+						db = null;
+						dbTrans.trigger("commit");
+					}
+					if(!options.xCommit){
+						options.xCommitCB();
+					}
 				});
 			}
 			
