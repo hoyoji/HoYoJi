@@ -10,7 +10,7 @@
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">记账好友</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己" right="0" width="70%"
 					bindModel="$.$model"
-					bindAttribute="getOwnerUser()"/>
+					bindAttribute="getFriendUser()"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 				bindModel="$.$model"

@@ -72,7 +72,8 @@ exports.definition = {
 
 					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
 					self.xGet("moneyExpense").save({
-						amount : expenseAmount - amount
+						amount : expenseAmount - amount,
+						moneyAccount : moneyAccount
 					}, saveOptions);
 
 					this._xDelete(function(error, options) {
