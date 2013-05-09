@@ -25,16 +25,10 @@
 				saveCollection : function(xCompleteCallback, xErrorCallback, dbTrans, options) {
 					var mydb, myDbTrans;
 					if (!dbTrans) {
-						mydb = Ti.Database.open("hoyoji");
-						mydb.execute("BEGIN;");
-
-						myDbTrans = {
-							db : mydb
-						};
-						_.extend(myDbTrans, Backbone.Events);
+						var myDbTrans = Alloy.Globals.DataStore.createTransaction();
+						myDbTrans.begin();
 					} else {
 						myDbTrans = dbTrans;
-						mydb = dbTrans.db;
 					}
 					var i = 0, hasError;
 					for ( i = 0; i < $.__saveCollection.length; i++) {
@@ -46,11 +40,7 @@
 							$.__saveCollection[i]._xSave(_.extend({
 								dbTrans : myDbTrans,
 								error : function(model, error) {
-									// if(!dbTrans){
-									mydb.execute("ROLLBACK;");
-									mydb.close();
-									myDbTrans.trigger("rollback");
-									// }
+									myDbTrans.rollback();
 									hasError = true;
 									var errMsg;
 									if (error.__summary) {
@@ -69,9 +59,7 @@
 					}
 					$.__saveCollection = [];
 					if (!dbTrans) {
-						mydb.execute("COMMIT;");
-						mydb.close();
-						myDbTrans.trigger("commit");
+						myDbTrans.commit();
 					}
 					xCompleteCallback();
 				},
@@ -87,13 +75,8 @@
 								return;
 							}
 
-							var db = Ti.Database.open("hoyoji");
-							var dbTrans = {
-								db : db
-							};
-							_.extend(dbTrans, Backbone.Events);
-
-							db.execute("BEGIN;");
+							var dbTrans = Alloy.Globals.DataStore.createTransaction();
+							dbTrans.begin();
 
 							// if (!$.$model.isNew()) {
 							// if this is a addnew action, reset the id if there is any error during sync operation
@@ -117,9 +100,7 @@
 								if (error.__summary) {
 									errMsg = error.__summary.msg;
 								}
-								db.execute("ROLLBACK;");
-								db.close();
-								dbTrans.trigger("rollback");
+								dbTrans.rollback();
 								if (saveErrorCB) {
 									saveErrorCB(errMsg);
 								}
@@ -138,11 +119,6 @@
 									dbTrans : dbTrans,
 									commit : true
 								}, options));
-								// if(!hasError){
-								// db.execute("COMMIT;");
-								// db.close();
-								// dbTrans.trigger("commit");
-								// }
 							}, saveErrorCB, dbTrans, options);
 
 							// } catch (err) {

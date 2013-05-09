@@ -8,7 +8,12 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
     $.$model.xSet("messageTitle", "好友请求");
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-	$.$model.xGet("toUser").xAddToSave($);
+	
+	var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("toUser").xGet("id")});
+	if(!toUser.id){
+		$.$model.xGet("toUser").xAddToSave($);
+	} 
+	
 	var date = (new Date()).toISOString();
 	$.$model.xSet("date", date);
 	Alloy.Globals.Server.sendMsg({

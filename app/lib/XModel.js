@@ -419,7 +419,8 @@
 						}
 					}
 
-					function delFail(model, error) {
+					function delFail(model, err) {
+						error = err;
 						this.off("destroy", delSuccess);
 						this.off("error", delFail);
 						if (xFinishCallback) {
@@ -435,7 +436,7 @@
 				} else if (xFinishCallback) {
 					xFinishCallback(error);
 				}
-				return this;
+				return !error;
 			},
 			xFindInDb : function(filter) {
 				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
