@@ -260,7 +260,9 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
+				var localUpdated = false;
 				if(this.xGet("moneyIncomeDetails").length > 0 && this.__syncAmount){
+					localUpdated = true;
 					this.syncUpdate(record, dbTrans);
 					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
 						this.save({amount : record.amount}, {
@@ -278,7 +280,6 @@ exports.definition = {
 						syncFromServer : true,
 						patch : true
 					});
-					
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				} 

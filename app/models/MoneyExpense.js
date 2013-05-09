@@ -276,7 +276,9 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
-				if(this.xGet("moneyExpenseDetails").length > 0){
+				var localUpdated = false;
+				if(this.xGet("moneyExpenseDetails").length > 0 && this.__syncAmount){
+					localUpdated = true;
 					this.syncUpdate(record, dbTrans);
 					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
 						this.save({amount : record.amount}, {
@@ -294,9 +296,10 @@ exports.definition = {
 						syncFromServer : true,
 						patch : true
 					});
-					
-					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					dbTrans.db.execute(sql, [this.xGet("id")]);
+					if(!localUpdated){
+						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+						dbTrans.db.execute(sql, [this.xGet("id")]);
+					}
 				}
 				// 让本地修改覆盖服务器上的记录
 			}

@@ -32,7 +32,7 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 			dateTo : d.getUTCTimeOfDateEnd().toISOString()
 		}
-		$.transactionsTable.doFilter(timeFilter);
+		$.transactionsTable.doFilter(timeFilter,sortReverse,"date");
 	} else if (e.source.id === "weekTransactions") {
 		$.titleBar.setTitle(e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle("周流水");
@@ -43,7 +43,7 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
 			dateTo : d.getUTCTimeOfWeekEnd().toISOString()
 		}
-		$.transactionsTable.doFilter(timeFilter);
+		$.transactionsTable.doFilter(timeFilter,sortReverse,"date");
 	} else if (e.source.id === "monthTransactions") {
 		$.titleBar.setTitle("月流水");
 		$.footerBar.transactionsTable.setTitle("月流水");
@@ -54,7 +54,7 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
 			dateTo : d.getUTCTimeOfMonthEnd().toISOString()
 		}
-		$.transactionsTable.doFilter(timeFilter);
+		$.transactionsTable.doFilter(timeFilter,sortReverse,"date");
 	} else if (e.source.id === "sort") {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse, $.transactionsTable.$attrs.groupByField);
@@ -66,4 +66,4 @@ function onFooterbarTap(e) {
 	}
 }
 
-$.transactionsTable.doFilter(timeFilter);
+$.transactionsTable.doFilter(timeFilter,sortReverse,"date");
