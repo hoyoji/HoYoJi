@@ -242,14 +242,19 @@
 					deleteFunc.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
+							db.execute("ROLLBACK;");
+							db.close();
+							db = null;
+							dbTrans.trigger("rollback");
 							showErrorMsg(error.msg);
+						} else {
+							db.execute("COMMIT;");
+							db.close();
+							db = null;
+							dbTrans.trigger("commit");
 						}
 					}, {dbTrans : dbTrans, wait : true});
 					
-					db.execute("COMMIT;");
-					db.close();
-					db = null;
-					dbTrans.trigger("commit");
 				});
 			}
 			
