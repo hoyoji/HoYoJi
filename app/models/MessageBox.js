@@ -35,32 +35,32 @@ exports.definition = {
 								type : "System.Friend.Delete",
 								messageState : "new"
 							}).length;
-							if(deleteFriendMsgLength === 0){
-									Alloy.Globals.Server.getData([{
-										__dataType : "Friend",
-										friendUserId : msg.xGet("fromUserId"),
-										ownerUserId : Alloy.Models.User.id
-									}], function(data) {
-										if (data[0].length = 0) {
-								    		var friend = Alloy.createModel("Friend", {
-												ownerUser :　Alloy.Models.User,
-												friendUser : msg.xGet("fromUser"),
-												friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
-											});
-											
-											Alloy.Globals.Server.postData(
-											[friend.toJSON()], function(data) {
-												msg.save({messageState : "unread"}, {wait : true, patch : true});
-												friend.xSave({syncFromServer : true});
-											}, function(e) {
-												alert(e.__summary.msg);
-											});
-									    }else{
-									    	msg.save({messageState : "unread"}, {wait : true, patch : true});
-									    }
-								    }, function(e) {
+						if(deleteFriendMsgLength === 0){
+							Alloy.Globals.Server.getData([{
+								__dataType : "Friend",
+								friendUserId : msg.xGet("fromUserId"),
+								ownerUserId : Alloy.Models.User.id
+							}], function(data) {
+								if (data[0].length === 0) {
+						    		var friend = Alloy.createModel("Friend", {
+										ownerUser :　Alloy.Models.User,
+										friendUser : msg.xGet("fromUser"),
+										friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+									});
+									
+									Alloy.Globals.Server.postData(
+									[friend.toJSON()], function(data) {
+										msg.save({messageState : "unread"}, {wait : true, patch : true});
+										friend.xSave({syncFromServer : true});
+									}, function(e) {
 										alert(e.__summary.msg);
 									});
+							    }else{
+							    	msg.save({messageState : "unread"}, {wait : true, patch : true});
+							    }
+						    }, function(e) {
+								alert(e.__summary.msg);
+							});
 						}
 						
 					} else if(msg.xGet("type") === "System.Friend.AutoAdd"){
@@ -69,7 +69,7 @@ exports.definition = {
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 						}], function(data) {
-							if (data[0].length = 0) {
+							if (data[0].length === 0) {
 								var friend = Alloy.createModel("Friend", {
 									ownerUser :　Alloy.Models.User,
 									friendUser : msg.xGet("fromUser"),
