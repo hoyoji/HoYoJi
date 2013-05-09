@@ -21,12 +21,12 @@
 }
 
 "#localAmountLabel": {
-	color: 'green'
+	color: '#329600'
 }
 
 "#amount": {
 	color: '#042c37',
-	fieldColor: "green"
+	fieldColor: "#329600"
 }
 
 "#incomeTypeLabel": {
