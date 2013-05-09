@@ -41,7 +41,7 @@ exports.definition = {
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 							}], function(data) {
-								if (data[0].length = 0) {
+								if (data[0].length === 0) {
 									var friend = Alloy.createModel("Friend", {
 										ownerUser :　Alloy.Models.User,
 										friendUser : msg.xGet("fromUser"),
@@ -67,7 +67,7 @@ exports.definition = {
 								friendUserId : msg.xGet("fromUserId"),
 								ownerUserId : Alloy.Models.User.id
 						}], function(data) {
-							if (data[0].length = 0) {
+							if (data[0].length === 0) {
 								var friend = Alloy.createModel("Friend", {
 									ownerUser :　Alloy.Models.User,
 									friendUser : msg.xGet("fromUser"),
