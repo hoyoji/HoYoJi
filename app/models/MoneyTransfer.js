@@ -115,11 +115,11 @@ exports.definition = {
 			},
 			getTransferOut : function() {
 				var transferOut = this.xGet("transferOut");
-				return "(" + transferOut.xGet("name") + transferOut.xGet("currency").xGet("code") + ")转出";
+				return  transferOut.xGet("name") + "(" + transferOut.xGet("currency").xGet("code") + ")转出";
 			},
 			getTransferIn : function() {
 				var transferIn = this.xGet("transferIn");
-				return "转入(" + transferIn.xGet("name") + transferIn.xGet("currency").xGet("code") + ")";
+				return "转入" + transferIn.xGet("name") + "(" + transferIn.xGet("currency").xGet("code") + ")";
 			},
 			getTransferOutAmount : function() {
 				return this.xGet("transferOut").xGet("currency").xGet("symbol") + this.xGet("transferOutAmount").toUserCurrency();

@@ -1,11 +1,11 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-// if($.$attrs.color){
-	// $.label.setColor($.$attrs.color);
-// }
-// if($.$attrs.font){
-	// $.label.setFont($.$attrs.font);
-// }
+if($.$attrs.color){
+	$.label.setColor($.$attrs.color);
+}
+if($.$attrs.font){
+	$.label.setFont($.$attrs.font);
+}
 
 $.onWindowOpenDo(function() {
 	var model = $.$attrs.bindModel || $.$model;
