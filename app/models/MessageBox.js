@@ -42,7 +42,7 @@ exports.definition = {
 								ownerUserId : Alloy.Models.User.id
 							}], function(data) {
 								if (data[0].length === 0) {
-									var friend = Alloy.createModel("Friend", {
+						    		var friend = Alloy.createModel("Friend", {
 										ownerUser :　Alloy.Models.User,
 										friendUser : msg.xGet("fromUser"),
 										friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
@@ -55,8 +55,10 @@ exports.definition = {
 									}, function(e) {
 										alert(e.__summary.msg);
 									});
-								}
-							}, function(e) {
+							    }else{
+							    	msg.save({messageState : "unread"}, {wait : true, patch : true});
+							    }
+						    }, function(e) {
 								alert(e.__summary.msg);
 							});
 						}
@@ -119,6 +121,8 @@ exports.definition = {
 									}, function(e) {
 										alert(e.__summary.msg);
 									});
+								}else{
+									msg.save({messageState : "unread"}, {wait : true, patch : true});
 								}
 							}, function(e) {
 								alert(e.__summary.msg);

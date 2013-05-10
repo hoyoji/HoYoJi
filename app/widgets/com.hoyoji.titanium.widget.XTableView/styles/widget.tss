@@ -6,15 +6,4 @@
 	},
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
-},
-
-".container": {
-	backgroundColor: "#e7f5f5"
-},
-
-"TableView": {
-	backgroundColor: "#e7f5f5"
 }
-
-
-

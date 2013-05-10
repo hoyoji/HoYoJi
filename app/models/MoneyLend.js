@@ -157,12 +157,12 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("symbol");
+						currencySymbol = accountCurrency.xGet("code");
 					}
 				}
 				return currencySymbol;
 			},
-			getOwnerUser : function() {
+			getFriendUser : function() {
 				var ownerUserSymbol;
 				if (!this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;

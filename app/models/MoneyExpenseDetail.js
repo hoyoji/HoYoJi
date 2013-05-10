@@ -72,7 +72,8 @@ exports.definition = {
 
 					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
 					self.xGet("moneyExpense").save({
-						amount : expenseAmount - amount
+						amount : expenseAmount - amount,
+						moneyAccount : moneyAccount
 					}, saveOptions);
 
 					this._xDelete(function(error, options) {
@@ -115,24 +116,37 @@ exports.definition = {
 				// 该支出明细在服务器上被改变了，我们将其变动缓存到 __syncAmount 里，等更新 moneyExpense 的时候会将该值替换本地的值
 				var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
 				moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount") + record.amount
-			}
-			// ,
-			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-					// id : record.moneyExpenseId
-				// });
-				// if (moneyExpense.id) {
-					// // 支出已在本地存在
+			},
+			syncUpdateConflict : function(record, dbTrans) {
+				delete record.id;
+				
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					this.syncUpdate(record, dbTrans);
+					this._syncUpdate(record, dbTrans);
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				}
+				// 让本地修改覆盖服务器上的记录
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+					id : record.moneyExpenseId
+				});
+				if (moneyExpense.id) {
+					// 支出已在本地存在
 					// if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
-						// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-						// moneyExpense.__syncAmount = oldExpenseAmount - record.amount
-						// // moneyExpense.save("amount", moneyExpense.__syncAmount, {
-							// // dbTrans : dbTrans,
-							// // patch : true
-						// // });
+						var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+						moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount");
 					// }
-				// }
-			// }
+				}
+			},	
+			_syncDelete : function(record, dbTrans, xFinishedCallback) {
+				this._xDelete(xFinishedCallback, {
+					dbTrans : dbTrans,
+					syncFromServer : true
+				});
+			}
 		});
 
 		return Model;

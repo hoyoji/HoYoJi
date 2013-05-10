@@ -72,7 +72,8 @@ exports.definition = {
 
 					var incomeAmount = self.xGet("moneyIncome").xGet("amount");
 					self.xGet("moneyIncome").save({
-						amount : incomeAmount - amount
+						amount : incomeAmount - amount,
+						moneyAccount : moneyAccount
 					}, saveOptions);
 
 					this._xDelete(function(error, options) {
@@ -114,24 +115,37 @@ exports.definition = {
 				});
 				var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
 				moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
-			}
-			// ,
-			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					// id : record.moneyIncomeId
-				// });
-				// if (moneyIncome.id) {
-					// // 支出已在本地存在
+			},
+			syncUpdateConflict : function(record, dbTrans) {
+				delete record.id;
+				
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					this.syncUpdate(record, dbTrans);
+					this._syncUpdate(record, dbTrans);
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				}
+				// 让本地修改覆盖服务器上的记录
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+					id : record.moneyIncomeId
+				});
+				if (moneyIncome.id) {
+					// 支出已在本地存在
 					// if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
-						// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-						// moneyIncome.__syncAmount = oldIncomeAmount + record.amount
-						// // moneyIncome.save("amount", moneyIncome.__syncAmount, {
-							// // dbTrans : dbTrans,
-							// // patch : true
-						// // });
+						var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+						moneyIncome.__syncAmount = oldIncomeAmount + this.xGet("amount");
 					// }
-				// }
-			// }			
+				}
+			},	
+			_syncDelete : function(record, dbTrans, xFinishedCallback) {
+				this._xDelete(xFinishedCallback, {
+					dbTrans : dbTrans,
+					syncFromServer : true
+				});
+			}			
 		});
 		return Model;
 	},

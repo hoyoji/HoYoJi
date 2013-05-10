@@ -1,5 +1,13 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.makeContextMenu = function(e, isSelectMode, sourceModel) {
+	var menuSection = Ti.UI.createTableViewSection({headerTitle : "消息操作"});
+	menuSection.add($.createContextMenuItem("删除消息", function() {
+		$.deleteModel();
+	}, isSelectMode));
+	return menuSection;
+}
+
 $.onRowTap = function(e){
 	if($.$model.xGet("fromUserId") === Alloy.Models.User.id){
 		if ($.$model.xGet("type") === "System.Friend.AddRequest"){
