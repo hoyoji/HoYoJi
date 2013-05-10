@@ -54,28 +54,28 @@ exports.definition = {
 				
 				}
 			},
-			xDelete : function(xFinishCallback, options){
-				var error;
-				var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-					localCurrency : this
-					});
-				// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-					// foreignCurrency : this
+			// xDelete : function(xFinishCallback, options){
+				// var error;
+				// var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+					// localCurrency : this
 					// });
-				if(options.syncFromServer !== true 
-					&& Alloy.Models.User.xGet("activeCurrency") === this){
-					error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除"};
-				 } 
-				else if(options.syncFromServer !== true 
-					&& currencyPositive.length>0){
-					error = { msg : "删除失败，请先删除相关汇率"};
-				 } else {
-					this._xDelete(xFinishCallback, options);
-					return;
-				}
-				
-				xFinishCallback(error);
-			},
+				// // var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
+					// // foreignCurrency : this
+					// // });
+				// if(options.syncFromServer !== true 
+					// && Alloy.Models.User.xGet("activeCurrency") === this){
+					// error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除"};
+				//  } 
+				// else if(options.syncFromServer !== true 
+					// && currencyPositive.length>0){
+					// error = { msg : "删除失败，请先删除相关汇率"};
+				//  } else {
+					// this._xDelete(xFinishCallback, options);
+					// return;
+				// }
+// 				
+				// xFinishCallback(error);
+			// },
 			getExchanges : function(foreignCurrency) {
 					var exchanges = Alloy.createCollection("Exchange");
 					if (foreignCurrency) {
