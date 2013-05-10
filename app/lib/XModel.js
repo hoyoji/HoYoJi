@@ -531,10 +531,7 @@
 			_syncAddNew : function(record, dbTrans) {
 				this.xSet(record);
 				delete this.id;
-				this.save(null, {
-					dbTrans : dbTrans,
-					syncFromServer : true
-				});
+				this._syncUpdate(null, dbTrans);
 				console.info("_syncAddNew : " + record.id);
 			},
 			syncAddNew : function(record, dbTrans) {
@@ -564,11 +561,7 @@
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
 					delete record.id;
-					this.save(record, {
-						dbTrans : dbTrans,
-						syncFromServer : true,
-						patch : true
-					});
+					this._syncUpdate(record, dbTrans);
 					
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);

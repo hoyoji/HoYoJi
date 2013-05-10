@@ -106,6 +106,8 @@ exports.definition = {
 							// dbTrans : dbTrans,
 							// patch : true
 						// });
+					} else {
+						moneyIncome.__syncAmount = moneyIncome.__syncAmount !== undefined ? moneyIncome.__syncAmount + record.amount : record.amount;
 					}
 				}
 			},
