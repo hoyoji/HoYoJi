@@ -141,11 +141,7 @@ exports.definition = {
 					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
 				}, saveOptions);
 
-				this._xDelete(function(error, options) {
-					if (xFinishCallback) {
-							xFinishCallback(error);
-					}
-				}, options);
+				this._xDelete(xFinishCallback, options);
 			},
 			syncAddNew : function(record, dbTrans) {
 				// 更新账户余额
