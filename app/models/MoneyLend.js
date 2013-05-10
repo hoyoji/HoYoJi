@@ -199,11 +199,7 @@ exports.definition = {
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
-					this._xDelete(function(error, options) {
-						if (xFinishCallback) {
-							xFinishCallback(error);
-						}
-					}, options);
+					this._xDelete(xFinishCallback, options);
 				}
 			},
 			// canMoneyPaybackAddNew : function(){

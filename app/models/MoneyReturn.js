@@ -220,11 +220,7 @@ exports.definition = {
 					}, saveOptions);
 				}
 
-				this._xDelete(function(error, options) {
-					if (xFinishCallback) {
-							xFinishCallback(error);
-					}
-				}, options);
+				this._xDelete(xFinishCallback, options);
 			}
 		});
 		return Model;
