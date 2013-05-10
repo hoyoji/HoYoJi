@@ -249,7 +249,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "MoneyAccount") {
-				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash");
+				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime");
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'"
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
@@ -257,7 +257,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 
-				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, null, null, null, main.lastServerUpdateTime, main.serverRecordHash FROM MoneyAccount main ";
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, null, null, null, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime FROM MoneyAccount main ";
 				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')))";
 				if (qs.length > 1) {
 					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";
@@ -470,13 +470,17 @@ function Sync(method, model, opts) {
 	}
 	if (resp) {
 		if(method !== "read"){
-				resp = null;
+				resp = resp.lastClientUpdateTime ? { lastClientUpdateTime : resp.lastClientUpdateTime} : null;
 		}
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
-				opts.dbTrans.commit();
 				_.isFunction(opts.success) && opts.success(resp);
-				method === "read" && model.trigger("fetch", model);
+				opts.dbTrans.commit();
+				if(method === "read"){
+					model.trigger("fetch", model);
+				} else {
+				 	Ti.App.fireEvent("updateSyncCount");	
+				}
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
@@ -486,8 +490,11 @@ function Sync(method, model, opts) {
 						// // model._previousAttributes = {};
 					// }
 					_.isFunction(opts.success) && opts.success(resp);
-					method === "read" && model.trigger("fetch", model);
-					Ti.App.fireEvent("updateSyncCount");
+					if(method === "read"){
+						model.trigger("fetch", model);
+					} else {
+					 	Ti.App.fireEvent("updateSyncCount");	
+					}
 				}
 
 				function rollbackTrans() {

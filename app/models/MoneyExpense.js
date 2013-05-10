@@ -149,12 +149,12 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("symbol");
+						currencySymbol = accountCurrency.xGet("code");
 					}
 				}
 				return currencySymbol;
 			},
-			getOwnerUser : function() {
+			getFriendUser : function() {
 				var ownerUserSymbol;
 				if (!this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;
@@ -202,11 +202,7 @@ exports.definition = {
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
 
-					this._xDelete(function(error, options) {
-						if (xFinishCallback) {
-							xFinishCallback(error);
-						}
-					}, options);
+					this._xDelete(xFinishCallback, options);
 
 				}
 			},
@@ -242,7 +238,7 @@ exports.definition = {
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
-				if(this.xGet("moneyExpenseDetails").length > 0 && this.__syncAmount){
+				if(this.__syncAmount !== undefined){
 					record.amount = this.__syncAmount;
 					delete this.__syncAmount;
 				}
@@ -276,27 +272,22 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
-				if(this.xGet("moneyExpenseDetails").length > 0){
+				var localUpdated = false;
+				if(this.__syncAmount !== undefined){
+					localUpdated = true;
 					this.syncUpdate(record, dbTrans);
 					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
-						this.save({amount : record.amount}, {
-								dbTrans : dbTrans,
-								syncFromServer : true,
-								patch : true
-						});
+						this._syncUpdate({amount : record.amount}, dbTrans);
 					}
 				}
 				
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
-					this.save(record, {
-						dbTrans : dbTrans,
-						syncFromServer : true,
-						patch : true
-					});
-					
-					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					dbTrans.db.execute(sql, [this.xGet("id")]);
+					this._syncUpdate(record, dbTrans);
+					if(!localUpdated){
+						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+						dbTrans.db.execute(sql, [this.xGet("id")]);
+					}
 				}
 				// 让本地修改覆盖服务器上的记录
 			}

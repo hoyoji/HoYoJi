@@ -168,12 +168,12 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("symbol");
+						currencySymbol = accountCurrency.xGet("code");
 					}
 				}
 				return currencySymbol;
 			},
-			getOwnerUser : function() {
+			getFriendUser : function() {
 				var ownerUserSymbol;
 				if (!this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;
@@ -218,11 +218,7 @@ exports.definition = {
 						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
 					}, saveOptions);
 				}
-				this._xDelete(function(error, options) {
-					if (xFinishCallback) {
-						xFinishCallback(error);
-					}
-				}, options);
+				this._xDelete(xFinishCallback, options);
 			}
 		});
 		return Model;
