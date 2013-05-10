@@ -6,7 +6,7 @@
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyExpenseDetailsTable" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="新增支出明细"
+		buttons="新增支出明细" imagesFolder="/images/money/moneyExpenseDetailAll"
 		ids="addExpenseDetail"/>
 	</View>
 </Alloy>

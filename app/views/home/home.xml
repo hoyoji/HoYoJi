@@ -4,19 +4,31 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"
 		image="/images/mainWindow/home"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
-			<View top="0" height="Ti.UI.SIZE" backgroundColor="#f1fbfb">
-				<View width="3" height="84" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>				
-				<View height="84" width="50%" left="3" layout="vertical">		
+			<View top="0" height="84" backgroundImage="/images/rowBackgroundColor.png">
+				<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
+				<View height="74" width="50%" left="3" top="5" layout="vertical">
 					<Label>当日收入</Label>
-					<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date"/>
+					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date"/>
+					</View>
 				</View>
-				<View height="84" width="50%" right="0" layout="vertical">
+				<View height="74" width="50%" right="0" top="5" layout="vertical">
 					<Label>当日支出</Label>
-					<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date"/>
+					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date"/>
+					</View>
 				</View>
-				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="84">
+				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="74">
 					<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
 					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 				</View>
 			</View>

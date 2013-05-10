@@ -16,20 +16,20 @@
 		<TextField top="126" height="42" id="date2" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<TextField top="168" height="42" id="date3" borderWidth="1" width="Ti.UI.FILL"></TextField>
 		<Widget id="datePicker" src="com.hoyoji.titanium.widget.DatePicker"/> -->
-		<View height="25" width="Ti.UI.FILL" backgroundColor="#f1fbfb">
+		<View height="25" width="Ti.UI.FILL" backgroundImage="/images/formRowBackgroundColor.png">
 			<View width="3" left="0" height="25" backgroundImage="/images/rowLeftShadow.png" backgroundRepeat="true" zIndex="0" />
 			<View height="Ti.UI.SIZE" width="60%">
 				<Button width="45%" left="0" onClick="doLogin">登入</Button>
 				<Button width="45%" right="0" onClick="openRegister">注册</Button>
 			</View>
 		</View>
-		<View height="35" width="Ti.UI.FILL" backgroundColor="#f1fbfb">
+		<View height="35" width="Ti.UI.FILL" backgroundImage="/images/formRowBackgroundColor.png">
 			<View width="3" left="0" height="35" backgroundImage="/images/rowLeftShadow.png" backgroundRepeat="true" zIndex="0" />
 			<Label right="20%">找回密码</Label>
 		</View>
 		<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
 			<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-			<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+			<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
 			<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 		</View>
 	</View>
