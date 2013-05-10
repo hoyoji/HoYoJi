@@ -98,7 +98,7 @@ exports.definition = {
 					id : record.moneyExpenseId
 				});
 				if (moneyExpense.id) {
-					// 支出已在本地存在
+					// 支出已在本地存在, 我们要更新本地支出的余额
 					if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
 						var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
 						moneyExpense.__syncAmount = oldExpenseAmount + record.amount
@@ -106,6 +106,8 @@ exports.definition = {
 							// dbTrans : dbTrans,
 							// patch : true
 						// });
+					} else {
+						moneyExpense.__syncAmount = moneyExpense.__syncAmount !== undefined ? moneyExpense.__syncAmount + record.amount : record.amount;
 					}
 				}
 			},
