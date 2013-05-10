@@ -130,7 +130,7 @@ exports.definition = {
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					id : record.moneyIncomeId
+					id : this.xGet("moneyIncomeId")
 				});
 				if (moneyIncome.id) {
 					// 支出已在本地存在
