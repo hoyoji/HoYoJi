@@ -3,14 +3,15 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
-				<View id="ownerUser" height="0" backgroundColor="#f1fbfb">
+		<View id="body" top="50" bottom="50" left="0" right="0" backgroundColor="#ebeeee">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="50">
+				<View id="ownerUser" height="0" backgroundImage="/images/formRowBackgroundColor.png">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">记账好友</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己" right="0" width="70%"
 					bindModel="$.$model"
 					bindAttribute="getFriendUser()"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 				bindModel="$.$model"
@@ -18,13 +19,14 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
-				<View id="localAmount" height="0" backgroundColor="#f1fbfb">
+				<View id="localAmount" height="0" backgroundImage="/images/formRowBackgroundColor.png">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
 					hintText="请输入金额"
 					bindModel="$.$model"
 					bindAttribute="getLocalAmount()"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 				bindModel="$.$model"
@@ -62,7 +64,7 @@
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				bindModelSelectorParams="selectedFriend:friend"
 				/>
-				<View height="42" backgroundColor="#f1fbfb">
+				<View height="42" backgroundImage="/images/formRowBackgroundColor.png">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="expenseTypeLabel">是否预支</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="70%"
@@ -71,6 +73,7 @@
 					values="Ordinary,PreExpense"
 					bindModel="$.$model"
 					bindAttribute="expenseType"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 				bindModel="$.$model"

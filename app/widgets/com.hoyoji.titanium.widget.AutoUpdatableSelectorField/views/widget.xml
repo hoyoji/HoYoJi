@@ -1,8 +1,9 @@
 <Alloy>
-	<View height="47">
+	<View height="47" backgroundImage="/images/formRowBackgroundColor.png">
 		<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 	 	<Label id="error" left="3" top="47"/>
 		<Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
 		<Picker id="field" right="0"  height="Ti.UI.FILL" type="Titanium.UI.PICKER_TYPE_PLAIN" selectionIndicator="true" width="70%"/>
+	<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 	</View>
 </Alloy>

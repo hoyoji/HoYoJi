@@ -2,9 +2,9 @@
 	<View class="container" title="设置">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="设置"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f1fbfb">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<View height="56">
+				<View height="56" backgroundImage="/images/rowBackgroundColor.png">
 					<View width="3" height="56" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 					<ImageView width="56" height="56" left="10" borderWidth="1" image="/images/user/userImage.png"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="150" top="20"
@@ -14,10 +14,10 @@
 				</View>
 				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
 					<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
 					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 				</View>
-				<View height="42">
+				<View height="42" backgroundImage="/images/rowBackgroundColor.png">
 					<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 					<Label left="10">加我为好友时需要验证</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
@@ -28,7 +28,7 @@
 				</View>
 				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
 					<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
+					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
 					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 				</View>
 				<!-- <Widget id="xButton" src="com.hoyoji.titanium.widget.XButton" 
