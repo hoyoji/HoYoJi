@@ -6,10 +6,10 @@
 				<Label id="headerTitle" text="  登录" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" color="white"  backgroundImage="/images/headerTitle_green.png"/>
 			</View>
 		</View>
-		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII"
+		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII" rowLeftImage="true"
 		bindModel="$.$model"
 		bindAttribute="userName"/>
-		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"
+		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true" rowLeftImage="true"
 		bindModel="$.$model"
 		bindAttribute="password"/>
 		<!-- <TextField top="84" height="42" id="date1" borderWidth="1" width="Ti.UI.FILL"></TextField>

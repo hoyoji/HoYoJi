@@ -13,6 +13,9 @@ if($.$attrs.color){
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
+if($.$attrs.rowLeftImage === "true") {
+	$.rowLeftImage.setVisible(true);
+}
 if (OS_IOS) {
 	$.field.setAutocapitalization(false);
 }
