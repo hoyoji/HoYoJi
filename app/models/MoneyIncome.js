@@ -9,6 +9,7 @@ exports.definition = {
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
+			pictureId : "TEXT",
 			moneyIncomeCategoryId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
@@ -120,6 +121,10 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
+			picture : {
+				type : "Picture",
+				attribute : null
+			},
 				moneyIncomeCategory : function(xValidateComplete) {
 					var error;
 					var moneyIncomeCategory = this.xGet("moneyIncomeCategory");

@@ -9,6 +9,7 @@ exports.definition = {
 			transferInId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
+			pictureId : "TEXT",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
@@ -27,6 +28,10 @@ exports.definition = {
 			project : {
 				type : "Project",
 				attribute : "moneyTransfers"
+			},
+			picture : {
+				type : "Picture",
+				attribute : null
 			},
 			ownerUser : {
 				type : "User",

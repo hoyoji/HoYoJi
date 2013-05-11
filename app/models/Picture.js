@@ -2,8 +2,8 @@ exports.definition = {
 	config: {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
-		    title : "TEXT NOT NULL",
-		    path : "TEXT NOT NULL",
+		    title : "TEXT",
+		    path : "TEXT",
 		    recordId : "TEXT NOT NULL",
 		    recordType : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",

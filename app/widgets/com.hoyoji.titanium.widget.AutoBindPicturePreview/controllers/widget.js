@@ -44,11 +44,11 @@ $.onWindowOpenDo(function() {
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;
 		if(value){
-			$.picture.setImage(value + "_icon.png");
+			$.picture.setImage(Ti.Filesystem.applicationDataDirectory + value + "_icon.png");
 		} else if($.$attrs.defaultImage){
 			$.picture.setImage($.$attrs.defaultImage);
 		} else {
-			$.picture.setImage(WPATH("/images/noPicture_icon.png"));
+			$.picture.setImage(WPATH("/images/noPicture.png"));
 		}
 	}
 

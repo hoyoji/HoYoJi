@@ -7,7 +7,8 @@
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
 				bindModel="$.$model"
-				bindAttribute="pictureId"/>
+				bindAttribute="picture"
+				bindAttributeIsModel="id"/>
 				<View id="ownerUser" height="0" backgroundImage="/images/formRowBackgroundColor.png">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">记账好友</Label>

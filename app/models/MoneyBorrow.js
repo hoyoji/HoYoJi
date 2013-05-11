@@ -8,6 +8,7 @@ exports.definition = {
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
+			pictureId : "TEXT",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
 			returnDate : "TEXT",
@@ -40,6 +41,10 @@ exports.definition = {
 			project : {
 				type : "Project",
 				attribute : "moneyBorrows"
+			},
+			picture : {
+				type : "Picture",
+				attribute : null
 			},
 			localCurrency : {
 				type : "Currency",
