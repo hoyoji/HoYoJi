@@ -1,0 +1,13 @@
+<Alloy>
+	<View class="container" height="60" width="Ti.UI.FILL">
+		<ImageView id="takePicture" left="8" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+		<ScrollView id="pictures" left="66" right="10" top="0" layout="horizontal" scrollType="horizontal" disableBounce="true" showHorizontalScrollIndicator="true" >
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+			<ImageView left="2" top="2" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
+		</ScrollView>
+	</View>
+</Alloy>
