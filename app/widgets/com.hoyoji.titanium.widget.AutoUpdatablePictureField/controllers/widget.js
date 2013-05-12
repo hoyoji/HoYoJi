@@ -1,55 +1,60 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-var mainPicture = null;
-
+var mainPicture = null, firstTimeSetValue = true;
+	
 // $.pictures = [];
+$.$view.addEventListener("longpress", function(e){
+	e.cancelBubble = true;	
+});
 
-$.field.addEventListener("singletap", function() {
+$.takePicture.addEventListener("singletap", function() {
 	Ti.Media.showCamera({
 		success : function(event) {
 			var image = event.media;
 
 			Ti.API.debug('Our type was: ' + event.mediaType);
 			if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
-				var imageView = Ti.UI.createImageView({
-					width : 56,
-					height : 56,
-					top : 2,
-					left : 2,
-					right : 2,
-					image : event.media
-				});
-				$.picturesContainer.add(imageView);
-				
+				var imageView = createImageView(event.media);
+
 				var newPicture = Alloy.createModel("Picture", {
 					// path : "TEXT NOT NULL",
-				    recordId : $.$attrs.bindModel.xGet("id"),
-				    recordType : $.$attrs.bindModel.config.adapter.collection_name
+					recordId : $.$attrs.bindModel.xGet("id"),
+					recordType : $.$attrs.bindModel.config.adapter.collection_name
 				}).xAddToSave($.getParentController());
-				newPicture.once("sync", function(newPicture){
-					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 
-						newPicture.xGet("id") + "_icon.png");
-						f.write(imageView.toImage());
-						f = null;
-						f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 
-						newPicture.xGet("id") + ".png");
-						f.write(imageView.toBlob());
-						f = null;
-				});
-				// $.pictures.push(newPicture);
-				if(!mainPicture){
-					mainPicture = newPicture;
+				
+				if (!mainPicture) {
 					$.setValue(newPicture, event.media);
-   	 				$.field.fireEvent("change");
+				} else {
+					$.picturesContainer.add(imageView);
 				}
+				$.field.fireEvent("change");
+				
+				newPicture.once("sync", function(newPicture) {
+					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + "_icon.png");
+					f.write(imageView.toImage());
+					f = null;
+					f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + ".png");
+					f.write(imageView.toBlob());
+					f = null;
+				});
+				// imageView.addEventListener("longpress", function(e){
+						// Alloy.Globals.alloyAnimation.shake(imageView);
+						// var image = imageView.getImage();
+						// imageView.setImage($.field.getImage());
+						// $.setValue(newPicture);
+						// $.field.fireEvent("change");
+						// if(newPicture.isNew()){
+							// $.field.setImage(image);
+						// }
+				// });
 				
 			} else {
 				alert("不支持视频");
 			}
 		},
-		cancel : function() {
-			alert('You canceled the action.');
-		},
+		// cancel : function() {
+			// // alert('You canceled the action.');
+		// },
 		error : function(error) {
 			// create alert
 			var a = Titanium.UI.createAlertDialog({
@@ -71,23 +76,66 @@ $.field.addEventListener("singletap", function() {
 		mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO],
 	});
 });
-// 
+//
 // $.getValue = function(e){
-	// return mainImage;
+// return mainImage;
 // }
 
 $.setValue = function(value, image) {
-    $.__bindAttributeIsModel = value;
-    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
-    if(image){
-		$.field.setImage(image);    	
-    } else {
-	    if(!value){
-	    	value = WPATH("/images/takePicture.png");
-	    } else {
-	    	value = Ti.Filesystem.applicationDataDirectory + value + "_icon.png"
-	    }
-	    $.field.setImage(value);
-    }
+	$.__bindAttributeIsModel = value;
+	$.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
+	if (image) {
+		$.field.setImage(image);
+		if (firstTimeSetValue) {
+			firstTimeSetValue = false;
+			mainPicture = value;
+		}
+	} else {
+		if (!value) {
+			value = WPATH("/images/noPicture.png");
+		} else {
+			if (firstTimeSetValue) {
+				firstTimeSetValue = false;
+				mainPicture = value;
+				displayPictures();
+			}
+			value = Ti.Filesystem.applicationDataDirectory + value + "_icon.png";
+		}
+		$.field.setImage(value);
+
+	}
 };
 
+function createImageView(imageData) {
+	if (_.isString(imageData)) {
+		imageData = Ti.Filesystem.applicationDataDirectory + imageData + "_icon.png";
+	}
+	var imageView = Ti.UI.createImageView({
+		width : 56,
+		height : 56,
+		top : 2,
+		left : 2,
+		right : 2,
+		image : imageData
+	});
+	return imageView;
+}
+
+function displayPictures() {
+	var pictures = $.$attrs.bindModel.xGet("pictures");
+	if (pictures) {
+		pictures.forEach(function(picture) {
+			if(picture.xGet("id") !== mainPicture){
+	 			var imageView = createImageView(picture.xGet("id"));
+				$.picturesContainer.add(imageView);
+				
+				imageView.addEventListener("longpress", function(e){
+						Alloy.Globals.alloyAnimation.shake(imageView);
+						imageView.setImage($.field.getImage());
+						$.setValue(picture);
+						$.field.fireEvent("change");
+				});
+			}
+		});
+	}
+}
