@@ -28,6 +28,36 @@ $.allAuthorization.addEventListener("click", function(e) {
 	}
 });
 
+function loadAuthorizationDetails(successCB) {
+	var _projectShareAuthorization;
+	if (!projectShareAuthorization) {
+		if (firstClickShowAuthorization) {
+			_projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+				id : projectShareData.projectShareAuthorizationId
+			});
+			if (!_projectShareAuthorization.id) {
+				var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+				Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
+					if (collection.length > 0) {
+						firstClickShowAuthorization = false;
+						projectShareAuthorization = collection.at(0);
+						createProjectShareAuthorizationDetails(projectShareAuthorization);
+						successCB();
+					}
+				});
+			} else {
+				createProjectShareAuthorizationDetails(_projectShareAuthorization);
+				successCB();
+			}
+		}else{
+		successCB();
+			
+		}
+	} else {
+		successCB();
+	}
+}
+
 function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 	//创建支出权限
 	var authorizationDetailRow1 = Titanium.UI.createView({
@@ -459,34 +489,6 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 	$.projectShareAuthorizationDetails.add(authorizationDetailRow9);
 }
 
-function loadAuthorizationDetails(successCB) {
-	var _projectShareAuthorization;
-	if (!projectShareAuthorization) {
-		if (firstClickShowAuthorization) {
-			firstClickShowAuthorization = false;
-			_projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-				id : projectShareData.projectShareAuthorizationId
-			});
-			if (!_projectShareAuthorization.id) {
-				var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
-				Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
-					if (collection.length > 0) {
-						projectShareAuthorization = collection.at(0);
-						createProjectShareAuthorizationDetails(projectShareAuthorization);
-						successCB();
-					}
-				});
-			} else {
-				createProjectShareAuthorizationDetails(_projectShareAuthorization);
-				successCB();
-			}
-		}
-		successCB();
-	} else {
-		successCB();
-	}
-}
-
 $.onWindowOpenDo(function() {
 	$.showHideAuthorization.hide();
 	if ($.$model.xGet('messageState') === "unread") {
@@ -511,6 +513,7 @@ $.onWindowCloseDo(function() {
 			patch : true
 		});
 	}
+	projectShareAuthorization = null;
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
