@@ -18,8 +18,8 @@
 	width: "60%",
 	right : 0,
 	zIndex : 1
-},
-
-".container": {
-	backgroundColor: "#f1fbfb"
 }
+
+// ".container": {
+	// backgroundColor: "#f1fbfb"
+// }

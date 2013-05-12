@@ -9,6 +9,7 @@ exports.definition = {
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
+			pictureId : "TEXT",
 			moneyExpenseCategoryId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
@@ -19,6 +20,10 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "record"
+			},
 			moneyExpenseDetails : {
 				type : "MoneyExpenseDetail",
 				attribute : "moneyExpense"
@@ -40,6 +45,10 @@ exports.definition = {
 			project : {
 				type : "Project",
 				attribute : "moneyExpenses"
+			},
+			picture : {
+				type : "Picture",
+				attribute : null
 			},
 			moneyExpenseCategory : {
 				type : "MoneyExpenseCategory",
@@ -247,18 +256,22 @@ exports.definition = {
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : this.xGet("moneyAccountId")
 				});
-				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
-				} else {
+				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;	
-				}
-				oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-					dbTrans : dbTrans,
-					patch : true
-				});
-				
-				// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
-				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+				} else {
+					if(oldMoneyAccount.id){
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
+						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
+					
+					// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
 					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : record.moneyAccountId
 					});

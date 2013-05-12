@@ -12,9 +12,9 @@ if($.$attrs.values){
 	values = $.$attrs.values.split(",");
 } 
 
-$.$view.addEventListener("singletap", function(e){
-	$.getCurrentWindow().closeSoftKeyboard();
-});
+// $.$view.addEventListener("singletap", function(e){
+	// $.getCurrentWindow().closeSoftKeyboard();
+// });
 
 $.field.addEventListener("singletap", function(e){
 	 if(currentItemIndex){
