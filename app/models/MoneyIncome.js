@@ -20,6 +20,10 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "recordId"
+			},
 			moneyIncomeDetails : {
 				type : "MoneyIncomeDetail",
 				attribute : "moneyIncome"
@@ -41,6 +45,10 @@ exports.definition = {
 			project : {
 				type : "Project",
 				attribute : "moneyIncomes"
+			},
+			picture : {
+				type : "Picture",
+				attribute : null
 			},
 			moneyIncomeCategory : {
 				type : "MoneyIncomeCategory",

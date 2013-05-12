@@ -16,6 +16,12 @@ exports.definition = {
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
 		},
+		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "recordId"
+			}
+		},
 		belongsTo : {
 			transferOut : {
 				type : "MoneyAccount",

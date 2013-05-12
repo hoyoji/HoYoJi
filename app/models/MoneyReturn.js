@@ -19,6 +19,12 @@ exports.definition = {
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
 		},
+		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "recordId"
+			}
+		},
 		belongsTo : {
 			friend : {
 				type : "Friend",

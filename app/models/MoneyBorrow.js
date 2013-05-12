@@ -20,6 +20,10 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "recordId"
+			},
 			moneyReturns : {
 				type : "MoneyReturn",
 				attribute : "moneyBorrow"
