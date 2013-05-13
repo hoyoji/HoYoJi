@@ -9,6 +9,7 @@ exports.definition = {
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
+			pictureId : "TEXT",
 			moneyIncomeCategoryId : "TEXT NOT NULL",
 			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
@@ -19,6 +20,10 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		hasMany : {
+			pictures : {
+				type : "Picture",
+				attribute : "recordId"
+			},
 			moneyIncomeDetails : {
 				type : "MoneyIncomeDetail",
 				attribute : "moneyIncome"
@@ -40,6 +45,10 @@ exports.definition = {
 			project : {
 				type : "Project",
 				attribute : "moneyIncomes"
+			},
+			picture : {
+				type : "Picture",
+				attribute : null
 			},
 			moneyIncomeCategory : {
 				type : "MoneyIncomeCategory",
@@ -120,6 +129,10 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
+			picture : {
+				type : "Picture",
+				attribute : null
+			},
 				moneyIncomeCategory : function(xValidateComplete) {
 					var error;
 					var moneyIncomeCategory = this.xGet("moneyIncomeCategory");
@@ -233,16 +246,21 @@ exports.definition = {
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : this.xGet("moneyAccountId")
 				});
-				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");	
-				} else {
+				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;	
-				}
-				oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-					dbTrans : dbTrans,
-					patch : true
-				});
-				if (this.xGet("moneyAccountId") !== record.moneyAccountId) {
+					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+						dbTrans : dbTrans,
+						patch : true
+					});
+				} else {
+					if(oldMoneyAccount.id){
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");	
+						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
+					
 					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : record.moneyAccountId
 					});

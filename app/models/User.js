@@ -18,7 +18,8 @@ exports.definition = {
 		    lastServerUpdateTime : "INTEGER",
 		    lastSyncTime : "INTEGER",
 		    defaultTransactionDisplayType : "TEXT NOT NULL",
-			lastClientUpdateTime : "INTEGER"
+			lastClientUpdateTime : "INTEGER",
+			pictureId : "TEXT"
 		},
 		defaults : {
 			newFriendAuthentication : "required",
@@ -26,6 +27,7 @@ exports.definition = {
 			isMerchant : 0
 		},
 		hasMany : {
+			pictures : {type : "Picture", attribute : "ownerUser"},
 	    	projects : {type : "Project", attribute : "ownerUser" },
 	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" },
 	    	currencies : {type : "Currency", attribute : "ownerUser"},
@@ -41,6 +43,7 @@ exports.definition = {
 			logins : {type : "Login", attribute : "ownerUser"}
 		},
 		belongsTo : {
+			picture : {type : "Picture", attribute : null},
 			activeProject : {type : "Project", attribute : null},
 			activeCurrency : {type : "Currency", attribute : null},
 			activeMoneyAccount : {type : "MoneyAccount", attribute : null},

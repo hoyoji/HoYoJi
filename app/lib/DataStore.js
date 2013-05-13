@@ -3,6 +3,7 @@
 		// Creating all the collection singletons, they will be use as store
 		Alloy.Collections.instance("Login");
 		Alloy.Collections.instance("User");
+		Alloy.Collections.instance("Picture");
 		Alloy.Collections.instance("Project");
 		Alloy.Collections.instance("ProjectShareAuthorization");
 		Alloy.Collections.instance("MoneyExpenseCategory");
