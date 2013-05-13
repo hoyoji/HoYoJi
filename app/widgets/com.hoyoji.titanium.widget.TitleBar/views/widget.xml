@@ -14,7 +14,7 @@
 				<Label id="title" color="white"></Label>
 			</View>
 			
-			<Label id="childTableTitle" color="black" visible="false"></Label>
+			<Label id="childTableTitle" color="white" visible="false"></Label>
 	
 			<Widget src="com.hoyoji.titanium.widget.XButton" id="menuButton" 
 				right="15" height="Ti.UI.FILL" width="45" 
