@@ -2,7 +2,7 @@
 	<View class="container" title="流水汇总">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="流水汇总"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<View height="42">
 					<Label left="5" width="30%">总收入</Label>

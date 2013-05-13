@@ -24,29 +24,34 @@ $.takePicture.addEventListener("singletap", function() {
 				
 				if (!mainPicture) {
 					$.setValue(newPicture, event.media);
+					$.field.fireEvent("change");
 				} else {
 					$.picturesContainer.add(imageView);
+					if($.__dirtyCount === 0){
+						$.becameDirty();
+					}
 				}
-				$.field.fireEvent("change");
 				
+				var pictureIcon = imageView.toImage();
 				newPicture.once("sync", function(newPicture) {
 					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + "_icon.png");
-					f.write(imageView.toImage());
+					f.write(pictureIcon);
 					f = null;
 					f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + ".png");
 					f.write(imageView.toBlob());
 					f = null;
+					// $.$attrs.bindModel.trigger("sync");
 				});
-				// imageView.addEventListener("longpress", function(e){
-						// Alloy.Globals.alloyAnimation.shake(imageView);
-						// var image = imageView.getImage();
-						// imageView.setImage($.field.getImage());
-						// $.setValue(newPicture);
-						// $.field.fireEvent("change");
-						// if(newPicture.isNew()){
-							// $.field.setImage(image);
-						// }
-				// });
+				imageView.addEventListener("longpress", function(e){
+						Alloy.Globals.alloyAnimation.shake(imageView);
+						var image = imageView.getImage();
+						imageView.setImage($.field.getImage());
+						$.setValue(newPicture);
+						$.field.fireEvent("change");
+						if(newPicture.isNew()){
+							$.field.setImage(image);
+						}
+				});
 				
 			} else {
 				alert("不支持视频");
