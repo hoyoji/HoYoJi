@@ -28,8 +28,8 @@
 			<Label right="20%">找回密码</Label>
 		</View>
 		<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
-			<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-			<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
+			<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f8f8f8" backgroundImage="/images/sectionBottomShadow.png"/>
+			<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f8f8f8" zIndex="0"/>
 			<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 		</View>
 	</View>
