@@ -10,11 +10,8 @@ $.$view.addEventListener("longpress", function(e){
 $.takePicture.addEventListener("singletap", function() {
 	Ti.Media.showCamera({
 		success : function(event) {
-			var image = event.media;
-
 			Ti.API.debug('Our type was: ' + event.mediaType);
 			if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
-				var imageView = createImageView(event.media);
 
 				var newPicture = Alloy.createModel("Picture", {
 					// path : "TEXT NOT NULL",
@@ -25,27 +22,40 @@ $.takePicture.addEventListener("singletap", function() {
 				if (!mainPicture) {
 					$.setValue(newPicture, event.media);
 					$.field.fireEvent("change");
+								
 				} else {
-					$.picturesContainer.add(imageView);
+					var imageView = createImageView(event.media, true);
+					imageView.addEventListener("longpress", function(e){
+						setAsMainIcon(imageView, newPicture);
+					});
+					// $.picturesContainer.add(imageView);
+					// imageView.setImage(event.media);
 					if($.__dirtyCount === 0){
 						$.becameDirty();
 					}
 				}
 				
-				var pictureIcon = imageView.toImage();
+				// var pictureIcon = imageView.toImage();
 				newPicture.once("sync", function(newPicture) {
-					var fName = newPicture.xGet("id");
-					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon.bmp");
-					f.write(pictureIcon.media);
+					var fName = newPicture.xGet("id"), f;
+					var image = event.media;
+					var ImageFactory = require('ti.imagefactory');
+					var pictureIcon = ImageFactory.imageAsResized(event.media, { width:56, height:56 });
+					
+					f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon.png");
+					// if(OS_IOS){
+						f.write(pictureIcon);
+					// }
+					// if(OS_ANDROID){
+						// f.write(pictureIcon.media);
+					// }
 					f = null;
-					// f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + ".jpg");
-					// f.write(imageView.toBlob());
+					// f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + ".png");
+					// f.write(event.media);
 					// f = null;
 					// $.$attrs.bindModel.trigger("sync");
 				});
-				imageView.addEventListener("longpress", function(e){
-					setAsMainIcon(imageView, newPicture);
-				});
+
 			} else {
 				alert("不支持视频");
 			}
@@ -92,34 +102,51 @@ $.setValue = function(value, image) {
 		if (!value) {
 			value = WPATH("/images/noPicture.png");
 		} else {
+			if(!mainPicture){
+				mainPicture = value;
+			}
 			if (firstTimeSetValue) {
 				firstTimeSetValue = false;
-				mainPicture = value;
 				displayPictures();
 			}
 			// value = value.replace(/-/g, "_");
            	// var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, value + "_icon.jpg");
-			value = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.bmp";
+           	if(OS_IOS){
+           		value = Ti.Filesystem.applicationDataDirectory + value + "_icon.png";
+			}
+			if(OS_ANDROID){
+				value = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.png";
+			}
 			// console.info(f);
 		}
-		$.field.setImage(value);
-
+		// if(value){
+			$.field.setImage(value);
+		// }
 	}
 };
 
-function createImageView(imageData) {
+function createImageView(imageData, addToContainer) {
 	if (_.isString(imageData)) {
-        imageData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + imageData + "_icon.bmp";
-		//imageData = Ti.Filesystem.applicationDataDirectory + "/" + imageData + "_icon.png";
+		if(OS_IOS){
+			imageData = Ti.Filesystem.applicationDataDirectory + imageData + "_icon.png";
+		}
+		if(OS_ANDROID){
+			imageData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + imageData + "_icon.png";
+		}
+        //imageData = Ti.Filesystem.applicationDataDirectory + "/" + imageData + "_icon.png";
 	}
 	var imageView = Ti.UI.createImageView({
 		width : 56,
 		height : 56,
-		top : 2,
 		left : 2,
-		right : 2,
-		image : imageData
+		right : 2
 	});
+	if(addToContainer){
+		$.picturesContainer.add(imageView);
+	}
+	if(imageData){
+		imageView.setImage(imageData);
+	}
 	return imageView;
 }
 
@@ -128,9 +155,7 @@ function displayPictures() {
 	if (pictures) {
 		pictures.forEach(function(picture) {
 			if(picture.xGet("id") !== mainPicture){
-	 			var imageView = createImageView(picture.xGet("id"));
-				$.picturesContainer.add(imageView);
-				
+	 			var imageView = createImageView(picture.xGet("id"), true);
 				imageView.addEventListener("longpress", function(e){
 					setAsMainIcon(imageView, picture);
 				});

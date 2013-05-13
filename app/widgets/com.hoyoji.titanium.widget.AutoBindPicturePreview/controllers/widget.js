@@ -24,16 +24,19 @@ $.onWindowOpenDo(function() {
 		var path = attributes.split(".");
 		var value = model;
 		for (var i = 0; i < path.length-1; i++) {
+			value = value.xGet ? value.xGet(path[i]) : value[path[i]];
 			if(!value){
 				return null;
 			}
-			value = value.xGet(path[i]);
+		}
+		if(!value){
+			return null;
 		}
 		var lastAttr = path[path.length-1];
 		if(lastAttr.endsWith("()")){
 			return value[lastAttr.slice(0,-2)]();		
 		} else {
-			return value.xGet(lastAttr);
+			return value.xGet ? value.xGet(lastAttr) : value[lastAttr];
 		}
 	}
 
@@ -42,13 +45,21 @@ $.onWindowOpenDo(function() {
 	}
 	
 	function updatePicture(model) {
-		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;
+		var value = getAttributeValue(model, $.$attrs.bindAttribute);
+        console.info("=================================================================== updatePIcture :" + value);
 		if(value){
 			// value = value.replace(/-/g, "_");
-            var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.bmp";
+			var f;
+			if(OS_IOS){
+				f = Ti.Filesystem.applicationDataDirectory + value + "_icon.png";
+			}
+			if(OS_ANDROID){
+		    	f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.png";
+           	}
             // var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
+            console.info("=================================================================== updatePIcture :" + f);
 			$.picture.setImage(f);
-		} else if($.$attrs.defaultImage){
+		} else if($.$attrs.defaultImage) {
 			$.picture.setImage($.$attrs.defaultImage+".png");
 		} else {
 			$.picture.setImage(WPATH("/images/noPicture.png"));
@@ -62,6 +73,7 @@ $.onWindowOpenDo(function() {
 
 	console.info(model + " AutoBind Label get model : " + $.$attrs.bindModel + " from " + $.getParentController().$view.id);
 
+    console.info("=================================================================== updatePIcture :");
 	model.on("sync", updatePicture);
 
 	updatePicture(model);
