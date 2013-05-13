@@ -7,7 +7,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
-			var editProjectShareAuthorizationArray[];
+			var editProjectShareAuthorizationArray = [];
 			var subProjectShareAuthorizationIds = [];
 			$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
 				var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({

@@ -536,7 +536,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			// fromUser.attributes.id = id;
 			// fromUser.save(userData);
 		// }
-		var editProjectShareAuthorizationArray[];
+		var editProjectShareAuthorizationArray = [];
 		if (operation === "agree") {
 			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
 			Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {

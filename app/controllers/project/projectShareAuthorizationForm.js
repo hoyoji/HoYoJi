@@ -247,40 +247,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						}else{
 								$.saveModel(saveEndCB, saveErrorCB);
 						}
-						// $.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
-							// var subProjectShareAuthorization;
-							// subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								// projectId : subProject.xGet("id"),
-								// friendId : $.$model.xGet("friend").xGet("id")
-							// });
-							// if (subProjectShareAuthorization && subProjectShareAuthorization.id
-								// && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
-								// // subProjectShareAuthorization.xSet("state", "Wait");
-								// // subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-								// // subProjectShareAuthorization.xAddToSave($);
-							// }else{
-								// var data = {
-									// project : subProject,
-									// friend :　$.$model.xGet("friend"),
-									// state : "Wait",
-									// shareType : $.$model.xGet("shareType"),
-						        	// remark : $.$model.xGet("remark"),
-						        	// ownerUser : $.$model.xGet("ownerUser"),
-									// shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
-								// }
-								// for(var attr in $.$model.config.columns){
-									// if(attr.startsWith("projectShare")){
-										// data[attr] = $.$model.xGet(attr);
-									// }
-								// }
-								// subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", data); 
-								// subProjectShareAuthorization.xAddToSave($);
-								// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-							// }
-						// });
-						
 					}else {
-								var editProjectShareAuthorizationArray[];
+								var editProjectShareAuthorizationArray = [];
 								editProjectShareAuthorizationArray.push($.$model.toJSON());
 								allSubProject.map(function(subProject){
 									var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -325,12 +293,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								}else{
 									$.saveModel(saveEndCB, saveErrorCB);
 								}
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
 					}
 				}else{
-					var editProjectShareAuthorizationArray[];
+					var editProjectShareAuthorizationArray = [];
 					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					if($.$model.xGet("shareAllSubProjects")){
 						Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function(){
