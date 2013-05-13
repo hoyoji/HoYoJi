@@ -7,6 +7,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
+			var editProjectShareAuthorizationArray = [];
 			var subProjectShareAuthorizationIds = [];
 			$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
 				var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -18,26 +19,32 @@ $.makeContextMenu = function(e, isSelectMode) {
 					// subProjectShareAuthorization._xDelete();
 					subProjectShareAuthorization.xSet("state", "Delete");
 					subProjectShareAuthorization.xSave();
+					editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 				}
 			});
 			$.$model.xSet("state", "Delete");
-			Alloy.Globals.Server.sendMsg({
-				id : guid(),
-				"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
-				"fromUserId" : Alloy.Models.User.xGet("id"),
-				"type" : "Project.Share.Delete",
-				"messageState" : "unread",
-				"messageTitle" : Alloy.Models.User.xGet("userName"),
-				"date" : (new Date()).toISOString(),
-				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "及子项目给您",
-				"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
-				"messageData" : JSON.stringify({
-					shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-					projectShareAuthorizationId : $.$model.xGet("id"),
-					subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-				})
-			}, function() {
-				$.$model.xSave();
+			editProjectShareAuthorizationArray.push($.$model.toJSON());
+			Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+				Alloy.Globals.Server.sendMsg({
+					id : guid(),
+					"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+					"fromUserId" : Alloy.Models.User.xGet("id"),
+					"type" : "Project.Share.Delete",
+					"messageState" : "unread",
+					"messageTitle" : Alloy.Models.User.xGet("userName"),
+					"date" : (new Date()).toISOString(),
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "及子项目给您",
+					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"messageData" : JSON.stringify({
+						shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+						projectShareAuthorizationId : $.$model.xGet("id"),
+						subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+					})
+				}, function() {
+					$.$model.xSave();
+				}, function(e) {
+					alert(e.__summary.msg);
+				});
 			}, function(e) {
 				alert(e.__summary.msg);
 			});

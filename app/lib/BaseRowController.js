@@ -120,6 +120,7 @@
 					title : ">",
 					height : Ti.UI.FILL,
 					width : 42,
+					backgroundColor : "#f8f8f8",
 					right : 0
 				});
 				$.$view.add(openChildButton);
@@ -142,6 +143,7 @@
 					title : "+",
 					height : Ti.UI.FILL,
 					width : 42,
+					backgroundColor : "#f8f8f8",
 					left : 0
 				});
 				$.$view.add(openDetailButton);

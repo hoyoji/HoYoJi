@@ -134,7 +134,7 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if ($.$model.isNew() || $.$model.xGet("moneyIncomeDetails").length === 0) {
+		if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !== 0)) {
 			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 			} else {//账户改变时
@@ -145,7 +145,7 @@ if ($.saveableMode === "read") {
 			if ($.$model.hasChanged("moneyAccount")) {
 				var oldAccount = $.$model.previous("moneyAccount");
 				var newAccount = $.$model.xGet("moneyAccount");
-				oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+				oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
 				newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
 				oldAccount.xAddToSave($);
 				newAccount.xAddToSave($);
