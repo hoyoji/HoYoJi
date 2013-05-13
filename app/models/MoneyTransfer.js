@@ -19,7 +19,7 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "recordId"
+				attribute : "record"
 			}
 		},
 		belongsTo : {

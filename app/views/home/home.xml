@@ -3,8 +3,8 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"
 		image="/images/mainWindow/home"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
-			<View top="0" height="84" backgroundImage="/images/rowBackgroundColor.png">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
+			<View top="0" height="84" backgroundColor="#f8f8f8">
 				<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 				<View height="74" width="50%" left="3" top="5" layout="vertical">
 					<Label>当日收入</Label>
@@ -28,7 +28,7 @@
 				</View>
 				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="74">
 					<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundImage="/images/rowBackgroundColor.png" zIndex="0"/>
+					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f8f8f8" zIndex="0"/>
 					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 				</View>
 			</View>

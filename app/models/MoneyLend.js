@@ -22,7 +22,7 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "recordId"
+				attribute : "record"
 			},
 			moneyPaybacks : {
 				type : "MoneyPayback",
