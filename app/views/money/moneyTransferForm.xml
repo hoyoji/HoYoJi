@@ -5,6 +5,10 @@
 		addModeTitle="新增转账" readModeTitle="转账详细" editModeTitle="修改转账"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
+				bindModel="$.$model"
+				bindAttribute="picture"
+				bindAttributeIsModel="id"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 				bindModel="$.$model"
 				bindAttribute="date"/>
