@@ -22,7 +22,7 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "recordId"
+				attribute : "record"
 			},
 			moneyIncomeDetails : {
 				type : "MoneyIncomeDetail",
@@ -129,10 +129,6 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				},
-			picture : {
-				type : "Picture",
-				attribute : null
-			},
 				moneyIncomeCategory : function(xValidateComplete) {
 					var error;
 					var moneyIncomeCategory = this.xGet("moneyIncomeCategory");

@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增好友分类" readModeTitle="好友分类" editModeTitle="修改好友分类"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#ebeeee">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="请选择上级分类"
 				bindModel="$.$model"
