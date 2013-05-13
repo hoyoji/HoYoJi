@@ -44,9 +44,12 @@ $.onWindowOpenDo(function() {
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;
 		if(value){
-			$.picture.setImage(Ti.Filesystem.applicationDataDirectory + value + "_icon.png");
+			// value = value.replace(/-/g, "_");
+            var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.bmp";
+            // var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
+			$.picture.setImage(f);
 		} else if($.$attrs.defaultImage){
-			$.picture.setImage($.$attrs.defaultImage);
+			$.picture.setImage($.$attrs.defaultImage+".png");
 		} else {
 			$.picture.setImage(WPATH("/images/noPicture.png"));
 		}

@@ -34,25 +34,18 @@ $.takePicture.addEventListener("singletap", function() {
 				
 				var pictureIcon = imageView.toImage();
 				newPicture.once("sync", function(newPicture) {
-					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + "_icon.png");
-					f.write(pictureIcon);
+					var fName = newPicture.xGet("id");
+					var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon.bmp");
+					f.write(pictureIcon.media);
 					f = null;
-					f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, newPicture.xGet("id") + ".png");
-					f.write(imageView.toBlob());
-					f = null;
+					// f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + ".jpg");
+					// f.write(imageView.toBlob());
+					// f = null;
 					// $.$attrs.bindModel.trigger("sync");
 				});
 				imageView.addEventListener("longpress", function(e){
-						Alloy.Globals.alloyAnimation.shake(imageView);
-						var image = imageView.getImage();
-						imageView.setImage($.field.getImage());
-						$.setValue(newPicture);
-						$.field.fireEvent("change");
-						if(newPicture.isNew()){
-							$.field.setImage(image);
-						}
+					setAsMainIcon(imageView, newPicture);
 				});
-				
 			} else {
 				alert("不支持视频");
 			}
@@ -104,7 +97,10 @@ $.setValue = function(value, image) {
 				mainPicture = value;
 				displayPictures();
 			}
-			value = Ti.Filesystem.applicationDataDirectory + value + "_icon.png";
+			// value = value.replace(/-/g, "_");
+           	// var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, value + "_icon.jpg");
+			value = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.bmp";
+			// console.info(f);
 		}
 		$.field.setImage(value);
 
@@ -113,7 +109,8 @@ $.setValue = function(value, image) {
 
 function createImageView(imageData) {
 	if (_.isString(imageData)) {
-		imageData = Ti.Filesystem.applicationDataDirectory + imageData + "_icon.png";
+        imageData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + imageData + "_icon.bmp";
+		//imageData = Ti.Filesystem.applicationDataDirectory + "/" + imageData + "_icon.png";
 	}
 	var imageView = Ti.UI.createImageView({
 		width : 56,
@@ -135,12 +132,20 @@ function displayPictures() {
 				$.picturesContainer.add(imageView);
 				
 				imageView.addEventListener("longpress", function(e){
-						Alloy.Globals.alloyAnimation.shake(imageView);
-						imageView.setImage($.field.getImage());
-						$.setValue(picture);
-						$.field.fireEvent("change");
+					setAsMainIcon(imageView, picture);
 				});
 			}
 		});
 	}
+}
+
+function setAsMainIcon(imageView, picture){
+		Alloy.Globals.alloyAnimation.shake(imageView);
+		var image = imageView.getImage();
+		imageView.setImage($.field.getImage());
+		$.setValue(picture);
+		$.field.fireEvent("change");
+		if(picture.isNew()){
+			$.field.setImage(image);
+		}
 }

@@ -1,26 +1,38 @@
 exports.definition = {
-	config: {
-		columns: {
-		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
-		    title : "TEXT",
-		    path : "TEXT",
-		    recordId : "TEXT NOT NULL",
-		    recordType : "TEXT NOT NULL",
-		    serverRecordHash : "TEXT",
+	config : {
+		columns : {
+			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
+			title : "TEXT",
+			path : "TEXT",
+			recordId : "TEXT NOT NULL",
+			recordType : "TEXT NOT NULL",
+			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			ownerUserId : "TEXT NOT NULL",
-			lastClientUpdateTime : "INTEGER"
+			lastClientUpdateTime : "INTEGER",
+			toBeUploaded : "INTEGER",
+			toBeDownloaded : "INTEGER"
+		},
+		defaults : {
+			toBeUploaded : 1,
+			toBeDownloaded : 0
 		},
 		belongsTo : {
-			record : {type : "XModel", attribute : "pictures"},
-			ownerUser : {type : "User", attribute : "pictures"}
+			record : {
+				type : "XModel",
+				attribute : "pictures"
+			},
+			ownerUser : {
+				type : "User",
+				attribute : "pictures"
+			}
 		},
-		adapter: {
+		adapter : {
 			type : "hyjSql"
 		}
-	},		
-	extendModel: function(Model) {		
-		_.extend(Model.prototype, Alloy.Globals.XModel,  {
+	},
+	extendModel : function(Model) {
+		_.extend(Model.prototype, Alloy.Globals.XModel, {
 			// extended functions and properties go here
 			xGet : function(attr) {
 				var value = this.get(attr);
@@ -53,22 +65,43 @@ exports.definition = {
 					}
 					this.attributes[attr] = m;
 					// this.set(attr, m, {
-						// silent : true
+					// silent : true
 					// });
 					this._previousAttributes[attr] = m;
 					return m;
 				}
-				return value;
+			},
+			xDelete : function(xFinishCallback, options) {
+				var self = this;
+				this._xDelete(function(error) {
+					if (!error) {
+						// delete picture and its icon from file system
+						var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, self.xGet("id") + ".png");
+						if (file.exists()) {
+							file.deleteFile();
+						}
+						file = null;
+						file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, self.xGet("id") + "_icon.png");
+						if (file.exists()) {
+							file.deleteFile();
+						}
+					}
+					xFinishCallback(error);
+				}, options);
+			},
+			syncAddNew : function(record, dbTrans) {
+				record.toBeDownloaded = 1;
+				record.toBeUploaded = 0;
 			}
 		});
-		
+
 		return Model;
 	},
-	extendCollection: function(Collection) {		
-		_.extend(Collection.prototype, Alloy.Globals.XCollection,  {
+	extendCollection : function(Collection) {
+		_.extend(Collection.prototype, Alloy.Globals.XCollection, {
 			// extended functions and properties go here
 		});
-		
+
 		return Collection;
 	}
 }
