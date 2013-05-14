@@ -80,6 +80,11 @@
 					}
 				};
 				_.extend(dbTrans, Backbone.Events);
+				function updateSyncCount(){
+					dbTrans.off("commit", updateSyncCount);
+					Ti.App.fireEvent("updateSyncCount");
+				}
+				dbTrans.on("commit", updateSyncCount);
 				return dbTrans;
 			}
 		}
