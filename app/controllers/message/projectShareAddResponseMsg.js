@@ -520,22 +520,22 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// var projectShareData = JSON.parse($.$model.xGet("messageData"));
 	var date = (new Date()).toISOString();
 
-	// Alloy.Globals.Server.getData([{
-		// __dataType : "User",
-		// id : $.$model.xGet("fromUserId")
-	// }], function(data) {
+	Alloy.Globals.Server.getData([{
+		__dataType : "User",
+		id : $.$model.xGet("fromUserId")
+	}], function(data) {
 
-		// var userData = data[0][0];
-		// var id = userData.id;
-		// var fromUser = Alloy.createModel("User").xFindInDb({
-			// id : id
-		// });
-		// if (!fromUser.id) {
-			// delete userData.id;
-			// fromUser = Alloy.createModel("User", userData);
-			// fromUser.attributes.id = id;
-			// fromUser.save(userData);
-		// }
+		var userData = data[0][0];
+		var id = userData.id;
+		var fromUser = Alloy.createModel("User").xFindInDb({
+			id : id
+		});
+		if (!fromUser.id) {
+			delete userData.id;
+			fromUser = Alloy.createModel("User", userData);
+			fromUser.attributes.id = id;
+			fromUser.save(userData);
+		}
 		var editProjectShareAuthorizationArray = [];
 		if (operation === "agree") {
 			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
@@ -733,7 +733,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			}, saveErrorCB);
 		}
-	// }, function(e) {
-		// alert(e.__summary.msg);
-	// });
+	}, function(e) {
+		alert(e.__summary.msg);
+	});
 }
