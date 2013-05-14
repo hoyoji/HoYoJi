@@ -56,6 +56,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			var projectShareAuthorizationsSearchArray = [];
 			var subProjectsArray = [];
 			var projectShareAuthorizationArray = [];
+			
+			var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+				tableName : "Project",
+				recordId : $.$model.xGet("project").xGet("id"),
+				operation : "create"
+			});
+			if(syncRecord.id){
+				projectShareAuthorizationArray.push($.$model.xGet("project").toJSON());
+			}
+			
 			projectShareAuthorizationsSearchArray.push({
 				__dataType : "ProjectShareAuthorization",
 				projectId : $.$model.xGet("project").xGet("id"),
@@ -114,6 +124,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								subProjectShareAuthorization.xAddToSave($);
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+								
+								syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+									tableName : "Project",
+									id : subProjectsArray[i/2-1].xGet("id"),
+									operation : "create"
+								});
+								if(syncRecord.id){
+									projectShareAuthorizationArray.push(subProjectsArray[i/2-1].toJSON());
+								}
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
