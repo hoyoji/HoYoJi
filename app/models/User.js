@@ -27,7 +27,7 @@ exports.definition = {
 			isMerchant : 0
 		},
 		hasMany : {
-			pictures : {type : "Picture", attribute : "ownerUser"},
+			pictures : {type : "Picture", attribute : "ownerUser",cascadeDelete : true},
 	    	projects : {type : "Project", attribute : "ownerUser" },
 	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" },
 	    	currencies : {type : "Currency", attribute : "ownerUser"},
