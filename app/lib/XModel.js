@@ -99,6 +99,7 @@
 					silent : true
 				});
 				
+				// 把所有的 belongsTo 保存会对应的 Id column 中, 以便保存倒数据库
 				for (var belongsTo in this.config.belongsTo) {
 					var belongsToModel = this.xGet(belongsTo);
 					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
@@ -115,11 +116,7 @@
 				}
 
 				console.info("xValidation done with no errors ");
-				//self.__cascadeUpdateBelongsTo(function() {
-				//	self.__cascadeUpdateHasMany(function(){
 				this.save(null, options);
-				//	});
-				//});
 			},
 			xSave : function(options) {
 				var self = this;
