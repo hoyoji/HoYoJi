@@ -451,7 +451,9 @@
 								if(err){
 									error = err; 
 									options.dbTrans.rollback();
-									xFinishCallback(error);
+									if(xFinishCallback){
+										xFinishCallback(error);
+									}
 								}
 							}, options);
 							if(error){
