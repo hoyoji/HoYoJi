@@ -16,6 +16,9 @@ if($.$attrs.color){
 if($.$attrs.rowLeftImage === "true") {
 	$.rowLeftImage.setVisible(true);
 }
+if($.$attrs.noBottomImage === "true") {
+	$.rowBottomImage.setVisible(false);
+}
 if (OS_IOS) {
 	$.field.setAutocapitalization(false);
 }

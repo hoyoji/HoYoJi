@@ -5,7 +5,7 @@
 "Label": {
 	color: '#000',
 	font: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold'
 	},
 	height: Ti.UI.SIZE,
