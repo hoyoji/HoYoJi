@@ -278,6 +278,11 @@
 				_.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
 				c || ( c = {});
 				c.silent = true;
+				for(var attr in d){
+					if(this.attributes[attr] === undefined){
+						this.xGet(attr);
+					}
+				}
 				this.set(d, c);
 				return this;
 			},
@@ -323,9 +328,12 @@
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
-					if (!fId)
+					if (!fId){
+						this.attributes[attr] = null;
+						this._previousAttributes[attr] = null;
 						return null;
-
+					}
+					
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";

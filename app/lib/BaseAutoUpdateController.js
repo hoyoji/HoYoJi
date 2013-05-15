@@ -253,9 +253,9 @@
 						}
 					}
 					if(model.xGet){
-						if (model.xPrevious(attribute) == model.xGet(attribute) && $.__dirtyCount > 0) {
+						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
-						} else if (model.xPrevious(attribute) != model.xGet(attribute) && $.__dirtyCount === 0) {
+						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
 							// if (bindAttributeIsModel && model.xGet("id") !== model.previous(attribute + "Id")) {
 								$.becameDirty();
 							// }
