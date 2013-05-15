@@ -123,13 +123,8 @@ if ($.saveableMode === "read") {
 			var paybackedAmount = $.$model.xGet("moneyLend").xGet("paybackedAmount");
 			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
 			var paybackRate = $.$model.xGet("exchangeRate");
-			// moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
-			moneyLend.save({
-				paybackedAmount : paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate
-			}, {
-				patch : true,
-				wait : true
-			});
+			moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
+			moneyLend.xAddToSave($);
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -145,7 +140,35 @@ if ($.saveableMode === "read") {
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
+
+		var newMoneyLendAmount = moneyLend.xGet("amount");
+		var oldMoneyLendAmount = moneyLend.previous("amount");
+		var newMoneyLendAccount = moneyLend.xGet("moneyAccount");
+		var oldMoneyLendAccount = moneyLend.previous("moneyAccount");
 		$.saveModel(function(e) {
+			if (moneyLend) {
+				if (newMoneyLendAccount === oldMoneyLendAccount) {
+					newMoneyLendAccount.save({
+						currentBalance : newMoneyLendAccount.xGet("currentBalance") + oldMoneyLendAmount - newMoneyLendAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+				} else {
+					oldMoneyLendAccount.save({
+						currentBalance : oldMoneyLendAccount.xGet("currentBalance") + oldMoneyLendAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+					newMoneyLendAccount.save({
+						currentBalance : newMoneyLendAccount.xGet("currentBalance") - newMoneyLendAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+				}
+			}
 			if (moneyLend && oldAccountHasChanged) {
 				moneyLend.trigger("xchange:moneyAccount.currentBalance", moneyLend);
 			}

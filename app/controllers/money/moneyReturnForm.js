@@ -121,14 +121,8 @@ if ($.saveableMode === "read") {
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
-			// moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
-			// moneyBorrow.xAddToSave($);
-			moneyBorrow.save({
-				returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate
-			}, {
-				patch : true,
-				wait : true
-			});
+			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
+			moneyBorrow.xAddToSave($);
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -144,7 +138,35 @@ if ($.saveableMode === "read") {
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
+		
+		var newMoneyBorrowAmount = moneyBorrow.xGet("amount");
+		var oldMoneyBorrowAmount = moneyBorrow.previous("amount");
+		var newMoneyBorrowAccount = moneyBorrow.xGet("moneyAccount");
+		var oldMoneyBorrowAccount = moneyBorrow.previous("moneyAccount");
 		$.saveModel(function(e) {
+			if (moneyBorrow) {
+				if (newMoneyBorrowAccount === oldMoneyBorrowAccount) {
+					newMoneyBorrowAccount.save({
+						currentBalance : newMoneyBorrowAccount.xGet("currentBalance") - oldMoneyBorrowAmount + newMoneyBorrowAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+				} else {
+					oldMoneyBorrowAccount.save({
+						currentBalance : oldMoneyBorrowAccount.xGet("currentBalance") - oldMoneyBorrowAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+					newMoneyBorrowAccount.save({
+						currentBalance : newMoneyBorrowAccount.xGet("currentBalance") + newMoneyBorrowAmount
+					}, {
+						patch : true,
+						wait : true
+					});
+				}
+			}
 			if (moneyBorrow && oldAccountHasChanged) {
 				moneyBorrow.trigger("xchange:moneyAccount.currentBalance", moneyBorrow);
 			}

@@ -48,3 +48,7 @@ if($.$attrs.autoSync === "true"){
 		Alloy.Collections[$.$attrs.modelType].off("add destroy sync", exports.refresh);
 	});
 }
+
+if($.$attrs.color) {
+	$.moneyTotal.setColor($.$attrs.color);
+}
