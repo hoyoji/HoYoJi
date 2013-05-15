@@ -48,9 +48,6 @@ $.$view.addEventListener("click", function(e) {
 		var data = $.table.data.slice(0);
 		if (e.rowHasRendered) {
 			
-			getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
-				bubbles : false
-			});
 			$.table.deleteRow(e.index);
 			
 			// remove the section header
