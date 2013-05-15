@@ -398,20 +398,34 @@
 				getAncestors(this.xGet(attribute));
 				return ancestors;
 			},
+			xDelete : function(xFinishCallback, options) {
+				this._xDelete(xFinishCallback, options);
+			},
 			_xDelete : function(xFinishCallback, options) {
-				var error;
+				var error, cascadeDeletions = [];
 				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
-						if (this.xGet(hasMany).length > 0) {
+						if (this.config.hasMany[hasMany]["cascadeDelete"] !== true && this.xPrevious(hasMany).length > 0) {
 							error = {
 								msg : "包含有相关联的子数据，删除失败"
 							};
 							break;
+						} else {
+							cascadeDeletions.push(hasMany)
 						}
 					}
 				}
 				if (!error) {
+					options = options || {};
+					options.wait = true;
+					
+					var outerTransaction = options.dbTrans;
+					if(!outerTransaction){
+						options.dbTrans = Alloy.Globals.DataStore.createTransaction();
+						options.dbTrans.begin();
+					}
+					
 					function delSuccess() {
 						this.off("destroy", delSuccess);
 						this.off("error", delFail);
@@ -428,12 +442,32 @@
 							xFinishCallback(error.__summary);
 						}
 					}
-
+					
+					for(var i = 0; i < cascadeDeletions.length; i++){
+						var hasMany = this.xPrevious(cascadeDeletions[i]).toArray();
+						for(var j = 0; j < hasMany.length; j++){
+							var item = hasMany[j];
+							item.xDelete(function(err){
+								if(err){
+									error = err; 
+									options.dbTrans.rollback();
+									xFinishCallback(error);
+								}
+							}, options);
+							if(error){
+								return;
+							}
+						}
+					}
+					
+					if(!outerTransaction && options.dbTrans.xCommitCount === 0){
+						// options.dbTrans.commit();
+						options.commit = true;
+					}	
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
-					options = options || {};
-					options.wait = true;
 					this.destroy(options);
+					
 				} else if (xFinishCallback) {
 					xFinishCallback(error);
 				}
