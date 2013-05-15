@@ -46,27 +46,25 @@ $.$view.addEventListener("click", function(e) {
 
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
 		if (e.rowHasRendered) {
-			
-			console.info("1 XTable deleting row at " + e.index);
 			// remove the section header
 			if ($.table.data[sectionIndex].rows.length === 1) {
-			console.info("2 XTable deleting row at " + e.index);
-				var data = $.table.data.slice(0);
-				data.splice(sectionIndex, 1);
-			console.info("3 XTable deleting row at " + e.index);
-				$.table.setData(data);
-			console.info("4 XTable deleting row at " + e.index);
+				// setTimeout(function(){
+					var data = $.table.data.slice(0);
+					data.splice(sectionIndex, 1);
+					$.table.setData(data);
+				// },10000);
 			} else {
 				$.table.deleteRow(e.index);
 			}
 		} else {
 			var data = $.table.data.slice(0);
-			var rows = data[sectionIndex].rows.slice(0);
-			rows.splice(e.index, 1);
-			data[sectionIndex].rows = rows;
 			// remove the section header
-			if ($.table.data[sectionIndex].rows.length === 0) {
+			if ($.table.data[sectionIndex].rows.length === 1) {
 				data.splice(sectionIndex, 1);
+			} else {
+				var rows = data[sectionIndex].rows.slice(0);
+				rows.splice(e.index, 1);
+				data[sectionIndex].rows = rows;
 			}
 			$.table.setData(data);
 		}
