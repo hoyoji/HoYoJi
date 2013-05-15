@@ -25,7 +25,7 @@
 						}
 					});
 					
-					this.once("sync fetch", this.__initializeExistingModel, this);
+					this.on("sync fetch", this.__initializeExistingModel, this);
 				} else {
 					this.__initializeExistingModel();
 				}
@@ -59,6 +59,7 @@
 				if (this.isNew()) {
 					return;
 				}
+				this.off(null, this.__initializeExistingModel);
 				// keep the relations in sync
 				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
 

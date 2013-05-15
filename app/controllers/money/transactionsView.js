@@ -19,7 +19,7 @@ exports.doFilter = function (filter) {
 }
 
 exports.sort = function(sortField, sortReverse, groupByField){
-	$.transactionsTable.sort(sortField, sortReverse, groupByField);
+	$.transactionsTable.sort(sortField, sortReverse, groupByField || "date");
 }
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");

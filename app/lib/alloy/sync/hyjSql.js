@@ -474,34 +474,24 @@ function Sync(method, model, opts) {
 		}
 		if (opts.dbTrans) {
 			if (opts.commit === true) {
-				_.isFunction(opts.success) && opts.success(resp);
 				opts.dbTrans.commit();
+				_.isFunction(opts.success) && opts.success(resp);
 				if(method === "read"){
 					model.trigger("fetch", model);
-				} else {
-				 	Ti.App.fireEvent("updateSyncCount");	
-				}
+				} 
 			} else {
 				function commitTrans() {
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					// if(method !== "read"){
-						// model.changed = {};
-						// // model._previousAttributes = {};
-					// }
 					_.isFunction(opts.success) && opts.success(resp);
 					if(method === "read"){
 						model.trigger("fetch", model);
-					} else {
-					 	Ti.App.fireEvent("updateSyncCount");	
 					}
 				}
 
 				function rollbackTrans() {
 					opts.dbTrans.off("commit", commitTrans);
 					opts.dbTrans.off("rollback", rollbackTrans);
-					//error = { __summary : { msg : "没有删除权限"}};
-					//_.isFunction(opts.error) && opts.error(model, error);
 				}
 
 				opts.dbTrans.on("commit", commitTrans);
@@ -509,10 +499,6 @@ function Sync(method, model, opts) {
 			}
 
 		} else {
-			// if(method !== "read"){
-				// model.changed = {};
-				// model._previousAttributes = {};
-			// }
 			_.isFunction(opts.success) && opts.success(resp);
 			if(method === "read"){
 				model.trigger("fetch", model);
