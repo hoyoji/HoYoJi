@@ -1,6 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -40,10 +39,10 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		if($.$model.isNew()){
+		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
-		}else{
-			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+		} else {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -122,8 +121,14 @@ if ($.saveableMode === "read") {
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
-			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
-			moneyBorrow.xAddToSave($);
+			// moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
+			// moneyBorrow.xAddToSave($);
+			moneyBorrow.save({
+				returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate
+			}, {
+				patch : true,
+				wait : true
+			});
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -136,33 +141,32 @@ if ($.saveableMode === "read") {
 				exchange.xAddToSave($);
 			}
 		}
-		
+
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
 		$.saveModel(function(e) {
-			if(moneyBorrow && oldAccountHasChanged){
-				moneyBorrow.trigger("xchange:moneyAccount.currentBalance",moneyBorrow);
+			if (moneyBorrow && oldAccountHasChanged) {
+				moneyBorrow.trigger("xchange:moneyAccount.currentBalance", moneyBorrow);
 			}
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-				if(Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") 
-					|| Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project") ){
+				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
 					Alloy.Models.User.save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")
 					}, {
 						patch : true,
 						wait : true
-					});	
+					});
 				}
 			}
 			saveEndCB(e);
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if(moneyBorrow){
-			moneyBorrow.xSet("returnedAmount", moneyBorrow.previous("returnedAmount"));
+			if (moneyBorrow) {
+				moneyBorrow.xSet("returnedAmount", moneyBorrow.previous("returnedAmount"));
 			}
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
