@@ -5,7 +5,7 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL",
+			activeProjectId : "TEXT",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
 			newFriendAuthentication : "TEXT NOT NULL",

@@ -43,8 +43,8 @@
 					//Alloy.Models.instance(m)
 				}
 			},
-			createTransaction : function(db) {
-				db = db || Ti.Database.open("hoyoji");
+			createTransaction : function() {
+				var db = Ti.Database.open("hoyoji");
 				var dbTrans = {
 					db : db,
 					xCommitCount : 0,
