@@ -45,17 +45,22 @@ $.$view.addEventListener("click", function(e) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
-		var data = $.table.data.slice(0);
 		if (e.rowHasRendered) {
 			
-			$.table.deleteRow(e.index);
-			
+			console.info("1 XTable deleting row at " + e.index);
 			// remove the section header
-			if ($.table.data[sectionIndex].rows.length === 0) {
+			if ($.table.data[sectionIndex].rows.length === 1) {
+			console.info("2 XTable deleting row at " + e.index);
+				var data = $.table.data.slice(0);
 				data.splice(sectionIndex, 1);
+			console.info("3 XTable deleting row at " + e.index);
 				$.table.setData(data);
+			console.info("4 XTable deleting row at " + e.index);
+			} else {
+				$.table.deleteRow(e.index);
 			}
 		} else {
+			var data = $.table.data.slice(0);
 			var rows = data[sectionIndex].rows.slice(0);
 			rows.splice(e.index, 1);
 			data[sectionIndex].rows = rows;
@@ -83,7 +88,9 @@ $.$view.addEventListener("click", function(e) {
 		addRowToSection(rowModel, collection, e.index + len);
 	}
 	$.__changingRow = false;
+			console.info("5 XTable deleting row at " + e.index);
 	$.trigger("endchangingrow");
+			console.info("6 XTable deleting row at " + e.index);
 });
 
 function createRowView(rowModel, collection) {
@@ -269,10 +276,19 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-	if (collection.isFetching || collection.isFiltering) {
-		return;
+	function doAddRow(){
+		$.off("endchangingrow", doAddRow)
+		if($.__changingRow){
+			$.on("endchanggingrow", doAddRow);
+			return;
+		} else {
+			addRowToSection(rowModel, collection);
+		}
 	}
-	addRowToSection(rowModel, collection);
+	if (collection.isFetching || collection.isFiltering) {
+				return;
+	}
+	doAddRow();
 }
 
 exports.expandHasDetailSection = function(rowIndex, sectionRowId) {

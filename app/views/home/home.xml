@@ -32,7 +32,7 @@
 					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
 				</View>
 			</View>
-			<Require id="transactionsTable" src="home/activityView" top="94" bottom="0"/>
+			<!-- <Require id="transactionsTable" src="home/activityView" top="94" bottom="0"/> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="同步,记一笔,设置" imagesFolder="/images/home"
