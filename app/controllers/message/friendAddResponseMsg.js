@@ -26,25 +26,35 @@ $.onWindowOpenDo(function() {
 			friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
 		}], function(data) {
 			if (data[0].length > 0) {
-				$.$model.xSet('messageState', "closed");
-				$.$model.xSave();
-				$.footerBar.$view.hide();
+				$.$model.save({
+					messageState : "closed"
+				}, {
+					wait : true,
+					patch : true
+				});
 			}
 		}, function(e) {
 			alert(e.__summary.msg);
 		});
 	}
-	if ($.$model.xGet('messageState') === "unread") {
-		$.$model.xSet('messageState', "closed");
-		$.$model.xSave();
-		$.footerBar.$view.hide();
-	}
-	if ($.$model.xGet('messageState') === "closed") {
-		$.footerBar.$view.hide();
-	}
+	
 	if ($.$model.xGet('messageState') === "new") {
-		$.$model.xSet('messageState', "read");
-		$.$model.xSave();
+		$.$model.save({
+			messageState : "read"
+		}, {
+			wait : true,
+			patch : true
+		});
+		$.footerBar.$view.show();
+	}else if ($.$model.xGet('messageState') === "read") {
+		$.footerBar.$view.show();
+	}else if ($.$model.xGet('messageState') === "unread") {
+		$.$model.save({
+			messageState : "closed"
+		}, {
+			wait : true,
+			patch : true
+		});
 	}
 });
 

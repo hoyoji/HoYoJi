@@ -151,6 +151,7 @@ exports.definition = {
 					// } 
 					else if(msg.xGet("type") === "Project.Share.Edit"){
 						var projectShareData = JSON.parse(msg.xGet("messageData"));
+						var editProjectShareAuthorizationArray = [];
 						if(projectShareData.shareAllSubProjects){
 							var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
 							Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection){
@@ -160,10 +161,15 @@ exports.definition = {
 										projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId){
 											var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 											if(subProjectShareAuthorization.xGet("state") === "Wait"){
+												editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorization.save({state : "Accept"}, {wait : true, patch : true});
 											}
 										});
-										msg.save({messageState : "unread"}, {wait : true, patch : true});
+										Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+											msg.save({messageState : "unread"}, {wait : true, patch : true});
+										}, function(e) {
+											alert(e.__summary.msg);
+										});
 											// Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareData.subProjectShareAuthorizationIds, function(collection){
 												// collection.map(function(projectShareAuthorization){
 													// projectShareAuthorization.save({state : 'Accept'}, {wait : true, patch : true});
