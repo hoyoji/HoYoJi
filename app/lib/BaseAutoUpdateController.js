@@ -255,7 +255,7 @@
 					if(model.xGet){
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
-						} else if (model.hasChanged(attribute) && model.previous(attribute) != model.xGet(attribute) && $.__dirtyCount === 0) {
+						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
 							// if (bindAttributeIsModel && model.xGet("id") !== model.previous(attribute + "Id")) {
 								$.becameDirty();
 							// }
