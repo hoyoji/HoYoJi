@@ -10,7 +10,7 @@
 					addModeEditability="noneditable"
 					onSingletap = "openFriendSelector"
 				/>
-				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="请求消息" height="84" width="Ti.UI.FILL" hintText="请输入请求消息"
+				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="内容" height="84" width="Ti.UI.FILL"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 		</ScrollView>
