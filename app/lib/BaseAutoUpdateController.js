@@ -158,6 +158,13 @@
 				if ($.$attrs.bindAttributeIsModel) {
 					// open bindModelSelector
 					if ($.$attrs.bindModelSelector) {
+						if($.beforeOpenModelSelector){
+							var retMsg = $.beforeOpenModelSelector();
+							if(retMsg){
+								$.showErrorMsg(retMsg);
+								return;
+							}
+						}
 						var attributes = {
 							selectorCallback : function(model) {
 								$.setValue(model);

@@ -491,16 +491,23 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 
 $.onWindowOpenDo(function() {
 	$.showHideAuthorization.hide();
-	if ($.$model.xGet('messageState') === "unread") {
+	if ($.$model.xGet('messageState') === "new") {
+		$.$model.save({
+			messageState : "read"
+		}, {
+			wait : true,
+			patch : true
+		});
+		$.footerBar.$view.show();
+	}else if ($.$model.xGet('messageState') === "read") {
+		$.footerBar.$view.show();
+	}else if ($.$model.xGet('messageState') === "unread") {
 		$.$model.save({
 			messageState : "closed"
 		}, {
 			wait : true,
 			patch : true
 		});
-		$.footerBar.$view.hide();
-	} else if ($.$model.xGet('messageState') === "closed") {
-		$.footerBar.$view.hide();
 	}
 });
 

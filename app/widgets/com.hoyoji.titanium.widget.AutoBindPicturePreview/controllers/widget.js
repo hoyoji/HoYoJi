@@ -46,7 +46,7 @@ $.onWindowOpenDo(function() {
 	
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);
-        console.info("=================================================================== updatePIcture :" + value);
+        console.info("=================================================================== updatePIcture 1 :" + value);
 		if(value){
 			// value = value.replace(/-/g, "_");
 			var f;
@@ -60,9 +60,13 @@ $.onWindowOpenDo(function() {
             console.info("=================================================================== updatePIcture :" + f);
 			$.picture.setImage(f);
 		} else if($.$attrs.defaultImage) {
+        console.info("=================================================================== updatePIcture 2 :" + value);
 			$.picture.setImage($.$attrs.defaultImage+".png");
 		} else {
+			
+        console.info("=================================================================== updatePIcture 3 :" + value);
 			$.picture.setImage(WPATH("/images/noPicture.png"));
+        console.info("=================================================================== updatePIcture 4 :" + value);
 		}
 	}
 

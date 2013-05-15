@@ -22,7 +22,8 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "record"
+				attribute : "record",
+				cascadeDelete : true
 			},
 			moneyIncomeDetails : {
 				type : "MoneyIncomeDetail",
@@ -288,6 +289,7 @@ exports.definition = {
 					}
 				} 
 				// 让本地修改覆盖服务器上的记录
+				
 			}
 		});
 		return Model;

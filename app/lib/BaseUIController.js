@@ -159,7 +159,6 @@
 								// }
 								
 								winController.$view.addEventListener("close", function(){
-									$.destroy();
 									$.$view.fireEvent("winclose", {bubbles : false});
 								});
 							}
@@ -184,6 +183,10 @@
 					e.cancelBubble = true;
 					$.becameClean();
 				}
+			});
+			
+			$.onWindowCloseDo(function(){
+				$.destroy();
 			});
 		}
 	}());

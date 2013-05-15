@@ -86,7 +86,9 @@ exports.definition = {
 							file.deleteFile();
 						}
 					}
-					xFinishCallback(error);
+					if(xFinishCallback){
+						xFinishCallback(error);
+					}
 				}, options);
 			},
 			syncAddNew : function(record, dbTrans) {

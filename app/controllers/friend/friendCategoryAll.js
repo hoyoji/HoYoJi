@@ -12,3 +12,9 @@ $.titleBar.bindXTable($.friendCategoriesTable);
 
 var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null}, $);
 $.friendCategoriesTable.addCollection(collection);
+
+function onFooterbarTap(e){
+	if(e.source.id === "addFriendCategory"){
+		Alloy.Globals.openWindow("friend/friendCategoryForm",{$model : "FriendCategory"});
+	}
+}

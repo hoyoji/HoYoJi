@@ -62,6 +62,12 @@ if ($.saveableMode === "read") {
 		}
 	});
 
+	$.moneyExpenseCategory.beforeOpenModelSelector = function(){
+		if(!$.$model.xGet("project")){
+			return "请先选择项目";
+		}
+	}
+
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	oldAmount = $.$model.xGet("amount") || 0;
 

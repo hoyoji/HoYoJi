@@ -5,7 +5,7 @@ exports.definition = {
 			userName : "TEXT UNIQUE NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
-			activeProjectId : "TEXT NOT NULL",
+			activeProjectId : "TEXT",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
 			newFriendAuthentication : "TEXT NOT NULL",
@@ -27,7 +27,7 @@ exports.definition = {
 			isMerchant : 0
 		},
 		hasMany : {
-			pictures : {type : "Picture", attribute : "ownerUser"},
+			pictures : {type : "Picture", attribute : "ownerUser",cascadeDelete : true},
 	    	projects : {type : "Project", attribute : "ownerUser" },
 	    	friendCategories : { type : "FriendCategory", attribute : "ownerUser" },
 	    	currencies : {type : "Currency", attribute : "ownerUser"},
