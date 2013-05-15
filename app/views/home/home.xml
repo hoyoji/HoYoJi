@@ -6,8 +6,8 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
 			<View top="0" height="84" backgroundColor="#f8f8f8">
 				<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
-				<View height="74" width="50%" left="3" top="5" layout="vertical">
-					<Label>当日收入</Label>
+				<View height="74" width="50%" left="3" top="0" layout="vertical">
+					<Label top="20">当日收入</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600"
 						bindModel = "User"
@@ -16,8 +16,8 @@
 						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#329600"/>
 					</View>
 				</View>
-				<View height="74" width="50%" right="0" top="5" layout="vertical">
-					<Label>当日支出</Label>
+				<View height="74" width="50%" right="0" top="0" layout="vertical">
+					<Label top="20">当日支出</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032"
 						bindModel = "User"
