@@ -314,42 +314,17 @@
 			// $.$model.on("change", shakeMe);
 			$.onWindowOpenDo(function() {
 				$.parent.addEventListener("rowremoved", function() {
-					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
+					// $.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
+					$.$view.fireEvent("winclose", {bubbles : false});
 				});
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 					$.$view.setBackgroundColor("pink");
 				}
 			});
 			
-			// var collectionFetching = false;
-			// function collectionFetchStart(){
-				// collectionFetching = true;
-			// }
-			// function collectionFetchEnd(){
-				// collectionFetching = false;
-			// }
-			// $.$attrs.$collection && $.$attrs.$collection.on("xFetchStart", collectionFetchStart);
-			// $.$attrs.$collection && $.$attrs.$collection.on("xFetchEnd", collectionFetchEnd);
-// 			
-			// var collectionFiltering = false;
-			// function collectionFilterStart(){
-				// collectionFetching = true;
-			// }
-			// function collectionFilterEnd(){
-				// collectionFetching = false;
-			// }
-			// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterStart", collectionFilterStart);
-			// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterEnd", collectionFilterEnd);
-			
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
-			
-				// $.$attrs.$collection && $.$attrs.$collection.off("xFetchStart", collectionFetchStart);
-				// $.$attrs.$collection && $.$attrs.$collection.off("xFetchStart", collectionFetchEnd);
-// 				
-				// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterStart", collectionFilterStart);
-				// $.$attrs.$collection && $.$attrs.$collection.on("xSetFilterEnd", collectionFilterEnd);
 				
 				// $.$model.off("change", shakeMe);
 			});

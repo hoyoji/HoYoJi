@@ -47,7 +47,12 @@ $.$view.addEventListener("click", function(e) {
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
 		var data = $.table.data.slice(0);
 		if (e.rowHasRendered) {
+			
+			getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
+				bubbles : false
+			});
 			$.table.deleteRow(e.index);
+			
 			// remove the section header
 			if ($.table.data[sectionIndex].rows.length === 0) {
 				data.splice(sectionIndex, 1);
@@ -366,7 +371,7 @@ exports.addCollection = function(collection, rowView) {
 	// }
 	collection.on("add", addRow);
 	collection.on("reset", resetCollection);
-	collection.on("sync", refreshCollectionOnChange);
+	collection.on("sync", refreshCollectionOnChange, collection);
 	
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
@@ -377,7 +382,7 @@ var clearCollections = function() {
 			//exports.removeCollection(collections[i], {previousModels : collections[i].models});
 			collections[i].off("add", addRow);
 			collections[i].off("reset", resetCollection);
-			collections[i].off("sync", refreshCollectionOnChange);
+			collections[i].off("sync", refreshCollectionOnChange, collections[i]);
 			collections[i].off("xFetchEnd", refreshCollection);
 			collections[i].off("xSetFilterEnd", refreshCollection);
 		}
@@ -386,8 +391,10 @@ var clearCollections = function() {
 	$.table.setData([]);
 }
 
-function refreshCollectionOnChange(){
+function refreshCollectionOnChange(model){
+	if(this.__compareFilter(model)){
 		$.sort(null,null,null,true);
+	}
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
@@ -610,7 +617,8 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	}
 	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
-			return getSectionNameOfRowModel(findObject(item.id).xDeepGet(groupByField));
+			var model = findObject(item.id);
+			return model && getSectionNameOfRowModel(model.xDeepGet(groupByField));
 		});
 		data = [];
 		var sectionIndex = 0;
