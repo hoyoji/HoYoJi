@@ -12,6 +12,7 @@
 		Alloy.Collections.instance("Currency");
 		Alloy.Collections.instance("Exchange");
 		Alloy.Collections.instance("MoneyAccount");
+		Alloy.Collections.instance("MoneyAccountBalanceAdjustment");
 		Alloy.Collections.instance("Friend");
 		Alloy.Collections.instance("Message");
 		Alloy.Collections.instance("MessageBox");

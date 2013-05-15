@@ -99,6 +99,7 @@
 					silent : true
 				});
 				
+				// 把所有的 belongsTo 保存会对应的 Id column 中, 以便保存倒数据库
 				for (var belongsTo in this.config.belongsTo) {
 					var belongsToModel = this.xGet(belongsTo);
 					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
@@ -115,11 +116,7 @@
 				}
 
 				console.info("xValidation done with no errors ");
-				//self.__cascadeUpdateBelongsTo(function() {
-				//	self.__cascadeUpdateHasMany(function(){
 				this.save(null, options);
-				//	});
-				//});
 			},
 			xSave : function(options) {
 				var self = this;
@@ -278,6 +275,11 @@
 				_.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
 				c || ( c = {});
 				c.silent = true;
+				for(var attr in d){
+					if(this.attributes[attr] === undefined){
+						this.xGet(attr);
+					}
+				}
 				this.set(d, c);
 				return this;
 			},
@@ -323,9 +325,12 @@
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
-					if (!fId)
+					if (!fId){
+						this.attributes[attr] = null;
+						this._previousAttributes[attr] = null;
 						return null;
-
+					}
+					
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
