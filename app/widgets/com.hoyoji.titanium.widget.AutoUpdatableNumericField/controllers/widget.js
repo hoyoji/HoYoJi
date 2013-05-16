@@ -5,10 +5,10 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 // $.field.setText(hintText || "");
 // }
 // }
-if($.$attrs.color){
+if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 }
-if($.$attrs.fieldColor){
+if ($.$attrs.fieldColor) {
 	$.field.setColor($.$attrs.fieldColor);
 }
 
@@ -34,6 +34,8 @@ $.onWindowOpenDo(function() {
 		$.getCurrentWindow().numericKeyboard.open($);
 	});
 	$.hintText.addEventListener("singletap", function(e) {
+		e.cancelBubble = true;
+		$.field.fireEvent("singletap");
 		if ($.saveableMode === "read") {
 			return;
 		}
@@ -64,7 +66,7 @@ $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
 		return $.__bindAttributeIsModel;
 	}
-	if($.field.getText() === ""){
+	if ($.field.getText() === "") {
 		return null;
 	}
 	return Number($.field.getText());

@@ -13,7 +13,10 @@
 }
 
 "#localAmountLabel": {
-	color: '#c80032'
+	color: '#c80032',
+	font: {
+		fontWeight: 'normal'
+	}
 }
 
 ".firstRow": {
