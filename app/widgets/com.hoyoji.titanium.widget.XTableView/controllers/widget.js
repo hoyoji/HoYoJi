@@ -45,26 +45,26 @@ $.$view.addEventListener("click", function(e) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 
 		var sectionIndex = getSectionIndexByRowIndex(e.index);
-		var data = $.table.data.slice(0);
 		if (e.rowHasRendered) {
-			
-			getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
-				bubbles : false
-			});
-			$.table.deleteRow(e.index);
-			
 			// remove the section header
-			if ($.table.data[sectionIndex].rows.length === 0) {
-				data.splice(sectionIndex, 1);
-				$.table.setData(data);
+			if ($.table.data[sectionIndex].rows.length === 1) {
+				// setTimeout(function(){
+					var data = $.table.data.slice(0);
+					data.splice(sectionIndex, 1);
+					$.table.setData(data);
+				// },10000);
+			} else {
+				$.table.deleteRow(e.index);
 			}
 		} else {
-			var rows = data[sectionIndex].rows.slice(0);
-			rows.splice(e.index, 1);
-			data[sectionIndex].rows = rows;
+			var data = $.table.data.slice(0);
 			// remove the section header
-			if ($.table.data[sectionIndex].rows.length === 0) {
+			if ($.table.data[sectionIndex].rows.length === 1) {
 				data.splice(sectionIndex, 1);
+			} else {
+				var rows = data[sectionIndex].rows.slice(0);
+				rows.splice(e.index, 1);
+				data[sectionIndex].rows = rows;
 			}
 			$.table.setData(data);
 		}
@@ -86,7 +86,9 @@ $.$view.addEventListener("click", function(e) {
 		addRowToSection(rowModel, collection, e.index + len);
 	}
 	$.__changingRow = false;
+			console.info("5 XTable deleting row at " + e.index);
 	$.trigger("endchangingrow");
+			console.info("6 XTable deleting row at " + e.index);
 });
 
 function createRowView(rowModel, collection) {
@@ -272,10 +274,19 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-	if (collection.isFetching || collection.isFiltering) {
-		return;
+	function doAddRow(){
+		$.off("endchangingrow", doAddRow)
+		if($.__changingRow){
+			$.on("endchanggingrow", doAddRow);
+			return;
+		} else {
+			addRowToSection(rowModel, collection);
+		}
 	}
-	addRowToSection(rowModel, collection);
+	if (collection.isFetching || collection.isFiltering) {
+				return;
+	}
+	doAddRow();
 }
 
 exports.expandHasDetailSection = function(rowIndex, sectionRowId) {

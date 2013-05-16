@@ -42,6 +42,11 @@ exports.definition = {
 			moneyReturns : {
 				type : "MoneyReturn",
 				attribute : "moneyAccount"
+			},
+			moneyAccountBalanceAdjustments : {
+				type : "MoneyAccountBalanceAdjustment",
+				attribute : "moneyAccount",
+				cascadeDelete : true
 			}
 		},
 		belongsTo : {

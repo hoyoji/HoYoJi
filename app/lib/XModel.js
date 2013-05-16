@@ -99,6 +99,7 @@
 					silent : true
 				});
 				
+				// 把所有的 belongsTo 保存会对应的 Id column 中, 以便保存倒数据库
 				for (var belongsTo in this.config.belongsTo) {
 					var belongsToModel = this.xGet(belongsTo);
 					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
@@ -115,11 +116,7 @@
 				}
 
 				console.info("xValidation done with no errors ");
-				//self.__cascadeUpdateBelongsTo(function() {
-				//	self.__cascadeUpdateHasMany(function(){
 				this.save(null, options);
-				//	});
-				//});
 			},
 			xSave : function(options) {
 				var self = this;
@@ -278,6 +275,11 @@
 				_.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
 				c || ( c = {});
 				c.silent = true;
+				for(var attr in d){
+					if(this.attributes[attr] === undefined){
+						this.xGet(attr);
+					}
+				}
 				this.set(d, c);
 				return this;
 			},
@@ -323,9 +325,12 @@
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
-					if (!fId)
+					if (!fId){
+						this.attributes[attr] = null;
+						this._previousAttributes[attr] = null;
 						return null;
-
+					}
+					
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
@@ -398,20 +403,34 @@
 				getAncestors(this.xGet(attribute));
 				return ancestors;
 			},
+			xDelete : function(xFinishCallback, options) {
+				this._xDelete(xFinishCallback, options);
+			},
 			_xDelete : function(xFinishCallback, options) {
-				var error;
+				var error, cascadeDeletions = [];
 				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
-						if (this.xGet(hasMany).length > 0) {
+						if (this.config.hasMany[hasMany]["cascadeDelete"] !== true && this.xPrevious(hasMany).length > 0) {
 							error = {
 								msg : "包含有相关联的子数据，删除失败"
 							};
 							break;
+						} else {
+							cascadeDeletions.push(hasMany)
 						}
 					}
 				}
 				if (!error) {
+					options = options || {};
+					options.wait = true;
+					
+					var outerTransaction = options.dbTrans;
+					if(!outerTransaction){
+						options.dbTrans = Alloy.Globals.DataStore.createTransaction();
+						options.dbTrans.begin();
+					}
+					
 					function delSuccess() {
 						this.off("destroy", delSuccess);
 						this.off("error", delFail);
@@ -428,12 +447,34 @@
 							xFinishCallback(error.__summary);
 						}
 					}
-
+					
+					for(var i = 0; i < cascadeDeletions.length; i++){
+						var hasMany = this.xPrevious(cascadeDeletions[i]).toArray();
+						for(var j = 0; j < hasMany.length; j++){
+							var item = hasMany[j];
+							item.xDelete(function(err){
+								if(err){
+									error = err; 
+									options.dbTrans.rollback();
+									if(xFinishCallback){
+										xFinishCallback(error);
+									}
+								}
+							}, options);
+							if(error){
+								return;
+							}
+						}
+					}
+					
+					if(!outerTransaction && options.dbTrans.xCommitCount === 0){
+						// options.dbTrans.commit();
+						options.commit = true;
+					}	
 					this.on("destroy", delSuccess);
 					this.on("error", delFail);
-					options = options || {};
-					options.wait = true;
 					this.destroy(options);
+					
 				} else if (xFinishCallback) {
 					xFinishCallback(error);
 				}

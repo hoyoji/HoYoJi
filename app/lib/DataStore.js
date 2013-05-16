@@ -12,6 +12,7 @@
 		Alloy.Collections.instance("Currency");
 		Alloy.Collections.instance("Exchange");
 		Alloy.Collections.instance("MoneyAccount");
+		Alloy.Collections.instance("MoneyAccountBalanceAdjustment");
 		Alloy.Collections.instance("Friend");
 		Alloy.Collections.instance("Message");
 		Alloy.Collections.instance("MessageBox");
@@ -43,8 +44,8 @@
 					//Alloy.Models.instance(m)
 				}
 			},
-			createTransaction : function(db) {
-				db = db || Ti.Database.open("hoyoji");
+			createTransaction : function() {
+				var db = Ti.Database.open("hoyoji");
 				var dbTrans = {
 					db : db,
 					xCommitCount : 0,

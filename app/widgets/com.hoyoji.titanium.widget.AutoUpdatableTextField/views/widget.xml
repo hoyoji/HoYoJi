@@ -4,6 +4,6 @@
 	 <Label id="error" left="3" top="42"/>
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
      <TextField id="field" right="0" height="Ti.UI.FILL" width="70%" backgroundColor="#f8f8f8"></TextField>
-     <View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+     <View id="rowBottomImage" width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 	</View>
 </Alloy>

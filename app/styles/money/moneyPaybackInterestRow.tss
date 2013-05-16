@@ -5,7 +5,7 @@
 "Label": {
 	color: '#000',
 	font: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold'
 	},
 	height: Ti.UI.SIZE,
@@ -13,7 +13,7 @@
 }
 
 ".firstRow": {
-	color: "#a7a7a7",
+	color: "#6e6d6d",
 	font: {
 		fontSize: 12,
 		fontWeight: 'normal'
@@ -22,7 +22,7 @@
 
 ".secondRow": {
 	font: {
-	    fontSize: 18,
+	    fontSize: 16,
 		fontWeight: 'bold'
 	}
 }

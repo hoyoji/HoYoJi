@@ -4,7 +4,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	if(!sourceModel || (sourceModel.config.adapter.collection_name === "Project" && sourceModel.xGet("ownerUserId") === Alloy.Models.User.id)){
 		menuSection.add($.createContextMenuItem("新增项目", function() {
-			Alloy.Globals.openWindow("project/projectForm", {$model : "Project", data : { parentProject : sourceModel }});
+			Alloy.Globals.openWindow("project/projectForm", {$model : "Project", data : { parentProject : sourceModel}});
 		}));
 	}
 	return menuSection;

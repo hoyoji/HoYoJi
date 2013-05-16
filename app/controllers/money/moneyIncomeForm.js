@@ -53,6 +53,13 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
+	
+	$.moneyIncomeCategory.beforeOpenModelSelector = function(){
+		if(!$.$model.xGet("project")){
+			return "请先选择项目";
+		}
+	}
+
 	$.onWindowOpenDo(function() {
 		// $.localAmount.hide();
 		// $.ownerUser.hide();

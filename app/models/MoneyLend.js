@@ -22,7 +22,8 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "record"
+				attribute : "record",
+				cascadeDelete : true
 			},
 			moneyPaybacks : {
 				type : "MoneyPayback",

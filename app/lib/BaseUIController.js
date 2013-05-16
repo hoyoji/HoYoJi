@@ -81,7 +81,7 @@
 					}
 				},
 				onWindowCloseDo : function(callback){
-					$.$view.addEventListener("winclose", function(e){
+					$.on("winclose", function(e){
 						e.cancelBubble = true;
 						callback();
 					});
@@ -117,6 +117,22 @@
 				
 					$.$view.setTop("-100%");
 					$.$view.setZIndex(zIndex);
+				},
+				remove : function() {
+					$.trigger("winclose", {bubbles : false});
+					var views = $.getViews();
+					for (var view in views) {
+						if(views[view].__iamalloy){
+							views[view].remove();
+							console.info("reeeeeeeeeeeeeeeeeeeeeeeee remove view " + $.$view.id);
+						}
+					}
+					if($.__currentWindow){
+						$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
+					}
+				},
+				triggerWindowCloseEvent : function() {
+					$.trigger("winclose", {bubbles : false});
 				}
 			});
 
@@ -158,9 +174,7 @@
 									$.$view.fireEvent("winopen", {bubbles : false});					
 								// }
 								
-								winController.$view.addEventListener("close", function(){
-									$.$view.fireEvent("winclose", {bubbles : false});
-								});
+								winController.$view.addEventListener("close", $.triggerWindowCloseEvent);
 							}
 						}
 				});				
