@@ -27,10 +27,10 @@ function changeForeignAmount() {
 }
 
 $.onWindowOpenDo(function() {
-	var parentController = $.getParentController()
+	var parentController = $.getParentController();
 	parentController.onWindowOpenDo(function(){
-		changeForeignAmount();
 		
+		changeForeignAmount();
 		parentController = parentController.getParentController();
 		parentController.localCurrencyAmount.addEventListener("change", changeForeignAmount);
 		$.$model.on("sync", changeForeignAmount);
