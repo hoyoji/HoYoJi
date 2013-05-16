@@ -2,8 +2,14 @@
 	<View class="container" height="42" openForm="money/currency/exchangeForm">
 			<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
 			<View id="content" class="row-content" left="3" height="Ti.UI.FILL">
-			<View height="Ti.UI.SIZE" layout="horizontal" left="10">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" 
+			
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
+			bindModel="$.$model"
+			bindAttribute="rate"
+			/>
+			
+			<!-- <View height="Ti.UI.SIZE" layout="horizontal" left="10"> -->
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42" left="10"
 				bindModel="$.$model"
 				bindAttribute="getForeignCurrency()"
 				/>
@@ -11,11 +17,8 @@
 				bindModel="$.$model.foreignCurrency"
 				bindAttribute="code"
 				/> -->
-			</View>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
-			bindModel="$.$model"
-			bindAttribute="rate"
-			/>
+			<!-- </View> -->
+
 			<Label id="foreignCurrencyAmount" right="5" color= "#000">0</Label>
 		</View>
 	</View>

@@ -3,6 +3,22 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 $.friend = null;
 var selectedAccount = $.$attrs.selectedAccount;
 
+$.$model.xSet("fromUser", Alloy.Models.User);
+$.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
+$.$model.xSet("type", "Account.Share.AddRequest");
+$.$model.xSet("messageState", "unRead");
+$.$model.xSet("messageTitle", "分享账务给好友");
+
+$.onWindowOpenDo(function() {
+	if(selectedAccount.config.adapter.collection_name = "MoneyExpense"){
+		$.$model.xSet("detail",
+		"日期：" + selectedAccount.xGet("date") + 
+		"金额：" + selectedAccount.xGet("amount") + 
+		"是否预付：" + selectedAccount.xGet("expenseType") + 
+		"备注：" + selectedAccount.xGet("detail"))
+	}
+});
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	if($.friend && $.friend.xGet("id")){
 		var date = (new Date()).toISOString();
@@ -11,15 +27,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			account[attr] = selectedAccount.xGet(attr);
 		}
 		$.$model.xSet("date", date);
+		$.$model.xSet("toUser", $.friend.xGet("friendUser"));
 		Alloy.Globals.Server.sendMsg({
 			id : guid(),
-			"toUserId" : $.$model.xGet("toUser").xGet("id"),
-			"fromUserId" : $.friend.xGet("friendUserId"),
+			"toUserId" : $.friend.xGet("friendUserId"),
+			"fromUserId" : Alloy.Models.User.id,
 			"type" : "Account.Share.AddRequest",
 			"messageState" : "new",
 			"messageTitle" : Alloy.Models.User.xGet("userName"),
 			"date" : date,
-			"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享了一条账务给您",
+			"detail" : $.$model.xGet("detail"),
 			"messageBoxId" : $.friend.xGet("friendUser").xGet("messageBoxId"),
 			messageData : JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,
