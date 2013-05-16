@@ -81,7 +81,7 @@
 					}
 				},
 				onWindowCloseDo : function(callback){
-					$.$view.addEventListener("winclose", function(e){
+					$.on("winclose", function(e){
 						e.cancelBubble = true;
 						callback();
 					});
@@ -117,10 +117,25 @@
 				
 					$.$view.setTop("-100%");
 					$.$view.setZIndex(zIndex);
+				},
+				remove : function() {
+					$.trigger("winclose", {bubbles : false});
+					var views = $.getViews();
+					for (var view in views) {
+						if(views[view].__iamalloy){
+							views[view].remove();
+						}
+					}
+					if($.__currentWindow){
+						$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
+					}
+					$.$view.removeEventListener("registerwindowevent",registerWindowEvent);
+				},
+				triggerWindowCloseEvent : function() {
+					$.trigger("winclose", {bubbles : false});
 				}
 			});
-
-			$.$view.addEventListener("registerwindowevent", function(e){
+			function registerWindowEvent(e){
 				if(e.windowEvent === "detectwindow" && e.source !== $.$view){
 					if(e.parentWindowCallback){
 						e.parentWindowCallback($);
@@ -134,7 +149,8 @@
 						delete e.windowPreListenCallback;
 					} 
 				}
-			});
+			}
+			$.$view.addEventListener("registerwindowevent", registerWindowEvent);
 			
 			function detectWindow(e){
 				$.$view.removeEventListener("postlayout", detectWindow);
@@ -158,9 +174,7 @@
 									$.$view.fireEvent("winopen", {bubbles : false});					
 								// }
 								
-								winController.$view.addEventListener("close", function(){
-									$.$view.fireEvent("winclose", {bubbles : false});
-								});
+								winController.$view.addEventListener("close", $.triggerWindowCloseEvent);
 							}
 						}
 				});				

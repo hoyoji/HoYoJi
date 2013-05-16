@@ -100,7 +100,29 @@ exports.definition = {
 			},
 			getForeignCurrency : function() {
 				return this.xGet("foreignCurrency").xGet("name");
-			}
+			},
+			syncAddNew : function(record, dbTrans) {
+				var exchange = Alloy.createModel("Exchange").xFindInDb({
+					localCurrencyId : record.localCurrencyId,
+					foreignCurrencyId : record.foreignCurrencyId
+				});
+				if (exchange.id) {
+					// 该币种组合的汇率已经存在，我们更新存在的汇率
+					if(this.lastClientUpdateTime < record.lastClientUpdateTime){
+						// 服務器上的记录较新，我们用服务器上的更新本地的，然后将服务器上的删除
+						delete record.id;
+						exchange._syncUpdate(record, dbTrans);
+						dbTrans.db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','Exchange','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+						return false; // tell the server not to add it as new
+					} else {
+						// 本地的较新，我们用服务器上的，把本地的删掉
+						exchange.xDelete(null, {
+							dbTrans : dbTrans,
+							wait : true
+						});
+					}
+				}
+			},
 		});
 		return Model;
 	},
