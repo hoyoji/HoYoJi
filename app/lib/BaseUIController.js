@@ -124,12 +124,12 @@
 					for (var view in views) {
 						if(views[view].__iamalloy){
 							views[view].remove();
-							console.info("reeeeeeeeeeeeeeeeeeeeeeeee remove view " + $.$view.id);
 						}
 					}
 					if($.__currentWindow){
 						$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
 					}
+					$.$view.removeEventListener("registerwindowevent");
 				},
 				triggerWindowCloseEvent : function() {
 					$.trigger("winclose", {bubbles : false});
