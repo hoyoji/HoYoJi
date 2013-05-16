@@ -8,7 +8,7 @@
 		 <SearchBar id="search" barColor="#000" showCancel="false" height="42" hintText="请输入好友账户名" left="0" width="80%"/>
 		 <Button id="searchButton" title="查找" height="42" right="0" width="20%" />
 		</View>
-		<TableView id="searchUserTable" dataCollection="$.userCollection" bottom="0" top="84">
+		<TableView id="searchUserTable" dataCollection="$.userCollection" bottom="0" top="50">
 			<TableViewRow>
 				<Require src="user/userRow"/>
 			</TableViewRow>

@@ -264,7 +264,6 @@
 				}
 				if (row === $.$model) {
 					isRemoving = true;
-					$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					function doRemoveRow() {
 						if ($.__currentWindow) {
 							$.getParentController().off("endchangingrow", doRemoveRow);
@@ -304,6 +303,8 @@
 						}
 					}
 
+					$.remove();
+					// $.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
 					doRemoveRow();
 				}
 			}
@@ -315,7 +316,7 @@
 			$.onWindowOpenDo(function() {
 				$.parent.addEventListener("rowremoved", function() {
 					// $.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
-					$.$view.fireEvent("winclose", {bubbles : false});
+					$.remove();
 				});
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 					$.$view.setBackgroundColor("pink");
@@ -325,7 +326,6 @@
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
-				
 				// $.$model.off("change", shakeMe);
 			});
 

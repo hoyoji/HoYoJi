@@ -363,6 +363,7 @@
 
 		_.extend(Backbone.Collection.prototype, {
 			reset : function(models, options) {
+		      	models  || (models = []);
 				options || ( options = {});
 				for (var i = 0, l = this.models.length; i < l; i++) {
 					this._removeReference(this.models[i]);
@@ -376,6 +377,18 @@
 					this.trigger('reset', this, options);
 				return this;
 			}
+			// reset: function(models, options) {
+		      // models  || (models = []);
+		      // options || (options = {});
+		      // for (var i = 0, l = this.models.length; i < l; i++) {
+		        // this._removeReference(this.models[i]);
+		      // }
+		      // this._reset();
+		      // this.add(models, _.extend({silent: true}, options));
+		      // if (!options.silent) this.trigger('reset', this, options);
+		      // return this;
+		    // },
+			
 			// remove : function(models, options) {
 			// var i, l, index, model;
 			// options || ( options = {});
