@@ -21,6 +21,7 @@
 				bindModel="$.$model"
 				bindAttribute="date"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
+				editModeEditability="editable" addModeEditability="editable"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
 				<View id="localAmount" height="0" backgroundColor="#f8f8f8">
