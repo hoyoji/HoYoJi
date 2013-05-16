@@ -35,8 +35,25 @@ function updateAmount() {
 	$.amount.field.fireEvent("change");
 }
 
-$.$model.on("xchange:amount", updateAmount);
+// function setAmountEdit() {
+	// if($.$model.xGet("moneyExpenseDetails").length > 0) {
+		// $.amount.$attrs.editModeEditability = "noneditable";
+		// $.amount.$attrs.addModeEditability = "noneditable";
+	// }else {
+		// $.amount.$attrs.editModeEditability = "editable";
+		// $.amount.$attrs.addModeEditability = "editable";
+	// }
+// 
+// }
+
+$.onWindowOpenDo(function(){
+	// setAmountEdit();
+	// $.$model.on("sync",setAmountEdit);
+	$.$model.on("xchange:amount", updateAmount);
+});
+
 $.onWindowCloseDo(function() {
+	// $.$model.off("sync",setAmountEdit);
 	$.$model.off("xchange:amount", updateAmount);
 });
 
