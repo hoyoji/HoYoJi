@@ -58,8 +58,9 @@
 					} else {
 						row = Ti.UI.createTableViewRow({
 							title : title,
-							color : 'black',
-							height : Alloy.CFG.UI.DefaultRowHeight
+							color : 'white',
+							height : Alloy.CFG.UI.DefaultRowHeight,
+							backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", callback);
 					}

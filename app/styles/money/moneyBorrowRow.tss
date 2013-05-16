@@ -20,6 +20,12 @@
 	}
 }
 
+"#localAmountLabel": {
+	font: {
+		fontWeight: 'normal'
+	}
+}
+
 ".secondRow": {
 	font: {
 	    fontSize: 16,
