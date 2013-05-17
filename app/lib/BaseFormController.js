@@ -3,8 +3,12 @@
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			_.extend($, {
 				__saveCollection : [],
+				__deleteCollection : [],
 				addToSave : function(model) {
 					$.__saveCollection.push(model);
+				},
+				addToDelete : function(model) {
+					$.__deleteCollection.push(model);
 				},
 				setSaveableMode : function(saveableMode) {
 					if ($.saveableMode !== saveableMode) {
@@ -52,12 +56,36 @@
 								}
 							}, options));
 						}
-						if (hasError){
+						if (hasError) {
+							$.__saveCollection = [];
+							$.__deleteCollection = [];
+							return;
+						}
+					}
+					for ( i = 0; i < $.__deleteCollection.length; i++) {
+						$.__deleteCollection[i].xDelete(function(e) {
+							if (e) {
+								myDbTrans.rollback();
+								hasError = true;
+								var errMsg;
+								if (error.__summary) {
+									errMsg = error.__summary.msg;
+								}
+								if (xErrorCallback) {
+									xErrorCallback(errMsg);
+								}
+							}
+						}, _.extend({
+							dbTrans : myDbTrans
+						}, options));
+						if (hasError) {
+							$.__deleteCollection = [];
 							$.__saveCollection = [];
 							return;
 						}
 					}
 					$.__saveCollection = [];
+					$.__deleteCollection = [];
 					if (!dbTrans) {
 						myDbTrans.commit();
 					}
@@ -113,7 +141,7 @@
 							// try{
 
 							// $.$model.xSave({dbTrans : dbTrans, commit : true});
-							
+
 							$.saveCollection(function() {
 								$.$model._xSave(_.extend({
 									dbTrans : dbTrans,

@@ -3,11 +3,12 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"
 		image="/images/mainWindow/home"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
-			<View top="0" height="84" backgroundColor="#f8f8f8">
-				<View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/>
-				<View height="74" width="50%" left="3" top="0" layout="vertical">
-					<Label top="20">当日收入</Label>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+			<View top="0" height="58" backgroundColor="#f5f5f5" borderRadius="7">
+				<View width="5" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"  zIndex="1"/>
+
+				<View height="55" width="51%" left="3" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
+					<Label top="5">当日收入</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600"
 						bindModel = "User"
@@ -16,8 +17,9 @@
 						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#329600"/>
 					</View>
 				</View>
-				<View height="74" width="50%" right="0" top="0" layout="vertical">
-					<Label top="20">当日支出</Label>
+				
+				<View height="55" width="51%" right="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
+					<Label top="5">当日支出</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032"
 						bindModel = "User"
@@ -26,13 +28,11 @@
 						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#c80032"/>
 					</View>
 				</View>
-				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="74">
-					<View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundImage="/images/sectionBottomShadow.png"/>
-					<View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f8f8f8" zIndex="0"/>
-					<View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
-				</View>
+				
+				<View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="48" backgroundImage="/images/sectionBottomShadow.png" zIndex="0"/>
 			</View>
-			<Require id="transactionsTable" src="home/activityView" top="94" bottom="0"/>
+			
+			<Require id="transactionsTable" src="home/activityView" top="67" bottom="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="同步,记一笔,设置" imagesFolder="/images/home"

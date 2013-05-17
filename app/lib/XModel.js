@@ -271,6 +271,10 @@
 				saveableController.addToSave(this);
 				return this;
 			},
+			xAddToDelete : function(saveableController) {
+				saveableController.addToDelete(this);
+				return this;
+			},
 			xSet : function(a, b, c) {
 				var d;
 				_.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);

@@ -1,5 +1,5 @@
 ".container": {
-	backgroundColor: "#e7f5f5"
+	backgroundColor: "#e1e1e1"
 }
 "Label" : {
 	textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
