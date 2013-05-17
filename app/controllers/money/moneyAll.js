@@ -1,7 +1,9 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection();
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "账务设置"
+	});
 	menuSection.add($.createContextMenuItem("货币设置", function() {
 		Alloy.Globals.openWindow("money/currency/currencyAll");
 	}));
