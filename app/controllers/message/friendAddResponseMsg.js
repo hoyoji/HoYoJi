@@ -257,7 +257,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 						Alloy.Globals.Server.putData(
 						[$.$model.toJSON()], function(data) {
 							setOtherRequestMsgToRead();
-							$.saveModel(saveEndCB, saveErrorCB);
+							$.saveModel(saveEndCB, saveErrorCB,{syncFromServer : true});
 							saveEndCB("添加好友成功");
 						}, function(e) {
 							alert(e.__summary.msg);
