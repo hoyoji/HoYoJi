@@ -124,19 +124,18 @@
 					for (var view in views) {
 						if(views[view].__iamalloy){
 							views[view].remove();
-							console.info("reeeeeeeeeeeeeeeeeeeeeeeee remove view " + $.$view.id);
 						}
 					}
 					if($.__currentWindow){
 						$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
 					}
+					$.$view.removeEventListener("registerwindowevent",registerWindowEvent);
 				},
 				triggerWindowCloseEvent : function() {
 					$.trigger("winclose", {bubbles : false});
 				}
 			});
-
-			$.$view.addEventListener("registerwindowevent", function(e){
+			function registerWindowEvent(e){
 				if(e.windowEvent === "detectwindow" && e.source !== $.$view){
 					if(e.parentWindowCallback){
 						e.parentWindowCallback($);
@@ -150,7 +149,8 @@
 						delete e.windowPreListenCallback;
 					} 
 				}
-			});
+			}
+			$.$view.addEventListener("registerwindowevent", registerWindowEvent);
 			
 			function detectWindow(e){
 				$.$view.removeEventListener("postlayout", detectWindow);

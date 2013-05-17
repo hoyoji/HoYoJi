@@ -1,5 +1,5 @@
 ".container": {
-	backgroundColor: "#e7f5f5"
+	backgroundColor: "#f6f6f6"
 }
 
 "Label": {
@@ -10,6 +10,12 @@
 	},
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE
+}
+
+"#localAmountLabel": {
+	font: {
+		fontWeight: 'normal'
+	}
 }
 
 ".firstRow": {

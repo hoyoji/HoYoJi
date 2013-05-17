@@ -10,6 +10,20 @@
 			__xValidateCount : 0,
 			initialize : function() {
 				var self = this;
+				this.on("sync", function() {
+					for (var belongsTo in this.config.belongsTo) {
+						//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
+						this.attributes[belongsTo] = null;
+						delete this.attributes[belongsTo];
+						//}
+					}
+					
+					this._previousAttributes = _.clone(this.attributes)
+					this.changed = {};
+				    this._silent = {};
+				    this._pending = {};						
+				}, this);
+
 				if (this.isNew()) {
 					this.attributes.id = guid();
 					if (Alloy.Models.User) {
@@ -29,19 +43,6 @@
 				} else {
 					this.__initializeExistingModel();
 				}
-				this.on("sync", function() {
-					for (var belongsTo in this.config.belongsTo) {
-						//if (self.xGet(belongsTo) && self.xGet(belongsTo).xGet("id") !== self.xGet(belongsTo + "Id")) {
-						this.attributes[belongsTo] = null;
-						delete this.attributes[belongsTo];
-						//}
-					}
-					
-					this._previousAttributes = _.clone(this.attributes)
-					this.changed = {};
-				    this._silent = {};
-				    this._pending = {};						
-				}, this);
 				
 				// revert the belongsTo ID changes on error
 				this.on("error", function() {
@@ -268,6 +269,10 @@
 			},
 			xAddToSave : function(saveableController) {
 				saveableController.addToSave(this);
+				return this;
+			},
+			xAddToDelete : function(saveableController) {
+				saveableController.addToDelete(this);
 				return this;
 			},
 			xSet : function(a, b, c) {

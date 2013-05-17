@@ -220,8 +220,9 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
-										model.syncAddNew(record, dbTrans);
-										model._syncAddNew(record,dbTrans);
+										if(model.syncAddNew(record, dbTrans) !== false){
+											model._syncAddNew(record,dbTrans);
+										}
 									} else {
 										// 该记录已存在本地，我们更新
 										model.syncUpdate(record, dbTrans);
