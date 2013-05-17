@@ -517,8 +517,7 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 		sortByField : sortByField,
 		groupByField : groupByField,
 		sortReverse : sortReverse,
-		zIndex : 3,
-		left : 3
+		zIndex : 4
 	});
 	$.detailsTable.setParent($.$view);
 	// detailsTable.$view.setZIndex($.$view.getZIndex() ? $.$view.getZIndex() + 1 : 1);
