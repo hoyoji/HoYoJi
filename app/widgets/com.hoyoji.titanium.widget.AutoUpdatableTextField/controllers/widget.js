@@ -13,9 +13,9 @@ if($.$attrs.color){
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
-if($.$attrs.rowLeftImage === "true") {
-	$.rowLeftImage.setVisible(true);
-}
+// if($.$attrs.rowLeftImage === "true") {
+	// $.rowLeftImage.setVisible(true);
+// }
 if($.$attrs.noBottomImage === "true") {
 	$.rowBottomImage.setVisible(false);
 }
