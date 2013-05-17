@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增好友资料" readModeTitle="查看好友资料" editModeTitle="修改好友资料"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="好友" editModeEditability="noneditable"
 				bindModel="$.$model"

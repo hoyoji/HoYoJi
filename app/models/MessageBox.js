@@ -93,41 +93,30 @@ exports.definition = {
 							friendUserId : msg.xGet("fromUserId"),
 							ownerUserId : Alloy.Models.User.id
 							});
-					    if (friend && friend.xGet("id")) {
-							Alloy.Globals.Server.deleteData(
-							[{__dataType : "Friend", id : friend.xGet("id")}], function(data) {
-								friend._xDelete();
-								msg.save({messageState : "unread"}, {wait : true, patch : true});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						}else{
-							Alloy.Globals.Server.getData([{
-								__dataType : "Friend",
-								friendUserId : msg.xGet("fromUserId"),
-								ownerUserId : Alloy.Models.User.id
-							}], function(data) {
-								if (data[0].length > 0) {
-									Alloy.Globals.Server.deleteData(
-									[{__dataType : "Friend", id : data[0][0].id}], function(data) {
-										// var friend = Alloy.createModel("Friend").xFindInDb({
-											// friendUserId : msg.xGet("fromUserId"),
-											// ownerUserId : Alloy.Models.User.id
-											// });
-									    // if (friend && friend.xGet("id")) {
-												// friend._xDelete();
-										// }
-										msg.save({messageState : "unread"}, {wait : true, patch : true});
-									}, function(e) {
-										alert(e.__summary.msg);
-									});
-								}else{
+						Alloy.Globals.Server.getData([{
+							__dataType : "Friend",
+							friendUserId : msg.xGet("fromUserId"),
+							ownerUserId : Alloy.Models.User.id
+						}], function(data) {
+							if (data[0].length > 0) {
+								Alloy.Globals.Server.deleteData(
+								[{__dataType : "Friend", id : data[0][0].id}], function(data) {
+								    if (friend && friend.xGet("id")) {
+											friend._xDelete();
+									}
 									msg.save({messageState : "unread"}, {wait : true, patch : true});
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
+							}else{
+							    if (friend && friend.xGet("id")) {
+										friend._xDelete();
 								}
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						}
+								msg.save({messageState : "unread"}, {wait : true, patch : true});
+							}
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
 					} 
 					// else if(msg.xGet("type") === "Project.Share.Reject"){
 						// msg.save({messageState : "unread"}, {wait : true, patch : true});
