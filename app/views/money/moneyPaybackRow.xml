@@ -2,7 +2,7 @@
 	<View class="container" height="90" openForm="money/moneyPaybackForm">
 		<View width="Ti.UI.FILL" height="1" top="0" left="10" right="10" backgroundImage="/images/rowTopShadow.png" backgroundImageRepeat="true"/>
 		<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
-			<View id="content" class="row-content" left="3" height="Ti.UI.FILL" backgroundColor="#f8f8f8">
+			<View id="content" class="row-content" left="3" height="Ti.UI.FILL" backgroundColor="#f2f2f2">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
 					bindModel="$.$model"
 					bindAttribute="pictureId"/>
