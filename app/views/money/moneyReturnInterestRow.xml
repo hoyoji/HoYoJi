@@ -20,7 +20,7 @@
 				<Label top="42" left="5" width="Ti.UI.SIZE" height="42" class="secondRow">还款支付了利息</Label>
 			<!-- </View>
 			<View width="Ti.UI.SIZE" right="5" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false"> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" right="5" width="Ti.UI.SIZE" height="42"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" right="5" width="Ti.UI.SIZE" height="42" id="localAmountLabel"
 				bindModel = "$.$model"
 				bindAttribute = "getInterest()"
 				/>

@@ -12,6 +12,12 @@
 	width: Ti.UI.SIZE
 }
 
+"#localAmountLabel": {
+	font: {
+		fontWeight: 'normal'
+	}
+}
+
 ".firstRow": {
 	color: "#6e6d6d",
 	font: {
