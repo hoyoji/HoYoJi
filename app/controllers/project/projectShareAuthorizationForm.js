@@ -168,7 +168,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 						                        })
 								}).xAddToSave($); 
-						        $.saveModel(saveEndCB, saveErrorCB);
+						        $.saveModel(saveEndCB, saveErrorCB , {syncFromServer : true});
 						    	saveEndCB("发送成功，请等待回复");
 						    }, function(e){
 						    	alert(e.__summary.msg);
