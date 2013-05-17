@@ -42,6 +42,9 @@
 			if ($.$attrs.zIndex){
 				$.$view.setZIndex($.$attrs.zIndex);
 			}
+			if ($.$attrs.borderRadius){
+				$.$view.setBorderRadius($.$attrs.borderRadius);
+			}
 			
 			_.extend($, {
 				__dirtyCount : 0,
