@@ -5,7 +5,7 @@ var selectedIncome = $.$attrs.selectedIncome;
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增收入明细", function() {
-		Alloy.Globals.openWindow("money/moneyIncomeDetailForm", {selectedIncome : selectedIncome});
+		Alloy.Globals.openWindow("money/moneyIncomeDetailForm", {selectedIncome : selectedIncome, closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave});
 	},!selectedIncome.canAddNew()));
 	return menuSection;
 }
@@ -23,6 +23,6 @@ $.onWindowOpenDo(function() {
 
 function onFooterbarTap(e){
 	if(e.source.id === "addIncomeDetail"){
-		Alloy.Globals.openWindow("money/moneyIncomeDetailForm",{selectedIncome : selectedIncome});
+		Alloy.Globals.openWindow("money/moneyIncomeDetailForm",{selectedIncome : selectedIncome, closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave});
 	}
 }

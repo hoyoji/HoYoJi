@@ -6,7 +6,8 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("收入明细", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
-			selectedIncome : $.$model
+			selectedIncome : $.$model,
+			closeWithoutSave : true
 		});
 	}));
 	return menuSection;
@@ -28,18 +29,20 @@ if (!$.$model) {
 	});
 
 	$.setSaveableMode("add");
-
-	function updateAmount() {
-		$.amount.setValue($.$model.xGet("amount"));
-		$.amount.field.fireEvent("change");
-	}
-
-
-	$.$model.on("xchange:amount", updateAmount);
-	$.onWindowCloseDo(function() {
-		$.$model.off("xchange:amount", updateAmount);
-	});
 }
+
+function updateAmount() {
+	$.amount.setValue($.$model.xGet("amount"));
+	$.amount.field.fireEvent("change");
+}
+
+$.onWindowOpenDo(function() {
+	$.$model.on("xchange:amount", updateAmount);
+});
+$.onWindowCloseDo(function() {
+	$.$model.off("xchange:amount", updateAmount);
+});
+
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	// $.exchangeRate.hide();
@@ -53,9 +56,9 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
-	
-	$.moneyIncomeCategory.beforeOpenModelSelector = function(){
-		if(!$.$model.xGet("project")){
+
+	$.moneyIncomeCategory.beforeOpenModelSelector = function() {
+		if (!$.$model.xGet("project")) {
 			return "请先选择项目";
 		}
 	}
@@ -141,31 +144,30 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !== 0)) {
-			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
-			} else {//账户改变时
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
-			}
-		} else {
-			if ($.$model.hasChanged("moneyAccount")) {
-				var oldAccount = $.$model.previous("moneyAccount");
-				var newAccount = $.$model.xGet("moneyAccount");
-				oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
-				newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
-				oldAccount.xAddToSave($);
-				newAccount.xAddToSave($);
-			}
+		//if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !== 0)) {
+		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+		} else {//账户改变时
+			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 		}
-		if ($.$model.isNew()) {
-			// save all income details
-			$.$model.xGet("moneyIncomeDetails").map(function(item) {
-				console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
-				item.xAddToSave($);
-			});
-
-		}
+		//} else {
+		// if ($.$model.hasChanged("moneyAccount")) {
+		// var oldAccount = $.$model.previous("moneyAccount");
+		// var newAccount = $.$model.xGet("moneyAccount");
+		// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
+		// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
+		// oldAccount.xAddToSave($);
+		// newAccount.xAddToSave($);
+		// }
+		//}
+		//if ($.$model.isNew()) {
+		// save all income details
+		$.$model.xGet("moneyIncomeDetails").map(function(item) {
+			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
+			item.xAddToSave($);
+		});
+		//}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
