@@ -64,7 +64,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 			if(syncRecord.id){
 				projectShareAuthorizationArray.push($.$model.xGet("project").toJSON());
-				syncRecord.destroy();
+				syncRecord.destroy({syncFromServer : true});
 			}
 			
 			projectShareAuthorizationsSearchArray.push({
@@ -103,7 +103,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					});
 					if(syncRecord.id){
 						projectShareAuthorizationArray.push(subProject.toJSON());
-						syncRecord.destroy();
+						syncRecord.destroy({syncFromServer : true});
 					}
 				});
 			}
@@ -215,6 +215,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						if(syncRecord.id){
 							projectShareAuthorizationArray.push(subProject.toJSON());
+							syncRecord.destroy({syncFromServer : true});
 						}
 					});
 					if($.$model.xGet("shareAllSubProjects")){
