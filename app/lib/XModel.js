@@ -368,6 +368,34 @@
 				}
 				return this.xGet(f);
 			},
+			xReset : function(){
+				if(this.hasChanged){
+					for(var attr in this.attributes){
+						if(this.hasChanged(attr)){
+							this.xSet(attr, this.xPrevious(attr));
+						}
+					}
+				}
+				if(this.config.hasMany){
+					for(var hasMany in this.config.hasMany){
+						var c = this.xGet(hasMany);
+						if(c.length > 0){
+							var toBeRemoved = [];
+							c.forEach(function(item){
+								if(item.isNew()){
+									toBeRemoved.push(item);
+								} else if(item.hasChanged()){
+									item.xReset();
+								}
+								delete item.__xDeleted;
+							});
+							toBeRemoved.forEach(function(item){
+								c.remove(item);
+							});
+						}
+					}
+				}
+			},
 			xDeepGet : function(fields) {
 				function xGetRecursive(object, path) {
 					if (path.length > 1) {

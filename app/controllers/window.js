@@ -55,7 +55,11 @@ exports.openWin = function(contentController, options) {
 	$.content.setParent($.window);
 	
 	$.open(contentController);
+<<<<<<< HEAD
 	$.content;
+=======
+	return $.content;
+>>>>>>> 805eecfff36459533c1ff478a0c1a7ddf8147907
 }
 //
 // var touchend = false;
