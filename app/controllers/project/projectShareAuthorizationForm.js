@@ -215,6 +215,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						if(syncRecord.id){
 							projectShareAuthorizationArray.push(subProject.toJSON());
+							syncRecord.destroy({syncFromServer : true});
 						}
 					});
 					if($.$model.xGet("shareAllSubProjects")){
