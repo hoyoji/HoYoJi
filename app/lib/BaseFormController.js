@@ -5,10 +5,14 @@
 				__saveCollection : [],
 				__deleteCollection : [],
 				addToSave : function(model) {
-					$.__saveCollection.push(model);
+					if(_.indexOf($.__saveCollection, model) !== -1){
+						$.__saveCollection.push(model);
+					}
 				},
 				addToDelete : function(model) {
-					$.__deleteCollection.push(model);
+					if(_.indexOf($.__deleteCollection, model) !== -1){
+						$.__deleteCollection.push(model);
+					}
 				},
 				setSaveableMode : function(saveableMode) {
 					if ($.saveableMode !== saveableMode) {
@@ -57,8 +61,6 @@
 							}, options));
 						}
 						if (hasError) {
-							$.__saveCollection = [];
-							$.__deleteCollection = [];
 							return;
 						}
 					}
@@ -79,13 +81,9 @@
 							dbTrans : myDbTrans
 						}, options));
 						if (hasError) {
-							$.__deleteCollection = [];
-							$.__saveCollection = [];
 							return;
 						}
 					}
-					$.__saveCollection = [];
-					$.__deleteCollection = [];
 					if (!dbTrans) {
 						myDbTrans.commit();
 					}
