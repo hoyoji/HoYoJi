@@ -16,7 +16,7 @@ exports.close = function(e) {
 		$.$view.animate(animation);
 	}
 
-	if ($.__dirtyCount > 0) {
+	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
 		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose);
 	} else {
 		animateClose();

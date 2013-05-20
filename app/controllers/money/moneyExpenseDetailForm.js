@@ -68,10 +68,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 	//} else {//新增时，不自动保存，把amount传回expenseForm
 
-	saveEndCB();
 	$.$model.xGet("moneyExpense").trigger("xchange:amount", $.$model.xGet("moneyExpense"));
-	$.becameClean();
+	// $.becameClean();
 	$.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").add($.$model);
-	$.getCurrentWindow().$view.close();
+	saveEndCB();
+	$.getCurrentWindow().close();
 	// }
 }
