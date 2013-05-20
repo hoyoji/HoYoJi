@@ -117,12 +117,17 @@
 			}
 			if (hasChild) {
 				var openChildButton = Ti.UI.createButton({
-					title : ">",
+					// title : ">",
+					image : "/images/childButton@2x.png",
 					height : Ti.UI.FILL,
 					width : 42,
-					backgroundColor : "#f5f5f5",
+					backgroundColor : "transparent",
+					color : "transparent",
 					right : 0
+					//borderWidth : 0,
+					//borderColor : "transparent"
 				});
+				// openChildButton.setImage("/images/childButton@2x.png");
 				$.$view.add(openChildButton);
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
@@ -140,12 +145,16 @@
 
 			if (hasDetail) {
 				var openDetailButton = Ti.UI.createButton({
-					title : "+",
+					// title : "+",
+					image : "/images/detailExpandButton@2x.png",
 					height : Ti.UI.FILL,
 					width : 42,
-					backgroundColor : "#f5f5f5",
+					backgroundColor : "transparent",
 					left : 0
+					//borderWidth : 0,
+					//borderColor : "transparent"
 				});
+				// openDetailButton.setImage("/images/detailExpandButton@2x.png");
 				$.$view.add(openDetailButton);
 				$.content.setLeft(42);
 				openDetailButton.addEventListener("singletap", function(e) {
@@ -155,7 +164,8 @@
 						function _expandSection() {
 							if (isExpanded) {
 								isExpanded = false;
-								openDetailButton.setTitle("＋");
+								//openDetailButton.setTitle("＋");
+								openDetailButton.setImage("/images/detailExpandButton@2x.png");
 								$.$view.fireEvent("click", {
 									bubbles : true,
 									collapseSection : true,
@@ -163,7 +173,8 @@
 								});
 							} else {
 								isExpanded = true;
-								openDetailButton.setTitle("－");
+								//openDetailButton.setTitle("－");
+								openDetailButton.setImage("/images/detailCollapseButton@2x.png");
 								$.$view.fireEvent("click", {
 									bubbles : true,
 									expandSection : true,
@@ -234,13 +245,13 @@
 			$.deleteModel = function() {
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
-					var deleteFunc = $.$model.xDelete || $.$model._xDelete;
+					// var deleteFunc = $.$model.xDelete || $.$model._xDelete;
 					
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
 					dbTrans.begin();
 					
 					var options = {dbTrans : dbTrans, wait : true};
-					deleteFunc.call($.$model, function(error) {
+					$.$model.xDelete.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
 							dbTrans.rollback();
