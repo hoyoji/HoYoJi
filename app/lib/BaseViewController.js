@@ -50,6 +50,7 @@
 						row = Ti.UI.createTableViewRow({
 							title : title,
 							color : 'gray',
+							backgroundColor : "transparent",
 							height : Alloy.CFG.UI.DefaultRowHeight,
 							backgroundImage : '/images/headerTitle_green.png'
 						});
@@ -59,7 +60,8 @@
 					} else {
 						row = Ti.UI.createTableViewRow({
 							title : title,
-							color : 'black',
+							color : 'white',
+							backgroundColor : "transparent",
 							height : Alloy.CFG.UI.DefaultRowHeight,
 							backgroundImage : '/images/headerTitle_green.png'
 						});

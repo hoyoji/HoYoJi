@@ -45,8 +45,11 @@ $.onSave = function(saveEndCB, saveErrorCB){
 				data.push($.__saveCollection[i].toJSON());
 			}
 			Alloy.Globals.Server.postData(data,function(returnedData){
-				$.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
-				$.saveModel(saveEndCB, saveErrorCB);
+				// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
+				$.saveModel(function(msg){
+					Alloy.Models.User = $.$model;
+					saveEndCB(msg);
+				}, saveErrorCB);
 			}, function(e){
 				// 连接服务器出错或用户名已经存在，注册不成功
 				$.$model.__xValidationErrorCount = 1;

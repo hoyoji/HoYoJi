@@ -4,7 +4,7 @@ $.$model = Alloy.createModel("Login");
 $.setSaveableMode("add");
 
 function doLogin(e) {
-	
+	delete Alloy.Models.User;
 	// var moneyAccount = Alloy.createModel("moneyAccount");
 	// moneyAccount.on("all", function(eventName){
 		// console.info("eventName : " + eventName);
