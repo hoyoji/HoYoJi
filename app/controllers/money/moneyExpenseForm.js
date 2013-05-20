@@ -8,7 +8,8 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("支出明细", function() {
 		Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
-			selectedExpense : $.$model
+			selectedExpense : $.$model,
+			closeWithoutSave : true
 		});
 	}));
 	return menuSection;

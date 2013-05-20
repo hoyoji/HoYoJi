@@ -374,7 +374,8 @@
 
 				if (form && openForm !== false) {
 					Alloy.Globals.openWindow(form, {
-						$model : $.$model
+						$model : $.$model,
+						closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave
 					});
 				}
 			});
