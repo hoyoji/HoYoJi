@@ -29,20 +29,20 @@ if (!$.$model) {
 	});
 
 	$.setSaveableMode("add");
-
-	function updateAmount() {
-		$.amount.setValue($.$model.xGet("amount"));
-		$.amount.field.fireEvent("change");
-	}
-
-
-	$.onWindowOpenDo(function() {
-		$.$model.on("xchange:amount", updateAmount);
-	});
-	$.onWindowCloseDo(function() {
-		$.$model.off("xchange:amount", updateAmount);
-	});
 }
+
+function updateAmount() {
+	$.amount.setValue($.$model.xGet("amount"));
+	$.amount.field.fireEvent("change");
+}
+
+$.onWindowOpenDo(function() {
+	$.$model.on("xchange:amount", updateAmount);
+});
+$.onWindowCloseDo(function() {
+	$.$model.off("xchange:amount", updateAmount);
+});
+
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	// $.exchangeRate.hide();
@@ -145,28 +145,28 @@ if ($.saveableMode === "read") {
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 		//if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !== 0)) {
-			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
-			} else {//账户改变时
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
-			}
+		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+		} else {//账户改变时
+			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+		}
 		//} else {
-			// if ($.$model.hasChanged("moneyAccount")) {
-				// var oldAccount = $.$model.previous("moneyAccount");
-				// var newAccount = $.$model.xGet("moneyAccount");
-				// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
-				// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
-				// oldAccount.xAddToSave($);
-				// newAccount.xAddToSave($);
-			// }
+		// if ($.$model.hasChanged("moneyAccount")) {
+		// var oldAccount = $.$model.previous("moneyAccount");
+		// var newAccount = $.$model.xGet("moneyAccount");
+		// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
+		// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
+		// oldAccount.xAddToSave($);
+		// newAccount.xAddToSave($);
+		// }
 		//}
 		//if ($.$model.isNew()) {
-			// save all income details
-			$.$model.xGet("moneyIncomeDetails").map(function(item) {
-				console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
-				item.xAddToSave($);
-			});
+		// save all income details
+		$.$model.xGet("moneyIncomeDetails").map(function(item) {
+			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
+			item.xAddToSave($);
+		});
 		//}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条

@@ -66,10 +66,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// saveErrorCB(e);
 	// });
 	// } else {
-	saveEndCB();
 	$.$model.xGet("moneyIncome").trigger("xchange:amount", $.$model.xGet("moneyIncome"));
 	// $.becameClean();
 	$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").add($.$model);
+	saveEndCB();
 	$.getCurrentWindow().$view.close();
 	// }
 }
