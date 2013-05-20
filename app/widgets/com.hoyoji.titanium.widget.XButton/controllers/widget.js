@@ -89,7 +89,7 @@ $.$view.addEventListener("touchend", function() {
 
 $.$view.addEventListener("singletap", function(e) {
 	if(e.source !== $.$view){
-		$.$view.fireEvent("singletap", {bubbles : true});
+		$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
 		e.cancelBubble = true;
 	}
 	 // else {
