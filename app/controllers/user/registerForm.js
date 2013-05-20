@@ -45,7 +45,7 @@ $.onSave = function(saveEndCB, saveErrorCB){
 				data.push($.__saveCollection[i].toJSON());
 			}
 			Alloy.Globals.Server.postData(data,function(returnedData){
-				// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
+				$.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
 				$.saveModel(function(msg){
 					Alloy.Models.User = $.$model;
 					saveEndCB(msg);
