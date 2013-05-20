@@ -100,7 +100,8 @@ exports.cleanCB = function() {
 }
 
 exports.saveStartCB = function() {
-	$.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
+	// $.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
+		$.menuButton.setImage(WPATH("/images/savingButton"));
 	$.menuButton.setEnabled(false);
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(false);

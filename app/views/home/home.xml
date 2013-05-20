@@ -7,7 +7,7 @@
 			<View top="0" height="58" backgroundColor="#d1d1d1" borderRadius="7">
 				<!-- <View width="5" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"  zIndex="1"/> -->
 
-				<View height="55" width="51%" left="3" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
+				<View height="56" width="51%" left="2" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
 					<Label top="5">当日收入</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600"
@@ -18,7 +18,7 @@
 					</View>
 				</View>
 				
-				<View height="55" width="51%" right="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
+				<View height="56" width="51%" right="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5"  borderRadius="5">
 					<Label top="5">当日支出</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032"
