@@ -151,7 +151,7 @@ if ($.saveableMode === "read") {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
+		//if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
 			if (oldMoneyAccount === newMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 			} else {
@@ -159,23 +159,23 @@ if ($.saveableMode === "read") {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 				oldMoneyAccount.xAddToSave($);
 			}
-		} else {
-			if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
-				var oldAccount = $.$model.previous("moneyAccount");
-				var newAccount = $.$model.xGet("moneyAccount");
-				oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xPrevious("amount"));
-				newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
-				oldAccount.xAddToSave($);
-				newAccount.xAddToSave($);
-			}
-		}
-		if ($.$model.isNew()) {
+		// } else {
+			// if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
+				// var oldAccount = $.$model.previous("moneyAccount");
+				// var newAccount = $.$model.xGet("moneyAccount");
+				// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xPrevious("amount"));
+				// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+				// oldAccount.xAddToSave($);
+				// newAccount.xAddToSave($);
+			// }
+		// }
+		//if ($.$model.isNew()) {
 			// save all expense details
 			$.$model.xGet("moneyExpenseDetails").map(function(item) {
 				console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
 				item.xAddToSave($);
 			});
-		}
+		//}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
