@@ -50,7 +50,8 @@
 						row = Ti.UI.createTableViewRow({
 							title : title,
 							color : 'gray',
-							height : Alloy.CFG.UI.DefaultRowHeight
+							height : Alloy.CFG.UI.DefaultRowHeight,
+							backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", function(e) {
 							e.cancelBubble = true;
@@ -58,7 +59,7 @@
 					} else {
 						row = Ti.UI.createTableViewRow({
 							title : title,
-							color : 'white',
+							color : 'black',
 							height : Alloy.CFG.UI.DefaultRowHeight,
 							backgroundImage : '/images/headerTitle_green.png'
 						});

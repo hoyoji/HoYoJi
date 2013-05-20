@@ -34,11 +34,11 @@ $.onWindowOpenDo(function() {
 		parentController = parentController.getParentController();
 		parentController.localCurrencyAmount.addEventListener("change", changeForeignAmount);
 		$.$model.on("sync", changeForeignAmount);
+		
+		$.onWindowCloseDo(function() {
+			$.$model.off("sync", changeForeignAmount);
+			// var parentController = $.getParentController().getParentController();
+			parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
+		});
 	});
-});
-
-$.onWindowCloseDo(function() {
-	$.$model.off("sync", changeForeignAmount);
-	var parentController = $.getParentController().getParentController();
-	parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
 });

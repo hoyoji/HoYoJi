@@ -39,6 +39,12 @@
 			if ($.$attrs.visible){
 				$.$view.setVisible($.$attrs.visible);
 			}
+			if ($.$attrs.zIndex){
+				$.$view.setZIndex($.$attrs.zIndex);
+			}
+			if ($.$attrs.borderRadius){
+				$.$view.setBorderRadius($.$attrs.borderRadius);
+			}
 			
 			_.extend($, {
 				__dirtyCount : 0,
@@ -179,7 +185,6 @@
 						}
 				});				
 			}
-			
 			
 			//Ti.App.addEventListener("winopen", detectWindow);
 			//detectWindow();

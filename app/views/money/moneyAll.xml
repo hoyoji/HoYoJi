@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"
 		image="/images/mainWindow/moneyAll"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#f6f6f6">
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<Require id="transactionsSearchTable" src="money/transactionsSearch"/>
 			<Require id="transactionsTable" src="money/transactionsView"/>
 		</View>
