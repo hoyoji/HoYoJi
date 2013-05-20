@@ -5,12 +5,12 @@
 				__saveCollection : [],
 				__deleteCollection : [],
 				addToSave : function(model) {
-					if(_.indexOf($.__saveCollection, model) !== -1){
+					if(_.indexOf($.__saveCollection, model) === -1){
 						$.__saveCollection.push(model);
 					}
 				},
 				addToDelete : function(model) {
-					if(_.indexOf($.__deleteCollection, model) !== -1){
+					if(_.indexOf($.__deleteCollection, model) === -1){
 						$.__deleteCollection.push(model);
 					}
 				},
@@ -65,7 +65,7 @@
 						}
 					}
 					for ( i = 0; i < $.__deleteCollection.length; i++) {
-						$.__deleteCollection[i].xDelete(function(e) {
+						$.__deleteCollection[i]._xDelete(function(e) {
 							if (e) {
 								myDbTrans.rollback();
 								hasError = true;
@@ -178,6 +178,27 @@
 					saveModelCB : $.saveModel,
 					saveableModeChangeCB : $.setSaveableMode
 				});
+			});
+			$.onWindowCloseDo(function(){
+				if(!$.getCurrentWindow().$attrs.closeWithoutSave){
+					if($.$model){
+						$.$model.xReset();
+					}
+					if($.__saveCollection.length > 0){
+						$.__saveCollection.forEach(function(model){
+							if(!model.isNew()){
+								model.xReset();
+							}
+						});
+						$.__saveCollection = [];
+					}
+					if($.__deleteCollection.length > 0){
+						$.__deleteCollection.forEach(function(model){
+							delete model.__xDeleted;
+						});
+						$.__deleteCollection = [];
+					}
+				}
 			});
 			$.$view.addEventListener("resolvesaveablemodel", function(e) {
 				e.cancelBubble = true;

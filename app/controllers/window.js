@@ -17,18 +17,7 @@ exports.close = function(e) {
 	}
 
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
-		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", function(){
-			if($.$model){
-				$.$model.xReset();
-			}
-			if($.__saveCollection.length > 0){
-				$.__saveCollection.forEach(function(model){
-					model.xReset();
-				});
-				$.__saveCollection = [];
-			}
-			animateClose();
-		});
+		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose);
 	} else {
 		animateClose();
 	}
@@ -62,10 +51,11 @@ exports.openWin = function(contentController, options) {
 	}
 
 	_.extend($.$attrs, options);
-	var content = Alloy.createController(contentController, options);
-	content.setParent($.window);
+	$.content = Alloy.createController(contentController, options);
+	$.content.setParent($.window);
 	
 	$.open(contentController);
+	return $.content;
 }
 //
 // var touchend = false;
