@@ -16,7 +16,14 @@ $.onWindowOpenDo(function() {
 		"金额：" + selectedAccount.xGet("amount") + 
 		"是否预付：" + selectedAccount.xGet("expenseType") + 
 		"备注：" + selectedAccount.xGet("detail"))
+	}else if(selectedAccount.config.adapter.collection_name = "MoneyIncome"){
+		$.$model.xSet("detail",
+		"日期：" + selectedAccount.xGet("date") + 
+		"金额：" + selectedAccount.xGet("amount") + 
+		"是否预付：" + selectedAccount.xGet("incomeType") + 
+		"备注：" + selectedAccount.xGet("detail"))
 	}
+	$.titleBar.dirtyCB();
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {

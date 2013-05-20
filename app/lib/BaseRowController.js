@@ -202,8 +202,8 @@
 				if (!errorLabel) {
 					errorLabel = Ti.UI.createLabel({
 						text : msg,
-						height : $.$view.getSize().height,
-						width : $.$view.getSize().width,
+						height : Ti.UI.FILL,
+						width : Ti.UI.FILL,
 						top : "-100%",
 						color : "red",
 						backgroundColor : "#40000000",
@@ -241,11 +241,50 @@
 				$.content.setOpacity("0.3");
 				errorLabel.animate(animation);
 			}
+			function showDeletedMsg(animate) {
+					var msgLabel = Ti.UI.createLabel({
+						text : "已被移除",
+						height : Ti.UI.FILL,
+						width : Ti.UI.FILL,
+						top : "-100%",
+						color : "red",
+						backgroundColor : "#40000000",
+						textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
+					});
+					$.$view.add(msgLabel);
+
+					msgLabel.addEventListener("longpress", function(e) {
+						e.cancelBubble = true;
+					});
+					msgLabel.addEventListener("click", function(e) {
+						e.cancelBubble = true;
+					});
+					msgLabel.addEventListener("singletap", function(e) {
+						e.cancelBubble = true;
+					});
+
+					if(animate){
+						var animation = Titanium.UI.createAnimation();
+						animation.duration = 300;
+						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+						animation.top = "0";
+						msgLabel.animate(animation);
+					} else {
+						msgLabel.setTop(0);						
+					}
+					$.content.setOpacity("0.3");
+			}
 
 			$.deleteModel = function() {
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
 					// var deleteFunc = $.$model.xDelete || $.$model._xDelete;
+					if($.getCurrentWindow().$attrs.closeWithoutSave){
+						$.$model.__xDeleted = true;
+						showDeletedMsg(true);
+						$.$model.trigger("xdelete", $.$model);
+						return;	
+					}
 					
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
 					dbTrans.begin();
@@ -261,6 +300,10 @@
 					
 					dbTrans.commit();
 				});
+			}
+
+			if($.$model.__xDeleted){
+				showDeletedMsg(false);			
 			}
 			
 			// var rowHasRendered = false;
