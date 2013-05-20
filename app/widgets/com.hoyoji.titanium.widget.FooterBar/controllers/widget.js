@@ -136,9 +136,8 @@ if ($.$attrs.buttons) {
 		// }
 		// f = null;
 		$[buttonId] = buttonWidget;
-		buttonWidget.button;
 		if (subButtons.length > 1) {
-			buttonWidget.button.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
+			buttonWidget.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
 		}
 
 		// button.addEventListener("touchstart", function(button) {
@@ -161,7 +160,7 @@ $.$view.addEventListener("touchstart", function(e) {
 
 $.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	if (!e.source.getTitle) {
+	if (!e.source.id || !$[e.source.id]) {
 		return;
 	}
 	console.info("controll slideDown " + e.source.id);
@@ -173,7 +172,7 @@ $.$view.addEventListener("singletap", function(e) {
 		currentSlide = $.getParentController()[e.source.id];
 		currentSlide.slideDown(1);
 	}
-	$.trigger("singletap", e);
+	$.trigger("singletap", { source : $[e.source.id]});
 });
 
 $.$view.addEventListener("longpress", function(e) {
