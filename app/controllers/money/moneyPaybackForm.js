@@ -140,11 +140,12 @@ if ($.saveableMode === "read") {
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
-
-		var newMoneyLendAmount = moneyLend.xGet("amount");
-		var oldMoneyLendAmount = moneyLend.previous("amount");
-		var newMoneyLendAccount = moneyLend.xGet("moneyAccount");
-		var oldMoneyLendAccount = moneyLend.previous("moneyAccount");
+		if (moneyLend) {
+			var newMoneyLendAmount = moneyLend.xGet("amount");
+			var oldMoneyLendAmount = moneyLend.previous("amount");
+			var newMoneyLendAccount = moneyLend.xGet("moneyAccount");
+			var oldMoneyLendAccount = moneyLend.previous("moneyAccount");
+		}
 		$.saveModel(function(e) {
 			if (moneyLend) {
 				moneyLend.save({

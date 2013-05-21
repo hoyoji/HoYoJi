@@ -138,11 +138,12 @@ if ($.saveableMode === "read") {
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
-		
+		if(moneyBorrow){
 		var newMoneyBorrowAmount = moneyBorrow.xGet("amount");
 		var oldMoneyBorrowAmount = moneyBorrow.previous("amount");
 		var newMoneyBorrowAccount = moneyBorrow.xGet("moneyAccount");
 		var oldMoneyBorrowAccount = moneyBorrow.previous("moneyAccount");
+		}
 		$.saveModel(function(e) {
 			if (moneyBorrow) {
 				moneyBorrow.save({
