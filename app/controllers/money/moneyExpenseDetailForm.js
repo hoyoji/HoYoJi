@@ -15,6 +15,7 @@ var oldDetailAmount = $.$model.xGet("amount") || 0;
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var expenseAmount = 0;
 	var expense = $.$model.xGet("moneyExpense");
+	var oldExpenseAmount = expense.xGet("amount");
 	if (expense.xGet("moneyExpenseDetails").length > 0) {//获取moneyExpenseAmount，如果有amount就等于amount 没有的话设成0
 		expenseAmount = expense.xGet("amount");
 	}
@@ -59,11 +60,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (!$.$attrs.closeWithoutSave) {//从row打开时
 		var moneyAccount = expense.xGet("moneyAccount");
 		var newDetailAmount = $.$model.xGet("amount");
-		var expenseAmount = expense.xGet("amount");
 		if (expense.xGet("moneyExpenseDetails").length > 0) {
 			moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldDetailAmount - newDetailAmount);
 		} else {
-			moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + expenseAmount - newDetailAmount);
+			moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldExpenseAmount - newDetailAmount);
 		}
 		expense.xAddToSave($);
 		moneyAccount.xAddToSave($);
