@@ -96,13 +96,12 @@ $.$view.addEventListener("touchend", function() {
 $.$view.addEventListener("singletap", function(e) {
 	if(e.source !== $.$view){
 		$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
+		
+		$.trigger("singletap", {
+			source : $
+		});
 		e.cancelBubble = true;
 	}
-	 // else {
-		// $.trigger("singletap", {
-			// source : $
-		// });
-	// }
 });
 
 // $.imageView.addEventListener("singletap", function(e){

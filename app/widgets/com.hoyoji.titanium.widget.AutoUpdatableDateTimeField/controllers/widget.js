@@ -21,7 +21,7 @@ $.onWindowOpenDo(function(){
 		//$.getCurrentWindow().closeSoftKeyboard();
 		// $.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");	
 		
-		Alloy.Globals.openWindow("dateTimeSelector", {selectorCallback : function(value){
+		Alloy.Globals.openWindow("dateTimeSelector", {title : $.label.getText(), field : $, selectorCallback : function(value){
 			$.setValue(value);
 		}});	
 	});
