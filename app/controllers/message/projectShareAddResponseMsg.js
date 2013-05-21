@@ -551,12 +551,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (collection.length > 0) {
 					var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
 					if (projectShareAuthorization.xGet("state") === "Wait") {
-						projectShareAuthorization.save({
-							state : "Accept"
-						}, {
-							wait : true,
-							patch : true
-						});
+						// projectShareAuthorization.save({
+							// state : "Accept"
+						// }, {
+							// wait : true,
+							// patch : true
+						// });
+						projectShareAuthorization.xSet("state","Accept");
+						projectShareAuthorization.xAddToSave($);
 						editProjectShareAuthorizationArray.push({
 							__dataType : "ProjectShareAuthorization",
 							id : projectShareData.projectShareAuthorizationId,
@@ -572,13 +574,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
 							var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 							if (subProjectShareAuthorization.xGet("state") === "Wait") {
-								subProjectShareAuthorization.save({
-									state : "Accept"
-								}, {
-									wait : true,
-									patch : true
-								});
-								
+								// subProjectShareAuthorization.save({
+									// state : "Accept"
+								// }, {
+									// wait : true,
+									// patch : true
+								// });
+								subProjectShareAuthorization.xSet("state","Accept");
+								subProjectShareAuthorization.xAddToSave($);
 								editProjectShareAuthorizationArray.push({
 									__dataType : "ProjectShareAuthorization",
 									id : subProjectShareAuthorizationId,
@@ -608,12 +611,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
-									$.$model.save({
-										messageState : "closed"
-									}, {
-										wait : true,
-										patch : true
-									});
+									$.$model.xSet("messageState" , "closed");
+									$.saveModel(saveEndCB, saveErrorCB,{syncFromServer : true});
 									saveEndCB("您接受了 " + fromUser.xGet("userName") + " 分享的项目");
 									return;
 								}, function(e) {
@@ -644,6 +643,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								wait : true,
 								patch : true
 							});
+							$.saveModel(saveEndCB, saveErrorCB,{syncFromServer : true});
 							saveEndCB("您接受了 " + fromUser.xGet("userName") + " 分享的项目");
 							return;
 						}, function(e) {
