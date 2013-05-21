@@ -12,13 +12,19 @@ exports.getTitle = function() {
 }
 
 exports.fireEvent = function(eventName, options) {
-	options = options || {};
+	// options = options || {};
 	// _.extend(options, {source : { getTitle : exports.getTitle()}});
 	$.$view.fireEvent(eventName, options);
 }
 
 exports.addEventListener = function(eventName, callback) {
-	$.$view.addEventListener(eventName, callback);
+	$.$view.addEventListener(eventName, function(e){
+		if(e.source === $.$view){
+			callback(e);
+		} else {
+			e.cancelBubble = true;
+		}
+	});
 }
 
 exports.setEnabled = function(b) {
