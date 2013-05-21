@@ -36,11 +36,18 @@ function updateAmount() {
 	$.amount.field.fireEvent("change");
 }
 
+function deleteDetail(detailModel){
+	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+	updateAmount();
+}
+
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
+	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
 });
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
+	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
 });
 
 if ($.saveableMode === "read") {
@@ -165,7 +172,11 @@ if ($.saveableMode === "read") {
 		// save all income details
 		$.$model.xGet("moneyIncomeDetails").map(function(item) {
 			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
-			item.xAddToSave($);
+			if(item.__xDeleted){
+					item.xAddToDelete($);
+				} else if(item.hasChanged()){
+					item.xAddToSave($);
+				}
 		});
 		//}
 
