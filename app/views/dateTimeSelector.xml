@@ -1,0 +1,20 @@
+<Alloy>
+	<View class="container">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="请选择日期"
+			 image="/images/mainWindow/projectAll"/>
+		
+		<Label id="dateTimeField" top="42" bottom="257" text="无日期"></Label>
+		
+		<!-- <View platform="ios" height="Ti.UI.SIZE" width="Ti.UI.FILL" bottom="42" zIndex="900"> -->
+			<Picker bottom="42" id="datePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_DATE" zIndex="1"/>
+			<Picker bottom="42" id="timePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_TIME" zIndex="0"/>
+		<!-- </View> -->
+		<ScrollView id="widget" platform="android" height="Ti.UI.SIZE" bottom="42" width="Ti.UI.FILL" 
+				scrollType="horizontal" zIndex="900" layout="horizontal" horizontalWrap="false">
+				<Picker top="0" id="datePicker" useSpinner="true" selectionIndicator="true"  type="Ti.UI.PICKER_TYPE_DATE" />
+		</ScrollView>	
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
+		buttons="日期,时间" imagesFolder="/images/dateTimeSelector"
+		ids="date,time"/>
+	</View>
+</Alloy>

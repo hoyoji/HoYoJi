@@ -19,7 +19,11 @@ $.onWindowOpenDo(function(){
 			// inputType : "DateTimePicker"
 		// });
 		//$.getCurrentWindow().closeSoftKeyboard();
-		$.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");		
+		// $.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");	
+		
+		Alloy.Globals.openWindow("dateTimeSelector", {selectorCallback : function(value){
+			$.setValue(value);
+		}});	
 	});
 });
 
