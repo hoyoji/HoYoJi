@@ -1,0 +1,25 @@
+<Alloy>
+	<View class="container">
+		<View height="42" top="0" left="0" right="0" backgroundImage="/images/headerTitle_green.png">
+			<Widget src="com.hoyoji.titanium.widget.XButton" left="5" width="60" onSingletap="close" image="/images/backButton"/>
+			<Label id="title" color="white">请选择时间</Label>
+			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" onSingletap="selectDate" image="/images/saveButton"/>
+		</View>
+		
+		<Label id="dateTimeField" top="42" platform="ios" bottom="257" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+		<Label id="dateTimeField" top="42" platform="android" bottom="197" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+		
+		<Picker bottom="42" id="datePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_DATE" zIndex="1"/>
+		<Picker bottom="42" id="timePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_TIME" zIndex="0"/>
+
+		<View id="datePickerContainer" bottom="42" width="Ti.UI.FILL" height="Ti.UI.SIZE" platform="android" backgroundColor="black" zIndex="1">
+			<Picker id="datePicker" platform="android" selectionIndicator="true" useSpinner="true" type="Ti.UI.PICKER_TYPE_DATE" />
+		</View>
+		<View id="timePickerContainer" bottom="42" width="Ti.UI.FILL" height="Ti.UI.SIZE" platform="android" backgroundColor="black" zIndex="0">
+		</View>
+		
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
+		buttons="日期,时间" imagesFolder="/images/dateTimeSelector"
+		ids="date,time"/>
+	</View>
+</Alloy>
