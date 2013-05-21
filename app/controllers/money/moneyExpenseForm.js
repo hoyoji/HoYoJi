@@ -44,18 +44,24 @@ function updateAmount() {
 		// $.amount.$attrs.editModeEditability = "editable";
 		// $.amount.$attrs.addModeEditability = "editable";
 	// }
-// 
 // }
+
+function deleteDetail(detailModel){
+	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+	updateAmount();
+}
 
 $.onWindowOpenDo(function(){
 	// setAmountEdit();
 	// $.$model.on("sync",setAmountEdit);
 	$.$model.on("xchange:amount", updateAmount);
+	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
 });
 
 $.onWindowCloseDo(function() {
 	// $.$model.off("sync",setAmountEdit);
 	$.$model.off("xchange:amount", updateAmount);
+	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
 });
 
 if ($.saveableMode === "read") {
@@ -94,7 +100,6 @@ if ($.saveableMode === "read") {
 			setExchangeRate($.moneyAccount.getValue(), $.$model);
 		}
 	}
-
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
@@ -174,7 +179,11 @@ if ($.saveableMode === "read") {
 			// save all expense details
 			$.$model.xGet("moneyExpenseDetails").map(function(item) {
 				console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
-				item.xAddToSave($);
+				if(item.__xDeleted){
+					item.xAddToDelete($);
+				} else if(item.hasChanged()){
+					item.xAddToSave($);
+				}
 			});
 		//}
 

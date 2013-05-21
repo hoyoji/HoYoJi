@@ -5,8 +5,8 @@
 		<View width="32" height="32" zIndex="2">
 		<Label id="bubbleCount"/>
 		</View>
-		<Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL"
-			backgroundColor="transparent" backgroundImage="none" zIndex="3" color="transparent"/>
+		<!-- <Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL"
+			backgroundColor="transparent" backgroundImage="none" zIndex="3" color="transparent"/> -->
 		<Label id="title"/>
 	</View>
 </Alloy>

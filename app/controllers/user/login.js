@@ -4,7 +4,7 @@ $.$model = Alloy.createModel("Login");
 $.setSaveableMode("add");
 
 function doLogin(e) {
-	
+	delete Alloy.Models.User;
 	// var moneyAccount = Alloy.createModel("moneyAccount");
 	// moneyAccount.on("all", function(eventName){
 		// console.info("eventName : " + eventName);
@@ -66,6 +66,7 @@ function doLogin(e) {
 		}, function(data) {
 			// 密码验证通过，将该用户的资料保存到本地数据库
 			data.password = $.$model.xGet("password"); // 由于服务器不会反回密码，我们将用户输入的正确密码保存
+			delete data.lastSyncTime;
 			Alloy.Models.User.set(data);
 			delete Alloy.Models.User.id; // 将用户id删除，我们才能将该用户资料当成新的记录保存到数据库
 			Alloy.Models.User.xAddToSave($);

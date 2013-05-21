@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 exports.setTitle = function(title) {
 	$.title.setText(title);
-	$.button.setTitle(title);
+	// $.button.setTitle(title);
 	$.title.setVisible(true);
 	$.imageView.setTop(2);
 }
@@ -12,40 +12,41 @@ exports.getTitle = function() {
 }
 
 exports.fireEvent = function(eventName, options) {
-	$.button.fireEvent(eventName, options);
+	options = options || {};
+	// _.extend(options, {source : { getTitle : exports.getTitle()}});
+	$.$view.fireEvent(eventName, options);
 }
 
-exports.addEventListener = function(eventName, callback){
-	$.button.addEventListener(eventName, callback);
+exports.addEventListener = function(eventName, callback) {
+	$.$view.addEventListener(eventName, callback);
 }
 
-exports.setEnabled = function(b){
-	$.button.setEnabled(b);
+exports.setEnabled = function(b) {
+	$.$view.setEnabled(b);
 }
 
-exports.setBubbleCount = function(count){
-	if(count > 0){
+exports.setBubbleCount = function(count) {
+	if (count > 0) {
 		$.bubbleCount.show();
 	} else {
 		$.bubbleCount.hide();
 	}
-	
+
 	$.bubbleCount.setText(count);
 }
 
-exports.setImage = function(imagePath){
+exports.setImage = function(imagePath) {
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
 	imgPath = imagePath + ".png";
-	if(OS_IOS){
+	if (OS_IOS) {
 		imgPath = imagePath + "@2x.png";
 	}
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
-
 if ($.$attrs.id) {
-	$.button.id = $.$attrs.id;
+	$.id = $.$attrs.id;
 }
 if ($.$attrs.borderRadius) {
 	$.$view.setBorderRadius($.$attrs.borderRadius);
@@ -69,30 +70,35 @@ if ($.$attrs.image) {
 	exports.setImage($.$attrs.image);
 }
 
-	var backgroundImage;
-	var backgroundImageShadow;
-	if (OS_IOS) {
-		// backgroundImage = WPATH("/images/buttonBackground@2x.png");
-		backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
-	} else {
-		// backgroundImage = WPATH("/images/buttonBackground.png");
-		backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
-	}
+var backgroundImage;
+var backgroundImageShadow;
+if (OS_IOS) {
+	// backgroundImage = WPATH("/images/buttonBackground@2x.png");
+	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
+} else {
+	// backgroundImage = WPATH("/images/buttonBackground.png");
+	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
+}
 
-	var buttonView = $.$view;
-	buttonView.addEventListener("touchstart", function(buttonView) {
-		buttonView.setBackgroundImage(backgroundImageShadow);
-	}.bind(null, buttonView));
-	buttonView.addEventListener("touchend", function(buttonView) {
-		buttonView.setBackgroundImage("none");
-	}.bind(null, buttonView));
-
-
-$.button.addEventListener("singletap", function(e) {
-	$.trigger("singletap", {
-		source : $.button
-	});
-	// $.$view.fireEvent("singletap",{bubbles : true});
-	// e.cancelBubble = true;
+$.$view.addEventListener("touchstart", function() {
+	$.$view.setBackgroundImage(backgroundImageShadow);
+});
+$.$view.addEventListener("touchend", function() {
+	$.$view.setBackgroundImage("none");
 });
 
+$.$view.addEventListener("singletap", function(e) {
+	if(e.source !== $.$view){
+		$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
+		e.cancelBubble = true;
+	}
+	 // else {
+		// $.trigger("singletap", {
+			// source : $
+		// });
+	// }
+});
+
+// $.imageView.addEventListener("singletap", function(e){
+	// $.$view.fireEvent("singletap");
+// });

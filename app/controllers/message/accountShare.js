@@ -23,6 +23,7 @@ $.onWindowOpenDo(function() {
 		"是否预付：" + selectedAccount.xGet("incomeType") + 
 		"备注：" + selectedAccount.xGet("detail"))
 	}
+	$.titleBar.dirtyCB();
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {

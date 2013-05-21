@@ -51,10 +51,11 @@ exports.openWin = function(contentController, options) {
 	}
 
 	_.extend($.$attrs, options);
-	var content = Alloy.createController(contentController, options);
-	content.setParent($.window);
+	$.content = Alloy.createController(contentController, options);
+	$.content.setParent($.window);
 	
 	$.open(contentController);
+	return $.content;
 }
 //
 // var touchend = false;
