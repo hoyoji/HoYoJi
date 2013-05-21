@@ -6,6 +6,7 @@ exports.definition = {
         	remark : "TEXT",
         	ownerUserId : "TEXT NOT NULL",
 			friendId : "TEXT NOT NULL",
+			friendUserId : "TEXT",
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 	        projectId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
