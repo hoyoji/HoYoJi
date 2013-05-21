@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增收入分类" readModeTitle="收入分类" editModeTitle="修改收入分类"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+		<View id="body" top="42" bottom="50" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
 				bindModel="$.$model"

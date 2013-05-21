@@ -124,7 +124,7 @@ if ($.saveableMode === "read") {
 			var lendRate = $.$model.xGet("moneyLend").xGet("exchangeRate");
 			var paybackRate = $.$model.xGet("exchangeRate");
 			moneyLend.xSet("paybackedAmount", paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate);
-			moneyLend.xAddToSave($);
+			// moneyLend.xAddToSave($);
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -147,6 +147,12 @@ if ($.saveableMode === "read") {
 		var oldMoneyLendAccount = moneyLend.previous("moneyAccount");
 		$.saveModel(function(e) {
 			if (moneyLend) {
+				moneyLend.save({
+					paybackedAmount : paybackedAmount + (newAmount - oldAmount) * paybackRate / lendRate
+				}, {
+					patch : true,
+					wait : true
+				});
 				if (newMoneyLendAccount === oldMoneyLendAccount) {
 					newMoneyLendAccount.save({
 						currentBalance : newMoneyLendAccount.xGet("currentBalance") + oldMoneyLendAmount - newMoneyLendAmount
