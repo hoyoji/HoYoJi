@@ -128,7 +128,15 @@ exports.definition = {
 				this._previousAttributes[attr] = collection;
 				return collection;				
 			},
+			syncAddNew : function(record, dbTrans){
+				// last sync time 在每台手机上都不一样，所以我们不将其同步下来
+				delete record.lastSyncTime;
+			},
 			syncUpdate : function(record, dbTrans){
+				// last sync time 在每台手机上都不一样，所以我们不将其同步下来
+				delete record.lastSyncTime;
+			},
+			syncUpdateConflict : function(record, dbTrans){
 				// last sync time 在每台手机上都不一样，所以我们不将其同步下来
 				delete record.lastSyncTime;
 			},
