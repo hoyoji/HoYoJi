@@ -43,11 +43,11 @@ function deleteDetail(detailModel){
 
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
-	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
+	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
 });
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
-	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
+	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
 });
 
 if ($.saveableMode === "read") {

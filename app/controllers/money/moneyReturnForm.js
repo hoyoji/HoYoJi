@@ -122,7 +122,7 @@ if ($.saveableMode === "read") {
 			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
 			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
-			moneyBorrow.xAddToSave($);
+			// moneyBorrow.xAddToSave($);
 		}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -138,13 +138,20 @@ if ($.saveableMode === "read") {
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
-		
+		if(moneyBorrow){
 		var newMoneyBorrowAmount = moneyBorrow.xGet("amount");
 		var oldMoneyBorrowAmount = moneyBorrow.previous("amount");
 		var newMoneyBorrowAccount = moneyBorrow.xGet("moneyAccount");
 		var oldMoneyBorrowAccount = moneyBorrow.previous("moneyAccount");
+		}
 		$.saveModel(function(e) {
 			if (moneyBorrow) {
+				moneyBorrow.save({
+					returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate
+				}, {
+					patch : true,
+					wait : true
+				});
 				if (newMoneyBorrowAccount === oldMoneyBorrowAccount) {
 					newMoneyBorrowAccount.save({
 						currentBalance : newMoneyBorrowAccount.xGet("currentBalance") - oldMoneyBorrowAmount + newMoneyBorrowAmount
