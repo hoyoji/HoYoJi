@@ -165,6 +165,7 @@
 								for(var hasMany in model.config.hasMany){
 									model.xGet(hasMany).forEach(function(item){
 										item.syncDelete(null, dbTrans);
+										item._syncDelete(null, dbTrans);
 										dbTrans.db.execute(sql, [item.xGet("id")]);
 									});
 								}
