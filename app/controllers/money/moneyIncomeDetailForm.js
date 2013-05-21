@@ -14,11 +14,12 @@ var oldDetailAmount = $.$model.xGet("amount") || 0;
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var incomeAmount = 0;
-	if ($.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").length > 0) {
-		incomeAmount = $.$model.xGet("moneyIncome").xGet("amount");
+	var income = $.$model.xGet("moneyIncome");
+	if (income.xGet("moneyIncomeDetails").length > 0) {
+		incomeAmount = income.xGet("amount");
 	}
 
-	$.$model.xGet("moneyIncome").xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+	income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 	$.$model.trigger("xchange:amount", $.$model);
 	$.$model.trigger("xchange:name", $.$model);
 
@@ -65,12 +66,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// }
 	// saveErrorCB(e);
 	// });
-	// } else {
-	$.$model.xGet("moneyIncome").trigger("xchange:amount", $.$model.xGet("moneyIncome"));
-	// $.becameClean();
-	$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").add($.$model);
-	saveEndCB();
-	$.getCurrentWindow().$view.close();
 	// }
+	if (!$.$attrs.closeWithoutSave) {//从row打开时
+		var moneyAccount = income.xGet("moneyAccount");
+		var newDetailAmount = $.$model.xGet("amount");
+		var incomeAmount = income.xGet("amount");
+		if (income.xGet("moneyIncomeDetails").length > 0) {
+			moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldDetailAmount + newDetailAmount);
+		} else {
+			moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - incomeAmount + newDetailAmount);
+		}
+		income.xAddToSave($);
+		moneyAccount.xAddToSave($);
+		$.saveModel(saveEndCB, function(e) {
+			income.xSet("amount", income.previous("amount"));
+			moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+			// if (oldMoneyAccount) {
+			// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			// }
+			saveErrorCB(e);
+		});
+	} else {
+		income.trigger("xchange:amount", income);
+		// $.becameClean();
+		income.xGet("moneyIncomeDetails").add($.$model);
+		saveEndCB();
+		$.getCurrentWindow().$view.close();
+	}
 }
 // }
