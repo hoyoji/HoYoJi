@@ -19,7 +19,7 @@ function onFooterbarTap(e) {
 
 			$[e.source.id]= Alloy.createController(formName);
 			$[e.source.id].$view.setTop(0);
-			$[e.source.id].$view.setBottom(42);
+			$[e.source.id].$view.setBottom(84);
 			$[e.source.id].setParent($.$view);
 		} 
 		if(currentForm === $[e.source.id]){

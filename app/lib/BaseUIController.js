@@ -45,7 +45,12 @@
 			if ($.$attrs.borderRadius){
 				$.$view.setBorderRadius($.$attrs.borderRadius);
 			}
-			
+			if ($.$attrs.horizontalWrap){
+				$.$view.setHorizontalWrap($.$attrs.horizontalWrap);
+			}
+			if ($.$attrs.wordWrap){
+				$.$view.setWordWrap($.$attrs.wordWrap);
+			}			
 			_.extend($, {
 				__dirtyCount : 0,
 				show : function(){
