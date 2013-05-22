@@ -1,0 +1,21 @@
+<Alloy>
+	<View class="container">
+		<View height="42" top="0" left="0" right="0" backgroundImage="/images/headerTitle_green.png">
+			<Widget src="com.hoyoji.titanium.widget.XButton" left="5" width="60" onSingletap="close" image="/images/backButton"/>
+			<Label id="title" color="white">请选择</Label>
+			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" onSingletap="confirm" image="/images/saveButton"/>
+		</View>
+
+		<Label id="selectedOption" top="42" platform="ios" bottom="215" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+		<Label id="selectedOption" top="42" platform="android" bottom="155" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+
+		<Picker id="field" platform="ios" selectionIndicator="true" width="Ti.UI.FILL" bottom="0">
+            <PickerColumn id="column1">
+            </PickerColumn>
+        </Picker>
+          
+		<!-- <Picker id="field" platform="android" selectionIndicator="true" useSpinner="true" bottom="0">
+        </Picker> -->
+        <View id="fieldContainer" platform="android" backgroundColor="black" height="155" width="Ti.UI.FILL" bottom="0"></View>
+	</View>
+</Alloy>

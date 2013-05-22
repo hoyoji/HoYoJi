@@ -1,71 +1,76 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-if($.$attrs.color){
+var items = $.$attrs.items.split(",");
+var values = $.$attrs.values ? $.$attrs.values.split(",") : items;
+
+if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
 
-if(OS_IOS){
-	$.field.setSelectionIndicator(false);
+$.$view.addEventListener("singletap", function(e) {
+	e.cancelBubble = true;
+
+	if ($.saveableMode === "read") {
+		return;
+	}
+	
+	Alloy.Globals.openWindow("optionSelector", {
+		title : $.label.getText(), 
+		field : $, 
+		items : items, 
+		values : values,
+		selectorCallback : function(value){
+			$.setValue(value);
+			$.field.fireEvent("change");
+	}});
+});
+
+$.setEditable = function(editable) {
+	// if (editable === false) {
+		// $.field.setHintText("");
+	// } else {
+		// $.field.setHintText($.$attrs.hintText);
+	// }
+// 
+	// if (OS_ANDROID) {
+		// if ($.$attrs.bindAttributeIsModel) {
+			// $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+		// }
+	// }
+// 
+	// $.field.setEditable(editable);
+
+}
+$.getValue = function() {
+	if ($.$attrs.bindAttributeIsModel) {
+		return $.__bindAttributeIsModel;
+	}
+	return selectedValue;
 }
 
-var items = $.$attrs.items.split(",");//从input widget获取items转为array
-var values = items;
-if($.$attrs.values){
-	values = $.$attrs.values.split(",");//从input widget获取values转为array
-} 
-var data = [], selectedValue;
-for (var i = 0; i < items.length; i++) {//根据items的长度动态创建rows
-	data[i] = Ti.UI.createPickerRow({
-		title : items[i]
-	});
-};
-$.field.add(data);//把rows添加到picker
-
-$.field.addEventListener("singletap", function(e){
-	// $.getCurrentWindow().closeSoftKeyboard();
-	if(OS_IOS){
-		if(!$.__expanded){
-			$.widget.setHeight(215);
-			$.field.setSelectionIndicator(true);
-			$.__expanded = true;
+var selectedValue = null;
+$.setValue = function(value) {
+	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
+	$.__bindAttributeIsModel = value;
+	if ($.$attrs.bindAttributeIsModel && value) {
+		if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
+			value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
 		} else {
-			$.widget.setHeight(47);
-			$.field.setSelectionIndicator(false);
-			$.__expanded = false;
+			value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
 		}
 	}
-});
-
-$.field.addEventListener("change", function(e){
-	if(OS_IOS){
-		 if($.__setValueChangeEvent){
-	    	return; 	
-	     }
-	}
-	console.info("Selector selected value : " + values[e.rowIndex]);
-	selectedValue = values[e.rowIndex];
-});
-
-$.getValue = function(e){
-	if(e){
-		return values[e.rowIndex];
-	} else {
-		return selectedValue;
-	}
+	selectedValue = value;
+	value = this.convertModelValue(value);
+	$.field.setText(value || "");
 }
 
-$.setValue = function(value) {
-    $.__bindAttributeIsModel = value;
-    $.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
-    var rowIndex = _.indexOf(values, value || "");
-    if(rowIndex < 0){
-		rowIndex = 0;
-    }
-    // $.field.columns[0].setSelectedRow(rowIndex);
-    // if(OS_IOS){
-	     $.__setValueChangeEvent = true;
-    // }
-     $.field.setSelectedRow(0,rowIndex);
+$.convertModelValue = function(value){
+	var index = values.indexOf(value);
+	if(index === -1){
+		return null;
+	}
+	return items[index];
 }
 
+$.setSaveableMode($.saveableMode);

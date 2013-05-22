@@ -47,7 +47,7 @@ exports.open = function(contentController) {
 exports.openWin = function(contentController, options) {
 	options = options || {};
 	if(options.selectorCallback){
-		 _.extend(options, {height : "90%", width : "90%", borderRadius : 10});
+		 _.extend(options, {height : "90%", width : "90%", borderRadius : 5});
 	}
 
 	_.extend($.$attrs, options);

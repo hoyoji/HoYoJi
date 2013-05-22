@@ -1,0 +1,12 @@
+<Alloy>
+	<View class="container">
+		<View height="42" top="0" left="0" right="0" backgroundImage="/images/headerTitle_green.png">
+			<Widget src="com.hoyoji.titanium.widget.XButton" left="5" width="60" onSingletap="close" image="/images/backButton"/>
+			<Label id="title" color="white">请输入文字</Label>
+			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" onSingletap="confirm" image="/images/saveButton"/>
+		</View>
+
+     	<TextArea id="textField" platform="ios" height="150" width="90%" top="50" backgroundColor="yellow" borderRadius="3"/>
+     	<TextArea id="textField" platform="android" height="150" width="90%" top="50" backgroundColor="yellow" borderRadius="3" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS"/>
+	</View>
+</Alloy>

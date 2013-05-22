@@ -1,6 +1,6 @@
 ".container": {
 	backgroundColor:"#e1e1e1"
-},
+}
 
 "Label": {
 	width: Ti.UI.SIZE,
