@@ -6,6 +6,6 @@
 			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" onSingletap="confirm" image="/images/saveButton"/>
 		</View>
 
-     	<TextArea id="textField" height="150" width="90%" top="50" backgroundColor="yellow" borderRadius="3"/>
+     	<TextArea id="textField" height="150" width="90%" top="50" backgroundColor="yellow" borderRadius="3" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS"/>
 	</View>
 </Alloy>

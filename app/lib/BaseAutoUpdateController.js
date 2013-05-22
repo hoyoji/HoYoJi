@@ -3,7 +3,6 @@
 			Alloy.Globals.extendsBaseUIController($, attrs);
 			$.saveableMode = $.$attrs.saveableMode || $.$view.saveableMode || "edit";
 
-			$.__setValueChangeEvent = false;
 			// some control will raise change event when setting its value programmatically
 			$.__bindAttributeIsModel = null;
 
@@ -225,10 +224,6 @@
 					}
 				}
 				var updateModel = function(e) {
-					if ($.__setValueChangeEvent) {
-						$.__setValueChangeEvent = false;
-						return;
-					}
 					$.hideErrorMsg();
 					if (bindAttributeIsModel) {
 						model.xSet ? model.xSet(attribute, $.__bindAttributeIsModel) : model[attribute] = $.__bindAttributeIsModel;

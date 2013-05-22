@@ -11,9 +11,9 @@ function close(){
 
 $.onWindowOpenDo(function() {
 	if($.getCurrentWindow().$attrs.title){
-		$.title.setText("请输入"+ $.getCurrentWindow().$attrs.title);
+		$.title.setText("请输入" + $.getCurrentWindow().$attrs.title);
 	}
 	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
-	$.textField.addEventListener("singletap", confirm);
+	// $.textField.addEventListener("singletap", confirm);
 	$.textField.focus();
 });
