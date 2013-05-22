@@ -50,6 +50,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if(!$.$model.xGet("friend")){
 		saveErrorCB("好友不能为空！");
 	}else{
+		$.$model.xSet("friendUserId", $.$model.xGet("friend").xGet("friendUser").xGet("id"));
 		if ($.$model.isNew()) {
 			//新增共享
 			$.$model.xSet("state", "Wait");

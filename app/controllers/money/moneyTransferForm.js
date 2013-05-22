@@ -28,7 +28,7 @@ $.onWindowOpenDo(function() {
 var createRate;
 $.transferOut.field.addEventListener("change", updateExchangeRate);
 $.transferIn.field.addEventListener("change", updateExchangeRate);
-function updateExchangeRate(transferOut, transferIn) {
+function updateExchangeRate() {
 	// if (!$.transferOutOwnerUser.getValue() && !$.transferInOwnerUser.getValue()) {
 		if ($.transferOut.getValue() && $.transferIn.getValue()) {
 			setExchangeRate($.transferOut.getValue(), $.transferIn.getValue());
@@ -56,6 +56,8 @@ function setExchangeRate(transferOut, transferIn) {
 		} else {
 			createRate = true;
 			exchangeRateValue = null;
+			$.transferInAmount.setValue(null);
+			$.transferInAmount.field.fireEvent("change");
 		}
 		$.exchangeRate.$view.setHeight(42);
 		$.transferInAmount.$view.setHeight(42);
