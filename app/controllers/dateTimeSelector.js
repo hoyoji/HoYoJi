@@ -35,7 +35,7 @@ if(OS_ANDROID){
 var datetime;
 
 function selectDate(){
-	$.getCurrentWindow().$attrs.field.setValue(datetime);
+	$.getCurrentWindow().$attrs.selectorCallback(datetime);
 	$.getCurrentWindow().close();
 }
 

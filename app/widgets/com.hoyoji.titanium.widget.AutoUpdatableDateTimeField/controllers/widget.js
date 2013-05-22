@@ -23,6 +23,7 @@ $.onWindowOpenDo(function(){
 		
 		Alloy.Globals.openWindow("dateTimeSelector", {title : $.label.getText(), field : $, selectorCallback : function(value){
 			$.setValue(value);
+			$.field.fireEvent("change");
 		}});	
 	});
 });

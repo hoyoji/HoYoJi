@@ -3,7 +3,7 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 if ($.$attrs.hintText) {
 	$.field.hintText = $.$attrs.hintText;
 }
-if($.$attrs.color){
+if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
@@ -17,47 +17,64 @@ if (OS_IOS) {
 if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
+$.error.setVisible(true);
 
-	$.field.addEventListener("focus", function(e) {
-		e.cancelBubble = true;
+$.$view.addEventListener("singletap", function(e) {
+	e.cancelBubble = true;
 
-		if ($.saveableMode === "read") {
-			return;
-		}
-		if ($.$attrs.bindAttributeIsModel) {
-			$.field.blur();
-			if(OS_IOS){
-				$.field.fireEvent("singletap");
-			}
-		}
-		
-		// $.field.fireEvent("textfieldfocused", {
-			// bubbles : true,
-			// inputType : $.$attrs.inputType
-		// });
-	});
+	if ($.saveableMode === "read") {
+		return;
+	}
+	
+	// $.field.blur();
+// 		
+	// if ($.$attrs.bindAttributeIsModel) {
+		// if (OS_IOS) {
+			// $.field.fireEvent("singletap");
+		// }
+	// }
 
-
-// $.$view.addEventListener("singletap", function(e) {
-	// $.field.focus();
-// 	
-// });
+	Alloy.Globals.openWindow("textInput", {title : $.label.getText(), field : $, selectorCallback : function(value){
+			$.setValue(value);
+			$.field.fireEvent("change");
+	}});
+});
 
 $.setEditable = function(editable) {
-	if (editable === false) {
-		$.field.setHintText("");
-	} else {
-		$.field.setHintText($.$attrs.hintText);
-	}
-
-	if (OS_ANDROID) {
-		if ($.$attrs.bindAttributeIsModel) {
-			$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
-		}
-	}
-
-	$.field.setEditable(editable);
+	// if (editable === false) {
+		// $.field.setHintText("");
+	// } else {
+		// $.field.setHintText($.$attrs.hintText);
+	// }
+// 
+	// if (OS_ANDROID) {
+		// if ($.$attrs.bindAttributeIsModel) {
+			// $.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+		// }
+	// }
+// 
+	// $.field.setEditable(editable);
 
 }
+$.getValue = function() {
+	if ($.$attrs.bindAttributeIsModel) {
+		return $.__bindAttributeIsModel;
+	}
+	return $.field.getText();
+}
 
-$.setSaveableMode($.saveableMode); 
+$.setValue = function(value) {
+	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
+	$.__bindAttributeIsModel = value;
+	if ($.$attrs.bindAttributeIsModel && value) {
+		if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
+			value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0,-2)]();
+		} else {
+			value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel);
+		}
+	}
+	value = this.convertModelValue(value);
+	$.field.setText(value || "");
+}
+
+$.setSaveableMode($.saveableMode);
