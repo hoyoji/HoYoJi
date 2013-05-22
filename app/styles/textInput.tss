@@ -2,9 +2,9 @@
 	backgroundColor: "#f5f5f5"
 }
 
-"Label" : {
+"TextArea" : {
 	font: {
-		fontSize : 20,
-		fontWeight: 'bold'
+		fontSize : 18,
+		fontWeight: 'normal'
 	}
 }
