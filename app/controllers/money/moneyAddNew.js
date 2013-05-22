@@ -27,8 +27,9 @@ function onFooterbarTap(e) {
 		}
 		currentForm.$view.hide();
 		currentForm = $[e.source.id];
-		currentForm.date.setValue((new Date()).toISOString());	
-		$.getCurrentWindow().numericKeyboard.open(currentForm.amount, function(){
+		currentForm.date.setValue((new Date()).toISOString());
+		
+		$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function(){
 			currentForm.titleBar.save();
 		}, 42);
 		$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
@@ -37,7 +38,7 @@ function onFooterbarTap(e) {
 
 $.onWindowOpenDo(function(){
 	currentForm.date.setValue((new Date()).toISOString());
-	$.getCurrentWindow().numericKeyboard.open(currentForm.amount, function(){
+	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function(){
 		currentForm.titleBar.save();
 	}, 42);
 });

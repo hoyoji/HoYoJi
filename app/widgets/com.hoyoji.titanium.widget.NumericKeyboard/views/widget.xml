@@ -1,8 +1,8 @@
 <Alloy>
-	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="168" bottom="-168">
-		<View backgroundColor="#40000000" height="Ti.UI.FILL" width="Ti.UI.FILL" />
-		<View layout="vertical" height="Ti.UI.FILL" width="Ti.UI.FILL">
-			<View layout="vertical" width="Ti.UI.FILL" height="50%">
+	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="Ti.UI.FILL" bottom="0" visible="false" backgroundColor="#40000000">
+		<!-- <View backgroundColor="#40000000" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
+		<View id="keyboard" layout="vertical" height="168" width="Ti.UI.FILL" bottom="-168">
+			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View height="42" layout="horizontal" horizontalWrap="false">
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="7" />
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="8" />
@@ -18,8 +18,8 @@
 					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" />
 				</View>
 			</View>
-			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="50%">
-				<View width="80%" layout="vertical" height="Ti.UI.FILL">
+			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
+				<View width="80%" layout="vertical" height="Ti.UI.SIZE">
 					<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
 						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="1" />
 						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="2" />
