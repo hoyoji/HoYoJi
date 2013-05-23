@@ -74,14 +74,21 @@ var numSubmit = 0;
 var latestClickOp ="";
 //输入数字操作
 function numPress(e) {
+	
 	if (flagNewNum) {
 		activeTextField.setValue(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		if (activeTextField.getValue() + oldValue === "0" || activeTextField.getValue() + oldValue === "") {
+		var readout = activeTextField.getValue();
+		if(!readout){
+			readout = 0;
+		}else{
+			readout = readout + "";
+		}
+		if (readout + oldValue === "0" || readout + oldValue === "") {
 			activeTextField.setValue(e.source.getTitle());
 		} else {
-			var thisNum = (activeTextField.getValue() || "") + oldValue + e.source.getTitle();
+			var thisNum = (readout || 0) + oldValue + e.source.getTitle();
 			oldValue = ""
 			activeTextField.setValue(thisNum);
 		}
@@ -97,7 +104,12 @@ function doubleClickNumPress(e){
 
 //+-*/操作
 function operation(e) {
-	var readout = activeTextField.getValue() + "";
+	var readout = activeTextField.getValue();
+	if(!readout){
+		readout = "0";
+	}else{
+		readout = readout + "";
+	}
 	// if(activeTextField.getValue()===""){
 		// readout = 0;
 	// }
@@ -125,7 +137,7 @@ function operation(e) {
 		} else {
 			accum = parseFloat(readout);
 		}
-		accum = parseFloat(accum).toFixed(2) / 1;
+		// accum = parseFloat(accum).toFixed(2) / 1;
 		activeTextField.setValue(accum + "");
 		
 		activeTextField.field.fireEvent("change");
@@ -142,16 +154,23 @@ function operation(e) {
 
 //小数点
 function decimal() {
-	var curReadOut = activeTextField.getValue() + "";
+	var curReadOut = activeTextField.getValue() || "0";
+	if(!curReadOut){
+		curReadOut = "0";
+	}else{
+		curReadOut = curReadOut + "";
+	}
 	if (flagNewNum) {
 		curReadOut = "0.";
 		flagNewNum = false;
 	} else {
 		if (curReadOut.indexOf(".") == -1) {
 			curReadOut += ".";
+			oldValue = ".";
+		}else{
+			oldValue = "";
 		}
 	}
-	oldValue = "."
 	activeTextField.setValue(curReadOut);
 	activeTextField.field.fireEvent("change");
 	setOPColor();
@@ -159,7 +178,12 @@ function decimal() {
 
 //退格键
 function backspace() {
-	var readout = activeTextField.getValue() + "";
+	var readout = activeTextField.getValue();
+	if(!readout){
+		readout = "0";
+	}else{
+		readout = readout + "";
+	}
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
@@ -208,7 +232,12 @@ function submitValue() {
 //提交触发=操作
 function equalToValue() {
 	if(pendingOp !== "=" && pendingOp !== ""){
-		var readout = activeTextField.getValue() + "";
+		var readout = activeTextField.getValue();
+		if(!readout){
+			readout = "0";
+		}else{
+			readout = readout + "";
+		}
 		var pendOp = pendingOp;
 		if (flagNewNum && pendOp !== "=");
 		else {
