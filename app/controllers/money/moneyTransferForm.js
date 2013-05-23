@@ -210,7 +210,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newTransferOut.xAddToSave($);
 		newTransferIn.xAddToSave($);
 
-	if (createRate) {//若汇率不存在 ，保存时自动新建一条
+	if (createRate && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
 			foreignCurrency : $.$model.xGet("transferIn").xGet("currency"),
