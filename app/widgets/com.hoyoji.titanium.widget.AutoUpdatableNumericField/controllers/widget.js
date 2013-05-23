@@ -31,7 +31,13 @@ $.onWindowOpenDo(function() {
 		// inputType : "NumericKeyboard"
 		// });
 		// $.getCurrentWindow().closeSoftKeyboard();
-		$.getCurrentWindow().numericKeyboard.open($);
+		if($.getParentController().titleBar){
+			$.getCurrentWindow().openNumericKeyboard($, function(){
+				$.getParentController().titleBar.save();
+			});
+		} else {
+			$.getCurrentWindow().openNumericKeyboard($);
+		}
 	});
 	$.hintText.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
@@ -39,7 +45,13 @@ $.onWindowOpenDo(function() {
 		if ($.saveableMode === "read") {
 			return;
 		}
-		$.getCurrentWindow().numericKeyboard.open($);
+		if($.getParentController().titleBar){
+			$.getCurrentWindow().openNumericKeyboard($, function(){
+				$.getParentController().titleBar.save();
+			});
+		} else {
+			$.getCurrentWindow().openNumericKeyboard($);
+		}
 	});
 
 });

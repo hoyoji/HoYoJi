@@ -8,13 +8,13 @@
 					bindAttribute="pictureId"/>
 			
 			<!-- <View width="Ti.UI.SIZE" height="Ti.UI.FILL" layout="horizontal" left="5" horizontalWrap="false"> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="16" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="16" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow" 
 				bindModel = "$.$model"
 				bindAttribute = "getProjectName()"
 				/>
 			<!-- </View>
 			<View width="Ti.UI.SIZE" right="5" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false"> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow" 
 				dataType="DateTime"
 				bindModel = "$.$model"
 				bindAttribute = "date"
@@ -24,13 +24,13 @@
 				<Label left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow">还款</Label>
 			<!-- </View>
 			<View width="Ti.UI.SIZE" right="5" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false"> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" id="localAmountLabel" class="secondRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="5" height="Ti.UI.SIZE" id="localAmountLabel" class="secondRow"
 				bindModel = "$.$model"
 				bindAttribute = "getLocalAmount()"
 				/>
 			<!-- </View>
 			<View width="Ti.UI.SIZE" height="Ti.UI.FILL" layout="horizontal" left="5" horizontalWrap="false"> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="57" left="66" right="25" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="57" left="66" right="25" height="14" class="firstRow" 
 				bindModel = "$.$model"
 				bindAttribute = "remark"
 				/>

@@ -50,8 +50,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if(!$.$model.xGet("friend")){
 		saveErrorCB("好友不能为空！");
 	}else{
-		$.$model.xSet("friendUserId", $.$model.xGet("friend").xGet("friendUser").xGet("id"));
 		if ($.$model.isNew()) {
+			$.$model.xSet("friendUserId", $.$model.xGet("friend").xGet("friendUser").xGet("id"));
 			//新增共享
 			$.$model.xSet("state", "Wait");
 			var projectShareAuthorizationsSearchArray = [];
@@ -120,6 +120,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								var subProjectSharedAuthorizationData = {
 									project : subProjectsArray[i/2-1],
 									friend :　$.$model.xGet("friend"),
+									friendUserId : $.$model.xGet("friend").xGet("friendUserId"),
 									state : "Wait",
 									shareType : $.$model.xGet("shareType"),
 						        	remark : $.$model.xGet("remark"),
@@ -132,11 +133,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									}
 								}
 								subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData); 
-								subProjectShareAuthorization.xAddToSave($);
-								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
-								
-								
+								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+								subProjectShareAuthorization.xAddToSave($);
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {

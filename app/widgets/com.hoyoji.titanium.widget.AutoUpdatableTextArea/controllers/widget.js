@@ -1,23 +1,9 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-if ($.$attrs.hintText) {
-	$.field.hintText = $.$attrs.hintText;
-}
 if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
-
-if ($.$attrs.keyboardType) {
-	$.field.setKeyboardType($.$attrs.keyboardType);
-}
-if (OS_IOS) {
-	$.field.setAutocapitalization(false);
-}
-if (OS_ANDROID) {
-	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
-}
-$.error.setVisible(true);
 
 $.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
@@ -34,7 +20,10 @@ $.$view.addEventListener("singletap", function(e) {
 		// }
 	// }
 
-	Alloy.Globals.openWindow("textInput", {title : $.label.getText(), field : $, selectorCallback : function(value){
+	Alloy.Globals.openWindow("textInput", {
+		title : $.label.getText(), 
+		field : $, 
+		selectorCallback : function(value){
 			$.setValue(value);
 			$.field.fireEvent("change");
 	}});
