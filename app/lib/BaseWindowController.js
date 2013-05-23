@@ -23,6 +23,15 @@
 					$.$view.open({animated : false});
 					//$.closeSoftKeyboard();
 				},
+				openNumericKeyboard : function(textField, callback, bottom){
+					if(!$.numericKeyboard){
+						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
+							id : "numericKeyboard"
+						});
+						$.numericKeyboard.setParent($.$view);
+					}
+					$.numericKeyboard.open(textField, callback, bottom);
+				},
 				openContextMenu : function(e) {
 					if ($.contextMenu) {
 						var title = "返回";

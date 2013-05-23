@@ -6,18 +6,27 @@ exports.close = function() {
 	console.info("close NumericKeyboard");
 	if (!activeTextField)
 		return;
-	activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
+	// $.$view.removeEventListener("touchstart", exports.close);
+	// $.keyboard.removeEventListener("touchstart", cancelBubbleTouchStart);
+	
 	activeTextField = null;
 	var animation = Titanium.UI.createAnimation();
 	animation.bottom = -168;
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	$.widget.animate(animation);
+	animation.addEventListener("complete", function(){
+		$.widget.setVisible(false);
+	});
+	$.keyboard.animate(animation);
 }
 
-var cancelTouchStart = function(e){
+function cancelBubbleTouchStart(e){
 		e.cancelBubble = true;
 }
+
+$.$view.addEventListener("touchstart", exports.close);
+$.keyboard.addEventListener("touchstart", cancelBubbleTouchStart);
+
 
 exports.open = function(textField, saveCB, bottom) {
 	confirmCB = saveCB;
@@ -28,44 +37,19 @@ exports.open = function(textField, saveCB, bottom) {
 	}
 	openBottom = bottom ? bottom : 0;
 	
-	// if (!activeTextField) {
 	if (activeTextField !== textField){	
 		activeTextField = textField;
-		// activeTextField.$view.fireEvent("touchstart"); // close other pickers
-		activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
-		
-		// function animateOpen(){
-			// $.widget.removeEventListener("postlayout", animateOpen);
 			var animation = Titanium.UI.createAnimation();
-			animation.bottom = openBottom;
+			animation.bottom = 0;
 			animation.duration = 300;
 			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-			animation.addEventListener("complete", function(){
-				activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
-			});
-			$.widget.animate(animation);	
-		// }
-		// $.widget.addEventListener("postlayout", animateOpen);
-		// animateOpen();
-	// } else if (activeTextField !== textField){
-		// activeTextField.$view.removeEventListener("touchstart", cancelTouchStart);
-		// activeTextField = textField;
-		// activeTextField.$view.addEventListener("touchstart", cancelTouchStart);
+			$.widget.setBottom(openBottom);
+			$.widget.setVisible(true);
+			$.keyboard.animate(animation);	
 	} else {
 		return;
 	}
 }
-
-$.onWindowOpenDo(function(){
-	$.$view.addEventListener("touchstart", function(e){
-		e.cancelBubble = true;
-	});
-	$.getCurrentWindow().$view.addEventListener("touchstart", function(e){
-		if(activeTextField && e.source !== activeTextField.$view){
-			exports.close();
-		}
-	});
-});
 
 var accum = 0;
 var flagNewNum = false;

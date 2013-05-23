@@ -1,9 +1,9 @@
 <Alloy>
-	<View class="container" title="借入" saveableContainer="true"  width="100%" height="100%">
+	<View class="container" title="借入" saveableContainer="true"  top="0" bottom="0">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增借入" readModeTitle="借入详细" editModeTitle="修改借入"/>
-		<View id="body" top="42" bottom="50" left="0" right="0" backgroundColor="#ebeeee">
+		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
 				bindModel="$.$model"
