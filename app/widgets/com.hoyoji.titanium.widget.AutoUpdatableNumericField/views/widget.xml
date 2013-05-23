@@ -1,7 +1,6 @@
 <Alloy>
      <View class="container" height="42" backgroundColor="#f5f5f5">
-     <!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
-	 <Label id="error" left="30%" top="42"/>
+     <Label id="error" left="30%" top="42"/>
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
      <Label id="field" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" />
      <Label id="hintText" right="0" height="Ti.UI.FILL" width="70%" borderRadius="0" color="gray" text="请点击输入"/>

@@ -116,9 +116,15 @@
 				return count;
 			}
 			if (hasChild) {
+				
+				if(OS_IOS){
+					var childButtonImage = "/images/childButton@2x.png";
+				} else {
+					var childButtonImage = "/images/childButton.png";
+				}
 				var openChildButton = Ti.UI.createButton({
 					// title : ">",
-					image : "/images/childButton@2x.png",
+					image : childButtonImage,
 					height : Ti.UI.FILL,
 					width : 42,
 					backgroundColor : "transparent",
@@ -127,7 +133,6 @@
 					//borderWidth : 0,
 					//borderColor : "transparent"
 				});
-				// openChildButton.setImage("/images/childButton@2x.png");
 				$.$view.add(openChildButton);
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
@@ -144,9 +149,16 @@
 			}
 
 			if (hasDetail) {
+				if(OS_IOS){
+					var detailExpandButtonImage = "/images/detailExpandButton@2x.png";
+					var detailCollapseButtonImage = "/images/detailCollapseButton@2x.png";
+				} else {
+					var detailExpandButtonImage = "/images/detailExpandButton.png";
+					var detailCollapseButtonImage = "/images/detailCollapseButton.png";
+				}
 				var openDetailButton = Ti.UI.createButton({
 					// title : "+",
-					image : "/images/detailExpandButton@2x.png",
+					image : detailExpandButtonImage,
 					height : Ti.UI.FILL,
 					width : 42,
 					backgroundColor : "transparent",
@@ -154,7 +166,6 @@
 					//borderWidth : 0,
 					//borderColor : "transparent"
 				});
-				// openDetailButton.setImage("/images/detailExpandButton@2x.png");
 				$.$view.add(openDetailButton);
 				$.content.setLeft(42);
 				openDetailButton.addEventListener("singletap", function(e) {
@@ -165,7 +176,7 @@
 							if (isExpanded) {
 								isExpanded = false;
 								//openDetailButton.setTitle("＋");
-								openDetailButton.setImage("/images/detailExpandButton@2x.png");
+								openDetailButton.setImage(detailExpandButtonImage);
 								$.$view.fireEvent("click", {
 									bubbles : true,
 									collapseSection : true,
@@ -174,7 +185,7 @@
 							} else {
 								isExpanded = true;
 								//openDetailButton.setTitle("－");
-								openDetailButton.setImage("/images/detailCollapseButton@2x.png");
+								openDetailButton.setImage(detailCollapseButtonImage);
 								$.$view.fireEvent("click", {
 									bubbles : true,
 									expandSection : true,
