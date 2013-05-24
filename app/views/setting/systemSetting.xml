@@ -20,7 +20,6 @@
 			</View>
 
 			<View height="45" top="10" backgroundColor="#d1d1d1" borderRadius="7">
-				<!-- <View width="5" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"  zIndex="1"/> -->
 				<View height="43" left="2" top="0"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">加我为好友时需要验证</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
@@ -29,21 +28,20 @@
 					bindModel="User"
 					bindAttribute="newFriendAuthentication"/>
 				</View>
-				<!-- <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="35" backgroundImage="/images/sectionBottomShadow.png" zIndex="0"/> -->
 			</View>
-			
-				<!-- <Widget id="xButton" src="com.hoyoji.titanium.widget.XButton" 
-					backgroundImage="/images/bodyImage.png" 
-					onSingletap="click"/> -->
-				<!-- <View height="42">
-				<Button right="10" left="10" onSingletap="openMoneyAccount">账户设置</Button>
+
+			<View height="45" top="10" backgroundColor="#d1d1d1" borderRadius="7">
+				<View height="43" left="2" top="0"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
+					<Label left="10">版本</Label>
+					<Label id="currentVersionNumber" right="10" width="50">1.0.0</Label>
+					<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
+					values="required,none"
+					items="是,否"
+					bindModel="User"
+					bindAttribute="newFriendAuthentication"/> -->
 				</View>
-				<View height="42">
-				<Button right="10" left="10" onSingletap="openCurrency">币种设置</Button>
-				</View>
-				<View height="42">
-				<Button right="10" left="10" onSingletap="openExchange">汇率设置</Button>
-				</View> -->
+			</View>
+
 			</ScrollView>
 		</View>
 	</View>

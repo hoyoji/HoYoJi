@@ -10,6 +10,7 @@ $.$model.xSet("messageState", "unRead");
 $.$model.xSet("messageTitle", "分享账务给好友");
 
 $.onWindowOpenDo(function() {
+	$.selectFriend.textField.blur();
 	if(selectedAccount.config.adapter.collection_name = "MoneyExpense"){
 		$.$model.xSet("detail",
 		"日期：" + selectedAccount.xGet("date") + 
@@ -60,6 +61,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}
 }
 function openFriendSelector(){
+	$.selectFriend.textField.blur();
 	var attributes = {
 	selectorCallback : function(model) {
 		$.friend = model;
