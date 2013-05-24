@@ -18,7 +18,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 					subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 					// subProjectShareAuthorization._xDelete();
 					subProjectShareAuthorization.xSet("state", "Delete");
-					subProjectShareAuthorization.xSave();
+					subProjectShareAuthorization.xSave({syncFromServer : true});
 					editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 				}
 			});
@@ -41,7 +41,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 						subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 					})
 				}, function() {
-					$.$model.xSave();
+					$.$model.xSave({syncFromServer : true});
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
