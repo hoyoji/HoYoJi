@@ -75,8 +75,8 @@
 						  font: {fontSize:20, fontWeight:'bold'},
 						  message: msg || null,
 						  style:style,
-						  top:"50%",
-						  left:"50%",
+						  top:"48%",
+						  left:"48%",
 						  height:Ti.UI.SIZE,
 						  width:Ti.UI.SIZE
 						});

@@ -86,6 +86,16 @@ if ($.saveableMode === "read") {
 		}
 	});
 
+	$.amount.beforeOpenKeyboard = function(confirmCB){
+		// if($.$model.xGet("useDetailsTotal")){
+			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function(){
+				
+				
+				confirmCB();
+			});
+		// }
+	}
+
 	$.moneyExpenseCategory.beforeOpenModelSelector = function(){
 		if(!$.$model.xGet("project")){
 			return "请先选择项目";

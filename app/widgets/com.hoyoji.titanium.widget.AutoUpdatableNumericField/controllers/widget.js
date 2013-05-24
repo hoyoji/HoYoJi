@@ -11,7 +11,15 @@ if ($.$attrs.color) {
 if ($.$attrs.fieldColor) {
 	$.field.setColor($.$attrs.fieldColor);
 }
-
+function openKeyboard(){
+	if($.getParentController().titleBar){
+					$.getCurrentWindow().openNumericKeyboard($, function(){
+						$.getParentController().titleBar.save();
+					});
+				} else {
+					$.getCurrentWindow().openNumericKeyboard($);
+				}
+}
 $.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {
 		if ($.saveableMode === "read") {
@@ -31,27 +39,27 @@ $.onWindowOpenDo(function() {
 		// inputType : "NumericKeyboard"
 		// });
 		// $.getCurrentWindow().closeSoftKeyboard();
-		if($.getParentController().titleBar){
-			$.getCurrentWindow().openNumericKeyboard($, function(){
-				$.getParentController().titleBar.save();
-			});
-		} else {
-			$.getCurrentWindow().openNumericKeyboard($);
+		if($.beforeOpenKeyboard){
+			$.beforeOpenKeyboard(openKeyboard);
+			return;
 		}
+		openKeyboard();
 	});
 	$.hintText.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
-		$.field.fireEvent("singletap");
+		// $.field.fireEvent("singletap");
 		if ($.saveableMode === "read") {
 			return;
+		} else if ($.saveableMode === "edit") {
+			if ($.$attrs.editModeEditability === "noneditable") {
+				return;
+			}
+		} else if ($.saveableMode === "add") {
+			if ($.$attrs.addModeEditability === "noneditable") {
+				return;
+			}
 		}
-		if($.getParentController().titleBar){
-			$.getCurrentWindow().openNumericKeyboard($, function(){
-				$.getParentController().titleBar.save();
-			});
-		} else {
-			$.getCurrentWindow().openNumericKeyboard($);
-		}
+		openKeyboard();
 	});
 
 });

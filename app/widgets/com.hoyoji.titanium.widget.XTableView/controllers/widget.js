@@ -52,6 +52,7 @@ $.$view.addEventListener("click", function(e) {
 					var data = $.table.data.slice(0);
 					data.splice(sectionIndex, 1);
 					$.table.setData(data);
+					showNoDataIndicator(data.length);
 				// },10000);
 			} else {
 				$.table.deleteRow(e.index);
@@ -67,6 +68,7 @@ $.$view.addEventListener("click", function(e) {
 				data[sectionIndex].rows = rows;
 			}
 			$.table.setData(data);
+			showNoDataIndicator(data.length);
 		}
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
@@ -255,6 +257,7 @@ function addRowToSection(rowModel, collection, index) {
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
 				$.table.setData(data);
+				showNoDataIndicator(data.length);
 				// $.table.insertRowBefore(pos.index, row);
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
@@ -404,6 +407,7 @@ var clearCollections = function() {
 	}
 	collections = [];
 	$.table.setData([]);
+	showNoDataIndicator(0);
 }
 
 function refreshCollectionOnChange(model){
@@ -436,6 +440,7 @@ exports.resetTable = function() {
 		collections[i].on("reset", resetCollection);
 	}
 	$.table.setData([]);
+	showNoDataIndicator(0);
 }
 var resetCollection = function(collection, options) {
 	var data = $.table.data.slice(0);
@@ -457,6 +462,7 @@ var resetCollection = function(collection, options) {
 		}
 	});
 	$.table.setData(data);
+	showNoDataIndicator(data.length);	
 }
 
 exports.removeCollection = function(collection) {
@@ -650,6 +656,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		}
 	}
 	$.table.setData(data);
+	showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
 	
 }
@@ -765,7 +772,7 @@ $.onWindowOpenDo(function() {
 		row.add(titleLabel);
 		row.add(titleLabel);
 		if (!$.getCurrentWindow().$attrs.selectedModel) {
-			row.setBackgroundColor("pink");
+			row.setColor("blue");
 		}
 		if ($.table.data.length > 0) {
 			$.table.insertRowBefore(0, row);
@@ -774,3 +781,25 @@ $.onWindowOpenDo(function() {
 		}
 	}
 });
+
+var __noDataIndicator;
+function showNoDataIndicator(hasData){
+	if(hasData){
+		if(__noDataIndicator){
+			__noDataIndicator.hide();
+		}
+	} else if(!__noDataIndicator){
+		__noDataIndicator = Ti.UI.createLabel({
+			text : "没有内容",
+			backgroundColor : "white",
+			width : "Ti.UI.SIZE",
+			height : "Ti.UI.SIZE",
+			top : "48%",
+			left : "48%",
+			zIndex : 200
+		});
+		$.$view.add(__noDataIndicator);
+	} else {
+		__noDataIndicator.show();
+	}
+}
