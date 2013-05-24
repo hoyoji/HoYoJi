@@ -52,6 +52,7 @@ $.$view.addEventListener("click", function(e) {
 					var data = $.table.data.slice(0);
 					data.splice(sectionIndex, 1);
 					$.table.setData(data);
+					showNoDataIndicator(data.length);
 				// },10000);
 			} else {
 				$.table.deleteRow(e.index);
@@ -67,6 +68,7 @@ $.$view.addEventListener("click", function(e) {
 				data[sectionIndex].rows = rows;
 			}
 			$.table.setData(data);
+			showNoDataIndicator(data.length);
 		}
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
@@ -255,6 +257,7 @@ function addRowToSection(rowModel, collection, index) {
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
 				$.table.setData(data);
+				showNoDataIndicator(data.length);
 				// $.table.insertRowBefore(pos.index, row);
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
@@ -358,6 +361,8 @@ function collapseAllHasDetailSections() {
 }
 
 exports.addCollection = function(collection, rowView) {
+	$.showActivityIndicator();
+	
 	console.info("xTableView adding collection " + collection.length);
 	if (rowView) {
 		collection.__rowView = rowView;
@@ -386,6 +391,8 @@ exports.addCollection = function(collection, rowView) {
 	
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
+
+	$.hideActivityIndicator();
 }
 var clearCollections = function() {
 	for (var i = 0; i < collections.length; i++) {
@@ -400,6 +407,7 @@ var clearCollections = function() {
 	}
 	collections = [];
 	$.table.setData([]);
+	showNoDataIndicator(0);
 }
 
 function refreshCollectionOnChange(model){
@@ -432,6 +440,7 @@ exports.resetTable = function() {
 		collections[i].on("reset", resetCollection);
 	}
 	$.table.setData([]);
+	showNoDataIndicator(0);
 }
 var resetCollection = function(collection, options) {
 	var data = $.table.data.slice(0);
@@ -453,6 +462,7 @@ var resetCollection = function(collection, options) {
 		}
 	});
 	$.table.setData(data);
+	showNoDataIndicator(data.length);	
 }
 
 exports.removeCollection = function(collection) {
@@ -511,6 +521,7 @@ exports.getLastTableTitle = function() {
 };
 
 exports.createChildTable = function(theBackNavTitle, collections) {
+	
 	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
 		top : "100%",
 		hasDetail : $.$attrs.hasDetail,
@@ -532,6 +543,7 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	for (var i = 0; i < collections.length; i++) {
 		$.detailsTable.addCollection(collections[i]);
 	}
+	
 }
 
 exports.navigateUp = function() {
@@ -580,6 +592,8 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		sortReverse = reverse;
 		groupByField = groupField;
 	}
+	$.showActivityIndicator();
+	
 	collapseAllHasDetailSections();
 
 	var data = $.table.data;
@@ -642,6 +656,9 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		}
 	}
 	$.table.setData(data);
+	showNoDataIndicator(data.length);
+	$.hideActivityIndicator();
+	
 }
 function createSection(sectionTitle, sectionIndex) {
 	var section;
@@ -755,7 +772,7 @@ $.onWindowOpenDo(function() {
 		row.add(titleLabel);
 		row.add(titleLabel);
 		if (!$.getCurrentWindow().$attrs.selectedModel) {
-			row.setBackgroundColor("pink");
+			row.setColor("blue");
 		}
 		if ($.table.data.length > 0) {
 			$.table.insertRowBefore(0, row);
@@ -764,3 +781,25 @@ $.onWindowOpenDo(function() {
 		}
 	}
 });
+
+var __noDataIndicator;
+function showNoDataIndicator(hasData){
+	if(hasData){
+		if(__noDataIndicator){
+			__noDataIndicator.hide();
+		}
+	} else if(!__noDataIndicator){
+		__noDataIndicator = Ti.UI.createLabel({
+			text : "没有内容",
+			backgroundColor : "white",
+			width : "Ti.UI.SIZE",
+			height : "Ti.UI.SIZE",
+			top : "48%",
+			left : "48%",
+			zIndex : 200
+		});
+		$.$view.add(__noDataIndicator);
+	} else {
+		__noDataIndicator.show();
+	}
+}

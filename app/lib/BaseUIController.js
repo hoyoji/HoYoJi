@@ -61,7 +61,34 @@
 				},
 				animate : function(animation){
 					$.$view.animate(animation);
-				},						
+				},
+				showActivityIndicator : function(msg){
+					if(!$.__activityIndicator){
+						var style;
+						if (OS_IOS){
+						  style = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
+						} else {
+						  style = Ti.UI.ActivityIndicatorStyle.DARK;
+						}
+						$.__activityIndicator = Ti.UI.createActivityIndicator({
+						  color: 'black',
+						  font: {fontSize:20, fontWeight:'bold'},
+						  message: msg || null,
+						  style:style,
+						  top:"48%",
+						  left:"48%",
+						  height:Ti.UI.SIZE,
+						  width:Ti.UI.SIZE
+						});
+						$.$view.add($.__activityIndicator);
+					}
+					$.__activityIndicator.show();
+				},
+				hideActivityIndicator : function(){
+					if($.__activityIndicator){
+						$.__activityIndicator.hide();
+					}
+				},
 				becameDirty : function() {
 					if ($.__dirtyCount === 0) {
 						$.$view.fireEvent("becamedirty", {
