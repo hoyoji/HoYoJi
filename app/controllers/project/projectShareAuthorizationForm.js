@@ -58,15 +58,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			var subProjectsArray = [];
 			var projectShareAuthorizationArray = [];
 			
-			var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-				tableName : "Project",
-				recordId : $.$model.xGet("project").xGet("id"),
-				operation : "create"
-			});
-			if(syncRecord.id){
-				projectShareAuthorizationArray.push($.$model.xGet("project").toJSON());
-				syncRecord.destroy({syncFromServer : true});
-			}
+			
 			
 			projectShareAuthorizationsSearchArray.push({
 				__dataType : "ProjectShareAuthorization",
@@ -97,15 +89,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						state : "Accept"
 					});
 					subProjectsArray.push(subProject);
-					syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-						tableName : "Project",
-						id : subProject.xGet("id"),
-						operation : "create"
-					});
-					if(syncRecord.id){
-						projectShareAuthorizationArray.push(subProject.toJSON());
-						syncRecord.destroy({syncFromServer : true});
-					}
+					
 				});
 			}
 			
@@ -113,6 +97,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (data[0].length > 0 || data[1].length > 0) {
 					saveErrorCB("好友已在共享列表,请重新选择好友！");
 				}else{
+					var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+						tableName : "Project",
+						recordId : $.$model.xGet("project").xGet("id"),
+						operation : "create"
+					});
+					if(syncRecord.id){
+						projectShareAuthorizationArray.push($.$model.xGet("project").toJSON());
+						syncRecord.destroy({syncFromServer : true});
+					}
 						// 有些subProject已被共享过，不能再次共享
 						for (var i=2;i < projectShareAuthorizationsSearchArray.length;i=i+2){
 							var subProjectShareAuthorization;
@@ -136,6 +129,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								subProjectShareAuthorization.xAddToSave($);
+								
+								var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+									tableName : "Project",
+									id : subProjectsArray[i/2-1].xGet("id"),
+									operation : "create"
+								});
+								if(subProjectSyncRecord.id){
+									projectShareAuthorizationArray.push(subProject.toJSON());
+									subProjectSyncRecord.destroy({syncFromServer : true});
+								}
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
