@@ -284,6 +284,7 @@ function addRow(rowModel, collection) {
 			return;
 		} else {
 			addRowToSection(rowModel, collection);
+			showNoDataIndicator($.table.data.length);
 		}
 	}
 	if (collection.isFetching || collection.isFiltering) {
@@ -392,6 +393,7 @@ exports.addCollection = function(collection, rowView) {
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
 
+	showNoDataIndicator($.table.data.length);
 	$.hideActivityIndicator();
 }
 var clearCollections = function() {
@@ -791,11 +793,12 @@ function showNoDataIndicator(hasData){
 	} else if(!__noDataIndicator){
 		__noDataIndicator = Ti.UI.createLabel({
 			text : "没有内容",
-			backgroundColor : "white",
-			width : "Ti.UI.SIZE",
-			height : "Ti.UI.SIZE",
+			color : "blue",
+			backgroundColor : "transparent",
+			width : "150",
+			height : "42",
 			top : "48%",
-			left : "48%",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			zIndex : 200
 		});
 		$.$view.add(__noDataIndicator);
