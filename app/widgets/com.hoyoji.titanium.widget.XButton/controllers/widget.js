@@ -111,6 +111,10 @@ $.$view.addEventListener("longpress", function(e){
 	$.$view.setBackgroundImage("none");
 });
 
+$.$view.addEventListener("touchcancel", function(e){
+	$.$view.setBackgroundImage("none");
+});
+
 $.$view.addEventListener("touchmove", function(e){	$.$view.setBackgroundImage("none");
 });
 
