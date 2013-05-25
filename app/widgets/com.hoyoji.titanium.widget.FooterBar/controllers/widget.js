@@ -80,7 +80,7 @@ if ($.$attrs.buttons) {
 					// e.cancelBubble = true;
 					var tempCurrentSubFooterBar = currentSubFooterBar;
 					hideSubFooterBar(currentSubFooterBar);
-					if(!tempCurrentSubFooterBar){
+					if(tempCurrentSubFooterBar !== $[e.source.id + "subFooterBar"]){
 						createSubFooterBar(button, subButtons, subIds);
 					}
 				}.bind(null, button, subButtons, subIds)
