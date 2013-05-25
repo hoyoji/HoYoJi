@@ -93,17 +93,19 @@ $.$view.addEventListener("touchend", function() {
 	$.$view.setBackgroundImage("none");
 });
 
-$.$view.addEventListener("singletap", function(e) {
-	if(e.source !== $.$view){
-		$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
-		
-		$.trigger("singletap", {
-			source : $
-		});
-		e.cancelBubble = true;
-	}
-});
+function redirectEvent(view){
+	view.addEventListener("singletap", function(e) {
+			e.cancelBubble = true;
+			$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
+	});
+}
 
-// $.imageView.addEventListener("singletap", function(e){
-	// $.$view.fireEvent("singletap");
-// });
+redirectEvent($.imageView);
+redirectEvent($.bubbleCountContainer);
+redirectEvent($.title);
+
+$.$view.addEventListener("singletap", function(e) {
+			$.trigger("singletap", {
+				source : $
+			});
+});

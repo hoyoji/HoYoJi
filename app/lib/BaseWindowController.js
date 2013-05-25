@@ -32,6 +32,11 @@
 					}
 					$.numericKeyboard.open(textField, callback, bottom);
 				},
+				closeNumericKeyboard : function(){
+					if($.numericKeyboard){
+						$.numericKeyboard.close();
+					}				
+				},
 				openContextMenu : function(e) {
 					if ($.contextMenu) {
 						var title = "返回";

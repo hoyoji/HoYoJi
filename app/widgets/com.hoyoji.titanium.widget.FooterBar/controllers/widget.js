@@ -1,89 +1,58 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var timeOutId = null;
+var timeOutId = null, currentSubFooterBar = null;
 
 function hideSubFooterBar(subFooterBar) {
-	subFooterBar.hide();
+	if(subFooterBar){
+		subFooterBar.hide();
+		$.$view.setHeight(42);
+		currentSubFooterBar = null;
+	}
 }
 
 function createSubFooterBar(button, subButtons, subIds) {
 	var subFooterBarId = subIds[0] + "subFooterBar";
 	if (!$[subFooterBarId]) {
 		$[subFooterBarId] = Ti.UI.createView({
-			top : 0,
-			bottom : 0,
+			height : 42,
+			bottom : 42,
 			left : 0,
 			right : 0,
 			layout : "horizontal",
 			horizontalWrap : false,
-			zIndex : 2,
+			zIndex : 300,
 			backgroundImage : WPATH("/images/background.png")
 		});
 		$.$view.add($[subFooterBarId]);
-
 		var width = (1 / (subButtons.length - 1) * 100) + "%", subButton;
-		// var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + subButtons.length + ".png");
-		// var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + subButtons.length + ".png");
 		for (var i = 1; i < subButtons.length; i++) {
-			var imgPath;
-			// if(OS_IOS){
-				imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] : "";
-			// } else {
-				// imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] + ".png" : "";
-			// }
-			// var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
-			// if(imgPath && f.exists()){
-				subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-					id : subIds[i],
-					title : subButtons[i],
-					borderRadius : 0,
-					height : Ti.UI.FILL,
-					width : width,
-					// backgroundImage : backgroundImage,
-					image : imgPath
-				});
-			// } else {
-				// subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-					// id : subIds[i],
-					// title : subButtons[i],
-					// borderRadius : 0,
-					// height : Ti.UI.FILL,
-					// width : width
-					// // backgroundImage : backgroundImage
-				// });
-			// }
-			// f = null;
+			var imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + subIds[i] : "";
+			subButtonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+				id : subIds[i],
+				title : subButtons[i],
+				borderRadius : 0,
+				height : 42,
+				width : width,
+				image : imgPath
+			});
 			subButtonWidget.setParent($[subFooterBarId]);
 			$[subIds[i]] = subButtonWidget;
-			// subButton.addEventListener("touchstart", function(button) {
-				// button.setBackgroundImage(backgroundImageNormal);
-			// }.bind(null, subButton));
-			// subButton.addEventListener("touchend", function(button) {
-				// button.setBackgroundImage(backgroundImage);
-			// }.bind(null, subButton));
 		}
 
 		$[subFooterBarId].addEventListener("singletap", function(e) {
-			$[subFooterBarId].hide();
+			hideSubFooterBar($[subFooterBarId]);
 		});
-
 	} else {
 		$[subFooterBarId].show();
 	}
-	if (timeOutId) {
-		clearTimeout(timeOutId);
-	}
-	timeOutId = setTimeout(function() {
-		hideSubFooterBar($[subFooterBarId]);
-	}, 5000);
+	$.$view.setHeight(Ti.UI.FILL);
+	currentSubFooterBar = $[subFooterBarId];
 }
 
 if ($.$attrs.buttons) {
 	var buttons = $.$attrs.buttons.split(",");
 	var ids = $.$attrs.ids.split(",");
 	var width = (1 / buttons.length * 100) + "%";
-	// var backgroundImage = WPATH("/FooterBarImages/footerButtonShadow" + buttons.length + ".png");
-	// var backgroundImageNormal = WPATH("/FooterBarImages/footerButtonNormal" + buttons.length + ".png");
 	for (var i = 0; i < buttons.length; i++) {
 		var subButtons = buttons[i].split(";"), subIds, buttonWidget, button, buttonId, buttonTitle;
 		if (subButtons.length > 1) {
@@ -96,59 +65,34 @@ if ($.$attrs.buttons) {
 		}
 		var imgPath;
 		imgPath = $.$attrs.imagesFolder ? $.$attrs.imagesFolder + "/" + buttonId : "";
-		// var f = imgPath && Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, imgPath);
-		// if(imgPath && f.exists()){
 			buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 				id : buttonId,
 				title : buttonTitle,
 				borderRadius : 0,
 				width : width,
 				height : Ti.UI.FILL,
-				// backgroundImage : backgroundImage,
 				image : imgPath
 			});
-			// button = Ti.UI.createButton({
-				// id : buttonId,
-				// borderRadius : 0,
-				// width : width,
-				// height : Ti.UI.FILL,
-				// backgroundImage : backgroundImage,
-				// image : imgPath
-			// });
-		// } else {
-			// buttonWidget = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-				// id : buttonId,
-				// title : buttonTitle,
-				// borderRadius : 0,
-				// width : width,
-				// height : Ti.UI.FILL,
-				// backgroundImage : backgroundImage
-			// });			
-			// button = Ti.UI.createButton({
-				// id : buttonId,
-				// title : buttonTitle,
-				// color : "black",
-				// borderRadius : 0,
-				// width : width,
-				// height : Ti.UI.FILL,
-				// backgroundImage : backgroundImage
-			// });
-		// }
-		// f = null;
 		$[buttonId] = buttonWidget;
 		if (subButtons.length > 1) {
-			buttonWidget.addEventListener($.$attrs.openSubMenu || "longpress", createSubFooterBar.bind(null, button, subButtons, subIds));
+			buttonWidget.$view.addEventListener("singletap", 
+				function(button, subButtons, subIds, e){
+					// e.cancelBubble = true;
+					var tempCurrentSubFooterBar = currentSubFooterBar;
+					hideSubFooterBar(currentSubFooterBar);
+					if(!tempCurrentSubFooterBar){
+						createSubFooterBar(button, subButtons, subIds);
+					}
+				}.bind(null, button, subButtons, subIds)
+			);
+		} else {
+			buttonWidget.$view.addEventListener("singletap", 
+				function(e){
+					hideSubFooterBar(currentSubFooterBar);
+				}
+			);
 		}
-
-		// button.addEventListener("touchstart", function(button) {
-			// button.setBackgroundImage(backgroundImageNormal);
-		// }.bind(null, button));
-		// button.addEventListener("touchend", function(button) {
-			// button.setBackgroundImage(backgroundImage);
-		// }.bind(null, button));
-
 		buttonWidget.setParent($.mainFooterBar);
-		// $.mainFooterBar.add(button);
 	}
 }
 
@@ -160,6 +104,11 @@ $.$view.addEventListener("touchstart", function(e) {
 
 $.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
+	if(currentSubFooterBar && e.source === $.$view){
+		hideSubFooterBar(currentSubFooterBar);
+		return;
+	}
+	
 	if (!e.source.id || !$[e.source.id]) {
 		return;
 	}

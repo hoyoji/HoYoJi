@@ -797,7 +797,7 @@ function showNoDataIndicator(hasData){
 			backgroundColor : "transparent",
 			width : "150",
 			height : "42",
-			top : "48%",
+			top : "25%",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			zIndex : 200
 		});
