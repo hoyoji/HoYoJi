@@ -106,12 +106,12 @@ $.$view.addEventListener("singletap", function(e) {
 		});
 });
 
-$.$view.addEventListener("longpress", function(){
+$.$view.addEventListener("longpress", function(e){
+	e.cancelBubble = true;
 	$.$view.setBackgroundImage("none");
 });
 
-$.$view.addEventListener("touchmove", function(){
-	$.$view.setBackgroundImage("none");
+$.$view.addEventListener("touchmove", function(e){	$.$view.setBackgroundImage("none");
 });
 
 redirectEvent($.imageView);
