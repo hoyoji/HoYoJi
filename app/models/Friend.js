@@ -127,67 +127,84 @@ exports.definition = {
 			},
 
 			xDelete : function(xFinishCallback, options) {
-				var self = this;
-				if (options.dbTrans) {
-					options.dbTrans.xCommitStart();
-				}
-				Alloy.Globals.Server.getData([{
-					__dataType : "ProjectShareAuthorization",
-					ownerUserId : Alloy.Models.User.id,
-					state : "Accept",
-					friendId : this.xGet("id")
-				}, {
-					__dataType : "ProjectShareAuthorization",
-					state : "Accept",
-					ownerUserId : self.xGet("friendUserId")
-				}], function(data) {
-					if (data[0].length > 0) {
-						xFinishCallback({
-							msg : "您与该好友有共享项目,请移除共享再删除"
-						});
-					} else if (data[1].length > 0) {
-						xFinishCallback({
-							msg : "您与该好友有共享项目,请移除共享再删除"
-						});
-					} else {
-						Alloy.Globals.Server.sendMsg({
-							id : guid(),
-							"toUserId" : self.xGet("friendUserId"),
-							"fromUserId" : Alloy.Models.User.id,
-							"type" : "System.Friend.Delete",
-							"messageState" : "new",
-							"messageTitle" : Alloy.Models.User.xGet("userName"),
-							"date" : (new Date()).toISOString(),
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-							"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
-						}, function() {
-							Alloy.Globals.Server.deleteData([{
-								__dataType : "Friend",
-								id : self.xGet("id")
-							}], function() {
-								
-								var delSuccess = self._xDelete(function(error){
-									xFinishCallback(error);
-								}, options);
-								
-								if (delSuccess && options.dbTrans) {
-									options.dbTrans.xCommitEnd();
-								}
+				if(this.xGet("moneyExpenses").length > 0){
+					xFinishCallback({ msg :"您与好友有支出关联，不能删除"});
+				}else if(this.xGet("moneyIncomes").length > 0){
+					xFinishCallback({ msg :"您与好友有收入关联，不能删除"});
+				}else if(this.xGet("moneyBorrows").length > 0){
+					xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
+				}else if(this.xGet("moneyReturns").length > 0){
+					xFinishCallback({ msg :"您与好友有还款关联，不能删除"});
+				}else if(this.xGet("moneyLends").length > 0){
+					xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
+				}else if(this.xGet("moneyPaybacks").length > 0){
+					xFinishCallback({ msg :"您与好友有收款关联，不能删除"});
+				}else if(this.xGet("ProjectShareAuthorization").length > 0){
+					xFinishCallback({ msg :"您与好友有共享项目，不能删除"});
+				}else {
+					var self = this;
+					if (options.dbTrans) {
+						options.dbTrans.xCommitStart();
+					}
+					Alloy.Globals.Server.getData([{
+						__dataType : "ProjectShareAuthorization",
+						ownerUserId : Alloy.Models.User.id,
+						state : "Accept",
+						friendId : this.xGet("id")
+					}, {
+						__dataType : "ProjectShareAuthorization",
+						state : "Accept",
+						ownerUserId : self.xGet("friendUserId")
+					}], function(data) {
+						if (data[0].length > 0) {
+							xFinishCallback({
+								msg : "您与该好友有共享项目,请移除共享再删除"
+							});
+						} else if (data[1].length > 0) {
+							xFinishCallback({
+								msg : "您与该好友有共享项目,请移除共享再删除"
+							});
+						} else {
+							Alloy.Globals.Server.sendMsg({
+								id : guid(),
+								"toUserId" : self.xGet("friendUserId"),
+								"fromUserId" : Alloy.Models.User.id,
+								"type" : "System.Friend.Delete",
+								"messageState" : "new",
+								"messageTitle" : Alloy.Models.User.xGet("userName"),
+								"date" : (new Date()).toISOString(),
+								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
+								"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
+							}, function() {
+								Alloy.Globals.Server.deleteData([{
+									__dataType : "Friend",
+									id : self.xGet("id")
+								}], function() {
+									
+									var delSuccess = self._xDelete(function(error){
+										xFinishCallback(error);
+									}, options);
+									
+									if (delSuccess && options.dbTrans) {
+										options.dbTrans.xCommitEnd();
+									}
+									
+								}, function(e) {
+									alert(e.__summary.msg);
+									xFinishCallback(e.__summary);
+								});
 								
 							}, function(e) {
 								alert(e.__summary.msg);
 								xFinishCallback(e.__summary);
 							});
-							
-						}, function(e) {
-							alert(e.__summary.msg);
-							xFinishCallback(e.__summary);
-						});
-					}
-				}, function(e) {
-					alert(e.__summary.msg);
-					xFinishCallback(e.__summary);
-				});
+						}
+					}, function(e) {
+						alert(e.__summary.msg);
+						xFinishCallback(e.__summary);
+					});
+				}
+				
 			},
 			syncAddNew : function(record, dbTrans) {
 				var self = this;

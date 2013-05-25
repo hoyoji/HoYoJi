@@ -11,7 +11,7 @@ $.$model.xSet("messageTitle", "分享账务给好友");
 
 $.onWindowOpenDo(function() {
 	$.selectFriend.field.blur();
-	if(selectedAccount.config.adapter.collection_name = "MoneyExpense"){
+	if(selectedAccount.config.adapter.collection_name === "MoneyExpense"){
 		//创建支出
 		var accountRow1 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -92,7 +92,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("detail"),
+			text : selectedAccount.xGet("remark"),
 			height : 42,
 			color : "black",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -104,7 +104,7 @@ $.onWindowOpenDo(function() {
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
 		$.account.add(accountRow4);
-	}else if(selectedAccount.config.adapter.collection_name = "MoneyIncome"){
+	}else if(selectedAccount.config.adapter.collection_name === "MoneyIncome"){
 		//创建支出
 		var accountRow1 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -156,7 +156,7 @@ $.onWindowOpenDo(function() {
 			height : "42"
 		});
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "是否预付：",
+			text : "是否预收：",
 			height : 42,
 			color : "black",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -185,7 +185,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("detail"),
+			text : selectedAccount.xGet("remark"),
 			height : 42,
 			color : "black",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -193,6 +193,7 @@ $.onWindowOpenDo(function() {
 		});
 		accountRow4.add(accountDetailLabel);
 		accountRow4.add(accountDetailContentLabel);
+		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
