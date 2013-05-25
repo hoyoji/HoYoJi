@@ -100,12 +100,21 @@ function redirectEvent(view){
 	});
 }
 
+$.$view.addEventListener("singletap", function(e) {
+		$.trigger("singletap", {
+			source : $
+		});
+});
+
+$.$view.addEventListener("longpress", function(){
+	$.$view.setBackgroundImage("none");
+});
+
+$.$view.addEventListener("touchmove", function(){
+	$.$view.setBackgroundImage("none");
+});
+
 redirectEvent($.imageView);
 redirectEvent($.bubbleCountContainer);
 redirectEvent($.title);
 
-$.$view.addEventListener("singletap", function(e) {
-			$.trigger("singletap", {
-				source : $
-			});
-});
