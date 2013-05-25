@@ -401,6 +401,10 @@
 				e.cancelBubble = true;
 			});
 
+			$.$view.addEventListener("touchcancel", function(e){
+				e.cancelBubble = true;
+			});
+
 			$.$view.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;
 				if (!$.getCurrentWindow() || isRemoving) {
