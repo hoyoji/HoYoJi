@@ -1,87 +1,5 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.makeContextMenu = function(e, isSelectMode, sourceModel) {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "收件箱操作"
-	});
-	menuSection.add($.createContextMenuItem("未读消息", function() {
-		$.titleBar.setTitle("未读消息");
-		receivedMessagesCollection.xSetFilter(function(model){
-			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "unread")
-					&& model.xGet("toUserId") === Alloy.Models.User.id)
-		});
-		receivedMessagesCollection.xSearchInDb(
-			sqlAND(
-				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
-				sqlOR("messageState".sqlEQ("new"), "messageState".sqlEQ("unread")),
-				"toUserId".sqlEQ(Alloy.Models.User.id)
-			)
-		);
-	}));
-	menuSection.add($.createContextMenuItem("已读消息", function() {
-		$.titleBar.setTitle("已读消息");
-		receivedMessagesCollection.xSetFilter(function(model){
-			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-					&& (model.xGet("messageState") === "read" || model.xGet("messageState") === "closed")
-					&& model.xGet("toUserId") === Alloy.Models.User.id)
-		});
-		receivedMessagesCollection.xSearchInDb(
-			sqlAND(
-				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
-				sqlOR("messageState".sqlEQ("read"), "messageState".sqlEQ("closed")),
-				"toUserId".sqlEQ(Alloy.Models.User.id)
-			)
-		);
-	}));
-	return menuSection;
-}
-
-
-//$.titleBar.bindXTable($.newMessagesTable);
-
-
-
-// var newMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "new"
-// });
-// newMsgCollection = newMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "new"
-// });
-// var noReadMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "unread"
-// });
-// noReadMsgCollection = noReadMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "unread"
-// });
-// var readedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "read"
-// });
-// readedMsgCollection = readedMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "read"
-// });
-// var closedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "closed"
-// });
-// closedMsgCollection = closedMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "closed"
-// }); 
 var sendedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	fromUserId : Alloy.Models.User.id
@@ -101,6 +19,13 @@ receivedMessagesCollection.xSetFilter(function(model){
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
 }, $);
 
+$.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback){
+	if($.footerBar.currentSlide
+		&& $.footerBar.currentSlide.$view.id !== buttonWidget.id){
+		return;
+	}
+	callback();
+}
 
 function onFooterbarTap (e) {
 	$.titleBar.setTitle(e.source.getTitle());
@@ -114,10 +39,34 @@ function onFooterbarTap (e) {
 			toUserId : Alloy.Models.User.id
 		});
 	} 
+	else if (e.source.id === "newMessagesTable") {
+		receivedMessagesCollection.xSetFilter(function(model){
+			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
+					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "unread")
+					&& model.xGet("toUserId") === Alloy.Models.User.id)
+		});
+		receivedMessagesCollection.xSearchInDb(
+			sqlAND(
+				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
+				sqlOR("messageState".sqlEQ("new"), "messageState".sqlEQ("unread")),
+				"toUserId".sqlEQ(Alloy.Models.User.id)
+			)
+		);
+	} else if (e.source.id === "oldMessagesTable") {
+		receivedMessagesCollection.xSetFilter(function(model){
+			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
+					&& (model.xGet("messageState") === "read" || model.xGet("messageState") === "closed")
+					&& model.xGet("toUserId") === Alloy.Models.User.id)
+		});
+		receivedMessagesCollection.xSearchInDb(
+			sqlAND(
+				"messageBoxId".sqlEQ(Alloy.Models.User.xGet("messageBoxId")),
+				sqlOR("messageState".sqlEQ("read"), "messageState".sqlEQ("closed")),
+				"toUserId".sqlEQ(Alloy.Models.User.id)
+			)
+		);
+	}
 }
-// $.newMessagesTable.addCollection(newMsgCollection);
-// $.newMessagesTable.addCollection(noReadMsgCollection);
-// $.oldMessagesTable.addCollection(readedMsgCollection);
-// $.oldMessagesTable.addCollection(closedMsgCollection);
+
 $.receivedMessagesTable.addCollection(receivedMessagesCollection);
 $.sendedMessagesTable.addCollection(sendedMsgCollection);
