@@ -73,6 +73,10 @@ exports.setTitle = function(title){
 	$.title.setText($.$attrs.title);	
 }
 
+exports.getTitle = function(){
+	return $.$attrs.title;	
+}
+
 exports.dirtyCB = function() {
 	if($.saveableMode === "edit"){
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
