@@ -27,9 +27,21 @@ $.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback){
 	callback();
 }
 
+var inBoxTitle = "收件箱";
 function onFooterbarTap (e) {
-	$.titleBar.setTitle(e.source.getTitle());
-	if (e.source.id === "receivedMessagesTable") {
+	if(e.source.id === "sendedMessagesTable") {
+		$.titleBar.setTitle(e.source.getTitle());
+	} else if(e.source.id === "receivedMessagesTable") {
+		$.titleBar.setTitle(inBoxTitle);
+	} else {
+		if(e.source.id === "allMessagesTable"){
+			inBoxTitle = "收件箱";
+		} else {
+			inBoxTitle = e.source.getTitle();
+		}
+		$.titleBar.setTitle(inBoxTitle);
+	}
+	if (e.source.id === "allMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
@@ -38,8 +50,7 @@ function onFooterbarTap (e) {
 			messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 			toUserId : Alloy.Models.User.id
 		});
-	} 
-	else if (e.source.id === "newMessagesTable") {
+	} else if (e.source.id === "newMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 					&& (model.xGet("messageState") === "new" || model.xGet("messageState") === "unread")

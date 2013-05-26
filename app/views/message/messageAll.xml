@@ -10,7 +10,7 @@
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="receivedMessagesTable" sortByField="date" groupByField="date" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
-		buttons="收件箱;已读消息;未读消息,发件箱" imagesFolder="/images/message/messageAll"
-		ids="receivedMessagesTable;newMessagesTable;oldMessagesTable,sendedMessagesTable"/>
+		buttons="收件箱;全部消息;已读消息;未读消息,发件箱" imagesFolder="/images/message/messageAll"
+		ids="receivedMessagesTable;allMessagesTable;newMessagesTable;oldMessagesTable,sendedMessagesTable"/>
 	</View>
 </Alloy>
