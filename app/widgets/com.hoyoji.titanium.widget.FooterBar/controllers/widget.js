@@ -76,14 +76,20 @@ if ($.$attrs.buttons) {
 		$[buttonId] = buttonWidget;
 		if (subButtons.length > 1) {
 			buttonWidget.$view.addEventListener("singletap", 
-				function(button, subButtons, subIds, e){
-					// e.cancelBubble = true;
-					var tempCurrentSubFooterBar = currentSubFooterBar;
-					hideSubFooterBar(currentSubFooterBar);
-					if(tempCurrentSubFooterBar !== $[e.source.id + "subFooterBar"]){
-						createSubFooterBar(button, subButtons, subIds);
+				function(buttonWidget, subButtons, subIds, e){
+					function ___openSubFooterBar(){
+							var tempCurrentSubFooterBar = currentSubFooterBar;
+							hideSubFooterBar(currentSubFooterBar);
+							if(tempCurrentSubFooterBar !== $[e.source.id + "subFooterBar"]){
+								createSubFooterBar(buttonWidget, subButtons, subIds);
+							}
+					}	
+					if($.beforeOpenSubFooterBar){
+						$.beforeOpenSubFooterBar(buttonWidget, ___openSubFooterBar);
+					} else {
+						___openSubFooterBar();
 					}
-				}.bind(null, button, subButtons, subIds)
+				}.bind(null, buttonWidget, subButtons, subIds)
 			);
 		} else {
 			buttonWidget.$view.addEventListener("singletap", 
@@ -96,7 +102,7 @@ if ($.$attrs.buttons) {
 	}
 }
 
-var currentSlide = null;
+$.currentSlide = null;
 
 $.$view.addEventListener("touchstart", function(e) {
 	e.cancelBubble = true;
@@ -114,12 +120,12 @@ $.$view.addEventListener("singletap", function(e) {
 	}
 	console.info("controll slideDown " + e.source.id);
 	if ($.$attrs.controlSlideDown && $.getParentController()[e.source.id]) {
-		if (currentSlide) {
-			currentSlide.$view.setZIndex(-1);
+		if ($.currentSlide) {
+			$.currentSlide.$view.setZIndex(-1);
 		}
 		console.info("controll slideDown " + e.source.id);
-		currentSlide = $.getParentController()[e.source.id];
-		currentSlide.slideDown(1);
+		$.currentSlide = $.getParentController()[e.source.id];
+		$.currentSlide.slideDown(1);
 	}
 	$.trigger("singletap", { source : $[e.source.id]});
 });

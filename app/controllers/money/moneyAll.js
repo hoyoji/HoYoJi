@@ -17,6 +17,14 @@ var d = new Date(), sortReverse = true, timeFilter = {
 	dateTo : d.getUTCTimeOfDateEnd().toISOString()
 };
 
+$.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback){
+	if($.footerBar.currentSlide
+		&& $.footerBar.currentSlide.$view.id !== buttonWidget.id){
+		return;
+	}
+	callback();
+}
+
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
