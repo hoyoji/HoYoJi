@@ -121,6 +121,9 @@ $.$view.addEventListener("singletap", function(e) {
 	console.info("controll slideDown " + e.source.id);
 	if ($.$attrs.controlSlideDown && $.getParentController()[e.source.id]) {
 		if ($.currentSlide) {
+			if($.currentSlide.$view.id === e.source.id){
+				return;
+			}
 			$.currentSlide.$view.setZIndex(-1);
 		}
 		console.info("controll slideDown " + e.source.id);
