@@ -133,7 +133,7 @@ exports.definition = {
 				}else if(this.xGet("moneyIncomes").length > 0){
 					xFinishCallback({ msg :"您与好友有收入关联，不能删除"});
 				}else if(this.xGet("moneyBorrows").length > 0){
-					xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
+					xFinishCallback({ msg :"您与好友有借入关联，不能删除"});
 				}else if(this.xGet("moneyReturns").length > 0){
 					xFinishCallback({ msg :"您与好友有还款关联，不能删除"});
 				}else if(this.xGet("moneyLends").length > 0){
