@@ -10,19 +10,194 @@ $.$model.xSet("messageState", "unRead");
 $.$model.xSet("messageTitle", "分享账务给好友");
 
 $.onWindowOpenDo(function() {
-	$.selectFriend.textField.blur();
-	if(selectedAccount.config.adapter.collection_name = "MoneyExpense"){
-		$.$model.xSet("detail",
-		"日期：" + selectedAccount.xGet("date") + 
-		"金额：" + selectedAccount.xGet("amount") + 
-		"是否预付：" + selectedAccount.xGet("expenseType") + 
-		"备注：" + selectedAccount.xGet("detail"))
-	}else if(selectedAccount.config.adapter.collection_name = "MoneyIncome"){
-		$.$model.xSet("detail",
-		"日期：" + selectedAccount.xGet("date") + 
-		"金额：" + selectedAccount.xGet("amount") + 
-		"是否预付：" + selectedAccount.xGet("incomeType") + 
-		"备注：" + selectedAccount.xGet("detail"))
+	$.selectFriend.field.blur();
+	if(selectedAccount.config.adapter.collection_name === "MoneyExpense"){
+		//创建支出
+		var accountRow1 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountDateLabel = Ti.UI.createLabel({
+			text : "日期：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountDateContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("date"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow1.add(accountDateLabel);
+		accountRow1.add(accountDateContentLabel);
+		
+		var accountRow2 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountAmountLabel = Ti.UI.createLabel({
+			text : "金额：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountAmountContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("amount"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow2.add(accountAmountLabel);
+		accountRow2.add(accountAmountContentLabel);
+		
+		var accountRow3 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountExpenseTypeLabel = Ti.UI.createLabel({
+			text : "是否预付：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountExpenseTypeContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("expenseType"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow3.add(accountExpenseTypeLabel);
+		accountRow3.add(accountExpenseTypeContentLabel);
+		
+		var accountRow4 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountDetailLabel = Ti.UI.createLabel({
+			text : "备注：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountDetailContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("remark"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow4.add(accountDetailLabel);
+		accountRow4.add(accountDetailContentLabel);
+		$.account.add(accountRow1);
+		$.account.add(accountRow2);
+		$.account.add(accountRow3);
+		$.account.add(accountRow4);
+	}else if(selectedAccount.config.adapter.collection_name === "MoneyIncome"){
+		//创建支出
+		var accountRow1 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountDateLabel = Ti.UI.createLabel({
+			text : "日期：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountDateContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("date"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow1.add(accountDateLabel);
+		accountRow1.add(accountDateContentLabel);
+		
+		var accountRow2 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountAmountLabel = Ti.UI.createLabel({
+			text : "金额：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountAmountContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("amount"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow2.add(accountAmountLabel);
+		accountRow2.add(accountAmountContentLabel);
+		
+		var accountRow3 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountIncomeTypeLabel = Ti.UI.createLabel({
+			text : "是否预收：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("incomeType"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow3.add(accountIncomeTypeLabel);
+		accountRow3.add(accountIncomeTypeContentLabel);
+		
+		var accountRow4 = Titanium.UI.createView({
+			layout : "horizontal",
+			horizontalWrap : false,
+			height : "42"
+		});
+		var accountDetailLabel = Ti.UI.createLabel({
+			text : "备注：",
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "30%"
+		});
+		var accountDetailContentLabel = Ti.UI.createLabel({
+			text : selectedAccount.xGet("remark"),
+			height : 42,
+			color : "black",
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			width : "70%"
+		});
+		accountRow4.add(accountDetailLabel);
+		accountRow4.add(accountDetailContentLabel);
+		
+		$.account.add(accountRow1);
+		$.account.add(accountRow2);
+		$.account.add(accountRow3);
+		$.account.add(accountRow4);
 	}
 	$.titleBar.dirtyCB();
 });
@@ -61,7 +236,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}
 }
 function openFriendSelector(){
-	$.selectFriend.textField.blur();
+	$.selectFriend.field.blur();
 	var attributes = {
 	selectorCallback : function(model) {
 		$.friend = model;

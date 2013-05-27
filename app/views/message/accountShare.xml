@@ -5,7 +5,7 @@
 		addModeTitle="发送账务给好友" readModeTitle="发送账务给好友" addModeMenuButtonTitle="发送"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" hintText="请选择好友" id="selectFriend"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" labelText="好友" hintText="请选择好友" id="selectFriend"
 					editModeEditability="noneditable"
 					addModeEditability="noneditable"
 					onSingletap = "openFriendSelector"
@@ -13,6 +13,9 @@
 				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="126" width="Ti.UI.FILL"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
+				<View layout="vertical" id="account">
+					
+				</View>
 		</ScrollView>
 		</View>
 	</View>

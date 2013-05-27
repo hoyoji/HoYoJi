@@ -93,17 +93,33 @@ $.$view.addEventListener("touchend", function() {
 	$.$view.setBackgroundImage("none");
 });
 
+function redirectEvent(view){
+	view.addEventListener("singletap", function(e) {
+			e.cancelBubble = true;
+			$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
+	});
+}
+
 $.$view.addEventListener("singletap", function(e) {
-	if(e.source !== $.$view){
-		$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
-		
 		$.trigger("singletap", {
 			source : $
 		});
-		e.cancelBubble = true;
-	}
 });
 
-// $.imageView.addEventListener("singletap", function(e){
-	// $.$view.fireEvent("singletap");
+$.$view.addEventListener("longpress", function(e){
+	e.cancelBubble = true;
+	$.$view.setBackgroundImage("none");
+});
+// 
+// $.$view.addEventListener("touchcancel", function(e){
+	// $.$view.setBackgroundImage("none");
 // });
+
+$.$view.addEventListener("touchmove", function(e){	
+	$.$view.setBackgroundImage("none");
+});
+
+redirectEvent($.imageView);
+redirectEvent($.bubbleCountContainer);
+redirectEvent($.title);
+
