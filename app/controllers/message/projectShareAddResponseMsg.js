@@ -32,6 +32,7 @@ function loadAuthorizationDetails(successCB) {
 	var _projectShareAuthorization;
 	if (!projectShareAuthorization) {
 		if (firstClickShowAuthorization) {
+			firstClickShowAuthorization = false;
 			_projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 				id : projectShareData.projectShareAuthorizationId
 			});
@@ -39,7 +40,6 @@ function loadAuthorizationDetails(successCB) {
 				var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
 				Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
 					if (collection.length > 0) {
-						firstClickShowAuthorization = false;
 						projectShareAuthorization = collection.at(0);
 						createProjectShareAuthorizationDetails(projectShareAuthorization);
 						successCB();
@@ -597,7 +597,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 					$.$model.xSet("messageState" , "closed");
 					editProjectShareAuthorizationArray.push($.$model.toJSON());
-					console.info("|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"+projectIds.length);
 					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 						Alloy.Globals.Server.loadData("Project", projectIds, function(collection) {
 							Alloy.Globals.Server.sendMsg({

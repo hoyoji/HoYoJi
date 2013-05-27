@@ -235,6 +235,10 @@
 					$.becameClean();
 				}
 			});
+	
+			$.$view.addEventListener("touchcancel", function(e){
+				e.cancelBubble = true;
+			});
 			
 			$.onWindowCloseDo(function(){
 				$.destroy();

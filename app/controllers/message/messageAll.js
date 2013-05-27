@@ -1,49 +1,5 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-//$.titleBar.bindXTable($.newMessagesTable);
-
-
-
-// var newMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "new"
-// });
-// newMsgCollection = newMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "new"
-// });
-// var noReadMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "unread"
-// });
-// noReadMsgCollection = noReadMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "unread"
-// });
-// var readedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "read"
-// });
-// readedMsgCollection = readedMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "read"
-// });
-// var closedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
-	// messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
-	// toUserId : Alloy.Models.User.id,
-	// messageState : "closed"
-// });
-// closedMsgCollection = closedMsgCollection.xSetFilter({
-	// messageBox : Alloy.Models.User.xGet("messageBox"),
-	// toUser : Alloy.Models.User,
-	// messageState : "closed"
-// }); 
 var sendedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	fromUserId : Alloy.Models.User.id
@@ -63,10 +19,29 @@ receivedMessagesCollection.xSetFilter(function(model){
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
 }, $);
 
+$.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback){
+	if($.footerBar.currentSlide
+		&& $.footerBar.currentSlide.$view.id !== buttonWidget.id){
+		return;
+	}
+	callback();
+}
 
+var inBoxTitle = "收件箱";
 function onFooterbarTap (e) {
-	$.titleBar.setTitle(e.source.getTitle());
-	if (e.source.id === "receivedMessagesTable") {
+	if(e.source.id === "sendedMessagesTable") {
+		$.titleBar.setTitle(e.source.getTitle());
+	} else if(e.source.id === "receivedMessagesTable") {
+		$.titleBar.setTitle(inBoxTitle);
+	} else {
+		if(e.source.id === "allMessagesTable"){
+			inBoxTitle = "收件箱";
+		} else {
+			inBoxTitle = e.source.getTitle();
+		}
+		$.titleBar.setTitle(inBoxTitle);
+	}
+	if (e.source.id === "allMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model){
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
 			&& model.xGet("toUserId") === Alloy.Models.User.id)
@@ -103,9 +78,6 @@ function onFooterbarTap (e) {
 		);
 	}
 }
-// $.newMessagesTable.addCollection(newMsgCollection);
-// $.newMessagesTable.addCollection(noReadMsgCollection);
-// $.oldMessagesTable.addCollection(readedMsgCollection);
-// $.oldMessagesTable.addCollection(closedMsgCollection);
+
 $.receivedMessagesTable.addCollection(receivedMessagesCollection);
 $.sendedMessagesTable.addCollection(sendedMsgCollection);

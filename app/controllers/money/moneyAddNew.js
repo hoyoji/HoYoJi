@@ -14,6 +14,8 @@ function onFooterbarTap(e) {
 				case "moneyLendForm" : formName = "money/moneyLendForm"; break;
 				case "moneyReturnForm" : formName = "money/moneyReturnForm"; break;
 				case "moneyPaybackForm" : formName = "money/moneyPaybackForm"; break;
+				case "moneyLoan" : $.getCurrentWindow().closeNumericKeyboard(); return; break;
+				case "project" : $.getCurrentWindow().closeNumericKeyboard(); return; break;
 				default : return;
 			}
 

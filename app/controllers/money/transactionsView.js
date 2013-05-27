@@ -1,21 +1,34 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
-
-function doTimeFilter(collection, timeFilter) {
+var currentFilter = null;
+function doTimeFilter(collection) {
+	
 	collection.xSetFilter(function(model) {
-		return (model.xGet("date") <= timeFilter.dateTo && model.xGet("date") >= timeFilter.dateFrom);
+		if(Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal"){
+			return (model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+		}
+		return (model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
 	});
-	collection.xSearchInDb(sqlAND("date".sqlLE(timeFilter.dateTo), "date".sqlGE(timeFilter.dateFrom)));
+	if(Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal"){
+		collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), 
+										"date".sqlGE(currentFilter.dateFrom),
+										"main.ownerUserId".sqlEQ(Alloy.Models.User.id)));
+	} else {
+		collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)));
+	}
 }
 
 exports.doFilter = function (filter) {
-	doTimeFilter(moneyIncomes, filter);
-	doTimeFilter(moneyExpenses, filter);
-	doTimeFilter(moneyTransferOuts, filter);
-	doTimeFilter(moneyTransferIns, filter);
-	doTimeFilter(moneyBorrows, filter);
-	doTimeFilter(moneyLends, filter);
-	doTimeFilter(moneyReturns, filter);
-	doTimeFilter(moneyPaybacks, filter);
+	if(filter){
+		currentFilter = filter;
+	}
+	doTimeFilter(moneyIncomes);
+	doTimeFilter(moneyExpenses);
+	doTimeFilter(moneyTransferOuts);
+	doTimeFilter(moneyTransferIns);
+	doTimeFilter(moneyBorrows);
+	doTimeFilter(moneyLends);
+	doTimeFilter(moneyReturns);
+	doTimeFilter(moneyPaybacks);
 }
 
 exports.sort = function(sortField, sortReverse, groupByField){
