@@ -24,7 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 	}
 	
-	if (expenseAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyExpense").xGet("useDetailsTotal")) {
+	if (!oldExpenseAmount || expenseAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyExpense").xGet("useDetailsTotal")) {
 		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
 			$.$model.xGet("moneyExpense").xSet("useDetailsTotal", true);
 			expenseAmount = detailTotal;
