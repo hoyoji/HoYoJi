@@ -28,7 +28,8 @@ exports.definition = {
 		hasMany : {
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
-				attribute : "friend"
+				attribute : "friend",
+				cascadeDelete : true
 			},
 			moneyExpenses : {
 				type : "MoneyExpense",
@@ -137,10 +138,8 @@ exports.definition = {
 					xFinishCallback({ msg :"您与好友有还款关联，不能删除"});
 				}else if(this.xGet("moneyLends").length > 0){
 					xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
-				}else if(this.xGet("moneyPaybacks").length > 0){
+				}else if(this.xGet("moneyPayback").length > 0){
 					xFinishCallback({ msg :"您与好友有收款关联，不能删除"});
-				}else if(this.xGet("ProjectShareAuthorization").length > 0){
-					xFinishCallback({ msg :"您与好友有共享项目，不能删除"});
 				}else {
 					var self = this;
 					if (options.dbTrans) {
