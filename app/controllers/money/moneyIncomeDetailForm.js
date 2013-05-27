@@ -24,8 +24,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 	}
 
-if (incomeAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyIncome").xSet("useDetailsTotal")) {
-		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
+if (incomeAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
 			$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
 			incomeAmount = detailTotal;
 			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));//增改的时候计算amount

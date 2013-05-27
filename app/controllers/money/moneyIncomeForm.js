@@ -15,6 +15,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+var fistChangeFlag;
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
