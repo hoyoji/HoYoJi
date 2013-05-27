@@ -17,6 +17,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+var fistChangeFlag;
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
@@ -86,18 +87,24 @@ if ($.saveableMode === "read") {
 		}
 	});
 
-	$.amount.addEventListener("singleTap", function(e) {
-		if ($.$model.xGet("moneyExpenseDetails").length > 0) {
-			$.$model.xSet("useDetailsTotal", true);
+	$.amount.field.addEventListener("singletap", function(e) {
+		if ($.$model.xGet("moneyExpenseDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
+			if (!fistChangeFlag) {
+				fistChangeFlag = 1;
+			}
 		}
 	});
 
 	$.amount.beforeOpenKeyboard = function(confirmCB) {
-		if ($.$model.xGet("useDetailsTotal")) {
+		if (fistChangeFlag === 1) {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
-				$.$model.xSet("useDetailsTotal", false);
+				fistChangeFlag = 2;
+				$.$model.xSet("useDetailsTotal",false);
 				confirmCB();
 			});
+
+		} else {
+			confirmCB();
 		}
 	}
 
