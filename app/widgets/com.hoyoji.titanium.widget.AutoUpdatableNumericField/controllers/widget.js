@@ -11,15 +11,16 @@ if ($.$attrs.color) {
 if ($.$attrs.fieldColor) {
 	$.field.setColor($.$attrs.fieldColor);
 }
-function openKeyboard(){
-	if($.getParentController().titleBar){
-					$.getCurrentWindow().openNumericKeyboard($, function(){
-						$.getParentController().titleBar.save();
-					});
-				} else {
-					$.getCurrentWindow().openNumericKeyboard($);
-				}
+function openKeyboard() {
+	if ($.getParentController().titleBar) {
+		$.getCurrentWindow().openNumericKeyboard($, function() {
+			$.getParentController().titleBar.save();
+		});
+	} else {
+		$.getCurrentWindow().openNumericKeyboard($);
+	}
 }
+
 $.onWindowOpenDo(function() {
 	$.field.addEventListener("singletap", function(e) {
 		if ($.saveableMode === "read") {
@@ -39,7 +40,7 @@ $.onWindowOpenDo(function() {
 		// inputType : "NumericKeyboard"
 		// });
 		// $.getCurrentWindow().closeSoftKeyboard();
-		if($.beforeOpenKeyboard){
+		if ($.beforeOpenKeyboard) {
 			$.beforeOpenKeyboard(openKeyboard);
 			return;
 		}
