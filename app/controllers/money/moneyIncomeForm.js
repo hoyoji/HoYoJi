@@ -15,6 +15,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+var fistChangeFlag;
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
@@ -36,7 +37,7 @@ function updateAmount() {
 	$.amount.field.fireEvent("change");
 }
 
-function deleteDetail(detailModel){
+function deleteDetail(detailModel) {
 	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
 	updateAmount();
 }
@@ -63,13 +64,6 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
-
-	$.moneyIncomeCategory.beforeOpenModelSelector = function() {
-		if (!$.$model.xGet("project")) {
-			return "请先选择项目";
-		}
-	}
-
 	$.onWindowOpenDo(function() {
 		// $.localAmount.hide();
 		// $.ownerUser.hide();
@@ -85,6 +79,32 @@ if ($.saveableMode === "read") {
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
+	$.amount.field.addEventListener("singletap", function(e) {
+		if ($.$model.xGet("moneyIncomeDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
+			if (!fistChangeFlag) {
+				fistChangeFlag = 1;
+			}
+		}
+	});
+
+	$.amount.beforeOpenKeyboard = function(confirmCB) {
+		if (fistChangeFlag === 1) {
+			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
+				fistChangeFlag = 2;
+				$.$model.xSet("useDetailsTotal", false);
+				confirmCB();
+			});
+
+		} else {
+			confirmCB();
+		}
+	}
+
+	$.moneyIncomeCategory.beforeOpenModelSelector = function() {
+		if (!$.$model.xGet("project")) {
+			return "请先选择项目";
+		}
+	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 	oldAmount = $.$model.xGet("amount") || 0;
 
@@ -172,11 +192,11 @@ if ($.saveableMode === "read") {
 		// save all income details
 		$.$model.xGet("moneyIncomeDetails").map(function(item) {
 			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
-			if(item.__xDeleted){
-					item.xAddToDelete($);
-				} else if(item.hasChanged()){
-					item.xAddToSave($);
-				}
+			if (item.__xDeleted) {
+				item.xAddToDelete($);
+			} else if (item.hasChanged()) {
+				item.xAddToSave($);
+			}
 		});
 		//}
 

@@ -17,6 +17,7 @@ $.makeContextMenu = function() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+var fistChangeFlag;
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
@@ -37,21 +38,21 @@ function updateAmount() {
 }
 
 // function setAmountEdit() {
-	// if($.$model.xGet("moneyExpenseDetails").length > 0) {
-		// $.amount.$attrs.editModeEditability = "noneditable";
-		// $.amount.$attrs.addModeEditability = "noneditable";
-	// }else {
-		// $.amount.$attrs.editModeEditability = "editable";
-		// $.amount.$attrs.addModeEditability = "editable";
-	// }
+// if($.$model.xGet("moneyExpenseDetails").length > 0) {
+// $.amount.$attrs.editModeEditability = "noneditable";
+// $.amount.$attrs.addModeEditability = "noneditable";
+// }else {
+// $.amount.$attrs.editModeEditability = "editable";
+// $.amount.$attrs.addModeEditability = "editable";
+// }
 // }
 
-function deleteDetail(detailModel){
+function deleteDetail(detailModel) {
 	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
 	updateAmount();
 }
 
-$.onWindowOpenDo(function(){
+$.onWindowOpenDo(function() {
 	// setAmountEdit();
 	// $.$model.on("sync",setAmountEdit);
 	$.$model.on("xchange:amount", updateAmount);
@@ -86,22 +87,32 @@ if ($.saveableMode === "read") {
 		}
 	});
 
-	$.amount.beforeOpenKeyboard = function(confirmCB){
-		// if($.$model.xGet("useDetailsTotal")){
-			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function(){
-				
-				
+	$.amount.field.addEventListener("singletap", function(e) {
+		if ($.$model.xGet("moneyExpenseDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
+			if (!fistChangeFlag) {
+				fistChangeFlag = 1;
+			}
+		}
+	});
+
+	$.amount.beforeOpenKeyboard = function(confirmCB) {
+		if (fistChangeFlag === 1) {
+			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
+				fistChangeFlag = 2;
+				$.$model.xSet("useDetailsTotal",false);
 				confirmCB();
 			});
-		// }
-	}
 
-	$.moneyExpenseCategory.beforeOpenModelSelector = function(){
-		if(!$.$model.xGet("project")){
-			return "请先选择项目";
+		} else {
+			confirmCB();
 		}
 	}
 
+	$.moneyExpenseCategory.beforeOpenModelSelector = function() {
+		if (!$.$model.xGet("project")) {
+			return "请先选择项目";
+		}
+	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	oldAmount = $.$model.xGet("amount") || 0;
 
@@ -110,6 +121,7 @@ if ($.saveableMode === "read") {
 			setExchangeRate($.moneyAccount.getValue(), $.$model);
 		}
 	}
+
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
@@ -168,33 +180,33 @@ if ($.saveableMode === "read") {
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 		//if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
-			if (oldMoneyAccount === newMoneyAccount) {
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-			} else {
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
-				oldMoneyAccount.xAddToSave($);
-			}
+		if (oldMoneyAccount === newMoneyAccount) {
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
+		} else {
+			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+			oldMoneyAccount.xAddToSave($);
+		}
 		// } else {
-			// if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
-				// var oldAccount = $.$model.previous("moneyAccount");
-				// var newAccount = $.$model.xGet("moneyAccount");
-				// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xPrevious("amount"));
-				// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
-				// oldAccount.xAddToSave($);
-				// newAccount.xAddToSave($);
-			// }
+		// if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
+		// var oldAccount = $.$model.previous("moneyAccount");
+		// var newAccount = $.$model.xGet("moneyAccount");
+		// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xPrevious("amount"));
+		// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+		// oldAccount.xAddToSave($);
+		// newAccount.xAddToSave($);
+		// }
 		// }
 		//if ($.$model.isNew()) {
-			// save all expense details
-			$.$model.xGet("moneyExpenseDetails").map(function(item) {
-				console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
-				if(item.__xDeleted){
-					item.xAddToDelete($);
-				} else if(item.hasChanged()){
-					item.xAddToSave($);
-				}
-			});
+		// save all expense details
+		$.$model.xGet("moneyExpenseDetails").map(function(item) {
+			console.info("adding expense detail : " + item.xGet("name") + " " + item.xGet("amount"));
+			if (item.__xDeleted) {
+				item.xAddToDelete($);
+			} else if (item.hasChanged()) {
+				item.xAddToSave($);
+			}
+		});
 		//}
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条

@@ -14,13 +14,25 @@ var oldDetailAmount = $.$model.xGet("amount") || 0;
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var incomeAmount = 0;
+	var detailTotal = 0;
 	var income = $.$model.xGet("moneyIncome");
 	var oldIncomeAmount = income.xGet("amount");
 	if (income.xGet("moneyIncomeDetails").length > 0) {
 		incomeAmount = income.xGet("amount");
+		$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
+			detailTotal = detailTotal + item.xGet("amount");
+		});
 	}
 
-	income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+if (!oldIncomeAmount || incomeAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
+			$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
+			incomeAmount = detailTotal;
+			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));//增改的时候计算amount
+			income.trigger("xchange:amount", income);
+		});
+
+	}
 	$.$model.trigger("xchange:amount", $.$model);
 	$.$model.trigger("xchange:name", $.$model);
 
