@@ -10,7 +10,7 @@
 					addModeEditability="noneditable"
 					onSingletap = "openFriendSelector"
 				/>
-				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="126" width="Ti.UI.FILL"
+				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="84" width="Ti.UI.FILL"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical" id="account">
