@@ -60,7 +60,7 @@ exports.definition = {
 					this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();
-				} else {
+				} else if(this.xGet("moneyExpense").xGet("useDetailsTotal")){
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 
@@ -76,6 +76,8 @@ exports.definition = {
 						moneyAccount : moneyAccount
 					}, saveOptions);
 
+					this._xDelete(xFinishCallback, options);
+				} else {
 					this._xDelete(xFinishCallback, options);
 				}
 			},

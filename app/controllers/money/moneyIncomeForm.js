@@ -38,8 +38,10 @@ function updateAmount() {
 }
 
 function deleteDetail(detailModel) {
+	if ($.$model.xGet("useDetailsTotal")) {
 	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
 	updateAmount();
+	}
 }
 
 $.onWindowOpenDo(function() {
