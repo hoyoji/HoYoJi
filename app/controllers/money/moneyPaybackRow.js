@@ -4,6 +4,12 @@ $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "收款操作"
 	});
+	menuSection.add($.createContextMenuItem("发送给好友", function() {
+		Alloy.Globals.openWindow("message/accountShare", {
+			$model : "Message",
+			selectedAccount : $.$model
+		});
+	}));
 	menuSection.add($.createContextMenuItem("删除收款", function() {
 		$.deleteModel();
 	},!$.$model.canDelete()));
