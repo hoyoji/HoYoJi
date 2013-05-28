@@ -20,7 +20,7 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
 				bindModel="$.$model"
 				bindAttribute="date"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额" showRightButton="true" rightButtonText="明细"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
 				<View id="localAmount" height="0" backgroundColor="#f5f5f5">

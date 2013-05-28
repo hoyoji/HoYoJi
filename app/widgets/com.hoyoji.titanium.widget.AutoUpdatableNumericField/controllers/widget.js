@@ -1,10 +1,6 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-// exports.setHintText = function(hintText){
-// if(!$.field.getText()){
-// $.field.setText(hintText || "");
-// }
-// }
+$.hintText.setText($.$attrs.hintText || "");
 if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 }
@@ -44,6 +40,7 @@ $.onWindowOpenDo(function() {
 			$.beforeOpenKeyboard(openKeyboard);
 			return;
 		}
+		
 		openKeyboard();
 	});
 	$.hintText.addEventListener("singletap", function(e) {
