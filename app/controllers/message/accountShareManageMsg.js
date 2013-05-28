@@ -5,7 +5,7 @@ var accountShareData = JSON.parse($.$model.xGet("messageData"));
 var onFooterbarTap = function(e) {
 	if (e.source.id === "importToLocal") {
 		if (accountShareData.accountType === "MoneyExpense") {
-			var moneyExpenseController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
 				$model : "MoneyExpense",
 				data : {
 					date : accountShareData.account.date,
@@ -20,9 +20,9 @@ var onFooterbarTap = function(e) {
 					moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null
 				}
 			}); 
-			moneyExpenseController.content.titleBar.dirtyCB();
+			accountShareMsgController.content.titleBar.dirtyCB();
 		}else if(accountShareData.accountType === "MoneyIncome") {
-			var moneyIncomeController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
 				$model : "MoneyIncome",
 				data : {
 					date : accountShareData.account.date,
@@ -38,7 +38,89 @@ var onFooterbarTap = function(e) {
 					moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null
 				}
 			}); 
-			moneyIncomeController.content.titleBar.dirtyCB();
+			accountShareMsgController.content.titleBar.dirtyCB();
+		}else if(accountShareData.accountType === "MoneyBorrow") {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
+				$model : "MoneyBorrow",
+				data : {
+					date : accountShareData.account.date,
+					amount : accountShareData.account.amount,
+					remark : accountShareData.account.remark,
+					returnDate : accountShareData.account.returnDate,
+					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+					exchangeRate : 1,
+					returnedAmount : 0,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject")
+				}
+			}); 
+			accountShareMsgController.content.titleBar.dirtyCB();
+		}else if(accountShareData.accountType === "MoneyLend") {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
+				$model : "MoneyLend",
+				data : {
+					date : accountShareData.account.date,
+					amount : accountShareData.account.amount,
+					remark : accountShareData.account.remark,
+					paybackDate : accountShareData.account.paybackDate,
+					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+					exchangeRate : 1,
+					paybackedAmount : 0,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject")
+				}
+			}); 
+			accountShareMsgController.content.titleBar.dirtyCB();
+		}else if(accountShareData.accountType === "MoneyLend") {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
+				$model : "MoneyLend",
+				data : {
+					date : accountShareData.account.date,
+					amount : accountShareData.account.amount,
+					remark : accountShareData.account.remark,
+					paybackDate : accountShareData.account.paybackDate,
+					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+					exchangeRate : 1,
+					paybackedAmount : 0,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject")
+				}
+			}); 
+			accountShareMsgController.content.titleBar.dirtyCB();
+		}else if(accountShareData.accountType === "MoneyPayback") {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
+				$model : "MoneyPayback",
+				data : {
+					date : accountShareData.account.date,
+					amount : accountShareData.account.amount,
+					remark : accountShareData.account.remark,
+					exchangeRate : accountShareData.account.exchangeRate,
+					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+					exchangeRate : 1,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyLend : null,
+					interest : 0
+				}
+			}); 
+			accountShareMsgController.content.titleBar.dirtyCB();
+		}else if(accountShareData.accountType === "MoneyReturn") {
+			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
+				$model : "MoneyReturn",
+				data : {
+					date : accountShareData.account.date,
+					amount : accountShareData.account.amount,
+					remark : accountShareData.account.remark,
+					exchangeRate : accountShareData.account.exchangeRate,
+					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+					exchangeRate : 1,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyBorrow : null,
+					interest : 0
+				}
+			}); 
+			accountShareMsgController.content.titleBar.dirtyCB();
 		}
 	}
 }
