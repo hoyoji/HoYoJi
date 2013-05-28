@@ -287,9 +287,9 @@
 			if($.$attrs.showRightButton){
 				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
 				$.rightButton = Ti.UI.createButton({
-					title : $.$attrs.showRightButton,
+					title : $.$attrs.rightButtonText,
 					right : 0,
-					width : 40,
+					width : 60,
 					height : 38
 				});
 				$.field.setRight(40);

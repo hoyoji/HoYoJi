@@ -241,3 +241,10 @@ if ($.saveableMode === "read") {
 		});
 	}
 }
+
+$.amount.rightButton.addEventListener("singletap", function(e) {
+	Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
+		selectedIncome : $.$model,
+		closeWithoutSave : true
+	});
+});
