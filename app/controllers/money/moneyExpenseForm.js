@@ -48,8 +48,10 @@ function updateAmount() {
 // }
 
 function deleteDetail(detailModel) {
-	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
-	updateAmount();
+	if ($.$model.xGet("useDetailsTotal")) {
+		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+		updateAmount();
+	}
 }
 
 $.onWindowOpenDo(function() {
@@ -99,7 +101,7 @@ if ($.saveableMode === "read") {
 		if (fistChangeFlag === 1) {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
 				fistChangeFlag = 2;
-				$.$model.xSet("useDetailsTotal",false);
+				$.$model.xSet("useDetailsTotal", false);
 				confirmCB();
 			});
 
