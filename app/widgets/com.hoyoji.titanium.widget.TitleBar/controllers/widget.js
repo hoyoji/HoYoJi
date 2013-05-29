@@ -8,8 +8,8 @@ exports.setImage = function(image){
 	$.imageView.setImage(imgPath);
 }
 
-if($.$attrs.backButtonHidden === "true"){
-	$.backButton.hide();
+if(!$.$attrs.backButtonHidden){
+	$.backButton.show();
 }
 
 // if($.$attrs.image){
