@@ -51,6 +51,10 @@ exports.setImage = function(imagePath) {
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
+exports.setVisible = function(visible) {
+	$.buttonView.setVisible(visible);
+}
+
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }

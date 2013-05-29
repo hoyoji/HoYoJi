@@ -9,7 +9,7 @@ exports.setImage = function(image){
 }
 
 if(!$.$attrs.backButtonHidden){
-	$.backButton.show();
+	$.backButton.setVisible(true);
 }
 
 // if($.$attrs.image){
