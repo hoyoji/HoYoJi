@@ -24,12 +24,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 	}
 
-if (!oldIncomeAmount || incomeAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+	if (!oldIncomeAmount || incomeAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
 		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
 			$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
 			incomeAmount = detailTotal;
-			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));//增改的时候计算amount
-			income.trigger("xchange:amount", income);
+			if ($.$attrs.closeWithoutSave) {
+				income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+				//增改的时候计算amount
+				income.trigger("xchange:amount", income);
+			}
 		});
 
 	}

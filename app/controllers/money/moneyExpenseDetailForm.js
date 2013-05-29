@@ -23,13 +23,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			detailTotal = detailTotal + item.xGet("amount");
 		});
 	}
-	
+
 	if (!oldExpenseAmount || expenseAmount !== (detailTotal + $.$model.xGet("amount")) && !$.$model.xGet("moneyExpense").xGet("useDetailsTotal")) {
 		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
 			$.$model.xGet("moneyExpense").xSet("useDetailsTotal", true);
 			expenseAmount = detailTotal;
-			expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));//增改的时候计算amount
-			expense.trigger("xchange:amount", expense);
+			if ($.$attrs.closeWithoutSave) {
+				expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
+				//增改的时候计算amount
+				expense.trigger("xchange:amount", expense);
+			}
 		});
 
 	}
