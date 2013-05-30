@@ -51,6 +51,10 @@ exports.setImage = function(imagePath) {
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
+exports.setVisible = function(visible) {
+	$.buttonView.setVisible(visible);
+}
+
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }
@@ -101,6 +105,9 @@ function redirectEvent(view){
 }
 
 $.$view.addEventListener("singletap", function(e) {
+		if(OS_ANDROID){
+			e.cancelBubble = true;
+		}
 		$.trigger("singletap", {
 			source : $
 		});
