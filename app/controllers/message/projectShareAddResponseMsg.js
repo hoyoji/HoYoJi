@@ -551,19 +551,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (collection.length > 0) {
 					var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
 					if (projectShareAuthorization.xGet("state") === "Wait") {
-						// projectShareAuthorization.save({
-							// state : "Accept"
-						// }, {
-							// wait : true,
-							// patch : true
-						// });
 						projectShareAuthorization.xSet("state","Accept");
 						projectShareAuthorization.xAddToSave($);
-						editProjectShareAuthorizationArray.push({
-							__dataType : "ProjectShareAuthorization",
-							id : projectShareData.projectShareAuthorizationId,
-							state : "Accept"
-						});
+						editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
 						var projectLength = Alloy.createCollection("Project").xSearchInDb({
 							id : projectShareAuthorization.xGet("projectId")
 							}).length;
@@ -574,19 +564,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
 							var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 							if (subProjectShareAuthorization.xGet("state") === "Wait") {
-								// subProjectShareAuthorization.save({
-									// state : "Accept"
-								// }, {
-									// wait : true,
-									// patch : true
-								// });
 								subProjectShareAuthorization.xSet("state","Accept");
 								subProjectShareAuthorization.xAddToSave($);
-								editProjectShareAuthorizationArray.push({
-									__dataType : "ProjectShareAuthorization",
-									id : subProjectShareAuthorizationId,
-									state : "Accept"
-								});
+								editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								var subProjectLength = Alloy.createCollection("Project").xSearchInDb({
 									id : subProjectShareAuthorization.xGet("projectId")
 									}).length;
@@ -598,7 +578,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					$.$model.xSet("messageState" , "closed");
 					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-						Alloy.Globals.Server.loadData("Project", projectIds, function(collection) {
+						// Alloy.Globals.Server.loadData("Project", projectIds, function(collection) {
 							Alloy.Globals.Server.sendMsg({
 								id : guid(),
 								"toUserId" : $.$model.xGet("fromUserId"),
@@ -619,7 +599,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
 								return;
 							});
-						});
+						// });
 						
 					}, function(e) {
 						alert(e.__summary.msg);
@@ -641,11 +621,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							wait : true,
 							patch : false
 						});
-						editProjectShareAuthorizationArray.push({
-							__dataType : "ProjectShareAuthorization",
-							id : projectShareData.projectShareAuthorizationId,
-							state : "Reject"
-						});
+						editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
 					}
 					if (projectShareData.shareAllSubProjects) {
 						projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
@@ -657,14 +633,17 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									wait : true,
 									patch : true
 								});
-								editProjectShareAuthorizationArray.push({
-									__dataType : "ProjectShareAuthorization",
-									id : subProjectShareAuthorizationId,
-									state : "Reject"
-								});
+								editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 							}
 						});
 					}
+					$.$model.save({
+						messageState : "closed"
+					}, {
+						wait : true,
+						patch : true
+					});
+					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 						Alloy.Globals.Server.sendMsg({
 							id : guid(),
@@ -678,12 +657,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							"messageBoxId" : fromUser.xGet("messageBoxId"),
 							"messageData" : $.$model.xGet("messageData")
 						}, function() {
-							$.$model.save({
-								messageState : "closed"
-							}, {
-								wait : true,
-								patch : true
-							});
 							saveEndCB("您拒绝了" + fromUser.xGet("userName") + "分享的项目");
 							return;
 						}, function(e) {

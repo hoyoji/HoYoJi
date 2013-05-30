@@ -177,7 +177,7 @@ exports.definition = {
 							ownerUser : Alloy.Models.User
 						});
 						friends.xSearchInDb({
-							friendUserId : this.xGet("ownerUser").xGet("id"),
+							friendUserId : this.xGet("ownerUserId"),
 							ownerUserId : Alloy.Models.User.xGet("id")
 						});
 						this.__friends = friends;
