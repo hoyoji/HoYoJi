@@ -4,6 +4,10 @@
 			var errorLabel, childrenCollections, detailCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 			var hasDetail = $.$attrs.hasDetail === undefined ? $.$view.hasDetail : $.$attrs.hasDetail;
+			$.setSelected = function(b){
+				
+			}
+			
 			$.getChildTitle = function() {
 				var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
 				return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
@@ -384,7 +388,7 @@
 					$.remove();
 				});
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
-					$.$view.setBackgroundColor("pink");
+					$.setSelected(true);
 				}
 			});
 			
