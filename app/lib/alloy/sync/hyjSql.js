@@ -85,7 +85,8 @@ function Migrator(config, transactionDb) {
 }
 
 var projectPermissionTables = ["Project", "ProjectPreExpenseBalance", "ProjectPreIncomeBalance", "MoneyPreIncome", "MoneyPreExpense", "ProjectDeposit", "ProjectDepositeReturn", 
-						"MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", 
+						"MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyExpenseApportion", 
+						"MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "MoneyIncomeApportion", 
 						"MoneyLend", "MoneyPayback", "MoneyBorrow", "MoneyReturn" /*, "MoneyTransfer"*/];
 
 function Sync(method, model, opts) {
@@ -227,6 +228,12 @@ function Sync(method, model, opts) {
 				} else if (table === "MoneyExpenseDetail") {
 					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN Project prj ON prj.id = mi.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND prj.id = joinedtable.projectId ';
 					q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
+				} else if (table === "MoneyIncomeApportion") {
+					qs[0] += ' JOIN MoneyIncome mi ON main.moneyIncomeId = mi.id JOIN Project prj ON prj.id = mi.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND prj.id = joinedtable.projectId ';
+					q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShareMoneyIncomeDetailOwnerDataOnly = 0 OR (joinedtable.projectShareMoneyIncomeDetailOwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
+				} else if (table === "MoneyExpenseApportion") {
+					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN Project prj ON prj.id = mi.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND prj.id = joinedtable.projectId ';
+					q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShareMoneyExpenseDetailOwnerDataOnly = 0 OR (joinedtable.projectShareMoneyExpenseDetailOwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else {
 					qs[0] += " JOIN Project prj ON prj.id = main.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND prj.id = joinedtable.projectId ";
 					q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
