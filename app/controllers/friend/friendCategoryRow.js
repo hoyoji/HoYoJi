@@ -1,4 +1,9 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
+$.setSelected = function(selected){
+	if(selected){
+		$.friendCategoryName.$view.setColor("blue");
+	}
+}
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({

@@ -12,7 +12,7 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.setSelected = function(selected){
 	if(selected){
-		$.projectName.setColor("blue");
+		$.projectName.$view.setColor("blue");
 	}
 }
 
