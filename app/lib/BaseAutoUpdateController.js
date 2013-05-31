@@ -143,7 +143,10 @@
 					$.error.animate(animation);
 				}
 			}
-			// $.error.addEventListener("singletap", $.hideErrorMsg);
+			// $.error.addEventListener("singletap", function(){
+				// $.hideErrorMsg();
+				// $.field.fireEvent("singletap");
+			// });
 			$.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
