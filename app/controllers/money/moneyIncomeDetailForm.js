@@ -21,7 +21,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (!$.$attrs.closeWithoutSave) {//从row打开时
 		var moneyAccount = income.xGet("moneyAccount");
 		var newDetailAmount = $.$model.xGet("amount");
-		if (expense.xGet("useDetailsTotal")) {
+		if (income.xGet("useDetailsTotal")) {
 			if (income.xGet("moneyIncomeDetails").length > 0) {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldDetailAmount + newDetailAmount);
 			} else {
@@ -46,7 +46,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 		}
 		if (!oldIncomeAmount || $.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
-			expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
+			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 		} else {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
 				$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
