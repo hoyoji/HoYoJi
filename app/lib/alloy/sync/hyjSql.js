@@ -249,7 +249,7 @@ function Sync(method, model, opts) {
 			} else if (table === "User") {
 
 			} else if (table === "ProjectShareAuthorization") {
-				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR main.friendUserId = '" + Alloy.Models.User.xGet("id") + "'";// EXISTS (SELECT id FROM Friend WHERE ownerUserId = main.ownerUserId AND main.friendId = id AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')";
+				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "' OR EXISTS (SELECT id FROM ProjectShareAuthorization WHERE projectId = main.projectId AND friendUserId = '" + Alloy.Models.User.xGet("id") + "')";
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
 				} else {
