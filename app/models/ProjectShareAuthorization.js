@@ -19,7 +19,7 @@ exports.definition = {
 			sharedTotalIncome : "REAL NOT NULL",
 			sharedTotalExpense : "REAL NOT NULL",
 			sharePercentage : "REAL NOT NULL",
-		    sharePercentageType : "TEXT NOT NULL",
+		    sharePercentageType : "TEXT NOT NULL", // average, fixed
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			
