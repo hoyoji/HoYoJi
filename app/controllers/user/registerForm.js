@@ -2,6 +2,13 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var activeProject = Alloy.createModel("Project", {name : "我的收支", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeProject", activeProject);
+	
+Alloy.createModel("ProjectShareAuthorization", {
+		project : activeProject,
+		state : "Accept",
+		friendUser : $.$model,
+		ownerUser : $.$model
+}).xAddToSave($);
 
 var defaultFriendCategory = Alloy.createModel("FriendCategory", {name : "我的好友", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
