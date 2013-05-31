@@ -5,13 +5,20 @@ exports.definition = {
 			shareType : "TEXT",
         	remark : "TEXT",
         	ownerUserId : "TEXT NOT NULL",
-			friendId : "TEXT NOT NULL",
+			friendId : "TEXT",
 			friendUserId : "TEXT",
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 	        projectId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER",
+			actualTotalIncome : "REAL NOT NULL",
+			actualTotalExpense : "REAL NOT NULL",
+			apportionedTotalIncome : "REAL NOT NULL",
+			apportionedTotalExpense : "REAL NOT NULL",
+			sharedTotalIncome : "REAL NOT NULL",
+			sharedTotalExpense : "REAL NOT NULL",
+			sharePercentage : "REAL NOT NULL",
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			

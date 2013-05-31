@@ -17,6 +17,10 @@
 				bindAttributeIsModel="getDisplayName()"
 				bindModelSelector="friend/friendAll"
 				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="占股(%)"
+				bindModel="$.$model"
+				bindAttribute="sharePercentage"
+				/>
 				<View height="42">
 					<Label left="0" width="40%">共享所有子项目</Label>
 					<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
