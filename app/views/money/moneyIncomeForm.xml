@@ -67,8 +67,7 @@
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				bindModelSelectorParams="selectedFriend:friend"
 				/>
-				<View height="42" backgroundColor="#f5f5f5">
-					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
+				<!-- <View height="42" backgroundColor="#f5f5f5">
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="incomeTypeLabel">是否预收</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher"  right="0" width="70%"
 					hightLight="false"
@@ -77,7 +76,7 @@
 					bindModel="$.$model"
 					bindAttribute="incomeType"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
-				</View>
+				</View> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
