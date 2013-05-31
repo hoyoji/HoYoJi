@@ -19,6 +19,7 @@ exports.definition = {
 			sharedTotalIncome : "REAL NOT NULL",
 			sharedTotalExpense : "REAL NOT NULL",
 			sharePercentage : "REAL NOT NULL",
+		    sharePercentageType : "TEXT NOT NULL",
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			
@@ -79,6 +80,7 @@ exports.definition = {
 			lastServerUpdateTime : 0,
 			lastClientUpdateTime : 0,
 			
+			sharePercentageType : "average",
 			sharePercentage : 100,
 			
 			actualTotalIncome : 0,
