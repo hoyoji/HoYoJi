@@ -58,21 +58,21 @@ exports.setVisible = function(visible) {
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }
-if ($.$attrs.borderRadius) {
-	$.$view.setBorderRadius($.$attrs.borderRadius);
-}
-if ($.$attrs.width) {
-	$.$view.setWidth($.$attrs.width);
-}
-if ($.$attrs.height) {
-	$.$view.setHeight($.$attrs.height);
-}
+// if ($.$attrs.borderRadius) {
+	// $.$view.setBorderRadius($.$attrs.borderRadius);
+// }
+// if ($.$attrs.width) {
+	// $.$view.setWidth($.$attrs.width);
+// }
+// if ($.$attrs.height) {
+	// $.$view.setHeight($.$attrs.height);
+// }
 if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
-if ($.$attrs.color) {
-	$.button.setColor($.$attrs.color);
-}
+// if ($.$attrs.color) {
+	// $.$view.setColor($.$attrs.color);
+// }
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }

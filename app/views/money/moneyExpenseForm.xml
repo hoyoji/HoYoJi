@@ -84,6 +84,11 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
+				
+				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
+				height="42" width="100%" title="多人分摊"
+				backgroundColor="green" image="none" />
+	
 			</ScrollView>
 		</View>
 	</View>
