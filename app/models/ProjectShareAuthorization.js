@@ -5,7 +5,7 @@ exports.definition = {
 			shareType : "TEXT",
         	remark : "TEXT",
         	ownerUserId : "TEXT NOT NULL",
-			friendId : "TEXT",
+			// friendId : "TEXT",
 			friendUserId : "TEXT",
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 	        projectId : "TEXT NOT NULL",
