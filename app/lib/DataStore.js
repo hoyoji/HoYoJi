@@ -20,6 +20,8 @@
 		Alloy.Collections.instance("MoneyIncome");
 		Alloy.Collections.instance("MoneyExpenseDetail");
 		Alloy.Collections.instance("MoneyIncomeDetail");
+		Alloy.Collections.instance("MoneyExpenseApportion");
+		Alloy.Collections.instance("MoneyIncomeApportion");
 		Alloy.Collections.instance("MoneyTransfer");
 		Alloy.Collections.instance("MoneyBorrow");
 		Alloy.Collections.instance("MoneyReturn");

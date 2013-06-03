@@ -29,6 +29,10 @@ exports.definition = {
 			moneyExpenseDetails : {
 				type : "MoneyExpenseDetail",
 				attribute : "moneyExpense"
+			},
+			moneyExpenseApportions : {
+				type : "MoneyExpenseApportion",
+				attribute : "moneyExpense"
 			}
 		},
 		belongsTo : {

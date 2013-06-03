@@ -82,6 +82,6 @@ if ($.$model.isNew()) {
 	        projectShareMoneyReturnOwnerDataOnly : 0,
 	        projectShareMoneyReturnAddNew : 1,
 	        projectShareMoneyReturnEdit : 1,
-	        projectShareMoneyReturnDelete : 1		
+	        projectShareMoneyReturnDelete : 1
 	}).xAddToSave($);
 }

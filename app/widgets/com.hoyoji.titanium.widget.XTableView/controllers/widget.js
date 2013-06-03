@@ -772,9 +772,8 @@ $.onWindowOpenDo(function() {
 		});
 		var row = Ti.UI.createTableViewRow();
 		row.add(titleLabel);
-		row.add(titleLabel);
 		if (!$.getCurrentWindow().$attrs.selectedModel) {
-			row.setColor("blue");
+			titleLabel.setColor("blue");
 		}
 		if ($.table.data.length > 0) {
 			$.table.insertRowBefore(0, row);

@@ -29,6 +29,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}
 			expense.xSet("amount", oldExpenseAmount - oldDetailAmount + $.$model.xGet("amount"));
 		}
+		else {
+			
+		}
 		expense.xAddToSave($);
 		moneyAccount.xAddToSave($);
 		$.saveModel(saveEndCB, function(e) {

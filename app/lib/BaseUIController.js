@@ -45,12 +45,12 @@
 			if ($.$attrs.borderRadius){
 				$.$view.setBorderRadius($.$attrs.borderRadius);
 			}
-			// if ($.$attrs.horizontalWrap){
-				// $.$view.setHorizontalWrap($.$attrs.horizontalWrap);
-			// }
-			// if ($.$attrs.wordWrap){
-				// $.$view.setWordWrap($.$attrs.wordWrap);
-			// }			
+			if ($.$attrs.backgroundColor){
+				$.$view.setBackgroundColor($.$attrs.backgroundColor);
+			}
+			if ($.$attrs.color){
+				$.$view.setColor($.$attrs.color);
+			}			
 			_.extend($, {
 				__dirtyCount : 0,
 				show : function(){

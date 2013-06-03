@@ -19,6 +19,7 @@ exports.definition = {
 			sharedTotalIncome : "REAL NOT NULL",
 			sharedTotalExpense : "REAL NOT NULL",
 			sharePercentage : "REAL NOT NULL",
+		    sharePercentageType : "TEXT NOT NULL", // average, fixed
 		    
 			shareAllSubProjects : "INTEGER NOT NULL",
 			
@@ -76,6 +77,18 @@ exports.definition = {
 	        projectShareMoneyReturnDelete : "INTEGER NOT NULL"
 		},
 		defaults : {
+			lastServerUpdateTime : 0,
+			lastClientUpdateTime : 0,
+			
+			sharePercentageType : "average",
+			sharePercentage : 100,
+			
+			actualTotalIncome : 0,
+			actualTotalExpense : 0,
+			apportionedTotalIncome : 0,
+			apportionedTotalExpense : 0,
+			sharedTotalIncome : 0,
+			sharedTotalExpense : 0,
 			shareAllSubProjects : 0,
 			
 			projectShareMoneyExpenseOwnerDataOnly : 0,
@@ -133,8 +146,8 @@ exports.definition = {
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null },
-			friendUser : { type : "User", attribute : null },
 			// friend : { type : "Friend", attribute : "projectShareAuthorizations" },
+			friendUser : { type : "User", attribute : "projectShareAuthorizations" },
 			project : { type : "Project", attribute : "projectShareAuthorizations" }
 		},
 		hasMany : {
@@ -172,13 +185,23 @@ exports.definition = {
 						self.xPrevious("project").xGet("subProjects").map(function(subProject){
 							if (model.xPrevious("project").xGet("id") ===  subProject.xGet("id")
 								&& (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept")){
-								found = true;
+								found = true;3	
 							}
 						});
 						return found;
 					});
 				}
 				return this.__getSharedWIthHerSubProjectsFilter;
+			},
+			getFriendDisplayName : function(){
+				var friend = Alloy.createModel("Friend").xFindInDb({
+					friendUserId : this.xGet("friendUserId")
+				});
+				if(friend.id){
+					return friend.getDisplayName();
+				} else {
+					return this.xGet("friendUser").xGet("userName");
+				}
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;

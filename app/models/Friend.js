@@ -26,11 +26,6 @@ exports.definition = {
 			}
 		},
 		hasMany : {
-			projectShareAuthorizations : {
-				type : "ProjectShareAuthorization",
-				attribute : "friend",
-				cascadeDelete : true
-			},
 			moneyExpenses : {
 				type : "MoneyExpense",
 				attribute : "friend"

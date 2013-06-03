@@ -143,7 +143,10 @@
 					$.error.animate(animation);
 				}
 			}
-			// $.error.addEventListener("singletap", $.hideErrorMsg);
+			// $.error.addEventListener("singletap", function(){
+				// $.hideErrorMsg();
+				// $.field.fireEvent("singletap");
+			// });
 			$.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
@@ -284,15 +287,15 @@
 				}
 			}
 			
-			if($.$attrs.showRightButton){
+			if($.$attrs.rightButtonText){
 				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
 				$.rightButton = Ti.UI.createButton({
 					title : $.$attrs.rightButtonText,
-					right : 0,
-					width : 60,
+					right : 8,
+					width : 40,
 					height : 38
 				});
-				$.field.setRight(40);
+				$.field.setRight(48);
 				$.$view.add($.rightButton); 
 			}
 

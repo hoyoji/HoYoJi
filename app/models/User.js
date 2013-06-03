@@ -40,7 +40,12 @@ exports.definition = {
 	    	moneyReturns : {type : "MoneyReturn", attribute : "ownerUser"},
 	    	moneyLends : {type : "MoneyLend", attribute : "ownerUser"},
 			moneyPaybacks : {type : "MoneyPayback", attribute : "ownerUser"},
-			logins : {type : "Login", attribute : "ownerUser"}
+			logins : {type : "Login", attribute : "ownerUser"},
+			projectShareAuthorizations : {
+				type : "ProjectShareAuthorization",
+				attribute : "friendUser",
+				cascadeDelete : true
+			}
 		},
 		belongsTo : {
 			picture : {type : "Picture", attribute : null},
@@ -84,6 +89,9 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				}
+			},
+			getDisplayName : function() {
+				return this.xGet("userName");
 			},
 			_xSave : function(options){
 				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));

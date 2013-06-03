@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" height="42" hasChild="subProjects" ><!-- hasDetail="getSharedWithHerFriends()" -->
 			<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="rowMainTitle"
+				<Widget id="projectName" src="com.hoyoji.titanium.widget.AutoBindLabel" class="rowMainTitle"
 					left="10" top="0" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
 				bindAttribute = "name" 
