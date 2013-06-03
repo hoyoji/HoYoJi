@@ -56,8 +56,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
 	if($.friend && $.friend.xGet("id")){
-		saveErrorCB("好友不能为空！");
-	}else{
 		if ($.$model.isNew()) {
 			$.$model.xSet("friendUser", $.friend.xGet("friendUser"));
 			//新增共享
@@ -71,13 +69,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			projectShareAuthorizationsSearchArray.push({
 				__dataType : "ProjectShareAuthorization",
 				projectId : $.$model.xGet("project").xGet("id"),
-				friendId : $.$model.xGet("friend").xGet("id"),
+				friendUserId : $.$model.xGet("friendUser").xGet("id"),
 				state : "Wait"
 			});
 			projectShareAuthorizationsSearchArray.push({
 				__dataType : "ProjectShareAuthorization",
 				projectId : $.$model.xGet("project").xGet("id"),
-				friendId : $.$model.xGet("friend").xGet("id"),
+				friendUserId : $.$model.xGet("friendUser").xGet("id"),
 				state : "Accept"
 			});
 			projectShareAuthorizationArray.push($.$model.toJSON());
@@ -87,13 +85,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					projectShareAuthorizationsSearchArray.push({
 						__dataType : "ProjectShareAuthorization",
 						projectId : subProject.xGet("id"),
-						friendId : $.$model.xGet("friend").xGet("id"),
+						friendUserId : $.$model.xGet("friendUser").xGet("id"),
 						state : "Wait"
 					});
 					projectShareAuthorizationsSearchArray.push({
 						__dataType : "ProjectShareAuthorization",
 						projectId : subProject.xGet("id"),
-						friendId : $.$model.xGet("friend").xGet("id"),
+						friendUserId : $.$model.xGet("friendUser").xGet("id"),
 						state : "Accept"
 					});
 					subProjectsArray.push(subProject);
@@ -120,7 +118,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							if (data[i].length === 0 && data[i+1].length === 0) {
 								var subProjectSharedAuthorizationData = {
 									project : subProjectsArray[i/2-1],
-									friend :　$.$model.xGet("friend"),
 									friendUserId : $.$model.xGet("friendUser").xGet("id"),
 									state : "Wait",
 									shareType : $.$model.xGet("shareType"),
@@ -208,13 +205,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						projectShareAuthorizationsSearchArray.push({
 							__dataType : "ProjectShareAuthorization",
 							projectId : subProject.xGet("id"),
-							friendId : $.$model.xGet("friend").xGet("id"),
+							friendUserId : $.$model.xGet("friendUser").xGet("id"),
 							state : "Wait"
 						});
 						projectShareAuthorizationsSearchArray.push({
 							__dataType : "ProjectShareAuthorization",
 							projectId : subProject.xGet("id"),
-							friendId : $.$model.xGet("friend").xGet("id"),
+							friendUserId : $.$model.xGet("friendUser").xGet("id"),
 							state : "Accept"
 						});
 						subProjectsArray.push(subProject);
@@ -237,7 +234,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									if (data[i].length === 0 && data[i+1].length === 0) {
 										var subProjectSharedAuthorizationData = {
 											project : subProjectsArray[i/2],
-											friend :　$.$model.xGet("friend"),
+											friendUserId :　$.$model.xGet("friendUser"),
 											state : "Wait",
 											shareType : $.$model.xGet("shareType"),
 								        	remark : $.$model.xGet("remark"),
@@ -434,6 +431,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			}
 	   }
+   }else{
+   		saveErrorCB("好友不能为空！");
    }
 }
 
