@@ -5,7 +5,7 @@ exports.definition = {
 			shareType : "TEXT",
         	remark : "TEXT",
         	ownerUserId : "TEXT NOT NULL",
-			friendId : "TEXT",
+			// friendId : "TEXT",
 			friendUserId : "TEXT",
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 	        projectId : "TEXT NOT NULL",
@@ -133,7 +133,8 @@ exports.definition = {
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null },
-			friend : { type : "Friend", attribute : "projectShareAuthorizations" },
+			friendUser : { type : "User", attribute : null },
+			// friend : { type : "Friend", attribute : "projectShareAuthorizations" },
 			project : { type : "Project", attribute : "projectShareAuthorizations" }
 		},
 		hasMany : {

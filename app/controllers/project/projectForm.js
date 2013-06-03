@@ -19,8 +19,17 @@ if ($.$model.isNew()) {
 	
 	Alloy.createModel("ProjectShareAuthorization", {
 			project : $.$model,
-			friendUserId : Alloy.Models.User.id,
+			state : "Accept",
+			friendUser : Alloy.Models.User,
 			sharePercentage : 100,
+			
+			actualTotalIncome : 0,
+			actualTotalExpense : 0,
+			apportionedTotalIncome : 0,
+			apportionedTotalExpense : 0,
+			sharedTotalIncome : 0,
+			sharedTotalExpense : 0,
+			
 			shareAllSubProjects : 1,
 			projectShareMoneyExpenseOwnerDataOnly : 0,
 	        projectShareMoneyExpenseAddNew : 1,
