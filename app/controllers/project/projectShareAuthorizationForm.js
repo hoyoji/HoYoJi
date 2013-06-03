@@ -48,6 +48,7 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
 $.onWindowOpenDo(function() {
 	if (!$.$model.isNew()) {
 		$.selectFriend.setValue($.$model.xGet("friendUser").xGet("userName"));
+		
 	}
 });
 
@@ -55,8 +56,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	setExpenseDetailAndIncomeDetailAuthorization();
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
-	if($.friend && $.friend.xGet("id")){
-		if ($.$model.isNew()) {
+	if ($.$model.isNew()) {
+		if($.friend && $.friend.xGet("id")){
 			$.$model.xSet("friendUser", $.friend.xGet("friendUser"));
 			//新增共享
 			$.$model.xSet("state", "Wait");
@@ -190,6 +191,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
+			
+			}else{
+		   		saveErrorCB("好友不能为空！");
+		   }
 	   }else{
 	   	//修改共享
 		   	if($.$model.hasChanged("friend")){
@@ -431,9 +436,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			}
 	   }
-   }else{
-   		saveErrorCB("好友不能为空！");
-   }
+   
 }
 
 function openFriendSelector(){

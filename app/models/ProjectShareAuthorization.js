@@ -180,7 +180,7 @@ exports.definition = {
 				var self = this;
 				var found = false;
 				if(!this.__getSharedWIthHerSubProjectsFilter){
-					this.__getSharedWIthHerSubProjectsFilter = this.xGet("friend").xGet("projectShareAuthorizations").xCreateFilter(function(model){
+					this.__getSharedWIthHerSubProjectsFilter = this.xGet("ownerUser").xGet("projectShareAuthorizations").xCreateFilter(function(model){
 						found = false;
 						self.xPrevious("project").xGet("subProjects").map(function(subProject){
 							if (model.xPrevious("project").xGet("id") ===  subProject.xGet("id")
