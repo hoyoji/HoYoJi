@@ -14,6 +14,21 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+
+$.convertSelectedFriend2UserModel = function(selectedFriendModel){
+	return selectedFriendModel.xGet("friendUser");
+}
+
+$.convertUser2FriendModel = function(userModel){
+	if(userModel){
+		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
+		if(friend.id){
+			return friend;
+		}
+	}
+	return userModel;
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
