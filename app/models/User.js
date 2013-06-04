@@ -93,6 +93,13 @@ exports.definition = {
 			getDisplayName : function() {
 				return this.xGet("userName");
 			},
+			getFriendDisplayName : function() {
+				var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : this.id});
+				if(friend.id){
+					return friend.getDisplayName();
+				}
+				return this.getDisplayName();
+			},
 			_xSave : function(options){
 				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
 				Alloy.Globals.XModel._xSave.call(this, options);

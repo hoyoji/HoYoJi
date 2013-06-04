@@ -1,4 +1,5 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
+
 $.setSelected = function(selected){
 	if(selected){
 		$.nickName.$view.setColor("blue");
@@ -12,6 +13,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	}, isSelectMode));
 	return menuSection;
 }
+
 $.getChildTitle = function() {
 	return $.$model.xGet("friendUser").xGet("userName");
 }
