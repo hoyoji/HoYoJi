@@ -45,7 +45,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				} else {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
 				}
-				income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+				income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
 				income.trigger("xchange:amount", income);
 			});
 		}
