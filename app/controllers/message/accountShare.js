@@ -105,6 +105,18 @@ $.onWindowOpenDo(function() {
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
 		$.account.add(accountRow4);
+		
+		$.accountDetails = [];
+		selectedAccount.xGet("moneyExpenseDetails").map(function(moneyExpenseDetail){
+			var moneyExpenseDetailArray = {}
+			for (var attr in moneyExpenseDetail.config.columns) {
+				moneyExpenseDetailArray[attr] = moneyExpenseDetail.xGet(attr);
+			}
+			$.accountDetails.push(moneyExpenseDetailArray);
+		});
+		
+		
+		
 	}else if(selectedAccount.config.adapter.collection_name === "MoneyIncome"){
 		$.$model.xSet("detail", "分享收入");
 		//创建收入
@@ -200,6 +212,17 @@ $.onWindowOpenDo(function() {
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
 		$.account.add(accountRow4);
+		
+		$.accountDetails = [];
+		selectedAccount.xGet("moneyIncomeDetails").map(function(moneyIncomeDetail){
+			var moneyIncomeDetailArray = {}
+			for (var attr in moneyIncomeDetail.config.columns) {
+				moneyIncomeDetailArray[attr] = moneyIncomeDetail.xGet(attr);
+			}
+			$.accountDetails.push(moneyIncomeDetailArray);
+		});
+		
+		
 	}else if(selectedAccount.config.adapter.collection_name === "MoneyBorrow"){
 		$.$model.xSet("detail", "分享借入");
 		//创建借入
@@ -593,10 +616,18 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		$.$model.xSet("date", date);
 		$.$model.xSet("toUser", $.friend.xGet("friendUser"));
-		$.$model.xSet("messageData", JSON.stringify({
+		if(selectedAccount.config.adapter.collection_name === "MoneyExpense" || selectedAccount.config.adapter.collection_name === "MoneyIncome"){
+			$.$model.xSet("messageData", JSON.stringify({
+				accountType : selectedAccount.config.adapter.collection_name,
+				account : account,
+				accountDetails : $.accountDetails
+			}));
+		}else{
+			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,
 				account : account
 			}));
+		}
 		Alloy.Globals.Server.sendMsg({
 			id : guid(),
 			"toUserId" : $.friend.xGet("friendUserId"),

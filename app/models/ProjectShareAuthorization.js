@@ -185,7 +185,7 @@ exports.definition = {
 						self.xPrevious("project").xGet("subProjects").map(function(subProject){
 							if (model.xPrevious("project").xGet("id") ===  subProject.xGet("id")
 								&& (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept")){
-								found = true;3	
+								found = true;
 							}
 						});
 						return found;

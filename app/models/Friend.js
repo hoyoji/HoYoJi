@@ -75,7 +75,7 @@ exports.definition = {
 				if (!this.__getSharedWithHerProjectsFilter) {
 					this.__getSharedWithHerProjectsFilter = this.xGet("ownerUser").xGet("projectShareAuthorizations").xCreateFilter(function(model) {
 						found = false;
-						if (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept") {
+						if ((model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept") && !(model.xPrevious("friendUserId") === Alloy.Models.User.id)) {
 							if (!model.xPrevious("project").xPrevious("parentProject")) {
 								found = true;
 							} else {
