@@ -59,6 +59,9 @@
 				bindAttribute="friend"
 				bindAttributeIsModel="getDisplayName()"
 				bindModelSelector="friend/friendAll"
+				bindModelSelectorConvertType="Friend"
+				bindModelSelectorConvert2Model="convertUser2FriendModel"
+				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="付款方账户" hintText="无付款方账户"
 				bindModel="$.$model"

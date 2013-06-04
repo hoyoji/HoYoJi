@@ -5,7 +5,7 @@ exports.definition = {
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
 			expenseType : "TEXT NOT NULL",
-			friendId : "TEXT",
+			friendUserId : "TEXT",
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -36,8 +36,8 @@ exports.definition = {
 			}
 		},
 		belongsTo : {
-			friend : {
-				type : "Friend",
+			friendUser : {
+				type : "User",
 				attribute : "moneyExpenses"
 			},
 			friendAccount : {

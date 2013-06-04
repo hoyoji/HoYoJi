@@ -169,6 +169,9 @@
 						}
 						var attributes = {
 							selectorCallback : function(model) {
+								if($.$attrs.bindModelSelectorConvertSelectedModel && $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel]){
+									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model);
+								}
 								$.setValue(model);
 								$.field.fireEvent("change");
 							}
@@ -181,9 +184,13 @@
 							}
 						}
 						attributes.title = $.label.getText();
-						attributes.selectModelType = $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+						var selectedModel = $.$attrs.bindModel;
+						if($.$attrs.bindModelSelectorConvert2Model && $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]){
+							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
+						}
+						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
 						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
-						attributes.selectedModel = $.__bindAttributeIsModel;
+						attributes.selectedModel = selectedModel;
 						attributes.selectModelCanNotBeChild = 
 								$.$attrs.bindModel.config.hasMany 
 								&& $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute 
@@ -298,7 +305,6 @@
 				$.field.setRight(48);
 				$.$view.add($.rightButton); 
 			}
-
 
 			// $.setSaveableMode($.saveableMode);
 

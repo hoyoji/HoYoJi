@@ -48,9 +48,9 @@
 			if ($.$attrs.backgroundColor){
 				$.$view.setBackgroundColor($.$attrs.backgroundColor);
 			}
-			if ($.$attrs.color){
-				$.$view.setColor($.$attrs.color);
-			}			
+			// if ($.$attrs.color){
+				// $.$view.setColor($.$attrs.color);
+			// }			
 			_.extend($, {
 				__dirtyCount : 0,
 				show : function(){

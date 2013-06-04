@@ -93,6 +93,10 @@ exports.definition = {
 			getDisplayName : function() {
 				return this.xGet("userName");
 			},
+			getFriendDisplayName : function() {
+				
+				return this.xGet("userName");
+			},
 			_xSave : function(options){
 				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
 				Alloy.Globals.XModel._xSave.call(this, options);
