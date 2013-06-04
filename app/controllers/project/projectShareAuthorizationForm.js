@@ -57,8 +57,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
 	if ($.$model.isNew()) {
-		if($.friend && $.friend.xGet("id")){
-			$.$model.xSet("friendUser", $.friend.xGet("friendUser"));
+		if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
 			$.$model.xSet("state", "Wait");
 			var projectShareAuthorizationsSearchArray = [];
@@ -439,18 +438,31 @@ $.onSave = function(saveEndCB, saveErrorCB) {
    
 }
 
-function openFriendSelector(){
-	$.selectFriend.field.blur();
-	var attributes = {
-	selectorCallback : function(model) {
-		$.friend = model;
-		$.selectFriend.setValue(model.getDisplayName());
+// function openFriendSelector(){
+	// $.selectFriend.field.blur();
+	// var attributes = {
+	// selectorCallback : function(model) {
+		// $.friend = model;
+		// $.selectFriend.setValue(model.getDisplayName());
+	// }
+	// };
+	// attributes.title = "好友";
+	// attributes.selectModelType = "Friend";
+	// attributes.selectModelCanBeNull = false;
+	// attributes.selectedModel = $.friend;
+// 	
+	// Alloy.Globals.openWindow("friend/friendAll", attributes); 
+// }
+$.convertSelectedFriend2UserModel = function(selectedFriendModel){
+	return selectedFriendModel.xGet("friendUser");
+}
+
+$.convertUser2FriendModel = function(userModel){
+	if(userModel){
+		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
+		if(friend.id){
+			return friend;
+		}
 	}
-	};
-	attributes.title = "好友";
-	attributes.selectModelType = "Friend";
-	attributes.selectModelCanBeNull = false;
-	attributes.selectedModel = $.friend;
-	
-	Alloy.Globals.openWindow("friend/friendAll", attributes); 
+	return userModel;
 }
