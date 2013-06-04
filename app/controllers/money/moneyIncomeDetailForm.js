@@ -21,12 +21,33 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (!$.$attrs.closeWithoutSave) {//从row打开时
 		var moneyAccount = income.xGet("moneyAccount");
 		var newDetailAmount = $.$model.xGet("amount");
+		if (income.xGet("moneyIncomeDetails").length > 0) {
+			$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
+				if (!item.__xDeleted) {
+				detailTotal = detailTotal + item.xGet("amount");
+				}
+			});
+		}
 		if (income.xGet("useDetailsTotal")) {
 			if (income.xGet("moneyIncomeDetails").length > 0) {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldDetailAmount + newDetailAmount);
 			} else {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
 			}
+			income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+			income.trigger("xchange:amount", income);
+		} else {
+			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
+				$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
+				incomeAmount = detailTotal;
+				if (income.xGet("moneyIncomeDetails").length > 0) {
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldDetailAmount + newDetailAmount);
+				} else {
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
+				}
+				income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+				income.trigger("xchange:amount", income);
+			});
 		}
 		income.xAddToSave($);
 		moneyAccount.xAddToSave($);
