@@ -144,7 +144,7 @@ exports.definition = {
 						__dataType : "ProjectShareAuthorization",
 						ownerUserId : Alloy.Models.User.id,
 						state : "Accept",
-						friendId : this.xGet("id")
+						friendUserId : this.xGet("friendUser").xGet("id")
 					}, {
 						__dataType : "ProjectShareAuthorization",
 						state : "Accept",

@@ -1,6 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.friend = null;
 var selectedAccount = $.$attrs.selectedAccount;
 
 $.$model.xSet("fromUser", Alloy.Models.User);
@@ -10,7 +9,6 @@ $.$model.xSet("messageState", "closed");
 $.$model.xSet("messageTitle", Alloy.Models.User.xGet("userName"));
 
 $.onWindowOpenDo(function() {
-	$.selectFriend.field.blur();
 	if(selectedAccount.config.adapter.collection_name === "MoneyExpense"){
 		$.$model.xSet("detail", "分享支出");
 		//创建支出
@@ -608,14 +606,13 @@ $.onWindowOpenDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-	if($.friend && $.friend.xGet("id")){
+	if($.$model.xGet("toUser") && $.$model.xGet("toUser").xGet("id")){
 		var date = (new Date()).toISOString();
 		var account = {};
 		for (var attr in selectedAccount.config.columns) {
 			account[attr] = selectedAccount.xGet(attr);
 		}
 		$.$model.xSet("date", date);
-		$.$model.xSet("toUser", $.friend.xGet("friendUser"));
 		if(selectedAccount.config.adapter.collection_name === "MoneyExpense" || selectedAccount.config.adapter.collection_name === "MoneyIncome"){
 			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,
@@ -630,14 +627,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		Alloy.Globals.Server.sendMsg({
 			id : guid(),
-			"toUserId" : $.friend.xGet("friendUserId"),
+			"toUserId" : $.$model.xGet("toUser").xGet("id"),
 			"fromUserId" : Alloy.Models.User.id,
 			"type" : "Account.Share.AddRequest",
 			"messageState" : "new",
 			"messageTitle" : Alloy.Models.User.xGet("userName"),
 			"date" : date,
 			"detail" : $.$model.xGet("detail"),
-			"messageBoxId" : $.friend.xGet("friendUser").xGet("messageBoxId"),
+			"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId"),
 			messageData : $.$model.xGet("messageData")
 		}, function() {
 			$.saveModel(saveEndCB, saveErrorCB);
@@ -649,18 +646,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("请选择好友！");
 	}
 }
-function openFriendSelector(){
-	$.selectFriend.field.blur();
-	var attributes = {
-	selectorCallback : function(model) {
-		$.friend = model;
-		$.selectFriend.setValue(model.getDisplayName());
+// function openFriendSelector(){
+	// $.selectFriend.field.blur();
+	// var attributes = {
+	// selectorCallback : function(model) {
+		// $.friend = model;
+		// $.selectFriend.setValue(model.getDisplayName());
+	// }
+	// };
+	// attributes.title = "好友";
+	// attributes.selectModelType = "Friend";
+	// attributes.selectModelCanBeNull = false;
+	// attributes.selectedModel = $.friend;
+// 	
+	// Alloy.Globals.openWindow("friend/friendAll", attributes); 
+// }
+
+$.convertSelectedFriend2UserModel = function(selectedFriendModel){
+	return selectedFriendModel.xGet("friendUser");
+}
+
+$.convertUser2FriendModel = function(userModel){
+	if(userModel){
+		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
+		if(friend.id){
+			return friend;
+		}
 	}
-	};
-	attributes.title = "好友";
-	attributes.selectModelType = "Friend";
-	attributes.selectModelCanBeNull = false;
-	attributes.selectedModel = $.friend;
-	
-	Alloy.Globals.openWindow("friend/friendAll", attributes); 
+	return userModel;
 }
