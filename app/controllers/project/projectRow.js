@@ -40,6 +40,14 @@ $.makeContextMenu = function(e, isSelectMode) {
 			$model : "ProjectShareAuthorization",
 			data : {
 				project : $.$model,
+				sharePercentage : 0,
+				actualTotalIncome : 0,
+				actualTotalExpense : 0,
+				apportionedTotalIncome : 0,
+				apportionedTotalExpense : 0,
+				sharedTotalIncome : 0,
+				sharedTotalExpense : 0,
+				
 				shareAllSubProjects : 0,
 				projectShareMoneyExpenseOwnerDataOnly : 0,
 				projectShareMoneyExpenseAddNew : 1,
