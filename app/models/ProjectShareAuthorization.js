@@ -146,6 +146,7 @@ exports.definition = {
 		},
 		belongsTo : {
 			ownerUser : { type : "User", attribute : null },
+			// friend : { type : "Friend", attribute : "projectShareAuthorizations" },
 			friendUser : { type : "User", attribute : "projectShareAuthorizations" },
 			project : { type : "Project", attribute : "projectShareAuthorizations" }
 		},
@@ -179,7 +180,7 @@ exports.definition = {
 				var self = this;
 				var found = false;
 				if(!this.__getSharedWIthHerSubProjectsFilter){
-					this.__getSharedWIthHerSubProjectsFilter = this.xGet("friend").xGet("projectShareAuthorizations").xCreateFilter(function(model){
+					this.__getSharedWIthHerSubProjectsFilter = this.xGet("ownerUser").xGet("projectShareAuthorizations").xCreateFilter(function(model){
 						found = false;
 						self.xPrevious("project").xGet("subProjects").map(function(subProject){
 							if (model.xPrevious("project").xGet("id") ===  subProject.xGet("id")
@@ -201,6 +202,12 @@ exports.definition = {
 				} else {
 					return this.xGet("friendUser").xGet("userName");
 				}
+			},
+			getActualTotalExpense : function(){
+				return "实际支出 : "+ this.xGet("actualTotalExpense");
+			},
+			getApportionedTotalExpense : function(){
+				return "应该支出 : "+ this.xGet("apportionedTotalExpense");
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;

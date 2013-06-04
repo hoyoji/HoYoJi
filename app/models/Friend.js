@@ -73,7 +73,7 @@ exports.definition = {
 				var self = this;
 				var found = false;
 				if (!this.__getSharedWithHerProjectsFilter) {
-					this.__getSharedWithHerProjectsFilter = this.xGet("projectShareAuthorizations").xCreateFilter(function(model) {
+					this.__getSharedWithHerProjectsFilter = this.xGet("ownerUser").xGet("projectShareAuthorizations").xCreateFilter(function(model) {
 						found = false;
 						if (model.xPrevious("state") === "Wait" || model.xPrevious("state") === "Accept") {
 							if (!model.xPrevious("project").xPrevious("parentProject")) {
@@ -81,7 +81,7 @@ exports.definition = {
 							} else {
 								var parentProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 									projectId : model.xPrevious("project").xPrevious("parentProject").xGet("id"),
-									friendId : model.xPrevious("friendId")
+									friendUserId : model.xPrevious("friendUserId")
 								});
 								if (parentProjectShareAuthorizations.length > 0) {
 									found = true;

@@ -26,11 +26,11 @@ exports.definition = {
 		belongsTo : {
 			transferOut : {
 				type : "MoneyAccount",
-				attribute : null
+				attribute : "moneyTransferOuts"
 			},
 			transferIn : {
 				type : "MoneyAccount",
-				attribute : null
+				attribute : "moneyTransferIns"
 			},
 			project : {
 				type : "Project",

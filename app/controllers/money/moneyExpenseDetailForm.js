@@ -21,6 +21,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (!$.$attrs.closeWithoutSave) {//从row打开时
 		var moneyAccount = expense.xGet("moneyAccount");
 		var newDetailAmount = $.$model.xGet("amount");
+		if (expense.xGet("moneyExpenseDetails").length > 0) {
+			$.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").forEach(function(item) {
+				if (!item.__xDeleted) {
+					detailTotal = detailTotal + item.xGet("amount");
+				}
+
+			});
+		}
 		if (expense.xGet("useDetailsTotal")) {
 			if (expense.xGet("moneyExpenseDetails").length > 0) {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldDetailAmount - newDetailAmount);
@@ -28,9 +36,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldExpenseAmount - newDetailAmount);
 			}
 			expense.xSet("amount", oldExpenseAmount - oldDetailAmount + $.$model.xGet("amount"));
-		}
-		else {
-			
+			expense.trigger("xchange:amount", expense);
+		} else {
+			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
+				$.$model.xGet("moneyExpense").xSet("useDetailsTotal", true);
+				expenseAmount = detailTotal;
+				if (expense.xGet("moneyExpenseDetails").length > 0) {
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldDetailAmount - newDetailAmount);
+				} else {
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldExpenseAmount - newDetailAmount);
+				}
+				expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
+				expense.trigger("xchange:amount", expense);
+			});
 		}
 		expense.xAddToSave($);
 		moneyAccount.xAddToSave($);

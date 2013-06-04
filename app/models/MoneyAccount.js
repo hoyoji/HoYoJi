@@ -43,6 +43,14 @@ exports.definition = {
 				type : "MoneyReturn",
 				attribute : "moneyAccount"
 			},
+			moneyTransferOuts : {
+				type : "MoneyTransfer",
+				attribute : "transferOut"
+			},
+			moneyTransferIns : {
+				type : "MoneyTransfer",
+				attribute : "transferIn"
+			},
 			moneyAccountBalanceAdjustments : {
 				type : "MoneyAccountBalanceAdjustment",
 				attribute : "moneyAccount",
