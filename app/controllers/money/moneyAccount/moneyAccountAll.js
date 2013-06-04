@@ -15,23 +15,27 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	}));
 	return menuSection;
 }
-
 // $.titleBar.bindXTable($.moneyAccountsTable);
 
 var collection;
 if ($.$attrs.selectedFriendUser) {
-	console.info("++++++++++hello"+$.$attrs.selectedFriend.xGet("id"));
-	
-	collection = $.$attrs.selectedFriend.getSharedAccounts();
+	var selectedFriendUser = $.$attrs.selectedFriendUser;
+	console.info("++++++++++hello" + $.$attrs.selectedFriendUser.xGet("id"));
+	var friend = Alloy.createModel("Friend").xFindInDb({
+		friendUserId : selectedFriendUser.id
+	});
+	if (friend.id) {
+		collection = friend.getSharedAccounts();
+	}
 	$.moneyAccountsTable.addCollection(collection);
 } else {
 	collection = Alloy.Models.User.xGet("moneyAccounts");
 	$.moneyAccountsTable.addCollection(collection);
 }
 
-function onFooterbarTap(e){
-	if(e.source.id === "addMoneyAccount"){
-				Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
+function onFooterbarTap(e) {
+	if (e.source.id === "addMoneyAccount") {
+		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
 			$model : "MoneyAccount",
 			data : {
 				currency : Alloy.Models.User.xGet("activeCurrency"),

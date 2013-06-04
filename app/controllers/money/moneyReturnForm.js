@@ -1,5 +1,19 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.convertSelectedFriend2UserModel = function(selectedFriendModel){
+	return selectedFriendModel.xGet("friendUser");
+}
+
+$.convertUser2FriendModel = function(userModel){
+	if(userModel){
+		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
+		if(friend.id){
+			return friend;
+		}
+	}
+	return userModel;
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -14,7 +28,7 @@ if (!$.$model) {
 			moneyAccount : selectedBorrow.xGet("moneyAccount"),
 			moneyBorrow : selectedBorrow,
 			project : selectedBorrow.xGet("project"),
-			friend : selectedBorrow.xGet("friend"),
+			friendUser : selectedBorrow.xGet("friendUser"),
 			interest : 0
 		});
 	} else {

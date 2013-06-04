@@ -52,7 +52,6 @@
 				bindAttribute="friendUser"
 				bindAttributeIsModel="getFriendDisplayName()"
 				bindModelSelector="friend/friendAll"
-				
 				bindModelSelectorConvertType="Friend"
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"

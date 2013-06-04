@@ -71,7 +71,7 @@
 				bindAttribute="friendAccount"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
-				bindModelSelectorParams="selectedFriend:friend"
+				bindModelSelectorParams="selectedFriendUser:friendUser"
 				/>
 				<!-- <View height="42" backgroundColor="#f5f5f5">
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="expenseTypeLabel">是否预支</Label>

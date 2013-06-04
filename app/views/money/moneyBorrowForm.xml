@@ -49,16 +49,19 @@
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friend" labelText="债权人" hintText="无债权人"
 				bindModel="$.$model"
-				bindAttribute="friend"
-				bindAttributeIsModel="getDisplayName()"
+				bindAttribute="friendUser"
+				bindAttributeIsModel="getFriendDisplayName()"
 				bindModelSelector="friend/friendAll"
+				bindModelSelectorConvertType="Friend"
+				bindModelSelectorConvert2Model="convertUser2FriendModel"
+				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="债权人账户" hintText="无债权人账户"
 				bindModel="$.$model"
 				bindAttribute="friendAccount"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
-				bindModelSelectorParams="selectedFriend:friend"
+				bindModelSelectorParams="selectedFriendUser:friendUser"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="无还款时间"
 				bindModel="$.$model"
