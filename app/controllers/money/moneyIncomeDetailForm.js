@@ -24,7 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (income.xGet("moneyIncomeDetails").length > 0) {
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
 				if (!item.__xDeleted) {
-				detailTotal = detailTotal + item.xGet("amount");
+					detailTotal = detailTotal + item.xGet("amount");
 				}
 			});
 		}
@@ -35,7 +35,17 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
 			}
 			income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount"));
-			income.trigger("xchange:amount", income);
+			// income.trigger("xchange:amount", income);
+			income.xAddToSave($);
+			moneyAccount.xAddToSave($);
+			$.saveModel(saveEndCB, function(e) {
+				income.xSet("amount", income.previous("amount"));
+				moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+				// if (oldMoneyAccount) {
+				// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+				// }
+				saveErrorCB(e);
+			});
 		} else {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
 				$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
@@ -45,25 +55,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				} else {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
 				}
-				income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount"));
-				income.trigger("xchange:amount", income);
+				income.xSet("amount", oldIncomeAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
+				// income.trigger("xchange:amount", income);
+				income.xAddToSave($);
+				moneyAccount.xAddToSave($);
+				$.saveModel(saveEndCB, function(e) {
+					income.xSet("amount", income.previous("amount"));
+					moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+					// if (oldMoneyAccount) {
+					// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+					// }
+					saveErrorCB(e);
+				});
 			});
 		}
-		income.xAddToSave($);
-		moneyAccount.xAddToSave($);
-		$.saveModel(saveEndCB, function(e) {
-			income.xSet("amount", income.previous("amount"));
-			moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
-			// if (oldMoneyAccount) {
-			// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			// }
-			saveErrorCB(e);
-		});
+
 	} else {
 		if (income.xGet("moneyIncomeDetails").length > 0) {
 			incomeAmount = income.xGet("amount");
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
-				detailTotal = detailTotal + item.xGet("amount");
+				if (!item.__xDeleted) {
+					detailTotal = detailTotal + item.xGet("amount");
+				}
 			});
 		}
 		if (!oldIncomeAmount || $.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
