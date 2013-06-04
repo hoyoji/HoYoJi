@@ -76,7 +76,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (expense.xGet("moneyExpenseDetails").length > 0) {//获取moneyExpenseAmount，如果有amount就等于amount 没有的话设成0
 			expenseAmount = expense.xGet("amount");
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").forEach(function(item) {
-				detailTotal = detailTotal + item.xGet("amount");
+				if (!item.__xDeleted) {
+					detailTotal = detailTotal + item.xGet("amount");
+				}
 			});
 		}
 
