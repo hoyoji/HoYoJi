@@ -203,6 +203,12 @@ exports.definition = {
 					return this.xGet("friendUser").xGet("userName");
 				}
 			},
+			getActualTotalExpense : function(){
+				return "实际支出 : "+ this.xGet("actualTotalExpense");
+			},
+			getApportionedTotalExpense : function(){
+				return "应该支出 : "+ this.xGet("apportionedTotalExpense");
+			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var subProjectShareAuthorizationIds = [];

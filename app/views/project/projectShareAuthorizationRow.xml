@@ -10,11 +10,11 @@
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 					bindModel = "$.$model"
-					bindAttribute = "actualTotalExpense"
+					bindAttribute = "getActualTotalExpense()"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				bindModel = "$.$model"
-				bindAttribute = "apportionedTotalExpense"
+				bindAttribute = "getApportionedTotalExpense()"
 				/>
 			<Label id="checkAccept" visible="false" color="black" right="100">等待接受</Label>
 		</View>

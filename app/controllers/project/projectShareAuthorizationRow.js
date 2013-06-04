@@ -12,7 +12,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 			$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
 				var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : subProject.xGet("id"),
-					friendId : $.$model.xGet("friendId")
+					friendUserId : $.$model.xGet("friendUserId")
 				});
 				if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
 					subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -49,7 +49,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 				alert(e.__summary.msg);
 			});
 		});
-	}, isSelectMode));
+	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id));
 	return menuSection;
 }
 function setWaitForAccept() {
