@@ -38,7 +38,7 @@ exports.definition = {
 		belongsTo : {
 			friendUser : {
 				type : "User",
-				attribute : "moneyExpenses"
+				attribute : null
 			},
 			friendAccount : {
 				type : "MoneyAccount",

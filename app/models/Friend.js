@@ -26,30 +26,30 @@ exports.definition = {
 			}
 		},
 		hasMany : {
-			moneyExpenses : {
-				type : "MoneyExpense",
-				attribute : "friend"
-			},
-			moneyIncomes : {
-				type : "MoneyIncome",
-				attribute : "friend"
-			},
-			moneyBorrows : {
-				type : "MoneyBorrow",
-				attribute : "friend"
-			},
-			moneyLends : {
-				type : "MoneyLend",
-				attribute : "friend"
-			},
-			moneyPayback : {
-				type : "MoneyPayback",
-				attribute : "friend"
-			},
-			moneyReturns : {
-				type : "MoneyReturn",
-				attribute : "friend"
-			}
+			// moneyExpenses : {
+				// type : "MoneyExpense",
+				// attribute : "friend"
+			// },
+			// moneyIncomes : {
+				// type : "MoneyIncome",
+				// attribute : "friend"
+			// },
+			// moneyBorrows : {
+				// type : "MoneyBorrow",
+				// attribute : "friend"
+			// },
+			// moneyLends : {
+				// type : "MoneyLend",
+				// attribute : "friend"
+			// },
+			// moneyPayback : {
+				// type : "MoneyPayback",
+				// attribute : "friend"
+			// },
+			// moneyReturns : {
+				// type : "MoneyReturn",
+				// attribute : "friend"
+			// }
 		},
 		rowView : "friend/friendRow",
 		adapter : {
@@ -123,19 +123,19 @@ exports.definition = {
 			},
 
 			xDelete : function(xFinishCallback, options) {
-				if(this.xGet("moneyExpenses").length > 0){
-					xFinishCallback({ msg :"您与好友有支出关联，不能删除"});
-				}else if(this.xGet("moneyIncomes").length > 0){
-					xFinishCallback({ msg :"您与好友有收入关联，不能删除"});
-				}else if(this.xGet("moneyBorrows").length > 0){
-					xFinishCallback({ msg :"您与好友有借入关联，不能删除"});
-				}else if(this.xGet("moneyReturns").length > 0){
-					xFinishCallback({ msg :"您与好友有还款关联，不能删除"});
-				}else if(this.xGet("moneyLends").length > 0){
-					xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
-				}else if(this.xGet("moneyPayback").length > 0){
-					xFinishCallback({ msg :"您与好友有收款关联，不能删除"});
-				}else {
+				// if(this.xGet("moneyExpenses").length > 0){
+					// xFinishCallback({ msg :"您与好友有支出关联，不能删除"});
+				// }else if(this.xGet("moneyIncomes").length > 0){
+					// xFinishCallback({ msg :"您与好友有收入关联，不能删除"});
+				// }else if(this.xGet("moneyBorrows").length > 0){
+					// xFinishCallback({ msg :"您与好友有借入关联，不能删除"});
+				// }else if(this.xGet("moneyReturns").length > 0){
+					// xFinishCallback({ msg :"您与好友有还款关联，不能删除"});
+				// }else if(this.xGet("moneyLends").length > 0){
+					// xFinishCallback({ msg :"您与好友有借出关联，不能删除"});
+				// }else if(this.xGet("moneyPayback").length > 0){
+					// xFinishCallback({ msg :"您与好友有收款关联，不能删除"});
+				// }else {
 					var self = this;
 					if (options.dbTrans) {
 						options.dbTrans.xCommitStart();
@@ -197,7 +197,7 @@ exports.definition = {
 						alert(e.__summary.msg);
 						xFinishCallback(e.__summary);
 					});
-				}
+				// }
 				
 			},			
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {

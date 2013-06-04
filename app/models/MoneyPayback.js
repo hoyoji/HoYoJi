@@ -29,7 +29,7 @@ exports.definition = {
 		belongsTo : {
 			friendUser : {
 				type : "User",
-				attribute : "moneyPaybacks"
+				attribute : null
 			},
 			friendAccount : {
 				type : "MoneyAccount",
