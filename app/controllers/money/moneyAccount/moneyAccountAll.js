@@ -19,13 +19,15 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 // $.titleBar.bindXTable($.moneyAccountsTable);
 
 var collection;
-if ($.$attrs.selectedFriend) {
+if ($.$attrs.selectedFriendUser) {
 	console.info("++++++++++hello"+$.$attrs.selectedFriend.xGet("id"));
+	
 	collection = $.$attrs.selectedFriend.getSharedAccounts();
+	$.moneyAccountsTable.addCollection(collection);
 } else {
 	collection = Alloy.Models.User.xGet("moneyAccounts");
+	$.moneyAccountsTable.addCollection(collection);
 }
-$.moneyAccountsTable.addCollection(collection);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addMoneyAccount"){
