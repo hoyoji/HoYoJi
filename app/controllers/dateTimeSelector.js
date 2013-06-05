@@ -47,10 +47,12 @@ $.onWindowOpenDo(function() {
 	if($.getCurrentWindow().$attrs.title){
 		$.title.setText("请选择"+ $.getCurrentWindow().$attrs.title);
 	}
-	datetime = new Date($.getCurrentWindow().$attrs.field.getDateTime());
-	// if (!datetime) {
-		// datetime = new Date();
-	// }
+	datetime = $.getCurrentWindow().$attrs.field.getDateTime();
+	if (!datetime) {
+		datetime = new Date();
+	} else {
+		datetime = new Date(datetime);
+	}
 	$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
 	$.datePicker.setValue(datetime);
 	$.timePicker.setValue(datetime);

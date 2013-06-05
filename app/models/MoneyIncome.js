@@ -18,7 +18,10 @@ exports.definition = {
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER",
-			useDetailsTotal : "INTEGER"
+			useDetailsTotal : "INTEGER NOT NULL"
+		},
+		defaults : {
+			useDetailsTotal : false
 		},
 		hasMany : {
 			pictures : {
