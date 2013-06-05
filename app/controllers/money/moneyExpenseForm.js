@@ -18,8 +18,12 @@ function openApportion() {
 	Alloy.Globals.openWindow("money/moneyExpenseApportionAll");
 }
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
-	return selectedFriendModel.xGet("friendUser");
+$.convertSelectedFriend2UserModel = function(selectedFriendModel){
+	if(selectedFriendModel){
+		return selectedFriendModel.xGet("friendUser");
+	}else{
+		return null;
+	}
 }
 
 $.convertUser2FriendModel = function(userModel) {

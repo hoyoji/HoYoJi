@@ -10,8 +10,7 @@ if (!$.$model) {
 } else {
 	$.setSaveableMode("edit");
 }
-var oldDetailAmount = $.$model.xGet("amount") || 0;
-//detail的旧值
+var oldDetailAmount = $.$model.xGet("amount") || 0; //detail的旧值
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var expenseAmount = 0;
 	var detailTotal = 0;

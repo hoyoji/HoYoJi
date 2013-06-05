@@ -10,6 +10,8 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	return menuSection;
 }
 
+$.footerBar.addExpenseDetail.setEnabled(selectedExpense.canAddNew());
+
 // $.titleBar.bindXTable($.moneyExpenseDetailsTable);
 
 var collection = selectedExpense.xGet("moneyExpenseDetails");

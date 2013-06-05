@@ -630,7 +630,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			"toUserId" : $.$model.xGet("toUser").xGet("id"),
 			"fromUserId" : Alloy.Models.User.id,
 			"type" : "Account.Share.AddRequest",
-			"messageState" : "new",
+			"messageState" : "unRead",
 			"messageTitle" : Alloy.Models.User.xGet("userName"),
 			"date" : date,
 			"detail" : $.$model.xGet("detail"),
@@ -663,7 +663,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 // }
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	return selectedFriendModel.xGet("friendUser");
+	if(selectedFriendModel){
+		return selectedFriendModel.xGet("friendUser");
+	}else{
+		return null;
+	}
 }
 
 $.convertUser2FriendModel = function(userModel){
