@@ -663,7 +663,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 // }
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	return selectedFriendModel.xGet("friendUser");
+	if(selectedFriendModel){
+		return selectedFriendModel.xGet("friendUser");
+	}else{
+		return null;
+	}
 }
 
 $.convertUser2FriendModel = function(userModel){
