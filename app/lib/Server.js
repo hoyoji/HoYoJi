@@ -29,7 +29,7 @@
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
-				this.searchData(modelName, filter, function(collection) {
+				this.searchData("Project", projectIds, function(collection) {
 					// collection.map(function(item){
 					// item.save({wait : true});
 					// });
