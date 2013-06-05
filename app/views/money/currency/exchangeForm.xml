@@ -23,7 +23,7 @@
 				bindModel="$.$model"
 				bindAttribute="rate"/>
 				<View height="42">
-					<Label left="0" width="30%" height="Ti.UI.FILL">是否自动更新</Label>
+					<Label left="0" width="30%" height="Ti.UI.FILL" backgroundColor="#f5f5f5">是否自动更新</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
 					hightLight="false"
 					items="否,是"

@@ -1,0 +1,1 @@
+Alloy.Globals.extendsBaseRowController($, arguments[0]);

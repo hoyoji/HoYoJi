@@ -1,0 +1,21 @@
+<Alloy>
+	<View class="container" height="42" openForm="money/moneyExpenseApportionForm">
+		<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
+			<Widget id="name" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+			bindModel = "$.$model"
+			bindAttribute = "friendUser"
+			bindAttributeIsModel = "getFriendDisplayName()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="70%"
+			hightLight="false"
+			items="固定,均摊"
+			values="Fixed,Average"
+			bindModel="$.$model"
+			bindAttribute="apportionType"/>
+			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoBindLabel" right="10" top="0" width="Ti.UI.SIZE" height="42"
+			bindModel = "$.$model"
+			bindAttribute = "amount"
+			/>
+		</View>
+	</View>
+</Alloy>

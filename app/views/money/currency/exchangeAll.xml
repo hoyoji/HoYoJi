@@ -23,7 +23,7 @@
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" sortByField="foreignCurrency.name" bottom="0" top="42"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="新增汇率"
+		buttons="新增汇率" imagesFolder="/images/money/currency/exchange"
 		ids="addExchange"/>
 	</View>
 </Alloy>

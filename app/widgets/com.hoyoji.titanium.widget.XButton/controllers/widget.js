@@ -1,5 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+var enabled = true;
 exports.setTitle = function(title) {
 	$.title.setText(title);
 	// $.button.setTitle(title);
@@ -18,9 +19,11 @@ exports.fireEvent = function(eventName, options) {
 }
 
 exports.addEventListener = function(eventName, callback) {
-	$.$view.addEventListener(eventName, function(e){
-		if(e.source === $.$view){
-			callback(e);
+	$.$view.addEventListener(eventName, function(e) {
+		if (e.source === $.$view) {
+			if (enabled) {
+				callback(e);
+			}
 		} else {
 			e.cancelBubble = true;
 		}
@@ -29,6 +32,7 @@ exports.addEventListener = function(eventName, callback) {
 
 exports.setEnabled = function(b) {
 	$.$view.setEnabled(b);
+	enabled = b;
 }
 
 exports.setBubbleCount = function(count) {
@@ -54,24 +58,23 @@ exports.setImage = function(imagePath) {
 exports.setVisible = function(visible) {
 	$.buttonView.setVisible(visible);
 }
-
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }
 // if ($.$attrs.borderRadius) {
-	// $.$view.setBorderRadius($.$attrs.borderRadius);
+// $.$view.setBorderRadius($.$attrs.borderRadius);
 // }
 // if ($.$attrs.width) {
-	// $.$view.setWidth($.$attrs.width);
+// $.$view.setWidth($.$attrs.width);
 // }
 // if ($.$attrs.height) {
-	// $.$view.setHeight($.$attrs.height);
+// $.$view.setHeight($.$attrs.height);
 // }
 if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
 // if ($.$attrs.color) {
-	// $.$view.setColor($.$attrs.color);
+// $.$view.setColor($.$attrs.color);
 // }
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
@@ -90,39 +93,55 @@ if (OS_IOS) {
 	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
 }
 
-$.$view.addEventListener("touchstart", function() {
-	$.$view.setBackgroundImage(backgroundImageShadow);
+$.$view.addEventListener("touchstart", function(e) {
+	if(!enabled){
+		e.cancelBubble = true;
+	} else {
+		$.$view.setBackgroundImage(backgroundImageShadow);
+	}
 });
-$.$view.addEventListener("touchend", function() {
-	$.$view.setBackgroundImage("none");
+$.$view.addEventListener("touchend", function(e) {
+	if(!enabled){
+		e.cancelBubble = true;
+	} else {
+		$.$view.setBackgroundImage("none");
+	}
 });
 
 function redirectEvent(view) {
 	view.addEventListener("singletap", function(e) {
-			e.cancelBubble = true;
-			$.$view.fireEvent("singletap", {source : $.$view, bubbles : true});
+		e.cancelBubble = true;
+		if(enabled){
+			$.$view.fireEvent("singletap", {
+				source : $.$view,
+				bubbles : true
+			});
+		}
 	});
 }
 
 // $.$view.addEventListener("singletap", function(e) {
-		// if(OS_ANDROID){
-			// e.cancelBubble = true;
-		// }
-		// $.trigger("singletap", {
-			// source : $
-		// });
+	// if(!enabled){
+		// e.cancelBubble = true;
+	// }
+// if(OS_ANDROID){
+// e.cancelBubble = true;
+// }
+// $.trigger("singletap", {
+// source : $
+// });
 // });
 
-$.$view.addEventListener("longpress", function(e){
+$.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
 	$.$view.setBackgroundImage("none");
 });
-// 
+//
 // $.$view.addEventListener("touchcancel", function(e){
-	// $.$view.setBackgroundImage("none");
+// $.$view.setBackgroundImage("none");
 // });
 
-$.$view.addEventListener("touchmove", function(e){	
+$.$view.addEventListener("touchmove", function(e) {
 	$.$view.setBackgroundImage("none");
 });
 
