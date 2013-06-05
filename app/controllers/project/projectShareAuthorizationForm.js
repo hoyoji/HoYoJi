@@ -45,13 +45,6 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
     }
 }
 
-$.onWindowOpenDo(function() {
-	if (!$.$model.isNew()) {
-		$.selectFriend.setValue($.$model.xGet("friendUser").xGet("userName"));
-		
-	}
-});
-
 $.onSave = function(saveEndCB, saveErrorCB) {
 	setExpenseDetailAndIncomeDetailAuthorization();
 	var subProjectShareAuthorizationIds = [];
