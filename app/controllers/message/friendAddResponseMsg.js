@@ -23,7 +23,7 @@ $.onWindowOpenDo(function() {
 		Alloy.Globals.Server.getData([{
 			__dataType : "Friend",
 			friendUserId : $.$model.xGet("fromUserId"),
-			friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
+			ownerUserId : Alloy.Models.User.xGet("id")
 		}], function(data) {
 			if (data[0].length > 0) {
 				$.$model.save({

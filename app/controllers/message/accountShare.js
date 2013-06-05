@@ -1,6 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedAccount = $.$attrs.selectedAccount;
+var datetime = new Date(selectedAccount.xGet("date"));
 
 $.$model.xSet("fromUser", Alloy.Models.User);
 $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
@@ -10,6 +11,7 @@ $.$model.xSet("messageTitle", Alloy.Models.User.xGet("userName"));
 
 $.onWindowOpenDo(function() {
 	if(selectedAccount.config.adapter.collection_name === "MoneyExpense"){
+		
 		$.$model.xSet("detail", "分享支出");
 		//创建支出
 		var accountRow1 = Titanium.UI.createView({
@@ -20,14 +22,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -42,14 +44,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -64,14 +66,14 @@ $.onWindowOpenDo(function() {
 		var accountExpenseTypeLabel = Ti.UI.createLabel({
 			text : "是否预付：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountExpenseTypeContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("expenseType"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -86,14 +88,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -126,14 +128,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -148,14 +150,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -170,14 +172,14 @@ $.onWindowOpenDo(function() {
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
 			text : "是否预收：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("incomeType"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -192,14 +194,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -232,14 +234,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -254,14 +256,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -276,14 +278,15 @@ $.onWindowOpenDo(function() {
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
 			text : "还款时间：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
+		var returnDate = new Date(selectedAccount.xGet("returnDate"));
 		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("returnDate"),
+			text : String.formatDate(returnDate, "medium") + " " + String.formatTime(returnDate, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -298,14 +301,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -327,14 +330,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -349,14 +352,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -371,14 +374,15 @@ $.onWindowOpenDo(function() {
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
 			text : "收款时间：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
+		var paybackDate = new Date(selectedAccount.xGet("paybackDate"));
 		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("paybackDate"),
+			text : String.formatDate(paybackDate, "medium") + " " + String.formatTime(paybackDate, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -393,14 +397,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -422,14 +426,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -444,14 +448,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -466,14 +470,14 @@ $.onWindowOpenDo(function() {
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
 			text : "利息：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("exchangeRate"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -488,14 +492,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -517,14 +521,14 @@ $.onWindowOpenDo(function() {
 		var accountDateLabel = Ti.UI.createLabel({
 			text : "日期：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDateContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("date"),
+			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -539,14 +543,14 @@ $.onWindowOpenDo(function() {
 		var accountAmountLabel = Ti.UI.createLabel({
 			text : "金额：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("amount"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -561,14 +565,14 @@ $.onWindowOpenDo(function() {
 		var accountIncomeTypeLabel = Ti.UI.createLabel({
 			text : "利息：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
 			text : selectedAccount.xGet("exchangeRate"),
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
@@ -583,14 +587,14 @@ $.onWindowOpenDo(function() {
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "30%"
 		});
 		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("remark"),
+			text : selectedAccount.xGet("remark") || "无备注",
 			height : 42,
-			color : "black",
+			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
