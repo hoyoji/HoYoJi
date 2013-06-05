@@ -29,6 +29,15 @@
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback){
+				this.searchData(modelName, filter, function(collection) {
+					// collection.map(function(item){
+					// item.save({wait : true});
+					// });
+					if (collection.length > 0) {
+						xFinishedCallback(collection);
+						return;
+					}
+
 				var requestData = [];
 				projectIds.forEach(function(projectId) {
 					var filter = {
@@ -55,6 +64,7 @@
 						});
 						xFinishedCallback(returnCollection);
 					}, xErrorCallback, "getSharedProjects");
+				}, xErrorCallback);
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				this.searchData(modelName, filter, function(collection) {
