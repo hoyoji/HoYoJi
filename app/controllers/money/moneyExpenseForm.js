@@ -15,13 +15,16 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 function openApportion() {
-	Alloy.Globals.openWindow("money/moneyExpenseApportionAll");
+	Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
+		selectedExpense : $.$model,
+		closeWithoutSave : true
+	});
 }
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	if(selectedFriendModel){
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
-	}else{
+	} else {
 		return null;
 	}
 }
