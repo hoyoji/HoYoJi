@@ -17,12 +17,12 @@ exports.definition = {
 				type : "MoneyExpense",
 				attribute : "moneyExpenseApportions"
 			},
-			ownerUser : {
+			ownerUser : { 
 				type : "User",
 				attribute : null
 			}
 		},
-		rowView : "money/moneyExpenseDetailRow",
+		rowView : "money/moneyExpenseApportionRow",
 		adapter : {
 			type : "hyjSql",
 		}
