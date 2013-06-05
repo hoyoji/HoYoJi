@@ -28,6 +28,34 @@
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
+			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback){
+				var requestData = [];
+				projectIds.forEach(function(projectId) {
+					var filter = {
+						__dataType : "Project",
+						id : projectId
+					}
+					requestData.push(filter);
+				});
+				this.getData(requestData, function(data) {
+						var returnCollection = Alloy.createCollection("Project");
+						data.forEach(function(record) {
+							var modelData = record[0];
+							var id = modelData.id;
+							delete modelData.id;
+							var model = Alloy.createModel(modelData.__dataType).xFindInDb({id : id});
+							model.xSet(modelData);	
+							if(!model.id){
+								model.attributes.id = id;
+							}
+							model.save(null, {silent : true});
+							if(modelData.__dataType === "Project"){
+								returnCollection.push(model);
+							}
+						});
+						xFinishedCallback(returnCollection);
+					}, xErrorCallback, "getSharedProjects");
+			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				this.searchData(modelName, filter, function(collection) {
 					// collection.map(function(item){

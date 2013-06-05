@@ -120,17 +120,17 @@ function redirectEvent(view) {
 	});
 }
 
-$.$view.addEventListener("singletap", function(e) {
-	if(!enabled){
-		e.cancelBubble = true;
-	}
+// $.$view.addEventListener("singletap", function(e) {
+	// if(!enabled){
+		// e.cancelBubble = true;
+	// }
 // if(OS_ANDROID){
 // e.cancelBubble = true;
 // }
 // $.trigger("singletap", {
 // source : $
 // });
-});
+// });
 
 $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
