@@ -785,23 +785,25 @@ $.onWindowOpenDo(function() {
 
 var __noDataIndicator;
 function showNoDataIndicator(hasData){
-	if(hasData){
-		if(__noDataIndicator){
-			__noDataIndicator.hide();
+	if(OS_IOS){
+		if(hasData){
+			if(__noDataIndicator){
+				__noDataIndicator.hide();
+			}
+		} else if(!__noDataIndicator){
+			__noDataIndicator = Ti.UI.createLabel({
+				text : "没有内容",
+				color : "blue",
+				backgroundColor : "transparent",
+				width : "150",
+				height : "42",
+				top : "25%",
+				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+				zIndex : 200
+			});
+			$.$view.add(__noDataIndicator);
+		} else {
+			__noDataIndicator.show();
 		}
-	} else if(!__noDataIndicator){
-		__noDataIndicator = Ti.UI.createLabel({
-			text : "没有内容",
-			color : "blue",
-			backgroundColor : "transparent",
-			width : "150",
-			height : "42",
-			top : "25%",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			zIndex : 200
-		});
-		$.$view.add(__noDataIndicator);
-	} else {
-		__noDataIndicator.show();
 	}
 }
