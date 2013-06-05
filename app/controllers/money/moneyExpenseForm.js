@@ -14,6 +14,9 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+function openApportion() {
+	Alloy.Globals.openWindow("money/moneyExpenseApportionAll");
+}
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	if(selectedFriendModel){
@@ -23,16 +26,17 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	}
 }
 
-$.convertUser2FriendModel = function(userModel){
-	if(userModel){
-		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
-		if(friend.id){
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
 			return friend;
 		}
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
