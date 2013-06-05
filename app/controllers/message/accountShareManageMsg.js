@@ -719,28 +719,6 @@ $.onWindowOpenDo(function() {
 			horizontalWrap : false,
 			height : "42"
 		});
-		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "利息：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.exchangeRate,
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountIncomeTypeLabel);
-		accountRow3.add(accountIncomeTypeContentLabel);
-		
-		var accountRow4 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
@@ -755,13 +733,12 @@ $.onWindowOpenDo(function() {
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
-		accountRow4.add(accountDetailLabel);
-		accountRow4.add(accountDetailContentLabel);
+		accountRow3.add(accountDetailLabel);
+		accountRow3.add(accountDetailContentLabel);
 		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
-		$.account.add(accountRow4);
 	}else if(accountShareData.accountType === "MoneyReturn"){
 		//创建还款
 		var accountRow1 = Titanium.UI.createView({
@@ -813,28 +790,6 @@ $.onWindowOpenDo(function() {
 			horizontalWrap : false,
 			height : "42"
 		});
-		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "利息：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.exchangeRate,
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountIncomeTypeLabel);
-		accountRow3.add(accountIncomeTypeContentLabel);
-		
-		var accountRow4 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
@@ -849,13 +804,12 @@ $.onWindowOpenDo(function() {
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
-		accountRow4.add(accountDetailLabel);
-		accountRow4.add(accountDetailContentLabel);
+		accountRow3.add(accountDetailLabel);
+		accountRow3.add(accountDetailContentLabel);
 		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
-		$.account.add(accountRow4);
 	}
 	$.titleBar.dirtyCB();
 });
