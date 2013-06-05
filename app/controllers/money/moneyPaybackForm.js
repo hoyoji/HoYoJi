@@ -3,7 +3,11 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 var selectedLend = $.$attrs.selectedLend;
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	return selectedFriendModel.xGet("friendUser");
+	if(selectedFriendModel){
+		return selectedFriendModel.xGet("friendUser");
+	}else{
+		return null;
+	}
 }
 
 $.convertUser2FriendModel = function(userModel){
