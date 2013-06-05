@@ -11,6 +11,6 @@
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
 		buttons="收件箱;全部消息;已读消息;未读消息,发件箱" imagesFolder="/images/message/messageAll"
-		ids="receivedMessagesTable;allMessagesTable;newMessagesTable;oldMessagesTable,sendedMessagesTable"/>
+		ids="receivedMessagesTable;allMessagesTable;oldMessagesTable;newMessagesTable,sendedMessagesTable"/>
 	</View>
 </Alloy>
