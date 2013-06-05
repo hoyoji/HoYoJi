@@ -454,7 +454,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// Alloy.Globals.openWindow("friend/friendAll", attributes); 
 // }
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	return selectedFriendModel.xGet("friendUser");
+	if(selectedFriendModel){
+		return selectedFriendModel.xGet("friendUser");
+	}else{
+		return null;
+	}
 }
 
 $.convertUser2FriendModel = function(userModel){
