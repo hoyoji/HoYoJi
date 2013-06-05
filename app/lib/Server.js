@@ -46,24 +46,27 @@
 						}
 						requestData.push(filter);
 					});
-					this.getData(requestData, function(data) {
+					Alloy.Globals.Server.getData(requestData, function(data) {
 						var returnCollection = Alloy.createCollection("Project");
+						data = _.flatten(data);
 						data.forEach(function(record) {
-							var modelData = record[0];
-							var id = modelData.id;
-							delete modelData.id;
-							var model = Alloy.createModel(modelData.__dataType).xFindInDb({
-								id : id
-							});
-							model.xSet(modelData);
-							if (!model.id) {
-								model.attributes.id = id;
-							}
-							model.save(null, {
-								silent : true
-							});
-							if (modelData.__dataType === "Project") {
-								returnCollection.push(model);
+							if(record){
+								var modelData = record;
+								var id = modelData.id;
+								delete modelData.id;
+								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
+									id : id
+								});
+								model.xSet(modelData);
+								if (!model.id) {
+									model.attributes.id = id;
+								}
+								model.save(null, {
+									silent : true
+								});
+								if (modelData.__dataType === "Project") {
+									returnCollection.push(model);
+								}
 							}
 						});
 						xFinishedCallback(returnCollection);
