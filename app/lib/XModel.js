@@ -26,9 +26,9 @@
 
 				if (this.isNew()) {
 					this.attributes.id = guid();
-					if (Alloy.Models.User) {
-						this.xSet("ownerUser", Alloy.Models.User);
-					}
+					// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
+						// this.xSet("ownerUser", Alloy.Models.User);
+					// }
 					
 					// need to clear all the hasMany filters on model destroy
 					this.on("destroy", function(){

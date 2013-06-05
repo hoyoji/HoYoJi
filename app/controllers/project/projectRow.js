@@ -128,7 +128,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 	selectedProject : $.$model
 	});
-	},projectIsSharedToMe));
+	}));
 
 	return menuSection;
 }

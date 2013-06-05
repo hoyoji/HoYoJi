@@ -62,7 +62,8 @@
 									model.attributes.id = id;
 								}
 								model.save(null, {
-									silent : true
+									silent : true,
+									syncFromServer : true
 								});
 								if (modelData.__dataType === "Project") {
 									returnCollection.push(model);
@@ -109,7 +110,8 @@
 								model.attributes.id = id;
 							}
 							model.save(null, {
-								silent : true
+								silent : true,
+								syncFromServer : true
 							});
 							returnCollection.push(model);
 						});
