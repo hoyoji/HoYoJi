@@ -9,6 +9,9 @@ function close(){
 	$.getCurrentWindow().close();
 }
 
+$.confirm.addEventListener("singletap", confirm);
+$.close.addEventListener("singletap", close);
+
 $.onWindowOpenDo(function() {
 	if($.getCurrentWindow().$attrs.title){
 		$.title.setText("请输入" + $.getCurrentWindow().$attrs.title);
