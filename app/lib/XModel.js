@@ -26,9 +26,9 @@
 
 				if (this.isNew()) {
 					this.attributes.id = guid();
-					// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
-						// this.xSet("ownerUser", Alloy.Models.User);
-					// }
+					if (Alloy.Models.User && !this.xGet("ownerUserId")) {
+						this.xSet("ownerUser", Alloy.Models.User);
+					}
 					
 					// need to clear all the hasMany filters on model destroy
 					this.on("destroy", function(){
@@ -165,7 +165,11 @@
 				var self = this;
 				this.__xValidationError = {};
 				this.__xValidationErrorCount = 0;
-
+				
+				// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
+					// this.xSet("ownerUser", Alloy.Models.User);
+				// }
+				
 				for (var column in this.config.columns) {
 					if (column === "id")
 						continue;
@@ -173,7 +177,7 @@
 					var field = this.config.columns[column], fieldValue = this.xGet(column);
 
 					console.info("validating column : " + column + "  " + fieldValue);
-					if ( typeof fieldValue === "string") {
+					if (typeof fieldValue === "string") {
 						fieldValue = Alloy.Globals.alloyString.trim(fieldValue);
 					}
 					// 检查不能为空
