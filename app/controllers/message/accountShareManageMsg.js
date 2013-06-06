@@ -812,4 +812,13 @@ $.onWindowOpenDo(function() {
 		$.account.add(accountRow3);
 	}
 	$.titleBar.dirtyCB();
+	
+	if ($.$model.xGet('messageState') === "unread") {
+		$.$model.save({
+			messageState : "closed"
+		}, {
+			wait : true,
+			patch : true
+		});
+	}
 });

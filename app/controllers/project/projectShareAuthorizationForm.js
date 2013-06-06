@@ -50,15 +50,34 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
 	if ($.$model.isNew()) {
-		if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
+		var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
+		var isSynAllProjects = true;
+		var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+			tableName : "Project",
+			recordId : $.$model.xGet("project").xGet("id"),
+			operation : "create"
+		});
+		if(syncRecord.id){
+			isSynAllProjects = false;
+		}else{
+			subProjects.map(function(subProject){
+				var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+					tableName : "Project",
+					recordId : subProject.xGet("id"),
+					operation : "create"
+				});
+				if(subProjectSyncRecord.id){
+					isSynAllProjects = false;
+				}
+			});
+		}
+		if(isSynAllProjects){
+			if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
 			$.$model.xSet("state", "Wait");
 			var projectShareAuthorizationsSearchArray = [];
 			var subProjectsArray = [];
 			var projectShareAuthorizationArray = [];
-			
-			
-			
 			projectShareAuthorizationsSearchArray.push({
 				__dataType : "ProjectShareAuthorization",
 				projectId : $.$model.xGet("project").xGet("id"),
@@ -74,7 +93,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			projectShareAuthorizationArray.push($.$model.toJSON());
 			//把子项目也加到搜索Array中去
 			if($.$model.xGet("shareAllSubProjects")){
-				$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
+				subProjects.map(function(subProject){
 					projectShareAuthorizationsSearchArray.push({
 						__dataType : "ProjectShareAuthorization",
 						projectId : subProject.xGet("id"),
@@ -88,7 +107,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						state : "Accept"
 					});
 					subProjectsArray.push(subProject);
-					
 				});
 			}
 			
@@ -96,15 +114,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (data[0].length > 0 || data[1].length > 0) {
 					saveErrorCB("好友已在共享列表,请重新选择好友！");
 				}else{
-					var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-						tableName : "Project",
-						recordId : $.$model.xGet("project").xGet("id"),
-						operation : "create"
-					});
-					if(syncRecord.id){
-						projectShareAuthorizationArray.push($.$model.xGet("project").toJSON());
-						syncRecord.destroy({syncFromServer : true});
-					}
 						// 有些subProject已被共享过，不能再次共享
 						for (var i=2;i < projectShareAuthorizationsSearchArray.length;i=i+2){
 							var subProjectShareAuthorization;
@@ -127,16 +136,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								subProjectShareAuthorization.xAddToSave($);
-								
-								var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-									tableName : "Project",
-									id : subProjectsArray[i/2-1].xGet("id"),
-									operation : "create"
-								});
-								if(subProjectSyncRecord.id){
-									projectShareAuthorizationArray.push(subProject.toJSON());
-									subProjectSyncRecord.destroy({syncFromServer : true});
-								}
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -185,8 +184,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 			
 			}else{
-		   		saveErrorCB("好友不能为空！");
-		   }
+		   		alert("好友不能为空！");
+		    }
+		}else{
+			alert("新增项目没有同步，请同步后重试!");
+		}
+		
 	   }else{
 	   	//修改共享
 		   	if($.$model.hasChanged("friend")){
@@ -431,21 +434,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
    
 }
 
-// function openFriendSelector(){
-	// $.selectFriend.field.blur();
-	// var attributes = {
-	// selectorCallback : function(model) {
-		// $.friend = model;
-		// $.selectFriend.setValue(model.getDisplayName());
-	// }
-	// };
-	// attributes.title = "好友";
-	// attributes.selectModelType = "Friend";
-	// attributes.selectModelCanBeNull = false;
-	// attributes.selectedModel = $.friend;
-// 	
-	// Alloy.Globals.openWindow("friend/friendAll", attributes); 
-// }
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	if(selectedFriendModel){
 		return selectedFriendModel.xGet("friendUser");
