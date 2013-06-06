@@ -94,14 +94,14 @@ if (OS_IOS) {
 }
 
 $.$view.addEventListener("touchstart", function(e) {
-	if(!enabled){
+	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
 		$.$view.setBackgroundImage(backgroundImageShadow);
 	}
 });
 $.$view.addEventListener("touchend", function(e) {
-	if(!enabled){
+	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
 		$.$view.setBackgroundImage("none");
@@ -111,7 +111,7 @@ $.$view.addEventListener("touchend", function(e) {
 function redirectEvent(view) {
 	view.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
-		if(enabled){
+		if (enabled) {
 			$.$view.fireEvent("singletap", {
 				source : $.$view,
 				bubbles : true
@@ -121,15 +121,15 @@ function redirectEvent(view) {
 }
 
 // $.$view.addEventListener("singletap", function(e) {
-	// if(!enabled){
+	// if (!enabled) {
 		// e.cancelBubble = true;
 	// }
-// if(OS_ANDROID){
-// e.cancelBubble = true;
-// }
-// $.trigger("singletap", {
-// source : $
-// });
+	// if (OS_ANDROID) {
+		// e.cancelBubble = true;
+	// }
+	// $.trigger("singletap", {
+		// source : $
+	// });
 // });
 
 $.$view.addEventListener("longpress", function(e) {

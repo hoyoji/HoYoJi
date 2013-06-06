@@ -14,6 +14,7 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+
 function openApportion() {
 	Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
 		selectedExpense : $.$model,
