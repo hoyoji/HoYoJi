@@ -7,7 +7,9 @@
 			if($.$attrs.$model && typeof $.$attrs.$model === "object"){
 				$.$model = $.$attrs.$model;
 			} else if($.$attrs.$model) {
-				$.$model = Alloy.createModel($.$attrs.$model);	
+				$.$model = Alloy.createModel($.$attrs.$model, {
+					ownerUser : Alloy.Models.User
+				});	
 			}
 			if($.$attrs.data){
 				$.$model.xSet($.$attrs.data);

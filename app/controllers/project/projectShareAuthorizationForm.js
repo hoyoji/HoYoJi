@@ -168,7 +168,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 						                            projectShareAuthorizationId : $.$model.xGet("id"),
 						                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-						                        })
+						                        }),
+									ownerUser : Alloy.Models.User
 								}).xAddToSave($); 
 						        $.saveModel(saveEndCB, saveErrorCB , {syncFromServer : true});
 						    	saveEndCB("发送成功，请等待回复");

@@ -7,13 +7,15 @@ $.onWindowOpenDo(function() {
 if ($.$model.isNew()) {
 	var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 		name : "日常收入",
-		project : $.$model
+		project : $.$model,
+		ownerUser : Alloy.Models.User
 	}).xAddToSave($);
 	$.$model.xSet("defaultIncomeCategory", defaultIncomeCategory);
 
 	var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 		name : "日常支出",
-		project : $.$model
+		project : $.$model,
+		ownerUser : Alloy.Models.User
 	}).xAddToSave($);
 	$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 	
@@ -31,6 +33,8 @@ if ($.$model.isNew()) {
 			sharedTotalExpense : 0,
 			
 			shareAllSubProjects : 1,
+			ownerUser : Alloy.Models.User,
+		
 			projectShareMoneyExpenseOwnerDataOnly : 0,
 	        projectShareMoneyExpenseAddNew : 1,
 	        projectShareMoneyExpenseEdit : 1,

@@ -42,7 +42,9 @@ function sendAddFriendMessage(friendlength){
 				});
 			});
 		} else {
-			var newMessage = Alloy.createModel("Message");
+			var newMessage = Alloy.createModel("Message", {
+				ownerUser : Alloy.Models.User
+			});
 			newMessage.xSet("toUser", $.$model);
 			Alloy.Globals.openWindow("message/friendAddRequestMsg", {
 				$model : newMessage

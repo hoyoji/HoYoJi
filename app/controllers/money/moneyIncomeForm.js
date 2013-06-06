@@ -46,7 +46,8 @@ if (!$.$model) {
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 		project : Alloy.Models.User.xGet("activeProject"),
-		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null
+		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+		ownerUser : Alloy.Models.User
 	});
 
 	$.setSaveableMode("add");
@@ -227,7 +228,8 @@ if ($.saveableMode === "read") {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrency : $.$model.xGet("localCurrency"),
 					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-					rate : $.$model.xGet("exchangeRate")
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
 				});
 				exchange.xAddToSave($);
 			}
