@@ -40,6 +40,15 @@
 			return Alloy.Globals.openingWindow[windowName];
 		}
 
+		exports.Utils.getClientSyncCount = function(){
+				var config = Alloy.createModel("ClientSyncTable").config,
+				Model = Alloy.M("ClientSyncTable", {config : config}),
+				model = new Model({TOTAL : 0});
+				var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main WHERE tableName <> 'Login'";
+				model.fetch({query : query});
+				return model.get("TOTAL") || 0;
+		}
+
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
 			if (OS_ANDROID) {
 				scView.getViews().map(function(view) {
