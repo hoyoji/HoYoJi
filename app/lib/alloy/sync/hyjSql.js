@@ -131,6 +131,9 @@ function Sync(method, model, opts) {
 				if (!opts.syncFromServer) {
 					if (Alloy.Models.User) {
 						ownerUserId = Alloy.Models.User.xGet("id");
+						if(!model.xGet("ownerUserId")){
+							model.xSet("ownerUserId", ownerUserId);
+						}
 						if (_.indexOf(projectPermissionTables, table) > -1) {
 							if (table === "Project") {
 								// 检查上级项目的共享中有没有允许我添加子项目的权限
