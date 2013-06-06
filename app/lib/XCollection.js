@@ -86,7 +86,7 @@
 			isFiltering : false,
 			__addModel : function(model, collection, options) {
 				if (this.__compareFilter(model, options)) {
-					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
 						this.add(model);
@@ -95,16 +95,16 @@
 			},
 			__changeModel : function(model, collection, options) {
 				if (this.__compareFilter(model, options)) {
-					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
-					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
 			__removeModel : function(model, collection, options) {
 				if (!this.__compareFilter(model, options)) {
-					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},

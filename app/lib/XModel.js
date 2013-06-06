@@ -61,16 +61,6 @@
 					return;
 				}
 				this.off(null, this.__initializeExistingModel);
-				// keep the relations in sync
-				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
-
-				// Keep every model to its store collection
-				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
-				if (this.collection !== storeCollection) {
-					this.collection = storeCollection;
-					options = options ? {syncFromServer : options.syncFromServer} : null;
-					storeCollection.add(this, options);
-				}
 
 				for (var key in this.config.hasMany) {
 					// need to also clear hasMany filter
@@ -80,6 +70,16 @@
 					
 					this.attributes[key] = null;
 					delete this.attributes[key];
+				}
+
+				// keep the relations in sync
+				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
+				// Keep every model to its store collection
+				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
+				if (this.collection !== storeCollection) {
+					this.collection = storeCollection;
+					options = options ? {syncFromServer : options.syncFromServer} : null;
+					storeCollection.add(this, options);
 				}
 				
 				// for (var belongsTo in this.config.belongsTo) {
