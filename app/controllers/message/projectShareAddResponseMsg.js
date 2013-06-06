@@ -578,7 +578,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					$.$model.xSet("messageState" , "closed");
 					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-						Alloy.Globals.Server.loadData("Project", projectIds, function(collection) {
+						Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
 							Alloy.Globals.Server.sendMsg({
 								id : guid(),
 								"toUserId" : $.$model.xGet("fromUserId"),
