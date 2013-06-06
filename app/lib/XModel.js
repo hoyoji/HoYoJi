@@ -26,10 +26,10 @@
 
 				if (this.isNew()) {
 					this.attributes.id = guid();
-					if (Alloy.Models.User && !this.xGet("ownerUserId")) {
-						this.xSet("ownerUser", Alloy.Models.User);
-					}
-					
+					// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
+						// this.xSet("ownerUser", Alloy.Models.User);
+					// }
+ 					
 					// need to clear all the hasMany filters on model destroy
 					this.on("destroy", function(){
 						for (var key in this.config.hasMany) {
@@ -100,6 +100,10 @@
 					silent : true
 				});
 				
+				if (Alloy.Models.User && !this.xGet("ownerUser") && !this.xGet("ownerUserId")) {
+					this.xSet("ownerUser", Alloy.Models.User);
+				}
+								
 				// 把所有的 belongsTo 保存会对应的 Id column 中, 以便保存倒数据库
 				for (var belongsTo in this.config.belongsTo) {
 					var belongsToModel = this.xGet(belongsTo);
@@ -126,7 +130,7 @@
 					throw Error("Model is still pending for xValidation to be completed! Can not call xSave again!!");
 					return;
 				}
-
+				
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
 						console.info("xValidation done with errors " + self.__xValidationErrorCount);
@@ -165,10 +169,10 @@
 				var self = this;
 				this.__xValidationError = {};
 				this.__xValidationErrorCount = 0;
-				
-				// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
-					// this.xSet("ownerUser", Alloy.Models.User);
-				// }
+
+				if (Alloy.Models.User && !this.xGet("ownerUser") && !this.xGet("ownerUserId")) {
+					this.xSet("ownerUser", Alloy.Models.User);
+				}
 				
 				for (var column in this.config.columns) {
 					if (column === "id")
@@ -184,7 +188,7 @@
 					if (field.contains("NOT NULL")) {
 						if (this.config.belongsTo && this.config.belongsTo[column.slice(0, -2)]) {
 							if (!this.xGet(column.slice(0, -2))) {
-								console.info("validating column : " + column + "  " + this.xGet(column.slice(0, -2)));
+								console.info("validating column  belongTo : " + column + "  " + this.xGet(column.slice(0, -2)));
 								this.__xValidationErrorCount++;
 								this.__xValidationError[column] = {
 									msg : "不能为空"
