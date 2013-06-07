@@ -17,14 +17,6 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
 				bindModel="$.$model"
 				bindAttribute="currentBalance"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
-				bindModel="$.$model"
-				bindAttribute="remark"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="资料公开" hintText="请选择资料公开类型"
-				items="个人,好友,公众"
-				values="Private,Friend,Public"
-				bindModel="$.$model"
-				bindAttribute="sharingType"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"
 				items="现金,储蓄卡,信用卡,网上支付,借贷"
 				values="Cash,Deposit,Credit,Online,Loan"
@@ -36,6 +28,14 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="开户地址" hintText="添加开户地址"
 				bindModel="$.$model"
 				bindAttribute="bankAddress"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
+				bindModel="$.$model"
+				bindAttribute="remark"/>
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="资料公开" hintText="请选择资料公开类型"
+				items="个人,好友,公众"
+				values="Private,Friend,Public"
+				bindModel="$.$model"
+				bindAttribute="sharingType"/> -->
 			</ScrollView>
 		</View>
 	</View>
