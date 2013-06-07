@@ -111,6 +111,11 @@ exports.definition = {
 					return this.xGet("currentBalance");
 				}
 			},
+        	syncAddNew: function(record, dbTrans) {
+        		if(!record.currentBalance){
+        			record.currentBalance = 0;
+        		}
+        	},
 			syncUpdate : function(record, dbTrans) {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				delete record.currentBalance;
