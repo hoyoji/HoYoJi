@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="45" zIndex="103">
+	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="3" zIndex="103">
 
 		<View width="Ti.UI.FILL" height="Ti.UI.SIZE"  top="0" zIndex="1" backgroundColor="black">
 			<Label id="hightlight" class="hightlight"  top="0" height="3" backgroundColor="cyan"></Label>
@@ -9,5 +9,5 @@
 				backgroundImage="/images/com.hoyoji.titanium.widget.ScrollableViewTabBar/background.png"/>
 		</View> -->
 	</View>
-	<Button id="pullDown" onSingletap="pullDown" top="3" left="0" height="42" width="42" zIndex="100" visible="false">下拉</Button>
+	<!-- <Button id="pullDown" onSingletap="pullDown" top="3" left="0" height="42" width="42" zIndex="100" visible="false">下拉</Button> -->
 </Alloy>
