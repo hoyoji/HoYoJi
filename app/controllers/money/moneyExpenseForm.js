@@ -15,6 +15,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.apportion.addEventListener("singletap", openApportion);
 function openApportion() {
 	Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
 		selectedExpense : $.$model,

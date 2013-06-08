@@ -89,7 +89,6 @@
 				
 				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
 				height="42" width="100%" title="多人分摊" 
-				onSingletap="openApportion"
 				backgroundColor="green" image="none" />
 	
 			</ScrollView>
