@@ -24,7 +24,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"fromUserId" : $.$model.xGet("fromUser").xGet("id"),
 				"type" : "System.Friend.AddRequest",
 				"messageState" : "new",
-				"messageTitle" : "系统消息",
+				"messageTitle" : "好友请求",
 				"date" : date,
 				"detail" : $.$model.xGet("detail"),
 				"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")
@@ -42,7 +42,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	
 }
 
-$.$model.xSet("detail", "请求将您添加为好友");
+$.$model.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
 
 $.onWindowOpenDo(function(){
 	$.titleBar.dirtyCB();
