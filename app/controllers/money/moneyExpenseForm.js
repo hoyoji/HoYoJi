@@ -143,7 +143,12 @@ if ($.saveableMode === "read") {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	oldAmount = $.$model.xGet("amount") || 0;
+	
+	if($.saveableMode === "add"){
+		oldAmount = 0
+	}else{
+		oldAmount = $.$model.xGet("amount")
+	}
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue()) {
@@ -211,7 +216,9 @@ if ($.saveableMode === "read") {
 		//if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
 		if (oldMoneyAccount === newMoneyAccount) {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
+			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+1|||"+oldAmount+"||||"+newAmount);
 		} else {
+			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+2");
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 			oldMoneyAccount.xAddToSave($);
@@ -272,6 +279,7 @@ if ($.saveableMode === "read") {
 			}
 			saveEndCB(e);
 		}, function(e) {
+			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+3");
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			saveErrorCB(e);
