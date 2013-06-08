@@ -7,20 +7,24 @@ function onFooterbarTap(e) {
 		Alloy.Globals.Server.sync();
 	} else if (e.source.id === "setting") {
 		Alloy.Globals.openWindow("setting/systemSetting");
-	}
-}
-
-function onHeaderbarTap(e) {
-	if (e.source.id === "moneyAll") {
-		Alloy.Globals.openWindow("money/moneyAll");
-	} else if (e.source.id === "projectAll") {
-		Alloy.Globals.openWindow("project/projectAll");
-	} else if (e.source.id === "friendAll") {
-		Alloy.Globals.openWindow("friend/friendAll");
 	} else if (e.source.id === "messageAll") {
 		Alloy.Globals.openWindow("message/messageAll");
-	}
+	} else if (e.source.id === "projectAll") {
+		Alloy.Globals.openWindow("project/projectAll");
+	} 
 }
+
+// function onHeaderbarTap(e) {
+	// if (e.source.id === "moneyAll") {
+		// Alloy.Globals.openWindow("money/moneyAll");
+	// } else if (e.source.id === "projectAll") {
+		// Alloy.Globals.openWindow("project/projectAll");
+	// } else if (e.source.id === "friendAll") {
+		// Alloy.Globals.openWindow("friend/friendAll");
+	// } else if (e.source.id === "messageAll") {
+		// Alloy.Globals.openWindow("message/messageAll");
+	// }
+// }
 
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection();
