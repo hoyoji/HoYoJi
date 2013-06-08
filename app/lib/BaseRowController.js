@@ -217,7 +217,7 @@
 				if (!errorLabel) {
 					errorLabel = Ti.UI.createLabel({
 						text : msg,
-						height : Ti.UI.FILL,
+						height : $.content.getSize().height,
 						width : Ti.UI.FILL,
 						top : "-100%",
 						color : "red",

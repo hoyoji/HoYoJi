@@ -88,6 +88,11 @@ $.myProjectShareAuthorizationsTable.addCollection(collection);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addShareFriend"){
-		openAddShareFriend();
+		var syncCount = Alloy.Globals.getClientSyncCount();
+		if(syncCount === 0){
+			openAddShareFriend();
+		}else{
+			alert("当前有" +syncCount+ "条记录没有同步，请同步后再添加");
+		}
 	}
 }

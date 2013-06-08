@@ -85,8 +85,9 @@
 			isFetching : false,
 			isFiltering : false,
 			__addModel : function(model, collection, options) {
-				if (this.__compareFilter(model, options)) {
-					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
+				var ret = this.__compareFilter(model, options);
+				if (ret !== null && ret) {
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
 						this.add(model);
@@ -94,17 +95,20 @@
 				}
 			},
 			__changeModel : function(model, collection, options) {
+				var ret = this.__compareFilter(model, options);
+				if (ret === null) return;
 				if (this.__compareFilter(model, options)) {
-					console.info("XCollection pick up model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
-					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
 			__removeModel : function(model, collection, options) {
-				if (!this.__compareFilter(model, options)) {
-					console.info("XCollection remove model from store : " + this.config.adapter.collection_name);
+				var ret = this.__compareFilter(model, options);
+				if (ret !== null && !ret) {
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
@@ -124,8 +128,10 @@
 				var filterAdded = [], filterRemoved = [];
 				this.trigger("xSetFilterStart");
 				this.isFiltering = true;
-				this.__filterCollection.map(function(model) {
-					if (self.__compareFilter(model)) {
+				this.__filterCollection.forEach(function(model) {
+					var ret = self.__compareFilter(model);
+					if(ret === null) return;
+					if (ret) {
 						if(!self.get(model)){
 							self.add(model);
 							filterAdded.push(model);

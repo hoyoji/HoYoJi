@@ -16,7 +16,8 @@ $.takePicture.addEventListener("singletap", function() {
 				var newPicture = Alloy.createModel("Picture", {
 					// path : "TEXT NOT NULL",
 					recordId : $.$attrs.bindModel.xGet("id"),
-					recordType : $.$attrs.bindModel.config.adapter.collection_name
+					recordType : $.$attrs.bindModel.config.adapter.collection_name,
+					ownerUser : Alloy.Models.User
 				}).xAddToSave($.getParentController());
 				
 				if (!mainPicture) {

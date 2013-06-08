@@ -51,27 +51,26 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var date = (new Date()).toISOString();
 	if ($.$model.isNew()) {
 		var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
-		var isSynAllProjects = true;
-		var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-			tableName : "Project",
-			recordId : $.$model.xGet("project").xGet("id"),
-			operation : "create"
-		});
-		if(syncRecord.id){
-			isSynAllProjects = false;
-		}else{
-			subProjects.map(function(subProject){
-				var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-					tableName : "Project",
-					recordId : subProject.xGet("id"),
-					operation : "create"
-				});
-				if(subProjectSyncRecord.id){
-					isSynAllProjects = false;
-				}
-			});
-		}
-		if(isSynAllProjects){
+		// var isSynAllProjects = true;
+		// var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+			// tableName : "Project",
+			// recordId : $.$model.xGet("project").xGet("id"),
+			// operation : "create"
+		// });
+		// if(syncRecord.id){
+			// isSynAllProjects = false;
+		// }else{
+			// subProjects.map(function(subProject){
+				// var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+					// tableName : "Project",
+					// recordId : subProject.xGet("id"),
+					// operation : "create"
+				// });
+				// if(subProjectSyncRecord.id){
+					// isSynAllProjects = false;
+				// }
+			// });
+		// }
 			if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
 			$.$model.xSet("state", "Wait");
@@ -168,7 +167,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 						                            projectShareAuthorizationId : $.$model.xGet("id"),
 						                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-						                        })
+						                        }),
+									ownerUser : Alloy.Models.User
 								}).xAddToSave($); 
 						        $.saveModel(saveEndCB, saveErrorCB , {syncFromServer : true});
 						    	saveEndCB("发送成功，请等待回复");
@@ -186,9 +186,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}else{
 		   		alert("好友不能为空！");
 		    }
-		}else{
-			alert("新增项目没有同步，请同步后重试!");
-		}
 		
 	   }else{
 	   	//修改共享

@@ -33,7 +33,8 @@ if (!$.$model) {
 			moneyBorrow : selectedBorrow,
 			project : selectedBorrow.xGet("project"),
 			friendUser : selectedBorrow.xGet("friendUser"),
-			interest : 0
+			interest : 0,
+			ownerUser : Alloy.Models.User
 		});
 	} else {
 		$.$model = Alloy.createModel("MoneyReturn", {
@@ -43,7 +44,8 @@ if (!$.$model) {
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			moneyBorrow : null,
 			project : Alloy.Models.User.xGet("activeProject"),
-			interest : 0
+			interest : 0,
+			ownerUser : Alloy.Models.User
 		});
 	}
 	$.setSaveableMode("add");
@@ -148,7 +150,8 @@ if ($.saveableMode === "read") {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrency : $.$model.xGet("localCurrency"),
 					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-					rate : $.$model.xGet("exchangeRate")
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
 				});
 				exchange.xAddToSave($);
 			}

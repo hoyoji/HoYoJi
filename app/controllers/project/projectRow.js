@@ -36,73 +36,78 @@ $.makeContextMenu = function(e, isSelectMode) {
 		});
 	}));
 	menuSection.add($.createContextMenuItem("添加共享", function() {
-		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
-			$model : "ProjectShareAuthorization",
-			data : {
-				project : $.$model,
-				sharePercentage : 0,
-				actualTotalIncome : 0,
-				actualTotalExpense : 0,
-				apportionedTotalIncome : 0,
-				apportionedTotalExpense : 0,
-				sharedTotalIncome : 0,
-				sharedTotalExpense : 0,
-				
-				shareAllSubProjects : 0,
-				projectShareMoneyExpenseOwnerDataOnly : 0,
-				projectShareMoneyExpenseAddNew : 1,
-				projectShareMoneyExpenseEdit : 1,
-				projectShareMoneyExpenseDelete : 1,
-
-				projectShareMoneyExpenseDetailOwnerDataOnly : 0,
-				projectShareMoneyExpenseDetailAddNew : 1,
-				projectShareMoneyExpenseDetailEdit : 1,
-				projectShareMoneyExpenseDetailDelete : 1,
-
-				projectShareMoneyIncomeOwnerDataOnly : 0,
-				projectShareMoneyIncomeAddNew : 1,
-				projectShareMoneyIncomeEdit : 1,
-				projectShareMoneyIncomeDelete : 1,
-
-				projectShareMoneyIncomeDetailOwnerDataOnly : 0,
-				projectShareMoneyIncomeDetailAddNew : 1,
-				projectShareMoneyIncomeDetailEdit : 1,
-				projectShareMoneyIncomeDetailDelete : 1,
-
-				projectShareMoneyExpenseCategoryAddNew : 1,
-				projectShareMoneyExpenseCategoryEdit : 1,
-				projectShareMoneyExpenseCategoryDelete : 1,
-
-				projectShareMoneyIncomeCategoryAddNew : 1,
-				projectShareMoneyIncomeCategoryEdit : 1,
-				projectShareMoneyIncomeCategoryDelete : 1,
-
-				// projectShareMoneyTransferOwnerDataOnly : 0,
-				// projectShareMoneyTransferAddNew : 1,
-				// projectShareMoneyTransferEdit : 1,
-				// projectShareMoneyTransferDelete : 1,
-
-				projectShareMoneyLendOwnerDataOnly : 0,
-				projectShareMoneyLendAddNew : 1,
-				projectShareMoneyLendEdit : 1,
-				projectShareMoneyLendDelete : 1,
-
-				projectShareMoneyBorrowOwnerDataOnly : 0,
-				projectShareMoneyBorrowAddNew : 1,
-				projectShareMoneyBorrowEdit : 1,
-				projectShareMoneyBorrowDelete : 1,
-
-				projectShareMoneyPaybackOwnerDataOnly : 0,
-				projectShareMoneyPaybackAddNew : 1,
-				projectShareMoneyPaybackEdit : 1,
-				projectShareMoneyPaybackDelete : 1,
-
-				projectShareMoneyReturnOwnerDataOnly : 0,
-				projectShareMoneyReturnAddNew : 1,
-				projectShareMoneyReturnEdit : 1,
-				projectShareMoneyReturnDelete : 1
-			}
-		});
+		var syncCount = Alloy.Globals.getClientSyncCount();
+		if(syncCount === 0){
+			Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
+				$model : "ProjectShareAuthorization",
+				data : {
+					project : $.$model,
+					sharePercentage : 0,
+					actualTotalIncome : 0,
+					actualTotalExpense : 0,
+					apportionedTotalIncome : 0,
+					apportionedTotalExpense : 0,
+					sharedTotalIncome : 0,
+					sharedTotalExpense : 0,
+					
+					shareAllSubProjects : 0,
+					projectShareMoneyExpenseOwnerDataOnly : 0,
+					projectShareMoneyExpenseAddNew : 1,
+					projectShareMoneyExpenseEdit : 1,
+					projectShareMoneyExpenseDelete : 1,
+	
+					projectShareMoneyExpenseDetailOwnerDataOnly : 0,
+					projectShareMoneyExpenseDetailAddNew : 1,
+					projectShareMoneyExpenseDetailEdit : 1,
+					projectShareMoneyExpenseDetailDelete : 1,
+	
+					projectShareMoneyIncomeOwnerDataOnly : 0,
+					projectShareMoneyIncomeAddNew : 1,
+					projectShareMoneyIncomeEdit : 1,
+					projectShareMoneyIncomeDelete : 1,
+	
+					projectShareMoneyIncomeDetailOwnerDataOnly : 0,
+					projectShareMoneyIncomeDetailAddNew : 1,
+					projectShareMoneyIncomeDetailEdit : 1,
+					projectShareMoneyIncomeDetailDelete : 1,
+	
+					projectShareMoneyExpenseCategoryAddNew : 1,
+					projectShareMoneyExpenseCategoryEdit : 1,
+					projectShareMoneyExpenseCategoryDelete : 1,
+	
+					projectShareMoneyIncomeCategoryAddNew : 1,
+					projectShareMoneyIncomeCategoryEdit : 1,
+					projectShareMoneyIncomeCategoryDelete : 1,
+	
+					// projectShareMoneyTransferOwnerDataOnly : 0,
+					// projectShareMoneyTransferAddNew : 1,
+					// projectShareMoneyTransferEdit : 1,
+					// projectShareMoneyTransferDelete : 1,
+	
+					projectShareMoneyLendOwnerDataOnly : 0,
+					projectShareMoneyLendAddNew : 1,
+					projectShareMoneyLendEdit : 1,
+					projectShareMoneyLendDelete : 1,
+	
+					projectShareMoneyBorrowOwnerDataOnly : 0,
+					projectShareMoneyBorrowAddNew : 1,
+					projectShareMoneyBorrowEdit : 1,
+					projectShareMoneyBorrowDelete : 1,
+	
+					projectShareMoneyPaybackOwnerDataOnly : 0,
+					projectShareMoneyPaybackAddNew : 1,
+					projectShareMoneyPaybackEdit : 1,
+					projectShareMoneyPaybackDelete : 1,
+	
+					projectShareMoneyReturnOwnerDataOnly : 0,
+					projectShareMoneyReturnAddNew : 1,
+					projectShareMoneyReturnEdit : 1,
+					projectShareMoneyReturnDelete : 1
+				}
+			});
+		}else{
+			alert("当前有" +syncCount+ "条记录没有同步，请同步后再添加");
+		}
 	}, projectIsSharedToMe));
 
 	if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {

@@ -44,7 +44,8 @@ if (!$.$model) {
 		exchangeRate : 1,
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 		project : Alloy.Models.User.xGet("activeProject"),
-		paybackedAmount : 0
+		paybackedAmount : 0,
+		ownerUser : Alloy.Models.User
 	});
 
 	$.setSaveableMode("add");
@@ -150,7 +151,8 @@ if ($.saveableMode === "read") {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrency : $.$model.xGet("localCurrency"),
 					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-					rate : $.$model.xGet("exchangeRate")
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
 				});
 				exchange.xAddToSave($);
 			}

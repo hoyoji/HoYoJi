@@ -1,6 +1,8 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.$model = Alloy.createModel("Login");
+$.$model = Alloy.createModel("Login", {
+	ownerUser : Alloy.Models.User
+});
 $.setSaveableMode("add");
 
 function doLogin(e) {

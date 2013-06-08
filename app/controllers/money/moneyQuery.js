@@ -47,3 +47,6 @@ function doQuery(){
 function close(){
 	$.getCurrentWindow().close();
 }
+
+$.doQuery.addEventListener("singletap", doQuery);
+$.close.addEventListener("singletap", close);

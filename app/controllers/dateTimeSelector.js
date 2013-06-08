@@ -43,6 +43,10 @@ function close(){
 	$.getCurrentWindow().close();
 }
 
+
+$.selectDate.addEventListener("singletap", selectDate);
+$.close.addEventListener("singletap", close);
+
 $.onWindowOpenDo(function() {
 	if($.getCurrentWindow().$attrs.title){
 		$.title.setText("请选择"+ $.getCurrentWindow().$attrs.title);

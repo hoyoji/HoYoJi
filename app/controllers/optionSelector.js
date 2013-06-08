@@ -11,6 +11,9 @@ function confirm() {
 	$.getCurrentWindow().close();
 }
 
+$.confirm.addEventListener("singletap", confirm);
+$.close.addEventListener("singletap", close);
+
 $.onWindowOpenDo(function() {
 	var data = [];
 	

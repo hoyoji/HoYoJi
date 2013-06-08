@@ -7,7 +7,17 @@ function onFooterbarTap(e) {
 		Alloy.Globals.Server.sync();
 	} else if (e.source.id === "setting") {
 		Alloy.Globals.openWindow("setting/systemSetting");
-	} else if (e.source.id === "message") {
+	}
+}
+
+function onHeaderbarTap(e) {
+	if (e.source.id === "moneyAll") {
+		Alloy.Globals.openWindow("money/moneyAll");
+	} else if (e.source.id === "projectAll") {
+		Alloy.Globals.openWindow("project/projectAll");
+	} else if (e.source.id === "friendAll") {
+		Alloy.Globals.openWindow("friend/friendAll");
+	} else if (e.source.id === "messageAll") {
 		Alloy.Globals.openWindow("message/messageAll");
 	}
 }
@@ -35,12 +45,8 @@ $.makeContextMenu = function() {
 }
 
 function refreshSyncCount(){
-	var config = Alloy.createModel("ClientSyncTable").config,
-	Model = Alloy.M("ClientSyncTable", {config : config}),
-	model = new Model({TOTAL : 0});
-	var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main WHERE tableName <> 'Login'";
-	model.fetch({query : query});
-	$.footerBar.sync.setBubbleCount(model.get("TOTAL") || 0);
+	var syncCount = Alloy.Globals.getClientSyncCount();
+	$.footerBar.sync.setBubbleCount(syncCount);
 }
 refreshSyncCount();
 Ti.App.addEventListener("updateSyncCount", refreshSyncCount);

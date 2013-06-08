@@ -8,6 +8,7 @@ if (!$.$model) {
 		exchangeRate : 1,
 		transferInAmount : 0,
 		project : Alloy.Models.User.xGet("activeProject"),
+		ownerUser : Alloy.Models.User
 	});
 	$.setSaveableMode("add");
 }
@@ -214,7 +215,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		var exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
 			foreignCurrency : $.$model.xGet("transferIn").xGet("currency"),
-			rate : $.$model.xGet("exchangeRate")
+			rate : $.$model.xGet("exchangeRate"),
+			ownerUser : Alloy.Models.User
 		});
 		exchange.xAddToSave($);
 	}
