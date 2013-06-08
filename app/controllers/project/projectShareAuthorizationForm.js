@@ -71,8 +71,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				// }
 			// });
 		// }
-		var syncCount = Alloy.Globals.getClientSyncCount();
-		if(syncCount === 0){
 			if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
 			$.$model.xSet("state", "Wait");
@@ -188,9 +186,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}else{
 		   		alert("好友不能为空！");
 		    }
-		}else{
-			alert("有" +syncCount+ "条数据没有同步，请同步后重试");
-		}
 		
 	   }else{
 	   	//修改共享
