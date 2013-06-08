@@ -309,13 +309,15 @@ function Sync(method, model, opts) {
 			break;
 		case "update":
 			if(model.config.columns["lastClientUpdateTime"]){
-					model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
+				model.attributes.lastClientUpdateTime = (new Date()).getTimeStamp();
 			}
 			var names = [], values = [], q = [];
 			for (var k in columns) {
-				names.push(k + "=?");
-				values.push(model.get(k));
-				q.push("?");
+				// if(model.get(k) !== undefined){
+					names.push(k + "=?");
+					values.push(model.get(k));
+					q.push("?");
+				// }
 			}
 
 			var sql = "UPDATE " + table + " SET " + names.join(",") + " WHERE " + model.idAttribute + "=?";
