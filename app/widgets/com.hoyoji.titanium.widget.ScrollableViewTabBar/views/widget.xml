@@ -1,13 +1,13 @@
 <Alloy>
-	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="47" zIndex="103">
+	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="45" zIndex="103">
 
 		<View width="Ti.UI.FILL" height="Ti.UI.SIZE"  top="0" zIndex="1" backgroundColor="black">
-			<Label id="hightlight" class="hightlight"  top="0" width="20%" height="5" backgroundColor="cyan"></Label>
+			<Label id="hightlight" class="hightlight"  top="0" height="3" backgroundColor="cyan"></Label>
 		</View>
-		<View id="tabsContainer" width="Ti.UI.FILL" height="42" top="5" zIndex="0">
+		<!-- <View id="tabsContainer" width="Ti.UI.FILL" height="42" top="3" zIndex="0">
 			<View id="tabs" height="42" top="0" left="0" right="0" layout="horizontal" zIndex="0" 
 				backgroundImage="/images/com.hoyoji.titanium.widget.ScrollableViewTabBar/background.png"/>
-		</View>
+		</View> -->
 	</View>
-	<Button id="pullDown" onSingletap="pullDown" top="5" left="0" height="42" width="42" zIndex="100" visible="false">下拉</Button>
+	<Button id="pullDown" onSingletap="pullDown" top="3" left="0" height="42" width="42" zIndex="100" visible="false">下拉</Button>
 </Alloy>
