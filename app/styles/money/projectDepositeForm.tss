@@ -1,0 +1,34 @@
+".container": {
+	backgroundColor: "#e1e1e1"
+}
+
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+}
+
+"Widget": {
+	color: '#042c37'
+}
+
+"#friendUserLable": {
+	color: '#042c37'
+}
+
+"#localAmountLabel": {
+	color: '#c80032'
+}
+
+"#amount": {
+	color: '#042c37',
+	fieldColor: "#c80032"
+}
+
+"#expenseTypeLabel": {
+	color: '#042c37'
+}

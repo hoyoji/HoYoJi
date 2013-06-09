@@ -2,7 +2,7 @@
 	<View class="container" title="支出" saveableContainer="true" top="0" bottom="0">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
-		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
+		addModeTitle="新增项目充值" readModeTitle="项目充值详细" editModeTitle="修改项目充值"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" defaultImage="/images/camera.png"
@@ -89,6 +89,7 @@
 				
 				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
 				height="42" width="100%" title="多人分摊" 
+				onSingletap="openApportion"
 				backgroundColor="green" image="none" />
 	
 			</ScrollView>

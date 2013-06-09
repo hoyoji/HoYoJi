@@ -123,6 +123,19 @@ exports.definition = {
 					}
 				}
 			},
+			syncUpdate : function(record, dbTrans) {
+				var exchange = Alloy.createModel("Exchange").xFindInDb({
+					localCurrencyId : record.localCurrencyId,
+					foreignCurrencyId : record.foreignCurrencyId
+				});
+				if (exchange.id) {
+					// 该币种组合的汇率已经存在，把本地的删掉
+					exchange.xDelete(null, {
+						dbTrans : dbTrans,
+						wait : true
+					});
+				}
+			}			
 		});
 		return Model;
 	},
