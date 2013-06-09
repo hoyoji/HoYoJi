@@ -88,25 +88,23 @@ exports.definition = {
 				return this.xGet("moneyExpense").canDelete();
 			},
 			syncAddNew : function(record, dbTrans) {
-				// 更新账户余额
-				// 1. 如果支出也是新增的
-				// 2. 支出已经存在
+				// 更新支出余额
+				// 1. 如果支出也是新增的，我们不需要更新支出余额
+				// 2. 支出已经存在，我们需要合并该明细(更新支出余额)
 
 				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
 					id : record.moneyExpenseId
 				});
 				if (moneyExpense.id) {
 					// 支出已在本地存在, 我们要更新本地支出的余额
-					if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
-						var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-						moneyExpense.__syncAmount = oldExpenseAmount + record.amount
-						// moneyExpense.save("amount", moneyExpense.__syncAmount, {
-							// dbTrans : dbTrans,
-							// patch : true
-						// });
-					} else {
-						moneyExpense.__syncAmount = moneyExpense.__syncAmount !== undefined ? moneyExpense.__syncAmount + record.amount : record.amount;
-					}
+					// if (moneyExpense.xGet("useDetailsTotal")) {
+						moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount + record.amount : record.amount;
+						// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+						// moneyExpense.__syncAmount = oldExpenseAmount + record.amount;
+					// }
+					 // else {
+						// moneyExpense.__syncAmount = moneyExpense.__syncAmount !== undefined ? moneyExpense.__syncAmount + record.amount : record.amount;
+					// }
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -114,8 +112,9 @@ exports.definition = {
 					id : record.moneyExpenseId
 				});
 				// 该支出明细在服务器上被改变了，我们将其变动缓存到 __syncAmount 里，等更新 moneyExpense 的时候会将该值替换本地的值
-				var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-				moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount") + record.amount
+				// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+				// moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount") + record.amount
+				moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount + record.amount - this.xGet("amount") : record.amount - this.xGet("amount");
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
@@ -136,9 +135,10 @@ exports.definition = {
 				if (moneyExpense.id) {
 					// 支出已在本地存在
 					// if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
-						var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-						moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount");
+						// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+						// moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount");
 					// }
+					moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount - this.xGet("amount") : - this.xGet("amount");
 				}
 			},	
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {

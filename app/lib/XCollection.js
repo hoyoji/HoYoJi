@@ -12,6 +12,9 @@
 					// this.xSetFilter(options.filter);
 				// }
 			},
+			xSum : function(field){
+				return _.reduce(this, function(memo, num){ return memo + this.xGet(field) }, 0);
+			},
 			xCreateFilter : function(filter, winController) {
 				var c = Alloy.createCollection(this.config.adapter.collection_name);
 				c.__filterCollection = this;
