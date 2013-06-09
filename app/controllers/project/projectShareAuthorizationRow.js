@@ -4,6 +4,12 @@ $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "共享属性操作"
 	});
+
+	menuSection.add($.createContextMenuItem("共享详细", function() {
+		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
+			$model : $.$model
+		},isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id);
+	}));
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
@@ -18,7 +24,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 					subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 					// subProjectShareAuthorization._xDelete();
 					subProjectShareAuthorization.xSet("state", "Delete");
-					subProjectShareAuthorization.xSave({syncFromServer : true});
+					subProjectShareAuthorization.xSave({
+						syncFromServer : true
+					});
 					editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 				}
 			});
@@ -41,7 +49,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 						subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 					})
 				}, function() {
-					$.$model.xSave({syncFromServer : true});
+					$.$model.xSave({
+						syncFromServer : true
+					});
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
@@ -62,4 +72,4 @@ function setWaitForAccept() {
 
 $.onWindowOpenDo(function() {
 	setWaitForAccept();
-}); 
+});

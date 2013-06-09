@@ -20,6 +20,10 @@ exports.definition = {
 			ownerUser : { 
 				type : "User",
 				attribute : null
+			},
+			friendUser : {
+				type : "User",
+				attribute : null
 			}
 		},
 		rowView : "money/moneyExpenseApportionRow",
@@ -46,6 +50,16 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				}
+			},
+			getDisplayName : function() {
+				return this.xGet("friendUser").xGet("userName");
+			},
+			getFriendDisplayName : function() {
+				var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : this.xGet("friendUser").id});
+				if(friend.id){
+					return friend.getDisplayName();
+				}
+				return this.getDisplayName();
 			},
 			getAmount : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {

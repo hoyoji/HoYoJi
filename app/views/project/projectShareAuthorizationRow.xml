@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="84" openForm="project/projectShareAuthorizationForm">
+	<View class="container" height="84">
 			<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
 					bindModel = "$.$model"
