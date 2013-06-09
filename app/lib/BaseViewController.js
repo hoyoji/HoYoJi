@@ -123,7 +123,9 @@
 
 			if ($.scrollableView) {
 				Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);
-				$.tabBar.init($.scrollableView);
+				if($.tabBar){
+					$.tabBar.init($.scrollableView);
+				}
 			}
 
 			// any view can become saveableContainer

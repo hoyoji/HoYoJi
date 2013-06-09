@@ -11,7 +11,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 	// return menuSection;
 // }
 
-$.searchButton.addEventListener("click", function(e){
+$.searchButton.addEventListener("singletap", function(e){
 	$.userCollection.reset();
 	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
 		Alloy.Globals.Server.getData([{__dataType : "User", userName : $.search.getValue()}], function(data){

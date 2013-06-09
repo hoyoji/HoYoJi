@@ -81,7 +81,11 @@ if ($.saveableMode === "read") {
 	});
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	oldAmount = $.$model.xGet("amount") || 0;
+	if($.saveableMode === "add"){
+		oldAmount = 0
+	}else{
+		oldAmount = $.$model.xGet("amount")
+	}
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue()) {
