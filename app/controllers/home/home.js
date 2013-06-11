@@ -1,5 +1,29 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "refreshkButton",
+	left : 5,
+	height : Ti.UI.FILL,
+	width : 45,
+	image : "/images/home/sync"
+});
+refreshButton.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
+	Alloy.Globals.Server.sync();
+});
+$.titleBar.setBackButton(refreshButton);
+var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "settingButton",
+	right : 15,
+	height : Ti.UI.FILL,
+	width : 45,
+	image : "/images/home/setting"
+});
+settingButton.addEventListener("singletap", function(){
+	Alloy.Globals.openWindow("setting/systemSetting");
+});
+$.titleBar.setMenuButton(settingButton);
+
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		Alloy.Globals.openWindow("money/moneyAddNew");
@@ -50,7 +74,7 @@ $.makeContextMenu = function() {
 
 function refreshSyncCount(){
 	var syncCount = Alloy.Globals.getClientSyncCount();
-	$.footerBar.sync.setBubbleCount(syncCount);
+	refreshButton.setBubbleCount(syncCount);
 }
 refreshSyncCount();
 Ti.App.addEventListener("updateSyncCount", refreshSyncCount);

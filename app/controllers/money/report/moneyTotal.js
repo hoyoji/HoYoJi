@@ -49,6 +49,10 @@ if($.$attrs.autoSync === "true"){
 	});
 }
 
+if($.$attrs.font) {
+	$.moneyTotal.setFont($.$attrs.font);
+}
+
 if($.$attrs.color) {
 	$.moneyTotal.setColor($.$attrs.color);
 }

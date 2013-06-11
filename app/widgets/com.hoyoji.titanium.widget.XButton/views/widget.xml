@@ -1,5 +1,5 @@
 <Alloy>
-	<View id="buttonView" height="Ti.UI.FILL" width="Ti.UI.SIZE">
+	<View id="buttonView" height="Ti.UI.FILL" width="Ti.UI.SIZE" visible="false">
 		<!-- backgroundImage="/images/com.hoyoji.titanium.widget.XButton/buttonBackground.png"> -->
 		<ImageView id="imageView" zIndex="1"/>
 		<View id="bubbleCountContainer" width="32" height="32" zIndex="2">

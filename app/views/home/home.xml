@@ -2,41 +2,48 @@
 	<View class="container" title="主页">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="主页"
-		image="/images/mainWindow/home"/>
+			image="/images/mainWindow/home"/>
 		
 		<!-- <Widget id="headerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onHeaderbarTap" top="0"
 		buttons="项目,账务,好友,消息" imagesFolder="/images/mainWindow"
 		ids="projectAll,moneyAll,friendAll,messageAll"/> -->
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
-			<View top="0" height="58" backgroundColor="#d1d1d1">
-				<View height="58" width="51%" left="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5">
-					<Label top="5">当日收入</Label>
-					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600"
+			<View top="0" height="50" backgroundColor="#d1d1d1">
+				<View height="50" width="50%" left="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5">
+					<Label top="5" class="reportTitle" height="Ti.UI.SIZE">当日收入</Label>
+					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#329600" width="Ti.UI.SIZE"
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
+						class="reportAmount"
 						/>
-						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#329600"/>
+						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" 
+							modelType="MoneyIncome" autoSync="true" 
+							totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#329600"
+							class="reportAmount"/>
 					</View>
 				</View>
 				
-				<View height="58" width="51%" right="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5">
-					<Label top="5">当日支出</Label>
-					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" left="30%">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032"
+				<View height="50" width="50%" right="0" top="0" layout="vertical" zIndex="2" backgroundColor="#f5f5f5">
+					<Label top="5" class="reportTitle" height="Ti.UI.SIZE">当日支出</Label>
+					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032" width="Ti.UI.SIZE"
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
+						class="reportAmount"
 						/>
-						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" autoSync="true" totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#c80032"/>
+						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" 
+							modelType="MoneyExpense" autoSync="true" 
+							totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#c80032"
+							class="reportAmount"/>
 					</View>
 				</View>
-				
 			</View>
 			
-			<Require id="transactionsTable" src="home/activityView" top="67" bottom="0"/>
+			<Require id="transactionsTable" src="home/activityView" top="60" bottom="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="同步,项目,记一笔,消息,设置" imagesFolder="/images/home"
-		ids="sync,projectAll,moneyAddNew,messageAll,setting"/>
+		buttons="项目,记一笔,好友" imagesFolder="/images/home"
+		ids="projectAll,moneyAddNew,friendAll"/>
 	</View>
 </Alloy>

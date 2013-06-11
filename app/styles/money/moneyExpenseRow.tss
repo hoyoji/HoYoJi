@@ -15,6 +15,7 @@
 "#localAmountLabel": {
 	color: '#c80032',
 	font: {
+		fontSize: 16,
 		fontWeight: 'normal'
 	}
 }
