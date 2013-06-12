@@ -35,6 +35,8 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("message/messageAll");
 	} else if (e.source.id === "projectAll") {
 		Alloy.Globals.openWindow("project/projectAll");
+	} else if (e.source.id === "friendAll") {
+		Alloy.Globals.openWindow("friend/friendAll");
 	} 
 }
 

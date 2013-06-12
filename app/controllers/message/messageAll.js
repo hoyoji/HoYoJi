@@ -79,5 +79,29 @@ function onFooterbarTap (e) {
 	}
 }
 
+var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "refreshkButton",
+	left : 5,
+	height : Ti.UI.FILL,
+	width : 45,
+	image : "/images/home/sync"
+});
+refreshButton.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
+	Alloy.Globals.Server.sync();
+});
+$.titleBar.setBackButton(refreshButton);
+
+function refreshSyncCount(){
+	var syncCount = Alloy.Globals.getClientSyncCount();
+	refreshButton.setBubbleCount(syncCount);
+}
+refreshSyncCount();
+Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
+$.onWindowCloseDo(function(){
+	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
+});
+
+
 $.receivedMessagesTable.addCollection(receivedMessagesCollection);
 $.sendedMessagesTable.addCollection(sendedMsgCollection);
