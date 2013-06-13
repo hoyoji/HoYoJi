@@ -4,19 +4,20 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
 					bindModel = "$.$model"
 					bindAttribute = "pictureId"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				<Label id="checkAccept" visible="false" color="black" top="14" left="66" class="firstRow">等待接受</Label>
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="34" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow"
 					bindModel = "$.$model"
 					bindAttribute = "getFriendDisplayName()"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
 					bindModel = "$.$model"
 					bindAttribute = "getActualTotalExpense()"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="36" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
 				bindModel = "$.$model"
 				bindAttribute = "getApportionedTotalExpense()"
 				/>
-			<Label id="checkAccept" visible="false" color="black" right="100">等待接受</Label>
+			
 		</View>
 	</View>
 </Alloy>
