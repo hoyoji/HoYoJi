@@ -321,28 +321,31 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										}
 										
 										if(subProjectShareAuthorizationIds.length){
-											projectShareAuthorizationArray.push($.$model.toJSON());
 											Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-												Alloy.Globals.Server.sendMsg({
-												id : guid(),
-												"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-												"fromUserId" : Alloy.Models.User.xGet("id"),
-												"type" : "Project.Share.Edit",
-												"messageState" : "unread",
-												"messageTitle" : "共享项目",
-												"date" : date,
-												"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
-												"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-												"messageData" : JSON.stringify({
-										                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-										                            projectShareAuthorizationId : $.$model.xGet("id"),
-										                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-										                        })
-										         },function(){
-											        $.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
-								    			}, function(e){
-								    				alert(e.__summary.msg);
-								    			});
+												Alloy.Globals.Server.putData($.$model.toJSON(), function(data) {
+													Alloy.Globals.Server.sendMsg({
+														id : guid(),
+														"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+														"fromUserId" : Alloy.Models.User.xGet("id"),
+														"type" : "Project.Share.Edit",
+														"messageState" : "unread",
+														"messageTitle" : "共享项目",
+														"date" : date,
+														"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
+														"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+														"messageData" : JSON.stringify({
+												                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+												                            projectShareAuthorizationId : $.$model.xGet("id"),
+												                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+												                        })
+											         },function(){
+												        $.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
+									    			}, function(e){
+									    				alert(e.__summary.msg);
+									    			});
+								    			}, function(e) {
+													alert(e.__summary.msg);
+												});
 							    			}, function(e) {
 												alert(e.__summary.msg);
 											});
