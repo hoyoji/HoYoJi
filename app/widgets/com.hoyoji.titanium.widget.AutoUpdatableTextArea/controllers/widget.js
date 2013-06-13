@@ -4,6 +4,7 @@ if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
+$.hintText.setText($.$attrs.hintText || "");
 
 $.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
@@ -63,6 +64,11 @@ $.setValue = function(value) {
 		}
 	}
 	value = this.convertModelValue(value);
+	if (value) {
+		$.hintText.hide();
+	} else {
+		$.hintText.show();
+	}
 	$.field.setText(value || "");
 }
 

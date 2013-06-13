@@ -96,7 +96,7 @@ $.onWindowCloseDo(function() {
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
 });
 
-if ($.saveableMode === "read") {
+if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
 	// $.friendAccount.hide();

@@ -61,5 +61,4 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions) {
 } else {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.addCollection(collection);
-
 }
