@@ -15,7 +15,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "amount"
 			/>
-			<Label id="removeMember" right="0" height="42" backgroundColor="black">del<Label/>
+			<Label id="removeMember" right="0" height="42"  width="10%" backgroundColor="red">del<Label/>
 		</View>
 	</View>
 </Alloy>
