@@ -30,7 +30,9 @@ function updateApportionAmount() {
 	}
 }
 
-$.$model.xGet("moneyExpense").on("change:amount",updateApportionAmount);
-$.onWindowCloseDo(function(){
-	$.$model.xGet("moneyExpense").off("change:amount", updateApportionAmount);	
+$.onWindowOpenDo(function(){
+	$.$model.xGet("moneyExpense").on("change:amount",updateApportionAmount);
+	$.onWindowCloseDo(function(){
+		$.$model.xGet("moneyExpense").off("change:amount", updateApportionAmount);	
+	});	
 });
