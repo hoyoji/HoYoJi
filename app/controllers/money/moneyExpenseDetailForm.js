@@ -10,7 +10,8 @@ if (!$.$model) {
 } else {
 	$.setSaveableMode("edit");
 }
-var oldDetailAmount = $.$model.xGet("amount") || 0; //detail的旧值
+var oldDetailAmount = $.$model.xGet("amount") || 0;
+//detail的旧值
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var expenseAmount = 0;
 	var detailTotal = 0;
@@ -56,18 +57,18 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				} else {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldExpenseAmount - newDetailAmount);
 				}
-				expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
-				// expense.trigger("xchange:amount", expense);
-				expense.xAddToSave($);
 				moneyAccount.xAddToSave($);
-				$.saveModel(saveEndCB, function(e) {
-					expense.xSet("amount", expense.previous("amount"));
-					moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
-					// if (oldMoneyAccount) {
-					// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-					// }
-					saveErrorCB(e);
-				});
+			});
+			expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
+			// expense.trigger("xchange:amount", expense);
+			expense.xAddToSave($);
+			$.saveModel(saveEndCB, function(e) {
+				expense.xSet("amount", expense.previous("amount"));
+				moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+				// if (oldMoneyAccount) {
+				// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+				// }
+				saveErrorCB(e);
 			});
 		}
 

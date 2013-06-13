@@ -96,7 +96,7 @@ $.onWindowCloseDo(function() {
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
 });
 
-if ($.saveableMode === "read") {
+if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
 	// $.friendAccount.hide();
@@ -246,6 +246,13 @@ if ($.saveableMode === "read") {
 			}
 		});
 		//}
+		$.$model.xGet("moneyExpenseApportions").map(function(item) {
+			if (item.__xDeleted) {
+				item.xAddToDelete($);
+			} else if (item.hasChanged()) {
+				item.xAddToSave($);
+			}
+		});
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
