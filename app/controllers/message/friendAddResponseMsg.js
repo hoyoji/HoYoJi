@@ -136,7 +136,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 						"fromUserId" : $.$model.xGet("toUserId"),
 						"type" : "System.Friend.AddResponse",
 						"messageState" : "new",
-						"messageTitle" : "系统消息",
+						"messageTitle" : "好友回复",
 						"date" : date,
 						"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "同意您的好友请求",
 						"messageBoxId" : friendUser.xGet("messageBoxId")
