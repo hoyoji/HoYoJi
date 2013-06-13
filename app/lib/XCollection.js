@@ -12,6 +12,13 @@
 					// this.xSetFilter(options.filter);
 				// }
 			},
+			xSum : function(field){
+				var total = 0;
+				this.forEach(function(item){
+					total += item.xPrevious(field);
+				})
+				return total;
+			},
 			xCreateFilter : function(filter, winController) {
 				var c = Alloy.createCollection(this.config.adapter.collection_name);
 				c.__filterCollection = this;

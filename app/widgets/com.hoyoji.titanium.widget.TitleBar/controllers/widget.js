@@ -12,10 +12,25 @@ if(!$.$attrs.backButtonHidden){
 	$.backButton.setVisible(true);
 }
 
+if(!$.$attrs.menuButtonHidden){
+	$.menuButton.setVisible(true);
+}
+
 // if($.$attrs.image){
 	// exports.setImage($.$attrs.image);
 // }
 
+exports.setBackButton = function(xButton){
+	$.$view.remove($.backButton.$view);
+	$.backButton = xButton;
+	xButton.setParent($.$view);
+}
+
+exports.setMenuButton = function(xButton){
+	$.$view.remove($.menuButton.$view);
+	$.menuButton = xButton;
+	xButton.setParent($.$view);
+}
 
 var boundXTable = null;
 exports.bindXTable = function(xTable){
@@ -142,7 +157,6 @@ exports.saveErrorCB = function(msg) {
 	}	
 }
 
-
 exports.setSaveableMode = function(mode) {
 	$.saveableMode = mode;
 	if ($.saveableMode === "add") {
@@ -201,6 +215,13 @@ $.menuButton.addEventListener('singletap', function(e) {
 	}
 });
 
+//if($.$attrs.backButtonHidden !== "true"){
+	$.backButton.addEventListener("singletap", function(e){
+		e.cancelBubble = true;
+		$.getCurrentWindow().close();
+	});
+//}
+
 exports.save = function(){
 	$.$view.fireEvent("save", {
 		bubbles : true,
@@ -226,13 +247,6 @@ $.onWindowOpenDo(function(){
 		// });
 	}
 	
-	if($.$attrs.backButtonHidden !== "true"){
-		$.backButton.addEventListener("singletap", function(e){
-			e.cancelBubble = true;
-			$.getCurrentWindow().close();
-		});
-	}
-
 	$.widget.fireEvent("registerdirtycallback", {
 		bubbles : true,
 		onBecameDirtyCB : $.dirtyCB,

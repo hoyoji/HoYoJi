@@ -342,26 +342,26 @@
 							} else {
 								$.getParentController().__changingRow = true;
 
-								var animation = Titanium.UI.createAnimation();
-								animation.duration = 500;
-								animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+								// var animation = Titanium.UI.createAnimation();
+								// animation.duration = 500;
+								// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
 
-								if ($.$model.id) {
-									animation.left = "-100%";
-								} else {
-									animation.opacity = "0.5";
-									animation.height = 0;
-									animation.width = 0;
-								}
-								animation.addEventListener('complete', function() {
+								// if ($.$model.id) {
+									// animation.left = "-100%";
+								// } else {
+									// animation.opacity = "0.5";
+									// animation.height = 0;
+									// animation.width = 0;
+								// }
+								// animation.addEventListener('complete', function() {
 									$.$view.fireEvent("click", {
 										bubbles : true,
 										deleteRow : true,
 										sectionRowId : $.$model.xGet("id"),
 										rowHasRendered : true
 									});
-								});
-								$.$view.animate(animation);
+								// });
+								// $.$view.animate(animation);
 							}
 						} else {
 							$.$view.fireEvent("click", {

@@ -87,10 +87,17 @@ $.$view.addEventListener("click", function(e) {
 		var len = collection.length ? collection.length - 1 : 0;
 		addRowToSection(rowModel, collection, e.index + len);
 	}
-	$.__changingRow = false;
-			console.info("5 XTable deleting row at " + e.index);
-	$.trigger("endchangingrow");
-			console.info("6 XTable deleting row at " + e.index);
+	if(OS_ANDROID){
+		function deleteRowPostLayout(){
+			$.table.removeEventListener("postlayout", deleteRowPostLayout);
+			$.__changingRow = false;
+			$.trigger("endchangingrow");
+		}
+		$.table.addEventListener("postlayout", deleteRowPostLayout);		
+	} else {
+		$.__changingRow = false;
+		$.trigger("endchangingrow");
+	}
 });
 
 function createRowView(rowModel, collection) {

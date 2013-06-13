@@ -97,24 +97,25 @@ exports.definition = {
 				});
 				if (moneyIncome.id) {
 					// 支出已在本地存在
-					if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
-						var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-						moneyIncome.__syncAmount = oldIncomeAmount + record.amount
-						// moneyIncome.save("amount", moneyIncome.__syncAmount, {
-							// dbTrans : dbTrans,
-							// patch : true
-						// });
-					} else {
-						moneyIncome.__syncAmount = moneyIncome.__syncAmount !== undefined ? moneyIncome.__syncAmount + record.amount : record.amount;
-					}
+					// if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
+						// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+						// moneyIncome.__syncAmount = oldIncomeAmount + record.amount
+						// // moneyIncome.save("amount", moneyIncome.__syncAmount, {
+							// // dbTrans : dbTrans,
+							// // patch : true
+						// // });
+					// } else {
+						moneyIncome.__syncAmount = moneyIncome.__syncAmount ? moneyIncome.__syncAmount + record.amount : record.amount;
+					// }
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
 					id : record.moneyIncomeId
 				});
-				var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-				moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
+				// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+				// moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
+				moneyIncome.__syncAmount = moneyIncome.__syncAmount ? moneyIncome.__syncAmount + record.amount - this.xGet("amount") : record.amount - this.xGet("amount");
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
@@ -138,6 +139,8 @@ exports.definition = {
 						var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
 						moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount");
 					// }
+						moneyIncome.__syncAmount = moneyIncome.__syncAmount ? moneyIncome.__syncAmount - record.amount : - record.amount;
+
 				}
 			},	
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {

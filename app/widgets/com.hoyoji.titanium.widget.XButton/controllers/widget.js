@@ -55,12 +55,15 @@ exports.setImage = function(imagePath) {
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
+
 exports.setVisible = function(visible) {
 	$.buttonView.setVisible(visible);
 }
+
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }
+
 // if ($.$attrs.borderRadius) {
 // $.$view.setBorderRadius($.$attrs.borderRadius);
 // }
@@ -70,6 +73,7 @@ if ($.$attrs.id) {
 // if ($.$attrs.height) {
 // $.$view.setHeight($.$attrs.height);
 // }
+
 if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
@@ -81,6 +85,10 @@ if ($.$attrs.backgroundImage) {
 }
 if ($.$attrs.image) {
 	exports.setImage($.$attrs.image);
+}
+
+if($.$attrs.visible !== "false"){
+	exports.setVisible(true);
 }
 
 var backgroundImage;
