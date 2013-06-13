@@ -47,17 +47,36 @@ $.onRowTap = function(e){
 	}
 	
 }
-if($.$model.xGet("type").startsWith("System.Friend")){
-	if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
-		$.messageImage.setImage("/images/message/messageRow/newFriendAddMessage.png");
-	}else{
-		$.messageImage.setImage("/images/message/messageRow/oldFriendAddMessage.png");
-	}
-}else if($.$model.xGet("type").startsWith("Project.Share")){
-	if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
-		$.messageImage.setImage("/images/message/messageRow/newProjectShareMessage.png");
-	}else{
-		$.messageImage.setImage("/images/message/messageRow/oldProjectShareMessage.png");
+
+$.onWindowOpenDo(function() {
+	setImageEdit();
+	$.$model.on("sync",setImageEdit);
+});
+
+$.onWindowCloseDo(function() {
+	$.$model.off("sync",setImageEdit);
+});
+
+function setImageEdit(){
+	if($.$model.xGet("type").startsWith("System.Friend")){
+		if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
+			$.messageImage.setImage("/images/message/messageRow/newFriendAddMessage.png");
+		}else{
+			$.messageImage.setImage("/images/message/messageRow/oldFriendAddMessage.png");
+		}
+	}else if($.$model.xGet("type").startsWith("Project.Share")){
+		if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
+			$.messageImage.setImage("/images/message/messageRow/newProjectShareMessage.png");
+		}else{
+			$.messageImage.setImage("/images/message/messageRow/oldProjectShareMessage.png");
+		}
+	}else if($.$model.xGet("type").startsWith("Account.Share")){
+		if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
+			$.messageImage.setImage("/images/message/messageRow/newProjectShareMessage.png");
+		}else{
+			$.messageImage.setImage("/images/message/messageRow/oldProjectShareMessage.png");
+		}
 	}
 }
+
 

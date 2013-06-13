@@ -249,7 +249,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
-			} else if (item.hasChanged()) {
+			} else /*if (item.hasChanged())*/ {
 				item.xAddToSave($);
 			}
 		});
