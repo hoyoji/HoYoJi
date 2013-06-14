@@ -55,7 +55,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (expense.xGet("moneyExpenseDetails").length > 0) {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldDetailAmount - newDetailAmount);
 				} else {
-					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + oldExpenseAmount - newDetailAmount);
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") + expenseAmount - newDetailAmount);
 				}
 				moneyAccount.xAddToSave($);
 			});
@@ -64,7 +64,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			expense.xAddToSave($);
 			$.saveModel(saveEndCB, function(e) {
 				expense.xSet("amount", expense.previous("amount"));
-				moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+				moneyAccount.xSet("currentBalance", moneyAccount.previous("currentBalance"));
 				// if (oldMoneyAccount) {
 				// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 				// }

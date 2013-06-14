@@ -43,10 +43,10 @@ function updateApportionAmount() {
 }
 
 $.onWindowOpenDo(function() {
-	$.$model.on("change:amount", updateApportionAmount);
+	$.$model.on("xchange:amount", updateApportionAmount);
 });
 $.onWindowCloseDo(function() {
-	$.$model.off("change:amount", updateApportionAmount);
+	$.$model.off("xchange:amount", updateApportionAmount);
 });
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
