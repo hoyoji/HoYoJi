@@ -8,7 +8,15 @@ function onFooterbarTap(e) {
 			selectedProject : selectedExpense.xGet("project"),
 			closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 			selectorCallback : function(model) {
-				$.projectShareAuthorization = model;
+				var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+					moneyExpense : selectedExpense,
+					friendUser : model.xGet("friendUser"),
+					amount : selectedExpenseAmount / (memberCount + 1),
+					apportionType : "Average"
+				});
+				selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
+				collection = selectedExpense.xGet("moneyExpenseApportions");
+				$.moneyExpenseApportionsTable.addCollection(collection);
 			}
 		};
 		attributes.title = "好友";
@@ -17,19 +25,6 @@ function onFooterbarTap(e) {
 		attributes.selectedModel = $.projectShareAuthorization;
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 	}
-}
-
-function addApportionMember(model) {
-	var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-		moneyExpense : selectedExpense,
-		friendUser : model.xGet("friendUser"),
-		amount : selectedExpenseAmount / (memberCount + 1),
-		apportionType : "Average"
-	});
-	selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
-	collection = selectedExpense.xGet("moneyExpenseApportions");
-	$.moneyExpenseApportionsTable.addCollection(collection);
-	$.moneyExpenseApportionsTable.refresh();
 }
 
 var collection;
