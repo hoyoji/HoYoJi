@@ -5,13 +5,14 @@
 			bindModel = "$.$model"
 			bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" left="100"
+			<Widget id="apportionType" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" left="100"
 			hightLight="false"
 			items="固定,均摊"
 			values="Fixed,Average"
 			bindModel="$.$model"
 			bindAttribute="apportionType"/>
 			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180" width="30%"
+			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"
 			bindAttribute = "amount"
 			/>

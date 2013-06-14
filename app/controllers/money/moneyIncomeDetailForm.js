@@ -67,6 +67,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					// }
 					saveErrorCB(e);
 				});
+			},function(){
+				$.saveModel(saveEndCB, saveErrorCB);
 			});
 		}
 

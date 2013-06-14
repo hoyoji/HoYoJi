@@ -29,6 +29,7 @@ function addApportionMember(model) {
 	selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.addCollection(collection);
+	$.moneyExpenseApportionsTable.refresh();
 }
 
 var collection;
@@ -38,7 +39,7 @@ if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject 
 	selectedExpense.oldProject = selectedExpense.xGet("project");
 }
 
-if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions) {
+if (!selectedExpense.hasAddedApportions) {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.removeCollection(collection);
 	selectedExpense.xGet("moneyExpenseApportions").reset();
