@@ -11,6 +11,7 @@
 				bindAttributeIsModel="name"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="friend" labelText="好友" hintText="请选择好友"
+					editModeEditability="noneditable"
 					bindModel="$.$model"
 					bindAttribute="friendUser"
 					bindAttributeIsModel="getFriendDisplayName()"

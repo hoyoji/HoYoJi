@@ -22,25 +22,20 @@ $.onRowTap = function(e){
 		}
 		
 	}else{
-		if ($.$model.xGet("type") === "System.Friend.AddRequest" 
-			|| $.$model.xGet("type") === "System.Friend.AddResponse" 
-			|| $.$model.xGet("type") === "System.Friend.AutoAdd"
-			|| $.$model.xGet("type") === "System.Friend.Reject"
-			|| $.$model.xGet("type") === "System.Friend.Delete") {
+		if ($.$model.xGet("type").startsWith("System.Friend")) {
 			Alloy.Globals.openWindow("message/friendAddResponseMsg", {
 				$model : $.$model,
 				saveableMode : "read"
 			});
 			return false;
-		}else if($.$model.xGet("type") === "Project.Share.AddRequest" 
-				||$.$model.xGet("type") === "Project.Share.Accept"
-				||$.$model.xGet("type") === "Project.Share.Edit"
-				||$.$model.xGet("type") === "Project.Share.Reject"
-				||$.$model.xGet("type") === "Project.Share.Delete"){
+		}else if($.$model.xGet("type").startsWith("Project.Share")){
 			Alloy.Globals.openWindow("message/projectShareAddResponseMsg", {$model : $.$model, saveableMode : "read"});
 			return false;
 		}else if($.$model.xGet("type") === "Account.Share.AddRequest"){
 			Alloy.Globals.openWindow("message/accountShareManageMsg", {$model : $.$model, saveableMode : "read"});
+			return false;
+		}else if($.$model.xGet("type").startsWith("Project.Deposite")){
+			Alloy.Globals.openWindow("message/ProjectDepositeAddResponseMsg", {$model : $.$model, saveableMode : "read"});
 			return false;
 		}
 		

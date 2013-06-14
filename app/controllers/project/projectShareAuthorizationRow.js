@@ -8,8 +8,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("共享详细", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
 			$model : $.$model
-		},isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id);
-	}));
+		});
+	},isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
@@ -59,7 +59,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 				alert(e.__summary.msg);
 			});
 		});
-	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id));
+	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 function setWaitForAccept() {
