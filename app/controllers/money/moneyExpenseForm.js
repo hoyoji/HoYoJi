@@ -38,7 +38,7 @@ $.apportion.addEventListener("singletap", openApportion);
 		// $.amount.field.fireEvent("change");
 	// }
 // }
-
+// 
 $.onWindowOpenDo(function() {
 	$.$model.on("change:amount", updateApportionAmount);
 });
