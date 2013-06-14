@@ -21,7 +21,7 @@ function onFooterbarTap(e) {
 
 function addApportionMember(model) {
 	var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-		expense : selectedExpense,
+		moneyExpense : selectedExpense,
 		friendUser : model.xGet("friendUser"),
 		amount : selectedExpenseAmount / (memberCount + 1),
 		apportionType : "Average"
@@ -48,7 +48,7 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions) {
 	var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
 	selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-			expense : selectedExpense,
+			moneyExpense : selectedExpense,
 			friendUser : projectShareAuthorization.xGet("friendUser"),
 			amount : selectedExpenseAmount / memberCount,
 			apportionType : "Average"
