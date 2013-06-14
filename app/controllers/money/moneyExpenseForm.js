@@ -16,27 +16,28 @@ $.makeContextMenu = function() {
 }
 
 $.apportion.addEventListener("singletap", openApportion);
-function openApportion() {
-	Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
-		selectedExpense : $.$model,
-		closeWithoutSave : true
-	});
-}
-
-function updateApportionAmount() {
-	if ($.$model.xGet("apportionType") === "Average") {
-		var fixedApportions = $.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").xCreateFilter({
-			apportionType : "Fixed"
-		});
-		var fixedTotal;
-		fixedApportions.forEach(function(item) {
-			fixedTotal = fixedTotal + item.xGet("amount");
-		});
-		var average = ($.$model.xGet("moneyExpense").xGet("amount") - fixedTotal ) / ($.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").length - fixedApportions.length);
-		$.amount.setValue(average);
-		$.amount.field.fireEvent("change");
-	}
-}
+// function openApportion() {
+	// Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
+		// selectedExpense : $.$model,
+		// closeWithoutSave : true
+	// });
+// }
+// 
+// function updateApportionAmount() {
+// 	
+	// if ($.$model.xGet("apportionType") === "Average") {
+		// var fixedApportions = $.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").xCreateFilter({
+			// apportionType : "Fixed"
+		// });
+		// var fixedTotal;
+		// fixedApportions.forEach(function(item) {
+			// fixedTotal = fixedTotal + item.xGet("amount");
+		// });
+		// var average = ($.$model.xGet("moneyExpense").xGet("amount") - fixedTotal ) / ($.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").length - fixedApportions.length);
+		// $.amount.setValue(average);
+		// $.amount.field.fireEvent("change");
+	// }
+// }
 
 $.onWindowOpenDo(function() {
 	$.$model.on("change:amount", updateApportionAmount);
