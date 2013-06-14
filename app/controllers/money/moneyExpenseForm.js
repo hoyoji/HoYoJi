@@ -16,36 +16,38 @@ $.makeContextMenu = function() {
 }
 
 $.apportion.addEventListener("singletap", openApportion);
-// function openApportion() {
-	// Alloy.Globals.openWindow("money/moneyExpenseApportionAll",{
-		// selectedExpense : $.$model,
-		// closeWithoutSave : true
-	// });
-// }
-// 
-// function updateApportionAmount() {
-// 	
-	// if ($.$model.xGet("apportionType") === "Average") {
-		// var fixedApportions = $.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").xCreateFilter({
-			// apportionType : "Fixed"
-		// });
-		// var fixedTotal;
-		// fixedApportions.forEach(function(item) {
-			// fixedTotal = fixedTotal + item.xGet("amount");
-		// });
-		// var average = ($.$model.xGet("moneyExpense").xGet("amount") - fixedTotal ) / ($.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").length - fixedApportions.length);
-		// $.amount.setValue(average);
-		// $.amount.field.fireEvent("change");
-	// }
-// }
-// 
-// $.onWindowOpenDo(function() {
-	// $.$model.on("change:amount", updateApportionAmount);
-// });
-// $.onWindowCloseDo(function() {
-	// $.$model.off("change:amount", updateApportionAmount);
-// });
+function openApportion() {
+	Alloy.Globals.openWindow("money/moneyExpenseApportionAll", {
+		selectedExpense : $.$model,
+		closeWithoutSave : true
+	});
+}
 
+function updateApportionAmount() {
+	if ($.$model.xGet("moneyExpenseApportions")) {
+		var fixedApportions = $.$model.xGet("moneyExpenseApportions").xCreateFilter({
+			apportionType : "Fixed"
+		});
+		var averageApportions = $.$model.xGet("moneyExpenseApportions").xCreateFilter({
+			apportionType : "Average"
+		});
+		var fixedTotal = 0;
+		fixedApportions.forEach(function(item) {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		});
+		var average = ($.$model.xGet("amount") - fixedTotal ) / averageApportions.length;
+		averageApportions.forEach(function(item) {
+			item.set("amount", average);
+		});
+	}
+}
+
+$.onWindowOpenDo(function() {
+	$.$model.on("change:amount", updateApportionAmount);
+});
+$.onWindowCloseDo(function() {
+	$.$model.off("change:amount", updateApportionAmount);
+});
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
@@ -169,10 +171,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	
-	if($.saveableMode === "add"){
+
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 
@@ -242,7 +244,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		//if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
 		if (oldMoneyAccount === newMoneyAccount) {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+1|||"+oldAmount+"||||"+newAmount);
+			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+1|||" + oldAmount + "||||" + newAmount);
 		} else {
 			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+2");
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
@@ -273,7 +275,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
-			} else /*if (item.hasChanged())*/ {
+			} else/*if (item.hasChanged())*/
+			{
 				item.xAddToSave($);
 			}
 		});
