@@ -42,7 +42,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			moneyAccount.xAddToSave($);
 			$.saveModel(saveEndCB, function(e) {
 				expense.xSet("amount", expense.previous("amount"));
-				moneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
+				moneyAccount.xSet("currentBalance", moneyAccount.previous("currentBalance"));
 				// if (oldMoneyAccount) {
 				// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 				// }
