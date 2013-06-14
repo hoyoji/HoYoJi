@@ -53,20 +53,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (income.xGet("moneyIncomeDetails").length > 0) {
 					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldDetailAmount + newDetailAmount);
 				} else {
-					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - incomeAmount + newDetailAmount);
+					moneyAccount.xSet("currentBalance", moneyAccount.xGet("currentBalance") - oldIncomeAmount + newDetailAmount);
 				}
 				moneyAccount.xAddToSave($);
-			});
-			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
-			// income.trigger("xchange:amount", income);
-			income.xAddToSave($);
-			$.saveModel(saveEndCB, function(e) {
-				income.xSet("amount", income.previous("amount"));
-				moneyAccount.xSet("currentBalance", moneyAccount.previous("currentBalance"));
-				// if (oldMoneyAccount) {
-				// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-				// }
-				saveErrorCB(e);
+				income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount")).xAddToSave($);
+				// income.trigger("xchange:amount", income);
+				income.xAddToSave($);
+				$.saveModel(saveEndCB, function(e) {
+					income.xSet("amount", income.previous("amount"));
+					moneyAccount.xSet("currentBalance", moneyAccount.previous("currentBalance"));
+					// if (oldMoneyAccount) {
+					// oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+					// }
+					saveErrorCB(e);
+				});
 			});
 		}
 

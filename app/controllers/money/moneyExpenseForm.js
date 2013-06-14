@@ -35,19 +35,14 @@ function updateApportionAmount() {
 		fixedApportions.forEach(function(item) {
 			fixedTotal = fixedTotal + item.xGet("amount");
 		});
-		var average = ($.$model.xGet("amount") - fixedTotal ) / averageApportions.length;
+		var average = ($.amount.getValue() - fixedTotal ) / averageApportions.length;
 		averageApportions.forEach(function(item) {
-			item.set("amount", average);
+			item.xSet("amount", average);
 		});
 	}
 }
 
-$.onWindowOpenDo(function() {
-	$.$model.on("xchange:amount", updateApportionAmount);
-});
-$.onWindowCloseDo(function() {
-	$.$model.off("xchange:amount", updateApportionAmount);
-});
+$.amount.field.addEventListener("change", updateApportionAmount);
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
