@@ -13,7 +13,7 @@ Alloy.createModel("ProjectShareAuthorization", {
 var defaultFriendCategory = Alloy.createModel("FriendCategory", {name : "我的好友", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 
-var merchantFriendCategory = Alloy.createModel("FriendCategory", {name : "商家好友", ownerUser : $.$model}).xAddToSave($);
+//var merchantFriendCategory = Alloy.createModel("FriendCategory", {name : "商家好友", ownerUser : $.$model}).xAddToSave($);
 
 var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("messageBox", messageBox);
@@ -30,6 +30,10 @@ $.$model.xGet("activeProject").xSet("defaultIncomeCategory",defaultIncomeCategor
 
 var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "日常支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCategory);
+
+var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "充值收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
+
+var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "充值支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 
 $.onSave = function(saveEndCB, saveErrorCB){
 	$.$model.xValidate(function() {
