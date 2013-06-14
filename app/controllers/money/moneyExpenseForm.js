@@ -39,12 +39,12 @@ $.apportion.addEventListener("singletap", openApportion);
 	// }
 // }
 // 
-$.onWindowOpenDo(function() {
-	$.$model.on("change:amount", updateApportionAmount);
-});
-$.onWindowCloseDo(function() {
-	$.$model.off("change:amount", updateApportionAmount);
-});
+// $.onWindowOpenDo(function() {
+	// $.$model.on("change:amount", updateApportionAmount);
+// });
+// $.onWindowCloseDo(function() {
+	// $.$model.off("change:amount", updateApportionAmount);
+// });
 
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
