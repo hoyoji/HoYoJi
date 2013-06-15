@@ -294,6 +294,11 @@
 					}
 				}
 				this.set(d, c);
+				if(!c.xsilent){
+					for(var attr in d){
+						this.trigger("_xchange:"+attr, this);
+					}
+				}
 				return this;
 			},
 			xGetHasMany : function(attr) {

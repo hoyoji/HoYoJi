@@ -202,6 +202,12 @@
 				}
 			});
 
+			$.refresh = function(){
+				if($.updateField){
+					$.updateField();
+				}
+			}
+
 			$.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
 				$.$attrs.bindModel = model;
 				$.$attrs.bindAttributeIsModel = bindAttributeIsModel;
@@ -226,7 +232,7 @@
 						$.hideErrorMsg();
 					}
 				}
-				$.updateField = function(e) {
+				$.updateField = function() {
 					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 					if ($.__dirtyCount > 0) {
