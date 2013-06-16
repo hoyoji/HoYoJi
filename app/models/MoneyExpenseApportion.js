@@ -51,16 +51,6 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getDisplayName : function() {
-				return this.xGet("friendUser").xGet("userName");
-			},
-			getFriendDisplayName : function() {
-				var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : this.xGet("friendUser").id});
-				if(friend.id){
-					return friend.getDisplayName();
-				}
-				return this.getDisplayName();
-			},
 			getAmount : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
@@ -96,12 +86,12 @@ exports.definition = {
 					// this._xDelete(xFinishCallback, options);
 				// }
 			// },
-			// canEdit : function() {
-				// return this.xGet("moneyExpense").canEdit();
-			// },
-			// canDelete : function() {
-				// return this.xGet("moneyExpense").canDelete();
-			// },
+			canEdit : function() {
+				return this.xGet("moneyExpense").canEdit();
+			},
+			canDelete : function() {
+				return this.xGet("moneyExpense").canDelete();
+			},
 			// syncAddNew : function(record, dbTrans) {
 				// // 更新账户余额
 				// // 1. 如果支出也是新增的

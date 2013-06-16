@@ -8,15 +8,19 @@ function onFooterbarTap(e) {
 			selectedProject : selectedExpense.xGet("project"),
 			closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 			selectorCallback : function(model) {
+				$.projectShareAuthorization = model;
 				var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
 					moneyExpense : selectedExpense,
-					friendUser : model.xGet("friendUser"),
-					amount : selectedExpenseAmount / (memberCount + 1),
+					friendUser : $.projectShareAuthorization.xGet("friendUser"),
+					amount : 0,
 					apportionType : "Average"
 				});
+				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
 				selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
 				collection = selectedExpense.xGet("moneyExpenseApportions");
-				$.moneyExpenseApportionsTable.addCollection(collection);
+				collection.forEach(function(item){
+					item.trigger("_xchange:amount",item);
+				})
 			}
 		};
 		attributes.title = "好友";
@@ -34,7 +38,7 @@ if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject 
 	selectedExpense.oldProject = selectedExpense.xGet("project");
 }
 
-if (!selectedExpense.hasAddedApportions) {
+if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 1) {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.removeCollection(collection);
 	selectedExpense.xGet("moneyExpenseApportions").reset();
