@@ -104,17 +104,43 @@ function deleteDetail(detailModel) {
 	}
 }
 
+function deleteApportion(apportionModel) {
+	var expenseAmount = $.$model.xGet("amount");
+	var moneyExpenseApportions = $.$model.xGet("moneyExpenseApportions");
+	var averageApportions = [];
+	var fixedTotal = 0;
+	moneyExpenseApportions.forEach(function(item) {
+		if (item.xGet("apportionType") === "Fixed") {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		} else {
+			averageApportions.push(item);
+		}
+	});
+	var average = 0;
+	if (apportionModel.xGet("apportionType") === "Average") {
+		average = (expenseAmount - fixedTotal) / (averageApportions.length - 1);
+	} else {
+		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+	}
+	averageApportions.forEach(function(item) {
+		item.xSet("amount", average);
+	});
+
+}
+
 $.onWindowOpenDo(function() {
 	// setAmountEdit();
 	// $.$model.on("sync",setAmountEdit);
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
+	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 });
 
 $.onWindowCloseDo(function() {
 	// $.$model.off("sync",setAmountEdit);
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
+	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
 });
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {

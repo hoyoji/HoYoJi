@@ -9,18 +9,29 @@ function onFooterbarTap(e) {
 			closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 			selectorCallback : function(model) {
 				$.projectShareAuthorization = model;
-				var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-					moneyExpense : selectedExpense,
-					friendUser : $.projectShareAuthorization.xGet("friendUser"),
-					amount : 0,
-					apportionType : "Average"
-				});
 				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
-				selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
-				collection = selectedExpense.xGet("moneyExpenseApportions");
-				collection.forEach(function(item){
-					item.trigger("_xchange:amount",item);
-				})
+				var hasMember;
+				oldCollection.forEach(function(item){
+					if(item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")){
+						hasMember = true;
+						return;
+					}
+				});
+				if (hasMember === true) {
+					alert("该成员已存在，无需重复添加");
+				} else {
+					var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+						moneyExpense : selectedExpense,
+						friendUser : $.projectShareAuthorization.xGet("friendUser"),
+						amount : 0,
+						apportionType : "Average"
+					});
+					selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
+					collection = selectedExpense.xGet("moneyExpenseApportions");
+					collection.forEach(function(item) {
+						item.trigger("_xchange:amount", item);
+					});
+				}
 			}
 		};
 		attributes.title = "好友";

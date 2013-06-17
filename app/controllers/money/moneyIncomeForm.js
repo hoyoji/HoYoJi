@@ -13,25 +13,25 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-
-$.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	if(selectedFriendModel){
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
-	}else{
+	} else {
 		return null;
 	}
 }
 
-$.convertUser2FriendModel = function(userModel){
-	if(userModel){
-		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
-		if(friend.id){
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
 			return friend;
 		}
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -60,18 +60,44 @@ function updateAmount() {
 
 function deleteDetail(detailModel) {
 	if ($.$model.xGet("useDetailsTotal")) {
-	$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
-	updateAmount();
+		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+		updateAmount();
 	}
+}
+
+function deleteApportion(apportionModel) {
+	var expenseAmount = $.$model.xGet("amount");
+	var moneyExpenseApportions = $.$model.xGet("moneyExpenseApportions");
+	var averageApportions = [];
+	var fixedTotal = 0;
+	moneyExpenseApportions.forEach(function(item) {
+		if (item.xGet("apportionType") === "Fixed") {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		} else {
+			averageApportions.push(item);
+		}
+	});
+	var average = 0;
+	if (apportionModel.xGet("apportionType") === "Average") {
+		average = (expenseAmount - fixedTotal) / (averageApportions.length - 1);
+	} else {
+		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+	}
+	averageApportions.forEach(function(item) {
+		item.xSet("amount", average);
+	});
+
 }
 
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
+	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 });
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
+	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
 });
 
 if ($.saveableMode === "read") {
@@ -129,9 +155,9 @@ if ($.saveableMode === "read") {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if($.saveableMode === "add"){
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 

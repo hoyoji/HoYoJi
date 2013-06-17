@@ -9,18 +9,29 @@ function onFooterbarTap(e) {
 			closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 			selectorCallback : function(model) {
 				$.projectShareAuthorization = model;
-				var newMoneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-					moneyIncome : selectedIncome,
-					friendUser : $.projectShareAuthorization.xGet("friendUser"),
-					amount : 0,
-					apportionType : "Average"
-				});
 				var oldCollection = selectedIncome.xGet("moneyIncomeApportions");
-				selectedIncome.xGet("moneyIncomeApportions").add(newMoneyIncomeApportion);
-				collection = selectedIncome.xGet("moneyIncomeApportions");
-				collection.forEach(function(item){
-					item.trigger("_xchange:amount",item);
-				})
+				var hasMember;
+				oldCollection.forEach(function(item) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")) {
+						hasMember = true;
+						return;
+					}
+				});
+				if (hasMember === true) {
+					alert("该成员已存在，无需重复添加");
+				} else {
+					var newMoneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+						moneyIncome : selectedIncome,
+						friendUser : $.projectShareAuthorization.xGet("friendUser"),
+						amount : 0,
+						apportionType : "Average"
+					});
+					selectedIncome.xGet("moneyIncomeApportions").add(newMoneyIncomeApportion);
+					collection = selectedIncome.xGet("moneyIncomeApportions");
+					collection.forEach(function(item) {
+						item.trigger("_xchange:amount", item);
+					});
+				}
 			}
 		};
 		attributes.title = "好友";
