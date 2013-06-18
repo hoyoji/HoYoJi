@@ -21,6 +21,27 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+function openFriendSelector(){
+	var attributes = {
+	selectorCallback : function(model) {
+		var friendUser =  Alloy.createModel("User",model.friendUser);
+		alert(friendUser.xGet("userName"));
+		
+		$.$model.xSet("friendUser",friendUser);
+		$.friendUser.setValue(friendUser.getFriendDisplayName());
+		$.friendUser.field.fireEvent("change");
+	}
+	};
+	attributes.title = "项目成员";
+	attributes.selectModelType = "ProjectShareAuthorization";
+	attributes.selectModelCanBeNull = false;
+	// attributes.selectedModel = $.friend;
+	attributes.selectedProject = $.$model.xGet("project");
+	
+	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes); 
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -200,7 +221,7 @@ if ($.saveableMode === "read") {
 				}
 				
 				
-				
+				var date = (new Date()).toISOString();
 				var account = {};
 				for (var attr in $.$model.config.columns) {
 					account[attr] = $.$model.xGet(attr);
@@ -217,7 +238,8 @@ if ($.saveableMode === "read") {
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 									  accountType : "MoneyExpense",
-									  account : account
+									  account : account,
+									  depositeProject : $.$model.xGet("project")
 								  })
 				}, function() {
 					saveEndCB(e);

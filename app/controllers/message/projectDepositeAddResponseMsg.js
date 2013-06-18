@@ -123,6 +123,7 @@ $.onWindowOpenDo(function() {
 
 function importToLocalOperate() {
 	if (accountShareData.accountType === "MoneyExpense") {
+		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject)
 		var account = Alloy.createModel("MoneyIncome", {
 			date : accountShareData.account.date,
 			amount : accountShareData.account.amount,
@@ -132,27 +133,17 @@ function importToLocalOperate() {
 			exchangeRate : 1,
 			incomeType : accountShareData.account.expenseType,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-			project : Alloy.Models.User.xGet("activeProject"),
-			moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+			project : depositeProject,
 			friendUser : $.$model.xGet("fromUser")
 		});
 
 		var moneyIncomeDetails = [];
-		var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
+		var accountShareMsgController = Alloy.Globals.openWindow("money/projectIncomeForm", {
 			$model : account
 		});
+		$.$model.xSet("messageState","closed");
+		$.$model.xAddToSave(accountShareMsgController.content);
 		account.xAddToSave(accountShareMsgController.content);
-		accountShareData.accountDetails.map(function(accountDetail) {
-			var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
-				name : accountDetail.name,
-				amount : accountDetail.amount,
-				moneyIncome : account,
-				remark : accountDetail.remark,
-				ownerUser : Alloy.Models.User
-			}).xAddToSave(accountShareMsgController.content);
-			moneyIncomeDetails.push(moneyIncomeDetail)
-		});
-		account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
 		accountShareMsgController.content.titleBar.dirtyCB();
 	}
 }
