@@ -96,12 +96,12 @@ exports.definition = {
 					// this._xDelete(xFinishCallback, options);
 				// }
 			// },
-			// canEdit : function() {
-				// return this.xGet("moneyExpense").canEdit();
-			// },
-			// canDelete : function() {
-				// return this.xGet("moneyExpense").canDelete();
-			// },
+			canEdit : function() {
+				return this.xGet("moneyExpense").canEdit();
+			},
+			canDelete : function() {
+				return this.xGet("moneyExpense").canDelete();
+			},
 			// syncAddNew : function(record, dbTrans) {
 				// // 更新账户余额
 				// // 1. 如果支出也是新增的

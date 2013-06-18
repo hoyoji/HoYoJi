@@ -1,0 +1,22 @@
+<Alloy>
+	<View class="container" height="42">
+		<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
+			<Widget id="name" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10"
+			bindModel = "$.$model"
+			bindAttribute = "getFriendDisplayName()"
+			/>
+			<Widget id="apportionType" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" left="100"
+			hightLight="false"
+			items="固定,均摊"
+			values="Fixed,Average"
+			bindModel="$.$model"
+			bindAttribute="apportionType"/>
+			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180" width="30%"
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel = "$.$model"
+			bindAttribute = "amount"
+			/>
+			<Label id="removeMember" right="0" height="42"  width="10%" backgroundColor="red">del<Label/>
+		</View>
+	</View>
+</Alloy>

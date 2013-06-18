@@ -8,15 +8,30 @@ function onFooterbarTap(e) {
 			selectedProject : selectedExpense.xGet("project"),
 			closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 			selectorCallback : function(model) {
-				var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-					moneyExpense : selectedExpense,
-					friendUser : model.xGet("friendUser"),
-					amount : selectedExpenseAmount / (memberCount + 1),
-					apportionType : "Average"
+				$.projectShareAuthorization = model;
+				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
+				var hasMember;
+				oldCollection.forEach(function(item){
+					if(item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")){
+						hasMember = true;
+						return;
+					}
 				});
-				selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
-				collection = selectedExpense.xGet("moneyExpenseApportions");
-				$.moneyExpenseApportionsTable.addCollection(collection);
+				if (hasMember === true) {
+					alert("该成员已存在，无需重复添加");
+				} else {
+					var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+						moneyExpense : selectedExpense,
+						friendUser : $.projectShareAuthorization.xGet("friendUser"),
+						amount : 0,
+						apportionType : "Average"
+					});
+					selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
+					collection = selectedExpense.xGet("moneyExpenseApportions");
+					collection.forEach(function(item) {
+						item.trigger("_xchange:amount", item);
+					});
+				}
 			}
 		};
 		attributes.title = "好友";
@@ -34,7 +49,7 @@ if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject 
 	selectedExpense.oldProject = selectedExpense.xGet("project");
 }
 
-if (!selectedExpense.hasAddedApportions) {
+if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 1) {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.removeCollection(collection);
 	selectedExpense.xGet("moneyExpenseApportions").reset();
