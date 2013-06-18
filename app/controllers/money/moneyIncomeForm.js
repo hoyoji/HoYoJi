@@ -13,6 +13,35 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.apportion.addEventListener("singletap", openApportion);
+function openApportion() {
+	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
+		selectedIncome : $.$model,
+		closeWithoutSave : true
+	});
+}
+
+function updateApportionAmount() {
+	if ($.$model.xGet("moneyIncomeApportions")) {
+		var fixedApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
+			apportionType : "Fixed"
+		});
+		var averageApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
+			apportionType : "Average"
+		});
+		var fixedTotal = 0;
+		fixedApportions.forEach(function(item) {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		});
+		var average = ($.amount.getValue() - fixedTotal ) / averageApportions.length;
+		averageApportions.forEach(function(item) {
+			item.xSet("amount", average);
+		});
+	}
+}
+
+$.amount.field.addEventListener("change", updateApportionAmount);
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
