@@ -21,10 +21,15 @@
 }
 
 "#localAmountLabel": {
-	color: '#329600'
+	color: '#042c37'
 }
 
 "#amount": {
+	color: '#042c37',
+	fieldColor: "#329600"
+}
+
+"#localAmount": {
 	color: '#042c37',
 	fieldColor: "#329600"
 }
