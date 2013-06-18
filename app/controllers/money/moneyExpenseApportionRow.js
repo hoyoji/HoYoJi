@@ -11,7 +11,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.$model.on("_xchange:amount", function(){
+$.$model.on("_xchange:amount", function() {
 	$.amount.refresh();
 });
 
@@ -26,38 +26,52 @@ $.$model.on("_xchange:apportionType", function() {
 	} else {
 		$.amount.$attrs.editModeEditability = "noneditable";
 		$.amount.$attrs.addModeEditability = "noneditable";
+		updateAmount();
 	}
 });
+
 
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
-	} 
-	var oldAmount = $.$model.xGet("amount");
+	}
+	oldAmount = $.$model.xGet("amount");
 	$.$model.on("_xchange:amount", function() {
-		if ($.$model.xGet("apportionType") === "Fixed" &&
-			$.amount.getValue() && $.amount.getValue() !== oldAmount) {
-			var expense = $.$model.xGet("moneyExpense");
-			var expenseAmount = expense.xGet("amount");
-			var moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
-			// var fixedApportions;
-			// var averageApportions;
-			var averageApportions = [];
-			var fixedTotal = 0;
-			moneyExpenseApportions.forEach(function(item){
-				if(item.xGet("apportionType") === "Fixed") {
-					fixedTotal = fixedTotal + item.xGet("amount");
-				} else {
-				// if(item.xGet("apportionType") === "Average") {
-					// averageApportions.add(item);
-					averageApportions.push(item);
-				}
-			});
-			var average = (expenseAmount - fixedTotal) / averageApportions.length;
-			averageApportions.forEach(function(item) {
-				item.xSet("amount", average);
-			});
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount")) {
+			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
+		} else {
+			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+				updateAmount();
+			}
 		}
 	});
-}); 
+});
+
+var oldAmount;
+var expense;
+var expenseAmount;
+var moneyExpenseApportions;
+var averageApportions;
+var fixedTotal;
+var average;
+function updateAmount() {
+	expense = $.$model.xGet("moneyExpense");
+	expenseAmount = expense.xGet("amount");
+	moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
+	averageApportions = [];
+	fixedTotal = 0;
+	moneyExpenseApportions.forEach(function(item) {
+		if (item.xGet("apportionType") === "Fixed") {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		} else {
+			averageApportions.push(item);
+		}
+	});
+	average = (expenseAmount - fixedTotal) / averageApportions.length;
+	averageApportions.forEach(function(item) {
+		if (item.xGet("apportionType") === "Average") {
+			item.xSet("amount", average);
+		}
+	});
+}
