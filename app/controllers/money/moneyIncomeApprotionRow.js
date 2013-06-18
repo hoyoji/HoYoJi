@@ -40,9 +40,9 @@ $.onWindowOpenDo(function() {
 		if ($.amount.getValue() && $.$model.xGet("moneyIncome").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyIncome").xGet("amount")) {
 			alert("分摊金额大于实际收入金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新输入");
 		} else {
-			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+			// if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
 			updateAmount();
-			}
+			// }
 		}
 	});
 });

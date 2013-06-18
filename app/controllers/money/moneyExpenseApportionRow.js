@@ -41,9 +41,9 @@ $.onWindowOpenDo(function() {
 		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount")) {
 			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
 		} else {
-			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+			// if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
 				updateAmount();
-			}
+			// }
 		}
 	});
 });
