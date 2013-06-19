@@ -133,19 +133,19 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
-	// $.localAmount.show();
+	// $.localAmountContainer.show();
 	// $.ownerUser.show();
 	// $.amount.hide();
 
-	$.localAmount.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		// $.localAmount.hide();
+		// $.localAmountContainer.hide();
 		// $.ownerUser.hide();
-		// $.localAmount.setHeight(0);
+		// $.localAmountContainer.setHeight(0);
 		// $.ownerUser.setHeight(0);
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);

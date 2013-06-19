@@ -147,10 +147,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
 	// $.friendAccount.hide();
-	// $.localAmount.show();
+	// $.localAmountContainer.show();
 	// $.ownerUser.show();
 	// $.amount.hide();
-	$.localAmount.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
