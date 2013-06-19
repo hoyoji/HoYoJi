@@ -163,6 +163,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
+		if($.$model.xGet("project").xGet("projectShareAuthorizations") === 1) {
+				$.apportion.hide();
+			}else{
+				$.apportion.show();
+			}
 	});
 
 	$.amount.field.addEventListener("singletap", function(e) {
@@ -240,12 +245,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 			if($.project.getValue().xGet("projectShareAuthorizations") === 1) {
-				$.apportion.setHeight(42);
+				$.apportion.hide();
 			}else{
-				$.apportion.setHeight(0);
+				$.apportion.show();
 			}
-		}else{
-			$.apportion.setHeight(0);
+		}
+		else{
+			$.apportion.hide();
 		}
 	});
 

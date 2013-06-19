@@ -30,7 +30,7 @@ $.$model.on("_xchange:apportionType", function() {
 	}
 });
 
-
+var oldAmount;
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.amount.$attrs.editModeEditability = "editable";
@@ -41,26 +41,23 @@ $.onWindowOpenDo(function() {
 		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount")) {
 			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
 		} else {
-			// if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
 				updateAmount();
-			// }
+			}
 		}
 	});
 });
 
-var oldAmount;
-var expense;
-var expenseAmount;
-var moneyExpenseApportions;
-var averageApportions;
-var fixedTotal;
-var average;
+if($.$model.isNew()){
+	updateAmount();
+}
+
 function updateAmount() {
-	expense = $.$model.xGet("moneyExpense");
-	expenseAmount = expense.xGet("amount");
-	moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
-	averageApportions = [];
-	fixedTotal = 0;
+	var expense = $.$model.xGet("moneyExpense");
+	var expenseAmount = expense.xGet("amount") || 0;
+	var moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
+	var averageApportions = [];
+	var fixedTotal = 0;
 	moneyExpenseApportions.forEach(function(item) {
 		if (item.xGet("apportionType") === "Fixed") {
 			fixedTotal = fixedTotal + item.xGet("amount");
@@ -68,7 +65,7 @@ function updateAmount() {
 			averageApportions.push(item);
 		}
 	});
-	average = (expenseAmount - fixedTotal) / averageApportions.length;
+	var average = (expenseAmount - fixedTotal) / averageApportions.length;
 	averageApportions.forEach(function(item) {
 		if (item.xGet("apportionType") === "Average") {
 			item.xSet("amount", average);
