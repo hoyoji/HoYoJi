@@ -13,6 +13,35 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.apportion.addEventListener("singletap", openApportion);
+function openApportion() {
+	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
+		selectedIncome : $.$model,
+		closeWithoutSave : true
+	});
+}
+
+function updateApportionAmount() {
+	if ($.$model.xGet("moneyIncomeApportions")) {
+		var fixedApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
+			apportionType : "Fixed"
+		});
+		var averageApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
+			apportionType : "Average"
+		});
+		var fixedTotal = 0;
+		fixedApportions.forEach(function(item) {
+			fixedTotal = fixedTotal + item.xGet("amount");
+		});
+		var average = ($.amount.getValue() - fixedTotal ) / averageApportions.length;
+		averageApportions.forEach(function(item) {
+			item.xSet("amount", average);
+		});
+	}
+}
+
+$.amount.field.addEventListener("change", updateApportionAmount);
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -66,11 +95,11 @@ function deleteDetail(detailModel) {
 }
 
 function deleteApportion(apportionModel) {
-	var expenseAmount = $.$model.xGet("amount");
-	var moneyExpenseApportions = $.$model.xGet("moneyExpenseApportions");
+	var incomeAmount = $.$model.xGet("amount");
+	var moneyIncomeApportions = $.$model.xGet("moneyIncomeApportions");
 	var averageApportions = [];
 	var fixedTotal = 0;
-	moneyExpenseApportions.forEach(function(item) {
+	moneyIncomeApportions.forEach(function(item) {
 		if (item.xGet("apportionType") === "Fixed") {
 			fixedTotal = fixedTotal + item.xGet("amount");
 		} else {
@@ -79,9 +108,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (expenseAmount - fixedTotal) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
 	} else {
-		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
 	}
 	averageApportions.forEach(function(item) {
 		item.xSet("amount", average);
@@ -92,12 +121,12 @@ function deleteApportion(apportionModel) {
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
-	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
+	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
 });
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
-	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
+	$.$model.xGet("moneyIncomeApportions").off("xdelete", deleteApportion);
 });
 
 if ($.saveableMode === "read") {

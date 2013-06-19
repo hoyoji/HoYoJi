@@ -27,7 +27,7 @@ exports.definition = {
 				attribute : null
 			}
 		},
-		rowView : "money/moneyIncomeDetailRow",
+		rowView : "money/moneyIncomeApportionRow",
 		adapter : {
 			type : "hyjSql"
 		}

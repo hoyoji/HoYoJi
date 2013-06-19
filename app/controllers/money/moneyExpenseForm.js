@@ -239,6 +239,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
+			if($.project.getValue().xGet("projectShareAuthorizations") === 1) {
+				$.apportion.setHeight(42);
+			}else{
+				$.apportion.setHeight(0);
+			}
+		}else{
+			$.apportion.setHeight(0);
 		}
 	});
 

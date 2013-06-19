@@ -20,11 +20,16 @@
 	color: '#042c37'
 }
 
-"#localAmountLabel": {
-	color: '#c80032'
+"#localAmountLable": {
+	color: '#042c37'
 }
 
 "#amount": {
+	color: '#042c37',
+	fieldColor: "#c80032"
+}
+
+"#localAmount": {
 	color: '#042c37',
 	fieldColor: "#c80032"
 }
