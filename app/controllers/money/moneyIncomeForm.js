@@ -155,7 +155,7 @@ if ($.saveableMode === "read") {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
-		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 			$.apportion.$view.setHeight(0);
 		} else {
 			$.apportion.$view.setHeight(42);
