@@ -18,3 +18,13 @@ $.makeContextMenu = function() {
 	},!$.$model.canDelete()));
 	return menuSection;
 }
+
+$.onRowTap = function(e){
+	if($.$model.xGet("incomeType") === "Deposite"){
+		Alloy.Globals.openWindow("money/projectIncomeForm", {$model : $.$model});
+		return false;
+	}else{
+		Alloy.Globals.openWindow("money/moneyIncomeForm", {$model : $.$model});
+		return false;
+	}
+}

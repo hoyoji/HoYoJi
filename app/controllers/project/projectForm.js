@@ -19,6 +19,18 @@ if ($.$model.isNew()) {
 	}).xAddToSave($);
 	$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 	
+	var projectIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
+		name : "充值收入",
+		project : $.$model,
+		ownerUser : Alloy.Models.User
+	}).xAddToSave($);
+
+	var projectDepositeCategory = Alloy.createModel("MoneyExpenseCategory", {
+		name : "充值支出",
+		project : $.$model,
+		ownerUser : Alloy.Models.User
+	}).xAddToSave($);
+	
 	Alloy.createModel("ProjectShareAuthorization", {
 			project : $.$model,
 			state : "Accept",

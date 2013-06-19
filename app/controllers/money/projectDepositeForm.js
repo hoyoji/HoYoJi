@@ -23,23 +23,21 @@ $.convertUser2FriendModel = function(userModel) {
 }
 
 function openFriendSelector(){
+	$.friendUser.field.blur();
 	var attributes = {
-	selectorCallback : function(model) {
-		var friendUser =  Alloy.createModel("User",model.friendUser);
-		alert(friendUser.xGet("userName"));
-		
-		$.$model.xSet("friendUser",friendUser);
-		$.friendUser.setValue(friendUser.getFriendDisplayName());
-		$.friendUser.field.fireEvent("change");
-	}
+		selectedProject : $.$model.xGet("project"),
+		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
+		selectorCallback : function(model) {
+			$.projectShareAuthorization = model;
+			$.$model.xSet("friendUser",$.projectShareAuthorization.xGet("friendUser"));
+			$.friendUser.setValue($.projectShareAuthorization.getFriendDisplayName());
+		}
 	};
 	attributes.title = "项目成员";
 	attributes.selectModelType = "ProjectShareAuthorization";
 	attributes.selectModelCanBeNull = false;
-	// attributes.selectedModel = $.friend;
-	attributes.selectedProject = $.$model.xGet("project");
-	
-	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes); 
+	attributes.selectedModel = $.projectShareAuthorization;
+	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 }
 
 var oldAmount;
@@ -59,6 +57,8 @@ if (!$.$model) {
 		expenseType : "Deposite"
 	});
 	$.setSaveableMode("add");
+}else{
+	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
 }
 
 if ($.saveableMode === "read") {
