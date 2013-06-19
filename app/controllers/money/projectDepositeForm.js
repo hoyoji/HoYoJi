@@ -21,6 +21,25 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+function openFriendSelector(){
+	$.friendUser.field.blur();
+	var attributes = {
+		selectedProject : $.$model.xGet("project"),
+		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
+		selectorCallback : function(model) {
+			$.projectShareAuthorization = model;
+			$.$model.xSet("friendUser",$.projectShareAuthorization.xGet("friendUser"));
+			$.friendUser.setValue($.projectShareAuthorization.getFriendDisplayName());
+		}
+	};
+	attributes.title = "项目成员";
+	attributes.selectModelType = "ProjectShareAuthorization";
+	attributes.selectModelCanBeNull = false;
+	attributes.selectedModel = $.projectShareAuthorization;
+	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -38,6 +57,8 @@ if (!$.$model) {
 		expenseType : "Deposite"
 	});
 	$.setSaveableMode("add");
+}else{
+	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
 }
 
 if ($.saveableMode === "read") {
@@ -200,7 +221,7 @@ if ($.saveableMode === "read") {
 				}
 				
 				
-				
+				var date = (new Date()).toISOString();
 				var account = {};
 				for (var attr in $.$model.config.columns) {
 					account[attr] = $.$model.xGet(attr);
@@ -217,7 +238,8 @@ if ($.saveableMode === "read") {
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 									  accountType : "MoneyExpense",
-									  account : account
+									  account : account,
+									  depositeProject : $.$model.xGet("project")
 								  })
 				}, function() {
 					saveEndCB(e);

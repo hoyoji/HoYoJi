@@ -20,3 +20,13 @@ $.makeContextMenu = function() {
 	}, !$.$model.canDelete()));
 	return menuSection;
 }
+
+$.onRowTap = function(e){
+	if($.$model.xGet("expenseType") === "Deposite"){
+		Alloy.Globals.openWindow("money/projectDepositeForm", {$model : $.$model});
+		return false;
+	}else{
+		Alloy.Globals.openWindow("money/moneyExpenseForm", {$model : $.$model});
+		return false;
+	}
+}
