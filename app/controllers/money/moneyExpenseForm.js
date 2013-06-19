@@ -163,10 +163,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
-		if($.$model.xGet("project").xGet("projectShareAuthorizations") === 1) {
-				$.apportion.hide();
+		if($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+				$.apportion.$view.setHeight(0);
 			}else{
-				$.apportion.show();
+				$.apportion.$view.setHeight(42);
 			}
 	});
 
@@ -244,14 +244,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
-			if($.project.getValue().xGet("projectShareAuthorizations") === 1) {
-				$.apportion.hide();
+			if($.project.getValue().xGet("projectShareAuthorizations").length === 1) {
+				$.apportion.$view.setHeight(0);
 			}else{
-				$.apportion.show();
+				$.apportion.$view.setHeight(42);
 			}
 		}
 		else{
-			$.apportion.hide();
+			$.apportion.$view.setHeight(0);
 		}
 	});
 
