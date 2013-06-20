@@ -66,7 +66,7 @@ function setWaitForAccept() {
 	if ($.$model.xGet("state") === "Wait") {
 		$.checkAccept.show();
 	} else {
-		$.checkAccept.hide();
+		$.sharePercentage.show();
 	}
 }
 

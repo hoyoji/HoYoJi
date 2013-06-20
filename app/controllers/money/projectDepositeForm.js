@@ -2,6 +2,8 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 // $.contentScrollView.setOverScrollMode(Titanium.UI.Android.OVER_SCROLL_NEVER);
 
+$.projectShareAuthorization = null;
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -174,6 +176,8 @@ if ($.saveableMode === "read") {
 			var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 			var newAmount = $.$model.xGet("amount");
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
+			$.projectShareAuthorization.xSet("actualTotalExpense",$.projectShareAuthorization.xSet("actualTotalExpense") - newAmount);
+			$.projectShareAuthorization.xAddToSave($);
 			
 			if (oldMoneyAccount === newMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);

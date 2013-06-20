@@ -139,7 +139,8 @@ function importToLocalOperate() {
 
 		var moneyIncomeDetails = [];
 		var accountShareMsgController = Alloy.Globals.openWindow("money/projectIncomeForm", {
-			$model : account
+			$model : account,
+			selectedDepositeMsg : $.$model
 		});
 		$.$model.xSet("messageState","closed");
 		$.$model.xAddToSave(accountShareMsgController.content);
