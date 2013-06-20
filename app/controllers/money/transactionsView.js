@@ -35,6 +35,10 @@ exports.sort = function(sortField, sortReverse, groupByField){
 	$.transactionsTable.sort(sortField, sortReverse, groupByField || "date");
 }
 
+exports.fetchNextPage = function(){
+	$.transactionsTable.fetchNextPage();
+}
+
 var moneyIncomes = Alloy.createCollection("moneyIncome");
 var moneyExpenses = Alloy.createCollection("moneyExpense");
 var moneyTransferOuts = Alloy.createCollection("moneyTransfer");

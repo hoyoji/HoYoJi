@@ -107,18 +107,23 @@ var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", nul
 	width : 45,
 	image : "/images/home/sync"
 });
+
 refreshButton.addEventListener("singletap", function(e){
 	e.cancelBubble = true;
 	Alloy.Globals.Server.sync();
 });
+
 $.titleBar.setBackButton(refreshButton);
 
 function refreshSyncCount(){
 	var syncCount = Alloy.Globals.getClientSyncCount();
 	refreshButton.setBubbleCount(syncCount);
 }
+
 refreshSyncCount();
+
 Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
+
 $.onWindowCloseDo(function(){
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
@@ -129,3 +134,5 @@ Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目"
 $.titleBar.setTitle(transactionDisplayType + "日流水");
 		
 $.transactionsTable.doFilter(timeFilter,sortReverse,"date");
+
+$.transactionsTable.fetchNextPage();

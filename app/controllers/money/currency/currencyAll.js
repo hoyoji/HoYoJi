@@ -14,3 +14,4 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 var collection = Alloy.Models.User.xGet("currencies");
 $.currenciesTable.addCollection(collection);
+$.currenciesTable.fetchNextPage();
