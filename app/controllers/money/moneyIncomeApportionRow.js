@@ -53,7 +53,7 @@ if ($.$model.isNew()) {
 }
 
 function updateAmount() {
-	if (income.xGet("moneyIncomeApportions").length > 0) {
+	if ($.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").length > 0) {
 		var income = $.$model.xGet("moneyIncome");
 		var incomeAmount = income.xGet("amount") || 0;
 		var moneyIncomeApportions = income.xGet("moneyIncomeApportions");

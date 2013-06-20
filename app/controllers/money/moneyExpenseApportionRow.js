@@ -53,7 +53,7 @@ if ($.$model.isNew()) {
 }
 
 function updateAmount() {
-	if (expense.xGet("moneyExpenseApportions").length > 0) {
+	if ($.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").length > 0) {
 		var expense = $.$model.xGet("moneyExpense");
 		var expenseAmount = expense.xGet("amount") || 0;
 		var moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
