@@ -147,10 +147,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
 	// $.friendAccount.hide();
-	// $.localAmount.show();
+	// $.localAmountContainer.show();
 	// $.ownerUser.show();
 	// $.amount.hide();
-	$.localAmount.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
@@ -163,6 +163,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
+		if($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+				$.apportion.$view.setHeight(0);
+			}else{
+				$.apportion.$view.setHeight(42);
+			}
 	});
 
 	$.amount.field.addEventListener("singletap", function(e) {
@@ -239,13 +244,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
-			if($.project.getValue().xGet("projectShareAuthorizations") === 1) {
-				$.apportion.setHeight(42);
+			if($.project.getValue().xGet("projectShareAuthorizations").length === 1) {
+				$.apportion.$view.setHeight(0);
 			}else{
-				$.apportion.setHeight(0);
+				$.apportion.$view.setHeight(42);
 			}
-		}else{
-			$.apportion.setHeight(0);
+		}
+		else{
+			$.apportion.$view.setHeight(0);
 		}
 	});
 

@@ -25,10 +25,10 @@
 				editModeEditability="editable" addModeEditability="editable"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
-				<View id="localAmount" height="0" backgroundColor="#f5f5f5">
+				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%" showRightButton="true" id="localAmount"
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%" showRightButton="true" id="localAmount" rightButtonText="明细"
 					hintText="请输入金额"
 					bindModel="$.$model"
 					bindAttribute="getLocalAmount()"/>

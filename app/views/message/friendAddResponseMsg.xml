@@ -20,7 +20,7 @@
 			</ScrollView>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" visible="false"
-		buttons="忽略,拒绝,加为好友"
+		buttons="忽略,拒绝,加为好友" imagesFolder="/images/message/friendAddResponseMsg"
 		ids="ignore,reject,addFriend"/>
 	</View>
 </Alloy>

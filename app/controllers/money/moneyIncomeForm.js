@@ -122,6 +122,7 @@ $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
+
 });
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
@@ -133,19 +134,19 @@ if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	// $.exchangeRate.hide();
 	// $.moneyAccount.hide();
-	// $.localAmount.show();
+	// $.localAmountContainer.show();
 	// $.ownerUser.show();
 	// $.amount.hide();
 
-	$.localAmount.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		// $.localAmount.hide();
+		// $.localAmountContainer.hide();
 		// $.ownerUser.hide();
-		// $.localAmount.setHeight(0);
+		// $.localAmountContainer.setHeight(0);
 		// $.ownerUser.setHeight(0);
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
@@ -153,6 +154,11 @@ if ($.saveableMode === "read") {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
+		}
+		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+			$.apportion.$view.setHeight(0);
+		} else {
+			$.apportion.$view.setHeight(42);
 		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
@@ -230,6 +236,13 @@ if ($.saveableMode === "read") {
 			var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
 			$.moneyIncomeCategory.setValue(defaultIncomeCategory);
 			$.moneyIncomeCategory.field.fireEvent("change");
+			if ($.project.getValue().xGet("projectShareAuthorizations").length === 1) {
+				$.apportion.$view.setHeight(0);
+			} else {
+				$.apportion.$view.setHeight(42);
+			}
+		} else {
+			$.apportion.$view.setHeight(0);
 		}
 	});
 
