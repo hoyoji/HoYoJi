@@ -93,7 +93,9 @@ function onFooterbarTap(e){
 		if(syncCount === 0){
 			openAddShareFriend();
 		}else{
-			alert("当前有" +syncCount+ "条记录没有同步，请同步后再添加");
+			Alloy.Globals.confirm("同步", "当前有" +syncCount+ "条记录没有同步，立即同步？", function(){
+				Alloy.Globals.Server.sync();
+			});
 		}
 	}
 }

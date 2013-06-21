@@ -42,16 +42,16 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
         $.$model.xSet("projectShareMoneyIncomeDetailDelete", 0);
     }
 }
-function editSharePercentage(project){
+function editSharePercentage(projectShareAuthorization){
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
 	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : project.xGet("id"),
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Wait"
 	});
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : project.xGet("id"),
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
 	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
@@ -73,7 +73,7 @@ function editSharePercentage(project){
 	if($.$model.xGet("sharePercentageType") === "fixed"){
 		// fixedSharePercentage = fixedSharePercentage + $.$model.xGet("sharePercentage");
 		if((fixedSharePercentage + $.$model.xGet("sharePercentage")) > 100){
-			$.$model.xSet("sharePercentage",100 - fixedSharePercentage);
+			projectShareAuthorization.xSet("sharePercentage",100 - fixedSharePercentage);
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 				averageSharePercentageCollection.xSet("sharePercentage" , 0);
 				averageSharePercentageCollection.xAddToSave($);
@@ -86,6 +86,7 @@ function editSharePercentage(project){
 				averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
 				averageSharePercentageCollection.xAddToSave($);
 			});
+			projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
 		}
 	}else{
 		var averageLength = averageSharePercentageCollections.length + 1;
@@ -95,6 +96,7 @@ function editSharePercentage(project){
 			averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
 			averageSharePercentageCollection.xAddToSave($);
 		});
+		projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
 	}
 }
 $.onSave = function(saveEndCB, saveErrorCB) {
@@ -123,7 +125,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				// }
 			// });
 		// }
-			editSharePercentage($.$model.xGet("project"));
+			editSharePercentage($.$model);
 			
 			if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
