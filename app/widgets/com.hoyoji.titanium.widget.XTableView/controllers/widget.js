@@ -709,9 +709,11 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 
 	collapseAllHasDetailSections();
 	
-	var tableRowsCount = exports.getRowsCount();
-	if(tableRowsCount < exports.getDataCount()){
-		appendRows = $.fetchNextPage(tableRowsCount, true);
+	if(pageSize > 0){
+		var tableRowsCount = exports.getRowsCount();
+		if(tableRowsCount < exports.getDataCount()){
+			appendRows = $.fetchNextPage(tableRowsCount, true);
+		}
 	}
 
 	var data = $.table.data;

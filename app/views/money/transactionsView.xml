@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" title="账务流水" >
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" 
-				sortByField="date" sortReverse="true" groupByField="date" pageSize="5" bottom="0" top="0"/>
+				sortByField="date" sortReverse="true" groupByField="date" pageSize="7" bottom="0" top="0"/>
 	</View>
 </Alloy>
