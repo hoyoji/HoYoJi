@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var collections = [], hasDetailSections = {}, sortedArray = [], currentPage = 0;
+var collections = [], hasDetailSections = {}, currentPage = 0;
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
 // if(OS_ANDROID){
@@ -372,22 +372,32 @@ function collapseAllHasDetailSections() {
 }
 
 var sortedArray_sortByField, sortedArray_sortReverse;
-exports.fetchNextPage = function(){
-	if (sortByField && sortByField !== sortedArray_sortByField) {
+exports.fetchNextPage = function(tableRowsCount, notCallSort){
+	 var sortedArray = [];
+	 
+	$.showActivityIndicator();
+	 
+	 if (sortByField && 
+	 	(sortByField !== sortedArray_sortByField
+	 		|| sortReverse !== sortedArray_sortReverse
+	 	)) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
-		currentPage = 0;
 		$.table.setData([]);
-		sortedArray = [];
-		for (var i = 0; i < collections.length; i++) {
-			if (collections[i] && collections[i].length>0) {
-				collections[i].forEach(function(item){
-					sortedArray.push({record : item, collection : collections[i]});			
-				})
-			}
+		tableRowsCount = 0;
+	 } else {
+		tableRowsCount = tableRowsCount || exports.getRowsCount();	 	
+	 }
+	
+	sortedArray = [];
+	for (var i = 0; i < collections.length; i++) {
+		if (collections[i] && collections[i].length>0) {
+			collections[i].forEach(function(item){
+				sortedArray.push({record : item, collection : collections[i]});			
+			})
 		}
 	}
-	
+
 	if (sortByField) {
 		sortedArray.sort(function(a, b) {
 			a = a.record.xDeepGet(sortByField);
@@ -402,18 +412,46 @@ exports.fetchNextPage = function(){
 	}
 
 	var newRows = [];
-	sortedArray.slice(currentPage * pageSize, currentPage * pageSize + pageSize).forEach(function(item) {
+	sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
 		newRows.push(createRowView(item.record, item.collection));
 	});
+	
 	if(newRows.length > 0){
-		$.sort(null, null, null, true, newRows);
-		currentPage ++;
+		if(!notCallSort){
+			$.sort(null, null, null, true, newRows);
+		}		
 	}
-	if(currentPage * pageSize < sortedArray.length){
+	
+	if(tableRowsCount + pageSize < sortedArray.length){
 		$.fetchNextPageButton.show();
 	} else {
 		$.fetchNextPageButton.hide();
 	}
+	
+	$.hideActivityIndicator();
+	
+	if(notCallSort){
+		return newRows;
+	}
+}
+
+exports.getDataCount = function(){
+	var count = 0;
+	for (var i = 0; i < collections.length; i++) {
+		if (collections[i] && collections[i].length>0) {
+			count += collections[i].length;
+		}
+	}
+	return count;
+}
+
+exports.getRowsCount = function(){
+	var sectionsSize = $.table.data.length;
+	var count = 0;
+	for(var i = 0; i < sectionsSize; i++){
+		count += $.table.data[i].rows.length
+	}
+	return count;
 }
 
 exports.addCollection = function(collection, rowView) {
@@ -434,9 +472,9 @@ exports.addCollection = function(collection, rowView) {
 
 	if (collection.length > 0) {
 		if (pageSize > 0) {
-			collection.forEach(function(item) {
-				sortedArray.push({record : item, collection : collection});
-			});
+			// collection.forEach(function(item) {
+				// sortedArray.push({record : item, collection : collection});
+			// });
 		} else {
 			var newRows = [];
 			collection.forEach(function(item) {
@@ -482,14 +520,14 @@ function refreshCollectionOnChange(model) {
 
 function refreshCollection(collection, appendRows, removedRows) {
 		if (pageSize > 0 && appendRows && appendRows.length > 0) {
-			appendRows.forEach(function(item) {
-				sortedArray.push({record : item, collection : collection});
-			});
-			if(currentPage * pageSize < sortedArray.length){
-				$.fetchNextPageButton.show();
-			} else {
-				$.fetchNextPageButton.hide();
-			}
+			// appendRows.forEach(function(item) {
+				// sortedArray.push({record : item, collection : collection});
+			// });
+			// if(currentPage * pageSize < sortedArray.length){
+				// $.fetchNextPageButton.show();
+			// } else {
+				// $.fetchNextPageButton.hide();
+			// }
 		} else {	
 			var newRows;
 			if (appendRows && appendRows.length > 0) {
@@ -581,7 +619,6 @@ exports.open = function(top) {
 		$.$view.animate(animation);
 	}
 
-
 	$.$view.setTop("99%")
 	animate();
 }
@@ -619,7 +656,6 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	for (var i = 0; i < collections.length; i++) {
 		$.detailsTable.addCollection(collections[i]);
 	}
-
 }
 
 exports.navigateUp = function() {
@@ -659,6 +695,7 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
+	
 	if (!refresh) {
 		if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
 			return;
@@ -671,6 +708,11 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	$.showActivityIndicator();
 
 	collapseAllHasDetailSections();
+	
+	var tableRowsCount = exports.getRowsCount();
+	if(tableRowsCount < exports.getDataCount()){
+		appendRows = $.fetchNextPage(tableRowsCount, true);
+	}
 
 	var data = $.table.data;
 
