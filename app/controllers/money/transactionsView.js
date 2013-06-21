@@ -29,6 +29,7 @@ exports.doFilter = function (filter) {
 	doTimeFilter(moneyLends);
 	doTimeFilter(moneyReturns);
 	doTimeFilter(moneyPaybacks);
+	$.transactionsTable.fetchNextPage();
 }
 
 exports.sort = function(sortField, sortReverse, groupByField){

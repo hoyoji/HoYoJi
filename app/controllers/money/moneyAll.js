@@ -134,5 +134,3 @@ Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目"
 $.titleBar.setTitle(transactionDisplayType + "日流水");
 		
 $.transactionsTable.doFilter(timeFilter,sortReverse,"date");
-
-$.transactionsTable.fetchNextPage();
