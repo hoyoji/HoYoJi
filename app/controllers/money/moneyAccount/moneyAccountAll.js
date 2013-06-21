@@ -33,6 +33,8 @@ if ($.$attrs.selectedFriendUser) {
 	$.moneyAccountsTable.addCollection(collection);
 }
 
+$.moneyAccountsTable.fetchNextPage();
+
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyAccount") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {

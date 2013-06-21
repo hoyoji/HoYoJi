@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var collections = [], hasDetailSections = {};
-var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true";
+var collections = [], hasDetailSections = {}, currentPage = 0;
+var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
 // if(OS_ANDROID){
 // if($.$attrs.groupByField){
@@ -49,10 +49,10 @@ $.$view.addEventListener("click", function(e) {
 			// remove the section header
 			if ($.table.data[sectionIndex].rows.length === 1) {
 				// setTimeout(function(){
-					var data = $.table.data.slice(0);
-					data.splice(sectionIndex, 1);
-					$.table.setData(data);
-					showNoDataIndicator(data.length);
+				var data = $.table.data.slice(0);
+				data.splice(sectionIndex, 1);
+				$.table.setData(data);
+				showNoDataIndicator(data.length);
 				// },10000);
 			} else {
 				$.table.deleteRow(e.index);
@@ -87,13 +87,15 @@ $.$view.addEventListener("click", function(e) {
 		var len = collection.length ? collection.length - 1 : 0;
 		addRowToSection(rowModel, collection, e.index + len);
 	}
-	if(OS_ANDROID){
-		function deleteRowPostLayout(){
+	if (OS_ANDROID) {
+		function deleteRowPostLayout() {
 			$.table.removeEventListener("postlayout", deleteRowPostLayout);
 			$.__changingRow = false;
 			$.trigger("endchangingrow");
 		}
-		$.table.addEventListener("postlayout", deleteRowPostLayout);		
+
+
+		$.table.addEventListener("postlayout", deleteRowPostLayout);
 	} else {
 		$.__changingRow = false;
 		$.trigger("endchangingrow");
@@ -284,9 +286,9 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-	function doAddRow(){
+	function doAddRow() {
 		$.off("endchangingrow", doAddRow)
-		if($.__changingRow){
+		if ($.__changingRow) {
 			$.on("endchanggingrow", doAddRow);
 			return;
 		} else {
@@ -294,8 +296,9 @@ function addRow(rowModel, collection) {
 			showNoDataIndicator($.table.data.length);
 		}
 	}
+
 	if (collection.isFetching || collection.isFiltering) {
-				return;
+		return;
 	}
 	doAddRow();
 }
@@ -368,35 +371,125 @@ function collapseAllHasDetailSections() {
 	}
 }
 
+var sortedArray_sortByField, sortedArray_sortReverse;
+exports.fetchNextPage = function(tableRowsCount, notCallSort){
+	 var sortedArray = [];
+	 
+	$.showActivityIndicator();
+	 
+	 if (sortByField && 
+	 	(sortByField !== sortedArray_sortByField
+	 		|| sortReverse !== sortedArray_sortReverse
+	 	)) {
+		sortedArray_sortByField = sortByField;
+		sortedArray_sortReverse = sortReverse;
+		$.table.setData([]);
+		tableRowsCount = 0;
+	 } else {
+		tableRowsCount = tableRowsCount || exports.getRowsCount();	 	
+	 }
+	
+	sortedArray = [];
+	for (var i = 0; i < collections.length; i++) {
+		if (collections[i] && collections[i].length>0) {
+			collections[i].forEach(function(item){
+				sortedArray.push({record : item, collection : collections[i]});			
+			})
+		}
+	}
+
+	if (sortByField) {
+		sortedArray.sort(function(a, b) {
+			a = a.record.xDeepGet(sortByField);
+			b = b.record.xDeepGet(sortByField);
+			if (a < b) {
+				return sortedArray_sortReverse ? 1 : -1;
+			} else if (a > b) {
+				return sortedArray_sortReverse ? -1 : 1;
+			}
+			return 0;
+		});
+	}
+
+	var newRows = [];
+	sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
+		newRows.push(createRowView(item.record, item.collection));
+	});
+	
+	if(newRows.length > 0){
+		if(!notCallSort){
+			$.sort(null, null, null, true, newRows);
+		}		
+	}
+	
+	if(tableRowsCount + pageSize < sortedArray.length){
+		$.fetchNextPageButton.show();
+	} else {
+		$.fetchNextPageButton.hide();
+	}
+	
+	$.hideActivityIndicator();
+	
+	if(notCallSort){
+		return newRows;
+	}
+}
+
+exports.getDataCount = function(){
+	var count = 0;
+	for (var i = 0; i < collections.length; i++) {
+		if (collections[i] && collections[i].length>0) {
+			count += collections[i].length;
+		}
+	}
+	return count;
+}
+
+exports.getRowsCount = function(){
+	var sectionsSize = $.table.data.length;
+	var count = 0;
+	for(var i = 0; i < sectionsSize; i++){
+		count += $.table.data[i].rows.length
+	}
+	return count;
+}
+
 exports.addCollection = function(collection, rowView) {
 	$.showActivityIndicator();
-	
+
 	console.info("xTableView adding collection " + collection.length);
 	if (rowView) {
 		collection.__rowView = rowView;
 	}
-	if(!collection.id){
+	if (!collection.id) {
 		collection.id = guid();
 	}
 	collections.push(collection);
 
 	// collection.map(function(row) {
-		// addRow(row, collection);
+	// addRow(row, collection);
 	// });
-	if(collection.length > 0){
-		var newRows = [];
-		collection.forEach(function(item){
-			newRows.push(createRowView(item, collection));
-		});
-		$.sort(null,null,null,true, newRows);
-	} 
+
+	if (collection.length > 0) {
+		if (pageSize > 0) {
+			// collection.forEach(function(item) {
+				// sortedArray.push({record : item, collection : collection});
+			// });
+		} else {
+			var newRows = [];
+			collection.forEach(function(item) {
+				newRows.push(createRowView(item, collection));
+			});
+			$.sort(null, null, null, true, newRows);
+		}
+	}
 	// else {
-		// addRow(collection.at(0), collection);
+	// addRow(collection.at(0), collection);
 	// }
 	collection.on("add", addRow);
 	collection.on("reset", resetCollection);
 	collection.on("sync", refreshCollectionOnChange, collection);
-	
+
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
 
@@ -416,29 +509,40 @@ var clearCollections = function() {
 	}
 	collections = [];
 	$.table.setData([]);
+	sortedArray = [];
 	showNoDataIndicator(0);
 }
-
-function refreshCollectionOnChange(model){
-	if(this.__compareFilter(model)){
-		$.sort(null,null,null,true);
+function refreshCollectionOnChange(model) {
+	if (this.__compareFilter(model)) {
+		$.sort(null, null, null, true);
 	}
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
-	var newRows;
-	if(appendRows && appendRows.length > 0){
-		newRows = [];
-		appendRows.forEach(function(item){
-			newRows.push(createRowView(item, collection));
-		});
-	}
-	if((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)){
-		$.sort(null,null,null,true, newRows, removedRows, collection.id);
+		if (pageSize > 0 && appendRows && appendRows.length > 0) {
+			// appendRows.forEach(function(item) {
+				// sortedArray.push({record : item, collection : collection});
+			// });
+			// if(currentPage * pageSize < sortedArray.length){
+				// $.fetchNextPageButton.show();
+			// } else {
+				// $.fetchNextPageButton.hide();
+			// }
+		} else {	
+			var newRows;
+			if (appendRows && appendRows.length > 0) {
+				newRows = [];
+				appendRows.forEach(function(item) {
+					newRows.push(createRowView(item, collection));
+				});
+			}
+			if ((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)) {
+				$.sort(null, null, null, true, newRows, removedRows, collection.id);
+			}
 	}
 }
 
-$.onWindowCloseDo(function(){
+$.onWindowCloseDo(function() {
 	clearCollections();
 });
 
@@ -449,6 +553,7 @@ exports.resetTable = function() {
 		collections[i].on("reset", resetCollection);
 	}
 	$.table.setData([]);
+	sortedArray = [];
 	showNoDataIndicator(0);
 }
 var resetCollection = function(collection, options) {
@@ -471,7 +576,8 @@ var resetCollection = function(collection, options) {
 		}
 	});
 	$.table.setData(data);
-	showNoDataIndicator(data.length);	
+	sortedArray = [];
+	showNoDataIndicator(data.length);
 }
 
 exports.removeCollection = function(collection) {
@@ -513,7 +619,6 @@ exports.open = function(top) {
 		$.$view.animate(animation);
 	}
 
-
 	$.$view.setTop("99%")
 	animate();
 }
@@ -530,7 +635,6 @@ exports.getLastTableTitle = function() {
 };
 
 exports.createChildTable = function(theBackNavTitle, collections) {
-	
 	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
 		top : "100%",
 		hasDetail : $.$attrs.hasDetail,
@@ -552,7 +656,6 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	for (var i = 0; i < collections.length; i++) {
 		$.detailsTable.addCollection(collections[i]);
 	}
-	
 }
 
 exports.navigateUp = function() {
@@ -592,34 +695,42 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
-	if(!refresh){
+	
+	if (!refresh) {
 		if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
 			return;
 		}
-	
+
 		sortByField = fieldName;
 		sortReverse = reverse;
 		groupByField = groupField;
 	}
 	$.showActivityIndicator();
-	
+
 	collapseAllHasDetailSections();
+	
+	if(pageSize > 0){
+		var tableRowsCount = exports.getRowsCount();
+		if(tableRowsCount < exports.getDataCount()){
+			appendRows = $.fetchNextPage(tableRowsCount, true);
+		}
+	}
 
 	var data = $.table.data;
 
 	data = _.flatten(data, true);
 	data = _.pluck(data, "rows");
 	data = _.flatten(data, true);
-	if(appendRows && appendRows.length > 0){
-		appendRows.forEach(function(row){
+	if (appendRows && appendRows.length > 0) {
+		appendRows.forEach(function(row) {
 			data.push(row)
 		});
 	}
-	if(removedRows && removedRows.length > 0){
-		data = _.filter(data, function(row){
-			for(var i = 0; i < removedRows.length; i++){
-				if(row.id === removedRows[i].id){
-					if(collectionId){
+	if (removedRows && removedRows.length > 0) {
+		data = _.filter(data, function(row) {
+			for (var i = 0; i < removedRows.length; i++) {
+				if (row.id === removedRows[i].id) {
+					if (collectionId) {
 						return row.collectionId !== collectionId;
 					} else {
 						return false;
@@ -629,15 +740,15 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 			return true;
 		});
 	}
-	
-	if(sortByField){
+
+	if (sortByField) {
 		data.sort(function(a, b) {
 			a = findObject(a.id);
 			b = findObject(b.id);
-			if(!a || !b){
+			if (!a || !b) {
 				return 0;
 			}
-			
+
 			a = a.xDeepGet(sortByField);
 			b = b.xDeepGet(sortByField);
 			if (a < b) {
@@ -667,100 +778,107 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	$.table.setData(data);
 	showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
-	
+
 }
 function createSection(sectionTitle, sectionIndex) {
 	var section;
 
 	// if (OS_IOS) {
-		// // var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex});
-		// // var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
-// 
-		// var sectionHeader = Ti.UI.createView({
-			// id : sectionIndex,
-			// height : 25,
-			// width : Ti.UI.FILL,
-			// backgroundColor : "#e7f5f5"
-		// });
-		// view1 = Ti.UI.createView({
-			// width : 5,
-			// height : 25,
-			// left : 1,
-			// bottom : 0,
-			// backgroundImage : "/images/rowTopLeftShadow.png",
-			// zIndex : 0
-		// });
-		// sectionHeader.add(view1);
-		// view2 = Ti.UI.createView({
-			// width : Ti.UI.FILL,
-			// height : 25,
-			// left : 3,
-			// bottom : 0,
-			// zIndex : 1
-		// });
-		// view2.add(Ti.UI.createLabel({
-			// text : sectionTitle,
-			// textAlign : Ti.UI.TEXTALIGNMENT_LEFT,
-			// width : Ti.UI.FILL,
-			// left : 0,
-			// height : 30,
-			// bottom : -5,
-			// borderRadius : 5,
-			// backgroundColor : "#d8fafa"
-		// }));
-		// sectionHeader.add(view2);
-// 
-		// var sectionFooter = Ti.UI.createView({
-			// height : 17,
-			// width : Ti.UI.FILL,
-			// backgroundColor : "#e7f5f5"
-		// });
-		// var fView1 = Ti.UI.createView({
-			// width : Ti.UI.FILL,
-			// height : 10,
-			// left : 0,
-			// top : 0
-		// });
-		// fView1.add(Ti.UI.createView({
-			// width : Ti.UI.FILL,
-			// left : 0,
-			// height : 10,
-			// top : 0,
-			// borderRadius : 5,
-			// backgroundColor : "#f1fbfb",
-			// backgroundImage : "/images/sectionBottomShadow.png"
-		// }));
-		// fView1.add(Ti.UI.createView({
-			// width : Ti.UI.FILL,
-			// left : 0,
-			// height : 14,
-			// top : -7,
-			// borderRadius : 5,
-			// backgroundColor : "#f1fbfb",
-			// zIndex : 0
-		// }));
-		// fView1.add(Ti.UI.createView({
-			// width : 10,
-			// left : 0,
-			// height : 10,
-			// top : 1,
-			// backgroundImage : "/images/rowBottomLeftShadow.png",
-			// zIndex : 1
-		// }));
-		// sectionFooter.add(fView1);
-// 
-		// section = Ti.UI.createTableViewSection({
-			// headerView : sectionHeader,
-			// footerView : sectionFooter
-		// });
-// 
+	// // var sectionHeader = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionHeader", "widget", {headerTitle : sectionTitle, sectionIndex : sectionIndex});
+	// // var	sectionFooter = Alloy.createWidget("com.hoyoji.titanium.widget.XTableSectionFooter", "widget");
+	//
+	// var sectionHeader = Ti.UI.createView({
+	// id : sectionIndex,
+	// height : 25,
+	// width : Ti.UI.FILL,
+	// backgroundColor : "#e7f5f5"
+	// });
+	// view1 = Ti.UI.createView({
+	// width : 5,
+	// height : 25,
+	// left : 1,
+	// bottom : 0,
+	// backgroundImage : "/images/rowTopLeftShadow.png",
+	// zIndex : 0
+	// });
+	// sectionHeader.add(view1);
+	// view2 = Ti.UI.createView({
+	// width : Ti.UI.FILL,
+	// height : 25,
+	// left : 3,
+	// bottom : 0,
+	// zIndex : 1
+	// });
+	// view2.add(Ti.UI.createLabel({
+	// text : sectionTitle,
+	// textAlign : Ti.UI.TEXTALIGNMENT_LEFT,
+	// width : Ti.UI.FILL,
+	// left : 0,
+	// height : 30,
+	// bottom : -5,
+	// borderRadius : 5,
+	// backgroundColor : "#d8fafa"
+	// }));
+	// sectionHeader.add(view2);
+	//
+	// var sectionFooter = Ti.UI.createView({
+	// height : 17,
+	// width : Ti.UI.FILL,
+	// backgroundColor : "#e7f5f5"
+	// });
+	// var fView1 = Ti.UI.createView({
+	// width : Ti.UI.FILL,
+	// height : 10,
+	// left : 0,
+	// top : 0
+	// });
+	// fView1.add(Ti.UI.createView({
+	// width : Ti.UI.FILL,
+	// left : 0,
+	// height : 10,
+	// top : 0,
+	// borderRadius : 5,
+	// backgroundColor : "#f1fbfb",
+	// backgroundImage : "/images/sectionBottomShadow.png"
+	// }));
+	// fView1.add(Ti.UI.createView({
+	// width : Ti.UI.FILL,
+	// left : 0,
+	// height : 14,
+	// top : -7,
+	// borderRadius : 5,
+	// backgroundColor : "#f1fbfb",
+	// zIndex : 0
+	// }));
+	// fView1.add(Ti.UI.createView({
+	// width : 10,
+	// left : 0,
+	// height : 10,
+	// top : 1,
+	// backgroundImage : "/images/rowBottomLeftShadow.png",
+	// zIndex : 1
+	// }));
+	// sectionFooter.add(fView1);
+	//
+	// section = Ti.UI.createTableViewSection({
+	// headerView : sectionHeader,
+	// footerView : sectionFooter
+	// });
+	//
 	// } else {
-		section = Ti.UI.createTableViewSection({
-			headerTitle : sectionTitle
-		});
+	section = Ti.UI.createTableViewSection({
+		headerTitle : sectionTitle
+	});
 	// }
 
 	return section;
+}
+
+if(pageSize > 0){
+	$.fetchNextPageButton.show();
+	$.fetchNextPageButton.addEventListener("singletap", function(){
+		exports.fetchNextPage();
+	});
 }
 
 $.onWindowOpenDo(function() {
@@ -791,13 +909,13 @@ $.onWindowOpenDo(function() {
 });
 
 var __noDataIndicator;
-function showNoDataIndicator(hasData){
-	if(OS_IOS){
-		if(hasData){
-			if(__noDataIndicator){
+function showNoDataIndicator(hasData) {
+	if (OS_IOS) {
+		if (hasData) {
+			if (__noDataIndicator) {
 				__noDataIndicator.hide();
 			}
-		} else if(!__noDataIndicator){
+		} else if (!__noDataIndicator) {
 			__noDataIndicator = Ti.UI.createLabel({
 				text : "没有内容",
 				color : "blue",

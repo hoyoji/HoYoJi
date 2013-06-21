@@ -29,10 +29,15 @@ exports.doFilter = function (filter) {
 	doTimeFilter(moneyLends);
 	doTimeFilter(moneyReturns);
 	doTimeFilter(moneyPaybacks);
+	$.transactionsTable.fetchNextPage();
 }
 
 exports.sort = function(sortField, sortReverse, groupByField){
 	$.transactionsTable.sort(sortField, sortReverse, groupByField || "date");
+}
+
+exports.fetchNextPage = function(){
+	$.transactionsTable.fetchNextPage();
 }
 
 var moneyIncomes = Alloy.createCollection("moneyIncome");

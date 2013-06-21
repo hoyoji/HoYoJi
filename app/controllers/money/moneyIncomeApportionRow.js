@@ -53,23 +53,25 @@ if ($.$model.isNew()) {
 }
 
 function updateAmount() {
-	var income = $.$model.xGet("moneyIncome");
-	var incomeAmount = income.xGet("amount") || 0;
-	var moneyIncomeApportions = income.xGet("moneyIncomeApportions");
-	var averageApportions = [];
-	var fixedTotal = 0;
-	moneyIncomeApportions.forEach(function(item) {
-		if (item.xGet("apportionType") === "Fixed") {
-			fixedTotal = fixedTotal + item.xGet("amount");
-		} else {
-			averageApportions.push(item);
-		}
-	});
-	var average = (incomeAmount - fixedTotal) / averageApportions.length;
-	averageApportions.forEach(function(item) {
-		if (item.xGet("apportionType") === "Average") {
-			item.xSet("amount", average);
-		}
-	});
+	if ($.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").length > 0) {
+		var income = $.$model.xGet("moneyIncome");
+		var incomeAmount = income.xGet("amount") || 0;
+		var moneyIncomeApportions = income.xGet("moneyIncomeApportions");
+		var averageApportions = [];
+		var fixedTotal = 0;
+		moneyIncomeApportions.forEach(function(item) {
+			if (item.xGet("apportionType") === "Fixed") {
+				fixedTotal = fixedTotal + item.xGet("amount");
+			} else {
+				averageApportions.push(item);
+			}
+		});
+		var average = (incomeAmount - fixedTotal) / averageApportions.length;
+		averageApportions.forEach(function(item) {
+			if (item.xGet("apportionType") === "Average") {
+				item.xSet("amount", average);
+			}
+		});
+	}
 }
 
