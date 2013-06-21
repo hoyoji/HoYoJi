@@ -5,7 +5,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "pictureId"/>
 			<Label id="checkAccept" visible="false" color="black" top="56" left="66" class="firstRow">等待接受</Label>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" visible="false" top="56" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" visible="false" top="56" left="66" width="100" height="Ti.UI.SIZE" class="firstRow"
 				bindModel = "$.$model"
 				bindAttribute = "getSharePercentage()"
 			/>

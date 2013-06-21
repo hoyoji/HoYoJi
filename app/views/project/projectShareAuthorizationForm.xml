@@ -20,18 +20,21 @@
 					bindModelSelectorConvert2Model="convertUser2FriendModel"
 					bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<View layout="vertical" height="Ti.UI.SIZE">
+				<View layout="vertical" height="Ti.UI.SIZE" width="Ti.UI.SIZE">
 					<View height="42" layout="horizontal">
-						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" width="80%" labelText="占股(%)"
-						bindModel="$.$model"
-						bindAttribute="sharePercentage"
-						/>
-						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+						<Label left="0" width="20%">占股(%)</Label>
+						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42" id="sharePercentageType"
 						hightLight="false"
 						items=" 均分,固定"
 						values="average,fixed"
 						bindModel="$.$model"
 						bindAttribute="sharePercentageType"/>
+						<View layout="horizontal" height="Ti.UI.SIZE" width="60%" id="sharePercentage">
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="42" labelText=""
+							bindModel="$.$model"
+							bindAttribute="sharePercentage"
+							/>
+						</View>
 					</View>
 				</View>
 				<View height="42">
