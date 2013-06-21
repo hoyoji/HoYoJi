@@ -176,8 +176,13 @@ if ($.saveableMode === "read") {
 			var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 			var newAmount = $.$model.xGet("amount");
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
-			$.projectShareAuthorization.xSet("actualTotalExpense",$.projectShareAuthorization.xSet("actualTotalExpense") - newAmount);
-			$.projectShareAuthorization.xAddToSave($);
+			
+			var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+				projectId : $.$model.xGet("project").xGet("id"),
+				friendUserId : Alloy.Models.User.id
+			});
+			projectShareAuthorization.xSet("actualTotalExpense",$.projectShareAuthorization.xGet("actualTotalExpense") - newAmount);
+			projectShareAuthorization.xAddToSave($);
 			
 			if (oldMoneyAccount === newMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);

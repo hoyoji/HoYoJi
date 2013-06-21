@@ -134,9 +134,9 @@ if ($.saveableMode === "read") {
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 			projectId : $.$model.xGet("project").xGet("id"),
-			friendUserId : $.$model.xGet("friendUser").xGet("id")
+			friendUserId : Alloy.Models.User.id
 		});
-		projectShareAuthorization.xSet("actualTotalIncome",$.projectShareAuthorization.xSet("actualTotalIncome") + newAmount);
+		projectShareAuthorization.xSet("actualTotalIncome",projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
 		projectShareAuthorization.xAddToSave($);
 		
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改

@@ -16,6 +16,7 @@ function openAddShareFriend(){
 		data : {
 			project : selectedProject,
 			sharePercentage : 0,
+			sharePercentageType : "average",
 			actualTotalIncome : 0,
 			actualTotalExpense : 0,
 			apportionedTotalIncome : 0,

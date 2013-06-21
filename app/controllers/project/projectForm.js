@@ -43,6 +43,7 @@ if ($.$model.isNew()) {
 			apportionedTotalExpense : 0,
 			sharedTotalIncome : 0,
 			sharedTotalExpense : 0,
+			sharePercentageType : "average",
 			
 			shareAllSubProjects : 1,
 			ownerUser : Alloy.Models.User,
