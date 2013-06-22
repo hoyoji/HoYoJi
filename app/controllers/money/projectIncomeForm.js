@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+var selectedDepositeMsg = $.$attrs.selectedDepositeMsg;
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	if(selectedFriendModel){
 		return selectedFriendModel.xGet("friendUser");
@@ -130,6 +132,13 @@ if ($.saveableMode === "read") {
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
+		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+			projectId : $.$model.xGet("project").xGet("id"),
+			friendUserId : Alloy.Models.User.id
+		});
+		projectShareAuthorization.xSet("actualTotalIncome",projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
+		projectShareAuthorization.xAddToSave($);
+		
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 		} else {//账户改变时
@@ -169,7 +178,26 @@ if ($.saveableMode === "read") {
 					});
 				}
 			}
-			saveEndCB(e)
+			
+			var date = (new Date()).toISOString();
+			Alloy.Globals.Server.sendMsg({
+				id : guid(),
+				"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "Project.Deposite.Response",
+				"messageState" : "unread",
+				"messageTitle" : "充值回复",
+				"date" : date,
+				"detail" : $.$model.xGet("detail"),
+				"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
+				messageData : selectedDepositeMsg.xGet("messageData")
+			}, function() {
+				saveEndCB(e);
+				alert("充值成功，请等待回复");
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
+			
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));

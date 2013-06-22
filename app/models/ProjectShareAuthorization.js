@@ -206,8 +206,11 @@ exports.definition = {
 			getActualTotalExpense : function(){
 				return "实际支出 : "+ this.xGet("actualTotalExpense");
 			},
-			getApportionedTotalExpense : function(){
-				return "应该支出 : "+ this.xGet("apportionedTotalExpense");
+			getActualTotalIncome : function(){
+				return "实际收入 : "+ this.xGet("actualTotalIncome");
+			},
+			getSharePercentage : function(){
+				return "占股 : "+ this.xGet("sharePercentage");
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;

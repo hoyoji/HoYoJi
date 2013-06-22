@@ -42,7 +42,63 @@ function setExpenseDetailAndIncomeDetailAuthorization(){
         $.$model.xSet("projectShareMoneyIncomeDetailDelete", 0);
     }
 }
-
+function editSharePercentage(projectShareAuthorization){
+	var averageSharePercentageCollections = [];
+	var fixedSharePercentageCollections = [];
+	var fixedSharePercentage = 0;
+	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Wait"
+	});
+	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Accept"
+	});
+	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
+		if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+		}else{
+			averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		}
+	});
+	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
+		if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
+		}else{
+			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+		}
+	});
+	if($.$model.xGet("sharePercentageType") === "fixed"){
+		// fixedSharePercentage = fixedSharePercentage + $.$model.xGet("sharePercentage");
+		if((fixedSharePercentage + $.$model.xGet("sharePercentage")) > 100){
+			projectShareAuthorization.xSet("sharePercentage",100 - fixedSharePercentage);
+			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+				averageSharePercentageCollection.xSet("sharePercentage" , 0);
+				averageSharePercentageCollection.xAddToSave($);
+			});
+		}else{
+			var averageLength = averageSharePercentageCollections.length;
+			var averageTotalPercentage = 100 - fixedSharePercentage;
+			var averagePercentage = averageTotalPercentage/averageLength;
+			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+				averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
+				averageSharePercentageCollection.xAddToSave($);
+			});
+			projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
+		}
+	}else{
+		var averageLength = averageSharePercentageCollections.length + 1;
+		var averageTotalPercentage = 100 - fixedSharePercentage;
+		var averagePercentage = averageTotalPercentage/averageLength;
+		averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+			averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
+			averageSharePercentageCollection.xAddToSave($);
+		});
+		projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
+	}
+}
 $.onSave = function(saveEndCB, saveErrorCB) {
 	setExpenseDetailAndIncomeDetailAuthorization();
 	var subProjectShareAuthorizationIds = [];
@@ -69,6 +125,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				// }
 			// });
 		// }
+			editSharePercentage($.$model);
+			
 			if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
 			//新增共享
 			$.$model.xSet("state", "Wait");
@@ -133,6 +191,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								subProjectShareAuthorization.xAddToSave($);
+								
+								editSharePercentage(subProjectsArray[i/2-1]);
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -190,6 +250,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		   	if($.$model.hasChanged("friendUser")){
 				saveErrorCB("好友不能修改！");
 			}else{
+				if($.$model.hasChanged("sharePercentage")){
+					editSharePercentage($.$model.xGet("project"));
+				}
 				if($.$model.hasChanged("shareAllSubProjects")){
 					var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
 					
@@ -511,7 +574,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	   }
    
 }
-
 $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	if(selectedFriendModel){
 		return selectedFriendModel.xGet("friendUser");
@@ -529,3 +591,18 @@ $.convertUser2FriendModel = function(userModel){
 	}
 	return userModel;
 }
+
+$.onWindowOpenDo(function() {
+	changeSharePercentageType();
+});
+
+function changeSharePercentageType(){
+	if($.$model.xGet("sharePercentageType") === "fixed"){
+		$.sharePercentage.show();
+	}else{
+		$.sharePercentage.hide();
+	}
+}
+$.sharePercentageType.field.addEventListener("singletap",function(e){
+	changeSharePercentageType();
+});
