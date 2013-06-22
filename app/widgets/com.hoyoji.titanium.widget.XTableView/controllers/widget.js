@@ -1,7 +1,24 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var collections = [], hasDetailSections = {}, currentPage = 0;
+var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
+
+if (OS_ANDROID) {
+	$.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// $.table.addEventListener('scroll',function(e){
+	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
+	// console.info("------ table View  y --------- " + $.table.getRect().y + " " + $.table.getRect().height);
+	// var offset = e.contentOffset.y;
+	// var height = e.size.height;
+	// var total = offset + height;
+	// var theEnd = e.contentSize.height;
+	// var distance = theEnd - total;
+	//
+	// if(distance === 0){
+	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// }
+	// });
+}
 
 // if(OS_ANDROID){
 // if($.$attrs.groupByField){
@@ -371,29 +388,32 @@ function collapseAllHasDetailSections() {
 	}
 }
 
-var sortedArray_sortByField, sortedArray_sortReverse;
-exports.fetchNextPage = function(tableRowsCount, notCallSort){
-	 var sortedArray = [];
-	 
-	$.showActivityIndicator();
-	 
-	 if (sortByField && 
-	 	(sortByField !== sortedArray_sortByField
-	 		|| sortReverse !== sortedArray_sortReverse
-	 	)) {
+var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField;
+exports.fetchNextPage = function(tableRowsCount) {
+	var sortedArray = [];
+
+	$.showActivityIndicator("正在加载...");
+	$.fetchNextPageButton.setTitle("正在加载更多...");
+
+	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField
+	)) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
+		sortedArray_groupByField = groupByField;
 		$.table.setData([]);
 		tableRowsCount = 0;
-	 } else {
-		tableRowsCount = tableRowsCount || exports.getRowsCount();	 	
-	 }
-	
+	} else {
+		tableRowsCount = tableRowsCount || exports.getRowsCount();
+	}
+
 	sortedArray = [];
 	for (var i = 0; i < collections.length; i++) {
-		if (collections[i] && collections[i].length>0) {
-			collections[i].forEach(function(item){
-				sortedArray.push({record : item, collection : collections[i]});			
+		if (collections[i] && collections[i].length > 0) {
+			collections[i].forEach(function(item) {
+				sortedArray.push({
+					record : item,
+					collection : collections[i]
+				});
 			})
 		}
 	}
@@ -415,47 +435,48 @@ exports.fetchNextPage = function(tableRowsCount, notCallSort){
 	sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
 		newRows.push(createRowView(item.record, item.collection));
 	});
-	
-	if(newRows.length > 0){
-		if(!notCallSort){
-			$.sort(null, null, null, true, newRows);
-		}		
+
+	if (newRows.length > 0) {
+		$.sort(null, null, null, true, newRows);
 	}
+
+	$.hideActivityIndicator();
+	$.fetchNextPageButton.setTitle("更多...");
 	
-	if(tableRowsCount + pageSize < sortedArray.length){
+	showNoDataIndicator();
+	
+	if (tableRowsCount + pageSize < sortedArray.length) {
 		$.fetchNextPageButton.show();
 	} else {
 		$.fetchNextPageButton.hide();
 	}
 	
-	$.hideActivityIndicator();
-	
-	if(notCallSort){
-		return newRows;
-	}
+	// if(notCallSort){
+	// return newRows;
+	// }
 }
 
-exports.getDataCount = function(){
+exports.getDataCount = function() {
 	var count = 0;
 	for (var i = 0; i < collections.length; i++) {
-		if (collections[i] && collections[i].length>0) {
+		if (collections[i] && collections[i].length > 0) {
 			count += collections[i].length;
 		}
 	}
 	return count;
 }
 
-exports.getRowsCount = function(){
+exports.getRowsCount = function() {
 	var sectionsSize = $.table.data.length;
 	var count = 0;
-	for(var i = 0; i < sectionsSize; i++){
+	for (var i = 0; i < sectionsSize; i++) {
 		count += $.table.data[i].rows.length
 	}
 	return count;
 }
 
 exports.addCollection = function(collection, rowView) {
-	$.showActivityIndicator();
+	$.showActivityIndicator("正在加载...");
 
 	console.info("xTableView adding collection " + collection.length);
 	if (rowView) {
@@ -473,14 +494,16 @@ exports.addCollection = function(collection, rowView) {
 	if (collection.length > 0) {
 		if (pageSize > 0) {
 			// collection.forEach(function(item) {
-				// sortedArray.push({record : item, collection : collection});
+			// sortedArray.push({record : item, collection : collection});
 			// });
 		} else {
 			var newRows = [];
 			collection.forEach(function(item) {
 				newRows.push(createRowView(item, collection));
 			});
-			$.sort(null, null, null, true, newRows);
+			if(newRows.length > 0){
+				$.sort(null, null, null, true, newRows);
+			}
 		}
 	}
 	// else {
@@ -509,37 +532,38 @@ var clearCollections = function() {
 	}
 	collections = [];
 	$.table.setData([]);
-	sortedArray = [];
 	showNoDataIndicator(0);
 }
 function refreshCollectionOnChange(model) {
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true);
+		 showNoDataIndicator();
 	}
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
-		if (pageSize > 0 && appendRows && appendRows.length > 0) {
-			// appendRows.forEach(function(item) {
-				// sortedArray.push({record : item, collection : collection});
-			// });
-			// if(currentPage * pageSize < sortedArray.length){
-				// $.fetchNextPageButton.show();
-			// } else {
-				// $.fetchNextPageButton.hide();
-			// }
-		} else {	
-			var newRows;
-			if (appendRows && appendRows.length > 0) {
-				newRows = [];
-				appendRows.forEach(function(item) {
-					newRows.push(createRowView(item, collection));
-				});
-			}
-			if ((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)) {
-				$.sort(null, null, null, true, newRows, removedRows, collection.id);
-			}
+	if (pageSize > 0 && appendRows && appendRows.length > 0) {
+		// appendRows.forEach(function(item) {
+		// sortedArray.push({record : item, collection : collection});
+		// });
+		// if(currentPage * pageSize < sortedArray.length){
+		// $.fetchNextPageButton.show();
+		// } else {
+		// $.fetchNextPageButton.hide();
+		// }
+	} else {
+		var newRows;
+		if (appendRows && appendRows.length > 0) {
+			newRows = [];
+			appendRows.forEach(function(item) {
+				newRows.push(createRowView(item, collection));
+			});
+		}
+		if ((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)) {
+			$.sort(null, null, null, true, newRows, removedRows, collection.id);
+		}
 	}
+    showNoDataIndicator();
 }
 
 $.onWindowCloseDo(function() {
@@ -553,7 +577,6 @@ exports.resetTable = function() {
 		collections[i].on("reset", resetCollection);
 	}
 	$.table.setData([]);
-	sortedArray = [];
 	showNoDataIndicator(0);
 }
 var resetCollection = function(collection, options) {
@@ -576,7 +599,6 @@ var resetCollection = function(collection, options) {
 		}
 	});
 	$.table.setData(data);
-	sortedArray = [];
 	showNoDataIndicator(data.length);
 }
 
@@ -695,7 +717,7 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
-	
+
 	if (!refresh) {
 		if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
 			return;
@@ -705,16 +727,16 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		sortReverse = reverse;
 		groupByField = groupField;
 	}
-	$.showActivityIndicator();
+	$.showActivityIndicator("正在排序...");
 
 	collapseAllHasDetailSections();
-	
-	if(pageSize > 0){
-		var tableRowsCount = exports.getRowsCount();
-		if(tableRowsCount < exports.getDataCount()){
-			appendRows = $.fetchNextPage(tableRowsCount, true);
-		}
-	}
+
+	// if(pageSize > 0){
+	// var tableRowsCount = exports.getRowsCount();
+	// if(tableRowsCount < exports.getDataCount()){
+	// appendRows = $.fetchNextPage(tableRowsCount, true);
+	// }
+	// }
 
 	var data = $.table.data;
 
@@ -776,7 +798,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		}
 	}
 	$.table.setData(data);
-	showNoDataIndicator(data.length);
+	 // showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
 
 }
@@ -874,9 +896,10 @@ function createSection(sectionTitle, sectionIndex) {
 	return section;
 }
 
-if(pageSize > 0){
+if (pageSize > 0) {
 	$.fetchNextPageButton.show();
-	$.fetchNextPageButton.addEventListener("singletap", function(){
+	$.fetchNextPageButton.addEventListener("singletap", function(e) {
+		e.cancelBubble = true;
 		exports.fetchNextPage();
 	});
 }
@@ -910,24 +933,26 @@ $.onWindowOpenDo(function() {
 
 var __noDataIndicator;
 function showNoDataIndicator(hasData) {
-	if (OS_IOS) {
-		if (hasData) {
-			if (__noDataIndicator) {
-				__noDataIndicator.hide();
-			}
-		} else if (!__noDataIndicator) {
+	if ($.getRowsCount() > 0) {
+		if (__noDataIndicator) {
+			__noDataIndicator.hide();
+			__noDataIndicator.setTop(-100);
+		}
+	} else{
+		if (!__noDataIndicator) {
 			__noDataIndicator = Ti.UI.createLabel({
 				text : "没有内容",
 				color : "blue",
 				backgroundColor : "transparent",
-				width : "150",
-				height : "42",
+				width : Ti.UI.SIZE,
+				height : Ti.UI.SIZE,
 				top : "25%",
 				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 				zIndex : 200
 			});
 			$.$view.add(__noDataIndicator);
 		} else {
+			__noDataIndicator.setTop("25%");
 			__noDataIndicator.show();
 		}
 	}

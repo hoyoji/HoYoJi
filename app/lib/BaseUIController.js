@@ -74,16 +74,16 @@
 						}
 						$.__activityIndicator = Ti.UI.createActivityIndicator({
 						  color: 'black',
-						  font: {fontSize:20, fontWeight:'bold'},
-						  message: msg || null,
+						  font: {fontSize:14, fontWeight:'normal'},
 						  style:style,
 						  top:"48%",
-						  left:"48%",
+						  // left:"48%",
 						  height:Ti.UI.SIZE,
 						  width:Ti.UI.SIZE
 						});
 						$.$view.add($.__activityIndicator);
 					}
+					$.__activityIndicator.setMessage(msg || null);
 					$.__activityIndicator.show();
 				},
 				hideActivityIndicator : function(){
