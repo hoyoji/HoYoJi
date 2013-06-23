@@ -69,7 +69,6 @@ exports.open = function(contentController) {
 }
 
 exports.openWin = function(contentController, options) {
-	$.open(contentController);
 	options = options || {};
 	if (options.selectorCallback) {
 		_.extend(options, {
@@ -77,7 +76,9 @@ exports.openWin = function(contentController, options) {
 			width : "90%",
 			borderRadius : 5
 		});
+		$.$view.setBackgroundColor("#99000000");
 	}
+	$.open(contentController);
 
 	_.extend($.$attrs, options);
 	$.content = Alloy.createController(contentController, options);
