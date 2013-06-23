@@ -32,12 +32,13 @@
 		// }
 
 		exports.Utils.openWindow = function(windowName, options) {
-			if (!Alloy.Globals.openingWindow[windowName]) {
-				var win = Alloy.createController("window");
+			var win;
+			// if (!Alloy.Globals.openingWindow[windowName]) {
+				win = Alloy.createController("window");
 				win.openWin(windowName, options);
 				Alloy.Globals.openingWindow[windowName] = win;
-			}
-			return Alloy.Globals.openingWindow[windowName];
+			// }
+			return win;
 		}
 
 		exports.Utils.getClientSyncCount = function(){

@@ -283,7 +283,7 @@ function addRowToSection(rowModel, collection, index) {
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
 				$.table.setData(data);
-				showNoDataIndicator(data.length);
+				// showNoDataIndicator(data.length);
 				// $.table.insertRowBefore(pos.index, row);
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
@@ -392,8 +392,8 @@ var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField;
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
-	$.showActivityIndicator("正在加载...");
-	$.fetchNextPageButton.setTitle("正在加载更多...");
+	//$.showActivityIndicator("正在加载...");
+	$.fetchNextPageButton.setText("正在加载更多...");
 
 	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField
 	)) {
@@ -440,16 +440,17 @@ exports.fetchNextPage = function(tableRowsCount) {
 		$.sort(null, null, null, true, newRows);
 	}
 
-	$.hideActivityIndicator();
-	$.fetchNextPageButton.setTitle("更多...");
+	//$.hideActivityIndicator();
 	
 	showNoDataIndicator();
 	
-	if (tableRowsCount + pageSize < sortedArray.length) {
-		$.fetchNextPageButton.show();
-	} else {
-		$.fetchNextPageButton.hide();
-	}
+	// if (tableRowsCount + pageSize < sortedArray.length) {
+		// $.fetchNextPageButton.setTitle("更多...");
+	// } else if($.getDataCount() === 0) {
+		// $.fetchNextPageButton.setTitle("无内容");
+	// } else {
+		// $.fetchNextPageButton.setTitle("无更多内容");
+	// }
 	
 	// if(notCallSort){
 	// return newRows;
@@ -716,6 +717,11 @@ function getSectionNameOfRowModel(sectionName) {
 	return sectionName;
 }
 
+exports.setHeaderView = function(headerView){
+	$.table.setHeaderView(headerView);
+}
+
+
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
 
 	if (!refresh) {
@@ -897,7 +903,6 @@ function createSection(sectionTitle, sectionIndex) {
 }
 
 if (pageSize > 0) {
-	$.fetchNextPageButton.show();
 	$.fetchNextPageButton.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
 		exports.fetchNextPage();
@@ -933,27 +938,37 @@ $.onWindowOpenDo(function() {
 
 var __noDataIndicator;
 function showNoDataIndicator(hasData) {
-	if ($.getRowsCount() > 0) {
-		if (__noDataIndicator) {
-			__noDataIndicator.hide();
-			__noDataIndicator.setTop(-100);
-		}
-	} else{
-		if (!__noDataIndicator) {
-			__noDataIndicator = Ti.UI.createLabel({
-				text : "没有内容",
-				color : "blue",
-				backgroundColor : "transparent",
-				width : Ti.UI.SIZE,
-				height : Ti.UI.SIZE,
-				top : "25%",
-				textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-				zIndex : 200
-			});
-			$.$view.add(__noDataIndicator);
+	var dataCount = $.getDataCount();
+	if (dataCount > 0) {
+		// if (__noDataIndicator) {
+			// __noDataIndicator.hide();
+			// __noDataIndicator.setTop(-100);
+		// }
+		if (dataCount > $.getRowsCount()){
+			$.fetchNextPageButton.setText("点击加载更多...");
 		} else {
-			__noDataIndicator.setTop("25%");
-			__noDataIndicator.show();
-		}
+			$.fetchNextPageButton.setText("无更多内容");
+		} 		
+	} else {
+		$.fetchNextPageButton.setText("无内容");
+		// if (!__noDataIndicator) {
+			// __noDataIndicator = Ti.UI.createLabel({
+				// text : "没有内容",
+				// color : "blue",
+				// backgroundColor : "transparent",
+				// width : Ti.UI.SIZE,
+				// height : Ti.UI.SIZE,
+				// top : "25%",
+				// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+				// zIndex : 200
+			// });
+			// $.$view.add(__noDataIndicator);
+		// } else {
+			// __noDataIndicator.setTop("25%");
+			// __noDataIndicator.show();
+		// }
 	}
 }
+
+
+

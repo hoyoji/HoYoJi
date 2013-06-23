@@ -1,9 +1,11 @@
-"Label": {
-	color: '#000',
+"#fetchNextPageButton": {
+	color: 'gray',
 	font: {
-		fontSize: 16,
-		fontWeight: 'bold'
+		fontSize: 14,
+		fontWeight: 'normal'
 	},
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+	height: 42,
+	width: Ti.UI.SIZE,
+	textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	borderColor : "transparent" 
 }

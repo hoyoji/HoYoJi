@@ -1,5 +1,10 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var currentFilter = null;
+
+exports.setHeaderView = function(headerView){
+	$.transactionsTable.setHeaderView(headerView);
+}
+
 function doTimeFilter(collection) {
 	
 	collection.xSetFilter(function(model) {

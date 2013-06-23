@@ -4,7 +4,7 @@
 			 backgroundColor="#f5f5f5">
 			<FooterView >
 				<View height="Ti.UI.SIZE" width="Ti.UI.FILL" >
-					<Button height="Ti.UI.SIZE" width="Ti.UI.FILL" visible="false" id="fetchNextPageButton">更多...</Button>
+					<Label id="fetchNextPageButton" text="无内容"/>
 				</View>
 			</FooterView>
         </TableView>
