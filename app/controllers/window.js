@@ -2,9 +2,11 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function confirmClose() {
 	function doClose() {
+		setTimeout(function(){
 		$.$view.close({
 			animated : false
 		});
+		},100);
 	}
 
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
@@ -47,7 +49,9 @@ exports.open = function(contentController) {
 	$.$view.open({
 		animated : false
 	});
-	$.scrollableView.scrollToView(1);
+	setTimeout(function(){
+		$.scrollableView.scrollToView(1);
+	}, 100);
 	//$.closeSoftKeyboard();
 	// if(OS_ANDROID){
 	// $.$view.focus();
@@ -59,13 +63,13 @@ exports.open = function(contentController) {
 	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	// if(contentController){
 	// animation.addEventListener("complete", function(){
-	delete Alloy.Globals.openingWindow[contentController];
 	// });
 	// }
 	// $.$view.animate(animation);
 }
 
 exports.openWin = function(contentController, options) {
+	$.open(contentController);
 	options = options || {};
 	if (options.selectorCallback) {
 		_.extend(options, {
@@ -80,7 +84,8 @@ exports.openWin = function(contentController, options) {
 	$.content.setParent($.contentView);
 	// $.scrollableView.addView($.content.$view);
 
-	$.open(contentController);
+	delete Alloy.Globals.openingWindow[contentController];
+	
 	return $.content;
 }
 //
