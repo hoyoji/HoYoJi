@@ -6,7 +6,7 @@ function confirmClose() {
 			$.$view.close({
 				animated : false
 			});
-		}, 100);
+		}, 500);
 	}
 
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
@@ -112,6 +112,8 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 		return;
 	}
 	if (e.currentPage === 0) {
+		
+		$.closeSoftKeyboard();
 		$.$view.hide();
 		confirmClose();
 	} else if (e.currentPage === 1 && firstTimeOpen) {
@@ -124,7 +126,7 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 			if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
 				$.$view.setBackgroundColor("transparent");
 			} else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-				$.$view.setBackgroundColor("#99000000");
+				$.$view.setBackgroundColor("#40000000");
 			}
 		});
 	}
