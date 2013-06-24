@@ -4,7 +4,7 @@
 		fontSize: 14,
 		fontWeight: 'normal'
 	},
-	height: 42,
+	height: 60,
 	width: Ti.UI.SIZE,
 	textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 	borderColor : "transparent" 
