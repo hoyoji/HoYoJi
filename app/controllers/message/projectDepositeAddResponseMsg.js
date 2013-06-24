@@ -137,7 +137,6 @@ function importToLocalOperate() {
 			friendUser : $.$model.xGet("fromUser")
 		});
 
-		var moneyIncomeDetails = [];
 		var accountShareMsgController = Alloy.Globals.openWindow("money/projectIncomeForm", {
 			$model : account,
 			selectedDepositeMsg : $.$model
