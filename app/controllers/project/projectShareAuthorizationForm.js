@@ -196,7 +196,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								subProjectShareAuthorization.xAddToSave($);
 								
-								editSharePercentage(subProjectShareAuthorization);
+								editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
