@@ -71,6 +71,12 @@ function setImageEdit(){
 		}else{
 			$.messageImage.setImage("/images/message/messageRow/oldProjectShareMessage.png");
 		}
+	}else if($.$model.xGet("type").startsWith("Project.Deposite")){
+		if($.$model.xGet("messageState") === "new" || $.$model.xGet("messageState") === "unread"){
+			$.messageImage.setImage("/images/message/messageRow/newProjectDepositeMessage.png");
+		}else{
+			$.messageImage.setImage("/images/message/messageRow/oldProjectDepositeMessage.png");
+		}
 	}
 }
 
