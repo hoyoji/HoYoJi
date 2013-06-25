@@ -484,6 +484,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					
 				}else{
 					var editProjectShareAuthorizationArray = [];
+					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					if($.$model.xGet("shareAllSubProjects")){
 						Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function(){
 							$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
@@ -510,8 +511,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 							});
 						});
-						editProjectShareAuthorizationArray.push($.$model.toJSON());
-						
 						if($.$model.xGet("state") === "Accept"){
 							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 								Alloy.Globals.Server.sendMsg({
