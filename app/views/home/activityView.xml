@@ -1,5 +1,5 @@
 <Alloy>
 	<View class="container" title="活动流水" >
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" groupByField="date" sortByField="date" sortReverse="true" pageSize="3" bottom="0" top="0"/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" groupByField="date" sortByField="date" sortReverse="true" pageSize="5" bottom="0" top="0"/>
 	</View>
 </Alloy>
