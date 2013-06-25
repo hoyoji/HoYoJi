@@ -134,6 +134,7 @@ function importToLocalOperate() {
 			incomeType : accountShareData.account.expenseType,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : depositeProject,
+			moneyIncomeCategory : depositeProject.xGet("depositeIncomeCategory"),
 			friendUser : $.$model.xGet("fromUser")
 		});
 

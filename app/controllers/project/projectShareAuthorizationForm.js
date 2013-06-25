@@ -70,9 +70,8 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
 		}
 	});
-	if($.$model.xGet("sharePercentageType") === "fixed"){
-		// fixedSharePercentage = fixedSharePercentage + $.$model.xGet("sharePercentage");
-		if((fixedSharePercentage + $.$model.xGet("sharePercentage")) > 100){
+	if(projectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+		if((fixedSharePercentage + projectShareAuthorization.xGet("sharePercentage")) > 100){
 			projectShareAuthorization.xSet("sharePercentage",100 - fixedSharePercentage);
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 				averageSharePercentageCollection.xSet("sharePercentage" , 0);
@@ -81,7 +80,7 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 			});
 		}else{
 			var averageLength = averageSharePercentageCollections.length;
-			var averageTotalPercentage = 100 - fixedSharePercentage;
+			var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 			var averagePercentage = averageTotalPercentage/averageLength;
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 				averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);

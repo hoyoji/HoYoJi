@@ -80,7 +80,7 @@ exports.definition = {
 			lastServerUpdateTime : 0,
 			lastClientUpdateTime : 0,
 			
-			sharePercentageType : "Average",
+			sharePercentageType : "average",
 			sharePercentage : 100,
 			
 			actualTotalIncome : 0,
