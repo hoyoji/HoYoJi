@@ -217,8 +217,13 @@ function Sync(method, model, opts) {
 			}();
 			break;
 		case "read":
-			var sql = opts.query || "SELECT main.* FROM " + table + " main";
-			var qs = opts.query.split("WHERE"), q;
+			var sql = "SELECT main.* FROM " + table + " main";
+			var qs = opts.query.split("qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS"), q, orderBy = "";
+			if(qs.length > 0){
+				orderBy = qs[1] || "";
+			}
+			sql = qs[0];
+			qs = qs[0].split("WHERE");
 			if (_.indexOf(projectPermissionTables, table) > -1) {
 				if (table === "Project") {
 					qs[0] += " LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND main.id = joinedtable.projectId ";
@@ -285,6 +290,8 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			}
+
+			sql = sql + orderBy;
 
 			if (!opts.dbTrans) {
 				db = Ti.Database.open(dbName);

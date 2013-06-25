@@ -193,8 +193,8 @@
 				}
 				return true;
 			},
-			xSearchInDb : function(filter) {
-				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
+			xSearchInDb : function(filter, sqlOptions) {
+				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main ", filterStr = "", sqlOptions = sqlOptions || {};
 				if (_.isArray(filter)) {
 					filterStr = "main.id IN ('" + filter.join("','") + "')";
 				} else if(typeof filter === "string"){
@@ -218,8 +218,14 @@
 				}
 
 				console.info("xSearchInDb " + query + filterStr);
+				var limit = sqlOptions.limit ? " LIMIT " + sqlOptions.limit + " ": "";
+				var offset = sqlOptions.offset ? " OFFSET " + sqlOptions.offset + " " : "";
+				var orderBy = sqlOptions.orderBy ? " ORDER BY main." + sqlOptions.orderBy + " " : "";
+				if(filterStr !== ""){
+					filterStr = " WHERE " + filterStr;
+				} 
 				this.xFetch({
-					query : query + filterStr
+					query : query + filterStr + "qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + orderBy +  limit + offset
 				});
 				return this;
 			}
