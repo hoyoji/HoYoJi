@@ -72,14 +72,14 @@ exports.fetchNextPage = function(){
 	$.transactionsTable.fetchNextPage();
 }
 
-var moneyIncomes = Alloy.createCollection("moneyIncome");
-var moneyExpenses = Alloy.createCollection("moneyExpense");
-var moneyTransferOuts = Alloy.createCollection("moneyTransfer");
-var moneyTransferIns = Alloy.createCollection("moneyTransfer");
-var moneyBorrows = Alloy.createCollection("moneyBorrow");
-var moneyLends = Alloy.createCollection("moneyLend");
-var moneyReturns = Alloy.createCollection("moneyReturn");
-var moneyPaybacks = Alloy.createCollection("moneyPayback");
+var moneyIncomes = Alloy.createCollection("MoneyIncome");
+var moneyExpenses = Alloy.createCollection("MoneyExpense");
+var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
+var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
+var moneyBorrows = Alloy.createCollection("MoneyBorrow");
+var moneyLends = Alloy.createCollection("MoneyLend");
+var moneyReturns = Alloy.createCollection("MoneyReturn");
+var moneyPaybacks = Alloy.createCollection("MoneyPayback");
 
 // exports.doFilter(timeFilter);
 

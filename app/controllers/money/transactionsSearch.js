@@ -10,14 +10,14 @@ exports.doSearch = function() {
 }
 
 
-var searchMoneyExpenses = Alloy.createCollection("moneyExpense");
-var searchMoneyIncomes = Alloy.createCollection("moneyIncome");
-var searchMoneyTransferOuts = Alloy.createCollection("moneyTransfer");
-var searchMoneyTransferIns = Alloy.createCollection("moneyTransfer");
-var searchMoneyBorrows = Alloy.createCollection("moneyBorrow");
-var searchMoneyLends = Alloy.createCollection("moneyLend");
-var searchMoneyReturns = Alloy.createCollection("moneyReturn");
-var searchMoneyPaybacks = Alloy.createCollection("moneyPayback");
+var searchMoneyExpenses = Alloy.createCollection("MoneyExpense");
+var searchMoneyIncomes = Alloy.createCollection("MoneyIncome");
+var searchMoneyTransferOuts = Alloy.createCollection("MoneyTransfer");
+var searchMoneyTransferIns = Alloy.createCollection("MoneyTransfer");
+var searchMoneyBorrows = Alloy.createCollection("MoneyBorrow");
+var searchMoneyLends = Alloy.createCollection("MoneyLend");
+var searchMoneyReturns = Alloy.createCollection("MoneyReturn");
+var searchMoneyPaybacks = Alloy.createCollection("MoneyPayback");
 
 $.transactionsSearchTable.addCollection(searchMoneyExpenses);
 $.transactionsSearchTable.addCollection(searchMoneyIncomes);

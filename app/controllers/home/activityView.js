@@ -173,6 +173,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 	searchData(moneyLends, offset, limit, orderBy);
 	searchData(moneyReturns, offset, limit, orderBy);
 	searchData(moneyPaybacks, offset, limit, orderBy);
+	searchData(receivedMessages, offset, limit, orderBy);
 	successCB();
 }
 
@@ -185,20 +186,25 @@ exports.doFilter = function() {
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
 	setFilter(moneyPaybacks);
+	receivedMessages.xSetFilter(function(model) {
+			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
+			&& model.xGet("toUserId") === Alloy.Models.User.id)
+	});
 	$.transactionsTable.fetchNextPage();
 }
 
 exports.sort = function(sortField, sortReverse, groupByField) {
 	$.transactionsTable.sort(sortField, sortReverse);
 }
-var moneyIncomes = Alloy.createCollection("moneyIncome");
-var moneyExpenses = Alloy.createCollection("moneyExpense");
-var moneyTransferOuts = Alloy.createCollection("moneyTransfer");
-var moneyTransferIns = Alloy.createCollection("moneyTransfer");
-var moneyBorrows = Alloy.createCollection("moneyBorrow");
-var moneyLends = Alloy.createCollection("moneyLend");
-var moneyReturns = Alloy.createCollection("moneyReturn");
-var moneyPaybacks = Alloy.createCollection("moneyPayback");
+var moneyIncomes = Alloy.createCollection("MoneyIncome");
+var moneyExpenses = Alloy.createCollection("MoneyExpense");
+var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
+var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
+var moneyBorrows = Alloy.createCollection("MoneyBorrow");
+var moneyLends = Alloy.createCollection("MoneyLend");
+var moneyReturns = Alloy.createCollection("MoneyReturn");
+var moneyPaybacks = Alloy.createCollection("MoneyPayback");
+var receivedMessages = Alloy.createCollection("Message");
 
 $.onWindowCloseDo(function() {
 	moneyIncomes.xClearFilter();
@@ -209,6 +215,7 @@ $.onWindowCloseDo(function() {
 	moneyLends.xClearFilter();
 	moneyReturns.xClearFilter();
 	moneyPaybacks.xClearFilter();
+	receivedMessages.xClearFilter();
 });
 
 
@@ -220,6 +227,6 @@ $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
 $.transactionsTable.addCollection(moneyReturns, "money/moneyReturnRow");
 $.transactionsTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
-
+$.transactionsTable.addCollection(receivedMessages);
 
 exports.doFilter();
