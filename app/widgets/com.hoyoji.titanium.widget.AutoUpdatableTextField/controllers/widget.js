@@ -1,8 +1,13 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-if ($.$attrs.hintText) {
-	$.field.hintText = $.$attrs.hintText;
+if ($.$attrs.enabled) {
+	$.field.setEnabled($.$attrs.enabled !== "false");
 }
+
+if (OS_ANDROID) {
+	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
+}
+
 if ($.$attrs.passwordMask === "true") {
 	$.field.setPasswordMask(true);
 }
@@ -21,9 +26,6 @@ if($.$attrs.noBottomImage === "true") {
 }
 if (OS_IOS) {
 	$.field.setAutocapitalization(false);
-}
-if (OS_ANDROID) {
-	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
 
 // $.onWindowOpenDo(function() {
