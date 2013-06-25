@@ -142,20 +142,20 @@
 					if (top === undefined)
 						top = 0;
 				
-					function animate() {
-						$.$view.removeEventListener("postlayout", animate);
-						var animation = Titanium.UI.createAnimation();
-						animation.top = top;
-						animation.duration = 500;
-						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+					// function animate() {
+						// $.$view.removeEventListener("postlayout", animate);
+						// var animation = Titanium.UI.createAnimation();
+						// animation.top = top;
+						// animation.duration = 500;
+						// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+// 				
+						// $.$view.animate(animation);
+					// }
 				
-						$.$view.animate(animation);
-					}
 				
+					// $.$view.addEventListener("postlayout", animate);
 				
-					$.$view.addEventListener("postlayout", animate);
-				
-					$.$view.setTop("-100%");
+					$.$view.setTop(top);
 					$.$view.setZIndex(zIndex);
 				},
 				remove : function() {

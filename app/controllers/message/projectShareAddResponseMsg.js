@@ -490,6 +490,24 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 }
 
 $.onWindowOpenDo(function() {
+	if ($.$model.xGet('messageState') !== "closed") {
+		Alloy.Globals.Server.getData([{
+			__dataType : "Message",
+			id : $.$model.xGet("id"),
+			messageState : "closed"
+		}], function(msgdata) {
+			if (data[0].length > 0) {
+				$.$model.save({
+					messageState : "closed"
+				}, {
+					wait : true,
+					patch : true
+				});
+			}
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
+	}
 	$.showHideAuthorization.hide();
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({
@@ -525,157 +543,170 @@ $.onWindowCloseDo(function() {
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	// var projectShareData = JSON.parse($.$model.xGet("messageData"));
-	var date = (new Date()).toISOString();
-
 	Alloy.Globals.Server.getData([{
-		__dataType : "User",
-		id : $.$model.xGet("fromUserId")
-	}], function(data) {
+		__dataType : "Message",
+		id : $.$model.xGet("id"),
+		messageState : "closed"
+	}], function(msgdata) {
+		if (msgdata[0].length > 0) {
+			saveErrorCB("操作失败，消息已过期");
+		} else {
+			var date = (new Date()).toISOString();
 
-		var userData = data[0][0];
-		var id = userData.id;
-		var fromUser = Alloy.createModel("User").xFindInDb({
-			id : id
-		});
-		if (!fromUser.id) {
-			delete userData.id;
-			fromUser = Alloy.createModel("User", userData);
-			fromUser.attributes.id = id;
-			fromUser.save(userData);
-		}
-		var editProjectShareAuthorizationArray = [];
-		if (operation === "agree") {
-			var projectIds = [];
-			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
-			Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
-				if (collection.length > 0) {
-					var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-					if (projectShareAuthorization.xGet("state") === "Wait") {
-						projectShareAuthorization.xSet("state", "Accept");
-						projectShareAuthorization.xAddToSave($);
-						editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
-						var projectLength = Alloy.createCollection("Project").xSearchInDb({
-							id : projectShareAuthorization.xGet("projectId")
-						}).length;
-						if (projectLength === 0) {
-							projectIds.push(projectShareAuthorization.xGet("projectId"));
-						}
-					}
-					projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
-						var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-						if (subProjectShareAuthorization.xGet("state") === "Wait") {
-							subProjectShareAuthorization.xSet("state", "Accept");
-							subProjectShareAuthorization.xAddToSave($);
-							editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
-							var subProjectLength = Alloy.createCollection("Project").xSearchInDb({
-								id : subProjectShareAuthorization.xGet("projectId")
-							}).length;
-							if (subProjectLength === 0) {
-								projectIds.push(subProjectShareAuthorization.xGet("projectId"));
-							}
-						}
-					});
-					$.$model.xSet("messageState", "closed");
-					editProjectShareAuthorizationArray.push($.$model.toJSON());
-					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-						Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
-							Alloy.Globals.Server.sendMsg({
-								id : guid(),
-								"toUserId" : $.$model.xGet("fromUserId"),
-								"fromUserId" : $.$model.xGet("toUserId"),
-								"type" : "Project.Share.Accept",
-								"messageState" : "unread",
-								"messageTitle" : "共享回复",
-								"date" : date,
-								"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
-								"messageBoxId" : fromUser.xGet("messageBoxId"),
-								"messageData" : $.$model.xGet("messageData")
-							}, function() {
-								// $.$model.xSet("messageState" , "closed");
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-								saveEndCB("您接受了 " + fromUser.xGet("userName") + " 分享的项目");
-								return;
-							}, function(e) {
-								saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
-								return;
-							});
-						});
+			Alloy.Globals.Server.getData([{
+				__dataType : "User",
+				id : $.$model.xGet("fromUserId")
+			}], function(data) {
 
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-				} else {
-					saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
-					return;
+				var userData = data[0][0];
+				var id = userData.id;
+				var fromUser = Alloy.createModel("User").xFindInDb({
+					id : id
+				});
+				if (!fromUser.id) {
+					delete userData.id;
+					fromUser = Alloy.createModel("User", userData);
+					fromUser.attributes.id = id;
+					fromUser.save(userData);
 				}
-			}, saveErrorCB);
-		} else if (operation === "reject") {
-			var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
-			Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
-				if (collection.length > 0) {
-					var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
-					if (projectShareAuthorization.xGet("state") === "Wait") {
-						projectShareAuthorization.save({
-							state : "Reject"
-						}, {
-							wait : true,
-							patch : false
-						});
-						editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
-					}
-					if (projectShareData.shareAllSubProjects) {
-						projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
-							var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
-							if (subProjectShareAuthorization.xGet("state") === "Wait") {
-								subProjectShareAuthorization.save({
+				var editProjectShareAuthorizationArray = [];
+				if (operation === "agree") {
+					var projectIds = [];
+					var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
+						if (collection.length > 0) {
+							var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
+							if (projectShareAuthorization.xGet("state") === "Wait") {
+								projectShareAuthorization.xSet("state", "Accept");
+								projectShareAuthorization.xAddToSave($);
+								editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
+								var projectLength = Alloy.createCollection("Project").xSearchInDb({
+									id : projectShareAuthorization.xGet("projectId")
+								}).length;
+								if (projectLength === 0) {
+									projectIds.push(projectShareAuthorization.xGet("projectId"));
+								}
+							}
+							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
+								var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
+								if (subProjectShareAuthorization.xGet("state") === "Wait") {
+									subProjectShareAuthorization.xSet("state", "Accept");
+									subProjectShareAuthorization.xAddToSave($);
+									editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+									var subProjectLength = Alloy.createCollection("Project").xSearchInDb({
+										id : subProjectShareAuthorization.xGet("projectId")
+									}).length;
+									if (subProjectLength === 0) {
+										projectIds.push(subProjectShareAuthorization.xGet("projectId"));
+									}
+								}
+							});
+							$.$model.xSet("messageState", "closed");
+							editProjectShareAuthorizationArray.push($.$model.toJSON());
+							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+								Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
+									Alloy.Globals.Server.sendMsg({
+										id : guid(),
+										"toUserId" : $.$model.xGet("fromUserId"),
+										"fromUserId" : $.$model.xGet("toUserId"),
+										"type" : "Project.Share.Accept",
+										"messageState" : "unread",
+										"messageTitle" : "共享回复",
+										"date" : date,
+										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
+										"messageBoxId" : fromUser.xGet("messageBoxId"),
+										"messageData" : $.$model.xGet("messageData")
+									}, function() {
+										// $.$model.xSet("messageState" , "closed");
+										$.saveModel(saveEndCB, saveErrorCB, {
+											syncFromServer : true
+										});
+										saveEndCB("您接受了 " + fromUser.xGet("userName") + " 分享的项目");
+										return;
+									}, function(e) {
+										saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
+										return;
+									});
+								});
+
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						} else {
+							saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+							return;
+						}
+					}, saveErrorCB);
+				} else if (operation === "reject") {
+					var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
+						if (collection.length > 0) {
+							var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
+							if (projectShareAuthorization.xGet("state") === "Wait") {
+								projectShareAuthorization.save({
 									state : "Reject"
 								}, {
 									wait : true,
-									patch : true
+									patch : false
 								});
-								editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+								editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
 							}
-						});
-					}
-					$.$model.save({
-						messageState : "closed"
-					}, {
-						wait : true,
-						patch : true
-					});
-					editProjectShareAuthorizationArray.push($.$model.toJSON());
-					Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-						Alloy.Globals.Server.sendMsg({
-							id : guid(),
-							"toUserId" : $.$model.xGet("fromUserId"),
-							"fromUserId" : $.$model.xGet("toUserId"),
-							"type" : "Project.Share.Reject",
-							"messageState" : "unread",
-							"messageTitle" : "共享回复",
-							"date" : date,
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
-							"messageBoxId" : fromUser.xGet("messageBoxId"),
-							"messageData" : $.$model.xGet("messageData")
-						}, function() {
-							saveEndCB("您拒绝了" + fromUser.xGet("userName") + "分享的项目");
-							return;
-						}, function(e) {
-							saveErrorCB("拒绝分享项目失败,请重新发送 : " + e.__summary.msg);
-							return;
-						});
+							if (projectShareData.shareAllSubProjects) {
+								projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
+									var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
+									if (subProjectShareAuthorization.xGet("state") === "Wait") {
+										subProjectShareAuthorization.save({
+											state : "Reject"
+										}, {
+											wait : true,
+											patch : true
+										});
+										editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+									}
+								});
+							}
+							$.$model.save({
+								messageState : "closed"
+							}, {
+								wait : true,
+								patch : true
+							});
+							editProjectShareAuthorizationArray.push($.$model.toJSON());
+							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+								Alloy.Globals.Server.sendMsg({
+									id : guid(),
+									"toUserId" : $.$model.xGet("fromUserId"),
+									"fromUserId" : $.$model.xGet("toUserId"),
+									"type" : "Project.Share.Reject",
+									"messageState" : "unread",
+									"messageTitle" : "共享回复",
+									"date" : date,
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+									"messageBoxId" : fromUser.xGet("messageBoxId"),
+									"messageData" : $.$model.xGet("messageData")
+								}, function() {
+									saveEndCB("您拒绝了" + fromUser.xGet("userName") + "分享的项目");
+									return;
+								}, function(e) {
+									saveErrorCB("拒绝分享项目失败,请重新发送 : " + e.__summary.msg);
+									return;
+								});
 
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-				} else {
-					saveErrorCB("拒绝分享项目失败，用户取消了该项目的分享");
-					return;
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						} else {
+							saveErrorCB("拒绝分享项目失败，用户取消了该项目的分享");
+							return;
+						}
+					}, saveErrorCB);
 				}
-			}, saveErrorCB);
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
 		}
 	}, function(e) {
 		alert(e.__summary.msg);
 	});
+
 }

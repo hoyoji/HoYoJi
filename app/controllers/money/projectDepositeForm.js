@@ -229,33 +229,54 @@ if ($.saveableMode === "read") {
 					}
 				}
 				
-				
-				var date = (new Date()).toISOString();
-				var account = {};
-				for (var attr in $.$model.config.columns) {
-					account[attr] = $.$model.xGet(attr);
-				}
-				Alloy.Globals.Server.sendMsg({
-					id : guid(),
-					"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-					"fromUserId" : Alloy.Models.User.id,
-					"type" : "Project.Deposite.AddRequest",
-					"messageState" : "unread",
-					"messageTitle" : "充值请求",
-					"date" : date,
-					"detail" : $.$model.xGet("detail"),
-					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-					messageData : JSON.stringify({
-									  accountType : "MoneyExpense",
-									  account : account,
-									  depositeProject : $.$model.xGet("project")
-								  })
-				}, function() {
+				if($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id){
 					saveEndCB(e);
-					alert("充值成功，请等待回复");
-				}, function(e) {
-					alert(e.__summary.msg);
-				});
+					var depositeIncome = Alloy.createModel("MoneyIncome", {
+						date : $.$model.xGet("date"),
+						amount : $.$model.xGet("amount"),
+						remark : $.$model.xGet("remark"),
+						ownerUser : Alloy.Models.User,
+						localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+						exchangeRate : 1,
+						incomeType : $.$model.xGet("expenseType"),
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : $.$model.xGet("project"),
+						friendUser : $.$model.xGet("friendUser")
+					});
+					var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
+						$model : depositeIncome
+					});
+					depositeIncome.xAddToSave(depositeIncomeController.content);
+					depositeIncomeController.content.titleBar.dirtyCB();
+				}else{
+					var date = (new Date()).toISOString();
+					var account = {};
+					for (var attr in $.$model.config.columns) {
+						account[attr] = $.$model.xGet(attr);
+					}
+					Alloy.Globals.Server.sendMsg({
+						id : guid(),
+						"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+						"fromUserId" : Alloy.Models.User.id,
+						"type" : "Project.Deposite.AddRequest",
+						"messageState" : "unread",
+						"messageTitle" : "充值请求",
+						"date" : date,
+						"detail" : $.$model.xGet("detail"),
+						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+						messageData : JSON.stringify({
+										  accountType : "MoneyExpense",
+										  account : account,
+										  depositeProject : $.$model.xGet("project")
+									  })
+					}, function() {
+						saveEndCB(e);
+						alert("充值成功，请等待回复");
+					}, function(e) {
+						alert(e.__summary.msg);
+					});
+				}
+				
 				
 				
 				

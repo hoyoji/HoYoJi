@@ -2,11 +2,11 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function confirmClose() {
 	function doClose() {
-		setTimeout(function(){
-		$.$view.close({
-			animated : false
-		});
-		},100);
+		setTimeout(function() {
+			$.$view.close({
+				animated : false
+			});
+		}, 500);
 	}
 
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
@@ -22,26 +22,26 @@ exports.close = function() {
 	//$.closeSoftKeyboard();
 
 	// function animateClose() {
-			$.scrollableView.scrollToView(0);
-		
-		// var animation = Titanium.UI.createAnimation();
-		// animation.left = "100%";
-		// animation.duration = 350;
-		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-		// animation.addEventListener('complete', function() {
-		// $.$view.close({
-		// animated : false
-		// });
-		// });
-		// $.$view.animate(animation);
+	$.scrollableView.scrollToView(0);
+
+	// var animation = Titanium.UI.createAnimation();
+	// animation.left = "100%";
+	// animation.duration = 350;
+	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	// animation.addEventListener('complete', function() {
+	// $.$view.close({
+	// animated : false
+	// });
+	// });
+	// $.$view.animate(animation);
 	// }
-// 
+	//
 	// if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
-		// Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose, function() {
-			// $.scrollableView.scrollToView(1);
-		// });
+	// Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose, function() {
+	// $.scrollableView.scrollToView(1);
+	// });
 	// } else {
-		// animateClose();
+	// animateClose();
 	// }
 }
 
@@ -49,7 +49,8 @@ exports.open = function(contentController) {
 	$.$view.open({
 		animated : false
 	});
-	setTimeout(function(){
+	$.showActivityIndicator();
+	setTimeout(function() {
 		$.scrollableView.scrollToView(1);
 	}, 100);
 	//$.closeSoftKeyboard();
@@ -86,7 +87,7 @@ exports.openWin = function(contentController, options) {
 	// $.scrollableView.addView($.content.$view);
 
 	delete Alloy.Globals.openingWindow[contentController];
-	
+
 	return $.content;
 }
 //
@@ -105,11 +106,30 @@ exports.openWin = function(contentController, options) {
 // $.close();
 // }
 // });
+var firstTimeOpen = true;
 $.scrollableView.addEventListener("scrollend", function(e) {
 	if (e.source !== $.scrollableView) {
 		return;
 	}
 	if (e.currentPage === 0) {
+		
+		$.closeSoftKeyboard();
+		$.$view.hide();
 		confirmClose();
+	} else if (e.currentPage === 1 && firstTimeOpen) {
+		firstTimeOpen = false;
+		$.hideActivityIndicator();
+		$.scrollableView.addEventListener("scroll", function(e) {
+			if (e.source !== $.scrollableView) {
+				return;
+			}
+			if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
+				$.$view.setBackgroundColor("transparent");
+			} else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
+				$.$view.setBackgroundColor("#40000000");
+			}
+		});
 	}
-}); 
+
+});
+

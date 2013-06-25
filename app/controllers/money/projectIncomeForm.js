@@ -178,25 +178,28 @@ if ($.saveableMode === "read") {
 					});
 				}
 			}
-			
-			var date = (new Date()).toISOString();
-			Alloy.Globals.Server.sendMsg({
-				id : guid(),
-				"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
-				"fromUserId" : Alloy.Models.User.id,
-				"type" : "Project.Deposite.Response",
-				"messageState" : "unread",
-				"messageTitle" : "充值回复",
-				"date" : date,
-				"detail" : $.$model.xGet("detail"),
-				"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
-				messageData : selectedDepositeMsg.xGet("messageData")
-			}, function() {
+			if($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id){
+				var date = (new Date()).toISOString();
+				Alloy.Globals.Server.sendMsg({
+					id : guid(),
+					"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
+					"fromUserId" : Alloy.Models.User.id,
+					"type" : "Project.Deposite.Response",
+					"messageState" : "unread",
+					"messageTitle" : "充值回复",
+					"date" : date,
+					"detail" : $.$model.xGet("detail"),
+					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
+					messageData : selectedDepositeMsg.xGet("messageData")
+				}, function() {
+					saveEndCB(e);
+				}, function(e) {
+					alert(e.__summary.msg);
+				});
+			}else{
 				saveEndCB(e);
-				alert("充值成功，请等待回复");
-			}, function(e) {
-				alert(e.__summary.msg);
-			});
+			}
+			
 			
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
