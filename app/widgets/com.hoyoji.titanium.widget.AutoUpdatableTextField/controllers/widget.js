@@ -1,12 +1,17 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-if ($.$attrs.enabled) {
-	$.field.setEnabled($.$attrs.enabled !== "false");
-}
-
 if (OS_ANDROID) {
 	$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_SHOW_ON_FOCUS);
 }
+if ($.$attrs.hideKeyboard) {
+	if(OS_IOS){
+		$.field.setEnabled(false);
+	}
+	if (OS_ANDROID) {
+		$.field.setSoftKeyboardOnFocus(Ti.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+	}
+}
+
 
 if ($.$attrs.passwordMask === "true") {
 	$.field.setPasswordMask(true);

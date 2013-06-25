@@ -181,7 +181,7 @@ if ($.saveableMode === "read") {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendUserId : Alloy.Models.User.id
 			});
-			projectShareAuthorization.xSet("actualTotalExpense",$.projectShareAuthorization.xGet("actualTotalExpense") - newAmount);
+			projectShareAuthorization.xSet("actualTotalExpense",projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
 			projectShareAuthorization.xAddToSave($);
 			
 			if (oldMoneyAccount === newMoneyAccount) {
