@@ -2,6 +2,10 @@
 		exports.extends = function($, attrs) {
 			// keep a local reference as $model might get modified in outter closures
 			// so user $.$model instead of attrs.$model or $model
+			if($.__IAMUI__){
+				return;
+			}
+			$.__IAMUI__ = true;
 			$.$attrs = attrs || {};
 			$.$view = $.getView();
 			if($.$attrs.$model && typeof $.$attrs.$model === "object"){
@@ -138,6 +142,12 @@
 					}
 					return $.__parentController;
 				},
+				UIInit : function(parentController, currentWindow) {
+					if(currentWindow) $.__currentWindow = currentWindow;
+					if(parentController) $.__parentController = parentController;
+					$.$view.fireEvent("winopen", {bubbles : false});
+					$.__currentWindow.$view.addEventListener("close", $.triggerWindowCloseEvent);
+				},
 				slideDown : function(zIndex, top) {
 					if (top === undefined)
 						top = 0;
@@ -222,8 +232,22 @@
 			
 			//Ti.App.addEventListener("winopen", detectWindow);
 			//detectWindow();
-			$.$view.addEventListener("postlayout", detectWindow);
 			
+			if($.$attrs.parentController){
+				$.__parentController = $.$attrs.parentController;
+			}
+			
+			if($.$attrs.currentWindow){
+				$.__currentWindow = $.$attrs.currentWindow;
+			}
+			if($.$attrs.autoInit !== "false"){
+				if($.__parentController && $.__currentWindow){
+					$.$view.fireEvent("winopen", {bubbles : false});
+					$.__currentWindow.$view.addEventListener("close", $.triggerWindowCloseEvent);
+				} else {
+					$.$view.addEventListener("postlayout", detectWindow);
+				}
+			}
 			$.$view.addEventListener("becamedirty", function(e) {
 				if (e.source !== $.$view) {
 					e.cancelBubble = true;

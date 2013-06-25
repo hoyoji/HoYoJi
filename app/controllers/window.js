@@ -71,6 +71,9 @@ exports.open = function(contentController) {
 
 exports.openWin = function(contentController, options) {
 	options = options || {};
+	options.parentController = $;
+	options.currentWindow = $;
+
 	if (options.selectorCallback) {
 		_.extend(options, {
 			height : "90%",

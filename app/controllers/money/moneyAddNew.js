@@ -1,5 +1,8 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm",{currentWindow : $.getCurrentWindow(), parentController : $.getParentController()});
+$.moneyExpenseForm.setParent($.$view);
+
 var currentForm = $.moneyExpenseForm;
 
 function onFooterbarTap(e) {
@@ -19,7 +22,7 @@ function onFooterbarTap(e) {
 				default : return;
 			}
 
-			$[e.source.id]= Alloy.createController(formName);
+			$[e.source.id]= Alloy.createController(formName, {currentWindow : $.getCurrentWindow(), parentController : $.getParentController()});
 			$[e.source.id].$view.setTop(0);
 			$[e.source.id].$view.setBottom(84);
 			$[e.source.id].setParent($.$view);
