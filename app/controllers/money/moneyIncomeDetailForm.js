@@ -81,7 +81,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			});
 		}
-		if (!oldIncomeAmount || $.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+		if (!oldIncomeAmount || $.$model.xGet("moneyIncome").xGet("useDetailsTotal") || $.$model.xGet("moneyIncome").isNew()) {
 			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 		} else {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
