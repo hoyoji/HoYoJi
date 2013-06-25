@@ -24,14 +24,14 @@ if ($.$model.isNew()) {
 		project : $.$model,
 		ownerUser : Alloy.Models.User
 	}).xAddToSave($);
-	$.$model.xGet("activeProject").xSet("depositeIncomeCategory",depositeIncomeCategory);
+	$.$model.xSet("depositeIncomeCategory",depositeIncomeCategory);
 
 	var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 		name : "充值支出",
 		project : $.$model,
 		ownerUser : Alloy.Models.User
 	}).xAddToSave($);
-	$.$model.xGet("activeProject").xSet("depositeExpenseCategory",depositeExpenseCategory);
+	$.$model.xSet("depositeExpenseCategory",depositeExpenseCategory);
 	
 	Alloy.createModel("ProjectShareAuthorization", {
 			project : $.$model,
