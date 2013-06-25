@@ -69,7 +69,7 @@ exports.open = function(contentController) {
 	// $.$view.animate(animation);
 }
 
-exports.openWin = function(contentController, options) {
+exports.openWin = function(contentController, options, loadOnly) {
 	options = options || {};
 	options.parentController = $;
 	options.currentWindow = $;
@@ -82,7 +82,9 @@ exports.openWin = function(contentController, options) {
 		});
 		$.$view.setBackgroundColor("#99000000");
 	}
-	$.open(contentController);
+	if(!loadOnly){
+		$.open(contentController);
+	}
 
 	_.extend($.$attrs, options);
 	$.content = Alloy.createController(contentController, options);
@@ -115,7 +117,7 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 		return;
 	}
 	if (e.currentPage === 0) {
-		
+		delete Alloy.Globals.openedWindow["money/moneyAddNew"];
 		$.closeSoftKeyboard();
 		$.$view.hide();
 		confirmClose();

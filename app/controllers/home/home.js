@@ -26,7 +26,8 @@ $.titleBar.setMenuButton(settingButton);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		Alloy.Globals.openWindow("money/moneyAddNew");
+		Alloy.Globals.openCacheMoneyAddNew();
+		// Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
 	} else if (e.source.id === "setting") {
