@@ -6,7 +6,7 @@
 			<Widget id="myProjectShareAuthorizationsTable" src="com.hoyoji.titanium.widget.XTableView" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-        	buttons="添加共享好友"
+        	buttons="添加共享好友" imagesFolder="/images/project/projectShareAuthorizationAll"
         	ids="addShareFriend"/>
 	</View>
 </Alloy>

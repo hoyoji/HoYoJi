@@ -89,14 +89,19 @@ $.myProjectShareAuthorizationsTable.addCollection(collection);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addShareFriend"){
-		var syncCount = Alloy.Globals.getClientSyncCount();
-		if(syncCount === 0){
-			openAddShareFriend();
+		if(selectedProject.xGet("ownerUserId") === Alloy.Models.User.id){
+			var syncCount = Alloy.Globals.getClientSyncCount();
+			if(syncCount === 0){
+				openAddShareFriend();
+			}else{
+				Alloy.Globals.confirm("同步", "当前有" +syncCount+ "条记录没有同步，立即同步？", function(){
+					Alloy.Globals.Server.sync();
+					Alloy.Models.User.xGet("messageBox").processNewMessages();
+				});
+			}
 		}else{
-			Alloy.Globals.confirm("同步", "当前有" +syncCount+ "条记录没有同步，立即同步？", function(){
-				Alloy.Globals.Server.sync();
-				Alloy.Models.User.xGet("messageBox").processNewMessages();
-			});
+			alert("您不能在共享项目下添加共享好友");
 		}
+		
 	}
 }
