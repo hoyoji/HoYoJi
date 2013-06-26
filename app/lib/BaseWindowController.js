@@ -11,9 +11,9 @@
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			}
 			$.$view.addEventListener("touchstart", function(e){
-				// if(!e.source.getHintText){
+				if(!e.source.focus){
 					$.getCurrentWindow().closeSoftKeyboard();
-				// }
+				}
 			});
 
 			_.extend($, {

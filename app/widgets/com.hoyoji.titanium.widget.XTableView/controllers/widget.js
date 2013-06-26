@@ -993,7 +993,8 @@ exports.getSortOrder = function(){
 // });
 
 $.table.footerView.addEventListener("touchstart", function(e){
+	$.$view.parent.fireEvent("touchstart");
 	// if(!e.source.getHintText){
-		$.getCurrentWindow().closeSoftKeyboard();
+		// $.getCurrentWindow().closeSoftKeyboard();
 	// }
 });
