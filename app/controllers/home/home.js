@@ -1,29 +1,56 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	id : "refreshButton",
+// var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	// id : "refreshButton",
+	// left : 5,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// image : "/images/home/sync"
+// });
+// refreshButton.addEventListener("singletap", function(e) {
+	// e.cancelBubble = true;
+	// Alloy.Globals.Server.sync();
+	// Alloy.Models.User.xGet("messageBox").processNewMessages();
+// });
+// $.titleBar.setBackButton(refreshButton);
+// 
+// var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	// id : "settingButton",
+	// right : 15,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// image : "/images/home/setting"
+// });
+// settingButton.addEventListener("singletap", function() {
+	// Alloy.Globals.openWindow("setting/systemSetting");
+// });
+// $.titleBar.setMenuButton(settingButton);
+
+var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "projectButton",
 	left : 5,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/sync"
+	image : "/images/home/projectAll"
 });
-refreshButton.addEventListener("singletap", function(e) {
+projectButton.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	Alloy.Globals.Server.sync();
-	Alloy.Models.User.xGet("messageBox").processNewMessages();
+	$.getCurrentWindow().scrollableView.scrollToView(0);
 });
-$.titleBar.setBackButton(refreshButton);
-var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	id : "settingButton",
+$.titleBar.setBackButton(projectButton);
+
+var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "friendButton",
 	right : 15,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/setting"
+	image : "/images/home/friendAll"
 });
-settingButton.addEventListener("singletap", function() {
-	Alloy.Globals.openWindow("setting/systemSetting");
+friendButton.addEventListener("singletap", function() {
+	$.getCurrentWindow().scrollableView.scrollToView(2);
 });
-$.titleBar.setMenuButton(settingButton);
+$.titleBar.setMenuButton(friendButton);
+
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
@@ -78,9 +105,10 @@ $.makeContextMenu = function() {
 	// }));
 	return menuSection;
 }
+
 function refreshSyncCount() {
 	var syncCount = Alloy.Globals.getClientSyncCount();
-	refreshButton.setBubbleCount(syncCount);
+	$.footerBar.sync.setBubbleCount(syncCount);
 }
 
 refreshSyncCount();

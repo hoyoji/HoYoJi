@@ -21,16 +21,45 @@ $.onWindowCloseDo(function() {
 	Alloy.Globals.DataStore.initStore();
 });
 
-
-
-$.home = Alloy.createController("home/home", {currentWindow : $, parentController : $, autoInit : "false"});
-$.home.setParent($.$view);
+$.home = Alloy.createController("home/home", {
+	currentWindow : $,
+	parentController : $,
+	autoInit : "false"
+});
+$.home.setParent($.page2);
 $.home.UIInit();
 
-$.onWindowOpenDo(function(){
+$.onWindowOpenDo(function() {
 	Alloy.Globals.cacheWindow("money/moneyAddNew");
 });
 
 if (Alloy.Models.User.xGet("messageBox")) {
 	Alloy.Models.User.xGet("messageBox").processNewMessages();
 }
+
+var page1Loaded = false, page3Loaded = false;
+
+$.scrollableView.addEventListener("scroll", function(e) {
+	// console.info(e.currentPageAsFloat);
+	if (e.currentPageAsFloat < 1 && page1Loaded === false) {
+		page1Loaded = true;
+		$.projectAll = Alloy.createController("project/projectAll", {
+			backButtonHidden : "true",
+			currentWindow : $,
+			parentController : $,
+			autoInit : "false"
+		});
+		$.projectAll.setParent($.page1);
+		$.projectAll.UIInit();
+	} else if (e.currentPageAsFloat > 1 && page3Loaded === false) {
+		page3Loaded = true;
+		$.messageAll = Alloy.createController("message/messageAll", {
+			backButtonHidden : "true",
+			currentWindow : $,
+			parentController : $,
+			autoInit : "false"
+		});
+		$.messageAll.setParent($.page3);
+		$.messageAll.UIInit();
+	}
+});
