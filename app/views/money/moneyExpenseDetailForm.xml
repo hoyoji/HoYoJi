@@ -4,7 +4,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增支出明细" readModeTitle="支出明细" editModeTitle="修改支出明细"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="0">
+			<ScrollView id="contentScrollView" layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商品" hintText="请输入商品名称"
 				bindModel="$.$model"
 				bindAttribute="name"/>

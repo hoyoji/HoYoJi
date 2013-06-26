@@ -12,6 +12,10 @@ exports.close = function(e) {
 }
 
 $.onWindowCloseDo(function() {
+	if (Alloy.Globals.openedWindow["money/moneyAddNew"]) {
+		Alloy.Globals.openedWindow["money/moneyAddNew"].close();
+		delete Alloy.Globals.openedWindow["money/moneyAddNew"];
+	}
 	Alloy.Models.User = null;
 	Alloy.Globals.mainWindow = null;
 	Alloy.Globals.DataStore.initStore();
