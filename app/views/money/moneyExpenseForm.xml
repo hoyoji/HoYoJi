@@ -101,14 +101,8 @@
 				bindAttribute="remark"/>
 				
 				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
-<<<<<<< HEAD
-				height="0" width="100%" title="多人分摊" 
-=======
-				autoInit="false"
-				height="42" width="100%" title="多人分摊" 
->>>>>>> 9b6e1f8e7a21cc6d85bce3fd9554bdc904274768
+				height="0" width="100%" title="多人分摊" autoInit="false"
 				backgroundColor="green" image="none" />
-	
 			</ScrollView>
 		</View>
 	</View>
