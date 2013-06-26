@@ -4,7 +4,7 @@
 		<!-- <ScrollableView id="scrollableView" currentPage="1" showPagingControl="false" top="3"> -->
 			<!-- <Require src="project/projectAll" backButtonHidden="true" id="projectAll"/> -->
 			<!-- <Require src="money/moneyAll" id="moneyAll" /> -->
-			<Require src="home/home" id="home" />
+			<!-- <Require src="home/home" id="home" /> -->
 			<!-- <Require src="friend/friendAll" backButtonHidden="true" id="friendAll" /> -->
 			<!-- <Require src="message/messageAll" id="messageAll"/> -->
 		<!-- </ScrollableView> -->
