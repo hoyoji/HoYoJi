@@ -32,15 +32,17 @@
 		// }
 
 		exports.Utils.openWindow = function(windowName, options, loadOnly) {
-			var win;
-			// if (!Alloy.Globals.openingWindow[windowName]) {
-			win = Alloy.createController("window", {autoInit : "false"});
-			win.openWin(windowName, options, loadOnly);
-			win.UIInit();
-			if (!loadOnly) {
-				Alloy.Globals.openingWindow[windowName] = win;
+			var win = Alloy.Globals.openingWindow[windowName];
+			if (!win || loadOnly) {
+				win = Alloy.createController("window", {
+					autoInit : "false"
+				});
+				win.openWin(windowName, options, loadOnly);
+				win.UIInit();
+				if (!loadOnly) {
+					Alloy.Globals.openingWindow[windowName] = win;
+				}
 			}
-			// }
 			return win;
 		}
 
@@ -54,6 +56,8 @@
 						exports.Utils.cacheWindow(windowName);
 					}
 				}
+
+
 				Alloy.Globals.openedWindow[windowName].$view.addEventListener("close", reCacheWindow);
 			}
 		}

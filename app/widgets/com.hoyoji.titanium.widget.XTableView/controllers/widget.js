@@ -987,14 +987,9 @@ exports.getSortOrder = function(){
 }
 
 // $.table.addEventListener("touchstart", function(e){
-	// // if(!e.source.getHintText){
-		// $.getCurrentWindow().closeSoftKeyboard();
-	// // }
+	// $.$view.fireEvent("touchstart");
 // });
 
 $.table.footerView.addEventListener("touchstart", function(e){
-	$.$view.parent.fireEvent("touchstart");
-	// if(!e.source.getHintText){
-		// $.getCurrentWindow().closeSoftKeyboard();
-	// }
+	$.$view.fireEvent("touchstart");
 });

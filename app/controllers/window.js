@@ -1,14 +1,13 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function doClose() {
+	$.closing = true;
 	$.$view.hide();
 	$.closeSoftKeyboard();
-	$.closing = true;
 	// setTimeout(function() {
 	$.$view.close({
 		animated : false
 	});
-
 	// }, 500);
 }
 
@@ -33,12 +32,15 @@ exports.close = function() {
 	}
 }
 
-exports.openCachedWindow = function() {
+exports.openCachedWindow = function(contentController) {
 	$.$view.show();
 	setTimeout(function() {
 		function fireShowEvent() {
 			$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 			$.$view.fireEvent("show");
+			if(contentController){
+				delete Alloy.Globals.openingWindow[contentController];
+			}
 		}
 
 
@@ -57,7 +59,7 @@ exports.open = function(contentController, loadOnly) {
 
 	if (!loadOnly) {
 		$.showActivityIndicator();
-		exports.openCachedWindow();
+		exports.openCachedWindow(contentController);
 	}
 
 	//$.closeSoftKeyboard();
@@ -98,9 +100,6 @@ exports.openWin = function(contentController, options, loadOnly) {
 	$.content.setParent($.contentView);
 	$.content.UIInit();
 	// $.scrollableView.addView($.content.$view);
-
-	delete Alloy.Globals.openingWindow[contentController];
-
 	return $.content;
 }
 //

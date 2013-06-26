@@ -123,8 +123,8 @@ function openMainWindow(){
 	$.$model.xSet("password", null);
 	if (!Alloy.Globals.mainWindow) {
 		var win = Alloy.createController("mainWindow", {autoInit : "false"});
-		win.open();
 		win.UIInit();
+		win.open();
 	}
 }
 
