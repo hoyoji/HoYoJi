@@ -218,7 +218,7 @@ exports.definition = {
 				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							projectId : subProject.xGet("id"),
-							friendId : self.xGet("friendId")
+							friendUserId : self.xGet("friendUserId")
 						});
 					if(subProjectShareAuthorization.id){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -227,14 +227,14 @@ exports.definition = {
 				});
 				Alloy.Globals.Server.sendMsg({
 					id : guid(),
-					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
+					"toUserId" : this.xGet("friendUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
 					"messageState" : "unread",
 					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+this.xGet("project").xGet("name")+"及子项目给您",
 					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + this.xGet("project").xGet("name") +"及子项目给您",
-					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
 			                            projectShareAuthorizationId : this.xGet("id"),
