@@ -101,6 +101,13 @@ exports.definition = {
 			getForeignCurrency : function() {
 				return this.xGet("foreignCurrency").xGet("name");
 			},
+			getAutoUpdate : function() {
+				if(this.xGet("autoUpdate")){
+					return "自动更新";
+				}else {
+					return "不自动更新";
+				}
+			},
 			syncAddNew : function(record, dbTrans) {
 				var exchange = Alloy.createModel("Exchange").xFindInDb({
 					localCurrencyId : record.localCurrencyId,

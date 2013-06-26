@@ -1,21 +1,21 @@
 <Alloy>
 	<View class="container" height="42" openForm="money/currency/currencyForm">
 		
-		<View id="content" class="row-content" height="Ti.UI.FILL" >
+		<View id="content" class="row-content" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
 			<View layout="horizontal" horizontalWrap="false" left="10" width="Ti.UI.SIZE">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
 				bindModel = "$.$model"
 				bindAttribute = "name"
 				/>
 			</View>
-			<View layout="horizontal" horizontalWrap="false" left="50%"  width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="42"
+			<View layout="horizontal" horizontalWrap="false" right="20"  width="Ti.UI.SIZE">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="21"
 				bindModel = "$.$model"
 				bindAttribute = "code"
 				/>
 			</View>
-			<View layout="horizontal" horizontalWrap="false" right="30" width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="42"
+			<View layout="horizontal" horizontalWrap="false" right="20" width="Ti.UI.SIZE">
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="21"  width="Ti.UI.SIZE" height="21" class="secondRow"
 				bindModel = "$.$model"
 				bindAttribute = "symbol"
 				/>

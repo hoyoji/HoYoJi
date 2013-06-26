@@ -1,7 +1,9 @@
 ".container": {
 	backgroundColor: "#f5f5f5"
 }
+
 ".secondRow": {
+	color: "#6e6d6d",
 	font: {
 		fontSize: 10,
 		fontWeight: 'normal'
