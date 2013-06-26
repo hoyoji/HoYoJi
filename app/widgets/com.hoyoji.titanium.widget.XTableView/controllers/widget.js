@@ -985,3 +985,15 @@ exports.getOrderBy = function(){
 exports.getSortOrder = function(){
 	return sortReverse ? "DESC" : "ASC";
 }
+
+// $.table.addEventListener("touchstart", function(e){
+	// // if(!e.source.getHintText){
+		// $.getCurrentWindow().closeSoftKeyboard();
+	// // }
+// });
+
+$.table.footerView.addEventListener("touchstart", function(e){
+	// if(!e.source.getHintText){
+		$.getCurrentWindow().closeSoftKeyboard();
+	// }
+});

@@ -30,9 +30,11 @@
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
 							id : "numericKeyboard",
 							currentWindow : $,
-							parentController : $
+							parentController : $,
+							autoInit : "false"
 						});
 						$.numericKeyboard.setParent($.$view);
+						$.numericKeyboard.UIInit();
 					}
 					$.numericKeyboard.open(textField, callback, bottom);
 				},

@@ -34,8 +34,9 @@
 		exports.Utils.openWindow = function(windowName, options, loadOnly) {
 			var win;
 			// if (!Alloy.Globals.openingWindow[windowName]) {
-			win = Alloy.createController("window");
+			win = Alloy.createController("window", {autoInit : "false"});
 			win.openWin(windowName, options, loadOnly);
+			win.UIInit();
 			if (!loadOnly) {
 				Alloy.Globals.openingWindow[windowName] = win;
 			}
