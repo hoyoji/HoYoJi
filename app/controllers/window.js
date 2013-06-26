@@ -2,8 +2,8 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function confirmClose() {
 	function doClose() {
+		$.$view.hide();
 		$.closing = true;
-		
 		// setTimeout(function() {
 			$.$view.close({
 				animated : false
@@ -140,7 +140,6 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 	if (e.currentPage === 0) {
 		// delete Alloy.Globals.openedWindow["money/moneyAddNew"];
 		$.closeSoftKeyboard();
-		$.$view.hide();
 		confirmClose();
 	} else if (e.currentPage === 1 && firstTimeOpen) {
 		firstTimeOpen = false;
