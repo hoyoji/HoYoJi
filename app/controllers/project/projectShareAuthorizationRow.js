@@ -35,14 +35,14 @@ $.makeContextMenu = function(e, isSelectMode) {
 			Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 				Alloy.Globals.Server.sendMsg({
 					id : guid(),
-					"toUserId" : $.$model.xGet("friend").xGet("friendUser").xGet("id"),
+					"toUserId" : $.$model.xGet("friendUserId"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
 					"messageState" : "unread",
 					"messageTitle" : Alloy.Models.User.xGet("userName"),
 					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "给您",
-					"messageBoxId" : $.$model.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 						shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 						projectShareAuthorizationId : $.$model.xGet("id"),

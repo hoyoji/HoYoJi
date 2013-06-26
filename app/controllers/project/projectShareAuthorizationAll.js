@@ -95,6 +95,7 @@ function onFooterbarTap(e){
 		}else{
 			Alloy.Globals.confirm("同步", "当前有" +syncCount+ "条记录没有同步，立即同步？", function(){
 				Alloy.Globals.Server.sync();
+				Alloy.Models.User.xGet("messageBox").processNewMessages();
 			});
 		}
 	}

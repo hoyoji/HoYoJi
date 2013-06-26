@@ -10,6 +10,7 @@ var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", nul
 refreshButton.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	Alloy.Globals.Server.sync();
+	Alloy.Models.User.xGet("messageBox").processNewMessages();
 });
 $.titleBar.setBackButton(refreshButton);
 var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
@@ -30,6 +31,7 @@ function onFooterbarTap(e) {
 		// Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
+		Alloy.Models.User.xGet("messageBox").processNewMessages();
 	} else if (e.source.id === "setting") {
 		Alloy.Globals.openWindow("setting/systemSetting");
 	} else if (e.source.id === "moneyAll") {
