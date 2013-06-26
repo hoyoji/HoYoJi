@@ -19,9 +19,9 @@ $.onWindowCloseDo(function() {
 
 
 
-$.home = Alloy.createController("home/home", {currentWindow : $, parentController : $});
+$.home = Alloy.createController("home/home", {currentWindow : $, parentController : $, autoInit : "false"});
 $.home.setParent($.$view);
-
+$.home.UIInit();
 
 $.onWindowOpenDo(function(){
 	Alloy.Globals.openCacheMoneyAddNew(true);

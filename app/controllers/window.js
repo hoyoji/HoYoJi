@@ -71,6 +71,7 @@ exports.open = function(contentController) {
 
 exports.openWin = function(contentController, options, loadOnly) {
 	options = options || {};
+	options.autoInit = "false";
 	options.parentController = $;
 	options.currentWindow = $;
 
@@ -89,6 +90,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 	_.extend($.$attrs, options);
 	$.content = Alloy.createController(contentController, options);
 	$.content.setParent($.contentView);
+	$.content.UIInit();
 	// $.scrollableView.addView($.content.$view);
 
 	delete Alloy.Globals.openingWindow[contentController];

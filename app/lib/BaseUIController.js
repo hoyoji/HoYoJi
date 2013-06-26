@@ -114,8 +114,8 @@
 						});
 					}
 				},
-				onWindowOpenDo : function(callback){
-					if($.__currentWindow){
+				onWindowOpenDo : function(callback, noWaitForWinOpen){
+					if($.__currentWindow && noWaitForWinOpen){
 						callback();
 					} else {
 						$.$view.addEventListener("winopen", function(e){
