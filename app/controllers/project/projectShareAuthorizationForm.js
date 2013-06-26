@@ -70,9 +70,8 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
 		}
 	});
-	if($.$model.xGet("sharePercentageType") === "fixed"){
-		// fixedSharePercentage = fixedSharePercentage + $.$model.xGet("sharePercentage");
-		if((fixedSharePercentage + $.$model.xGet("sharePercentage")) > 100){
+	if(projectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+		if((fixedSharePercentage + projectShareAuthorization.xGet("sharePercentage")) > 100){
 			projectShareAuthorization.xSet("sharePercentage",100 - fixedSharePercentage);
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 				averageSharePercentageCollection.xSet("sharePercentage" , 0);
@@ -81,7 +80,7 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 			});
 		}else{
 			var averageLength = averageSharePercentageCollections.length;
-			var averageTotalPercentage = 100 - fixedSharePercentage;
+			var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 			var averagePercentage = averageTotalPercentage/averageLength;
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 				averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
@@ -196,7 +195,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 								subProjectShareAuthorization.xAddToSave($);
 								
-								editSharePercentage(subProjectShareAuthorization);
+								editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -484,6 +483,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					
 				}else{
 					var editProjectShareAuthorizationArray = [];
+					editProjectShareAuthorizationArray.push($.$model.toJSON());
 					if($.$model.xGet("shareAllSubProjects")){
 						Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function(){
 							$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
@@ -510,8 +510,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 							});
 						});
-						editProjectShareAuthorizationArray.push($.$model.toJSON());
-						
 						if($.$model.xGet("state") === "Accept"){
 							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 								Alloy.Globals.Server.sendMsg({

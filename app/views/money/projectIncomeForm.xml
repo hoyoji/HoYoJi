@@ -47,6 +47,8 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="money/moneyIncomeCategoryAll"
 				bindModelSelectorParams="selectedProject:project"
+				addModeEditability="noneditable"
+				editModeEditability="noneditable"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="账户" hintText="请选择账户"
 				bindModel="$.$model"

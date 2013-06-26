@@ -7,6 +7,8 @@ exports.definition = {
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
+			depositeIncomeCategoryId : "TEXT",
+			depositeExpenseCategoryId : "TEXT",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
@@ -18,7 +20,9 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : "projects" },
 			parentProject : { type : "Project", attribute : "subProjects" },
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
-			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
+			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null},
+			depositeIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
+			depositeExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
 		},
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},

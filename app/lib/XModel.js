@@ -391,20 +391,22 @@
 				}
 				if(this.config.hasMany){
 					for(var hasMany in this.config.hasMany){
-						var c = this.xGet(hasMany);
-						if(c.length > 0){
-							var toBeRemoved = [];
-							c.forEach(function(item){
-								if(item.isNew()){
-									toBeRemoved.push(item);
-								} else if(item.hasChanged()){
-									item.xReset();
-								}
-								delete item.__xDeleted;
-							});
-							toBeRemoved.forEach(function(item){
-								c.remove(item);
-							});
+						if(this.attributes[hasMany]){
+							var c = this.xGet(hasMany);
+							if(c.length > 0){
+								var toBeRemoved = [];
+								c.forEach(function(item){
+									if(item.isNew()){
+										toBeRemoved.push(item);
+									} else if(item.hasChanged()){
+										item.xReset();
+									}
+									delete item.__xDeleted;
+								});
+								toBeRemoved.forEach(function(item){
+									c.remove(item);
+								});
+							}
 						}
 					}
 				}

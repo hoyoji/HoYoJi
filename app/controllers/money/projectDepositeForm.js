@@ -55,6 +55,7 @@ if (!$.$model) {
 		expenseType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 		project : Alloy.Models.User.xGet("activeProject"),
+		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeExpenseCategory"),
 		ownerUser : Alloy.Models.User,
 		expenseType : "Deposite"
 	});
@@ -150,8 +151,8 @@ if ($.saveableMode === "read") {
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
-			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
-			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
+			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
+			$.moneyExpenseCategory.setValue(depositeExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 		}
 	});
@@ -181,7 +182,7 @@ if ($.saveableMode === "read") {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendUserId : Alloy.Models.User.id
 			});
-			projectShareAuthorization.xSet("actualTotalExpense",$.projectShareAuthorization.xGet("actualTotalExpense") - newAmount);
+			projectShareAuthorization.xSet("actualTotalExpense",projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
 			projectShareAuthorization.xAddToSave($);
 			
 			if (oldMoneyAccount === newMoneyAccount) {
@@ -241,6 +242,7 @@ if ($.saveableMode === "read") {
 						incomeType : $.$model.xGet("expenseType"),
 						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 						project : $.$model.xGet("project"),
+						moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
 						friendUser : $.$model.xGet("friendUser")
 					});
 					var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {

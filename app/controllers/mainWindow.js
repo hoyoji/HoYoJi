@@ -17,6 +17,16 @@ $.onWindowCloseDo(function() {
 	Alloy.Globals.DataStore.initStore();
 });
 
+
+
+$.home = Alloy.createController("home/home", {currentWindow : $, parentController : $, autoInit : "false"});
+$.home.setParent($.$view);
+$.home.UIInit();
+
+$.onWindowOpenDo(function(){
+	Alloy.Globals.openCacheMoneyAddNew(true);
+});
+
 if (Alloy.Models.User.xGet("messageBox")) {
 	Alloy.Models.User.xGet("messageBox").processNewMessages();
 }

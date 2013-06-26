@@ -34,7 +34,7 @@ if (!$.$model) {
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 		project : Alloy.Models.User.xGet("activeProject"),
-		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeIncomeCategory"),
 		ownerUser : Alloy.Models.User
 	});
 

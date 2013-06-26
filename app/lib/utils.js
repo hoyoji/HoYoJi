@@ -31,14 +31,29 @@
 		// return transform;
 		// }
 
-		exports.Utils.openWindow = function(windowName, options) {
+		exports.Utils.openWindow = function(windowName, options, loadOnly) {
 			var win;
 			// if (!Alloy.Globals.openingWindow[windowName]) {
 				win = Alloy.createController("window");
-				win.openWin(windowName, options);
-				Alloy.Globals.openingWindow[windowName] = win;
+				win.openWin(windowName, options, loadOnly);
+				if(!loadOnly){
+					Alloy.Globals.openingWindow[windowName] = win;
+				}
 			// }
 			return win;
+		}
+
+		exports.Utils.openCacheMoneyAddNew = function(loadOnly){
+			if(!Alloy.Globals.openedWindow["money/moneyAddNew"]){
+				Alloy.Globals.openedWindow["money/moneyAddNew"] = exports.Utils.openWindow("money/moneyAddNew", null, loadOnly);
+				Alloy.Globals.openedWindow["money/moneyAddNew"].$view.addEventListener("close", function(){
+					delete Alloy.Globals.openedWindow["money/moneyAddNew"];
+					exports.Utils.openCacheMoneyAddNew(true);
+				});
+			}
+			if(!loadOnly){
+				Alloy.Globals.openedWindow["money/moneyAddNew"].open("money/moneyAddNew");
+			}
 		}
 
 		exports.Utils.getClientSyncCount = function(){

@@ -3,6 +3,8 @@
 			attrs = attrs || {};
 			// a window is by default a saveableContainer
 			attrs.saveableContainer = "true";
+			attrs.parentController = $;
+			attrs.currentWindow = $;
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			
 			if(OS_ANDROID){
@@ -26,7 +28,9 @@
 				openNumericKeyboard : function(textField, callback, bottom){
 					if(!$.numericKeyboard){
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
-							id : "numericKeyboard"
+							id : "numericKeyboard",
+							currentWindow : $,
+							parentController : $
 						});
 						$.numericKeyboard.setParent($.$view);
 					}
@@ -79,7 +83,9 @@
 			});
 			if ($.$view.contextMenu !== "false") {
 				$.__views.contextMenu = Alloy.createWidget("com.hoyoji.titanium.widget.ContextMenu", "widget", {
-					id : "contextMenu"
+					id : "contextMenu",
+					parentController : $,
+					currentWindow : $
 				});
 				$.__views.contextMenu.setParent($.$view);
 				$.contextMenu = $.__views.contextMenu;
