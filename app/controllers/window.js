@@ -3,10 +3,12 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 function confirmClose() {
 	function doClose() {
 		$.closing = true;
+		
 		// setTimeout(function() {
 			$.$view.close({
 				animated : false
 			});
+			
 		// }, 500);
 	}
 
@@ -49,8 +51,12 @@ exports.close = function() {
 exports.openCachedWindow = function(){
 	$.$view.show();
 	setTimeout(function() {
+		function fireShowEvent(){
+			$.scrollableView.removeEventListener("scrollend", fireShowEvent);
+			$.$view.fireEvent("show");
+		}
+		$.scrollableView.addEventListener("scrollend", fireShowEvent);
 		$.scrollableView.scrollToView(1);
-		$.$view.fireEvent("show");
 	}, 100);
 }
 
