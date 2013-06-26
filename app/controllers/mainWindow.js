@@ -53,13 +53,13 @@ $.scrollableView.addEventListener("scroll", function(e) {
 		$.projectAll.UIInit();
 	} else if (e.currentPageAsFloat > 1 && page3Loaded === false) {
 		page3Loaded = true;
-		$.messageAll = Alloy.createController("message/messageAll", {
+		$.friendAll = Alloy.createController("friend/friendAll", {
 			backButtonHidden : "true",
 			currentWindow : $,
 			parentController : $,
 			autoInit : "false"
 		});
-		$.messageAll.setParent($.page3);
-		$.messageAll.UIInit();
+		$.friendAll.setParent($.page3);
+		$.friendAll.UIInit();
 	}
 });
