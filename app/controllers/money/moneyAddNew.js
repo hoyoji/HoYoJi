@@ -50,28 +50,32 @@ function onFooterbarTap(e) {
 		$[e.source.id] = Alloy.createController(formName, {
 			currentWindow : $.getCurrentWindow(),
 			parentController : $.getParentController(),
-			autoInit : "false"
+			autoInit : "false",
+			top : 0,
+			bottom : 84
 		});
-		$[e.source.id].$view.setTop(0);
-		$[e.source.id].$view.setBottom(84);
+		// $[e.source.id].$view.setTop(0);
+		// $[e.source.id].$view.setBottom(84);
 		$[e.source.id].setParent($.$view);
 		$[e.source.id].UIInit();
 	}
 	if (currentForm === $[e.source.id]) {
 		return;
 	}
-	currentForm.$view.hide();
+	var previousForm = currentForm;
+	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
 	currentForm.date.setValue((new Date()).toISOString());
-
+	
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
 	}, 42);
 	$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
 	currentForm.$view.show();
+	previousForm.$view.hide();
 }
 
-$.getCurrentWindow().$view.addEventListener("open", function() {
+$.getCurrentWindow().$view.addEventListener("show", function() {
 	currentForm.date.setValue((new Date()).toISOString());
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();

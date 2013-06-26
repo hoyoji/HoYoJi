@@ -2,11 +2,12 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function confirmClose() {
 	function doClose() {
-		setTimeout(function() {
+		$.closing = true;
+		// setTimeout(function() {
 			$.$view.close({
 				animated : false
 			});
-		}, 500);
+		// }, 500);
 	}
 
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
@@ -45,14 +46,27 @@ exports.close = function() {
 	// }
 }
 
-exports.open = function(contentController) {
+exports.openCachedWindow = function(){
+	$.$view.show();
+	setTimeout(function() {
+		$.scrollableView.scrollToView(1);
+		$.$view.fireEvent("show");
+	}, 100);
+}
+
+exports.open = function(contentController, loadOnly) {
+	if(loadOnly){
+		$.$view.setVisible(false);	
+	}
 	$.$view.open({
 		animated : false
 	});
-	$.showActivityIndicator();
-	setTimeout(function() {
-		$.scrollableView.scrollToView(1);
-	}, 100);
+	
+	if(!loadOnly){
+		$.showActivityIndicator();
+		exports.openCachedWindow();
+	}
+		
 	//$.closeSoftKeyboard();
 	// if(OS_ANDROID){
 	// $.$view.focus();
@@ -83,9 +97,8 @@ exports.openWin = function(contentController, options, loadOnly) {
 		});
 		$.$view.setBackgroundColor("#99000000");
 	}
-	if(!loadOnly){
-		$.open(contentController);
-	}
+
+	$.open(contentController, loadOnly);
 
 	_.extend($.$attrs, options);
 	$.content = Alloy.createController(contentController, options);
@@ -119,7 +132,7 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 		return;
 	}
 	if (e.currentPage === 0) {
-		delete Alloy.Globals.openedWindow["money/moneyAddNew"];
+		// delete Alloy.Globals.openedWindow["money/moneyAddNew"];
 		$.closeSoftKeyboard();
 		$.$view.hide();
 		confirmClose();

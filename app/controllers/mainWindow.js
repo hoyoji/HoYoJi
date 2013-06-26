@@ -24,7 +24,7 @@ $.home.setParent($.$view);
 $.home.UIInit();
 
 $.onWindowOpenDo(function(){
-	Alloy.Globals.openCacheMoneyAddNew(true);
+	Alloy.Globals.cacheWindow("money/moneyAddNew");
 });
 
 if (Alloy.Models.User.xGet("messageBox")) {
