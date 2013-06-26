@@ -29,12 +29,9 @@
 						values="average,fixed"
 						bindModel="$.$model"
 						bindAttribute="sharePercentageType"/>
-						<View layout="horizontal" height="Ti.UI.SIZE" width="60%" id="sharePercentage">
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="42" labelText=""
-							bindModel="$.$model"
-							bindAttribute="sharePercentage"
-							/>
-						</View>
+						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
+						bindModel="$.$model"
+						bindAttribute="sharePercentage"/>
 					</View>
 				</View>
 				<View height="42">

@@ -242,6 +242,17 @@ exports.definition = {
 						patch : true
 					});
 				}
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				// 同步新增好友时，一起把该好友用户同步下来
+				if (!friendUser.id) {
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+						}
+					});
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额

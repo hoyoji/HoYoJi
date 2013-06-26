@@ -256,6 +256,17 @@ exports.definition = {
 						// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
 					});
 				}
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				// 同步新增好友时，一起把该好友用户同步下来
+				if (!friendUser.id) {
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+						}
+					});
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 该记录同时存在服务器上和在本地。在服务器上被改变，但是在本地未被改变

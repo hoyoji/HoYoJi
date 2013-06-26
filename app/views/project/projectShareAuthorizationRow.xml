@@ -15,11 +15,11 @@
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="16" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
 				bindModel = "$.$model"
-				bindAttribute = "getActualTotalExpense()"
+				bindAttribute = "getActualTotal()"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="36" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
 			bindModel = "$.$model"
-			bindAttribute = "getActualTotalIncome()"
+			bindAttribute = "getApportionedTotal()"
 			/>
 			
 		</View>

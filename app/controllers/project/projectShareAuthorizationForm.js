@@ -87,7 +87,6 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 				editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 				averageSharePercentageCollection.xAddToSave($);
 			});
-			projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
 		}
 	}else{
 		var averageLength = averageSharePercentageCollections.length + 1;
@@ -598,17 +597,17 @@ $.convertUser2FriendModel = function(userModel){
 	return userModel;
 }
 
-$.onWindowOpenDo(function() {
-	changeSharePercentageType();
-});
-
-function changeSharePercentageType(){
-	if($.$model.xGet("sharePercentageType") === "fixed"){
-		$.sharePercentage.show();
-	}else{
-		$.sharePercentage.hide();
-	}
-}
-$.sharePercentageType.field.addEventListener("singletap",function(e){
-	changeSharePercentageType();
-});
+// $.onWindowOpenDo(function() {
+	// changeSharePercentageType();
+// });
+// 
+// function changeSharePercentageType(){
+	// if($.$model.xGet("sharePercentageType") === "fixed"){
+		// $.sharePercentage.show();
+	// }else{
+		// $.sharePercentage.hide();
+	// }
+// }
+// $.sharePercentageType.field.addEventListener("singletap",function(e){
+	// changeSharePercentageType();
+// });
