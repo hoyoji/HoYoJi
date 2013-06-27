@@ -31,3 +31,7 @@ $.onWindowOpenDo(function(){
 	setActiveCurrency();
 });
 
+$.name.UIInit($, $.getCurrentWindow());
+$.symbol.UIInit($, $.getCurrentWindow());
+$.code.UIInit($, $.getCurrentWindow());
+
