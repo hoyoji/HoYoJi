@@ -25,3 +25,5 @@ function onFooterbarTap(e){
 	}
 }
 
+$.localCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.localCurrencyName.UIInit($, $.getCurrentWindow());

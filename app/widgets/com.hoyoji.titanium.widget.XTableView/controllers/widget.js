@@ -134,7 +134,7 @@ function createRowView(rowModel, collection) {
 			containingTable : $,
 			autoInit : "false",
 			currentWindow : $.__currentWindow,
-			parentController : $.__parentController
+			parentController : $
 		});
 		rowViewController.setParent(row);
 		rowViewController.UIInit();

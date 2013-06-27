@@ -42,3 +42,7 @@ $.onWindowOpenDo(function() {
 		
 	});
 });
+
+$.foreignCurrency.UIInit($, $.getCurrentWindow());
+$.rate.UIInit($, $.getCurrentWindow());
+$.autoUpdate.UIInit($, $.getCurrentWindow());
