@@ -52,7 +52,10 @@ var __alloyId76 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel",
 	bindModel : "User",
 	bindAttribute : "getLocalCurrencySymbol()",
 	id : "__alloyId76",
-	__parentSymbol : __alloyId75
+	__parentSymbol : __alloyId75,
+	autoInit : "false",
+	currentWindow : $.__currentWindow,
+	parentController : $.__parentController
 });
 __alloyId76.setParent(__alloyId75);
 var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
