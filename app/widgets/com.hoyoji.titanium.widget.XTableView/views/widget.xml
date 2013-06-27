@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#f5f5f5">
+	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#e1e1e1">
 		<!-- <View platform="android" height="60" width="Ti.UI.FILL" bottom="0" >
 			<Label id="fetchNextPageButton" text="无内容"/>
 		</View> -->

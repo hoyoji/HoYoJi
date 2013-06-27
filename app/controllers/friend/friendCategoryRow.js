@@ -22,3 +22,5 @@ $.makeContextMenu = function(e, isSelectMode) {
 
 	return menuSection;
 }
+
+$.friendCategoryName.UIInit($, $.getCurrentWindow());

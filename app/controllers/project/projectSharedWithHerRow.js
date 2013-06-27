@@ -98,3 +98,5 @@ $.makeContextMenu = function(e, isSelectMode) {
 	
 	return menuSection;
 }
+
+$.name.UIInit($, $.getCurrentWindow());

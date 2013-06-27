@@ -1,4 +1,13 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
+$.myProjectShareAuthorizationsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
+    id: "myProjectShareAuthorizationsTable",
+    bottom: "0",
+    top: "0",
+    parentController : $,
+	currentWindow : $.__currentWindow
+});
+$.myProjectShareAuthorizationsTable.setParent($.body);
+$.myProjectShareAuthorizationsTable.UIInit();
 
 var selectedProject = $.$attrs.selectedProject;
 
