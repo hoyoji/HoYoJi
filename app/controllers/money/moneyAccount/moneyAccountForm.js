@@ -18,3 +18,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}
 	$.saveModel(saveEndCB, saveErrorCB);
 }
+
+$.name.UIInit($, $.getCurrentWindow());
+$.currency.UIInit($, $.getCurrentWindow());
+$.currentBalance.UIInit($, $.getCurrentWindow());
+$.accountType.UIInit($, $.getCurrentWindow());
+$.accountNumber.UIInit($, $.getCurrentWindow());
+$.bankAddress.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+// $.sharingType.UIInit($, $.getCurrentWindow());

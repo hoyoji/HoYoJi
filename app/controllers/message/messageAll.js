@@ -1,5 +1,8 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.sendedMessagesTable.UIInit($, $.getCurrentWindow());
+$.receivedMessagesTable.UIInit($, $.getCurrentWindow());
+
 var sendedMsgCollection = Alloy.createCollection("Message").xSearchInDb({
 	messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 	fromUserId : Alloy.Models.User.id
