@@ -100,13 +100,52 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 		projectShareAuthorization.xSet("sharePercentage" , averagePercentage);
 	}
 }
+
+function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuthorization){
+	var averageSharePercentageCollections = [];
+	var fixedSharePercentageCollections = [];
+	var fixedSharePercentage = 0;
+	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Wait"
+	});
+	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Accept"
+	});
+	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
+		if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+		}else{
+			averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		}
+	});
+	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
+		if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
+		}else{
+			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+		}
+	});
+	var averageLength = averageSharePercentageCollections.length;
+	var averageTotalPercentage = 100 - fixedSharePercentage;
+	var averagePercentage = averageTotalPercentage/averageLength;
+	averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+		averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
+		editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
+		averageSharePercentageCollection.xAddToSave($);
+	});
+}
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	setExpenseDetailAndIncomeDetailAuthorization();
 	var subProjectShareAuthorizationIds = [];
 	var date = (new Date()).toISOString();
+	var editSharePercentageAuthorization = [];
 	if ($.$model.isNew()) {
 		var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
-		var editSharePercentageAuthorization = [];
 		// var isSynAllProjects = true;
 		// var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
 			// tableName : "Project",
@@ -256,8 +295,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		   	if($.$model.hasChanged("friendUser")){
 				saveErrorCB("好友不能修改！");
 			}else{
-				if($.$model.hasChanged("sharePercentage")){
-					editSharePercentage($.$model.xGet("project"));
+				if($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.hasChanged("sharePercentageType"))){
+					editSharePercentage($.$model,editSharePercentageAuthorization);
 				}
 				if($.$model.hasChanged("shareAllSubProjects")){
 					var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
@@ -332,32 +371,38 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 												subProjectShareAuthorization.xAddToSave($);
+												
+												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 											}
 										}
 										
 										if(subProjectShareAuthorizationIds.length){
-											projectShareAuthorizationArray.push($.$model.toJSON());
+											editSharePercentageAuthorization.push($.$model.toJSON());
 											Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-												Alloy.Globals.Server.sendMsg({
-												id : guid(),
-												"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-												"fromUserId" : Alloy.Models.User.xGet("id"),
-												"type" : "Project.Share.Edit",
-												"messageState" : "new",
-												"messageTitle" : "共享项目",
-												"date" : date,
-												"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
-												"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-												"messageData" : JSON.stringify({
-										                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-										                            projectShareAuthorizationId : $.$model.xGet("id"),
-										                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-										                        })
-										         },function(){
-											        $.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
-								    			}, function(e){
-								    				alert(e.__summary.msg);
-								    			});
+												Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+													Alloy.Globals.Server.sendMsg({
+													id : guid(),
+													"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+													"fromUserId" : Alloy.Models.User.xGet("id"),
+													"type" : "Project.Share.Edit",
+													"messageState" : "new",
+													"messageTitle" : "共享项目",
+													"date" : date,
+													"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") +"的子项目给您",
+													"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+													"messageData" : JSON.stringify({
+											                            shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+											                            projectShareAuthorizationId : $.$model.xGet("id"),
+											                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+											                        })
+											         },function(){
+												        $.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
+									    			}, function(e){
+									    				alert(e.__summary.msg);
+									    			});
+									    		}, function(e) {
+													alert(e.__summary.msg);
+												});
 							    			}, function(e) {
 												alert(e.__summary.msg);
 											});
@@ -386,12 +431,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 												subProjectShareAuthorization.xAddToSave($);
+												
+												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 											}
 										}
 										
 										if(subProjectShareAuthorizationIds.length){
+											editSharePercentageAuthorization.push($.$model.toJSON());
 											Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-												Alloy.Globals.Server.putData($.$model.toJSON(), function(data) {
+												Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 													Alloy.Globals.Server.sendMsg({
 														id : guid(),
 														"toUserId" : $.$model.xGet("friendUser").xGet("id"),
@@ -430,7 +478,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								$.saveModel(saveEndCB, saveErrorCB);
 							}
 						}else {
-							var editProjectShareAuthorizationArray = [];
 							allSubProject.map(function(subProject){
 								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 										projectId : subProject.xGet("id"),
@@ -443,12 +490,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									subProjectShareAuthorization.xSet("state", "Delete");
 									subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 									subProjectShareAuthorization.xAddToSave($);
-									editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+									editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+									deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 								}
 							});
 							if(subProjectShareAuthorizationIds.length){
-								editProjectShareAuthorizationArray.push($.$model.toJSON());
-								Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+								editSharePercentageAuthorization.push($.$model.toJSON());
+								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 									Alloy.Globals.Server.sendMsg({
 									id : guid(),
 									"toUserId" : $.$model.xGet("friendUser").xGet("id"),
@@ -481,8 +529,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 					
 				}else{
-					var editProjectShareAuthorizationArray = [];
-					editProjectShareAuthorizationArray.push($.$model.toJSON());
+					editSharePercentageAuthorization.push($.$model.toJSON());
 					if($.$model.xGet("shareAllSubProjects")){
 						Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function(){
 							$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject){
@@ -495,22 +542,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									&& (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")){
 										var data = {
 											shareType : $.$model.xGet("shareType"),
-											shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+											sharePercentageType : $.$model.xGet("sharePercentageType"),
+											sharePercentage : $.$model.xGet("sharePercentage")
 										}
 										for(var attr in $.$model.config.columns){
 											if(attr.startsWith("projectShare")){
 												data[attr] = $.$model.xGet(attr);
 											}
 										}
+										
+										var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
+										var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
 										subProjectShareAuthorization.xSet(data); 
 										subProjectShareAuthorization.xSave($);
-										editProjectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+										editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+										
+										if($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld 
+											|| ($.$model.xGet("sharePercentageType") === "fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))){
+											editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+										}
 									}
 								});
 							});
 						});
 						if($.$model.xGet("state") === "Accept"){
-							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
 									"toUserId" : $.$model.xGet("friendUser").xGet("id"),
@@ -534,7 +591,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			    				alert(e.__summary.msg);
 			    			});
 						}else{
-							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 								$.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
 							}, function(e){
 			    				alert(e.__summary.msg);
@@ -543,7 +600,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							
 					}else{
 						if($.$model.xGet("state") === "Accept"){
-							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
 									"toUserId" : $.$model.xGet("friendUser").xGet("id"),
@@ -567,7 +624,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				    				alert(e.__summary.msg);
 				    		});
 			    		}else{
-			    			Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+			    			Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 			    				$.saveModel(saveEndCB, saveErrorCB, {syncFromServer : true});
 			    			}, function(e){
 				    				alert(e.__summary.msg);
