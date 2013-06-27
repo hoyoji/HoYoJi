@@ -11,7 +11,7 @@
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			}
 			$.$view.addEventListener("touchstart", function(e){
-				if(!e.source.getHintText){
+				if(!e.source.focusable){
 					$.getCurrentWindow().closeSoftKeyboard();
 				}
 			});
@@ -30,9 +30,11 @@
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
 							id : "numericKeyboard",
 							currentWindow : $,
-							parentController : $
+							parentController : $,
+							autoInit : "false"
 						});
 						$.numericKeyboard.setParent($.$view);
+						$.numericKeyboard.UIInit();
 					}
 					$.numericKeyboard.open(textField, callback, bottom);
 				},

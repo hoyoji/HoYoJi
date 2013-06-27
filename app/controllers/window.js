@@ -1,17 +1,17 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
-function confirmClose() {
-	function doClose() {
-		$.$view.hide();
-		$.closing = true;
-		// setTimeout(function() {
-			$.$view.close({
-				animated : false
-			});
-			
-		// }, 500);
-	}
+function doClose() {
+	$.closing = true;
+	$.$view.hide();
+	$.closeSoftKeyboard();
+	// setTimeout(function() {
+	$.$view.close({
+		animated : false
+	});
+	// }, 500);
+}
 
+function confirmClose() {
 	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
 		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", doClose, function() {
 			$.scrollableView.scrollToView(1);
@@ -22,57 +22,46 @@ function confirmClose() {
 }
 
 exports.close = function() {
-	//$.closeSoftKeyboard();
-
-	// function animateClose() {
-	$.scrollableView.scrollToView(0);
-
-	// var animation = Titanium.UI.createAnimation();
-	// animation.left = "100%";
-	// animation.duration = 350;
-	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// animation.addEventListener('complete', function() {
-	// $.$view.close({
-	// animated : false
-	// });
-	// });
-	// $.$view.animate(animation);
-	// }
-	//
-	// if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
-	// Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", animateClose, function() {
-	// $.scrollableView.scrollToView(1);
-	// });
-	// } else {
-	// animateClose();
-	// }
+	if (!$.getCurrentWindow().$attrs.closeWithoutSave && $.__dirtyCount > 0) {
+		Alloy.Globals.confirm("修改未保存", "你所做修改尚未保存，确认放弃修改并返回吗？", function() {
+			// $.scrollableView.scrollToView(0);
+			doClose();
+		});
+	} else {
+		$.scrollableView.scrollToView(0);
+	}
 }
 
-exports.openCachedWindow = function(){
+exports.openCachedWindow = function(contentController) {
 	$.$view.show();
 	setTimeout(function() {
-		function fireShowEvent(){
+		function fireShowEvent() {
 			$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 			$.$view.fireEvent("show");
+			if(contentController){
+				delete Alloy.Globals.openingWindow[contentController];
+			}
 		}
+
+
 		$.scrollableView.addEventListener("scrollend", fireShowEvent);
 		$.scrollableView.scrollToView(1);
 	}, 100);
 }
 
 exports.open = function(contentController, loadOnly) {
-	if(loadOnly){
-		$.$view.setVisible(false);	
+	if (loadOnly) {
+		$.$view.setVisible(false);
 	}
 	$.$view.open({
 		animated : false
 	});
-	
-	if(!loadOnly){
+
+	if (!loadOnly) {
 		$.showActivityIndicator();
-		exports.openCachedWindow();
+		exports.openCachedWindow(contentController);
 	}
-		
+
 	//$.closeSoftKeyboard();
 	// if(OS_ANDROID){
 	// $.$view.focus();
@@ -101,7 +90,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 			width : "90%",
 			borderRadius : 5
 		});
-		$.$view.setBackgroundColor("#99000000");
+		// $.$view.setBackgroundColor("#99000000");
 	}
 
 	$.open(contentController, loadOnly);
@@ -111,9 +100,6 @@ exports.openWin = function(contentController, options, loadOnly) {
 	$.content.setParent($.contentView);
 	$.content.UIInit();
 	// $.scrollableView.addView($.content.$view);
-
-	delete Alloy.Globals.openingWindow[contentController];
-
 	return $.content;
 }
 //
@@ -139,22 +125,24 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 	}
 	if (e.currentPage === 0) {
 		// delete Alloy.Globals.openedWindow["money/moneyAddNew"];
-		$.closeSoftKeyboard();
 		confirmClose();
 	} else if (e.currentPage === 1 && firstTimeOpen) {
 		firstTimeOpen = false;
 		$.hideActivityIndicator();
-		$.scrollableView.addEventListener("scroll", function(e) {
-			if (e.source !== $.scrollableView) {
-				return;
-			}
-			if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-				$.$view.setBackgroundColor("transparent");
-			} else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-				$.$view.setBackgroundColor("#40000000");
-			}
-		});
 	}
 
 });
 
+$.scrollableView.addEventListener("scroll", function(e) {
+	if (e.source !== $.scrollableView) {
+		return;
+	}
+	var color = Math.round(99 * e.currentPageAsFloat);
+	color = Math.max(color, 10);
+	$.$view.setBackgroundColor("#"+color+"000000");
+	// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
+		// $.$view.setBackgroundColor("transparent");
+	// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
+		// $.$view.setBackgroundColor("#40000000");
+	// }
+});
