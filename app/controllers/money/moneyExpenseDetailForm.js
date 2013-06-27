@@ -85,7 +85,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 		}
 
-		if (!oldExpenseAmount || $.$model.xGet("moneyExpense").xGet("useDetailsTotal") || $.$model.xGet("moneyExpense").isNew()) {
+		if (!oldExpenseAmount || $.$model.xGet("moneyExpense").xGet("useDetailsTotal")) {
 			expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
 			//增改的时候计算amount
 		} else {
