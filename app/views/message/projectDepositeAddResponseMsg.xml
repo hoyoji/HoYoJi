@@ -18,7 +18,7 @@
 				</View>
 			</ScrollView>
 		</View>
-		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" visible="false"
 		buttons="接受充值" imagesFolder="/images/message/projectDepositeAddResponseMsg"
 		ids="importToLocal"/>
 	</View>
