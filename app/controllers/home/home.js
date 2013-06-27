@@ -31,8 +31,12 @@ var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", nul
 	left : 5,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/projectAll"
+	image : "/images/home/projectAll",
+	parentController : $,
+	currentWindow : $.__currentWindow,
+	autoInit : "false"
 });
+projectButton.UIInit();
 projectButton.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	$.getCurrentWindow().scrollableView.scrollToView(0);
@@ -44,8 +48,12 @@ var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null
 	right : 15,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/friendAll"
+	image : "/images/home/friendAll",
+	parentController : $,
+	currentWindow : $.__currentWindow,
+	autoInit : "false"
 });
+projectButton.UIInit();
 friendButton.addEventListener("singletap", function() {
 	$.getCurrentWindow().scrollableView.scrollToView(2);
 });
@@ -116,4 +124,16 @@ Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
 $.onWindowCloseDo(function() {
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
+
+$.activityTable = Alloy.createController("home/activityView", {
+    id: "activityTable",
+    top: "0",
+    bottom: "0",
+    autoInit: "false",
+	parentController : $,
+	currentWindow : $.__currentWindow
+});
+$.activityTable.setParent($.body);
+$.activityTable.UIInit();
+
 

@@ -120,18 +120,33 @@ $.$view.addEventListener("click", function(e) {
 });
 
 function createRowView(rowModel, collection) {
-	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
-		$model : rowModel,
-		$collection : collection,
-		hasDetail : $.$attrs.hasDetail,
-		containingTable : $
-	});
 	var row = Ti.UI.createTableViewRow({
 		id : rowModel.xGet("id"),
 		//className : (collection.__rowView || rowModel.config.rowView).replace("/", ""),
 		collectionId : collection.id
 	});
-	rowViewController.setParent(row);
+	var rowViewController;
+	if($.__currentWindow && $.__parentController){
+		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
+			$model : rowModel,
+			$collection : collection,
+			hasDetail : $.$attrs.hasDetail,
+			containingTable : $,
+			autoInit : "false",
+			currentWindow : $.__currentWindow,
+			parentController : $.__parentController
+		});
+		rowViewController.setParent(row);
+		rowViewController.UIInit();
+	} else {
+		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
+			$model : rowModel,
+			$collection : collection,
+			hasDetail : $.$attrs.hasDetail,
+			containingTable : $
+		});
+		rowViewController.setParent(row);
+	}
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
 		hasDetailSections[rowModel.xGet("id")] = {
 			parentRowController : rowViewController,

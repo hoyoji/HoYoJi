@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.currenciesTable.UIInit($,$.getCurrentWindow());
+
 // $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	// var menuSection = Ti.UI.createTableViewSection();
 	// // menuSection.add($.createContextMenuItem("新增币种", function() {

@@ -1,4 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
+
+$.transactionsTable.UIInit($, $.getCurrentWindow());
+
 var currentFilter = null;
 
 exports.setHeaderView = function(headerView){
