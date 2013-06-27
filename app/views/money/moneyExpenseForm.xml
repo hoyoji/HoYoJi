@@ -5,7 +5,7 @@
 		addModeTitle="新增支出" readModeTitle="支出详细" editModeTitle="修改支出"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" defaultImage="/images/camera.png"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
 				id="picture" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="picture"
@@ -101,8 +101,7 @@
 				bindAttribute="remark"/>
 				
 				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
-				autoInit="false"
-				height="42" width="100%" title="多人分摊" 
+				height="0" width="100%" title="多人分摊" autoInit="false"
 				backgroundColor="green" image="none" />
 			</ScrollView>
 		</View>
