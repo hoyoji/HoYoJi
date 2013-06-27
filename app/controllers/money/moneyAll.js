@@ -12,6 +12,16 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+
+$.transactionsTable = Alloy.createController("money/transactionsView", {
+    id: "transactionsTable",
+    autoInit: "false",
+    parentController : $,
+    currentWindow : $.__currentWindow
+});
+$.transactionsTable.setParent($.__views.body);
+$.transactionsTable.UIInit();
+
 var d = new Date(), sortReverse = true, timeFilter = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 	dateTo : d.getUTCTimeOfDateEnd().toISOString()
@@ -91,6 +101,16 @@ function onFooterbarTap(e) {
 		$.transactionsTable.sort("date", sortReverse);
 	} else if (e.source.id === "transactionsSearchTable") {
 		$.titleBar.setTitle("查找");
+		if(!$.transactionsSearchTable){		
+			$.transactionsSearchTable = Alloy.createController("money/transactionsSearch", {
+			    id: "transactionsSearchTable",
+			    autoInit: "false",
+			    parentController : $,
+			    currentWindow : $.__currentWindow
+			});
+			$.transactionsSearchTable.setParent($.__views.body);
+			$.transactionsSearchTable.UIInit();
+		}
 		$.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";

@@ -20,7 +20,7 @@
 					<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
 				</View>
 			</View>
-			<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" sortByField="foreignCurrency.name" bottom="0" top="42"/>
+			<Widget src="com.hoyoji.titanium.widget.XTableView" id="exchangesTable" autoInit="false" sortByField="foreignCurrency.name" bottom="0" top="42"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="新增汇率" imagesFolder="/images/money/currency/exchange"
