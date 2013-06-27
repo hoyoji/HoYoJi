@@ -55,19 +55,23 @@ function editSharePercentage(projectShareAuthorization,editSharePercentageAuthor
 		state : "Accept"
 	});
 	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
-		if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
-			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-		}else{
-			averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+			}else{
+				averageSharePercentageCollections.push(waitProjectShareAuthorization);
+			}
 		}
 	});
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
-		if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
-			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
-			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
-		}else{
-			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
+			}else{
+				averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+			}
 		}
 	});
 	if(projectShareAuthorization.xGet("sharePercentageType") === "fixed"){
@@ -114,19 +118,23 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 		state : "Accept"
 	});
 	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
-		if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
-			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-		}else{
-			averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+			}else{
+				averageSharePercentageCollections.push(waitProjectShareAuthorization);
+			}
 		}
 	});
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
-		if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
-			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
-			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
-		}else{
-			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
+			}else{
+				averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+			}
 		}
 	});
 	var averageLength = averageSharePercentageCollections.length;
@@ -229,11 +237,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									}
 								}
 								subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData); 
-								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+								editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorization.xAddToSave($);
 								
-								editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 							}
 						}
 						Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -295,7 +303,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		   	if($.$model.hasChanged("friendUser")){
 				saveErrorCB("好友不能修改！");
 			}else{
-				if($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.hasChanged("sharePercentageType"))){
+				if($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.hasChanged("sharePercentage"))){
 					editSharePercentage($.$model,editSharePercentageAuthorization);
 				}
 				if($.$model.hasChanged("shareAllSubProjects")){
@@ -368,11 +376,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													}
 												}
 												subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData); 
-												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorization.xAddToSave($);
 												
-												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 											}
 										}
 										
@@ -428,11 +436,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													}
 												}
 												subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData); 
-												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 												subProjectShareAuthorization.xAddToSave($);
 												
-												editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 											}
 										}
 										
@@ -555,13 +563,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
 										var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
 										subProjectShareAuthorization.xSet(data); 
-										subProjectShareAuthorization.xSave($);
-										editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-										
 										if($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld 
 											|| ($.$model.xGet("sharePercentageType") === "fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))){
 											editSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 										}
+										editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+										subProjectShareAuthorization.xSave($);
+										
 									}
 								});
 							});
