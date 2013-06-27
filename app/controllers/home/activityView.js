@@ -183,7 +183,7 @@ function setFilter(collection) {
 $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
 	searchData(moneyIncomes, offset, limit, orderBy);
 	searchData(moneyExpenses, offset, limit, orderBy);
-	searchData(moneyTransferOuts, offset, limit, orderBy);
+	// searchData(moneyTransferOuts, offset, limit, orderBy);
 	searchData(moneyTransferIns, offset, limit, orderBy);
 	searchData(moneyBorrows, offset, limit, orderBy);
 	searchData(moneyLends, offset, limit, orderBy);
@@ -196,7 +196,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 exports.doFilter = function() {
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
-	setFilter(moneyTransferOuts);
+	// setFilter(moneyTransferOuts);
 	setFilter(moneyTransferIns);
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
@@ -214,7 +214,7 @@ exports.sort = function(sortField, sortReverse, groupByField) {
 }
 var moneyIncomes = Alloy.createCollection("MoneyIncome");
 var moneyExpenses = Alloy.createCollection("MoneyExpense");
-var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
+// var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
 var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
 var moneyBorrows = Alloy.createCollection("MoneyBorrow");
 var moneyLends = Alloy.createCollection("MoneyLend");
@@ -225,7 +225,7 @@ var receivedMessages = Alloy.createCollection("Message");
 $.onWindowCloseDo(function() {
 	moneyIncomes.xClearFilter();
 	moneyExpenses.xClearFilter();
-	moneyTransferOuts.xClearFilter();
+	// moneyTransferOuts.xClearFilter();
 	moneyTransferIns.xClearFilter();
 	moneyBorrows.xClearFilter();
 	moneyLends.xClearFilter();
@@ -237,7 +237,7 @@ $.onWindowCloseDo(function() {
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);
-$.transactionsTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
+$.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferOutRow");
 $.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
 $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
