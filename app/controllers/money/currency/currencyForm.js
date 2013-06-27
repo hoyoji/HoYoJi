@@ -8,3 +8,7 @@ $.onSave = function(saveEndCB, saveErrorCB){
 	$.$model.attributes["id"]  = $.$model.xGet("code");
 	$.saveModel(saveEndCB, saveErrorCB);
 }
+
+$.name.UIInit($, $.getCurrentWindow());
+$.symbol.UIInit($, $.getCurrentWindow());
+$.code.UIInit($, $.getCurrentWindow());
