@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.friendCategoriesTable.UIInit($, $.getCurrentWindow());
+
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增好友分类", function() {

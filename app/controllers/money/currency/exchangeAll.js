@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.exchangesTable.UIInit($, $.getCurrentWindow());
+
 var localCurrency = Alloy.Models.User.xGet("activeCurrency");
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();

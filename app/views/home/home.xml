@@ -40,7 +40,7 @@
 				</View>
 			</View> -->
 			
-			<Require id="activityTable" src="home/activityView" top="0" bottom="0"/>
+			<!-- <Require id="activityTable" src="home/activityView" top="0" bottom="0" autoInit="false"/> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="同步,账务,记一笔,消息,设置" imagesFolder="/images/home"

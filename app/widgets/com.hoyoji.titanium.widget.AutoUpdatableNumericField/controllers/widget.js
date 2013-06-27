@@ -73,9 +73,9 @@ $.setValue = function(value) {
 	}
 	value = this.convertModelValue(value);
 	if (value) {
-		$.hintText.hide();
+		$.hintText.setHeight(0);
 	} else {
-		$.hintText.show();
+		$.hintText.setHeight(42);
 	}
 	$.field.setText(value || "");
 }

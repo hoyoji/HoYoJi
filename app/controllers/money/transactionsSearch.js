@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.transactionsSearchTable.UIInit($, $.getCurrentWindow());
+
 var queryOptions = {};
 
 exports.doSearch = function() {

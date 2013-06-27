@@ -3,7 +3,9 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友分类"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundImage="/images/bodyImage.png">
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" sortByField="name" bottom="0" top="0" hasDetail=""/>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
+			autoInit="false"
+			sortByField="name" bottom="0" top="0" hasDetail=""/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
         	buttons="添加好友分类"
