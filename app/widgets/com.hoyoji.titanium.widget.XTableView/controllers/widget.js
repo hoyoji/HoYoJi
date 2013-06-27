@@ -1,5 +1,37 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+
+// $.__alloyId10 = Ti.UI.createView({
+    // height: Ti.UI.SIZE,
+    // width: Ti.UI.FILL,
+    // id: "__alloyId10"
+// });
+// $.fetchNextPageButton = Ti.UI.createLabel({
+    // color: "gray",
+    // font: {
+        // fontSize: 14,
+        // fontWeight: "normal"
+    // },
+    // height: 60,
+    // width: Ti.UI.SIZE,
+    // textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    // borderColor: "transparent",
+    // id: "fetchNextPageButton",
+    // text: "无内容"
+// });
+// $.__alloyId10.add($.fetchNextPageButton);
+// 
+// $.table = Ti.UI.createTableView({
+    // id: "table",
+    // top: "0",
+    // left: "0",
+    // allowSelection: "false",
+    // backgroundColor: "#f5f5f5"
+// });
+// $.table.setFooterView($.__alloyId10);
+// $.widget.add($.table);
+
+
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
@@ -120,11 +152,19 @@ $.$view.addEventListener("click", function(e) {
 });
 
 function createRowView(rowModel, collection) {
-	var row = Ti.UI.createTableViewRow({
-		id : rowModel.xGet("id"),
-		//className : (collection.__rowView || rowModel.config.rowView).replace("/", ""),
-		collectionId : collection.id
-	});
+	if(OS_IOS){
+		var row = Ti.UI.createTableViewRow({
+			id : rowModel.xGet("id"),
+			className : collection.__rowView || rowModel.config.rowView,
+			collectionId : collection.id
+		});
+	} else {
+		var row = Ti.UI.createTableViewRow({
+			id : rowModel.xGet("id"),
+			// className : collection.__rowView || rowModel.config.rowView,
+			collectionId : collection.id
+		});
+	}
 	var rowViewController;
 	if($.__currentWindow && $.__parentController){
 		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
@@ -964,7 +1004,7 @@ function showNoDataIndicator(hasData) {
 		// __noDataIndicator.setTop(-100);
 		// }
 		if (dataCount > $.getRowsCount()) {
-			$.fetchNextPageButton.setText("点击加载更多...");
+			$.fetchNextPageButton.setText("加载更多...");
 		} else {
 			$.fetchNextPageButton.setText("无更多内容");
 		}
@@ -1001,10 +1041,16 @@ exports.getSortOrder = function(){
 	return sortReverse ? "DESC" : "ASC";
 }
 
-// $.table.addEventListener("touchstart", function(e){
-	// $.$view.fireEvent("touchstart");
-// });
-
-$.table.footerView.addEventListener("touchstart", function(e){
-	$.$view.fireEvent("touchstart");
-});
+// if(OS_IOS){
+	$.table.footerView.addEventListener("touchstart", function(e){
+		$.$view.fireEvent("touchstart");
+	});	
+// } else {
+	// var lastTotalItemCount = -1;
+	// $.table.addEventListener("scroll", function(e){
+		// if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.totalItemCount > lastTotalItemCount){
+			// lastTotalItemCount = e.totalItemCount;
+			// // exports.fetchNextPage();
+		// } 
+	// });
+// }

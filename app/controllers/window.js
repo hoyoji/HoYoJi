@@ -137,9 +137,11 @@ $.scrollableView.addEventListener("scroll", function(e) {
 	if (e.source !== $.scrollableView) {
 		return;
 	}
-	var color = Math.round(99 * e.currentPageAsFloat);
-	color = Math.max(color, 10);
-	$.$view.setBackgroundColor("#"+color+"000000");
+	var color = Math.round(153 * e.currentPageAsFloat);
+	color = Math.max(color, 17);
+	color = Math.min(color, 153);
+	// console.info(color.toString(16));
+	$.$view.setBackgroundColor("#"+color.toString(16)+"000000");
 	// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
 		// $.$view.setBackgroundColor("transparent");
 	// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
