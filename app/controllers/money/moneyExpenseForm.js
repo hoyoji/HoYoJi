@@ -364,17 +364,17 @@ $.amount.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
-$.picture.UIInit($, $.getCurrentWindow());
-$.friendUser.UIInit($, $.getCurrentWindow());
-$.date.UIInit($, $.getCurrentWindow());
-$.amount.UIInit($, $.getCurrentWindow());
-$.localAmount.UIInit($, $.getCurrentWindow());
-$.project.UIInit($, $.getCurrentWindow());
-$.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
-$.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
-$.friend.UIInit($, $.getCurrentWindow());
-$.friendAccount.UIInit($, $.getCurrentWindow());
-$.remark.UIInit($, $.getCurrentWindow());
-$.apportion.UIInit($, $.getCurrentWindow());
+// $.picture.UIInit($, $.getCurrentWindow());
+// $.friendUser.UIInit($, $.getCurrentWindow());
+// $.date.UIInit($, $.getCurrentWindow());
+// $.amount.UIInit($, $.getCurrentWindow());
+// $.localAmount.UIInit($, $.getCurrentWindow());
+// $.project.UIInit($, $.getCurrentWindow());
+// $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
+// $.moneyAccount.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.friend.UIInit($, $.getCurrentWindow());
+// $.friendAccount.UIInit($, $.getCurrentWindow());
+// $.remark.UIInit($, $.getCurrentWindow());
+// $.apportion.UIInit($, $.getCurrentWindow());
 

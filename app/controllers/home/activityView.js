@@ -1,6 +1,5 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.transactionsTable.UIInit($, $.__currentWindow);
 // ========================================== summary view =========================
 var summaryView = Ti.UI.createView({
 	id : "summaryView",
@@ -53,13 +52,9 @@ var __alloyId76 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel",
 	bindModel : "User",
 	bindAttribute : "getLocalCurrencySymbol()",
 	id : "__alloyId76",
-	__parentSymbol : __alloyId75,
-	autoInit : "false",
-	currentWindow : $.__currentWindow,
-	parentController : $.__parentController
+	__parentSymbol : __alloyId75
 });
 __alloyId76.setParent(__alloyId75);
-__alloyId76.UIInit();
 var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
 	font : {
 		fontSize : 16,
@@ -71,13 +66,9 @@ var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
 	totalField : "SUM(main.amount * main.exchangeRate)",
 	queryStr : "dateRange:date",
 	color : "#329600",
-	__parentSymbol : __alloyId75,
-	autoInit : "false",
-	currentWindow : $.__currentWindow,
-	parentController : $.__parentController
+	__parentSymbol : __alloyId75
 });
 moneyIncomeTotal.setParent(__alloyId75);
-moneyIncomeTotal.UIInit();
 
 
 var __alloyId77 = Ti.UI.createView({
@@ -121,13 +112,9 @@ var __alloyId80 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel",
 	bindModel : "User",
 	bindAttribute : "getLocalCurrencySymbol()",
 	id : "__alloyId80",
-	__parentSymbol : __alloyId79,
-	autoInit : "false",
-	currentWindow : $.__currentWindow,
-	parentController : $.__parentController
+	__parentSymbol : __alloyId79
 });
 __alloyId80.setParent(__alloyId79);
-__alloyId80.UIInit();
 var moneyExpenseTotal = Alloy.createController("money/report/moneyTotal", {
 	font : {
 		fontSize : 16,
@@ -139,13 +126,10 @@ var moneyExpenseTotal = Alloy.createController("money/report/moneyTotal", {
 	totalField : "SUM(main.amount * main.exchangeRate)",
 	queryStr : "dateRange:date",
 	color : "#c80032",
-	__parentSymbol : __alloyId79,
-	autoInit : "false",
-	currentWindow : $.__currentWindow,
-	parentController : $.__parentController
+	__parentSymbol : __alloyId79
 });
 moneyExpenseTotal.setParent(__alloyId79);
-moneyExpenseTotal.UIInit();
+
 
 
 
@@ -183,7 +167,7 @@ function setFilter(collection) {
 $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
 	searchData(moneyIncomes, offset, limit, orderBy);
 	searchData(moneyExpenses, offset, limit, orderBy);
-	// searchData(moneyTransferOuts, offset, limit, orderBy);
+	searchData(moneyTransferOuts, offset, limit, orderBy);
 	searchData(moneyTransferIns, offset, limit, orderBy);
 	searchData(moneyBorrows, offset, limit, orderBy);
 	searchData(moneyLends, offset, limit, orderBy);
@@ -196,7 +180,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 exports.doFilter = function() {
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
-	// setFilter(moneyTransferOuts);
+	setFilter(moneyTransferOuts);
 	setFilter(moneyTransferIns);
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
@@ -214,7 +198,7 @@ exports.sort = function(sortField, sortReverse, groupByField) {
 }
 var moneyIncomes = Alloy.createCollection("MoneyIncome");
 var moneyExpenses = Alloy.createCollection("MoneyExpense");
-// var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
+var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
 var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
 var moneyBorrows = Alloy.createCollection("MoneyBorrow");
 var moneyLends = Alloy.createCollection("MoneyLend");
@@ -225,7 +209,7 @@ var receivedMessages = Alloy.createCollection("Message");
 $.onWindowCloseDo(function() {
 	moneyIncomes.xClearFilter();
 	moneyExpenses.xClearFilter();
-	// moneyTransferOuts.xClearFilter();
+	moneyTransferOuts.xClearFilter();
 	moneyTransferIns.xClearFilter();
 	moneyBorrows.xClearFilter();
 	moneyLends.xClearFilter();
@@ -237,7 +221,7 @@ $.onWindowCloseDo(function() {
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);
-$.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferOutRow");
+$.transactionsTable.addCollection(moneyTransferOuts, "money/moneyTransferOutRow");
 $.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
 $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
