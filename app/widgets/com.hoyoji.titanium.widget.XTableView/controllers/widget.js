@@ -723,9 +723,13 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 		hasDetail : $.$attrs.hasDetail,
 		sortByField : sortByField,
 		groupByField : groupByField,
-		sortReverse : sortReverse
+		sortReverse : sortReverse,
+		autoInit : "false",
+		parentController : $.getParentController(),
+		currentWindow : $.getCurrentWindow()
 	});
 	$.detailsTable.setParent($.$view);
+	$.detailsTable.UIInit();
 	$.detailsTable.open();
 
 	$.$view.fireEvent("navigatedown", {

@@ -3,6 +3,7 @@ $.myProjectShareAuthorizationsTable = Alloy.createWidget("com.hoyoji.titanium.wi
     id: "myProjectShareAuthorizationsTable",
     bottom: "0",
     top: "0",
+    autoInit : "false",
     parentController : $,
 	currentWindow : $.__currentWindow
 });

@@ -5,6 +5,7 @@ $.myProjectsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", 
 	sortByField : "name",
 	bottom : "0",
 	top : "0",
+	autoInit : "false",
 	parentController : $,
 	currentWindow : $.__currentWindow
 });
@@ -42,6 +43,7 @@ function onFooterbarTap(e) {
 					bottom : "0",
 					top : "0",
 					hasDetail : "",
+					autoInit : "false",
 					parentController : $,
 					currentWindow : $.__currentWindow
 				});
