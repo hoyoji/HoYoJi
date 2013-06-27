@@ -342,3 +342,18 @@ $.amount.rightButton.addEventListener("singletap", function(e) {
 		closeWithoutSave : true
 	});
 });
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+$.apportion.UIInit($, $.getCurrentWindow());
+

@@ -3,7 +3,9 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="还款明细"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
-			<Widget src="com.hoyoji.titanium.widget.XTableView" id="moneyReturnsTable" bottom="0" top="0"/>
+			<Widget src="com.hoyoji.titanium.widget.XTableView" 
+				id="moneyReturnsTable" autoInit="false"
+				bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="新增还款" imagesFolder="/images/money/moneyReturnAll"

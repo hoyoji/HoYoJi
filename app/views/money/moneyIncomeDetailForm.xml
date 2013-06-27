@@ -6,12 +6,15 @@
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="商品" hintText="请输入商品名称"
+				id="name" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="name"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="金额" hintText="请输入金额"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="金额" hintText="请输入金额"
+				id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
+				id="remark" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
 			</ScrollView>

@@ -3,6 +3,7 @@
 		<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 			<View id="content" class="row-content" left="3" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
 				<Widget id="categoryName" src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+				id="name" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "name" 
 			/>

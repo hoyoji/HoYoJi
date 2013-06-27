@@ -188,3 +188,18 @@ if ($.saveableMode === "read") {
 		});
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.localAmountLabel.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.returnDate.UIInit($, $.getCurrentWindow());
+$.returnedAmount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+

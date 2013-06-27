@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.moneyReturnsTable.UIInit($, $.getCurrentWindow());
+
 var selectedBorrow = $.$attrs.selectedBorrow;
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {

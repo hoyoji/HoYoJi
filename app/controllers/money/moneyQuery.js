@@ -50,3 +50,6 @@ function close(){
 
 $.doQuery.addEventListener("singletap", doQuery);
 $.close.addEventListener("singletap", close);
+
+$.dateFrom.UIInit($, $.getCurrentWindow());
+$.dateTo.UIInit($, $.getCurrentWindow());
