@@ -37,12 +37,12 @@ exports.setEnabled = function(b) {
 
 exports.setBubbleCount = function(count) {
 	if (count > 0) {
-		$.bubbleCount.show();
+		$.bubbleCount.setVisible(true);
 	} else {
-		$.bubbleCount.hide();
+		$.bubbleCount.setVisible(false);
 	}
 
-	$.bubbleCount.setText(count);
+	$.bubbleCount.setText("  " + count + "  ");
 }
 
 exports.setImage = function(imagePath) {

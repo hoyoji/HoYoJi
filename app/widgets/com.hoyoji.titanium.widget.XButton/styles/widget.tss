@@ -22,14 +22,18 @@
 "#bubbleCount" : {
 	 visible : false,
 	 color : "white",
-	 width : 15,
-	 height : 15,
+	 backgroundColor : "red",
+	 // borderWidth : 1,
+	 // borderColor : "black",
+	 width : Ti.UI.SIZE,
+	 height : 14,
 	 top : 0,
 	 right : 0,
+	 borderRadius : 7,
 	 textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 	 font: {
 		fontSize: 9,
 		fontWeight: 'normal'
-	 },
-	 backgroundImage : WPATH("images/bubbleCount@2x.png")
+	 }
+	 // backgroundImage : WPATH("images/bubbleCount@2x.png")
 }

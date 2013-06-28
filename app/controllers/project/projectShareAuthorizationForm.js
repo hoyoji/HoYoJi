@@ -725,4 +725,3 @@ $.projectShareMoneyExpenseCategoryDelete.UIInit($, $.getCurrentWindow());
 $.projectShareMoneyIncomeCategoryAddNew.UIInit($, $.getCurrentWindow());
 $.projectShareMoneyIncomeCategoryEdit.UIInit($, $.getCurrentWindow());
 $.projectShareMoneyIncomeCategoryDelete.UIInit($, $.getCurrentWindow()); 
-
