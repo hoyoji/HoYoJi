@@ -18,3 +18,11 @@ $.makeContextMenu = function() {
 	},!$.$model.canDelete()));
 	return menuSection;
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.localAmountLabel.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.accountCurrency.UIInit($, $.getCurrentWindow());

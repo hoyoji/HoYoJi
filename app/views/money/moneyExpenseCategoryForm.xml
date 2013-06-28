@@ -6,13 +6,15 @@
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级分类" hintText="无上级分类"
+				id="parentExpenseCategory" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="parentExpenseCategory"
 				bindAttributeIsModel="name"
 				bindModelSelector="money/moneyExpenseCategoryAll"
 				bindModelSelectorParams="selectedProject:project"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="name" labelText="分类名称" hintText="请输入分类名称"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类名称" hintText="请输入分类名称"
+				id="name" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="name"/>
 			</ScrollView>

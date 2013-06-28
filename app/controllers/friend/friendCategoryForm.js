@@ -5,3 +5,7 @@ $.onWindowOpenDo(function() {
 		$.name.field.focus();
 	}
 });
+
+$.parentFriendCategory.UIInit($, $.getCurrentWindow());
+$.name.UIInit($, $.getCurrentWindow());
+

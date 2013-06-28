@@ -28,3 +28,12 @@ $.onRowTap = function(e){
 		return false;
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.projectName.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
+$.localAmountLabel.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.accountCurrency.UIInit($, $.getCurrentWindow());

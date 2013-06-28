@@ -80,4 +80,7 @@ function setImageEdit(){
 	}
 }
 
+$.messageTitle.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.detail.UIInit($, $.getCurrentWindow());
 

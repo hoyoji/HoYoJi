@@ -119,6 +119,10 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
+	
+	if($.$model.xGet('type') === "Project.Deposite.AddRequest"){
+		$.footerBar.$view.show();
+	}
 });
 
 function importToLocalOperate() {

@@ -104,3 +104,7 @@ if ($.$model.isNew()) {
 	        projectShareMoneyReturnDelete : 1
 	}).xAddToSave($);
 }
+
+$.parentProject.UIInit($, $.getCurrentWindow());
+$.name.UIInit($, $.getCurrentWindow());
+

@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.moneyExpenseApportionsTable.UIInit($, $.getCurrentWindow());
+
 var selectedExpense = $.$attrs.selectedExpense;
 
 function onFooterbarTap(e) {
