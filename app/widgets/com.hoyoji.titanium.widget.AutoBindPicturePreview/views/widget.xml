@@ -1,5 +1,5 @@
 <Alloy>
-	<View width="56" height="56">
+	<View width="56" height="56" backgroundColor="#e9f3f0">
 	<ImageView id="picture" width="Ti.UI.FILL" height="Ti.UI.FILL"/>
 	</View>
 </Alloy>

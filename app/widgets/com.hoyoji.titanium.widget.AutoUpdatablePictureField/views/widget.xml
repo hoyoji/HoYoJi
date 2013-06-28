@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="76" width="Ti.UI.FILL" backgroundColor="#d8fafa">
+	<View class="container" height="76" width="Ti.UI.FILL" backgroundColor="#e9f3f0">
 		<ImageView id="takePicture" left="8" width="56" height="56" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/takePicture.png"/>
 		<ScrollView id="picturesContainer" left="76" right="0" layout="horizontal" horizontalWrap="false" scrollType="horizontal" disableBounce="true" showHorizontalScrollIndicator="true" >
 			<ImageView id="field" left="2" right="2" width="56" height="56" borderWidth="2" borderColor="cyan" image="/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/noPicture.png"/>
