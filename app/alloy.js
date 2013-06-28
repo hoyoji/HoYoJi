@@ -10,20 +10,17 @@
 //
 // Alloy.Globals.someGlobalFunction = function(){};
 
-
 // Alloy.createWidget = function(id, name, args) {
-	// var newWidget = new (require("alloy/widgets/" + id + "/controllers/" + (name || "widget")))(args);
-	// newWidget.__parentController = this;
-	// return newWidget;
+// var newWidget = new (require("alloy/widgets/" + id + "/controllers/" + (name || "widget")))(args);
+// newWidget.__parentController = this;
+// return newWidget;
 // };
-// 
+//
 // Alloy.createController = function(name, args) {
-	// var newController = new (require("alloy/controllers/" + name))(args);
-	// newController.__parentController = this;
-    // return newController;
+// var newController = new (require("alloy/controllers/" + name))(args);
+// newController.__parentController = this;
+// return newController;
 // };
-
-
 
 Alloy.Globals.MenuSections = [];
 Alloy.Globals.openingWindow = {};
@@ -33,10 +30,10 @@ _.extend(Alloy.Globals, require("utils").Utils);
 
 Alloy.Globals.XModel = require("XModel").XModel;
 Alloy.Globals.XCollection = require("XCollection").XCollection;
-					
+
 Alloy.Globals.Server = require("Server").Server;
 Alloy.Globals.DataStore = require("DataStore").DataStore;
-	
+
 //=============================================== Views ============================
 
 // UI Component 继承表
@@ -73,5 +70,10 @@ Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
 // 基础的 Window
 //	- 可打开 contextMenu
 //	- 可被关闭
-Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends; 
+Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends;
 
+// if (OS_ANDROID) {
+	// Ti.Gesture.addEventListener('orientationchange', function(e) {
+		// Ti.Android.currentActivity.setRequestedOrientation(Ti.Android.SCREEN_ORIENTATION_PORTRAIT);
+	// });
+// }
