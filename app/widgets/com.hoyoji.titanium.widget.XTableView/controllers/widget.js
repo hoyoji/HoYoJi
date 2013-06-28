@@ -951,15 +951,29 @@ function createSection(sectionTitle, sectionIndex) {
 	// }));
 	// sectionFooter.add(fView1);
 	//
-	// section = Ti.UI.createTableViewSection({
-	// headerView : sectionHeader,
+	
+	var sectionHeader = Ti.UI.createView({
+		height : 30,
+		backgroundColor : "#e9f3f0"
+	});
+	
+	var titleLabel = Ti.UI.createLabel({
+		text : sectionTitle,
+		color : "#2E8B57",
+		left : 10
+	});
+	
+	sectionHeader.add(titleLabel);
+	
+	section = Ti.UI.createTableViewSection({
+	headerView : sectionHeader
 	// footerView : sectionFooter
-	// });
+	});
 	//
 	// } else {
-	section = Ti.UI.createTableViewSection({
-		headerTitle : sectionTitle
-	});
+	// section = Ti.UI.createTableViewSection({
+		// headerTitle : sectionTitle
+	// });
 	// }
 
 	return section;

@@ -1,6 +1,7 @@
 <Alloy>
 	<View  bottom="0" height="42" width="Ti.UI.FILL" zIndex="950" backgroundColor="#40000000">
 		<View id="mainFooterBar" bottom="0" height="42" left="0" right="0" layout="horizontal" horizontalWrap="false"
-			backgroundImage="/images/com.hoyoji.titanium.widget.FooterBar/background.png" />
+			backgroundColor="#2E8B57"/>
+			<!-- backgroundImage="/images/com.hoyoji.titanium.widget.FooterBar/background.png"  -->
 	</View>
 </Alloy>

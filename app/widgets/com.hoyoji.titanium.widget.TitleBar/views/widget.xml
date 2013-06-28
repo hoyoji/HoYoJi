@@ -1,5 +1,6 @@
 <Alloy>
-		<View class="title-bar" width="Ti.UI.FILL" height="42" zIndex="100"  backgroundColor="#e7f5f5" backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/titleBarBackground.png" top="0">
+		<View class="title-bar" width="Ti.UI.FILL" height="42" zIndex="100"  backgroundColor="#2E8B57" top="0">
+			<!-- backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/titleBarBackground.png" -->
 			<Label id="msg" width="Ti.UI.FILL" height="42" top="-42" zIndex="100" color="white" backgroundColor="#40000000" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 			<Widget src="com.hoyoji.titanium.widget.XButton" id="backButton" 
 				left="5" height="Ti.UI.FILL" width="45" visible="false"
