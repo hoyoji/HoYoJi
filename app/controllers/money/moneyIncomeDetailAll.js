@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.moneyIncomeDetailsTable.UIInit($, $.getCurrentWindow());
+
 var selectedIncome = $.$attrs.selectedIncome;
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {

@@ -17,3 +17,5 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 $.getChildTitle = function() {
 	return $.$model.xGet("friendUser").xGet("userName");
 }
+
+$.nickName.UIInit($, $.getCurrentWindow());

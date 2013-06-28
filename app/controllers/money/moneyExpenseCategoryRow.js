@@ -12,3 +12,5 @@ $.makeContextMenu = function(e, isSelectMode) {
 	}, isSelectMode || !$.$model.canDelete()));
 	return menuSection;
 }
+
+$.name.UIInit($, $.getCurrentWindow());

@@ -2,9 +2,22 @@
 	<Window class="container" >
 		<!-- <Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar" imagesFolder="/images/mainWindow"/> -->
 		<ScrollableView id="scrollableView" currentPage="1" showPagingControl="false" top="0">
+<<<<<<< HEAD
 			<View id="page1"></View>
 			<View id="page2"></View>
 			<View id="page3"></View>
+=======
+			<View id="page1">
+				<Label width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0" text="正在加载..."/>
+				<View  bottom="0" height="42" width="Ti.UI.FILL" backgroundColor="#2E8B57"></View>
+			</View>
+			<View id="page2">
+			</View>
+			<View id="page3">
+				<Label width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0" text="正在加载..."/>
+				<View  bottom="0" height="42" width="Ti.UI.FILL" backgroundColor="#2E8B57"></View>
+			</View>
+>>>>>>> 88cef800a73e07e99cdc5e555a7db527ff453789
 			<!-- <Require src="project/projectAll" backButtonHidden="true" id="projectAll"/> -->
 			<!-- <Require src="money/moneyAll" id="moneyAll" /> -->
 			<!-- <Require src="home/home" id="home" /> -->

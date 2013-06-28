@@ -6,3 +6,5 @@ $.onWindowOpenDo(function() {
 	}
 });
 
+$.parentExpenseCategory.UIInit($, $.getCurrentWindow());
+$.name.UIInit($, $.getCurrentWindow());

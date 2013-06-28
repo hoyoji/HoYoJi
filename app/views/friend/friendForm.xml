@@ -5,21 +5,25 @@
 		addModeTitle="新增好友资料" readModeTitle="查看好友资料" editModeTitle="修改好友资料"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyAccount" labelText="好友" editModeEditability="noneditable"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" editModeEditability="noneditable"
+				id="friendUser" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="friendUser"
 				bindAttributeIsModel="userName"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友分类"
+				id="friendCategory" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="friendCategory"
 				bindAttributeIsModel="name"
 				bindModelSelector="friend/friendCategoryAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注名称" hintText="请输入备注名称"
+				id="nickName" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="nickName"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="详细资料" hintText="请输入内容"
+				id="remark" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="remark"/>
 			</ScrollView>

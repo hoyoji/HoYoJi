@@ -9,9 +9,11 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical"  scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="开始时间" hintText="无开始时间" id="dateFrom"
+				id="dateForm" autoInit="false"
 				bindModel="$.queryOptions"
 				bindAttribute="dateFrom" />
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="结束时间" hintText="无结束时间" id="dateTo"
+				id="dateTo" autoInit="false"
 				bindModel="$.queryOptions"
 				bindAttribute="dateTo" />
 				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"

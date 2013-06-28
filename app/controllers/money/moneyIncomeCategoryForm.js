@@ -5,3 +5,6 @@ $.onWindowOpenDo(function() {
 		$.name.field.focus();
 	}
 });
+
+$.parentIncomeCategory.UIInit($, $.getCurrentWindow());
+$.name.UIInit($, $.getCurrentWindow());

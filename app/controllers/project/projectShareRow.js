@@ -15,3 +15,5 @@ function setWaitForAccept(){
 $.onWindowOpenDo(function(){
 	setWaitForAccept();
 });
+
+$.name.UIInit($, $.getCurrentWindow());

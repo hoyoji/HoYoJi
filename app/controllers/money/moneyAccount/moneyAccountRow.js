@@ -19,3 +19,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 	return menuSection;
 }
 
+$.accountName.UIInit($, $.getCurrentWindow());
+$.symbol.UIInit($, $.getCurrentWindow());
+$.currentBalance.UIInit($, $.getCurrentWindow());

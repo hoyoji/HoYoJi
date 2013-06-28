@@ -21,7 +21,8 @@ function createSubFooterBar(button, subButtons, subIds) {
 			layout : "horizontal",
 			horizontalWrap : false,
 			zIndex : 300,
-			backgroundImage : WPATH("/images/background.png")
+			backgroundColor : "#e9f3f0"
+			// backgroundImage : WPATH("/images/background.png")
 		});
 		$.$view.add($[subFooterBarId]);
 		var width = (1 / (subButtons.length - 1) * 100) + "%", subButton;

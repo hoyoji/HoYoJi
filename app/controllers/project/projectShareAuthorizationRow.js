@@ -120,3 +120,11 @@ function setWaitForAccept() {
 $.onWindowOpenDo(function() {
 	setWaitForAccept();
 });
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.sharePercentage.UIInit($, $.getCurrentWindow());
+$.friendDisplayName.UIInit($, $.getCurrentWindow());
+$.actualTotal.UIInit($, $.getCurrentWindow());
+$.apportionedTotal.UIInit($, $.getCurrentWindow());
+
+
