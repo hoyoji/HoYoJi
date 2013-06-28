@@ -60,10 +60,12 @@
 			_.extend($, {
 				__dirtyCount : 0,
 				show : function() {
-					$.$view.show();
+					// $.$view.show();
+					$.$view.setVisible(true);
 				},
 				hide : function() {
-					$.$view.hide();
+					// $.$view.hide();
+					$.$view.setVisible(false);
 				},
 				animate : function(animation) {
 					$.$view.animate(animation);
