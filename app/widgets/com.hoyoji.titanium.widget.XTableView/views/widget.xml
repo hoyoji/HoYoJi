@@ -1,9 +1,5 @@
 <Alloy>
-<<<<<<< HEAD
-	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#f5f5f5">
-=======
 	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#e1e1e1">
->>>>>>> 88cef800a73e07e99cdc5e555a7db527ff453789
 		<!-- <View platform="android" height="60" width="Ti.UI.FILL" bottom="0" >
 			<Label id="fetchNextPageButton" text="无内容"/>
 		</View> -->
@@ -11,11 +7,7 @@
 			 backgroundColor="#f5f5f5">
 			<FooterView>
 				<View height="60" width="Ti.UI.FILL" >
-<<<<<<< HEAD
-					<Label id="fetchNextPageButton" text="无内容"/>
-=======
 					<Label id="fetchNextPageButton" text="无内容" width="Ti.UI.FILL" height="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
->>>>>>> 88cef800a73e07e99cdc5e555a7db527ff453789
 				</View>
 			</FooterView>
         </TableView>

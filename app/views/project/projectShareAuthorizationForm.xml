@@ -33,10 +33,7 @@
 						bindModel="$.$model"
 						bindAttribute="sharePercentageType"/>
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
-<<<<<<< HEAD
-=======
 						id="sharePercentage" autoInit="false"
->>>>>>> 88cef800a73e07e99cdc5e555a7db527ff453789
 						bindModel="$.$model"
 						bindAttribute="sharePercentage"/>
 					</View>
