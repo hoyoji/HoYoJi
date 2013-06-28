@@ -96,7 +96,6 @@
 				id="remark" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
-				
 				<Widget src="com.hoyoji.titanium.widget.XButton" 
 				id="apportion" autoInit="false"
 				height="0" width="100%" title="多人分摊" 
