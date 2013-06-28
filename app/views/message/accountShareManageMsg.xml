@@ -19,7 +19,7 @@
 			</ScrollView>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="导入到本地"
+		buttons="导入到本地" imagesFolder="/images/message/accountShareManageMsg"
 		ids="importToLocal"/>
 	</View>
 </Alloy>

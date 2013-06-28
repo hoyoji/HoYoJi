@@ -98,7 +98,7 @@ function updateAmount() {
 // }
 
 function deleteDetail(detailModel) {
-	if ($.$model.xGet("useDetailsTotal")) {
+	if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
 		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
 		updateAmount();
 	}
@@ -363,3 +363,18 @@ $.amount.rightButton.addEventListener("singletap", function(e) {
 		closeWithoutSave : true
 	});
 });
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+$.apportion.UIInit($, $.getCurrentWindow());
+

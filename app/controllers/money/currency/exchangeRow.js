@@ -19,7 +19,7 @@ function changeForeignAmount() {
 	if (!isNaN(localCurrencyAmount)) {
 		var foreignCurrencyAmount = (localCurrencyAmount / rate).toUserCurrency();
 		console.info("++++++" + foreignCurrencyAmount + "++++++++");
-		$.foreignCurrencyAmount.setText(symbol+foreignCurrencyAmount);
+		$.foreignCurrencyAmount.setText("折算：" + symbol+foreignCurrencyAmount);
 		console.info("----" + foreignCurrencyAmount + "----");
 	} else {
 		alert("请输入正确数字");
@@ -28,7 +28,7 @@ function changeForeignAmount() {
 
 $.onWindowOpenDo(function() {
 	var parentController = $.getParentController();
-	parentController.onWindowOpenDo(function(){
+	
 		
 		changeForeignAmount();
 		parentController = parentController.getParentController();
@@ -39,6 +39,10 @@ $.onWindowOpenDo(function() {
 			$.$model.off("sync", changeForeignAmount);
 			// var parentController = $.getParentController().getParentController();
 			parentController.localCurrencyAmount.removeEventListener("change", changeForeignAmount);
-		});
+		
 	});
 });
+
+$.foreignCurrency.UIInit($, $.getCurrentWindow());
+$.rate.UIInit($, $.getCurrentWindow());
+$.autoUpdate.UIInit($, $.getCurrentWindow());

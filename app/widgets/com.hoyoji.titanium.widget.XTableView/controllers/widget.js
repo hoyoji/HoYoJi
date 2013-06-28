@@ -1,5 +1,37 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+
+// $.__alloyId10 = Ti.UI.createView({
+    // height: Ti.UI.SIZE,
+    // width: Ti.UI.FILL,
+    // id: "__alloyId10"
+// });
+// $.fetchNextPageButton = Ti.UI.createLabel({
+    // color: "gray",
+    // font: {
+        // fontSize: 14,
+        // fontWeight: "normal"
+    // },
+    // height: 60,
+    // width: Ti.UI.SIZE,
+    // textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+    // borderColor: "transparent",
+    // id: "fetchNextPageButton",
+    // text: "无内容"
+// });
+// $.__alloyId10.add($.fetchNextPageButton);
+// 
+// $.table = Ti.UI.createTableView({
+    // id: "table",
+    // top: "0",
+    // left: "0",
+    // allowSelection: "false",
+    // backgroundColor: "#f5f5f5"
+// });
+// $.table.setFooterView($.__alloyId10);
+// $.widget.add($.table);
+
+
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
@@ -120,18 +152,41 @@ $.$view.addEventListener("click", function(e) {
 });
 
 function createRowView(rowModel, collection) {
-	var rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
-		$model : rowModel,
-		$collection : collection,
-		hasDetail : $.$attrs.hasDetail,
-		containingTable : $
-	});
-	var row = Ti.UI.createTableViewRow({
-		id : rowModel.xGet("id"),
-		//className : (collection.__rowView || rowModel.config.rowView).replace("/", ""),
-		collectionId : collection.id
-	});
-	rowViewController.setParent(row);
+	if(OS_IOS){
+		var row = Ti.UI.createTableViewRow({
+			id : rowModel.xGet("id"),
+			className : collection.__rowView || rowModel.config.rowView,
+			collectionId : collection.id
+		});
+	} else {
+		var row = Ti.UI.createTableViewRow({
+			id : rowModel.xGet("id"),
+			// className : collection.__rowView || rowModel.config.rowView,
+			collectionId : collection.id
+		});
+	}
+	var rowViewController;
+	if($.__currentWindow && $.__parentController){
+		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
+			$model : rowModel,
+			$collection : collection,
+			hasDetail : $.$attrs.hasDetail,
+			containingTable : $,
+			autoInit : "false",
+			currentWindow : $.__currentWindow,
+			parentController : $
+		});
+		rowViewController.setParent(row);
+		rowViewController.UIInit();
+	} else {
+		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
+			$model : rowModel,
+			$collection : collection,
+			hasDetail : $.$attrs.hasDetail,
+			containingTable : $
+		});
+		rowViewController.setParent(row);
+	}
 	if (rowViewController.$attrs.hasDetail || rowViewController.$view.hasDetail) {
 		hasDetailSections[rowModel.xGet("id")] = {
 			parentRowController : rowViewController,
@@ -406,55 +461,59 @@ exports.fetchNextPage = function(tableRowsCount) {
 		tableRowsCount = tableRowsCount || exports.getRowsCount();
 	}
 
-	sortedArray = [];
-	for (var i = 0; i < collections.length; i++) {
-		if (collections[i] && collections[i].length > 0) {
-			collections[i].forEach(function(item) {
-				sortedArray.push({
-					record : item,
-					collection : collections[i]
-				});
-			})
-		}
-	}
-
-	if (sortByField) {
-		sortedArray.sort(function(a, b) {
-			a = a.record.xDeepGet(sortByField);
-			b = b.record.xDeepGet(sortByField);
-			if (a < b) {
-				return sortedArray_sortReverse ? 1 : -1;
-			} else if (a > b) {
-				return sortedArray_sortReverse ? -1 : 1;
+	function doFetchNextPage() {
+		sortedArray = [];
+		for (var i = 0; i < collections.length; i++) {
+			if (collections[i] && collections[i].length > 0) {
+				collections[i].forEach(function(item) {
+					sortedArray.push({
+						record : item,
+						collection : collections[i]
+					});
+				})
 			}
-			return 0;
+		}
+
+		if (sortByField) {
+			sortedArray.sort(function(a, b) {
+				a = a.record.xDeepGet(sortByField);
+				b = b.record.xDeepGet(sortByField);
+				if (a < b) {
+					return sortedArray_sortReverse ? 1 : -1;
+				} else if (a > b) {
+					return sortedArray_sortReverse ? -1 : 1;
+				}
+				return 0;
+			});
+		}
+
+		var newRows = [];
+		sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
+			newRows.push(createRowView(item.record, item.collection));
 		});
+
+		if (newRows.length > 0) {
+			$.sort(null, null, null, true, newRows);
+		}
+
+		//$.hideActivityIndicator();
+
+		showNoDataIndicator();
 	}
 
-	var newRows = [];
-	sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
-		newRows.push(createRowView(item.record, item.collection));
-	});
-
-	if (newRows.length > 0) {
-		$.sort(null, null, null, true, newRows);
+	if ($.beforeFetchNextPage) {
+		$.beforeFetchNextPage(
+			tableRowsCount,
+			pageSize + 1,
+			$.getOrderBy() + " " + $.getSortOrder(),
+			doFetchNextPage, 
+			function(err){
+				showNoDataIndicator();
+				alert(err.msg);
+			});
+	} else {
+		doFetchNextPage();
 	}
-
-	//$.hideActivityIndicator();
-	
-	showNoDataIndicator();
-	
-	// if (tableRowsCount + pageSize < sortedArray.length) {
-		// $.fetchNextPageButton.setTitle("更多...");
-	// } else if($.getDataCount() === 0) {
-		// $.fetchNextPageButton.setTitle("无内容");
-	// } else {
-		// $.fetchNextPageButton.setTitle("无更多内容");
-	// }
-	
-	// if(notCallSort){
-	// return newRows;
-	// }
 }
 
 exports.getDataCount = function() {
@@ -502,7 +561,7 @@ exports.addCollection = function(collection, rowView) {
 			collection.forEach(function(item) {
 				newRows.push(createRowView(item, collection));
 			});
-			if(newRows.length > 0){
+			if (newRows.length > 0) {
 				$.sort(null, null, null, true, newRows);
 			}
 		}
@@ -538,7 +597,7 @@ var clearCollections = function() {
 function refreshCollectionOnChange(model) {
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true);
-		 showNoDataIndicator();
+		showNoDataIndicator();
 	}
 }
 
@@ -564,7 +623,7 @@ function refreshCollection(collection, appendRows, removedRows) {
 			$.sort(null, null, null, true, newRows, removedRows, collection.id);
 		}
 	}
-    showNoDataIndicator();
+	showNoDataIndicator();
 }
 
 $.onWindowCloseDo(function() {
@@ -642,6 +701,7 @@ exports.open = function(top) {
 		$.$view.animate(animation);
 	}
 
+
 	$.$view.setTop("99%")
 	animate();
 }
@@ -717,10 +777,9 @@ function getSectionNameOfRowModel(sectionName) {
 	return sectionName;
 }
 
-exports.setHeaderView = function(headerView){
+exports.setHeaderView = function(headerView) {
 	$.table.setHeaderView(headerView);
 }
-
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
 
@@ -804,7 +863,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		}
 	}
 	$.table.setData(data);
-	 // showNoDataIndicator(data.length);
+	// showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
 
 }
@@ -941,34 +1000,57 @@ function showNoDataIndicator(hasData) {
 	var dataCount = $.getDataCount();
 	if (dataCount > 0) {
 		// if (__noDataIndicator) {
-			// __noDataIndicator.hide();
-			// __noDataIndicator.setTop(-100);
+		// __noDataIndicator.hide();
+		// __noDataIndicator.setTop(-100);
 		// }
-		if (dataCount > $.getRowsCount()){
-			$.fetchNextPageButton.setText("点击加载更多...");
+		if (dataCount > $.getRowsCount()) {
+			$.fetchNextPageButton.setText("加载更多...");
 		} else {
 			$.fetchNextPageButton.setText("无更多内容");
-		} 		
+		}
 	} else {
 		$.fetchNextPageButton.setText("无内容");
 		// if (!__noDataIndicator) {
-			// __noDataIndicator = Ti.UI.createLabel({
-				// text : "没有内容",
-				// color : "blue",
-				// backgroundColor : "transparent",
-				// width : Ti.UI.SIZE,
-				// height : Ti.UI.SIZE,
-				// top : "25%",
-				// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-				// zIndex : 200
-			// });
-			// $.$view.add(__noDataIndicator);
+		// __noDataIndicator = Ti.UI.createLabel({
+		// text : "没有内容",
+		// color : "blue",
+		// backgroundColor : "transparent",
+		// width : Ti.UI.SIZE,
+		// height : Ti.UI.SIZE,
+		// top : "25%",
+		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		// zIndex : 200
+		// });
+		// $.$view.add(__noDataIndicator);
 		// } else {
-			// __noDataIndicator.setTop("25%");
-			// __noDataIndicator.show();
+		// __noDataIndicator.setTop("25%");
+		// __noDataIndicator.show();
 		// }
 	}
 }
 
+exports.getPageSize = function(){
+	return pageSize;
+}
 
+exports.getOrderBy = function(){
+	return sortByField;
+}
 
+exports.getSortOrder = function(){
+	return sortReverse ? "DESC" : "ASC";
+}
+
+// if(OS_IOS){
+	$.table.footerView.addEventListener("touchstart", function(e){
+		$.$view.fireEvent("touchstart");
+	});	
+// } else {
+	// var lastTotalItemCount = -1;
+	// $.table.addEventListener("scroll", function(e){
+		// if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.totalItemCount > lastTotalItemCount){
+			// lastTotalItemCount = e.totalItemCount;
+			// // exports.fetchNextPage();
+		// } 
+	// });
+// }

@@ -27,7 +27,9 @@ $.$view.addEventListener("singletap", function(e) {
 		selectorCallback : function(value){
 			$.setValue(value);
 			$.field.fireEvent("change");
-	}});
+		}
+	});
+	
 });
 
 $.setEditable = function(editable) {

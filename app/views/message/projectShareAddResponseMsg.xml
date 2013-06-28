@@ -280,7 +280,7 @@
 			</ScrollView>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" visible="false"
-		buttons="忽略,拒绝,接受共享"
+		buttons="忽略,拒绝,接受共享" imagesFolder="/images/message/projectShareAddResponseMsg"
 		ids="ignore,reject,agree"/>
 	</View>
 </Alloy>

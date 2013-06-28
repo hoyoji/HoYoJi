@@ -7,6 +7,7 @@
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true"
 			id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="本币币种" hintText="请选择本币币种"
+				id="localCurrency" autoInit="false"
 				addModeEditability="noneditable"
 				editModeEditability="noneditable"
 				bindModel="$.$model"
@@ -14,17 +15,20 @@
 				bindAttributeIsModel="name"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="外币币种" hintText="请选择外币币种"
+				id="foreignCurrency" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="foreignCurrency"
 				bindAttributeIsModel="name"
 				bindModelSelector="money/currency/currencyAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="汇率" hintText="请输入汇率"
+				id="rate" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="rate"/>
 				<View height="42">
 					<Label left="0" width="30%" height="Ti.UI.FILL" backgroundColor="#f5f5f5">是否自动更新</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
+					id="autoUpdate" autoInit="false"
 					hightLight="false"
 					items="否,是"
 					values="false,true"

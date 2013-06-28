@@ -490,6 +490,24 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 }
 
 $.onWindowOpenDo(function() {
+	if ($.$model.xGet('messageState') !== "closed") {
+		Alloy.Globals.Server.getData([{
+			__dataType : "Message",
+			id : $.$model.xGet("id"),
+			messageState : "closed"
+		}], function(msgdata) {
+			if (data[0].length > 0) {
+				$.$model.save({
+					messageState : "closed"
+				}, {
+					wait : true,
+					patch : true
+				});
+			}
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
+	}
 	$.showHideAuthorization.hide();
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({

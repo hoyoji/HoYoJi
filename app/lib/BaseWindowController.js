@@ -3,13 +3,15 @@
 			attrs = attrs || {};
 			// a window is by default a saveableContainer
 			attrs.saveableContainer = "true";
+			attrs.parentController = $;
+			attrs.currentWindow = $;
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			
 			if(OS_ANDROID){
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			}
 			$.$view.addEventListener("touchstart", function(e){
-				if(!e.source.getHintText){
+				if(!e.source.focusable){
 					$.getCurrentWindow().closeSoftKeyboard();
 				}
 			});
@@ -26,9 +28,13 @@
 				openNumericKeyboard : function(textField, callback, bottom){
 					if(!$.numericKeyboard){
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
-							id : "numericKeyboard"
+							id : "numericKeyboard",
+							currentWindow : $,
+							parentController : $,
+							autoInit : "false"
 						});
 						$.numericKeyboard.setParent($.$view);
+						$.numericKeyboard.UIInit();
 					}
 					$.numericKeyboard.open(textField, callback, bottom);
 				},
@@ -79,7 +85,9 @@
 			});
 			if ($.$view.contextMenu !== "false") {
 				$.__views.contextMenu = Alloy.createWidget("com.hoyoji.titanium.widget.ContextMenu", "widget", {
-					id : "contextMenu"
+					id : "contextMenu",
+					parentController : $,
+					currentWindow : $
 				});
 				$.__views.contextMenu.setParent($.$view);
 				$.contextMenu = $.__views.contextMenu;

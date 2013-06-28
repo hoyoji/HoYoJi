@@ -80,7 +80,7 @@ exports.definition = {
 			lastServerUpdateTime : 0,
 			lastClientUpdateTime : 0,
 			
-			sharePercentageType : "Average",
+			sharePercentageType : "average",
 			sharePercentage : 100,
 			
 			actualTotalIncome : 0,
@@ -203,11 +203,26 @@ exports.definition = {
 					return this.xGet("friendUser").xGet("userName");
 				}
 			},
-			getActualTotalExpense : function(){
-				return "实际支出 : "+ this.xGet("actualTotalExpense");
+			getActualTotal : function(){
+				var getActualTotal = 0;
+				if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
+					getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
+					return "实际支出 : "+ getActualTotal;
+				}else{
+					getActualTotal = this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense");
+					return "实际收入 : "+ getActualTotal;
+				}
+				
 			},
-			getActualTotalIncome : function(){
-				return "实际收入 : "+ this.xGet("actualTotalIncome");
+			getApportionedTotal : function(){
+				var getApportionedTotal = 0;
+				if(this.xGet("apportionedTotalIncome") - this.xGet("apportionedTotalExpense") <= 0){
+					getApportionedTotal = this.xGet("apportionedTotalExpense") - this.xGet("apportionedTotalIncome");
+					return "应该支出 : "+ getApportionedTotal;
+				}else{
+					getApportionedTotal = this.xGet("apportionedTotalIncome") - this.xGet("apportionedTotalExpense");
+					return "应该收入 : "+ getApportionedTotal;
+				}
 			},
 			getSharePercentage : function(){
 				return "占股 : "+ this.xGet("sharePercentage");
@@ -218,7 +233,7 @@ exports.definition = {
 				this.xGet("project").xGetDescendents("subProjects").map(function(subProject){
 					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							projectId : subProject.xGet("id"),
-							friendId : self.xGet("friendId")
+							friendUserId : self.xGet("friendUserId")
 						});
 					if(subProjectShareAuthorization.id){
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
@@ -227,24 +242,24 @@ exports.definition = {
 				});
 				Alloy.Globals.Server.sendMsg({
 					id : guid(),
-					"toUserId" : this.xGet("friend").xGet("friendUser").xGet("id"),
+					"toUserId" : self.xGet("friendUserId"),
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
 					"messageState" : "unread",
-					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再分享项目"+this.xGet("project").xGet("name")+"及子项目给您",
+					"messageTitle" : Alloy.Models.User.xGet("userName")+"不再共享项目"+self.xGet("project").xGet("name")+"及子项目给您",
 					"date" : (new Date()).toISOString(),
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + this.xGet("project").xGet("name") +"及子项目给您",
-					"messageBoxId" : this.xGet("friend").xGet("friendUser").xGet("messageBoxId"),
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") +"及子项目给您",
+					"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
 					"messageData" : JSON.stringify({
 			                            shareAllSubProjects : this.xGet("shareAllSubProjects"),
 			                            projectShareAuthorizationId : this.xGet("id"),
 			                            subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 			                        })
-			         },function(){
-				        self._xDelete(xFinishCallback, options);
-	    			},function(e){
-	    				xFinishCallback({ msg :"删除出错,请重试 : " + e.__summary.msg});
-	    			});	
+		         },function(){
+			        self._xDelete(xFinishCallback, options);
+    			},function(e){
+    				xFinishCallback({ msg :"删除出错,请重试 : " + e.__summary.msg});
+    			});	
 			},
 			canEdit : function(){
 				if(this.isNew()){
@@ -256,6 +271,19 @@ exports.definition = {
 			},
 			canDelete : function(){
 				return this.xGet("ownerUser") === Alloy.Models.User;
+			},
+			syncAddNew : function(record, dbTrans) {
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				// 同步新增好友时，一起把该好友用户同步下来
+				if (!friendUser.id) {
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+						}
+					});
+				}
 			}
 		});
 		return Model;

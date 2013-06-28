@@ -7,6 +7,8 @@ exports.definition = {
 			parentProjectId : "TEXT",
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
+			depositeIncomeCategoryId : "TEXT",
+			depositeExpenseCategoryId : "TEXT",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
@@ -18,7 +20,9 @@ exports.definition = {
 			ownerUser : { type : "User", attribute : "projects" },
 			parentProject : { type : "Project", attribute : "subProjects" },
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
-			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
+			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null},
+			depositeIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
+			depositeExpenseCategory : {type : "MoneyExpenseCategory", attribute : null}
 		},
 		hasMany : {
 			moneyExpenseCategories : { type : "MoneyExpenseCategory", attribute : "project"},
@@ -59,33 +63,42 @@ exports.definition = {
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
-				// // if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
-					// // xFinishCallback({ msg :"不能删除当前激活的项目"});
-				// // }else if(this.xGet("moneyExpenses").length > 0){
-					// // xFinishCallback({ msg :"项目中的支出不为空，不能删除"});
-				// // }else if(this.xGet("moneyIncomes").length > 0){
-					// // xFinishCallback({ msg :"项目中的收入不为空，不能删除"});
-				// // }else if(this.xGet("moneyTransfers").length > 0){
-					// // xFinishCallback({ msg :"项目中的转账不为空，不能删除"});
-				// // }else if(this.xGet("moneyBorrows").length > 0){
-					// // xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
-				// // }else if(this.xGet("moneyReturns").length > 0){
-					// // xFinishCallback({ msg :"项目中的还款不为空，不能删除"});
-				// // }else if(this.xGet("moneyLends").length > 0){
-					// // xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
-				// // }else if(this.xGet("moneyPaybacks").length > 0){
-					// // xFinishCallback({ msg :"项目中的收款不为空，不能删除"});
-				// // }else if(this.xGet("moneyExpenseCategories").length > 0){
-					// // xFinishCallback({ msg :"项目中的支出分类不为空，不能删除"});
-				// // }else if(this.xGet("moneyIncomeCategories").length > 0){
-					// // xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
-				// // }else {
+				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
+					xFinishCallback({ msg :"不能删除当前激活的项目"});
+				}else if(this.xGet("moneyExpenses").length > 0){
+					xFinishCallback({ msg :"项目中的支出不为空，不能删除"});
+				}else if(this.xGet("moneyIncomes").length > 0){
+					xFinishCallback({ msg :"项目中的收入不为空，不能删除"});
+				}else if(this.xGet("moneyTransfers").length > 0){
+					xFinishCallback({ msg :"项目中的转账不为空，不能删除"});
+				}else if(this.xGet("moneyBorrows").length > 0){
+					xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
+				}else if(this.xGet("moneyReturns").length > 0){
+					xFinishCallback({ msg :"项目中的还款不为空，不能删除"});
+				}else if(this.xGet("moneyLends").length > 0){
+					xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
+				}else if(this.xGet("moneyPaybacks").length > 0){
+					xFinishCallback({ msg :"项目中的收款不为空，不能删除"});
+				}else if(this.xGet("moneyExpenseCategories").length > 0){
+					xFinishCallback({ msg :"项目中的支出分类不为空，不能删除"});
+				}else if(this.xGet("moneyIncomeCategories").length > 0){
+					xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
+				}else if(this.xGet("projectShareAuthorizations").length > 1){
+					xFinishCallback({ msg :"项目中的共享好友不为空，不能删除"});
+				}else {
 					if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
 						Alloy.Models.User.xSet("activeProject", null);
 						Alloy.Models.User.save("activeProjectId", null, options);
 					}
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : this.xGet("id"),
+							friendUserId : Alloy.Models.User.id
+						});
+					if(projectShareAuthorization.id){
+						projectShareAuthorization._xDelete();
+					}
 					this._xDelete(xFinishCallback, options);
-				// // }
+				}
 			},
 			// getSharedWithHerSubProjects : function(){
 				// if(!this.__getSharedWIthHerSubProjectsFilter){

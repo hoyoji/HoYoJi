@@ -122,7 +122,9 @@ function openMainWindow(){
 	$.password.field.setValue("");
 	$.$model.xSet("password", null);
 	if (!Alloy.Globals.mainWindow) {
-		Alloy.createController("mainWindow").open();
+		var win = Alloy.createController("mainWindow", {autoInit : "false"});
+		win.UIInit();
+		win.open();
 	}
 }
 

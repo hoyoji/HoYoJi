@@ -189,7 +189,11 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					ownerUserSymbol = friend.getDisplayName();
+					if(friend && friend.id){
+						ownerUserSymbol = friend.getDisplayName();
+					}else{
+						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
+					}
 				}
 
 				return ownerUserSymbol;
@@ -236,6 +240,17 @@ exports.definition = {
 					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
 						dbTrans : dbTrans,
 						patch : true
+					});
+				}
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				// 同步新增好友时，一起把该好友用户同步下来
+				if (!friendUser.id) {
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+						}
 					});
 				}
 			},

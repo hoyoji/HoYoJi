@@ -31,9 +31,11 @@ $.$model.xGet("activeProject").xSet("defaultIncomeCategory",defaultIncomeCategor
 var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "日常支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 $.$model.xGet("activeProject").xSet("defaultExpenseCategory",defaultExpenseCategory);
 
-var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "充值收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
+var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory",{name : "充值收入", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
+$.$model.xGet("activeProject").xSet("depositeIncomeCategory",depositeIncomeCategory);
 
-var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "充值支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
+var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "充值支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
+$.$model.xGet("activeProject").xSet("depositeExpenseCategory",depositeExpenseCategory);
 
 $.onSave = function(saveEndCB, saveErrorCB){
 	$.$model.xValidate(function() {

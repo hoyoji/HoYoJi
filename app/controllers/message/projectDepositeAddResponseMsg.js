@@ -119,6 +119,10 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
+	
+	if($.$model.xGet('type') === "Project.Deposite.AddRequest"){
+		$.footerBar.$view.show();
+	}
 });
 
 function importToLocalOperate() {
@@ -134,6 +138,7 @@ function importToLocalOperate() {
 			incomeType : accountShareData.account.expenseType,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : depositeProject,
+			moneyIncomeCategory : depositeProject.xGet("depositeIncomeCategory"),
 			friendUser : $.$model.xGet("fromUser")
 		});
 

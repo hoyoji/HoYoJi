@@ -27,6 +27,7 @@
 
 Alloy.Globals.MenuSections = [];
 Alloy.Globals.openingWindow = {};
+Alloy.Globals.openedWindow = {};
 
 _.extend(Alloy.Globals, require("utils").Utils);
 

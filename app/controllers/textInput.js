@@ -18,5 +18,7 @@ $.onWindowOpenDo(function() {
 	}
 	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
 	// $.textField.addEventListener("singletap", confirm);
-	$.textField.focus();
+	$.getCurrentWindow().$view.addEventListener("show", function(){
+		$.textField.focus();
+	})
 });

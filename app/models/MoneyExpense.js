@@ -190,7 +190,11 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					ownerUserSymbol = friend.getDisplayName();
+					if(friend && friend.id){
+						ownerUserSymbol = friend.getDisplayName();
+					}else{
+						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
+					}
 				}
 
 				return ownerUserSymbol;
@@ -250,6 +254,17 @@ exports.definition = {
 						dbTrans : dbTrans,
 						patch : true
 						// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
+					});
+				}
+				var self = this;
+				var friendUser = Alloy.createModel("User").xFindInDb({
+					id : record.friendUserId
+				});
+				// 同步新增好友时，一起把该好友用户同步下来
+				if (!friendUser.id) {
+					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						if (collection.length > 0) {
+						}
 					});
 				}
 			},

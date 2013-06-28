@@ -31,23 +31,53 @@
 		// return transform;
 		// }
 
-		exports.Utils.openWindow = function(windowName, options) {
-			var win;
-			// if (!Alloy.Globals.openingWindow[windowName]) {
-				win = Alloy.createController("window");
-				win.openWin(windowName, options);
-				Alloy.Globals.openingWindow[windowName] = win;
-			// }
+		exports.Utils.openWindow = function(windowName, options, loadOnly) {
+			var win = Alloy.Globals.openingWindow[windowName];
+			if (!win || loadOnly) {
+				win = Alloy.createController("window", {
+					autoInit : "false"
+				});
+				win.openWin(windowName, options, loadOnly);
+				win.UIInit();
+				if (!loadOnly) {
+					Alloy.Globals.openingWindow[windowName] = win;
+				}
+			}
 			return win;
 		}
 
-		exports.Utils.getClientSyncCount = function(){
-				var config = Alloy.createModel("ClientSyncTable").config,
-				Model = Alloy.M("ClientSyncTable", {config : config}),
-				model = new Model({TOTAL : 0});
-				var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main WHERE tableName <> 'Login'";
-				model.fetch({query : query});
-				return model.get("TOTAL") || 0;
+		exports.Utils.cacheWindow = function(windowName, options) {
+			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
+				Alloy.Globals.openedWindow[windowName] = exports.Utils.openWindow(windowName, options, true);
+				function reCacheWindow(e) {
+					Alloy.Globals.openedWindow[windowName].$view.removeEventListener("close", reCacheWindow);
+					if (Alloy.Globals.openedWindow[windowName].$view === e.source) {
+						delete Alloy.Globals.openedWindow[windowName];
+						exports.Utils.cacheWindow(windowName);
+					}
+				}
+
+
+				Alloy.Globals.openedWindow[windowName].$view.addEventListener("close", reCacheWindow);
+			}
+		}
+
+		exports.Utils.openCachedWindow = function(windowName) {
+			exports.Utils.cacheWindow(windowName);
+			Alloy.Globals.openedWindow[windowName].openCachedWindow();
+		}
+
+		exports.Utils.getClientSyncCount = function() {
+			var config = Alloy.createModel("ClientSyncTable").config, Model = Alloy.M("ClientSyncTable", {
+				config : config
+			}), model = new Model({
+				TOTAL : 0
+			});
+			var query = "SELECT COUNT(*) AS TOTAL FROM ClientSyncTable main WHERE tableName <> 'Login'";
+			model.fetch({
+				query : query
+			});
+			return model.get("TOTAL") || 0;
 		}
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
@@ -126,11 +156,11 @@
 			}
 			return this;
 		}
-		
-		Date.prototype.getTimeStamp = function(){
+
+		Date.prototype.getTimeStamp = function() {
 			return Math.floor(this.getTime() / 1000);
 		}
-		
+
 		Date.prototype.getUTCTimeOfDate = function() {
 			return Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds(), this.getUTCMilliseconds());
 		}
@@ -339,42 +369,42 @@
 		// });
 		// var f = _, g = Backbone;
 		// _.extend(Backbone.Model.prototype, {
-			// save : function(a, b, c) {
-			// var d, e;
-			// f.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
-			// c = c ? f.clone(c) : {};
-			// if (c.wait) {
-				// if (!this._validate(d, c))
-					// return !1;
-				// e = f.clone(this.attributes)
-			// }
-			// a = f.extend({}, c, {
-				// silent : !0
-			// });
-			// if (d && !this.set(d, c.wait ? a : c))
-				// return !1;
-			// var h = this, i = c.success;
-			// c.success = function(a, b, e) {
-				// b = h.parse(a, e);
-				// if (c.wait) {
-					// delete c.wait;
-					// b = f.extend(d || {}, b)
-				// }
-				// if (!h.set(b, c))
-					// return false;
-				// i ? i(h, a) : h.trigger("sync", h, a, c)
-			// };
-			// c.error = g.wrapError(c.error, h, c);
-			// b = this.isNew() ? "create" : "update";
-			// b = (this.sync || g.sync).call(this, b, this, c);
-			// c.wait && this.set(e, a);
-			// return b
+		// save : function(a, b, c) {
+		// var d, e;
+		// f.isObject(a) || null == a ? ( d = a, c = b) : ( d = {}, d[a] = b);
+		// c = c ? f.clone(c) : {};
+		// if (c.wait) {
+		// if (!this._validate(d, c))
+		// return !1;
+		// e = f.clone(this.attributes)
+		// }
+		// a = f.extend({}, c, {
+		// silent : !0
+		// });
+		// if (d && !this.set(d, c.wait ? a : c))
+		// return !1;
+		// var h = this, i = c.success;
+		// c.success = function(a, b, e) {
+		// b = h.parse(a, e);
+		// if (c.wait) {
+		// delete c.wait;
+		// b = f.extend(d || {}, b)
+		// }
+		// if (!h.set(b, c))
+		// return false;
+		// i ? i(h, a) : h.trigger("sync", h, a, c)
+		// };
+		// c.error = g.wrapError(c.error, h, c);
+		// b = this.isNew() ? "create" : "update";
+		// b = (this.sync || g.sync).call(this, b, this, c);
+		// c.wait && this.set(e, a);
+		// return b
 		// }
 		// });
 
 		_.extend(Backbone.Collection.prototype, {
 			reset : function(models, options) {
-		      	models  || (models = []);
+				models || ( models = []);
 				options || ( options = {});
 				for (var i = 0, l = this.models.length; i < l; i++) {
 					this._removeReference(this.models[i]);
@@ -389,17 +419,17 @@
 				return this;
 			},
 			// reset: function(models, options) {
-		      // models  || (models = []);
-		      // options || (options = {});
-		      // for (var i = 0, l = this.models.length; i < l; i++) {
-		        // this._removeReference(this.models[i]);
-		      // }
-		      // this._reset();
-		      // this.add(models, _.extend({silent: true}, options));
-		      // if (!options.silent) this.trigger('reset', this, options);
-		      // return this;
-		    // },
-			
+			// models  || (models = []);
+			// options || (options = {});
+			// for (var i = 0, l = this.models.length; i < l; i++) {
+			// this._removeReference(this.models[i]);
+			// }
+			// this._reset();
+			// this.add(models, _.extend({silent: true}, options));
+			// if (!options.silent) this.trigger('reset', this, options);
+			// return this;
+			// },
+
 			// remove : function(models, options) {
 			// var i, l, index, model;
 			// options || ( options = {});
@@ -434,61 +464,60 @@
 			// this.trigger.apply(this, arguments);
 			// }
 
-				add : function(models, options) {
-					var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
-					options || ( options = {});
-					models = _.isArray(models) ? models.slice() : [models];
-					for ( i = 0, length = models.length; i < length; i++) {
+			add : function(models, options) {
+				var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
+				options || ( options = {});
+				models = _.isArray(models) ? models.slice() : [models];
+				for ( i = 0, length = models.length; i < length; i++) {
 
-						if (!( model = models[i] = this._prepareModel(models[i], options))) {
-							throw new Error("Can't add an invalid model to a collection");
-						}
-
-						cid = model.cid;
-						id = model.id;
-
-						console.log("adding models check dups " + id);
-
-						if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
-							dups.push(i);
-							continue;
-						}
-						cids[cid] = ids[id] = model;
+					if (!( model = models[i] = this._prepareModel(models[i], options))) {
+						throw new Error("Can't add an invalid model to a collection");
 					}
 
-					console.log("adding models dups " + dups.length);
+					cid = model.cid;
+					id = model.id;
 
-					i = dups.length;
-					while (i--) {
-						models.splice(dups[i], 1);
-					}
+					console.log("adding models check dups " + id);
 
-					console.log("adding models " + models.length);
-
-					for ( i = 0, length = models.length; i < length; i++) {
-						( model = models[i]).on('all', this._onModelEvent, this);
-						this._byCid[model.cid] = model;
-						if (model.id != null)
-							this._byId[model.id] = model;
+					if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
+						dups.push(i);
+						continue;
 					}
-					this.length += length;
-					index = options.at != null ? options.at : this.models.length;
-					splice.apply(this.models, [index, 0].concat(models));
-					if (this.comparator)
-						this.sort({
-							silent : true
-						});
-					if (options.silent)
-						return this;
-					for ( i = 0, length = this.models.length; i < length; i++) {
-						if (!cids[( model = this.models[i]).cid])
-							continue;
-						options.index = i;
-						model.trigger('add', model, this, options);
-					}
-					return this;
+					cids[cid] = ids[id] = model;
 				}
 
+				console.log("adding models dups " + dups.length);
+
+				i = dups.length;
+				while (i--) {
+					models.splice(dups[i], 1);
+				}
+
+				console.log("adding models " + models.length);
+
+				for ( i = 0, length = models.length; i < length; i++) {
+					( model = models[i]).on('all', this._onModelEvent, this);
+					this._byCid[model.cid] = model;
+					if (model.id != null)
+						this._byId[model.id] = model;
+				}
+				this.length += length;
+				index = options.at != null ? options.at : this.models.length;
+				splice.apply(this.models, [index, 0].concat(models));
+				if (this.comparator)
+					this.sort({
+						silent : true
+					});
+				if (options.silent)
+					return this;
+				for ( i = 0, length = this.models.length; i < length; i++) {
+					if (!cids[( model = this.models[i]).cid])
+						continue;
+					options.index = i;
+					model.trigger('add', model, this, options);
+				}
+				return this;
+			}
 		});
 
 	}());
