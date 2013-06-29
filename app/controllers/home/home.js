@@ -136,4 +136,4 @@ $.activityTable = Alloy.createController("home/activityView", {
 $.activityTable.setParent($.body);
 $.activityTable.UIInit();
 
-
+$.activityTable.transactionsTable.autoHideFooter($.footerBar);
