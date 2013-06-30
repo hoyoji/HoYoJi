@@ -1,42 +1,42 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-
 // $.__alloyId10 = Ti.UI.createView({
-    // height: Ti.UI.SIZE,
-    // width: Ti.UI.FILL,
-    // id: "__alloyId10"
+// height: Ti.UI.SIZE,
+// width: Ti.UI.FILL,
+// id: "__alloyId10"
 // });
 // $.fetchNextPageButton = Ti.UI.createLabel({
-    // color: "gray",
-    // font: {
-        // fontSize: 14,
-        // fontWeight: "normal"
-    // },
-    // height: 60,
-    // width: Ti.UI.SIZE,
-    // textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-    // borderColor: "transparent",
-    // id: "fetchNextPageButton",
-    // text: "无内容"
+// color: "gray",
+// font: {
+// fontSize: 14,
+// fontWeight: "normal"
+// },
+// height: 60,
+// width: Ti.UI.SIZE,
+// textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+// borderColor: "transparent",
+// id: "fetchNextPageButton",
+// text: "无内容"
 // });
 // $.__alloyId10.add($.fetchNextPageButton);
-// 
+//
 // $.table = Ti.UI.createTableView({
-    // id: "table",
-    // top: "0",
-    // left: "0",
-    // allowSelection: "false",
-    // backgroundColor: "#f5f5f5"
+// id: "table",
+// top: "0",
+// left: "0",
+// allowSelection: "false",
+// backgroundColor: "#f5f5f5"
 // });
 // $.table.setFooterView($.__alloyId10);
 // $.widget.add($.table);
-
 
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
 if (OS_ANDROID) {
-	$.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// if(Ti.Platform.Android.API_LEVEL < 11){
+		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
 	// console.info("------ table View  y --------- " + $.table.getRect().y + " " + $.table.getRect().height);
@@ -152,7 +152,7 @@ $.$view.addEventListener("click", function(e) {
 });
 
 function createRowView(rowModel, collection) {
-	if(OS_IOS){
+	if (OS_IOS) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
 			className : collection.__rowView || rowModel.config.rowView,
@@ -166,7 +166,7 @@ function createRowView(rowModel, collection) {
 		});
 	}
 	var rowViewController;
-	if($.__currentWindow && $.__parentController){
+	if ($.__currentWindow && $.__parentController) {
 		rowViewController = Alloy.createController(collection.__rowView || rowModel.config.rowView, {
 			$model : rowModel,
 			$collection : collection,
@@ -502,15 +502,10 @@ exports.fetchNextPage = function(tableRowsCount) {
 	}
 
 	if ($.beforeFetchNextPage) {
-		$.beforeFetchNextPage(
-			tableRowsCount,
-			pageSize + 1,
-			$.getOrderBy() + " " + $.getSortOrder(),
-			doFetchNextPage, 
-			function(err){
-				showNoDataIndicator();
-				alert(err.msg);
-			});
+		$.beforeFetchNextPage(tableRowsCount, pageSize + 1, $.getOrderBy() + " " + $.getSortOrder(), doFetchNextPage, function(err) {
+			showNoDataIndicator();
+			alert(err.msg);
+		});
 	} else {
 		doFetchNextPage();
 	}
@@ -782,7 +777,12 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.setHeaderView = function(headerView) {
-	$.table.setHeaderView(headerView);
+	if(OS_IOS){
+		$.table.setHeaderView(headerView);
+	} else {
+		$.$view.add(headerView);
+		$.table.setTop(60);
+	}
 }
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
@@ -951,28 +951,28 @@ function createSection(sectionTitle, sectionIndex) {
 	// }));
 	// sectionFooter.add(fView1);
 	//
-	
+
 	var sectionHeader = Ti.UI.createView({
 		height : 30,
 		backgroundColor : "#e9f3f0"
 	});
-	
+
 	var titleLabel = Ti.UI.createLabel({
 		text : sectionTitle,
 		color : "#2E8B57",
 		left : 10
 	});
-	
+
 	sectionHeader.add(titleLabel);
-	
+
 	section = Ti.UI.createTableViewSection({
-	headerView : sectionHeader
-	// footerView : sectionFooter
+		headerView : sectionHeader
+		// footerView : sectionFooter
 	});
 	//
 	// } else {
 	// section = Ti.UI.createTableViewSection({
-		// headerTitle : sectionTitle
+	// headerTitle : sectionTitle
 	// });
 	// }
 
@@ -1047,28 +1047,70 @@ function showNoDataIndicator(hasData) {
 	}
 }
 
-exports.getPageSize = function(){
+exports.getPageSize = function() {
 	return pageSize;
 }
 
-exports.getOrderBy = function(){
+exports.getOrderBy = function() {
 	return sortByField;
 }
 
-exports.getSortOrder = function(){
+exports.getSortOrder = function() {
 	return sortReverse ? "DESC" : "ASC";
 }
-
-// if(OS_IOS){
-	$.table.footerView.addEventListener("touchstart", function(e){
+if(OS_IOS){
+	$.table.footerView.addEventListener("touchstart", function(e) {
 		$.$view.fireEvent("touchstart");
-	});	
+	});
+}
+
 // } else {
-	// var lastTotalItemCount = -1;
-	// $.table.addEventListener("scroll", function(e){
-		// if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.totalItemCount > lastTotalItemCount){
-			// lastTotalItemCount = e.totalItemCount;
-			// // exports.fetchNextPage();
-		// } 
-	// });
+// var lastTotalItemCount = -1;
+// $.table.addEventListener("scroll", function(e){
+// if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.totalItemCount > lastTotalItemCount){
+// lastTotalItemCount = e.totalItemCount;
+// // exports.fetchNextPage();
 // }
+// });
+// }
+
+exports.autoHideFooter = function(footer) {
+	var lastDistance = 0, direction, lastDirection = false;
+	$.table.addEventListener("scroll", function(e) {
+		if (OS_ANDROID) {
+			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+			if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
+				footer.slideDown();
+				//lastDirection = true;
+			} else {
+				footer.slideUp();
+				//lastDirection = false
+			}
+			// direction = e.firstVisibleItem - lastDistance;
+			// lastDistance = e.firstVisibleItem;
+		} else {
+			var offset = e.contentOffset.y;
+			var height = e.size.height;
+			var total = offset + height;
+			var theEnd = e.contentSize.height;
+			var distance = theEnd - total;
+
+			// going down is the only time we dynamically load,
+			// going up we can safely ignore -- note here that
+			// the values will be negative so we do the opposite
+
+			// adjust the % of rows scrolled before we decide to start fetching
+			// var nearEnd = theEnd * .9;
+			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
+				footer.slideDown();
+				lastDirection = true;	
+			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
+				footer.slideUp();
+				lastDirection = false;
+			}
+			direction = distance - lastDistance;
+			lastDistance = distance;
+		}
+	});
+}
+

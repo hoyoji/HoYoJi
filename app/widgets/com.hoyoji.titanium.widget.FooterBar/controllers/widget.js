@@ -138,3 +138,36 @@ $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
 	$.trigger("longpress", e);
 });
+
+var slidingUp = false, slidingDown = false;
+exports.slideDown = function() {
+	if(!slidingDown){
+		slidingDown = true;
+		slidingUp = false;
+		var animation = Titanium.UI.createAnimation();
+		animation.bottom = -42;
+		animation.duration = 300;
+		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		animation.addEventListener("complete", function(){
+			slidingDown = false;
+		});
+		
+		$.$view.animate(animation);
+	}
+}
+
+exports.slideUp = function() {
+	if(!slidingUp){
+		slidingUp = true;
+		slidingDown = false;
+		var animation = Titanium.UI.createAnimation();
+		animation.bottom = 0;
+		animation.duration = 300;
+		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		animation.addEventListener("complete", function(){
+			slidingUp = false;
+		});
+		
+		$.$view.animate(animation);
+	}
+}

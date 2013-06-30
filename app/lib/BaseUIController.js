@@ -60,10 +60,12 @@
 			_.extend($, {
 				__dirtyCount : 0,
 				show : function() {
-					$.$view.show();
+					// $.$view.show();
+					$.$view.setVisible(true);
 				},
 				hide : function() {
-					$.$view.hide();
+					// $.$view.hide();
+					$.$view.setVisible(false);
 				},
 				animate : function(animation) {
 					$.$view.animate(animation);
@@ -125,7 +127,14 @@
 							function postlayoutCB(e) {
 								$.$view.removeEventListener("postlayout", postlayoutCB);
 								e.cancelBubble = true;
-								callback();
+								if ($.__currentWindow) {
+									callback();
+								} else {
+									$.$view.addEventListener("winopen", function(e) {
+										e.cancelBubble = true;
+										callback();
+									});
+								}
 							}
 							$.$view.addEventListener("postlayout", postlayoutCB);
 						} else {
