@@ -34,9 +34,9 @@ var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
 if (OS_ANDROID) {
-	if(Ti.Platform.Android.API_LEVEL < 11){
-		$.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
-	}
+	// if(Ti.Platform.Android.API_LEVEL < 11){
+		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
 	// console.info("------ table View  y --------- " + $.table.getRect().y + " " + $.table.getRect().height);
@@ -777,7 +777,12 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.setHeaderView = function(headerView) {
-	$.table.setHeaderView(headerView);
+	if(OS_IOS){
+		$.table.setHeaderView(headerView);
+	} else {
+		$.$view.add(headerView);
+		$.table.setTop(60);
+	}
 }
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
@@ -1053,10 +1058,12 @@ exports.getOrderBy = function() {
 exports.getSortOrder = function() {
 	return sortReverse ? "DESC" : "ASC";
 }
-// if(OS_IOS){
-$.table.footerView.addEventListener("touchstart", function(e) {
-	$.$view.fireEvent("touchstart");
-});
+if(OS_IOS){
+	$.table.footerView.addEventListener("touchstart", function(e) {
+		$.$view.fireEvent("touchstart");
+	});
+}
+
 // } else {
 // var lastTotalItemCount = -1;
 // $.table.addEventListener("scroll", function(e){
@@ -1071,16 +1078,16 @@ exports.autoHideFooter = function(footer) {
 	var lastDistance = 0, direction, lastDirection = false;
 	$.table.addEventListener("scroll", function(e) {
 		if (OS_ANDROID) {
-			//if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-			if(direction > 0 && lastDirection === false ){
+			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+			if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
 				footer.slideDown();
-				lastDirection = true;
-			} else if(direction < 0 && lastDirection === true) {
+				//lastDirection = true;
+			} else {
 				footer.slideUp();
-				lastDirection = false
+				//lastDirection = false
 			}
-			direction = e.firstVisibleItem - lastDistance;
-			lastDistance = e.firstVisibleItem;
+			// direction = e.firstVisibleItem - lastDistance;
+			// lastDistance = e.firstVisibleItem;
 		} else {
 			var offset = e.contentOffset.y;
 			var height = e.size.height;
