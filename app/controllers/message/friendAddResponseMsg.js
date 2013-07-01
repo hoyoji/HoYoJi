@@ -188,3 +188,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 		alert(e.__summary.msg);
 	});
 }
+
+$.date.UIInit($, $.getCurrentWindow());
+$.fromUser.UIInit($, $.getCurrentWindow());
+$.msgDetail.UIInit($, $.getCurrentWindow());

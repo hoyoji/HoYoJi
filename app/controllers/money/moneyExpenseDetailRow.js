@@ -20,3 +20,6 @@ $.$model.on("xchange:amount", function(){
 $.$model.on("xchange:name", function(){
 	$.name.refresh();
 });
+
+$.name.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());

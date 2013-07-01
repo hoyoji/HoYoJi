@@ -14,25 +14,25 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	if(selectedFriendModel){
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
-	}else{
+	} else {
 		return null;
 	}
 }
 
-$.convertUser2FriendModel = function(userModel){
-	if(userModel){
-		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
-		if(friend.id){
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
 			return friend;
 		}
 	}
 	return userModel;
 }
-
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -53,13 +53,13 @@ if (!$.$model) {
 	$.paybackedAmount.$view.setHeight(42);
 }
 
- function updateAccountBalance() {
- 	$.moneyAccount.updateField();
- }
+function updateAccountBalance() {
+	$.moneyAccount.updateField();
+}
 
 $.$model.on("xchange:moneyAccount.currentBalance", updateAccountBalance);
 $.onWindowCloseDo(function() {
-		$.$model.off("xchange:moneyAccount.currentBalance", updateAccountBalance);
+	$.$model.off("xchange:moneyAccount.currentBalance", updateAccountBalance);
 });
 
 if ($.saveableMode === "read") {
@@ -70,10 +70,10 @@ if ($.saveableMode === "read") {
 	$.amount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		if($.$model.isNew()){
-		setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
-		}else{
-			if($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")){
+		if ($.$model.isNew()) {
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+		} else {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -81,9 +81,9 @@ if ($.saveableMode === "read") {
 	});
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if($.saveableMode === "add"){
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 
@@ -167,15 +167,14 @@ if ($.saveableMode === "read") {
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
 				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-				if(Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") 
-					|| Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project") ){
+				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
 					Alloy.Models.User.save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")
 					}, {
 						patch : true,
 						wait : true
-					});	
+					});
 				}
 			}
 			saveEndCB(e);
@@ -190,3 +189,17 @@ if ($.saveableMode === "read") {
 		});
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.paybackDate.UIInit($, $.getCurrentWindow());
+$.paybackedAmount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow()); 

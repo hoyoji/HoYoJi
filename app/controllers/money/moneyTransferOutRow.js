@@ -9,3 +9,11 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.projectName.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.transferOut.UIInit($, $.getCurrentWindow());
+$.transferOutAmount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());

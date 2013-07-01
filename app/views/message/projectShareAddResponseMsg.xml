@@ -6,15 +6,18 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间"
+					id="date" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "date"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友"
+					id="fromUser" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="fromUser"
 				bindAttributeIsModel="userName"
 				/>
-				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84" width="Ti.UI.FILL"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84" width="Ti.UI.FILL"
+					id="msgDetail" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical">

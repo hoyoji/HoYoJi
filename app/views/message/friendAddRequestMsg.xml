@@ -6,11 +6,13 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友" 
+						id="toUser" autoInit="false"
                 		bindModel="$.$model"
                 		bindAttribute="toUser"
                 		bindAttributeIsModel="userName"
                 		/>
-				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求消息" height="84" width="Ti.UI.SIZE" hintText="请输入请求消息"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求消息" height="84" width="Ti.UI.SIZE" hintText="请输入请求消息"
+					id="requestContent" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 		</ScrollView>

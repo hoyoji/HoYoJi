@@ -10,7 +10,8 @@
 					addModeEditability="noneditable"
 					onSingletap = "openFriendSelector"
 				/> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="friend" labelText="好友" hintText="请选择好友"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  labelText="好友" hintText="请选择好友"
+					id="friend" autoInit="false"
 					bindModel="$.$model"
 					bindAttribute="toUser"
 					bindAttributeIsModel="getFriendDisplayName()"
@@ -19,7 +20,8 @@
 					bindModelSelectorConvert2Model="convertUser2FriendModel"
 					bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="84" width="Ti.UI.FILL"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="84" width="Ti.UI.FILL"
+				id="requestContent" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical" id="account">
