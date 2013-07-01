@@ -16,6 +16,7 @@ $.titleBar.bindXTable($.moneyExpenseCategoriesTable);
 
 var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter({parentExpenseCategory : null}, $);
 $.moneyExpenseCategoriesTable.addCollection(collection);
+$.moneyExpenseCategoriesTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
 	if (!selectedProject.canExpenseCategoryAddNew()) {

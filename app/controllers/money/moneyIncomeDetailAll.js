@@ -16,6 +16,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 var collection = selectedIncome.xGet("moneyIncomeDetails");
 $.moneyIncomeDetailsTable.addCollection(collection);
+$.moneyIncomeDetailsTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
 	if (!selectedIncome.canAddNew()) {

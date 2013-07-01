@@ -97,6 +97,7 @@ var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilte
 	return model.xGet("projectId") === selectedProject.xGet("id") && (model.xGet("state") === "Wait" ||  model.xGet("state") === "Accept");
 }, $);
 $.myProjectShareAuthorizationsTable.addCollection(collection);
+$.myProjectShareAuthorizationsTable.autoHideFooter($.footerBar);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addShareFriend"){

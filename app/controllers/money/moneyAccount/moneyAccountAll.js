@@ -34,6 +34,7 @@ if ($.$attrs.selectedFriendUser) {
 	collection = Alloy.Models.User.xGet("moneyAccounts");
 	$.moneyAccountsTable.addCollection(collection);
 }
+$.moneyAccountsTable.autoHideFooter($.footerBar);
 
 $.moneyAccountsTable.fetchNextPage();
 

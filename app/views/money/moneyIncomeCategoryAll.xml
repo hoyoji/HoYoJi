@@ -2,7 +2,7 @@
 	<View class="container" title="收入分类" >
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收入分类"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 			<Widget src="com.hoyoji.titanium.widget.XTableView" 
 				id="moneyIncomeCategoriesTable" autoInit="false"
 				sortByField="name" bottom="0" top="0"/>

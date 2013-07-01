@@ -18,6 +18,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")}, $);
 $.exchangesTable.addCollection(collection);
+$.exchangesTable.autoHideFooter($.footerBar);
 
 function onFooterbarTap(e){
 	if(e.source.id === "addExchange"){

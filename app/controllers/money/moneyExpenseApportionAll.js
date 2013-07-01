@@ -75,3 +75,5 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedE
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.addCollection(collection);
 }
+
+$.moneyExpenseApportionsTable.autoHideFooter($.footerBar);
