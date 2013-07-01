@@ -21,7 +21,7 @@ $.transactionsTable = Alloy.createController("money/transactionsView", {
 });
 $.transactionsTable.setParent($.__views.body);
 $.transactionsTable.UIInit();
-$.transactionsTable.autoHideFooter($.footerBar);
+$.transactionsTable.transactionsTable.autoHideFooter($.footerBar);
 
 var d = new Date(), sortReverse = true, timeFilter = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
@@ -111,7 +111,7 @@ function onFooterbarTap(e) {
 			});
 			$.transactionsSearchTable.setParent($.__views.body);
 			$.transactionsSearchTable.UIInit();
-			$.transactionsSearchTable.autoHideFooter($.footerBar);
+			$.transactionsSearchTable.transactionsSearchTable.autoHideFooter($.footerBar);
 		}
 		$.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {

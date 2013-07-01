@@ -1,12 +1,14 @@
 <Alloy>
 	<View id="buttonView" height="Ti.UI.FILL" width="Ti.UI.SIZE" visible="false">
 		<!-- backgroundImage="/images/com.hoyoji.titanium.widget.XButton/buttonBackground.png"> -->
-		<ImageView id="imageView" zIndex="1"/>
+		<ImageView id="imageView" width="28" height="28" zIndex="1"/>
 		<View id="bubbleCountContainer" width="32" height="32" zIndex="2">
 			<Label id="bubbleCount"/>
 		</View>
 		<!-- <Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL"
 			backgroundColor="transparent" backgroundImage="none" zIndex="3" color="transparent"/> -->
 		<Label id="title"/>
+		<!-- <View id="disabledMask" backgroundColor="#40FFFFFF" 
+			width="Ti.UI.FILL" height="Ti.UI.FILL" visible="false"></View> -->
 	</View>
 </Alloy>

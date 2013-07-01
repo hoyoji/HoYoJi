@@ -83,6 +83,6 @@ $.onWindowCloseDo(function(){
 	Alloy.Globals.DataStore.initStore();
 })
 
-$.userName.autoInit($, $.getCurrentWindow());
-$.password.autoInit($, $.getCurrentWindow());
-$.password2.autoInit($, $.getCurrentWindow());
+$.userName.UIInit($, $.getCurrentWindow());
+$.password.UIInit($, $.getCurrentWindow());
+$.password2.UIInit($, $.getCurrentWindow());

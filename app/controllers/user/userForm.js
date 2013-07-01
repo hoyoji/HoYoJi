@@ -4,4 +4,4 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	Alloy.Models.User.save({newFriendAuthentication : "none" }, {wait : true, patch : true, success : saveEndCB});
 }
 
-$.newFriendAuthentication.autoInit($, $.getCurrentWindow());
+$.newFriendAuthentication.UIInit($, $.getCurrentWindow());
