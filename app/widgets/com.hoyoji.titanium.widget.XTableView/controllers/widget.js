@@ -782,6 +782,15 @@ exports.setHeaderView = function(headerView) {
 	} else {
 		$.$view.add(headerView);
 		$.table.setTop(60);
+		// $.table.addEventListener("scroll", function(e){
+			// if(e.firstVisibleItem !== 0){
+				// // headerView.setVisible(false);
+				// // $.table.setTop(0);
+			// } else{
+				// // headerView.setVisible(true);
+				// // $.table.setTop(60);
+			// }
+		// });
 	}
 }
 
@@ -1079,12 +1088,12 @@ exports.autoHideFooter = function(footer) {
 	$.table.addEventListener("scroll", function(e) {
 		if (OS_ANDROID) {
 			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-			if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
+			if(lastDirection === false && e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
 				footer.slideDown();
-				//lastDirection = true;
-			} else {
+				lastDirection = true;
+			} else if(lastDirection === true && e.firstVisibleItem + e.visibleItemCount < e.totalItemCount  && e.visibleItemCount < e.totalItemCount){
 				footer.slideUp();
-				//lastDirection = false
+				lastDirection = false
 			}
 			// direction = e.firstVisibleItem - lastDistance;
 			// lastDistance = e.firstVisibleItem;

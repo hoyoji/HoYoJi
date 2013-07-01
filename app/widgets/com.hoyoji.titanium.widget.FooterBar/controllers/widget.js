@@ -21,7 +21,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 			layout : "horizontal",
 			horizontalWrap : false,
 			zIndex : 300,
-			backgroundColor : "#e9f3f0"
+			backgroundColor : "#CC2E8B57"
 			// backgroundImage : WPATH("/images/background.png")
 		});
 		$.$view.add($[subFooterBarId]);
