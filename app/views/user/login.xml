@@ -1,10 +1,12 @@
 <Alloy>
 	<View class="container" saveableContainer="true" layout="vertical" height="Ti.UI.SIZE" borderRadius="5" backgroundColor="#f5f5f5">
 		<Label id="headerTitle" text="  登录" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" color="white"  backgroundImage="/images/headerTitle_green.png"/>
-		<Widget id="userName" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII" noBottomImage="true"
+		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" keyboardType="Ti.UI.KEYBOARD_ASCII" noBottomImage="true"
+			id="userName" autoInit="false"
 		bindModel="$.$model" 
 		bindAttribute="userName"/>
-		<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true" noBottomImage="true"
+		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true" noBottomImage="true"
+			id="password"  autoInit="false"
 		bindModel="$.$model"
 		bindAttribute="password"/>
 		<View height="Ti.UI.SIZE" width="60%">

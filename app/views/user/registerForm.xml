@@ -6,13 +6,16 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名"  keyboardType="Ti.UI.KEYBOARD_ASCII"
+				id="userName" autoInit="false"
 			editModeEditability="noneditable"
 			bindModel="$.$model"
 			bindAttribute="userName"/>
-			<Widget id="password" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"
+				id="password" autoInit="false"
 			bindModel="$.$model"
 			bindAttribute="password"/>
-			<Widget id="password2" src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="确认密码" hintText="请再次输入密码" passwordMask="true"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="确认密码" hintText="请再次输入密码" passwordMask="true"
+				id="password2" autoInit="false"
 			bindModel="$.$model"
 			bindAttribute="password2"/>
 			<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"

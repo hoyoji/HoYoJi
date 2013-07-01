@@ -143,3 +143,6 @@ function openRegister(e) {
 	});
 }
 
+$.userName.UIInit($, $.getCurrentWindow());
+$.password.UIInit($, $.getCurrentWindow());
+

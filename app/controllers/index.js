@@ -23,5 +23,13 @@ if (Ti.UI.Android){
   $.$view.setWindowSoftInputMode(Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN | Ti.UI.Android.SOFT_INPUT_ADJUST_PAN);
 }
 
+$.login = Alloy.createController("user/login", {
+	autoInit : "false",
+	currentWindow : $,
+	parentController : $
+})
+$.login.setParent($.body);
+$.login.UIInit();
+
 $.UIInit($, $);
 $.index.open();
