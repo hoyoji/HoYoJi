@@ -155,7 +155,7 @@ if ($.saveableMode === "read") {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
-		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
 			$.apportion.$view.setHeight(0);
 		} else {
 			$.apportion.$view.setHeight(42);
@@ -236,7 +236,7 @@ if ($.saveableMode === "read") {
 			var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
 			$.moneyIncomeCategory.setValue(defaultIncomeCategory);
 			$.moneyIncomeCategory.field.fireEvent("change");
-			if ($.project.getValue().xGet("projectShareAuthorizations").length === 1) {
+			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
 				$.apportion.$view.setHeight(0);
 			} else {
 				$.apportion.$view.setHeight(42);
@@ -294,6 +294,26 @@ if ($.saveableMode === "read") {
 			}
 		});
 		//}
+		$.$model.xGet("moneyIncomeApportions").map(function(item) {
+			if (item.__xDeleted) {
+				item.xAddToDelete($);
+			} else/*if (item.hasChanged())*/
+			{
+				item.xAddToSave($);
+				var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
+						if ($.$model.isNew()) {
+							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome + item.xGet("amount"));
+						} else {
+							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - oldAmount + item.xGet("amount"));
+						}
+						projectShareAuthorization.xAddToSave($);
+					}
+				});
+			}
+		});
 
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
@@ -307,6 +327,13 @@ if ($.saveableMode === "read") {
 			}
 		}
 
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+					item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") + $.$model.xGet("amount"));
+				}
+			});
+		}
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {

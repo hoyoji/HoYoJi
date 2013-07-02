@@ -36,7 +36,7 @@ $.onWindowOpenDo(function() {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	}
-	oldAmount = $.$model.xGet("amount");
+	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
 		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
 			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
