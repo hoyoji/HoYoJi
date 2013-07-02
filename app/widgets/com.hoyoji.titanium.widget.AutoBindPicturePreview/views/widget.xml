@@ -1,5 +1,5 @@
 <Alloy>
 	<View width="56" height="56">
-	<ImageView id="picture"/>
+	<!-- <ImageView id="picture"/> -->
 	</View>
 </Alloy>

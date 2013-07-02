@@ -35,7 +35,7 @@ var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, so
 
 if (OS_ANDROID) {
 	// if(Ti.Platform.Android.API_LEVEL < 11){
-		$.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
 	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
