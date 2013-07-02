@@ -216,11 +216,13 @@ exports.definition = {
 			},
 			getApportionedTotal : function(){
 				var getApportionedTotal = 0;
-				if(this.xGet("apportionedTotalIncome") - this.xGet("apportionedTotalExpense") <= 0){
-					getApportionedTotal = this.xGet("apportionedTotalExpense") - this.xGet("apportionedTotalIncome");
+				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
+				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
+				if(apportionedTotalIncome - apportionedTotalExpense <= 0){
+					getApportionedTotal = apportionedTotalExpense - apportionedTotalIncome;
 					return "应该支出 : "+ getApportionedTotal;
 				}else{
-					getApportionedTotal = this.xGet("apportionedTotalIncome") - this.xGet("apportionedTotalExpense");
+					getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
 					return "应该收入 : "+ getApportionedTotal;
 				}
 			},

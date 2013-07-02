@@ -5,7 +5,7 @@ $.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm", {
 	parentController : $.getParentController(),
 	autoInit : "false",
 	top : 0,
-	bottom : 84
+	bottom : 50
 });
 $.moneyExpenseForm.setParent($.$view);
 $.moneyExpenseForm.UIInit();
@@ -54,7 +54,7 @@ function onFooterbarTap(e) {
 			parentController : $.getParentController(),
 			autoInit : "false",
 			top : 0,
-			bottom : 84
+			bottom : 50
 		});
 		// $[e.source.id].$view.setTop(0);
 		// $[e.source.id].$view.setBottom(84);
