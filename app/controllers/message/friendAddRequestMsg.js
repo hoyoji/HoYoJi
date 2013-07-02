@@ -46,5 +46,5 @@ $.onWindowOpenDo(function(){
 });
 
 
-$.fromUser.UIInit($, $.getCurrentWindow());
+$.toUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
