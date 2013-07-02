@@ -30,16 +30,16 @@ $.keyboard.addEventListener("touchstart", cancelBubbleTouchStart);
 
 exports.open = function(textField, saveCB, bottom) {
 	confirmCB = saveCB;
-	if(confirmCB){
-		$.submitButton.setTitle("保存");
-	} else {
-		$.submitButton.setTitle("确认");
-	}
+	// if(confirmCB){
+		// $.submitButton.setTitle("保存");
+	// } else {
+		// $.submitButton.setTitle("确认");
+	// }
 	openBottom = bottom ? bottom : 0;
 	
 	if (activeTextField !== textField){	
 		activeTextField = textField;
-			$.display.setText(activeTextField.getValue());
+			// $.display.setText($.display.getText());
 			var animation = Titanium.UI.createAnimation();
 			animation.bottom = 0;
 			animation.duration = 300;
@@ -61,24 +61,27 @@ var latestClickOp ="";
 function numPress(e) {
 	
 	if (flagNewNum) {
-		activeTextField.setValue(e.source.getTitle());
+		// activeTextField.setValue(e.source.getTitle());
+		$.display.setText(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		var readout = activeTextField.getValue();
+		var readout = $.display.getText();
 		if(!readout){
 			readout = 0;
 		}else{
 			readout = readout + "";
 		}
 		if (readout + oldValue === "0" || readout + oldValue === "") {
-			activeTextField.setValue(e.source.getTitle());
+			// activeTextField.setValue(e.source.getTitle());
+			$.display.setText(e.source.getTitle());
 		} else {
 			var thisNum = (readout || 0) + oldValue + e.source.getTitle();
 			oldValue = ""
-			activeTextField.setValue(thisNum);
+			// activeTextField.setValue(thisNum);
+			$.display.setText(thisNum);
 		}
 	}
-	activeTextField.field.fireEvent("change");
+	// activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
@@ -89,13 +92,13 @@ function doubleClickNumPress(e){
 
 //+-*/操作
 function operation(e) {
-	var readout = activeTextField.getValue();
+	var readout = $.display.getText();
 	if(!readout){
 		readout = "0";
 	}else{
 		readout = readout + "";
 	}
-	// if(activeTextField.getValue()===""){
+	// if($.display.getText()===""){
 		// readout = 0;
 	// }
 	var pendOp = pendingOp;
@@ -123,9 +126,10 @@ function operation(e) {
 			accum = parseFloat(readout);
 		}
 		// accum = parseFloat(accum).toFixed(2) / 1;
-		activeTextField.setValue(accum + "");
+		// activeTextField.setValue(accum + "");
+		$.display.setText(accum + "");
 		
-		activeTextField.field.fireEvent("change");
+		// activeTextField.field.fireEvent("change");
 		pendingOp = e.source.getTitle();
 	}
 	if(latestClickOp === ""){
@@ -139,7 +143,7 @@ function operation(e) {
 
 //小数点
 function decimal() {
-	var curReadOut = activeTextField.getValue() || "0";
+	var curReadOut = $.display.getText() || "0";
 	if(!curReadOut){
 		curReadOut = "0";
 	}else{
@@ -156,14 +160,15 @@ function decimal() {
 			oldValue = "";
 		}
 	}
-	activeTextField.setValue(curReadOut);
-	activeTextField.field.fireEvent("change");
+	// activeTextField.setValue(curReadOut);
+	$.display.setText(curReadOut);
+	// activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
 //退格键
 function backspace() {
-	var readout = activeTextField.getValue();
+	var readout = $.display.getText();
 	if(!readout){
 		readout = "0";
 	}else{
@@ -172,15 +177,18 @@ function backspace() {
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
-			activeTextField.setValue("");
+			// activeTextField.setValue("");
+			$.display.setText("");
 		} else {
 			var rout = readout.substr(0, len - 1);
-			activeTextField.setValue(rout);
+			// activeTextField.setValue(rout);
+			$.display.setText(rout);
 		}
 	} else {
-		activeTextField.setValue("");
+		// activeTextField.setValue("");
+		$.display.setText("");
 	}
-	activeTextField.field.fireEvent("change");
+	// activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
@@ -190,12 +198,13 @@ function doubleClickBackspace(e){
 }
 
 //清除
-function clear(e) {
+function clear() {
 	accum = 0;
 	pendingOp = "";
-	activeTextField.setValue("");
+	// activeTextField.setValue("");
+	$.display.setText("");
 	flagNewNum = true;
-	activeTextField.field.fireEvent("change");
+	// activeTextField.field.fireEvent("change");
 	setOPColor();
 }
 
@@ -208,16 +217,22 @@ function setOPColor(){
 //提交
 function submitValue() {
 	equalToValue();
-	exports.close();
+	// exports.close();
 	if(confirmCB){
 		confirmCB();
 	}
 }
 
+//取消
+function cancel() {
+	exports.close();
+	clear();
+}
+
 //提交触发=操作
 function equalToValue() {
 	if(pendingOp !== "=" && pendingOp !== ""){
-		var readout = activeTextField.getValue();
+		var readout = $.display.getText();
 		if(!readout){
 			readout = "0";
 		}else{
@@ -248,9 +263,14 @@ function equalToValue() {
 				accum = parseFloat(readout);
 			}
 			accum = parseFloat(accum).toFixed(2) / 1;
-			activeTextField.setValue(accum + "");
-			activeTextField.field.fireEvent("change");
+			$.display.setText(accum + "");
+			// activeTextField.setValue($.display.getText());
+			// activeTextField.field.fireEvent("change");
 			pendingOp = "=";
 		}
 	}
+	activeTextField.setValue($.display.getText());
+	activeTextField.field.fireEvent("change");
+	exports.close();
+	clear();
 }
