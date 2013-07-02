@@ -712,5 +712,5 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 }
 
 $.date.UIInit($, $.getCurrentWindow());
-$.from.UIInit($, $.getCurrentWindow());
+$.fromUser.UIInit($, $.getCurrentWindow());
 $.msgDetail.UIInit($, $.getCurrentWindow());
