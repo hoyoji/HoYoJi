@@ -18,7 +18,8 @@ exports.definition = {
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER",
-			useDetailsTotal : "INTEGER NOT NULL"
+			useDetailsTotal : "INTEGER NOT NULL",
+			depositeId : "TEXT"
 		},
 		defaults : {
 			useDetailsTotal : false

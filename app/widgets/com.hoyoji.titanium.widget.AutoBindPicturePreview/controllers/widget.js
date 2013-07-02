@@ -58,14 +58,14 @@ $.onWindowOpenDo(function() {
            	}
             // var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
             console.info("=================================================================== updatePIcture :" + f);
-			$.picture.setImage(f);
+			// $.picture.setImage(f);
 		} else if($.$attrs.defaultImage) {
         console.info("=================================================================== updatePIcture 2 :" + value);
-			$.picture.setImage($.$attrs.defaultImage+".png");
+			// $.picture.setImage($.$attrs.defaultImage+".png");
 		} else {
 			
         console.info("=================================================================== updatePIcture 3 :" + value);
-			$.picture.setImage(WPATH("/images/noPicture.png"));
+			// $.picture.setImage(WPATH("/images/noPicture.png"));
         console.info("=================================================================== updatePIcture 4 :" + value);
 		}
 	}

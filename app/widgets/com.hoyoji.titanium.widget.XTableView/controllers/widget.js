@@ -35,7 +35,7 @@ var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, so
 
 if (OS_ANDROID) {
 	// if(Ti.Platform.Android.API_LEVEL < 11){
-		$.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
 	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
@@ -961,29 +961,28 @@ function createSection(sectionTitle, sectionIndex) {
 	// sectionFooter.add(fView1);
 	//
 
-	// var sectionHeader = Ti.UI.createView({
-		// height : 30,
-		// backgroundColor : "#e9f3f0"
-	// });
-// 
-	// var titleLabel = Ti.UI.createLabel({
-		// text : sectionTitle,
-		// color : "#2E8B57",
-		// left : 10
-	// });
-// 
-	// sectionHeader.add(titleLabel);
-// 
-	// section = Ti.UI.createTableViewSection({
-		// headerView : sectionHeader
-		// // footerView : sectionFooter
-	// });
-	
+	var sectionHeader = Ti.UI.createView({
+		height : 30,
+		backgroundColor : "#e9f3f0"
+	});
+
+	var titleLabel = Ti.UI.createLabel({
+		text : sectionTitle,
+		color : "#2E8B57",
+		left : 10
+	});
+
+	sectionHeader.add(titleLabel);
+
+	section = Ti.UI.createTableViewSection({
+		headerView : sectionHeader
+		// footerView : sectionFooter
+	});
 	//
 	// } else {
-	section = Ti.UI.createTableViewSection({
-		headerTitle : sectionTitle
-	});
+	// section = Ti.UI.createTableViewSection({
+	// headerTitle : sectionTitle
+	// });
 	// }
 
 	return section;
