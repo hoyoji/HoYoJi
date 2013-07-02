@@ -26,7 +26,7 @@ function onFooterbarTap(e) {
 			        top: "0",
 					autoInit : "false",
 					parentController : $,
-					currentWindow : $.__currentWindow()
+					currentWindow : $.__currentWindow
 			    });
 		    $.sendedMessagesTable.setParent($.body);
 			$.sendedMessagesTable.UIInit();
