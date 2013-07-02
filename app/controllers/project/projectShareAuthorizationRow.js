@@ -112,12 +112,12 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 }
 function setWaitForAccept() {
 	if ($.$model.xGet("state") === "Wait") {
-		$.checkAccept.setVisible("true");
+		$.checkAccept.setVisible(true);
 	}
 }
 $.onWindowOpenDo(function() {
 	setWaitForAccept();
-},true);
+});
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.sharePercentage.UIInit($, $.getCurrentWindow());

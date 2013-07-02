@@ -2,24 +2,25 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedDepositeMsg = $.$attrs.selectedDepositeMsg;
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	if(selectedFriendModel){
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
-	}else{
+	} else {
 		return null;
 	}
 }
 
-$.convertUser2FriendModel = function(userModel){
-	if(userModel){
-		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
-		if(friend.id){
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
 			return friend;
 		}
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -64,9 +65,9 @@ if ($.saveableMode === "read") {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if($.saveableMode === "add"){
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 
@@ -136,9 +137,9 @@ if ($.saveableMode === "read") {
 			projectId : $.$model.xGet("project").xGet("id"),
 			friendUserId : Alloy.Models.User.id
 		});
-		projectShareAuthorization.xSet("actualTotalIncome",projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
+		projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
 		projectShareAuthorization.xAddToSave($);
-		
+
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
 		} else {//账户改变时
@@ -178,7 +179,7 @@ if ($.saveableMode === "read") {
 					});
 				}
 			}
-			if($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id){
+			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 				var date = (new Date()).toISOString();
 				Alloy.Globals.Server.sendMsg({
 					id : guid(),
@@ -196,11 +197,10 @@ if ($.saveableMode === "read") {
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-			}else{
+			} else {
 				saveEndCB(e);
 			}
-			
-			
+
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
@@ -208,3 +208,15 @@ if ($.saveableMode === "read") {
 		});
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow()); 

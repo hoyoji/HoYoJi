@@ -75,3 +75,4 @@ if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedInc
 	collection = selectedIncome.xGet("moneyIncomeApportions");
 	$.moneyIncomeApportionsTable.addCollection(collection);
 }
+$.moneyIncomeApportionsTable.autoHideFooter($.footerBar);

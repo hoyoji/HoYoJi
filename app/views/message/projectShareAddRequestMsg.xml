@@ -6,15 +6,18 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="发送时间"
+					id="date" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "date"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友"
+					id="toUser" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="toUser"
 				bindAttributeIsModel="userName"
 				/>
-				<Widget id="msgDetail" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84" width="Ti.UI.FILL"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84" width="Ti.UI.FILL"
+					id="msgDetail" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical">
@@ -24,6 +27,7 @@
 							<Label left="0" width="20%">共享所有子项目</Label>
 							<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="shareAllSubProjects" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -42,24 +46,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">支出</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -69,24 +77,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">收入</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -123,24 +135,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">借入</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyBorrowOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyBorrowOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyBorrowAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyBorrowAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyBorrowEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyBorrowEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyBorrowDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -150,24 +166,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">借出</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyLendOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyLendOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyLendAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyLendAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyLendEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyLendEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyLendDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -177,24 +197,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">还款</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyReturnOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyReturnOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyReturnAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyReturnAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyReturnEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyReturnEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyReturnDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -204,24 +228,28 @@
 							<View height="42" layout="horizontal">
 								<Label left="0" width="20%">收款</Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyPaybackOwnerDataOnly" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyPaybackOwnerDataOnly"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyPaybackAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyPaybackAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyPaybackEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyPaybackEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyPaybackDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -232,18 +260,21 @@
 								<Label left="0" width="20%">支出分类</Label>
 								<Label width="20%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseCategoryAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseCategoryEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyExpenseCategoryEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyExpenseCategoryDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
@@ -254,18 +285,21 @@
 								<Label left="0" width="20%">收入分类</Label>
 								<Label width="20%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeCategoryAddNew"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeCategoryEdit" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="projectShareMoneyIncomeCategoryEdit"/>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+								id="projectShareMoneyIncomeCategoryDelete" autoInit="false"
 								hightLight="false"
 								items=" ,√"
 								values="0,1"

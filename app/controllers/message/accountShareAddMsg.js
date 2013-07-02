@@ -3,6 +3,9 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 var accountShareData = JSON.parse($.$model.xGet("messageData"));
 var datetime = new Date(accountShareData.account.date);
 
+$.toUser.UIInit($, $.getCurrentWindow());
+$.requestContent.UIInit($, $.getCurrentWindow());
+
 $.onWindowOpenDo(function() {
 	if(accountShareData.accountType === "MoneyExpense"){
 		//创建支出

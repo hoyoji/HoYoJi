@@ -82,3 +82,7 @@ $.onSave = function(saveEndCB, saveErrorCB){
 $.onWindowCloseDo(function(){
 	Alloy.Globals.DataStore.initStore();
 })
+
+$.userName.UIInit($, $.getCurrentWindow());
+$.password.UIInit($, $.getCurrentWindow());
+$.password2.UIInit($, $.getCurrentWindow());

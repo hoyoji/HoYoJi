@@ -93,34 +93,37 @@ exports.getTitle = function(){
 }
 
 exports.dirtyCB = function() {
-	if($.saveableMode === "edit"){
+	// if($.saveableMode === "edit"){
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
+		// $.menuButton.setImage(WPATH("/images/saveButton"));
 		$.menuButton.setEnabled(true);
 		// Alloy.Globals.alloyAnimation.flash($.menuButton);
-	} else if($.saveableMode === "add"){
+	// } else if($.saveableMode === "add"){
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
-		$.menuButton.setEnabled(true);
+		// $.menuButton.setImage(WPATH("/images/saveButton"));
+		// $.menuButton.setEnabled(true);
 		// Alloy.Globals.alloyAnimation.flash($.menuButton);
-	}
+	// }
 }
 
 exports.cleanCB = function() {
-	if($.saveableMode === "edit"){
-		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
-		$.menuButton.setEnabled(false);
-	} else if($.saveableMode === "add"){
-		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
-		$.menuButton.setEnabled(false);
-	}
+	$.menuButton.setEnabled(false);
+	// if($.saveableMode === "edit"){
+		// //$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		// // $.menuButton.setImage(WPATH("/images/saveButton"));
+		// $.menuButton.setEnabled(false);
+	// } else if($.saveableMode === "add"){
+		// //$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		// // $.menuButton.setImage(WPATH("/images/saveButton"));
+		// $.menuButton.setEnabled(false);
+	// }
 }
 
 exports.saveStartCB = function() {
 	// $.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
-		$.menuButton.setImage(WPATH("/images/savingButton"));
+		// $.menuButton.setImage(WPATH("/images/savingButton"));
+	
+	$.menuButton.showActivityIndicator();
 	$.menuButton.setEnabled(false);
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(false);
@@ -132,6 +135,7 @@ exports.saveEndCB = function() {
 	showMsg("保存成功");
 	console.info("Titlebar saveEndCB");
 	
+	$.menuButton.hideActivityIndicator();
 	$.menuButton.setEnabled(false);
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(true);
@@ -141,16 +145,18 @@ exports.saveEndCB = function() {
 exports.saveErrorCB = function(msg) {
 	showMsg(msg || "出错啦...");
 	console.info("Titlebar saveErrorCB");
-	if($.saveableMode === "read"){
-		//$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
-		$.menuButton.setImage(WPATH("/images/menuButton"));
-	} else if($.saveableMode === "edit"){
-		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
-	} else if($.saveableMode === "add"){
-		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
-		$.menuButton.setImage(WPATH("/images/saveButton"));
-	}
+	// if($.saveableMode === "read"){
+		// //$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
+		// $.menuButton.setImage(WPATH("/images/menuButton"));
+	// } else if($.saveableMode === "edit"){
+		// //$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
+		// $.menuButton.setImage(WPATH("/images/saveButton"));
+	// } else if($.saveableMode === "add"){
+		// //$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
+		// $.menuButton.setImage(WPATH("/images/saveButton"));
+	// }
+// 	
+	$.menuButton.hideActivityIndicator();
 	$.menuButton.setEnabled(true);
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(true);
@@ -193,7 +199,6 @@ var showMsg = function(msg){
 					animation.addEventListener('complete', function() {
 						$.title.show();
 					});
-					
 					$.msg.animate(animation);
 				}, 1000);
 			});

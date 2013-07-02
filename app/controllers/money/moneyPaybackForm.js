@@ -2,24 +2,25 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedLend = $.$attrs.selectedLend;
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel){
-	if(selectedFriendModel){
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
-	}else{
+	} else {
 		return null;
 	}
 }
 
-$.convertUser2FriendModel = function(userModel){
-	if(userModel){
-		var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : userModel.id});
-		if(friend.id){
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
 			return friend;
 		}
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -72,9 +73,9 @@ if ($.saveableMode === "read") {
 	});
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if($.saveableMode === "add"){
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 	var oldInterest = $.$model.xGet("interest") || 0;
@@ -232,3 +233,16 @@ if ($.saveableMode === "read") {
 		});
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
+$.friendAccount.UIInit($, $.getCurrentWindow());
+$.interest.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());

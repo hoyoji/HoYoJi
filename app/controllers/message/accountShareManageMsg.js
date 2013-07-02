@@ -20,6 +20,10 @@ var onFooterbarTap = function(e) {
 	}
 }
 
+
+$.fromUser.UIInit($, $.getCurrentWindow());
+$.requestContent.UIInit($, $.getCurrentWindow());
+
 $.onWindowOpenDo(function() {
 	if (accountShareData.accountType === "MoneyExpense") {
 		//创建支出

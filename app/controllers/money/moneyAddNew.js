@@ -3,7 +3,9 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 $.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm", {
 	currentWindow : $.getCurrentWindow(),
 	parentController : $.getParentController(),
-	autoInit : "false"
+	autoInit : "false",
+	top : 0,
+	bottom : 84
 });
 $.moneyExpenseForm.setParent($.$view);
 $.moneyExpenseForm.UIInit();

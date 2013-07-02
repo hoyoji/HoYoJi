@@ -26,7 +26,7 @@ function onFooterbarTap(e) {
 			        top: "0",
 					autoInit : "false",
 					parentController : $,
-					currentWindow : $.__currentWindow()
+					currentWindow : $.__currentWindow
 			    });
 		    $.sendedMessagesTable.setParent($.body);
 			$.sendedMessagesTable.UIInit();
@@ -40,6 +40,7 @@ function onFooterbarTap(e) {
 				fromUser : Alloy.Models.User
 			}, $);
 			$.sendedMessagesTable.addCollection(sendedMsgCollection);
+			$.sendedMessagesTable.autoHideFooter($.footerBar);
 		}
 
 		$.titleBar.setTitle(e.source.getTitle());
@@ -98,3 +99,5 @@ function onFooterbarTap(e) {
 // });
 
 $.receivedMessagesTable.addCollection(receivedMessagesCollection);
+$.receivedMessagesTable.autoHideFooter($.footerBar);
+

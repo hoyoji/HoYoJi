@@ -75,3 +75,7 @@ function updateAmount() {
 	}
 }
 
+$.name.UIInit($, $.getCurrentWindow());
+$.apportionType.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+

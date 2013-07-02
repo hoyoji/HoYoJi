@@ -710,3 +710,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	});
 
 }
+
+$.date.UIInit($, $.getCurrentWindow());
+$.fromUser.UIInit($, $.getCurrentWindow());
+$.msgDetail.UIInit($, $.getCurrentWindow());

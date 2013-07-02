@@ -20,3 +20,5 @@ function onFooterbarTap(e){
 		Alloy.Globals.openWindow("friend/friendCategoryForm",{$model : "FriendCategory"});
 	}
 }
+
+$.friendCategoriesTable.autoHideFooter($.footerBar);

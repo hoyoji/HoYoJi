@@ -33,6 +33,11 @@ exports.addEventListener = function(eventName, callback) {
 exports.setEnabled = function(b) {
 	$.$view.setEnabled(b);
 	enabled = b;
+	if(b){
+		$.$view.setOpacity(1);
+	} else {
+		$.$view.setOpacity(0.3);
+	}
 }
 
 exports.setBubbleCount = function(count) {
@@ -48,10 +53,10 @@ exports.setBubbleCount = function(count) {
 exports.setImage = function(imagePath) {
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
-	imgPath = imagePath + ".png";
-	if (OS_IOS) {
+	// imgPath = imagePath + ".png";
+	// if (OS_IOS) {
 		imgPath = imagePath + "@2x.png";
-	}
+	// }
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
 }
@@ -91,28 +96,28 @@ if($.$attrs.visible !== "false"){
 	exports.setVisible(true);
 }
 
-var backgroundImage;
-var backgroundImageShadow;
-if (OS_IOS) {
+// var backgroundImage;
+// var backgroundImageShadow;
+// if (OS_IOS) {
 	// backgroundImage = WPATH("/images/buttonBackground@2x.png");
-	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
-} else {
+	// backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
+// } else {
 	// backgroundImage = WPATH("/images/buttonBackground.png");
-	backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
-}
+	// backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
+// }
 
 $.$view.addEventListener("touchstart", function(e) {
 	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
-		$.$view.setBackgroundImage(backgroundImageShadow);
+		$.$view.setBackgroundColor("green");
 	}
 });
 $.$view.addEventListener("touchend", function(e) {
 	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
-		$.$view.setBackgroundImage("none");
+		$.$view.setBackgroundColor("transparent");
 	}
 });
 
@@ -142,7 +147,7 @@ function redirectEvent(view) {
 
 $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
-	$.$view.setBackgroundImage("none");
+	$.$view.setBackgroundColor("transparent");
 });
 //
 // $.$view.addEventListener("touchcancel", function(e){
@@ -150,7 +155,7 @@ $.$view.addEventListener("longpress", function(e) {
 // });
 
 $.$view.addEventListener("touchmove", function(e) {
-	$.$view.setBackgroundImage("none");
+	$.$view.setBackgroundColor("transparent");
 });
 
 redirectEvent($.imageView);
