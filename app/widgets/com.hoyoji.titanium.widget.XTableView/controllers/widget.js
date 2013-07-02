@@ -1091,9 +1091,11 @@ exports.autoHideFooter = function(footer) {
 			if(lastDirection === false && e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
 				footer.slideDown();
 				lastDirection = true;
-			} else if(lastDirection === true && e.firstVisibleItem + e.visibleItemCount < e.totalItemCount  && e.visibleItemCount < e.totalItemCount){
+			} else if((lastDirection === true && e.firstVisibleItem + e.visibleItemCount < e.totalItemCount)){
 				footer.slideUp();
 				lastDirection = false
+			} else if(e.visibleItemCount < e.totalItemCount) {
+				footer.slideUp();
 			}
 			// direction = e.firstVisibleItem - lastDistance;
 			// lastDistance = e.firstVisibleItem;
