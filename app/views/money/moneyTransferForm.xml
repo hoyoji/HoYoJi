@@ -6,41 +6,50 @@
 		<View id="body" top="40" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
+					id="picture" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="picture"
 				bindAttributeIsModel="id"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间" id="date"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间"
+					id="date" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="date"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" id="amount" labelText="转出金额" hintText="请输入金额"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="转出金额" hintText="请输入金额"
+					id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferOutAmount"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferOut" labelText="转出账户" hintText="请选择转出账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="转出账户" hintText="请选择转出账户"
+					id="transferOut" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferOut"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="transferIn" labelText="转入账户" hintText="请选择转入账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="转入账户" hintText="请选择转入账户"
+					id="transferIn" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferIn"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="exchangeRate" labelText="汇率" hintText="请输入汇率"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率"
+					id="exchangeRate" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" id="transferInAmount" labelText="转入金额"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="转入金额"
+					id="transferInAmount" autoInit="false"
 				editModeEditability="noneditable" addModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="transferInAmount"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
+					id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
+					id="remark" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
 			</ScrollView>

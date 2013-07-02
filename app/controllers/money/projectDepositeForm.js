@@ -23,15 +23,14 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
-
-function openFriendSelector(){
+function openFriendSelector() {
 	$.friendUser.field.blur();
 	var attributes = {
 		selectedProject : $.$model.xGet("project"),
 		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 		selectorCallback : function(model) {
 			$.projectShareAuthorization = model;
-			$.$model.xSet("friendUser",$.projectShareAuthorization.xGet("friendUser"));
+			$.$model.xSet("friendUser", $.projectShareAuthorization.xGet("friendUser"));
 			$.friendUser.setValue($.projectShareAuthorization.getFriendDisplayName());
 		}
 	};
@@ -60,7 +59,7 @@ if (!$.$model) {
 		expenseType : "Deposite"
 	});
 	$.setSaveableMode("add");
-}else{
+} else {
 	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
 }
 
@@ -107,10 +106,10 @@ if ($.saveableMode === "read") {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	
-	if($.saveableMode === "add"){
+
+	if ($.saveableMode === "add") {
 		oldAmount = 0
-	}else{
+	} else {
 		oldAmount = $.$model.xGet("amount")
 	}
 
@@ -158,33 +157,33 @@ if ($.saveableMode === "read") {
 	});
 
 	// $.friend.field.addEventListener("change", function() {
-		// if ($.friend.getValue()) {
-			// $.friendAccount.$view.setHeight(42);
-			// $.friendAccount.setValue("");
-			// $.friendAccount.field.fireEvent("change");
-		// } else {
-			// $.friendAccount.$view.setHeight(0);
-			// $.friendAccount.setValue("");
-		// }
+	// if ($.friend.getValue()) {
+	// $.friendAccount.$view.setHeight(42);
+	// $.friendAccount.setValue("");
+	// $.friendAccount.field.fireEvent("change");
+	// } else {
+	// $.friendAccount.$view.setHeight(0);
+	// $.friendAccount.setValue("");
+	// }
 	// });
 	// if (!$.friend.getValue()) {
-		// $.friendAccount.$view.setHeight(0);
+	// $.friendAccount.$view.setHeight(0);
 	// }
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
-		if($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")){
+		if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
 			var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 			var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 			var newAmount = $.$model.xGet("amount");
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
-			
+
 			var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendUserId : Alloy.Models.User.id
 			});
-			projectShareAuthorization.xSet("actualTotalExpense",projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
+			projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
 			projectShareAuthorization.xAddToSave($);
-			
+
 			if (oldMoneyAccount === newMoneyAccount) {
 				newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 			} else {
@@ -200,7 +199,7 @@ if ($.saveableMode === "read") {
 					item.xAddToSave($);
 				}
 			});
-	
+
 			if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 				if ($.$model.xGet("exchangeRate")) {
 					var exchange = Alloy.createModel("Exchange", {
@@ -212,7 +211,7 @@ if ($.saveableMode === "read") {
 					exchange.xAddToSave($);
 				}
 			}
-	
+
 			var modelIsNew = $.$model.isNew();
 			$.saveModel(function(e) {
 				if (modelIsNew) {
@@ -229,8 +228,8 @@ if ($.saveableMode === "read") {
 						});
 					}
 				}
-				
-				if($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id){
+
+				if ($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id) {
 					saveEndCB(e);
 					var depositeIncome = Alloy.createModel("MoneyIncome", {
 						date : $.$model.xGet("date"),
@@ -250,7 +249,7 @@ if ($.saveableMode === "read") {
 					});
 					depositeIncome.xAddToSave(depositeIncomeController.content);
 					depositeIncomeController.content.titleBar.dirtyCB();
-				}else{
+				} else {
 					var date = (new Date()).toISOString();
 					var account = {};
 					for (var attr in $.$model.config.columns) {
@@ -267,10 +266,10 @@ if ($.saveableMode === "read") {
 						"detail" : $.$model.xGet("detail"),
 						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 						messageData : JSON.stringify({
-										  accountType : "MoneyExpense",
-										  account : account,
-										  depositeProject : $.$model.xGet("project")
-									  })
+							accountType : "MoneyExpense",
+							account : account,
+							depositeProject : $.$model.xGet("project")
+						})
 					}, function() {
 						saveEndCB(e);
 						alert("充值成功，请等待回复");
@@ -278,18 +277,27 @@ if ($.saveableMode === "read") {
 						alert(e.__summary.msg);
 					});
 				}
-				
-				
-				
-				
+
 			}, function(e) {
 				newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 				oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 				saveErrorCB(e);
 			});
-		}else{
+		} else {
 			saveErrorCB("请选择收款人！");
 		}
-		
+
 	}
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.friendUser0.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
+$.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+

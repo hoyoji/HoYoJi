@@ -5,7 +5,9 @@ $.makeContextMenu = function() {
 		headerTitle : "借出操作"
 	});
 	menuSection.add($.createContextMenuItem("收款明细", function() {
-		Alloy.Globals.openWindow("money/moneyPaybackAll", {selectedLend : $.$model});
+		Alloy.Globals.openWindow("money/moneyPaybackAll", {
+			selectedLend : $.$model
+		});
 	}));
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
 		Alloy.Globals.openWindow("message/accountShare", {
@@ -15,6 +17,14 @@ $.makeContextMenu = function() {
 	}));
 	menuSection.add($.createContextMenuItem("删除借出", function() {
 		$.deleteModel();
-	},!$.$model.canDelete()));
+	}, !$.$model.canDelete()));
 	return menuSection;
 }
+
+$.picture.UIInit($, $.getCurrentWindow());
+$.projectName.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.localAmountLabel.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
+$.accountCurrency.UIInit($, $.getCurrentWindow());

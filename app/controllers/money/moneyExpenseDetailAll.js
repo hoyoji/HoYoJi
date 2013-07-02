@@ -18,6 +18,7 @@ $.footerBar.addExpenseDetail.setEnabled(selectedExpense.canAddNew());
 
 var collection = selectedExpense.xGet("moneyExpenseDetails");
 $.moneyExpenseDetailsTable.addCollection(collection);
+$.moneyExpenseDetailsTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
 	if (!selectedExpense.canAddNew()) {

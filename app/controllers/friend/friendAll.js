@@ -23,3 +23,5 @@ function onFooterbarTap(e){
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}
 }
+
+$.friendCategoriesTable.autoHideFooter($.footerBar);

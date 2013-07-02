@@ -20,7 +20,7 @@ $.currenciesTable.UIInit($,$.getCurrentWindow());
 var collection = Alloy.createCollection("Currency");
 collection.xSetFilter({}, $);
 $.currenciesTable.addCollection(collection);
-
+// $.currenciesTable.autoHideFooter($.footerBar);
 
 $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
 	collection.xSearchInDb({}, {

@@ -22,6 +22,7 @@ var interests = selectedLend.xGet("moneyPaybacks").xCreateFilter(function(model)
 }, $);
 $.moneyPaybacksTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
 $.moneyPaybacksTable.addCollection(interests, "money/moneyPaybackInterestRow");
+$.moneyPaybacksTable.autoHideFooter($.footerBar);
 
 // $.onWindowOpenDo(function() {
 	// if (!selectedLend.canMoneyPaybackAddNew()) {

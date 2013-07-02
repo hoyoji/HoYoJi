@@ -152,3 +152,8 @@ function importToLocalOperate() {
 		accountShareMsgController.content.titleBar.dirtyCB();
 	}
 }
+
+
+$.fromUser.UIInit($, $.getCurrentWindow());
+$.requestContent.UIInit($, $.getCurrentWindow());
+

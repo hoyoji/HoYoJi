@@ -85,7 +85,7 @@
 								fontWeight : 'normal'
 							},
 							style : style,
-							top : "48%",
+							// top : "48%",
 							// left:"48%",
 							height : Ti.UI.SIZE,
 							width : Ti.UI.SIZE

@@ -39,6 +39,7 @@ exports.open = function(textField, saveCB, bottom) {
 	
 	if (activeTextField !== textField){	
 		activeTextField = textField;
+			$.display.setText(activeTextField.getValue());
 			var animation = Titanium.UI.createAnimation();
 			animation.bottom = 0;
 			animation.duration = 300;

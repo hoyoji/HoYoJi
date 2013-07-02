@@ -637,3 +637,6 @@ $.convertUser2FriendModel = function(userModel){
 	}
 	return userModel;
 }
+
+$.friend.UIInit($, $.getCurrentWindow());
+$.requestContent.UIInit($, $.getCurrentWindow());

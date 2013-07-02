@@ -9,3 +9,7 @@ $.makeContextMenu = function() {
 	}));
 	return menuSection;
 }
+
+$.projectName.UIInit($, $.getCurrentWindow());
+$.date.UIInit($, $.getCurrentWindow());
+$.interest.UIInit($, $.getCurrentWindow());

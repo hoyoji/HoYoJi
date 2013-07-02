@@ -44,3 +44,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 $.onWindowOpenDo(function(){
 	$.titleBar.dirtyCB();
 });
+
+
+$.fromUser.UIInit($, $.getCurrentWindow());
+$.requestContent.UIInit($, $.getCurrentWindow());

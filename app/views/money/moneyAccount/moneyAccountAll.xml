@@ -2,7 +2,7 @@
 	<View class="container" title="我的账户">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的账户"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 			<Widget src="com.hoyoji.titanium.widget.XTableView" 
 				id="moneyAccountsTable" autoInit="false"
 				sortByField="name" pageSize="10" bottom="0" top="0"/>

@@ -16,6 +16,7 @@ $.titleBar.bindXTable($.moneyIncomeCategoriesTable);
 
 var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter({parentIncomeCategory : null}, $);
 $.moneyIncomeCategoriesTable.addCollection(collection);
+$.moneyIncomeCategoriesTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
 	if (!selectedProject.canIncomeCategoryAddNew()) {
