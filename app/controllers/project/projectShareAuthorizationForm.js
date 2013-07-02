@@ -41,6 +41,44 @@ function setExpenseDetailAndIncomeDetailAuthorization() {
 	}
 }
 
+if ($.$model.isNew()) {
+	addSharePercentage($.$model);
+}
+
+function addSharePercentage(projectShareAuthorization) {
+	var averageSharePercentageCollections = [];
+	var fixedSharePercentageCollections = [];
+	var fixedSharePercentage = 0;
+	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Wait"
+	});
+	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		state : "Accept"
+	});
+	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
+		if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+		} else {
+			averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		}
+	});
+	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
+		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
+		} else {
+			averageSharePercentageCollections.push(acceptProjectShareAuthorization);
+		}
+	});
+	var averageLength = averageSharePercentageCollections.length + 1;
+	var averageTotalPercentage = 100 - fixedSharePercentage;
+	var averagePercentage = averageTotalPercentage / averageLength;
+	projectShareAuthorization.xSet("sharePercentage", averagePercentage);
+}
+
 function editSharePercentage(projectShareAuthorization, editSharePercentageAuthorization) {
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
