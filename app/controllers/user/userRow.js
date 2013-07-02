@@ -59,4 +59,4 @@ function sendAddFriendMessage(friendlength){
 // $.userName.setText($.$model.xGet("userName"));
 // });
 
-$.userName.autoInit($, $.getCurrentWindow());
+// $.userName.autoInit($, $.getCurrentWindow());
