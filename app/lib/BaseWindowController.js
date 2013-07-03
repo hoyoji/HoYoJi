@@ -95,13 +95,15 @@
 			$.$view.addEventListener("opencontextmenu", function(e) {
 				$.openContextMenu(e);
 			});
-			$.$view.addEventListener('androidback', function(e) {
-				if ($.contextMenu && $.contextMenu.widget.getVisible().toString() === "true") {
-					$.closeContextMenu();
-				} else {
-					$.close();
+			if(OS_ANDROID){		
+				$.__androidBackFunction = function(e) {
+					if ($.contextMenu && $.contextMenu.widget.getVisible().toString() === "true") {
+						$.closeContextMenu();
+					} else {
+						$.close();
+					}
 				}
-			});
+			}
 			$.$view.addEventListener("registerwindowevent", function(e) {
 				console.info("window ======== receive registerwindowevent " + e.windowEvent + " from " + e.source.id);
 				if (e.parentWindowCallback) {

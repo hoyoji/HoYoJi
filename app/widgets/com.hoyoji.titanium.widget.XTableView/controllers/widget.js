@@ -34,8 +34,8 @@ var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
 
 if (OS_ANDROID) {
-	// if(Ti.Platform.Android.API_LEVEL < 11){
-	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// if(Ti.Platform.Android.API_LEVEL > 10){
+		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
 	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
@@ -1103,6 +1103,9 @@ exports.autoHideFooter = function(footer) {
 		$.table.addEventListener("touchstart", function(e) {
 			lastY = undefined;
 		});
+		$.table.addEventListener("touchcancel", function(e) {
+			lastY = undefined;
+		});		
 		$.table.addEventListener("touchmove", function(e) {
 			if(lastY === undefined){
 				lastY = e.y;	
@@ -1120,7 +1123,7 @@ exports.autoHideFooter = function(footer) {
 							lastY = e.y - 5;
 						}	
 					} else {
-						lastY = e.y - 5;
+						lastY = e.y;
 					}
 				}
 			}
