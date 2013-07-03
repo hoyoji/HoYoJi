@@ -14,7 +14,10 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.moneyIncomeCategoriesTable);
 
-var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter({parentIncomeCategory : null}, $);
+// var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter({parentIncomeCategory : null}, $);
+var collection = selectedProject.xGet("moneyIncomeCategories").xCreateFilter(function(model) {
+	return model.xPrevious("parentIncomeCategory") === null && model.xGet("id") !== selectedProject.xGet("depositeIncomeCategoryId");
+}, $);
 $.moneyIncomeCategoriesTable.addCollection(collection);
 $.moneyIncomeCategoriesTable.autoHideFooter($.footerBar);
 
