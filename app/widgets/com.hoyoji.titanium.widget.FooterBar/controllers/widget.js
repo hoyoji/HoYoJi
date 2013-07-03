@@ -141,6 +141,11 @@ $.$view.addEventListener("longpress", function(e) {
 
 var slidingUp = false, slidingDown = false;
 exports.slideDown = function() {
+	if(OS_ANDROID){
+		if($.$view.getBottom() === -42){
+			return;
+		}
+	}
 	if(!slidingDown){
 		slidingDown = true;
 		slidingUp = false;
@@ -157,6 +162,11 @@ exports.slideDown = function() {
 }
 
 exports.slideUp = function() {
+	if(OS_ANDROID){
+		if($.$view.getBottom() === 0){
+			return;
+		}
+	}
 	if(!slidingUp){
 		slidingUp = true;
 		slidingDown = false;
