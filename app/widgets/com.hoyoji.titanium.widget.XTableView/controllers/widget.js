@@ -35,7 +35,7 @@ var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, so
 
 if (OS_ANDROID) {
 	// if(Ti.Platform.Android.API_LEVEL < 11){
-		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
 	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
@@ -159,11 +159,19 @@ function createRowView(rowModel, collection) {
 			collectionId : collection.id
 		});
 	} else {
-		var row = Ti.UI.createTableViewRow({
-			id : rowModel.xGet("id"),
-			// className : collection.__rowView || rowModel.config.rowView,
-			collectionId : collection.id
-		});
+		if (Ti.Platform.Android.API_LEVEL < 11) {
+			var row = Ti.UI.createTableViewRow({
+				id : rowModel.xGet("id"),
+				// className : collection.__rowView || rowModel.config.rowView,
+				collectionId : collection.id
+			});
+		} else {
+			var row = Ti.UI.createTableViewRow({
+				id : rowModel.xGet("id"),
+				className : collection.__rowView || rowModel.config.rowView,
+				collectionId : collection.id
+			});
+		}
 	}
 	var rowViewController;
 	if ($.__currentWindow && $.__parentController) {
@@ -777,20 +785,24 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.setHeaderView = function(headerView) {
-	if(OS_IOS){
-		$.table.setHeaderView(headerView);
-	} else {
-		$.$view.add(headerView);
-		$.table.setTop(60);
-		// $.table.addEventListener("scroll", function(e){
+	if (OS_ANDROID) {
+		if (Ti.Platform.Android.API_LEVEL < 11) {
+			$.$view.add(headerView);
+			$.table.setTop(60);
+			// $.table.addEventListener("scroll", function(e){
 			// if(e.firstVisibleItem !== 0){
-				// // headerView.setVisible(false);
-				// // $.table.setTop(0);
+			// // headerView.setVisible(false);
+			// // $.table.setTop(0);
 			// } else{
-				// // headerView.setVisible(true);
-				// // $.table.setTop(60);
+			// // headerView.setVisible(true);
+			// // $.table.setTop(60);
 			// }
-		// });
+			// });
+		} else {
+			$.table.setHeaderView(headerView);
+		}
+	} else {
+		$.table.setHeaderView(headerView);
 	}
 }
 
@@ -1067,7 +1079,7 @@ exports.getOrderBy = function() {
 exports.getSortOrder = function() {
 	return sortReverse ? "DESC" : "ASC";
 }
-if(OS_IOS){
+if (OS_IOS) {
 	$.table.footerView.addEventListener("touchstart", function(e) {
 		$.$view.fireEvent("touchstart");
 	});
@@ -1082,24 +1094,55 @@ if(OS_IOS){
 // }
 // });
 // }
-
 exports.autoHideFooter = function(footer) {
-	var lastDistance = 0, direction, lastDirection = false;
-	$.table.addEventListener("scroll", function(e) {
-		if (OS_ANDROID) {
-			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-			if(lastDirection === false && e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount){
-				footer.slideDown();
-				lastDirection = true;
-			} else if((lastDirection === true && e.firstVisibleItem + e.visibleItemCount < e.totalItemCount)){
-				footer.slideUp();
-				lastDirection = false
-			} else if(e.visibleItemCount < e.totalItemCount) {
-				footer.slideUp();
+	if (OS_ANDROID) {
+		var lastY;
+		$.table.addEventListener("touchend", function(e) {
+			lastY = undefined;
+		});
+		$.table.addEventListener("touchstart", function(e) {
+			lastY = undefined;
+		});
+		$.table.addEventListener("touchmove", function(e) {
+			if(lastY === undefined){
+				lastY = e.y;	
+				console.info("++ : " + lastY);
+			} else {
+				var delta = e.y - lastY;
+				console.info(e.y + " --- " + delta);
+				if(Math.abs(delta) > 5){
+					if(Math.abs(delta) < 100){
+						if (delta < 0) {
+							footer.slideDown();
+							lastY = e.y + 5;
+						} else if(delta > 0) {
+							footer.slideUp();
+							lastY = e.y - 5;
+						}	
+					} else {
+						lastY = e.y - 5;
+					}
+				}
 			}
+		});
+	}
+
+	if (OS_IOS) {
+		var lastDistance = 0, direction, lastDirection = false;
+		$.table.addEventListener("scroll", function(e) {
+			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+			// if(touchDirectionUp) { //(lastDirection === false && e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount) {
+			// footer.slideDown();
+			// lastDirection = true;
+			// } else { //if ((lastDirection === true && e.firstVisibleItem + e.visibleItemCount < e.totalItemCount && e.visibleItemCount < e.totalItemCount)) {
+			// footer.slideUp();
+			// lastDirection = false
+			// }
+
 			// direction = e.firstVisibleItem - lastDistance;
 			// lastDistance = e.firstVisibleItem;
-		} else {
+			// } else {
+
 			var offset = e.contentOffset.y;
 			var height = e.size.height;
 			var total = offset + height;
@@ -1114,14 +1157,14 @@ exports.autoHideFooter = function(footer) {
 			// var nearEnd = theEnd * .9;
 			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
 				footer.slideDown();
-				lastDirection = true;	
+				lastDirection = true;
 			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
 				footer.slideUp();
 				lastDirection = false;
 			}
 			direction = distance - lastDistance;
 			lastDistance = distance;
-		}
-	});
+		});
+	}
 }
 
