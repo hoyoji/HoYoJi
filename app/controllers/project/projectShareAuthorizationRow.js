@@ -1,5 +1,12 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.onRowTap = function(e){
+	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {$model : $.$model});
+		return false;
+	}
+}
+
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "共享属性操作"

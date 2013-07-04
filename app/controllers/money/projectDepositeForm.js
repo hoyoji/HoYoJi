@@ -46,25 +46,7 @@ var oldMoneyAccount;
 var isRateExist;
 var fistChangeFlag;
 
-if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyExpense", {
-		date : (new Date()).toISOString(),
-		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-		exchangeRate : 1,
-		expenseType : "Ordinary",
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeExpenseCategory"),
-		ownerUser : Alloy.Models.User,
-		expenseType : "Deposite"
-	});
-	$.setSaveableMode("add");
-} else {
-	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
-}
-
 if ($.saveableMode === "read") {
-	$.localAmount.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
@@ -263,7 +245,7 @@ if ($.saveableMode === "read") {
 						"messageState" : "unread",
 						"messageTitle" : "充值请求",
 						"date" : date,
-						"detail" : $.$model.xGet("detail"),
+						"detail" : $.$model.xGet("remark"),
 						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 						messageData : JSON.stringify({
 							accountType : "MoneyExpense",
@@ -292,6 +274,7 @@ if ($.saveableMode === "read") {
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.friendUser0.UIInit($, $.getCurrentWindow());
+$.friendUser.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());

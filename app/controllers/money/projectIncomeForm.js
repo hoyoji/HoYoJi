@@ -26,24 +26,8 @@ var oldMoneyAccount;
 var isRateExist;
 var fistChangeFlag;
 
-if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyIncome", {
-		date : (new Date()).toISOString(),
-		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-		localAmount : 0,
-		exchangeRate : 1,
-		incomeType : "Ordinary",
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeIncomeCategory"),
-		ownerUser : Alloy.Models.User
-	});
-
-	$.setSaveableMode("add");
-}
-
 if ($.saveableMode === "read") {
-	$.localAmount.setHeight(42);
+	// $.localAmount.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);

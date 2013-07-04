@@ -66,28 +66,6 @@ $.onWindowOpenDo(function() {
 			horizontalWrap : false,
 			height : "42"
 		});
-		var accountExpenseTypeLabel = Ti.UI.createLabel({
-			text : "是否预付：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountExpenseTypeContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.expenseType,
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountExpenseTypeLabel);
-		accountRow3.add(accountExpenseTypeContentLabel);
-
-		var accountRow4 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
 		var accountDetailLabel = Ti.UI.createLabel({
 			text : "备注：",
 			height : 42,
@@ -102,12 +80,11 @@ $.onWindowOpenDo(function() {
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 			width : "70%"
 		});
-		accountRow4.add(accountDetailLabel);
-		accountRow4.add(accountDetailContentLabel);
+		accountRow3.add(accountDetailLabel);
+		accountRow3.add(accountDetailContentLabel);
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
-		$.account.add(accountRow4);
 	}
 	$.titleBar.dirtyCB();
 
@@ -126,6 +103,7 @@ $.onWindowOpenDo(function() {
 });
 
 function importToLocalOperate() {
+	alert(accountShareData.account.id);
 	if (accountShareData.accountType === "MoneyExpense") {
 		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject)
 		var account = Alloy.createModel("MoneyIncome", {
@@ -139,7 +117,8 @@ function importToLocalOperate() {
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : depositeProject,
 			moneyIncomeCategory : depositeProject.xGet("depositeIncomeCategory"),
-			friendUser : $.$model.xGet("fromUser")
+			friendUser : $.$model.xGet("fromUser"),
+			depositeId : accountShareData.account.id
 		});
 
 		var accountShareMsgController = Alloy.Globals.openWindow("money/projectIncomeForm", {
