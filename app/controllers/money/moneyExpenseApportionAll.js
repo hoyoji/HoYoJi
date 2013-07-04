@@ -42,6 +42,24 @@ function onFooterbarTap(e) {
 		attributes.selectedModel = $.projectShareAuthorization;
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 	}
+	else if(e.source.id === "sharePercentage"){
+		if(selectedExpense.xGet("moneyExpenseApportions").length !== selectedExpense.xGet("project").xGet("projectShareAuthorizations").length) {
+			alert("只有全部项目成员都参与才能按占股摊");
+		}else {
+			selectedExpense.xGet("moneyExpenseApportions").forEach(function(item){
+				item.xSet("amount", selectedExpense.xGet("amount") * (item.getSharePercentage() / 100));
+				item.xSet("apportionType", "Fixed");
+			});
+		}
+		
+	}
+	else if(e.source.id === "halve"){
+		var collections = $.moneyExpenseApportionsTable.getCollections();
+		collections.forEach(function(item){
+			item.xSet("amount", selectedExpense.xGet("amount") / collections.length);
+			item.xSet("apportionType", "Average");
+		})
+	}
 }
 
 var collection;
@@ -63,8 +81,8 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedE
 		var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
 			moneyExpense : selectedExpense,
 			friendUser : projectShareAuthorization.xGet("friendUser"),
-			amount : selectedExpenseAmount / memberCount,
-			apportionType : "Average"
+			amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+			apportionType : "Fixed"
 		});
 		selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
 	});
