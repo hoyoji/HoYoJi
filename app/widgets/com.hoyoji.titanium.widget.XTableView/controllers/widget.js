@@ -35,7 +35,7 @@ var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, so
 
 if (OS_ANDROID) {
 	// if(Ti.Platform.Android.API_LEVEL > 10){
-		// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
+	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
 	// }
 	// $.table.addEventListener('scroll',function(e){
 	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
@@ -1095,6 +1095,7 @@ if (OS_IOS) {
 // });
 // }
 exports.autoHideFooter = function(footer) {
+	var autoHideAnimationId;
 	if (OS_ANDROID) {
 		var lastY;
 		$.table.addEventListener("touchend", function(e) {
@@ -1105,23 +1106,33 @@ exports.autoHideFooter = function(footer) {
 		});
 		$.table.addEventListener("touchcancel", function(e) {
 			lastY = undefined;
-		});		
+		});
 		$.table.addEventListener("touchmove", function(e) {
-			if(lastY === undefined){
-				lastY = e.y;	
+			if (lastY === undefined) {
+				lastY = e.y;
 				console.info("++ : " + lastY);
 			} else {
 				var delta = e.y - lastY;
 				console.info(e.y + " --- " + delta);
-				if(Math.abs(delta) > 5){
-					if(Math.abs(delta) < 100){
+				if (Math.abs(delta) > 5) {
+					if (Math.abs(delta) < 100) {
 						if (delta < 0) {
-							footer.slideDown();
+							// if (autoHideAnimationId) {
+								// clearTimeout(autoHideAnimationId);
+							// }
+							// autoHideAnimationId = setTimeout(function() {
+								footer.slideDown();
+							// }, 1);
 							lastY = e.y + 5;
-						} else if(delta > 0) {
-							footer.slideUp();
+						} else if (delta > 0) {
+							// if (autoHideAnimationId) {
+								// clearTimeout(autoHideAnimationId);
+							// }
+							// autoHideAnimationId = setTimeout(function() {
+								footer.slideUp();
+							// }, 1);
 							lastY = e.y - 5;
-						}	
+						}
 					} else {
 						lastY = e.y;
 					}
@@ -1145,28 +1156,43 @@ exports.autoHideFooter = function(footer) {
 			// direction = e.firstVisibleItem - lastDistance;
 			// lastDistance = e.firstVisibleItem;
 			// } else {
+			clearTimeout(autoHideAnimationId);
+			autoHideAnimationId = setTimeout(function() {
 
-			var offset = e.contentOffset.y;
-			var height = e.size.height;
-			var total = offset + height;
-			var theEnd = e.contentSize.height;
-			var distance = theEnd - total;
+				var offset = e.contentOffset.y;
+				var height = e.size.height;
+				var total = offset + height;
+				var theEnd = e.contentSize.height;
+				var distance = theEnd - total;
 
-			// going down is the only time we dynamically load,
-			// going up we can safely ignore -- note here that
-			// the values will be negative so we do the opposite
+				// going down is the only time we dynamically load,
+				// going up we can safely ignore -- note here that
+				// the values will be negative so we do the opposite
 
-			// adjust the % of rows scrolled before we decide to start fetching
-			// var nearEnd = theEnd * .9;
-			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
-				footer.slideDown();
-				lastDirection = true;
-			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
-				footer.slideUp();
-				lastDirection = false;
-			}
-			direction = distance - lastDistance;
-			lastDistance = distance;
+				// adjust the % of rows scrolled before we decide to start fetching
+				// var nearEnd = theEnd * .9;
+				if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
+					// clearTimeout(autoHideAnimationId);
+					// autoHideAnimationId = setTimeout(
+					// function(){
+					footer.slideDown();
+					// }, 1
+					// );
+					lastDirection = true;
+				} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
+					// clearTimeout(autoHideAnimationId);
+					// autoHideAnimationId = setTimeout(
+					// function(){
+					footer.slideUp();
+					// }, 1
+					// );
+					lastDirection = false;
+				}
+				direction = distance - lastDistance;
+				lastDistance = distance;
+
+			}, 5);
+
 		});
 	}
 }

@@ -77,7 +77,7 @@ function onFooterbarTap(e) {
 	previousForm.$view.hide();
 }
 
-$.getCurrentWindow().$view.addEventListener("show", function() {
+$.getCurrentWindow().$view.addEventListener("contentready", function() {
 	currentForm.date.setValue((new Date()).toISOString());
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();

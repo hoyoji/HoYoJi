@@ -590,7 +590,9 @@ function importToLocalOperate() {
 				moneyIncomeDetails.push(moneyIncomeDetail)
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-			accountShareMsgController.content.titleBar.dirtyCB();
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
 			// moneyIncomeDetails.xAddToSave(accountShareMsgController.content);
 		} else {
 			var account = Alloy.createModel("MoneyExpense", {
@@ -621,8 +623,10 @@ function importToLocalOperate() {
 				}).xAddToSave(accountShareMsgController.content);
 				moneyExpenseDetails.push(moneyExpenseDetail);
 			});
-			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
-			accountShareMsgController.content.titleBar.dirtyCB();
+			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);		
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
 			// moneyExpenseDetails.xAddToSave(accountShareMsgController.content);
 		}
 
@@ -658,8 +662,10 @@ function importToLocalOperate() {
 				moneyExpenseDetails.push(moneyExpenseDetail);
 			});
 			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
-			accountShareMsgController.content.titleBar.dirtyCB();
-		} else {
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			} else {
 			var account = Alloy.createModel("MoneyIncome", {
 				date : accountShareData.account.date,
 				amount : accountShareData.account.amount,
@@ -690,8 +696,10 @@ function importToLocalOperate() {
 				moneyIncomeDetails.push(moneyIncomeDetail);
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-			accountShareMsgController.content.titleBar.dirtyCB();
-		}
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			}
 	} else if (accountShareData.accountType === "MoneyBorrow") {
 		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
@@ -709,8 +717,10 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		} else {
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			} else {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
 				$model : "MoneyBorrow",
 				data : {
@@ -725,8 +735,10 @@ function importToLocalOperate() {
 					project : Alloy.Models.User.xGet("activeProject")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		}
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			}
 
 	} else if (accountShareData.accountType === "MoneyLend") {
 		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
@@ -745,8 +757,10 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		} else {
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			} else {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
 				$model : "MoneyLend",
 				data : {
@@ -761,8 +775,10 @@ function importToLocalOperate() {
 					project : Alloy.Models.User.xGet("activeProject")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		}
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			}
 
 	} else if (accountShareData.accountType === "MoneyPayback") {
 		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
@@ -782,8 +798,10 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		} else {
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			} else {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
 				$model : "MoneyPayback",
 				data : {
@@ -799,8 +817,10 @@ function importToLocalOperate() {
 					interest : 0
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		}
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			}
 
 	} else if (accountShareData.accountType === "MoneyReturn") {
 		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
@@ -820,8 +840,10 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		} else {
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			} else {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
 				$model : "MoneyReturn",
 				data : {
@@ -837,8 +859,10 @@ function importToLocalOperate() {
 					interest : 0
 				}
 			});
-			accountShareMsgController.content.titleBar.dirtyCB();
-		}
+			accountShareMsgController.addEventListener("contentready", function(){
+				accountShareMsgController.content.titleBar.dirtyCB();
+			});
+			}
 
 	}
 }

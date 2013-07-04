@@ -46,6 +46,23 @@ var oldMoneyAccount;
 var isRateExist;
 var fistChangeFlag;
 
+if (!$.$model) {
+	$.$model = Alloy.createModel("MoneyExpense", {
+		date : (new Date()).toISOString(),
+		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+		exchangeRate : 1,
+		expenseType : "Ordinary",
+		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+		project : Alloy.Models.User.xGet("activeProject"),
+		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeExpenseCategory"),
+		ownerUser : Alloy.Models.User,
+		expenseType : "Deposite"
+	});
+	$.setSaveableMode("add");
+} else {
+	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
+}
+
 if ($.saveableMode === "read") {
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
