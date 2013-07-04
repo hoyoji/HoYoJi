@@ -5,7 +5,7 @@ var datetime = new Date(accountShareData.account.date);
 var onFooterbarTap = function(e) {
 	if (e.source.id === "importToLocal") {
 		if ($.$model.xGet('messageState') === "closed") {
-			Alloy.Globals.confirm("导入账务", "重复导入账务？", function(){
+			Alloy.Globals.confirm("导入账务", "重复导入账务？", function() {
 				importToLocalOperate();
 			});
 		} else {
@@ -119,8 +119,8 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
-	
-	if($.$model.xGet('type') === "Project.Deposite.AddRequest"){
+
+	if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
 		$.footerBar.$view.show();
 	}
 });
@@ -146,13 +146,14 @@ function importToLocalOperate() {
 			$model : account,
 			selectedDepositeMsg : $.$model
 		});
-		$.$model.xSet("messageState","closed");
+		$.$model.xSet("messageState", "closed");
 		$.$model.xAddToSave(accountShareMsgController.content);
 		account.xAddToSave(accountShareMsgController.content);
-		accountShareMsgController.content.titleBar.dirtyCB();
+		accountShareMsgController.addEventListener("contentready", function() {
+			accountShareMsgController.content.titleBar.dirtyCB();
+		});
 	}
 }
-
 
 $.fromUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());

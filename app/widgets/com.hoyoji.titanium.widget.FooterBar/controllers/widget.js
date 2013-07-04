@@ -151,7 +151,7 @@ exports.slideDown = function() {
 		slidingUp = false;
 		var animation = Titanium.UI.createAnimation();
 		animation.bottom = -42;
-		animation.duration = 300;
+		animation.duration = 250;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		animation.addEventListener("complete", function(){
 			slidingDown = false;
@@ -172,7 +172,7 @@ exports.slideUp = function() {
 		slidingDown = false;
 		var animation = Titanium.UI.createAnimation();
 		animation.bottom = 0;
-		animation.duration = 300;
+		animation.duration = 250;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		animation.addEventListener("complete", function(){
 			slidingUp = false;

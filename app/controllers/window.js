@@ -3,7 +3,7 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 function doClose() {
 	$.closing = true;
 	// if (OS_ANDROID) {
-		// $.$view.removeEventListener('androidback', $.__androidBackFunction);
+	// $.$view.removeEventListener('androidback', $.__androidBackFunction);
 	// }
 	$.$view.hide();
 	$.closeSoftKeyboard();
@@ -11,7 +11,7 @@ function doClose() {
 		$.$view.close({
 			animated : false
 		});
-	}, 100);
+	}, 500);
 }
 
 function confirmClose() {
@@ -58,15 +58,14 @@ exports.open = function(contentController, loadOnly) {
 	} else {
 		if (OS_ANDROID) {
 			$.$view.addEventListener('androidback', $.__androidBackFunction);
-		}		
+		}
 	}
-	
+
 	$.$view.open({
 		animated : false
 	});
 
 	if (!loadOnly) {
-		$.showActivityIndicator();
 		exports.openCachedWindow(contentController);
 	}
 
@@ -99,16 +98,45 @@ exports.openWin = function(contentController, options, loadOnly) {
 			borderRadius : 5
 		});
 		// $.$view.setBackgroundColor("#99000000");
+		//		<Label id="emptyTitleBar" width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
+		$.contentView.setBackgroundColor("transaprent");
+	} else {
+		$.contentView.add(Ti.UI.createLabel({
+			width : Ti.UI.FILL,
+			height : 42,
+			backgroundColor : "#2E8B57",
+			color : "white",
+			top : 0,
+			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
+		}));
 	}
 
 	$.open(contentController, loadOnly);
 
 	_.extend($.$attrs, options);
-	$.content = Alloy.createController(contentController, options);
-	$.content.setParent($.contentView);
-	$.content.UIInit();
+
+	function loadContent() {
+		$.content = Alloy.createController(contentController, options);
+		$.showActivityIndicator("正在加载...", {
+			top : 45
+		});
+		$.content.setParent($.contentView);
+		$.content.UIInit();
+		$.hideActivityIndicator();
+		$.getCurrentWindow().$view.fireEvent("contentready");
+	}
+
+	if (!options.selectorCallback) {
+		$.getCurrentWindow().$view.addEventListener("show", loadContent);
+	} else {
+		loadContent();
+	}
+
+	// setTimeout(function(){
+	// $.content.setParent($.contentView);
+	// $.content.UIInit();
+	// }, 100);
 	// $.scrollableView.addView($.content.$view);
-	return $.content;
 }
 //
 // var touchend = false;
@@ -136,23 +164,26 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 		confirmClose();
 	} else if (e.currentPage === 1 && firstTimeOpen) {
 		firstTimeOpen = false;
-		$.hideActivityIndicator();
 	}
 
 });
 
+var scrollTimeoutId = 0;
 $.scrollableView.addEventListener("scroll", function(e) {
 	if (e.source !== $.scrollableView) {
 		return;
 	}
-	var color = Math.round(153 * e.currentPageAsFloat);
-	color = Math.max(color, 17);
-	color = Math.min(color, 153);
-	// console.info(color.toString(16));
-	$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
-	// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-	// $.$view.setBackgroundColor("transparent");
-	// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-	// $.$view.setBackgroundColor("#40000000");
-	// }
+	clearTimeout(scrollTimeoutId);
+	scrollTimeoutId = setTimeout(function() {
+		var color = Math.round(153 * e.currentPageAsFloat);
+		color = Math.max(color, 17);
+		color = Math.min(color, 153);
+		// console.info(color.toString(16));
+		$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
+		// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
+		// $.$view.setBackgroundColor("transparent");
+		// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
+		// $.$view.setBackgroundColor("#40000000");
+		// }
+	}, 1);
 });

@@ -70,7 +70,7 @@
 				animate : function(animation) {
 					$.$view.animate(animation);
 				},
-				showActivityIndicator : function(msg) {
+				showActivityIndicator : function(msg, options) {
 					if (!$.__activityIndicator) {
 						var style;
 						if (OS_IOS) {
@@ -78,18 +78,17 @@
 						} else {
 							style = Ti.UI.ActivityIndicatorStyle.DARK;
 						}
-						$.__activityIndicator = Ti.UI.createActivityIndicator({
+						options = _.extend({
 							color : 'black',
 							font : {
 								fontSize : 14,
 								fontWeight : 'normal'
 							},
 							style : style,
-							// top : "48%",
-							// left:"48%",
 							height : Ti.UI.SIZE,
 							width : Ti.UI.SIZE
-						});
+						}, options);
+						$.__activityIndicator = Ti.UI.createActivityIndicator(options);
 						$.$view.add($.__activityIndicator);
 					}
 					$.__activityIndicator.setMessage(msg || null);
@@ -149,7 +148,9 @@
 				onWindowCloseDo : function(callback) {
 					$.on("winclose", function(e) {
 						e.cancelBubble = true;
-						callback();
+						setTimeout(function(){
+							callback();
+						}, 1);
 					});
 				},
 				getCurrentWindow : function() {
