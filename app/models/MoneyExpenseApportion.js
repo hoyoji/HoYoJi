@@ -70,13 +70,14 @@ exports.definition = {
 			},
 			getSharePercentage : function() {
 				var projectShareAuthorizations = this.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
-				// var sharePercentage;
+				var self = this;
+				var sharePercentage;
 				projectShareAuthorizations.forEach(function(item){
-					if(this.xGet("friendUser") === item.xGet("friendUser")){
-						return item.xGet("sharePercentage");
+					if(self.xGet("friendUser") === item.xGet("friendUser")){
+						sharePercentage = item.xGet("sharePercentage");
 					}
 				});
-				// return sharePercentage;
+				return sharePercentage;
 				
 			},
 			// xDelete : function(xFinishCallback, options) {
