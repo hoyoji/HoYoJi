@@ -12,14 +12,16 @@ function close(){
 $.confirm.addEventListener("singletap", confirm);
 $.close.addEventListener("singletap", close);
 
-$.getCurrentWindow().$view.addEventListener("contentready", function(){
-	$.textField.focus();
-});
-
-$.onWindowOpenDo(function() {
+// $.onWindowOpenDo(function() {
 	if($.getCurrentWindow().$attrs.title){
 		$.title.setText("请输入" + $.getCurrentWindow().$attrs.title);
 	}
 	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
 	// $.textField.addEventListener("singletap", confirm);
+// });
+
+$.getCurrentWindow().$view.addEventListener("open", function(){
+	setTimeout(function(){
+		$.textField.focus();
+	},100);
 });

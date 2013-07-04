@@ -91,6 +91,7 @@
 				});
 				$.__views.contextMenu.setParent($.$view);
 				$.contextMenu = $.__views.contextMenu;
+				$.contextMenu.UIInit();
 			}
 			$.$view.addEventListener("opencontextmenu", function(e) {
 				$.openContextMenu(e);
