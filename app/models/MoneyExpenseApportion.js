@@ -68,6 +68,17 @@ exports.definition = {
 					return this.xGet("moneyExpense").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();
 				}
 			},
+			getSharePercentage : function() {
+				var projectShareAuthorizations = this.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
+				// var sharePercentage;
+				projectShareAuthorizations.forEach(function(item){
+					if(this.xGet("friendUser") === item.xGet("friendUser")){
+						return item.xGet("sharePercentage");
+					}
+				});
+				// return sharePercentage;
+				
+			},
 			// xDelete : function(xFinishCallback, options) {
 				// var self = this;
 				// if (this.xGet("moneyExpense").isNew()) {
