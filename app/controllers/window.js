@@ -2,13 +2,16 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 function doClose() {
 	$.closing = true;
+	// if (OS_ANDROID) {
+		// $.$view.removeEventListener('androidback', $.__androidBackFunction);
+	// }
 	$.$view.hide();
 	$.closeSoftKeyboard();
-	// setTimeout(function() {
-	$.$view.close({
-		animated : false
-	});
-	// }, 500);
+	setTimeout(function() {
+		$.$view.close({
+			animated : false
+		});
+	}, 100);
 }
 
 function confirmClose() {
@@ -38,7 +41,7 @@ exports.openCachedWindow = function(contentController) {
 		function fireShowEvent() {
 			$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 			$.$view.fireEvent("show");
-			if(contentController){
+			if (contentController) {
 				delete Alloy.Globals.openingWindow[contentController];
 			}
 		}
@@ -52,7 +55,12 @@ exports.openCachedWindow = function(contentController) {
 exports.open = function(contentController, loadOnly) {
 	if (loadOnly) {
 		$.$view.setVisible(false);
+	} else {
+		if (OS_ANDROID) {
+			$.$view.addEventListener('androidback', $.__androidBackFunction);
+		}		
 	}
+	
 	$.$view.open({
 		animated : false
 	});
@@ -141,10 +149,10 @@ $.scrollableView.addEventListener("scroll", function(e) {
 	color = Math.max(color, 17);
 	color = Math.min(color, 153);
 	// console.info(color.toString(16));
-	$.$view.setBackgroundColor("#"+color.toString(16)+"000000");
+	$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
 	// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-		// $.$view.setBackgroundColor("transparent");
+	// $.$view.setBackgroundColor("transparent");
 	// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-		// $.$view.setBackgroundColor("#40000000");
+	// $.$view.setBackgroundColor("#40000000");
 	// }
 });
