@@ -79,9 +79,9 @@ exports.definition = {
 					xFinishCallback({ msg :"项目中的借出不为空，不能删除"});
 				}else if(this.xGet("moneyPaybacks").length > 0){
 					xFinishCallback({ msg :"项目中的收款不为空，不能删除"});
-				}else if(this.xGet("moneyExpenseCategories").length > 0){
+				}else if(this.xGet("moneyExpenseCategories").length > 1){
 					xFinishCallback({ msg :"项目中的支出分类不为空，不能删除"});
-				}else if(this.xGet("moneyIncomeCategories").length > 0){
+				}else if(this.xGet("moneyIncomeCategories").length > 1){
 					xFinishCallback({ msg :"项目中的收入分类不为空，不能删除"});
 				}else if(this.xGet("projectShareAuthorizations").length > 1){
 					xFinishCallback({ msg :"项目中的共享好友不为空，不能删除"});
@@ -94,8 +94,20 @@ exports.definition = {
 							projectId : this.xGet("id"),
 							friendUserId : Alloy.Models.User.id
 						});
+					var moneyExpenseCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
+							id : this.xGet("depositeExpenseCategoryId")
+						});
+					var moneyIncomeCategory = Alloy.createModel("MoneyIncomeCategory").xFindInDb({
+							id : this.xGet("depositeIncomeCategoryId")
+						});
 					if(projectShareAuthorization.id){
 						projectShareAuthorization._xDelete();
+					}
+					if(moneyExpenseCategory.id){
+						moneyExpenseCategory._xDelete();
+					}
+					if(moneyIncomeCategory.id){
+						moneyIncomeCategory._xDelete();
 					}
 					this._xDelete(xFinishCallback, options);
 				}

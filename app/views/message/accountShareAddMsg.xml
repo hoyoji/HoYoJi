@@ -11,7 +11,7 @@
 				bindAttribute="toUser"
 				bindAttributeIsModel="userName"
 				/>
-				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="84" width="Ti.UI.FILL"
+				<Widget id="requestContent" src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="内容" height="84"
 				id="requestContent" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>

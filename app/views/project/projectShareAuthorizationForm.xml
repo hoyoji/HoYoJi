@@ -38,7 +38,7 @@
 						bindAttribute="sharePercentage"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" id="shareAllSubProjectsView" visible="false">
 					<Label left="0" width="40%">共享所有子项目</Label>
 					<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
@@ -50,7 +50,7 @@
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
-				<View layout="vertical" height="Ti.UI.SIZE">
+				<View layout="vertical" height="Ti.UI.SIZE" id="shareAllProjectAuthorizationView" visible="false">
 					<View height="42" layout="horizontal">
 						<Label width="20%">权限</Label>
 						<Label width="20%">自己</Label>

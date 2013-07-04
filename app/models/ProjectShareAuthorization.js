@@ -203,31 +203,54 @@ exports.definition = {
 					return this.xGet("friendUser").xGet("userName");
 				}
 			},
-			getActualTotal : function(){
+			getActualTotalText : function(){
 				var getActualTotal = 0;
 				if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
-					getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
-					return "实际支出 : "+ getActualTotal;
+					return "实际支出 : ";
 				}else{
-					getActualTotal = this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense");
-					return "实际收入 : "+ getActualTotal;
+					return "实际收入 : ";
 				}
 				
 			},
-			getApportionedTotal : function(){
+			getActualTotalMoney : function(){
+				var getActualTotal = 0;
+				if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
+					getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
+					return getActualTotal;
+				}else{
+					getActualTotal = this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense");
+					return getActualTotal;
+				}
+				
+			},
+			getApportionedTotalText : function(){
+				var getApportionedTotal = 0;
+				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
+				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
+				if(apportionedTotalIncome - apportionedTotalExpense <= 0){
+					return "应该支出 : ";
+				}else{
+					return "应该收入 : ";
+				}
+			},
+			getApportionedTotalMoney : function(){
 				var getApportionedTotal = 0;
 				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
 				if(apportionedTotalIncome - apportionedTotalExpense <= 0){
 					getApportionedTotal = apportionedTotalExpense - apportionedTotalIncome;
-					return "应该支出 : "+ getApportionedTotal;
+					return getApportionedTotal;
 				}else{
 					getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
-					return "应该收入 : "+ getApportionedTotal;
+					return getApportionedTotal;
 				}
 			},
 			getSharePercentage : function(){
-				return "占股 : "+ this.xGet("sharePercentage");
+				if (this.xGet("state") === "Wait") {
+					return "占股 : "+ this.xGet("sharePercentage") + "(等待接受)";
+				}else{
+					return "占股 : "+ this.xGet("sharePercentage");
+				}
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;

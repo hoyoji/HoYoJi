@@ -2,6 +2,11 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 
 Alloy.Globals.mainWindow = $;
 
+if(OS_ANDROID){		
+	$.$view.addEventListener('androidback', $.__androidBackFunction);
+}
+
+
 exports.close = function(e) {
 	$.closeSoftKeyboard();
 	Alloy.Globals.confirm("退出", "您确定要退出吗？", function() {
@@ -29,9 +34,9 @@ $.home = Alloy.createController("home/home", {
 $.home.setParent($.page2);
 $.home.UIInit();
 
-$.onWindowOpenDo(function() {
-	Alloy.Globals.cacheWindow("money/moneyAddNew");
-});
+// $.onWindowOpenDo(function() {
+	// Alloy.Globals.cacheWindow("money/moneyAddNew");
+// });
 
 if (Alloy.Models.User.xGet("messageBox")) {
 	Alloy.Models.User.xGet("messageBox").processNewMessages();

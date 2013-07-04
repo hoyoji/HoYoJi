@@ -1,5 +1,12 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.onRowTap = function(e){
+	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {$model : $.$model});
+		return false;
+	}
+}
+
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "共享属性操作"
@@ -110,19 +117,21 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 					});
 	});
 }
-function setWaitForAccept() {
-	if ($.$model.xGet("state") === "Wait") {
-		$.checkAccept.setVisible(true);
-	}
-}
-$.onWindowOpenDo(function() {
-	setWaitForAccept();
-});
+// function setWaitForAccept() {
+	// if ($.$model.xGet("state") === "Wait") {
+		// $.checkAccept.setVisible(true);
+	// }
+// }
+// $.onWindowOpenDo(function() {
+	// setWaitForAccept();
+// });
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.sharePercentage.UIInit($, $.getCurrentWindow());
 $.friendDisplayName.UIInit($, $.getCurrentWindow());
-$.actualTotal.UIInit($, $.getCurrentWindow());
-$.apportionedTotal.UIInit($, $.getCurrentWindow());
+$.actualTotalText.UIInit($, $.getCurrentWindow());
+$.actualTotalMoney.UIInit($, $.getCurrentWindow());
+$.apportionedTotalText.UIInit($, $.getCurrentWindow());
+$.apportionedTotalMoney.UIInit($, $.getCurrentWindow());
 
 

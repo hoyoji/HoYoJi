@@ -1,6 +1,10 @@
 arguments[0] = arguments[0] || {};
 arguments[0].autoInit = "false";
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
+if(OS_ANDROID){		
+	$.$view.addEventListener('androidback', $.__androidBackFunction);
+}
+
 
 // if(OS_IOS){
 	// var ptrCtrl = Alloy.createWidget('nl.fokkezb.pullToRefresh', null, {

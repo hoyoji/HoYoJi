@@ -62,8 +62,8 @@ $.titleBar.setMenuButton(friendButton);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		Alloy.Globals.openCachedWindow("money/moneyAddNew");
-		// Alloy.Globals.openWindow("money/moneyAddNew");
+		// Alloy.Globals.openCachedWindow("money/moneyAddNew");
+		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
 		Alloy.Models.User.xGet("messageBox").processNewMessages();
