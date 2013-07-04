@@ -13,15 +13,18 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.transactionsTable = Alloy.createController("money/transactionsView", {
-    id: "transactionsTable",
-    autoInit: "false",
-    parentController : $,
-    currentWindow : $.__currentWindow
+$.getCurrentWindow().$view.addEventListener("contentready", function(){
+	$.transactionsTable = Alloy.createController("money/transactionsView", {
+	    id: "transactionsTable",
+	    autoInit: "false",
+	    parentController : $,
+	    currentWindow : $.__currentWindow
+	});
+	$.transactionsTable.setParent($.__views.body);
+	$.transactionsTable.UIInit();
+	$.transactionsTable.transactionsTable.autoHideFooter($.footerBar);
+	$.transactionsTable.doFilter(timeFilter,sortReverse,"date");
 });
-$.transactionsTable.setParent($.__views.body);
-$.transactionsTable.UIInit();
-$.transactionsTable.transactionsTable.autoHideFooter($.footerBar);
 
 var d = new Date(), sortReverse = true, timeFilter = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
@@ -155,4 +158,3 @@ var transactionDisplayType =
 Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 $.titleBar.setTitle(transactionDisplayType + "日流水");
 		
-$.transactionsTable.doFilter(timeFilter,sortReverse,"date");

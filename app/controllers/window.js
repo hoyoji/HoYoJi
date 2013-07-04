@@ -35,9 +35,11 @@ exports.close = function() {
 	}
 }
 
+var loadContentIndicatorTimeoutId = 0;
+
 exports.openCachedWindow = function(contentController) {
 	$.$view.show();
-	setTimeout(function() {
+	// setTimeout(function() {
 		function fireShowEvent() {
 			$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 			$.$view.fireEvent("show");
@@ -49,7 +51,7 @@ exports.openCachedWindow = function(contentController) {
 
 		$.scrollableView.addEventListener("scrollend", fireShowEvent);
 		$.scrollableView.scrollToView(1);
-	}, 100);
+	// }, 100);
 }
 
 exports.open = function(contentController, loadOnly) {
@@ -100,6 +102,8 @@ exports.openWin = function(contentController, options, loadOnly) {
 		// $.$view.setBackgroundColor("#99000000");
 		//		<Label id="emptyTitleBar" width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
 		$.contentView.setBackgroundColor("transaprent");
+		
+		$.showActivityIndicator();
 	} else {
 		$.contentView.add(Ti.UI.createLabel({
 			width : Ti.UI.FILL,
@@ -115,11 +119,14 @@ exports.openWin = function(contentController, options, loadOnly) {
 
 	_.extend($.$attrs, options);
 
-	function loadContent() {
-		$.content = Alloy.createController(contentController, options);
+	function loadContent(noLoadingIndicator) {
+		if(!noLoadingIndicator){
 		$.showActivityIndicator("正在加载...", {
-			top : 45
+			top : 10,
+			color : "white"
 		});
+		}
+		$.content = Alloy.createController(contentController, options);
 		$.content.setParent($.contentView);
 		$.content.UIInit();
 		$.hideActivityIndicator();
@@ -127,9 +134,11 @@ exports.openWin = function(contentController, options, loadOnly) {
 	}
 
 	if (!options.selectorCallback) {
-		$.getCurrentWindow().$view.addEventListener("show", loadContent);
+		$.getCurrentWindow().$view.addEventListener("show", function(){
+			loadContent();
+		});
 	} else {
-		loadContent();
+		loadContent(true);
 	}
 
 	// setTimeout(function(){
