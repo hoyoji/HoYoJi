@@ -177,6 +177,12 @@ if ($.saveableMode === "read") {
 					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
 					messageData : selectedDepositeMsg.xGet("messageData")
 				}, function() {
+					selectedDepositeMsg.save({
+						messageState : "closed"
+					}, {
+						wait : true,
+						patch : true
+					});
 					saveEndCB(e);
 				}, function(e) {
 					alert(e.__summary.msg);

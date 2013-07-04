@@ -5,9 +5,7 @@ var datetime = new Date(accountShareData.account.date);
 var onFooterbarTap = function(e) {
 	if (e.source.id === "importToLocal") {
 		if ($.$model.xGet('messageState') === "closed") {
-			Alloy.Globals.confirm("导入账务", "重复导入账务？", function() {
-				importToLocalOperate();
-			});
+			alert("您不能重复接受充值");
 		} else {
 			importToLocalOperate();
 		}
