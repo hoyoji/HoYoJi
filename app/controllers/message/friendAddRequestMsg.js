@@ -1,13 +1,16 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-if ($.$model.isNew()) {
-	$.$model.xSet("fromUser", Alloy.Models.User);
-    $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
-    $.$model.xSet("type", "System.Friend.AddRequest");
-    $.$model.xSet("messageState", "closed");
-    $.$model.xSet("messageTitle", "好友请求");
-	$.$model.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
-}
+$.onWindowOpenDo(function() {
+	if ($.$model.isNew()) {
+		$.$model.xSet("fromUser", Alloy.Models.User);
+	    $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
+	    $.$model.xSet("type", "System.Friend.AddRequest");
+	    $.$model.xSet("messageState", "closed");
+	    $.$model.xSet("messageTitle", "好友请求");
+		//$.$model.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
+	}
+});
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	Alloy.Globals.Server.getData([{__dataType : "Friend", friendUserId : $.$model.xGet("toUser").xGet("id") , ownerUserId : Alloy.Models.User.id}], function(data){
 		if (data[0].length > 0) {

@@ -110,19 +110,21 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 					});
 	});
 }
-function setWaitForAccept() {
-	if ($.$model.xGet("state") === "Wait") {
-		$.checkAccept.setVisible(true);
-	}
-}
-$.onWindowOpenDo(function() {
-	setWaitForAccept();
-});
+// function setWaitForAccept() {
+	// if ($.$model.xGet("state") === "Wait") {
+		// $.checkAccept.setVisible(true);
+	// }
+// }
+// $.onWindowOpenDo(function() {
+	// setWaitForAccept();
+// });
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.sharePercentage.UIInit($, $.getCurrentWindow());
 $.friendDisplayName.UIInit($, $.getCurrentWindow());
-$.actualTotal.UIInit($, $.getCurrentWindow());
-$.apportionedTotal.UIInit($, $.getCurrentWindow());
+$.actualTotalText.UIInit($, $.getCurrentWindow());
+$.actualTotalMoney.UIInit($, $.getCurrentWindow());
+$.apportionedTotalText.UIInit($, $.getCurrentWindow());
+$.apportionedTotalMoney.UIInit($, $.getCurrentWindow());
 
 
