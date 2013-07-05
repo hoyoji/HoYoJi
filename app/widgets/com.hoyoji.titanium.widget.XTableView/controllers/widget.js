@@ -786,7 +786,7 @@ function getSectionNameOfRowModel(sectionName) {
 
 exports.setHeaderView = function(headerView) {
 	if (OS_ANDROID) {
-		if (Ti.Platform.Android.API_LEVEL < 11) {
+		// if (Ti.Platform.Android.API_LEVEL < 11) {
 			$.$view.add(headerView);
 			$.table.setTop(60);
 			// $.table.addEventListener("scroll", function(e){
@@ -798,9 +798,9 @@ exports.setHeaderView = function(headerView) {
 			// // $.table.setTop(60);
 			// }
 			// });
-		} else {
-			$.table.setHeaderView(headerView);
-		}
+		// } else {
+			// $.table.setHeaderView(headerView);
+		// }
 	} else {
 		$.table.setHeaderView(headerView);
 	}
@@ -1095,7 +1095,7 @@ if (OS_IOS) {
 // });
 // }
 exports.autoHideFooter = function(footer) {
-	var autoHideAnimationId;
+	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
 		var lastY;
 		$.table.addEventListener("touchend", function(e) {
@@ -1118,18 +1118,18 @@ exports.autoHideFooter = function(footer) {
 					if (Math.abs(delta) < 100) {
 						if (delta < 0) {
 							// if (autoHideAnimationId) {
-								// clearTimeout(autoHideAnimationId);
+							// clearTimeout(autoHideAnimationId);
 							// }
 							// autoHideAnimationId = setTimeout(function() {
-								footer.slideDown();
+							footer.slideDown();
 							// }, 1);
 							lastY = e.y + 5;
 						} else if (delta > 0) {
 							// if (autoHideAnimationId) {
-								// clearTimeout(autoHideAnimationId);
+							// clearTimeout(autoHideAnimationId);
 							// }
 							// autoHideAnimationId = setTimeout(function() {
-								footer.slideUp();
+							footer.slideUp();
 							// }, 1);
 							lastY = e.y - 5;
 						}
@@ -1156,42 +1156,34 @@ exports.autoHideFooter = function(footer) {
 			// direction = e.firstVisibleItem - lastDistance;
 			// lastDistance = e.firstVisibleItem;
 			// } else {
-			clearTimeout(autoHideAnimationId);
-			autoHideAnimationId = setTimeout(function() {
+			var offset = e.contentOffset.y;
+			var height = e.size.height;
+			var total = offset + height;
+			var theEnd = e.contentSize.height;
+			var distance = theEnd - total;
 
-				var offset = e.contentOffset.y;
-				var height = e.size.height;
-				var total = offset + height;
-				var theEnd = e.contentSize.height;
-				var distance = theEnd - total;
+			// going down is the only time we dynamically load,
+			// going up we can safely ignore -- note here that
+			// the values will be negative so we do the opposite
 
-				// going down is the only time we dynamically load,
-				// going up we can safely ignore -- note here that
-				// the values will be negative so we do the opposite
-
-				// adjust the % of rows scrolled before we decide to start fetching
-				// var nearEnd = theEnd * .9;
-				if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
-					// clearTimeout(autoHideAnimationId);
-					// autoHideAnimationId = setTimeout(
-					// function(){
+			// adjust the % of rows scrolled before we decide to start fetching
+			// var nearEnd = theEnd * .9;
+			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
+				clearTimeout(autoHideAnimationId);
+				autoHideAnimationId = setTimeout(function() {
 					footer.slideDown();
-					// }, 1
-					// );
-					lastDirection = true;
-				} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
-					// clearTimeout(autoHideAnimationId);
-					// autoHideAnimationId = setTimeout(
-					// function(){
-					footer.slideUp();
-					// }, 1
-					// );
-					lastDirection = false;
-				}
-				direction = distance - lastDistance;
-				lastDistance = distance;
 
-			}, 5);
+				}, 100);
+				lastDirection = true;
+			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
+				clearTimeout(autoHideAnimationId);
+				autoHideAnimationId = setTimeout(function() {
+					footer.slideUp();
+				}, 100);
+				lastDirection = false;
+			}
+			direction = distance - lastDistance;
+			lastDistance = distance;
 
 		});
 	}
