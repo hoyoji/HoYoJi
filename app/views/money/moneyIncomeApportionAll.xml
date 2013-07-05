@@ -8,7 +8,7 @@
 				bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="新增分摊成员,按占股摊,平摊" imagesFolder="/images/money/moneyIncomeDetailAll"
-		ids="addIncomeApportionMember,sharePercentage,halve"/>
+		buttons="添加成员,添加所有成员,按占股分摊,平均分摊" imagesFolder="/images/money/moneyIncomeDetailAll"
+		ids="addIncomeApportionMember,addAllIncomeApportionMember,sharePercentage,halve"/>
 	</View>
 </Alloy>
