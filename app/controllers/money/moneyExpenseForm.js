@@ -39,9 +39,9 @@ function updateApportionAmount() {
 		averageApportions.forEach(function(item) {
 			item.xSet("amount", average);
 		});
-		if(averageApportions.length === 0){
-			fixedApportions.forEach(function(item){
-				item.xSet("amount",$.$model.xGet("amount") * (item.getSharePercentage() / 100))
+		if (averageApportions.length === 0) {
+			fixedApportions.forEach(function(item) {
+				item.xSet("amount", $.$model.xGet("amount") * (item.getSharePercentage() / 100))
 			});
 		}
 	}
@@ -310,6 +310,45 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		});
 		//}
+
+		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+			if ($.$model.xGet("exchangeRate")) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrency : $.$model.xGet("localCurrency"),
+					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
+				});
+				exchange.xAddToSave($);
+			}
+		}
+
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+					item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+					item.xAddToSave($);
+				}
+			});
+			if ($.$model.xGet("moneyExpenseApportions").length < 1) {
+				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+					var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+						moneyExpense : $.$model,
+						friendUser : projectShareAuthorization.xGet("friendUser"),
+						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+						apportionType : "Fixed"
+					});
+					$.$model.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+				});
+			}
+
+		} else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+			var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
+			projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+			projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
+			projectShareAuthorization.xAddToSave($);
+		}
+
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
@@ -331,26 +370,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		});
 
-		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
-			if ($.$model.xGet("exchangeRate")) {
-				var exchange = Alloy.createModel("Exchange", {
-					localCurrency : $.$model.xGet("localCurrency"),
-					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-					rate : $.$model.xGet("exchangeRate"),
-					ownerUser : Alloy.Models.User
-				});
-				exchange.xAddToSave($);
-			}
-		}
-
-		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
-			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
-				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-					item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
-				}
-				item.xAddToSave($);
-			});
-		}
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {

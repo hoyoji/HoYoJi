@@ -54,11 +54,11 @@ function onFooterbarTap(e) {
 		
 	}
 	else if(e.source.id === "halve"){
-		var collections = $.moneyExpenseApportionsTable.getCollections();
+		var collections = selectedExpense.xGet("moneyExpenseApportions");
 		collections.forEach(function(item){
 			item.xSet("amount", selectedExpense.xGet("amount") / collections.length);
 			item.xSet("apportionType", "Average");
-		})
+		});
 	}
 }
 
@@ -75,7 +75,6 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedE
 	selectedExpense.xGet("moneyExpenseApportions").reset();
 
 	selectedExpense.hasAddedApportions = true;
-	var memberCount = selectedExpense.xGet("project").xGet("projectShareAuthorizations").length;
 	var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
 	selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {

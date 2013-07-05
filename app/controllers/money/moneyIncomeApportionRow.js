@@ -15,6 +15,10 @@ $.$model.on("_xchange:amount", function() {
 	$.amount.refresh();
 });
 
+$.$model.on("_xchange:apportionType", function() {
+	$.apportionType.refresh();
+});
+
 $.removeMember.addEventListener("singletap", function() {
 	$.deleteModel();
 });

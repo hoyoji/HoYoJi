@@ -75,6 +75,7 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(item){
 					if(self.xGet("friendUser") === item.xGet("friendUser")){
 						sharePercentage = item.xGet("sharePercentage");
+						return;
 					}
 				});
 				return sharePercentage;
