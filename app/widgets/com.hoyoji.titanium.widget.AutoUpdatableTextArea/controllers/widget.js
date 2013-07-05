@@ -21,15 +21,14 @@ $.$view.addEventListener("singletap", function(e) {
 		// }
 	// }
 
-	Alloy.Globals.openWindow("textInput", {
-		title : $.label.getText(), 
-		field : $, 
-		selectorCallback : function(value){
-			$.setValue(value);
-			$.field.fireEvent("change");
-		}
-	});
-	
+		Alloy.Globals.openWindow("textInput", {
+			title : $.label.getText(), 
+			field : $, 
+			selectorCallback : function(value){
+				$.setValue(value);
+				$.field.fireEvent("change");
+			}
+		});
 });
 
 $.setEditable = function(editable) {
