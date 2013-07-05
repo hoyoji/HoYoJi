@@ -42,6 +42,10 @@ function onFooterbarTap(e) {
 		attributes.selectedModel = $.projectShareAuthorization;
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 	}
+	else if(e.source.id === "addAllExpenseApportionMember"){
+		
+		
+	}
 	else if(e.source.id === "sharePercentage"){
 		if(selectedExpense.xGet("moneyExpenseApportions").length !== selectedExpense.xGet("project").xGet("projectShareAuthorizations").length) {
 			alert("只有全部项目成员都参与才能按占股摊");
