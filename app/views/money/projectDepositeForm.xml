@@ -41,6 +41,7 @@
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
 					id="project" autoInit="false"
+					editModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
@@ -70,6 +71,7 @@
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  id="friendUser" labelText="收款人" hintText="请选择收款人" hideKeyboard="true"
 				onSingletap="openFriendSelector" autoInit="false"
+				editModeEditability="noneditable"
 				/>
 				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" id="friendAccount" labelText="商家账户" hintText="无商家账户"
 				bindModel="$.$model"

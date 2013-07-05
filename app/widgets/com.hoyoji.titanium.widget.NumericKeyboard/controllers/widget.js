@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var activeTextField, oldValue="", confirmCB = null, openBottom = 0;
+var activeTextField, confirmCB = null, openBottom = 0;
 
 exports.close = function() {
 	console.info("close NumericKeyboard");
@@ -66,17 +66,16 @@ function numPress(e) {
 		flagNewNum = false;
 	} else {
 		var readout = $.display.getText();
-		if(!readout){
-			readout = 0;
-		}else{
-			readout = readout + "";
-		}
-		if (readout + oldValue === "0" || readout + oldValue === "") {
+		// if(!readout){
+			// readout = 0;
+		// }else{
+			// readout = readout + "";
+		// }
+		if (readout === "0" || readout === "") {
 			// activeTextField.setValue(e.source.getTitle());
 			$.display.setText(e.source.getTitle());
 		} else {
-			var thisNum = (readout || 0) + oldValue + e.source.getTitle();
-			oldValue = ""
+			var thisNum = readout + e.source.getTitle();
 			// activeTextField.setValue(thisNum);
 			$.display.setText(thisNum);
 		}
@@ -93,11 +92,11 @@ function doubleClickNumPress(e){
 //+-*/操作
 function operation(e) {
 	var readout = $.display.getText();
-	if(!readout){
-		readout = "0";
-	}else{
-		readout = readout + "";
-	}
+	// if(!readout){
+		// readout = "0";
+	// }else{
+		// readout = readout + "";
+	// }
 	// if($.display.getText()===""){
 		// readout = 0;
 	// }
@@ -144,20 +143,20 @@ function operation(e) {
 //小数点
 function decimal() {
 	var curReadOut = $.display.getText() || "0";
-	if(!curReadOut){
-		curReadOut = "0";
-	}else{
-		curReadOut = curReadOut + "";
-	}
+	// if(!curReadOut){
+		// curReadOut = "0";
+	// }else{
+		// curReadOut = curReadOut + "";
+	// }
 	if (flagNewNum) {
 		curReadOut = "0.";
 		flagNewNum = false;
 	} else {
 		if (curReadOut.indexOf(".") == -1) {
 			curReadOut += ".";
-			oldValue = ".";
+			// oldValue = ".";
 		}else{
-			oldValue = "";
+			// oldValue = "";
 		}
 	}
 	// activeTextField.setValue(curReadOut);
@@ -169,11 +168,11 @@ function decimal() {
 //退格键
 function backspace() {
 	var readout = $.display.getText();
-	if(!readout){
-		readout = "0";
-	}else{
-		readout = readout + "";
-	}
+	// if(!readout){
+		// readout = "0";
+	// }else{
+		// readout = readout + "";
+	// }
 	var len = readout.length;
 	if (len > 1) {
 		if (parseFloat(readout) < 0 && len === 2) {
@@ -233,11 +232,11 @@ function cancel() {
 function equalToValue() {
 	if(pendingOp !== "=" && pendingOp !== ""){
 		var readout = $.display.getText();
-		if(!readout){
-			readout = "0";
-		}else{
-			readout = readout + "";
-		}
+		// if(!readout){
+			// readout = "0";
+		// }else{
+			// readout = readout + "";
+		// }
 		var pendOp = pendingOp;
 		if (flagNewNum && pendOp !== "=");
 		else {
