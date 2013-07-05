@@ -159,19 +159,19 @@ function createRowView(rowModel, collection) {
 			collectionId : collection.id
 		});
 	} else {
-		if (Ti.Platform.Android.API_LEVEL < 11) {
+		// if (Ti.Platform.Android.API_LEVEL < 11) {
 			var row = Ti.UI.createTableViewRow({
 				id : rowModel.xGet("id"),
 				// className : collection.__rowView || rowModel.config.rowView,
 				collectionId : collection.id
 			});
-		} else {
-			var row = Ti.UI.createTableViewRow({
-				id : rowModel.xGet("id"),
-				className : collection.__rowView || rowModel.config.rowView,
-				collectionId : collection.id
-			});
-		}
+		// } else {
+			// var row = Ti.UI.createTableViewRow({
+				// id : rowModel.xGet("id"),
+				// className : collection.__rowView || rowModel.config.rowView,
+				// collectionId : collection.id
+			// });
+		// }
 	}
 	var rowViewController;
 	if ($.__currentWindow && $.__parentController) {
@@ -1095,6 +1095,11 @@ if (OS_IOS) {
 // });
 // }
 exports.autoHideFooter = function(footer) {
+	if(OS_IOS){
+		$.table.setBottom(50);
+		return;		
+	}
+	
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
 		var lastY;
