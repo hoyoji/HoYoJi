@@ -15,8 +15,24 @@ $.$model.on("_xchange:amount", function() {
 	$.amount.refresh();
 });
 
+$.$model.on("_xchange:apportionType", function() {
+	$.apportionType.refresh();
+});
+
 $.removeMember.addEventListener("singletap", function() {
 	$.deleteModel();
+});
+
+$.$view.addEventListener("singletap", function(e){
+	if(e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
+		if($.apportionType.getValue() === "Fixed") {
+			$.apportionType.setValue("Average");
+		}
+		else if($.apportionType.getValue() === "Average") {
+			$.apportionType.setValue("Fixed");
+		}
+		$.apportionType.field.fireEvent("change");
+	}
 });
 
 $.$model.on("_xchange:apportionType", function() {
