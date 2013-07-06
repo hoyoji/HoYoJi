@@ -45,15 +45,30 @@
 			}
 			return win;
 		}
-
-		exports.Utils.cacheWindow = function(windowName, options) {
+		
+		exports.Utils.openLightWindow = function(baseWindow, windowName, options, loadOnly) {
+			var win = Alloy.Globals.openingWindow[windowName];
+			if (!win || loadOnly) {
+				win = Alloy.createController("lightWindow", {
+					autoInit : "false"
+				});
+				win.openWin(baseWindow, windowName, options, loadOnly);
+				win.UIInit();
+				if (!loadOnly) {
+					Alloy.Globals.openingWindow[windowName] = win;
+				}
+			}
+			return win;
+		}
+		
+		exports.Utils.cacheWindow = function(baseWindow, windowName, options) {
 			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
-				Alloy.Globals.openedWindow[windowName] = exports.Utils.openWindow(windowName, options, true);
+				Alloy.Globals.openedWindow[windowName] = exports.Utils.openLightWindow(baseWindow, windowName, options, true);
 				function reCacheWindow(e) {
 					Alloy.Globals.openedWindow[windowName].$view.removeEventListener("close", reCacheWindow);
 					if (Alloy.Globals.openedWindow[windowName].$view === e.source) {
 						delete Alloy.Globals.openedWindow[windowName];
-						exports.Utils.cacheWindow(windowName);
+						exports.Utils.cacheWindow(baseWindow, windowName);
 					}
 				}
 
@@ -62,8 +77,8 @@
 			}
 		}
 
-		exports.Utils.openCachedWindow = function(windowName) {
-			exports.Utils.cacheWindow(windowName);
+		exports.Utils.openCachedWindow = function(baseWindow, windowName) {
+			exports.Utils.cacheWindow(baseWindow, windowName);
 			Alloy.Globals.openedWindow[windowName].openCachedWindow();
 		}
 

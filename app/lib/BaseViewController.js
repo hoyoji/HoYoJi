@@ -50,9 +50,9 @@
 						row = Ti.UI.createTableViewRow({
 							title : title,
 							color : 'gray',
-							backgroundColor : "transparent",
-							height : Alloy.CFG.UI.DefaultRowHeight,
-							backgroundImage : '/images/headerTitle_green.png'
+							backgroundColor : "#e9f3f0",
+							height : Alloy.CFG.UI.DefaultRowHeight
+							// backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", function(e) {
 							e.cancelBubble = true;
@@ -60,10 +60,10 @@
 					} else {
 						row = Ti.UI.createTableViewRow({
 							title : title,
-							color : 'white',
-							backgroundColor : "transparent",
-							height : Alloy.CFG.UI.DefaultRowHeight,
-							backgroundImage : '/images/headerTitle_green.png'
+							color : '#2E8B57',
+							backgroundColor : "#e9f3f0",
+							height : Alloy.CFG.UI.DefaultRowHeight
+							// backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", callback);
 					}
@@ -103,13 +103,11 @@
 				}
 				e.cancelBubble = true;
 				if(Alloy.Globals.openingMenu){
-					 var a = 1;
 					return false;
 				}
 				Alloy.Globals.openingMenu = true;
 				var sourceModel;
 				if ($.$model) {
-					console.info("longpress " + $.$model.xGet("name"));
 					sourceModel = {
 						type : $.$model.config.adapter.collection_name,
 						id : $.$model.xGet("id")

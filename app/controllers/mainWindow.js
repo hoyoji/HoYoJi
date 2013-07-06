@@ -25,7 +25,7 @@ $.onWindowCloseDo(function() {
 	Alloy.Globals.mainWindow = null;
 	Alloy.Globals.DataStore.initStore();
 });
-
+// 
 $.home = Alloy.createController("home/home", {
 	currentWindow : $,
 	parentController : $,
@@ -34,9 +34,10 @@ $.home = Alloy.createController("home/home", {
 $.home.setParent($.page2);
 $.home.UIInit();
 
-// $.onWindowOpenDo(function() {
-	// Alloy.Globals.cacheWindow("money/moneyAddNew");
-// });
+
+$.onWindowOpenDo(function() {
+	Alloy.Globals.cacheWindow($, "money/moneyAddNew");
+});
 
 if (Alloy.Models.User.xGet("messageBox")) {
 	Alloy.Models.User.xGet("messageBox").processNewMessages();
