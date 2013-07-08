@@ -13,8 +13,8 @@ function onFooterbarTap(e) {
 				$.projectShareAuthorization = model;
 				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
 				var hasMember;
-				oldCollection.forEach(function(item){
-					if(item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")){
+				oldCollection.forEach(function(item) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")) {
 						hasMember = true;
 						return;
 					}
@@ -41,25 +41,35 @@ function onFooterbarTap(e) {
 		attributes.selectModelCanBeNull = false;
 		attributes.selectedModel = $.projectShareAuthorization;
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
-	}
-	else if(e.source.id === "addAllExpenseApportionMember"){
-		
-		
-	}
-	else if(e.source.id === "sharePercentage"){
-		if(selectedExpense.xGet("moneyExpenseApportions").length !== selectedExpense.xGet("project").xGet("projectShareAuthorizations").length) {
-			alert("只有全部项目成员都参与才能按占股摊");
-		}else {
-			selectedExpense.xGet("moneyExpenseApportions").forEach(function(item){
-				item.xSet("amount", selectedExpense.xGet("amount") * (item.getSharePercentage() / 100));
-				item.xSet("apportionType", "Fixed");
-			});
+	} else if (e.source.id === "addAllExpenseApportionMember") {
+		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+		var existApportion = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model){
+			return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
+		}, $);
+		if(existApportion.length < 1){
+			var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+			moneyExpense : selectedExpense,
+			friendUser : projectShareAuthorization.xGet("friendUser"),
+			amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+			apportionType : "Fixed"
+		});
+		selectedExpense.xGet("moneyExpenseApportions").add(expenseApportion);
 		}
-		
-	}
-	else if(e.source.id === "halve"){
+	});
+
+	} else if (e.source.id === "sharePercentage") {
+		// if(selectedExpense.xGet("moneyExpenseApportions").length !== selectedExpense.xGet("project").xGet("projectShareAuthorizations").length) {
+		// alert("只有全部项目成员都参与才能按占股摊");
+		// }else {
+		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
+			item.xSet("amount", selectedExpense.xGet("amount") * (item.getSharePercentage() / 100));
+			item.xSet("apportionType", "Fixed");
+		});
+		// }
+
+	} else if (e.source.id === "halve") {
 		var collections = selectedExpense.xGet("moneyExpenseApportions");
-		collections.forEach(function(item){
+		collections.forEach(function(item) {
 			item.xSet("amount", selectedExpense.xGet("amount") / collections.length);
 			item.xSet("apportionType", "Average");
 		});
