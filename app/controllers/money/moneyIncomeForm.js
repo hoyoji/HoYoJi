@@ -307,7 +307,7 @@ if ($.saveableMode === "read") {
 			}
 		}
 
-		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
 					item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") + $.$model.xGet("amount"));
@@ -315,7 +315,7 @@ if ($.saveableMode === "read") {
 				}
 			});
 
-			if ($.$model.xGet("moneyIncomeApportions").length < 0) {
+			if ($.$model.xGet("moneyIncomeApportions").length < 1) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 					var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 						moneyIncome : $.$model,

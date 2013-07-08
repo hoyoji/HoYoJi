@@ -20,7 +20,14 @@ $.$model.on("_xchange:apportionType", function() {
 });
 
 $.removeMember.addEventListener("singletap", function() {
+	if($.$model.isNew()){
+		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
+		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item){
+			item.trigger("_xChange");
+		});
+	}else{
 	$.deleteModel();
+	}
 });
 
 $.$view.addEventListener("singletap", function(e){
@@ -53,7 +60,7 @@ $.onWindowOpenDo(function() {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	}
-	oldAmount = $.$model.xGet("amount");
+	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
 		if ($.amount.getValue() && $.$model.xGet("moneyIncome").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyIncome").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
 			alert("分摊金额大于实际收入金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新输入");

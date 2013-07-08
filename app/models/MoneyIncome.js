@@ -35,7 +35,7 @@ exports.definition = {
 				attribute : "moneyIncome"
 			},
 			moneyIncomeApportions : {
-				type : "MoneyIncomeDetail",
+				type : "MoneyIncomeApportion",
 				attribute : "moneyIncome"
 			}
 		},
