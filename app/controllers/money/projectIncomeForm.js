@@ -170,7 +170,7 @@ if ($.saveableMode === "read") {
 					"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.id,
 					"type" : "Project.Deposite.Response",
-					"messageState" : "unread",
+					"messageState" : "new",
 					"messageTitle" : "充值回复",
 					"date" : date,
 					"detail" : $.$model.xGet("detail"),

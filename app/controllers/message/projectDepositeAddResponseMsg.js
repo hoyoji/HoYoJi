@@ -123,8 +123,8 @@ function importToLocalOperate() {
 			$model : account,
 			selectedDepositeMsg : $.$model
 		});
-		$.$model.xSet("messageState", "closed");
-		$.$model.xAddToSave(accountShareMsgController.content);
+		// $.$model.xSet("messageState", "closed");
+		// $.$model.xAddToSave(accountShareMsgController.content);
 		account.xAddToSave(accountShareMsgController.content);
 		accountShareMsgController.addEventListener("contentready", function() {
 			accountShareMsgController.content.titleBar.dirtyCB();

@@ -7,7 +7,7 @@ $.onWindowOpenDo(function() {
 	    $.$model.xSet("type", "System.Friend.AddRequest");
 	    $.$model.xSet("messageState", "closed");
 	    $.$model.xSet("messageTitle", "好友请求");
-		//$.$model.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
+		$.$model.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
 	}
 });
 
