@@ -37,6 +37,11 @@ function updateApportionAmount() {
 		averageApportions.forEach(function(item) {
 			item.xSet("amount", average);
 		});
+		if (averageApportions.length === 0) {
+			fixedApportions.forEach(function(item) {
+				item.xSet("amount", $.$model.xGet("amount") * (item.getSharePercentage() / 100))
+			});
+		}
 	}
 }
 
