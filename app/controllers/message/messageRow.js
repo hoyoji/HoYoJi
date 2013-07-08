@@ -35,6 +35,7 @@ $.onRowTap = function(e){
 			Alloy.Globals.openWindow("message/accountShareManageMsg", {$model : $.$model, saveableMode : "read"});
 			return false;
 		}else if($.$model.xGet("type").startsWith("Project.Deposite")){
+			
 			Alloy.Globals.openWindow("message/projectDepositeAddResponseMsg", {$model : $.$model, saveableMode : "read"});
 			return false;
 		}

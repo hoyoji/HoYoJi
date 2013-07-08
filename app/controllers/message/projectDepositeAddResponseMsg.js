@@ -4,11 +4,11 @@ var accountShareData = JSON.parse($.$model.xGet("messageData"));
 var datetime = new Date(accountShareData.account.date);
 var onFooterbarTap = function(e) {
 	if (e.source.id === "importToLocal") {
-		if ($.$model.xGet('messageState') === "closed") {
-			alert("您不能重复接受充值");
-		} else {
+		// if ($.$model.xGet('messageState') === "closed") {
+			// alert("您不能重复接受充值");
+		// } else {
 			importToLocalOperate();
-		}
+		// }
 	}
 }
 
@@ -125,8 +125,8 @@ function importToLocalOperate() {
 		});
 		// $.$model.xSet("messageState", "closed");
 		// $.$model.xAddToSave(accountShareMsgController.content);
-		account.xAddToSave(accountShareMsgController.content);
-		accountShareMsgController.addEventListener("contentready", function() {
+		accountShareMsgController.$view.addEventListener("contentready", function() {
+			account.xAddToSave(accountShareMsgController.content);
 			accountShareMsgController.content.titleBar.dirtyCB();
 		});
 	}
