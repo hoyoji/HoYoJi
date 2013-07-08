@@ -45,7 +45,7 @@
 			}
 			return win;
 		}
-		
+
 		exports.Utils.openLightWindow = function(baseWindow, windowName, options, loadOnly) {
 			var win = Alloy.Globals.openingWindow[windowName];
 			if (!win || loadOnly) {
@@ -60,7 +60,7 @@
 			}
 			return win;
 		}
-		
+
 		exports.Utils.cacheWindow = function(baseWindow, windowName, options) {
 			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
 				Alloy.Globals.openedWindow[windowName] = exports.Utils.openLightWindow(baseWindow, windowName, options, true);
@@ -96,6 +96,13 @@
 		}
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
+			// scView.addEventListener("scroll", function(){
+				// Alloy.Globals.scrollableViewScrolling = true;
+			// });
+			// scView.addEventListener("scrollend", function(){
+				// Alloy.Globals.scrollableViewScrolling = false;
+			// });
+			
 			if (OS_ANDROID) {
 				scView.getViews().map(function(view) {
 					view.addEventListener("longpress", function(e) {
@@ -108,6 +115,12 @@
 					view.addEventListener("touchstart", function(e) {
 						scView.fireEvent("touchstart", e);
 					});
+					// view.addEventListener("touchmove", function(e) {
+						// scView.fireEvent("touchmove", e);
+					// });
+					// view.addEventListener("touchend", function(e) {
+						// scView.fireEvent("touchend", e);
+					// });
 					view.addEventListener("becamedirty", function(e) {
 						scView.fireEvent("becamedirty", e);
 					});
@@ -140,7 +153,15 @@
 						scView.fireEvent("textfieldfocused", e);
 					});
 				})
-			}
+			} 
+			// else {
+					// scView.addEventListener("opencontextmenu", function(e) {
+						// if(!Alloy.Globals.contextMenuScrollableView){
+							// Alloy.Globals.contextMenuScrollableView = scView;
+							// Alloy.Globals.contextMenuScrollableViewPage = scView.currentPageAsFloat;
+						// }
+					// });
+			// }
 		}
 
 		String.prototype.contains = function(it) {

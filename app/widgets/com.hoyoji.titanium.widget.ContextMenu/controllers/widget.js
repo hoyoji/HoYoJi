@@ -75,9 +75,24 @@ exports.close = function() {
 }
 
 exports.open = function(menuSections, menuHeader, menuFooter) {
+	    // if(Ti.Platform.model != 'Kindle Fire'){
+			// Ti.Media.vibrate();		
+		// }
+		// if(OS_IOS){
+			// if(Alloy.Globals.contextMenuScrollableView && 
+				// Alloy.Globals.contextMenuScrollableView.currentPageAsFloat !==  Alloy.Globals.contextMenuScrollableViewPage){
+				// Alloy.Globals.MenuSections = [];
+				// Alloy.Globals.openingMenu = false;
+				// delete Alloy.Globals.contextMenuScrollableView;
+				// delete Alloy.Globals.contextMenuScrollableViewPage;
+				// return;
+			// }
+		// }
+		
+		$.getCurrentWindow().closeSoftKeyboard();
 		$.widget.show();
-		$.hiddenText.focus();
-		$.hiddenText.blur();
+		// $.hiddenText.focus();
+		// $.hiddenText.blur();
 		var animation = Titanium.UI.createAnimation();
 		animation.left = "50%";
 		animation.duration = 500;
@@ -89,7 +104,7 @@ exports.open = function(menuSections, menuHeader, menuFooter) {
 			// _menuSections.push(menuSections[i].makeContextMenu());
 		// }
 		
-		$.table.data = menuSections;
-		$.header.data = menuHeader;
-		$.footer.data = menuFooter;
+		$.table.setData(menuSections);
+		$.header.setData(menuHeader);
+		$.footer.setData(menuFooter);
 }

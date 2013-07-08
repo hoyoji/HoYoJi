@@ -1081,7 +1081,8 @@ exports.getSortOrder = function() {
 }
 if (OS_IOS) {
 	$.table.footerView.addEventListener("touchstart", function(e) {
-		$.$view.fireEvent("touchstart");
+		e.cancelBubble = true;
+		$.getCurrentWindow().closeSoftKeyboard();
 	});
 }
 
@@ -1152,7 +1153,7 @@ exports.autoHideFooter = function(footer) {
 	}
 
 	if (OS_IOS) {
-		var lastDistance = 0, direction, lastDirection = false;
+		var lastDistance, direction, lastDirection = false;
 		$.table.removeEventListener("scroll", cancelBubble);
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
@@ -1180,23 +1181,27 @@ exports.autoHideFooter = function(footer) {
 
 			// adjust the % of rows scrolled before we decide to start fetching
 			// var nearEnd = theEnd * .9;
+			
 			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
 				clearTimeout(autoHideAnimationId);
 				autoHideAnimationId = setTimeout(function() {
 					footer.slideDown();
-
-				}, 100);
+				}, 50);
 				lastDirection = true;
 			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
 				clearTimeout(autoHideAnimationId);
 				autoHideAnimationId = setTimeout(function() {
 					footer.slideUp();
-				}, 100);
+				}, 50);
 				lastDirection = false;
 			}
 			direction = distance - lastDistance;
 			lastDistance = distance;
-
+			// var footerTop = footer.$view.getRect().bottom - footer.$view.getRect().top;
+			// if(offset > 0 && distance > 0 && direction && footerTop <= 42 && footerTop >= 0){
+				// var bottom = Number(footer.$view.getBottom()) + direction;
+					// footer.$view.setBottom(Math.min(Math.max(bottom, -42), 0));
+			// }
 		});
 	}
 }

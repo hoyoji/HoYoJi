@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#e1e1e1">
-		<TableView id="table" platform="ios" top="0" left="0" allowSelection="false"
+		<TableView id="table" platform="ios" top="0" left="0"
 			 backgroundColor="#f5f5f5">
 			<FooterView>
 				<View height="50" width="Ti.UI.FILL" >
@@ -8,7 +8,7 @@
 				</View>
 			</FooterView>
         </TableView>
-        <TableView id="table" platform="android" top="0" left="0" bottom="50" allowSelection="false"
+        <TableView id="table" platform="android" top="0" left="0" bottom="50" 
 			 backgroundColor="#f5f5f5">
         </TableView>
         <View platform="android" height="50" width="Ti.UI.FILL" bottom="0" >
