@@ -1,3 +1,10 @@
 ".container": {
 	backgroundColor: "white"
 }
+".apportionType": {
+	color: "#6e6d6d",
+	font: {
+		fontSize: 9,
+		fontWeight: 'normal'
+	}
+}
