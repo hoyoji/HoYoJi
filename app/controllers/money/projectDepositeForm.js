@@ -221,8 +221,11 @@ if ($.saveableMode === "read") {
 				for (var attr in $.$model.config.columns) {
 					account[attr] = $.$model.xGet(attr);
 				}
-				
-				
+				account["localCurrencyId"] = $.$model.xGet("localCurrency").xGet("id");
+				account["projectId"] = $.$model.xGet("project").xGet("id");
+				account["moneyExpenseCategoryId"] = $.$model.xGet("moneyExpenseCategory").xGet("id");
+				account["localCurrencyId"] = $.$model.xGet("localCurrency").xGet("id");
+				account["moneyAccountId"] = $.$model.xGet("moneyAccount").xGet("id");
 				
 				Alloy.Globals.Server.sendMsg({
 					id : guid(),

@@ -223,38 +223,8 @@ exports.definition = {
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
-					
-					if(this.xGet("expenseType") === "Deposite"){
-						Alloy.Globals.Server.sendMsg({
-							id : guid(),
-							"toUserId" : this.xGet("friendUserId"),
-							"fromUserId" : Alloy.Models.User.id,
-							"type" : "Project.Deposite.Delete",
-							"messageState" : "new",
-							"messageTitle" : "删除充值",
-							"date" : date,
-							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "删除了充值支出",
-							"messageBoxId" : this.xGet("friendUser").xGet("messageBoxId"),
-							messageData : JSON.stringify({
-								accountType : "MoneyExpense",
-								accountId : this.xGet("id"),
-								depositeProject : this.xGet("project")
-							})
-						}, function() {
-							var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								projectId : this.xGet("project").xGet("id"),
-								friendUserId : Alloy.Models.User.id
-							});
-							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - newAmount);
-							projectShareAuthorization.xAddToSave($);
-							this._xDelete(xFinishCallback, options);
-						}, function(e) {
-							alert(e.__summary.msg);
-						});
-					 }else{
-						this._xDelete(xFinishCallback, options);
-					 }
 
+					this._xDelete(xFinishCallback, options);
 				}
 			},
 			canAddNew : function() {
