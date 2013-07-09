@@ -78,15 +78,6 @@
 						$.contextMenu.close();
 					}
 				}
-				// makeContextMenu : function() {
-				// var menuSection = Ti.UI.createTableViewSection({
-				// headerTitle : '测试功能'
-				// });
-				// menuSection.add($.createContextMenuItem("Say Hello", function() {
-				// alert("hello");
-				// }));
-				// return menuSection;
-				// }
 			});
 			if ($.$view.contextMenu !== "false") {
 				$.__views.contextMenu = Alloy.createWidget("com.hoyoji.titanium.widget.ContextMenu", "widget", {

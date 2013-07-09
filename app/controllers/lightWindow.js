@@ -58,9 +58,9 @@ exports.open = function(baseWindow, contentController, loadOnly) {
 	if (loadOnly) {
 		$.$view.setVisible(false);
 	} else {
-		if (OS_ANDROID) {
-			$.$view.addEventListener('androidback', $.__androidBackFunction);
-		}
+		// if (OS_ANDROID) {
+			// $.$view.addEventListener('androidback', $.__androidBackFunction);
+		// }
 	}
 	// setTimeout(function(){
 	baseWindow.$view.add($.$view);
