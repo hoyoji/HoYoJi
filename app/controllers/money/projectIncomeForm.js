@@ -170,10 +170,10 @@ if ($.saveableMode === "read") {
 					"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
 					"fromUserId" : Alloy.Models.User.id,
 					"type" : "Project.Deposite.Response",
-					"messageState" : "unread",
+					"messageState" : "new",
 					"messageTitle" : "充值回复",
 					"date" : date,
-					"detail" : $.$model.xGet("detail"),
+					"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
 					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
 					messageData : selectedDepositeMsg.xGet("messageData")
 				}, function() {
