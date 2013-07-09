@@ -127,6 +127,12 @@ $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
+	
+	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
+			$.apportion.$view.setHeight(0);
+		} else {
+			$.apportion.$view.setHeight(42);
+		}
 
 });
 $.onWindowCloseDo(function() {
@@ -159,11 +165,6 @@ if ($.saveableMode === "read") {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
-		}
-		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-			$.apportion.$view.setHeight(0);
-		} else {
-			$.apportion.$view.setHeight(42);
 		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});

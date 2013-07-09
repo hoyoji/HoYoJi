@@ -139,6 +139,12 @@ $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
+
+	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
+		$.apportion.$view.setHeight(0);
+	} else {
+		$.apportion.$view.setHeight(42);
+	}
 });
 
 $.onWindowCloseDo(function() {
@@ -167,11 +173,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
-		}
-		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-			$.apportion.$view.setHeight(0);
-		} else {
-			$.apportion.$view.setHeight(42);
 		}
 	});
 
@@ -342,12 +343,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				});
 			}
 
-		} 
+		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
-			// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
-			// projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + $.$model.xGet("amount"));
-			// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
-			// projectShareAuthorization.xAddToSave($);
+		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
+		// projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
+		// projectShareAuthorization.xAddToSave($);
 		// }
 
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
