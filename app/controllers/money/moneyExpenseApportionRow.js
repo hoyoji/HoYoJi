@@ -20,7 +20,14 @@ $.$model.on("_xchange:apportionType", function() {
 });
 
 $.removeMember.addEventListener("singletap", function() {
+	if($.$model.isNew()){
+		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
+		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item){
+			item.trigger("_xChange");
+		});
+	}else{
 	$.deleteModel();
+	}
 });
 
 $.$view.addEventListener("singletap", function(e){

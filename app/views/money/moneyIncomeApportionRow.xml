@@ -6,19 +6,19 @@
 			bindModel = "$.$model"
 			bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" top="0" left="180" height="28"
+			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180"  width="30%" height="28"
+				id="amount" autoInit="false"
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel = "$.$model"
+			bindAttribute = "amount"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" top="36" left="180" height="20"
 				id="apportionType" autoInit="false"
 			hightLight="false"
 			items="固定,均摊"
 			values="Fixed,Average"
 			bindModel="$.$model"
 			bindAttribute="apportionType"/>
-			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180" top="28" width="30%" height="28"
-				id="amount" autoInit="false"
-			editModeEditability="noneditable" addModeEditability="noneditable"
-			bindModel = "$.$model"
-			bindAttribute = "amount"
-			/>
 			<Label id="removeMember" right="0" height="56"  width="10%" backgroundColor="red">del<Label/>
 		</View>
 	</View>

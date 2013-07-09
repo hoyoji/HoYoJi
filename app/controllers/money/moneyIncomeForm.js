@@ -37,6 +37,11 @@ function updateApportionAmount() {
 		averageApportions.forEach(function(item) {
 			item.xSet("amount", average);
 		});
+		if (averageApportions.length === 0) {
+			fixedApportions.forEach(function(item) {
+				item.xSet("amount", $.$model.xGet("amount") * (item.getSharePercentage() / 100))
+			});
+		}
 	}
 }
 
@@ -122,6 +127,12 @@ $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
+	
+	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
+			$.apportion.$view.setHeight(0);
+		} else {
+			$.apportion.$view.setHeight(42);
+		}
 
 });
 $.onWindowCloseDo(function() {
@@ -154,11 +165,6 @@ if ($.saveableMode === "read") {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
-		}
-		if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-			$.apportion.$view.setHeight(0);
-		} else {
-			$.apportion.$view.setHeight(42);
 		}
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
@@ -307,7 +313,7 @@ if ($.saveableMode === "read") {
 			}
 		}
 
-		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
 					item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") + $.$model.xGet("amount"));
@@ -315,7 +321,7 @@ if ($.saveableMode === "read") {
 				}
 			});
 
-			if ($.$model.xGet("moneyIncomeApportions").length < 0) {
+			if ($.$model.xGet("moneyIncomeApportions").length < 1) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 					var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 						moneyIncome : $.$model,
