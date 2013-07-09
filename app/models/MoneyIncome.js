@@ -35,7 +35,7 @@ exports.definition = {
 				attribute : "moneyIncome"
 			},
 			moneyIncomeApportions : {
-				type : "MoneyIncomeDetail",
+				type : "MoneyIncomeApportion",
 				attribute : "moneyIncome"
 			}
 		},
@@ -206,6 +206,11 @@ exports.definition = {
 						msg : "当前收入的明细不为空，不能删除"
 					})
 				} else {
+					if (this.xGet("moneyIncomeApportions") === 1) {
+						this.xGet("moneyIncomeApportions").forEach(function(item) {
+							item._xDelete();
+						});
+					}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					var saveOptions = _.extend({}, options);
