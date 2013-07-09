@@ -214,10 +214,11 @@ exports.definition = {
 					xFinishCallback && xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
 					});
-				} else {
-					if (this.xGet("moneyExpenseApportions") === 1) {
-                       this.xGet("moneyExpenseApportions").at[0].deleteModel();
-					}
+				} else {if(this.xGet("moneyExpenseApportions") === 1){
+					this.xGet("moneyExpenseApportions").forEach(function(item) {
+						item._xDelete();
+					});
+				}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					var saveOptions = _.extend({}, options);

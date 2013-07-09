@@ -207,7 +207,9 @@ exports.definition = {
 					})
 				} else {
 					if (this.xGet("moneyIncomeApportions") === 1) {
-                       this.xGet("moneyIncomeApportions").at[0].deleteModel();
+						this.xGet("moneyIncomeApportions").forEach(function(item) {
+							item._xDelete();
+						});
 					}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");

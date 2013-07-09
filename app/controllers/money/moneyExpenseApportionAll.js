@@ -83,7 +83,7 @@ if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject 
 	selectedExpense.oldProject = selectedExpense.xGet("project");
 }
 
-if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 1) {
+if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 2) {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
 	$.moneyExpenseApportionsTable.removeCollection(collection);
 	selectedExpense.xGet("moneyExpenseApportions").reset();
