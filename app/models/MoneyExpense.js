@@ -190,9 +190,9 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					if(friend && friend.id){
+					if (friend && friend.id) {
 						ownerUserSymbol = friend.getDisplayName();
-					}else{
+					} else {
 						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
 					}
 				}
@@ -210,12 +210,14 @@ exports.definition = {
 			// this.xSet("amount", amount);
 			// },
 			xDelete : function(xFinishCallback, options) {
-				if (options.syncFromServer !== true 
-					&& this.xGet("moneyExpenseDetails").length > 0) {
+				if (options.syncFromServer !== true && this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback && xFinishCallback({
 						msg : "当前支出的明细不为空，不能删除"
 					});
 				} else {
+					if (this.xGet("moneyExpenseApportions") === 1) {
+                       this.xGet("moneyExpenseApportions").at[0].deleteModel();
+					}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					var saveOptions = _.extend({}, options);
@@ -273,11 +275,11 @@ exports.definition = {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
 				// __syncAmount 是临时变量。当支出的金额不能直接使用服务器上的支出金额时（比如要通过支出明细来更新支出金额），我们把更新的支出金额保存到这个临时变量。
-				if(record.useDetailsTotal && this.__syncAmount !== undefined){
+				if (record.useDetailsTotal && this.__syncAmount !== undefined) {
 					record.amount = this.__syncAmount + this.xGet("moneyExpenseDetails").xSum("amount");
 				}
 				delete this.__syncAmount;
-				
+
 				// 先更新老账户余额
 				var oldMoneyAccountBalance;
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -285,21 +287,21 @@ exports.definition = {
 				});
 				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 					// 账户没有改变
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;	
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
 					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 						dbTrans : dbTrans,
 						patch : true
 					});
 				} else {
 					// 帐户改变了
-					if(oldMoneyAccount.id){
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");	
+					if (oldMoneyAccount.id) {
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
 						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 							dbTrans : dbTrans,
 							patch : true
 						});
 					}
-					
+
 					// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
 					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : record.moneyAccountId
@@ -315,22 +317,24 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				// 该记录在服务器上和本地都同时被修改过了
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				
+
 				delete record.id;
 				var localUpdated = false;
-				if(this.__syncAmount !== undefined){
+				if (this.__syncAmount !== undefined) {
 					// 支出明细被合并了，我们先更新本地支出的金额
 					localUpdated = true;
 					this.syncUpdate(record, dbTrans);
-					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
-						this._syncUpdate({amount : record.amount}, dbTrans);
+					if (this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime) {
+						this._syncUpdate({
+							amount : record.amount
+						}, dbTrans);
 					}
 				}
-				
+
 				// 服务器上的记录比较新，我们用服务器上的记录更新本地记录
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					this._syncUpdate(record, dbTrans);
-					if(!localUpdated){
+					if (!localUpdated) {
 						// 如果同步时该支出的金额没有被再次改变，我们不需要将本地修改同步上服务器，因为我们已经使用了服务器上的记录。
 						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 						dbTrans.db.execute(sql, [this.xGet("id")]);

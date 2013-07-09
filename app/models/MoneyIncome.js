@@ -206,6 +206,9 @@ exports.definition = {
 						msg : "当前收入的明细不为空，不能删除"
 					})
 				} else {
+					if (this.xGet("moneyIncomeApportions") === 1) {
+                       this.xGet("moneyIncomeApportions").at[0].deleteModel();
+					}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					var saveOptions = _.extend({}, options);
