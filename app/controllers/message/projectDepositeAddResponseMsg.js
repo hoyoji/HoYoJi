@@ -39,7 +39,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				id : accountShareData.account.id
 			});
 			Alloy.Globals.Server.getData(accounts, function(data) {
-						alert(data[0].length + "||" +data[1].length + "||||" +moneyIncome.xGet("id"));
+						// alert(data[0].length + "||" +data[1].length + "||||" +moneyIncome.xGet("id"));
 				if (data[0].length > 0) {
 					Alloy.Globals.Server.deleteData(
 					[{__dataType : "MoneyIncome", id : data[0][0].id}], function(data) {
