@@ -21,7 +21,7 @@ exports.definition = {
 			useDetailsTotal : "INTEGER NOT NULL"
 		},
 		defaults : {
-			useDetailsTotal : false
+			useDetailsTotal : 0
 		},
 		hasMany : {
 			pictures : {

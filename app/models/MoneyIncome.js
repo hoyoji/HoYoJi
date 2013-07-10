@@ -22,7 +22,7 @@ exports.definition = {
 			depositeId : "TEXT"
 		},
 		defaults : {
-			useDetailsTotal : false
+			useDetailsTotal : 0
 		},
 		hasMany : {
 			pictures : {
