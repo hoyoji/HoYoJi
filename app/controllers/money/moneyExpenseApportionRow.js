@@ -25,7 +25,9 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function(){
+$.removeMember.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
+	
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
@@ -34,6 +36,10 @@ $.removeMember.addEventListener("singletap", function(){
 	} else {
 		$.deleteModel();
 	}
+});
+
+$.amount.$view.addEventListener("singletap", function(e){
+	e.cancelBubble = true;
 });
 
 $.$view.addEventListener("singletap", function(e) {
