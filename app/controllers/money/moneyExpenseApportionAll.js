@@ -43,19 +43,19 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 	} else if (e.source.id === "addAllExpenseApportionMember") {
 		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-		var existApportion = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model){
-			return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
-		}, $);
-		if(existApportion.length < 1){
-			var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-			moneyExpense : selectedExpense,
-			friendUser : projectShareAuthorization.xGet("friendUser"),
-			amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-			apportionType : "Fixed"
+			var existApportion = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
+				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
+			}, $);
+			if (existApportion.length < 1) {
+				var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+					moneyExpense : selectedExpense,
+					friendUser : projectShareAuthorization.xGet("friendUser"),
+					amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+					apportionType : "Fixed"
+				});
+				selectedExpense.xGet("moneyExpenseApportions").add(expenseApportion);
+			}
 		});
-		selectedExpense.xGet("moneyExpenseApportions").add(expenseApportion);
-		}
-	});
 
 	} else if (e.source.id === "sharePercentage") {
 		// if(selectedExpense.xGet("moneyExpenseApportions").length !== selectedExpense.xGet("project").xGet("projectShareAuthorizations").length) {
@@ -77,18 +77,13 @@ function onFooterbarTap(e) {
 }
 
 var collection;
-if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject || selectedExpense.oldProject !== selectedExpense.xGet("project")) {
-	selectedExpense.hasChangedProject = true;
-	selectedExpense.hasAddedApportions = false;
-	selectedExpense.oldProject = selectedExpense.xGet("project");
-}
-
-if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 2) {
-	collection = selectedExpense.xGet("moneyExpenseApportions");
-	$.moneyExpenseApportionsTable.removeCollection(collection);
+if (selectedExpense.hasChanged("project")) {
+	if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
+		collection = selectedExpense.xGet("moneyExpenseApportions");
+		$.moneyExpenseApportionsTable.removeCollection(collection);
+	}
 	selectedExpense.xGet("moneyExpenseApportions").reset();
 
-	selectedExpense.hasAddedApportions = true;
 	var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
 	selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
@@ -100,11 +95,57 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedE
 		selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
 	});
 	collection = selectedExpense.xGet("moneyExpenseApportions");
-	// $.moneyExpenseApportionsTable.addCollection(collection);
-
+	$.moneyExpenseApportionsTable.addCollection(collection);
+	selectedExpense.hasAddedApportions = true;
 } else {
-	collection = selectedExpense.xGet("moneyExpenseApportions");
-	// $.moneyExpenseApportionsTable.addCollection(collection);
+	if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions) {
+		var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
+		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+			var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+				moneyExpense : selectedExpense,
+				friendUser : projectShareAuthorization.xGet("friendUser"),
+				amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+				apportionType : "Fixed"
+			});
+			selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+		});
+		collection = selectedExpense.xGet("moneyExpenseApportions");
+		$.moneyExpenseApportionsTable.addCollection(collection);
+		selectedExpense.hasAddedApportions = true;
+	} else {
+		collection = selectedExpense.xGet("moneyExpenseApportions");
+		$.moneyExpenseApportionsTable.addCollection(collection);
+	}
 }
+
+// if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject || selectedExpense.oldProject !== selectedExpense.xGet("project")) {
+	// selectedExpense.hasChangedProject = true;
+	// selectedExpense.hasAddedApportions = false;
+	// selectedExpense.oldProject = selectedExpense.xGet("project");
+// }
+// 
+// if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedExpense.isNew() && selectedExpense.xGet("moneyExpenseApportions").length < 2) {
+	// collection = selectedExpense.xGet("moneyExpenseApportions");
+	// $.moneyExpenseApportionsTable.removeCollection(collection);
+	// selectedExpense.xGet("moneyExpenseApportions").reset();
+// 
+	// selectedExpense.hasAddedApportions = true;
+	// var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
+	// selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+		// var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+			// moneyExpense : selectedExpense,
+			// friendUser : projectShareAuthorization.xGet("friendUser"),
+			// amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+			// apportionType : "Fixed"
+		// });
+		// selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+	// });
+	// collection = selectedExpense.xGet("moneyExpenseApportions");
+	// $.moneyExpenseApportionsTable.addCollection(collection);
+// 
+// } else {
+	// collection = selectedExpense.xGet("moneyExpenseApportions");
+	// $.moneyExpenseApportionsTable.addCollection(collection);
+// }
 
 $.moneyExpenseApportionsTable.autoHideFooter($.footerBar);
