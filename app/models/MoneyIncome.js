@@ -22,13 +22,13 @@ exports.definition = {
 			depositeId : "TEXT"
 		},
 		defaults : {
-			useDetailsTotal : false
+			useDetailsTotal : 0
 		},
 		hasMany : {
 			pictures : {
 				type : "Picture",
 				attribute : "record",
-				cascadeDelete : true
+				cascadeDelete : 1
 			},
 			moneyIncomeDetails : {
 				type : "MoneyIncomeDetail",

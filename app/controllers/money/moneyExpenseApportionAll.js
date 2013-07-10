@@ -100,11 +100,11 @@ if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions || !selectedE
 		selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
 	});
 	collection = selectedExpense.xGet("moneyExpenseApportions");
-	$.moneyExpenseApportionsTable.addCollection(collection);
+	// $.moneyExpenseApportionsTable.addCollection(collection);
 
 } else {
 	collection = selectedExpense.xGet("moneyExpenseApportions");
-	$.moneyExpenseApportionsTable.addCollection(collection);
+	// $.moneyExpenseApportionsTable.addCollection(collection);
 }
 
 $.moneyExpenseApportionsTable.autoHideFooter($.footerBar);

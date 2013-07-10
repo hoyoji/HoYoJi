@@ -1,7 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-// $.contentScrollView.setOverScrollMode(Titanium.UI.Android.OVER_SCROLL_NEVER);
-
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "支出操作"

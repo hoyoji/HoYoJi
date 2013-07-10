@@ -62,8 +62,9 @@ $.titleBar.setMenuButton(friendButton);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
+		// Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
 		// Alloy.Globals.openLightWindow($.getCurrentWindow(), "money/moneyAddNew");
+		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
 		Alloy.Models.User.xGet("messageBox").processNewMessages();
@@ -72,7 +73,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "moneyAll") {
 		Alloy.Globals.openWindow("money/moneyAll");
 	} else if (e.source.id === "messageAll") {
-		Alloy.Globals.openLightWindow($.getCurrentWindow(), "message/messageAll");
+		Alloy.Globals.openWindow("message/messageAll");
 	} else if (e.source.id === "projectAll") {
 		Alloy.Globals.openWindow("project/projectAll");
 	} else if (e.source.id === "friendAll") {

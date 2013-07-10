@@ -71,6 +71,11 @@ $.onWindowOpenDo(function() {
 	});
 });
 
+$.name.UIInit($, $.getCurrentWindow());
+$.apportionType.UIInit($, $.getCurrentWindow());
+$.amount.UIInit($, $.getCurrentWindow());
+
+
 if ($.$model.isNew()) {
 	updateAmount();
 }
@@ -98,7 +103,4 @@ function updateAmount() {
 	}
 }
 
-$.name.UIInit($, $.getCurrentWindow());
-$.apportionType.UIInit($, $.getCurrentWindow());
-$.amount.UIInit($, $.getCurrentWindow());
 

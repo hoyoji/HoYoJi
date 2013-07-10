@@ -36,7 +36,7 @@ $.home.UIInit();
 
 
 $.onWindowOpenDo(function() {
-	Alloy.Globals.cacheWindow($, "money/moneyAddNew");
+	// Alloy.Globals.cacheWindow($, "money/moneyAddNew");
 });
 
 if (Alloy.Models.User.xGet("messageBox")) {
