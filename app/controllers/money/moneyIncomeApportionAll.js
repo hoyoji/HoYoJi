@@ -77,18 +77,13 @@ function onFooterbarTap(e) {
 }
 
 var collection;
-if (selectedIncome.hasChanged("project") && !selectedIncome.hasChangedProject || selectedIncome.oldProject !== selectedIncome.xGet("project")) {
-	selectedIncome.hasChangedProject = true;
-	selectedIncome.hasAddedApportions = false;
-	selectedIncome.oldProject = selectedIncome.xGet("project");
-}
-
-if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedIncome.isNew() && selectedIncome.xGet("moneyIncomeApportions").length < 1) {
-	collection = selectedIncome.xGet("moneyIncomeApportions");
-	$.moneyIncomeApportionsTable.removeCollection(collection);
+if (selectedIncome.hasChanged("project")) {
+	if (selectedIncome.xGet("moneyIncomeApportions").length > 0) {
+		collection = selectedIncome.xGet("moneyIncomeApportions");
+		$.moneyIncomeApportionsTable.removeCollection(collection);
+	}
 	selectedIncome.xGet("moneyIncomeApportions").reset();
 
-	selectedIncome.hasAddedApportions = true;
 	var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
 	selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
@@ -101,9 +96,55 @@ if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedInc
 	});
 	collection = selectedIncome.xGet("moneyIncomeApportions");
 	$.moneyIncomeApportionsTable.addCollection(collection);
-
+	selectedIncome.hasAddedApportions = true;
 } else {
-	collection = selectedIncome.xGet("moneyIncomeApportions");
-	$.moneyIncomeApportionsTable.addCollection(collection);
+	if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions) {
+		var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
+		selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+			var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+				moneyIncome : selectedIncome,
+				friendUser : projectShareAuthorization.xGet("friendUser"),
+				amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+				apportionType : "Fixed"
+			});
+			selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+		});
+		collection = selectedIncome.xGet("moneyIncomeApportions");
+		$.moneyIncomeApportionsTable.addCollection(collection);
+		selectedIncome.hasAddedApportions = true;
+	} else {
+		collection = selectedIncome.xGet("moneyIncomeApportions");
+		$.moneyIncomeApportionsTable.addCollection(collection);
+	}
 }
+
+// if (selectedIncome.hasChanged("project") && !selectedIncome.hasChangedProject || selectedIncome.oldProject !== selectedIncome.xGet("project")) {
+// selectedIncome.hasChangedProject = true;
+// selectedIncome.hasAddedApportions = false;
+// selectedIncome.oldProject = selectedIncome.xGet("project");
+// }
+//
+// if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedIncome.isNew() && selectedIncome.xGet("moneyIncomeApportions").length < 1) {
+// collection = selectedIncome.xGet("moneyIncomeApportions");
+// $.moneyIncomeApportionsTable.removeCollection(collection);
+// selectedIncome.xGet("moneyIncomeApportions").reset();
+//
+// selectedIncome.hasAddedApportions = true;
+// var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
+// selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+// var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+// moneyIncome : selectedIncome,
+// friendUser : projectShareAuthorization.xGet("friendUser"),
+// amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+// apportionType : "Fixed"
+// });
+// selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+// });
+// collection = selectedIncome.xGet("moneyIncomeApportions");
+// $.moneyIncomeApportionsTable.addCollection(collection);
+//
+// } else {
+// collection = selectedIncome.xGet("moneyIncomeApportions");
+// $.moneyIncomeApportionsTable.addCollection(collection);
+// }
 $.moneyIncomeApportionsTable.autoHideFooter($.footerBar);
