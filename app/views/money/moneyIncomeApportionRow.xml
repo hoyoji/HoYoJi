@@ -12,13 +12,12 @@
 			bindModel = "$.$model"
 			bindAttribute = "amount"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="30%" top="36" left="180" height="20"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="30%" top="36" left="180" height="20"
 				id="apportionType" autoInit="false"
 			hightLight="false"
-			items="固定,均摊"
-			values="Fixed,Average"
 			bindModel="$.$model"
-			bindAttribute="apportionType"/>
+			bindAttribute="getApportionType()"
+			/>
 			<Label id="removeMember" right="0" height="56"  width="10%" backgroundColor="red">del<Label/>
 		</View>
 	</View>

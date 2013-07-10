@@ -14,14 +14,42 @@ $.makeContextMenu = function() {
 		});
 	}));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
-		$.deleteModel();
+		if($.$model.xGet("incomeType") === "Deposite"){
+			var account = {};
+			for (var attr in $.$model.config.columns) {
+				account[attr] = $.$model.xGet(attr);
+			}
+			var date = (new Date()).toISOString();
+			Alloy.Globals.Server.sendMsg({
+				id : guid(),
+				"toUserId" : $.$model.xGet("friendUserId"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "Project.Deposite.Delete",
+				"messageState" : "new",
+				"messageTitle" : "删除充值",
+				"date" : date,
+				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "删除了充值支出",
+				"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+				messageData : JSON.stringify({
+					accountType : "MoneyIncome",
+					account : account,
+					depositeProject : $.$model.xGet("project")
+				})
+			}, function() {
+				alert("删除成功，请等待回复");
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
+		 }else{
+		 	$.deleteModel();
+		 }
 	},!$.$model.canDelete()));
 	return menuSection;
 }
 
 $.onRowTap = function(e){
 	if($.$model.xGet("incomeType") === "Deposite"){
-		Alloy.Globals.openWindow("money/projectIncomeForm", {$model : $.$model});
+		Alloy.Globals.openWindow("money/projectIncomeForm", {$model : $.$model, saveableMode : "read"});
 		return false;
 	}else{
 		Alloy.Globals.openWindow("money/moneyIncomeForm", {$model : $.$model});

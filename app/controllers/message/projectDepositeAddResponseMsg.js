@@ -11,16 +11,20 @@ var onFooterbarTap = function(e) {
 			importToLocalOperate();
 		}
 	} else if(e.source.id === "rejectAccept"){
-		
+		operation = "rejectAccept";
+		$.titleBar.save();
 	} else if(e.source.id === "delete"){
 		operation = "delete";
 		$.titleBar.save();
 	} else if(e.source.id === "rejectDelete"){
-		
+		operation = "rejectDelete";
+		$.titleBar.save();
 	}
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	var editData = [];
+	
 	if(operation === "delete"){
 		if (accountShareData.accountType === "MoneyExpense") {
 			var accounts = [];
@@ -39,56 +43,201 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				id : accountShareData.account.id
 			});
 			Alloy.Globals.Server.getData(accounts, function(data) {
-						// alert(data[0].length + "||" +data[1].length + "||||" +moneyIncome.xGet("id"));
 				if (data[0].length > 0) {
 					Alloy.Globals.Server.deleteData(
-					[{__dataType : "MoneyIncome", id : data[0][0].id}], function(data) {
+					[{__dataType : "MoneyIncome", id : data[0][0].id}], function(data1) {
 					    if (moneyIncome && moneyIncome.xGet("id")) {
 							var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								projectId : $.$model.xGet("project").xGet("id"),
+								projectId : accountShareData.account.projectId,
 								friendUserId : Alloy.Models.User.id
 							});
 							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount);
+							projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") - accountShareData.account.amount);
+							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
 							moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 							moneyIncome.xGet("moneyAccount").xAddToSave($);
 							
-							moneyIncome._xDelete(xFinishCallback,{syncFromServer : true});
+							moneyIncome._xDelete();
 						}
-						
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-				}
-				if (data[1].length > 0) {
-					var date = (new Date()).toISOString();
-					Alloy.Globals.Server.sendMsg({
-						id : guid(),
-						"toUserId" : $.$model.xGet("fromUserId"),
-						"fromUserId" : Alloy.Models.User.id,
-						"type" : "Project.Deposite.DeleteResponse",
-						"messageState" : "new",
-						"messageTitle" : "删除充值",
-						"date" : date,
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意删除了充值",
-						"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
-						messageData : $.$model.xGet("messageData")
-					}, function() {
-						$.saveModel(saveEndCB, saveErrorCB);
-						saveEndCB("删除充值成功");
+						if (data[1].length > 0) {
+							$.$model.xSet("messageState","closed");
+							editData.push($.$model.toJSON());
+							var date = (new Date()).toISOString();
+							Alloy.Globals.Server.putData(editData, function(data) {
+								Alloy.Globals.Server.sendMsg({
+									id : guid(),
+									"toUserId" : $.$model.xGet("fromUserId"),
+									"fromUserId" : Alloy.Models.User.id,
+									"type" : "Project.Deposite.DeleteResponse",
+									"messageState" : "new",
+									"messageTitle" : "删除充值",
+									"date" : date,
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意删除了充值",
+									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+									messageData : $.$model.xGet("messageData")
+								}, function() {
+									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+									saveEndCB("删除充值成功");
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}else{
+							$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+							saveEndCB("删除充值成功");
+						}
 					}, function(e) {
 						alert(e.__summary.msg);
 					});
 				}else{
-					saveEndCB("删除充值成功");
+					$.$model.save({
+						messageState : "closed"
+					}, {
+						wait : true,
+						patch : true
+					});
+					alert("已经删除成功");
 				}
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
 		}else if(accountShareData.accountType === "MoneyIncome"){
-			
+			var accounts = [];
+			var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+				id : accountShareData.account.depositeId
+			});
+			accounts.push({
+				__dataType : "MoneyExpense",
+				id : accountShareData.account.depositeId
+			});
+			var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+				id : accountShareData.account.id
+			});
+			accounts.push({
+				__dataType : "MoneyIncome",
+				id : accountShareData.account.id
+			});
+			Alloy.Globals.Server.getData(accounts, function(data) {
+				if (data[0].length > 0) {
+					Alloy.Globals.Server.deleteData(
+					[{__dataType : "MoneyExpense", id : data[0][0].id}], function(data1) {
+					    if (moneyExpense && moneyExpense.xGet("id")) {
+							var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+								projectId : accountShareData.account.projectId,
+								friendUserId : Alloy.Models.User.id
+							});
+							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - accountShareData.account.amount);
+							projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") - accountShareData.account.amount);
+							editData.push(projectShareAuthorization.toJSON());
+							projectShareAuthorization.xAddToSave($);
+					
+							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
+							moneyExpense.xGet("moneyAccount").xAddToSave($);
+							
+							moneyExpense._xDelete();
+						}
+						if (data[1].length > 0) {
+							$.$model.xSet("messageState","closed");
+							editData.push($.$model.toJSON());
+							var date = (new Date()).toISOString();
+							Alloy.Globals.Server.putData(editData, function(data) {
+								Alloy.Globals.Server.sendMsg({
+									id : guid(),
+									"toUserId" : $.$model.xGet("fromUserId"),
+									"fromUserId" : Alloy.Models.User.id,
+									"type" : "Project.Deposite.DeleteResponse",
+									"messageState" : "new",
+									"messageTitle" : "删除充值",
+									"date" : date,
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意删除充值",
+									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+									messageData : $.$model.xGet("messageData")
+								}, function() {
+									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+									saveEndCB("删除充值成功");
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}else{
+							$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+							saveEndCB("删除充值成功");
+						}
+					}, function(e) {
+						alert(e.__summary.msg);
+					});
+				}else{
+					$.$model.save({
+						messageState : "closed"
+					}, {
+						wait : true,
+						patch : true
+					});
+					alert("已经删除成功");
+				}
+				
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
 		}
+	}else if(operation === "rejectAccept"){
+		$.$model.xSet("messageState","closed");
+		editData.push($.$model.toJSON());
+		var date = (new Date()).toISOString();
+		Alloy.Globals.Server.putData(editData, function(data) {
+			Alloy.Globals.Server.sendMsg({
+				id : guid(),
+				"toUserId" : $.$model.xGet("fromUserId"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "Project.Deposite.RejectAccept",
+				"messageState" : "new",
+				"messageTitle" : "拒绝接受",
+				"date" : date,
+				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝接受充值",
+				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+				messageData : $.$model.xGet("messageData")
+			}, function() {
+				$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+				saveEndCB("删除充值成功");
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
+	}else if(operation === "rejectDelete"){
+		$.$model.xSet("messageState","closed");
+		editData.push($.$model.toJSON());
+		var date = (new Date()).toISOString();
+		Alloy.Globals.Server.putData(editData, function(data) {
+			Alloy.Globals.Server.sendMsg({
+				id : guid(),
+				"toUserId" : $.$model.xGet("fromUserId"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "Project.Deposite.RejectDelete",
+				"messageState" : "new",
+				"messageTitle" : "拒绝删除",
+				"date" : date,
+				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝删除充值",
+				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+				messageData : $.$model.xGet("messageData")
+			}, function() {
+				$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+				saveEndCB("删除充值成功");
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
 	}
 }
 
@@ -97,7 +246,7 @@ function importToLocalOperate() {
 	if (accountShareData.accountType === "MoneyExpense") {
 		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject)
 		var account = Alloy.createModel("MoneyIncome", {
-			date : accountShareData.account.date,
+			date : (new Date()).toISOString(),
 			amount : accountShareData.account.amount,
 			remark : accountShareData.account.remark,
 			ownerUser : Alloy.Models.User,
@@ -206,26 +355,39 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
-
-	if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
-		$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-			onSingletap:"onFooterbarTap",
-			buttons : "拒绝,接受充值",
-	        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
-			ids : "rejectAccept,accept"
-		});
-		$.footerBar.setParent($.$view);
-		$.footerBar.on("singletap", onFooterbarTap);
-	} else if($.$model.xGet('type') === "Project.Deposite.Delete"){
-		$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-			onSingletap:"onFooterbarTap",
-			buttons : "拒绝,删除",
-	        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
-			ids : "rejectDelete,delete"
-		});
-		$.footerBar.setParent($.$view);
-		$.footerBar.on("singletap", onFooterbarTap);
-	}
+	
+	Alloy.Globals.Server.getData([{
+		__dataType : "Message",
+		id : $.$model.xGet("id"),
+		messageState : "closed"
+	}], function(data) {
+		if (data[0].length === 0) {
+			if($.$model.xGet('messageState') !== "closed"){
+				if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
+					$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
+						onSingletap:"onFooterbarTap",
+						buttons : "拒绝充值,接受充值",
+				        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+						ids : "rejectAccept,accept"
+					});
+					$.footerBar.setParent($.$view);
+					$.footerBar.on("singletap", onFooterbarTap);
+				} else if($.$model.xGet('type') === "Project.Deposite.Delete"){
+					$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
+						onSingletap:"onFooterbarTap",
+						buttons : "拒绝删除,同意删除",
+				        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+						ids : "rejectDelete,delete"
+					});
+					$.footerBar.setParent($.$view);
+					$.footerBar.on("singletap", onFooterbarTap);
+				}
+			}
+			
+		}
+	}, function(e) {
+		alert(e.__summary.msg);
+	});
 });
 
 $.fromUser.UIInit($, $.getCurrentWindow());

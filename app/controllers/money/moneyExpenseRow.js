@@ -58,7 +58,7 @@ $.makeContextMenu = function() {
 
 $.onRowTap = function(e){
 	if($.$model.xGet("expenseType") === "Deposite"){
-		Alloy.Globals.openWindow("money/projectDepositeForm", {$model : $.$model});
+		Alloy.Globals.openWindow("money/projectDepositeForm", {$model : $.$model, saveableMode : "read"});
 		return false;
 	}else{
 		Alloy.Globals.openWindow("money/moneyExpenseForm", {$model : $.$model});

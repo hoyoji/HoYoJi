@@ -113,16 +113,21 @@ if ($.saveableMode === "read") {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		var editData = [];
+		var addData = [];
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
+		
 		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 			projectId : $.$model.xGet("project").xGet("id"),
 			friendUserId : Alloy.Models.User.id
 		});
 		projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
+		projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + newAmount);
 		projectShareAuthorization.xAddToSave($);
+		editData.push(projectShareAuthorization.toJSON());
 
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
@@ -130,7 +135,7 @@ if ($.saveableMode === "read") {
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 		}
-
+		editData.push(newMoneyAccount.toJSON());
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
@@ -140,62 +145,54 @@ if ($.saveableMode === "read") {
 					ownerUser : Alloy.Models.User
 				});
 				exchange.xAddToSave($);
+				addData.push(exchange.toJSON());
 			}
 		}
 
-		var modelIsNew = $.$model.isNew();
-		$.saveModel(function(e) {
-			if (modelIsNew) {
-				//记住当前分类为下次打开时的默认分类
-				$.$model.xGet("project").setDefaultIncomeCategory($.$model.xGet("moneyIncomeCategory"));
-
-				//记住当前账户为下次打开时的默认账户
-				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-				// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
-				//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
-				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
-					Alloy.Models.User.save({
-						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
-						activeProjectId : $.$model.xGet("project").xGet("id")
-					}, {
-						patch : true,
-						wait : true
+		if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
+			var date = (new Date()).toISOString();
+			Alloy.Globals.Server.sendMsg({
+				id : guid(),
+				"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
+				"fromUserId" : Alloy.Models.User.id,
+				"type" : "Project.Deposite.Response",
+				"messageState" : "new",
+				"messageTitle" : "充值回复",
+				"date" : date,
+				"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
+				"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
+				messageData : selectedDepositeMsg.xGet("messageData")
+			}, function() {
+				selectedDepositeMsg.xSet("messageState","closed");
+				selectedDepositeMsg.xAddToSave($);
+				editData.push(selectedDepositeMsg.toJSON());
+				// selectedDepositeMsg.save({
+					// messageState : "closed"
+				// }, {
+					// wait : true,
+					// patch : true
+				// });
+				addData.push($.$model.toJSON());
+				Alloy.Globals.Server.postData(addData, function(data) {
+					Alloy.Globals.Server.putData(editData, function(data) {
+						Alloy.Globals.Server.loadData("MoneyExpense", [$.$model.xGet("depositeId")], function(collection) {
+							$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+							saveEndCB(e);
+						}, saveErrorCB);
+					}, function(e) {
+						alert(e.__summary.msg);
 					});
-				}
-			}
-			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
-				var date = (new Date()).toISOString();
-				Alloy.Globals.Server.sendMsg({
-					id : guid(),
-					"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
-					"fromUserId" : Alloy.Models.User.id,
-					"type" : "Project.Deposite.Response",
-					"messageState" : "new",
-					"messageTitle" : "充值回复",
-					"date" : date,
-					"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
-					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
-					messageData : selectedDepositeMsg.xGet("messageData")
-				}, function() {
-					selectedDepositeMsg.save({
-						messageState : "closed"
-					}, {
-						wait : true,
-						patch : true
-					});
-					saveEndCB(e);
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-			} else {
-				saveEndCB(e);
-			}
-
-		}, function(e) {
-			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
-			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			saveErrorCB(e);
-		});
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
+		} else {
+			saveEndCB(e);
+		}
 	}
 }
 
