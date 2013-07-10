@@ -64,6 +64,7 @@ if (!$.$model) {
 }
 
 if ($.saveableMode === "read") {
+	$.localAmountContainer.$view.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
@@ -174,6 +175,7 @@ if ($.saveableMode === "read") {
 					friendUserId : Alloy.Models.User.id
 				});
 				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
+				projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + newAmount);
 				projectShareAuthorization.xAddToSave($);
 	
 				if (oldMoneyAccount === newMoneyAccount) {
@@ -235,7 +237,7 @@ if ($.saveableMode === "read") {
 					"messageState" : "unread",
 					"messageTitle" : "充值请求",
 					"date" : date,
-					"detail" : $.$model.xGet("remark"),
+					"detail" : $.$model.xGet("remark") || ("充值" + $.$model.xGet("amount")),
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 						accountType : "MoneyExpense",
