@@ -15,13 +15,12 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.apportion.addEventListener("singletap", openApportion);
-function openApportion() {
+$.apportion.addEventListener("singletap", function(){
 	Alloy.Globals.openWindow("money/moneyExpenseApportionAll", {
 		selectedExpense : $.$model,
 		closeWithoutSave : true
 	});
-}
+});
 
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyExpenseApportions")) {
@@ -354,6 +353,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
+
 			} else/*if (item.hasChanged())*/
 			{
 				item.xAddToSave($);

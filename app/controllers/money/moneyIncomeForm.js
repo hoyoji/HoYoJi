@@ -13,13 +13,12 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.apportion.addEventListener("singletap", openApportion);
-function openApportion() {
+$.apportion.addEventListener("singletap", function(){
 	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
 		selectedIncome : $.$model,
 		closeWithoutSave : true
 	});
-}
+});
 
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyIncomeApportions")) {

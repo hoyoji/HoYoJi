@@ -10,40 +10,45 @@ $.makeContextMenu = function() {
 
 	return menuSection;
 }
-
-$.$model.on("_xchange:amount", function() {
+function refreshAmount() {
 	$.amount.refresh();
-});
+}
 
-$.$model.on("_xchange:apportionType", function() {
+function updateApportionType() {
 	$.apportionType.refresh();
+}
+
+$.$model.on("_xchange:amount", refreshAmount);
+$.$model.on("_xchange:apportionType", updateApportionType);
+$.onWindowCloseDo(function() {
+	$.$model.off("_xchange:amount", refreshAmount);
+	$.$model.off("_xchange:apportionTyp", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function() {
-	if($.$model.isNew()){
+$.removeMember.addEventListener("singletap", function(){
+	if ($.$model.isNew()) {
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
-		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item){
+		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
 			item.trigger("_xChange");
 		});
-	}else{
-	$.deleteModel();
+	} else {
+		$.deleteModel();
 	}
 });
 
-$.$view.addEventListener("singletap", function(e){
-	if(e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
-		if($.apportionType.getValue() === "Fixed") {
-			$.apportionType.setValue("Average");
+$.$view.addEventListener("singletap", function(e) {
+	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
+		if ($.$model.xGet("apportionType") === "Fixed") {
+			$.$model.xSet("apportionType", "Average");
+		} else if ($.$model.xGet("apportionType") === "Average") {
+			$.$model.xSet("apportionType", "Fixed");
 		}
-		else if($.apportionType.getValue() === "Average") {
-			$.apportionType.setValue("Fixed");
-		}
-		$.apportionType.field.fireEvent("change");
+		// $.apportionType.label.fireEvent("change");
 	}
 });
 
-$.$model.on("_xchange:apportionType", function() {
-	if ($.apportionType.getValue() === "Fixed") {
+function editApportionType() {
+	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	} else {
@@ -51,6 +56,10 @@ $.$model.on("_xchange:apportionType", function() {
 		$.amount.$attrs.addModeEditability = "noneditable";
 		updateAmount();
 	}
+}
+$.$model.on("_xchange:apportionType", editApportionType);
+$.onWindowCloseDo(function() {
+	$.$model.off("_xchange:apportionType", editApportionType);
 });
 
 var oldAmount;
