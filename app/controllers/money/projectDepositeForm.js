@@ -168,21 +168,21 @@ if ($.saveableMode === "read") {
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 			if ($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id) {
-				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : $.$model.xGet("project").xGet("id"),
-					friendUserId : Alloy.Models.User.id
-				});
-				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
-				// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + newAmount);
-				projectShareAuthorization.xAddToSave($);
+				// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					// projectId : $.$model.xGet("project").xGet("id"),
+					// friendUserId : Alloy.Models.User.id
+				// });
+				// projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
+				// // projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + newAmount);
+				// projectShareAuthorization.xAddToSave($);
 	
-				if (oldMoneyAccount === newMoneyAccount) {
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-				} else {
-					oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
-					oldMoneyAccount.xAddToSave($);
-				}
+				// if (oldMoneyAccount === newMoneyAccount) {
+					// newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
+				// } else {
+					// oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+					// newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+					// oldMoneyAccount.xAddToSave($);
+				// }
 	
 				if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 					if ($.$model.xGet("exchangeRate")) {

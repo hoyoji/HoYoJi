@@ -277,6 +277,7 @@ exports.definition = {
 				// getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
 				// return getApportionedTotal;
 				// }
+				// console.info("apportionedTotalExpense+++++++" + apportionedTotalExpense + "+++++++++apportionedTotalIncome" + apportionedTotalIncome)
 				return apportionedTotalExpense - apportionedTotalIncome;
 			},
 			getSettlementMoney : function() {
@@ -285,7 +286,7 @@ exports.definition = {
 				var settlementMoney = 0;
 				if (actualTotalExpense > actualTotalIncome) {
 					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
-				} else {
+					} else {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
 				}
 
