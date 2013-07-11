@@ -52,7 +52,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								friendUserId : Alloy.Models.User.id
 							});
 							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount);
-							projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") - accountShareData.account.amount);
+							// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") - accountShareData.account.amount);
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
