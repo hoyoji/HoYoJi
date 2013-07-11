@@ -372,7 +372,7 @@ function Sync(method, model, opts) {
 				} else if (table === "User") {
 
 				} else if (table === "ProjectShareAuthorization") {
-					sql += ' AND (friendUserId = "' + ownerUserId + '" OR ownerUserId = "' + ownerUserId + '")';
+					// sql += ' AND (friendUserId = "' + ownerUserId + '" OR ownerUserId = "' + ownerUserId + '")';
 				} else {
 					sql += ' AND ownerUserId = "' + ownerUserId + '"';
 				}
