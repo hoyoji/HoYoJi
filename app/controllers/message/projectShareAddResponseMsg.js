@@ -610,7 +610,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"toUserId" : $.$model.xGet("fromUserId"),
 										"fromUserId" : $.$model.xGet("toUserId"),
 										"type" : "Project.Share.Accept",
-										"messageState" : "unread",
+										"messageState" : "new",
 										"messageTitle" : "共享回复",
 										"date" : date,
 										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",

@@ -354,40 +354,49 @@ $.onWindowOpenDo(function() {
 			wait : true,
 			patch : true
 		});
+	}else if ($.$model.xGet('messageState') === "new") {
+		$.$model.save({
+			messageState : "read"
+		}, {
+			wait : true,
+			patch : true
+		});
+	}
+	if($.$model.xGet("fromUserId") !== Alloy.Models.User.id){
+		Alloy.Globals.Server.getData([{
+			__dataType : "Message",
+			id : $.$model.xGet("id"),
+			messageState : "closed"
+		}], function(data) {
+			if (data[0].length === 0) {
+				if($.$model.xGet('messageState') !== "closed"){
+					if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
+						$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
+							onSingletap:"onFooterbarTap",
+							buttons : "拒绝充值,接受充值",
+					        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+							ids : "rejectAccept,accept"
+						});
+						$.footerBar.setParent($.$view);
+						$.footerBar.on("singletap", onFooterbarTap);
+					} else if($.$model.xGet('type') === "Project.Deposite.Delete"){
+						$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
+							onSingletap:"onFooterbarTap",
+							buttons : "拒绝删除,同意删除",
+					        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+							ids : "rejectDelete,delete"
+						});
+						$.footerBar.setParent($.$view);
+						$.footerBar.on("singletap", onFooterbarTap);
+					}
+				}
+				
+			}
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
 	}
 	
-	Alloy.Globals.Server.getData([{
-		__dataType : "Message",
-		id : $.$model.xGet("id"),
-		messageState : "closed"
-	}], function(data) {
-		if (data[0].length === 0) {
-			if($.$model.xGet('messageState') !== "closed"){
-				if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
-					$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-						onSingletap:"onFooterbarTap",
-						buttons : "拒绝充值,接受充值",
-				        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
-						ids : "rejectAccept,accept"
-					});
-					$.footerBar.setParent($.$view);
-					$.footerBar.on("singletap", onFooterbarTap);
-				} else if($.$model.xGet('type') === "Project.Deposite.Delete"){
-					$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-						onSingletap:"onFooterbarTap",
-						buttons : "拒绝删除,同意删除",
-				        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
-						ids : "rejectDelete,delete"
-					});
-					$.footerBar.setParent($.$view);
-					$.footerBar.on("singletap", onFooterbarTap);
-				}
-			}
-			
-		}
-	}, function(e) {
-		alert(e.__summary.msg);
-	});
 });
 
 $.fromUser.UIInit($, $.getCurrentWindow());
