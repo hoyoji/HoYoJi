@@ -247,7 +247,7 @@ exports.definition = {
 			},
 			getSharePercentage : function(){
 				if (this.xGet("state") === "Wait") {
-					return "占股 : "+ this.xGet("sharePercentage") + "(等待接受)";
+					return "等待接受";
 				}else{
 					return "占股 : "+ this.xGet("sharePercentage");
 				}

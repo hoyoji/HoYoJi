@@ -191,6 +191,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var editSharePercentageAuthorization = [];
 	if ($.$model.xGet("sharePercentage") >= 0) {
 		if ($.$model.isNew()) {
+			var projectIds = [];
+			projectIds.push($.$model.xGet("project").xGet("id"));
 			var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
 			// var isSynAllProjects = true;
 			// var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
@@ -212,7 +214,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			// }
 			// });
 			// }
-			editSharePercentage($.$model, editSharePercentageAuthorization);
+			// editSharePercentage($.$model, editSharePercentageAuthorization);
 	
 			if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
 				//新增共享
@@ -249,6 +251,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							state : "Accept"
 						});
 						subProjectsArray.push(subProject);
+						projectIds.push(subProject.xGet("id"));
 					});
 				}
 	
@@ -276,7 +279,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								}
 								subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
 								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-								editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+								// editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 								projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 								subProjectShareAuthorization.xAddToSave($);
 	
@@ -297,7 +300,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageData" : JSON.stringify({
 										shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 										projectShareAuthorizationId : $.$model.xGet("id"),
-										subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+										subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
+										projectIds : projectIds
 									})
 								}, function() {
 									var newSendMessage = Alloy.createModel("Message", {
