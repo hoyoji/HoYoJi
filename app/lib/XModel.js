@@ -214,6 +214,10 @@
 						}
 					}
 					if (field.contains("INTEGER") && fieldValue !== undefined && fieldValue !== null) {
+						// alert(column + " " + fieldValue + " " + (fieldValue === "true" || fieldValue === "false"));
+						// if (fieldValue === true || fieldValue === false){
+							// continue;
+						// }
 						if (_.isNaN(Number(fieldValue)) || fieldValue.toString().contains(".")) {
 							this.__xValidationErrorCount++;
 							this.__xValidationError[column] = {
@@ -228,7 +232,6 @@
 							var filter = {};
 							filter[column] = fieldValue;
 							if (Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0) {
-								console.info("Check UNIQUE : NO!!");
 								this.__xValidationErrorCount++;
 								this.__xValidationError[column] = {
 									msg : "该名称已存在"
@@ -236,7 +239,6 @@
 								continue;
 							}
 						}
-						console.info("Check UNIQUE : YES!!");
 					}
 				}
 

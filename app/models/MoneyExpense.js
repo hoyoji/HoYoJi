@@ -21,13 +21,13 @@ exports.definition = {
 			useDetailsTotal : "INTEGER NOT NULL"
 		},
 		defaults : {
-			useDetailsTotal : false
+			useDetailsTotal : 0
 		},
 		hasMany : {
 			pictures : {
 				type : "Picture",
 				attribute : "record",
-				cascadeDelete : true
+				cascadeDelete : 1
 			},
 			moneyExpenseDetails : {
 				type : "MoneyExpenseDetail",

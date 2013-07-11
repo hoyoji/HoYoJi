@@ -11,6 +11,11 @@
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			}
 			$.$view.addEventListener("touchstart", function(e){
+				if(OS_IOS){
+					if(!Ti.App.getKeyboardVisible()){
+						return;
+					}
+				}
 				if(!e.source.focusable){
 					$.getCurrentWindow().closeSoftKeyboard();
 				}
@@ -73,15 +78,6 @@
 						$.contextMenu.close();
 					}
 				}
-				// makeContextMenu : function() {
-				// var menuSection = Ti.UI.createTableViewSection({
-				// headerTitle : '测试功能'
-				// });
-				// menuSection.add($.createContextMenuItem("Say Hello", function() {
-				// alert("hello");
-				// }));
-				// return menuSection;
-				// }
 			});
 			if ($.$view.contextMenu !== "false") {
 				$.__views.contextMenu = Alloy.createWidget("com.hoyoji.titanium.widget.ContextMenu", "widget", {

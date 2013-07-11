@@ -1,8 +1,8 @@
 <Alloy>
 	<View class="container" backgroundColor='#40000000' visible="false" zIndex="10000" width="Ti.UI.FILL" height="Ti.UI.FILL" >
-		<TextField id="hiddenText" visible="false"></TextField>
+		<!-- <TextField id="hiddenText" visible="false"></TextField> -->
 		<View id="menuWrapper" backgroundColor='#99000000' left="100%" width="50%">
-			<TableView id="header" top="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0"  allowSelection="false" />
+			<TableView id="header" top="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0"  allowSelection="false" backgroundColor="transparent"/>
 			<View top="42" bottom="42" width="Ti.UI.FILL">
 				<TableView id="table" width="Ti.UI.FILL" height="Ti.UI.SIZE" right="0" ></TableView>
 			</View>

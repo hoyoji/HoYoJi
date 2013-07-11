@@ -13,12 +13,17 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.$model.on("xchange:amount", function(){
+function updateAmount() {
 	$.amount.refresh();
-});
-
-$.$model.on("xchange:name", function(){
+}
+function updateName() {
 	$.name.refresh();
+}
+$.$model.on("xchange:amount", updateAmount);
+$.$model.on("xchange:name", updateName);
+$.onWindowCloseDo(function() {
+	$.$model.off("xchange:amount", updateAmount);
+	$.$model.off("xchange:name", updateName);
 });
 
 $.name.UIInit($, $.getCurrentWindow());

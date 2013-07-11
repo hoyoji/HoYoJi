@@ -1081,11 +1081,16 @@ exports.getSortOrder = function() {
 }
 if (OS_IOS) {
 	$.table.footerView.addEventListener("touchstart", function(e) {
-		$.$view.fireEvent("touchstart");
+		e.cancelBubble = true;
+		$.getCurrentWindow().closeSoftKeyboard();
 	});
 }
 
-// } else {
+function cancelBubble(e) {
+	e.cancelBubble = true;
+}
+$.table.addEventListener("scroll", cancelBubble);
+
 // var lastTotalItemCount = -1;
 // $.table.addEventListener("scroll", function(e){
 // if(e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.totalItemCount > lastTotalItemCount){
@@ -1095,10 +1100,10 @@ if (OS_IOS) {
 // });
 // }
 exports.autoHideFooter = function(footer) {
-	if(OS_IOS){
-		$.table.setBottom(50);
-		return;		
-	}
+	// if(OS_IOS){
+		// $.table.setBottom(50);
+		// return;		
+	// }
 	
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
@@ -1113,12 +1118,13 @@ exports.autoHideFooter = function(footer) {
 			lastY = undefined;
 		});
 		$.table.addEventListener("touchmove", function(e) {
+			e.cancelBubble = true;
 			if (lastY === undefined) {
 				lastY = e.y;
-				console.info("++ : " + lastY);
+				// console.info("++ : " + lastY);
 			} else {
 				var delta = e.y - lastY;
-				console.info(e.y + " --- " + delta);
+				// console.info(e.y + " --- " + delta);
 				if (Math.abs(delta) > 5) {
 					if (Math.abs(delta) < 100) {
 						if (delta < 0) {
@@ -1147,8 +1153,10 @@ exports.autoHideFooter = function(footer) {
 	}
 
 	if (OS_IOS) {
-		var lastDistance = 0, direction, lastDirection = false;
+		var lastDistance, direction, lastDirection = false;
+		$.table.removeEventListener("scroll", cancelBubble);
 		$.table.addEventListener("scroll", function(e) {
+			e.cancelBubble = true;
 			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
 			// if(touchDirectionUp) { //(lastDirection === false && e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount && e.visibleItemCount < e.totalItemCount) {
 			// footer.slideDown();
@@ -1173,23 +1181,27 @@ exports.autoHideFooter = function(footer) {
 
 			// adjust the % of rows scrolled before we decide to start fetching
 			// var nearEnd = theEnd * .9;
+			
 			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
 				clearTimeout(autoHideAnimationId);
 				autoHideAnimationId = setTimeout(function() {
 					footer.slideDown();
-
-				}, 100);
+				}, 50);
 				lastDirection = true;
 			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
 				clearTimeout(autoHideAnimationId);
 				autoHideAnimationId = setTimeout(function() {
 					footer.slideUp();
-				}, 100);
+				}, 50);
 				lastDirection = false;
 			}
 			direction = distance - lastDistance;
 			lastDistance = distance;
-
+			// var footerTop = footer.$view.getRect().bottom - footer.$view.getRect().top;
+			// if(offset > 0 && distance > 0 && direction && footerTop <= 42 && footerTop >= 0){
+				// var bottom = Number(footer.$view.getBottom()) + direction;
+					// footer.$view.setBottom(Math.min(Math.max(bottom, -42), 0));
+			// }
 		});
 	}
 }

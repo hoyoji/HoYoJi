@@ -133,9 +133,11 @@
 					width : 42,
 					backgroundColor : "transparent",
 					color : "transparent",
-					right : 0
-					//borderWidth : 0,
-					//borderColor : "transparent"
+					right : 0,
+					borderWidth : 0,
+					borderColor : null,
+					borderRadius : 0,
+					style : 0
 				});
 				$.$view.add(openChildButton);
 				$.content.setRight(42);
@@ -166,9 +168,11 @@
 					height : Ti.UI.FILL,
 					width : 42,
 					backgroundColor : "transparent",
-					left : 0
-					//borderWidth : 0,
-					//borderColor : "transparent"
+					left : 0,
+					borderWidth : 0,
+					borderColor : null,
+					borderRadius : 0,
+					style : 0
 				});
 				$.$view.add(openDetailButton);
 				$.content.setLeft(42);

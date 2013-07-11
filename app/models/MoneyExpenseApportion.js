@@ -81,6 +81,13 @@ exports.definition = {
 				return sharePercentage;
 				
 			},
+			getApportionType : function() {
+				if(this.xGet("apportionType") === "Fixed") {
+					return "固定";
+				}else if (this.xGet("apportionType") === "Average"){
+					return "均摊";
+				}
+			},
 			// xDelete : function(xFinishCallback, options) {
 				// var self = this;
 				// if (this.xGet("moneyExpense").isNew()) {

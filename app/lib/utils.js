@@ -46,14 +46,29 @@
 			return win;
 		}
 
-		exports.Utils.cacheWindow = function(windowName, options) {
+		exports.Utils.openLightWindow = function(baseWindow, windowName, options, loadOnly) {
+			var win = Alloy.Globals.openingWindow[windowName];
+			if (!win || loadOnly) {
+				win = Alloy.createController("lightWindow", {
+					autoInit : "false"
+				});
+				win.openWin(baseWindow, windowName, options, loadOnly);
+				win.UIInit();
+				if (!loadOnly) {
+					Alloy.Globals.openingWindow[windowName] = win;
+				}
+			}
+			return win;
+		}
+
+		exports.Utils.cacheWindow = function(baseWindow, windowName, options) {
 			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
-				Alloy.Globals.openedWindow[windowName] = exports.Utils.openWindow(windowName, options, true);
+				Alloy.Globals.openedWindow[windowName] = exports.Utils.openLightWindow(baseWindow, windowName, options, true);
 				function reCacheWindow(e) {
 					Alloy.Globals.openedWindow[windowName].$view.removeEventListener("close", reCacheWindow);
 					if (Alloy.Globals.openedWindow[windowName].$view === e.source) {
 						delete Alloy.Globals.openedWindow[windowName];
-						exports.Utils.cacheWindow(windowName);
+						exports.Utils.cacheWindow(baseWindow, windowName);
 					}
 				}
 
@@ -62,8 +77,8 @@
 			}
 		}
 
-		exports.Utils.openCachedWindow = function(windowName) {
-			exports.Utils.cacheWindow(windowName);
+		exports.Utils.openCachedWindow = function(baseWindow, windowName) {
+			exports.Utils.cacheWindow(baseWindow, windowName);
 			Alloy.Globals.openedWindow[windowName].openCachedWindow();
 		}
 
@@ -81,6 +96,13 @@
 		}
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
+			// scView.addEventListener("scroll", function(){
+				// Alloy.Globals.scrollableViewScrolling = true;
+			// });
+			// scView.addEventListener("scrollend", function(){
+				// Alloy.Globals.scrollableViewScrolling = false;
+			// });
+			
 			if (OS_ANDROID) {
 				scView.getViews().map(function(view) {
 					view.addEventListener("longpress", function(e) {
@@ -93,6 +115,12 @@
 					view.addEventListener("touchstart", function(e) {
 						scView.fireEvent("touchstart", e);
 					});
+					// view.addEventListener("touchmove", function(e) {
+						// scView.fireEvent("touchmove", e);
+					// });
+					// view.addEventListener("touchend", function(e) {
+						// scView.fireEvent("touchend", e);
+					// });
 					view.addEventListener("becamedirty", function(e) {
 						scView.fireEvent("becamedirty", e);
 					});
@@ -125,7 +153,15 @@
 						scView.fireEvent("textfieldfocused", e);
 					});
 				})
-			}
+			} 
+			// else {
+					// scView.addEventListener("opencontextmenu", function(e) {
+						// if(!Alloy.Globals.contextMenuScrollableView){
+							// Alloy.Globals.contextMenuScrollableView = scView;
+							// Alloy.Globals.contextMenuScrollableViewPage = scView.currentPageAsFloat;
+						// }
+					// });
+			// }
 		}
 
 		String.prototype.contains = function(it) {

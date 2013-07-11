@@ -62,7 +62,8 @@ $.titleBar.setMenuButton(friendButton);
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		// Alloy.Globals.openCachedWindow("money/moneyAddNew");
+		// Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
+		// Alloy.Globals.openLightWindow($.getCurrentWindow(), "money/moneyAddNew");
 		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
@@ -125,6 +126,7 @@ $.onWindowCloseDo(function() {
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
 
+
 $.activityTable = Alloy.createController("home/activityView", {
     id: "activityTable",
     top: "0",
@@ -137,3 +139,11 @@ $.activityTable.setParent($.body);
 $.activityTable.UIInit();
 
 $.activityTable.transactionsTable.autoHideFooter($.footerBar);
+
+// // setTimeout(function(){
+// var footerBarWindow = Alloy.createController("footerBarWindow",{
+	// autoInit : false
+// });
+// footerBarWindow.UIInit(footerBarWindow, footerBarWindow);
+// footerBarWindow.$view.open();
+// // }, 3000);

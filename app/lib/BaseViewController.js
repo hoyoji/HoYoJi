@@ -50,9 +50,9 @@
 						row = Ti.UI.createTableViewRow({
 							title : title,
 							color : 'gray',
-							backgroundColor : "transparent",
-							height : Alloy.CFG.UI.DefaultRowHeight,
-							backgroundImage : '/images/headerTitle_green.png'
+							backgroundColor : "#e9f3f0",
+							height : Alloy.CFG.UI.DefaultRowHeight
+							// backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", function(e) {
 							e.cancelBubble = true;
@@ -60,10 +60,10 @@
 					} else {
 						row = Ti.UI.createTableViewRow({
 							title : title,
-							color : 'white',
-							backgroundColor : "transparent",
-							height : Alloy.CFG.UI.DefaultRowHeight,
-							backgroundImage : '/images/headerTitle_green.png'
+							color : '#2E8B57',
+							backgroundColor : "#e9f3f0",
+							height : Alloy.CFG.UI.DefaultRowHeight
+							// backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", callback);
 					}
@@ -81,7 +81,7 @@
 					}
 					$.__hiddenTextField.focus();
 					// if (OS_IOS) {
-						$.__hiddenTextField.blur();
+					$.__hiddenTextField.blur();
 					// }
 				}
 			});
@@ -94,36 +94,81 @@
 					}
 					var menuSection = $.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel);
 					Alloy.Globals.MenuSections.push(menuSection);
+					console.info("added context menu section ...........");
 				}
 			});
 
-			$.$view.addEventListener("longpress", function(e) {
-				if($.getCurrentWindow().$view.contextMenu === "false"){
-					return;					
+			function triggerOpenContextMenu(e) {
+				// if(Alloy.Globals.scrollableViewScrolling){
+					// return;
+				// }
+				if ($.getCurrentWindow().$view.contextMenu === "false") {
+					return;
 				}
-				e.cancelBubble = true;
-				if(Alloy.Globals.openingMenu){
-					 var a = 1;
+				// e.cancelBubble = true;
+				if (Alloy.Globals.openingMenu) {
 					return false;
 				}
 				Alloy.Globals.openingMenu = true;
 				var sourceModel;
 				if ($.$model) {
-					console.info("longpress " + $.$model.xGet("name"));
 					sourceModel = {
 						type : $.$model.config.adapter.collection_name,
 						id : $.$model.xGet("id")
 					};
 				}
-				$.$view.fireEvent("opencontextmenu", {
+
+				if ($.makeContextMenu) {
+					var menuSection = $.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, $.$model);
+					Alloy.Globals.MenuSections.push(menuSection);
+				}
+
+				$.getParentController().$view.fireEvent("opencontextmenu", {
 					bubbles : true,
 					sourceModel : sourceModel
 				});
-			});
+			}
+
+			if (OS_IOS) {
+				// Alloy.Globals.longpressTimeoutId = 0;
+
+				$.$view.addEventListener("touchstart", function(e) {
+					if (!e.detectingLongPress) {
+						e.detectingLongPress = true;
+						Alloy.Globals.longpressTimeoutId = setTimeout(triggerOpenContextMenu, 510);
+					}
+				});
+
+				$.$view.addEventListener("touchend", function() {
+					clearTimeout(Alloy.Globals.longpressTimeoutId);
+				});
+
+				// $.$view.addEventListener("touchcancel", function(){
+				// // clearTimeout(longpressTimeoutId);
+				// });
+
+				$.$view.addEventListener("touchmove", function() {
+					clearTimeout(Alloy.Globals.longpressTimeoutId);
+				});
+
+				$.$view.addEventListener("swipe", function() {
+					clearTimeout(Alloy.Globals.longpressTimeoutId);
+				});
+
+				$.$view.addEventListener("longpress", function(e) {
+					e.cancelBubble = true;
+				});
+
+			} else {
+				$.$view.addEventListener("longpress", function(e) {
+					e.cancelBubble = true;
+					triggerOpenContextMenu(e);
+				});
+			}
 
 			if ($.scrollableView) {
 				Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);
-				if($.tabBar){
+				if ($.tabBar) {
 					$.tabBar.init($.scrollableView);
 				}
 			}

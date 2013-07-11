@@ -7,11 +7,13 @@ function doClose() {
 	// }
 	$.$view.setVisible(false);
 	// $.closeSoftKeyboard();
-	setTimeout(function() {
-		$.$view.close({
-			animated : false
-		});
-	}, 500);
+	// setTimeout(function() {
+		$.$view.fireEvent("close");
+		$.$view.parent.remove($.$view);
+		// $.$view.close({
+		// animated : false
+		// });
+	// }, 500);
 }
 
 function confirmClose() {
@@ -52,18 +54,20 @@ exports.openCachedWindow = function(contentController) {
 	// }, 100);
 }
 
-exports.open = function(contentController, loadOnly) {
+exports.open = function(baseWindow, contentController, loadOnly) {
 	if (loadOnly) {
 		$.$view.setVisible(false);
 	} else {
-		if (OS_ANDROID) {
-			$.$view.addEventListener('androidback', $.__androidBackFunction);
-		}
+		// if (OS_ANDROID) {
+			// $.$view.addEventListener('androidback', $.__androidBackFunction);
+		// }
 	}
 	// setTimeout(function(){
-	$.$view.open({
-		animated : false
-	});
+	baseWindow.$view.add($.$view);
+	$.$view.fireEvent("open");
+	// $.$view.open({
+	// animated : false
+	// });
 	// }, 1);
 
 	if (!loadOnly) {
@@ -86,7 +90,7 @@ exports.open = function(contentController, loadOnly) {
 	// $.$view.animate(animation);
 }
 
-exports.openWin = function(contentController, options, loadOnly) {
+exports.openWin = function(baseWindow, contentController, options, loadOnly) {
 	options = options || {};
 	options.autoInit = "false";
 	options.parentController = $;
@@ -115,7 +119,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 		}));
 	}
 
-	$.open(contentController, loadOnly);
+	$.open(baseWindow, contentController, loadOnly);
 
 	_.extend($.$attrs, options);
 
@@ -126,8 +130,8 @@ exports.openWin = function(contentController, options, loadOnly) {
 		$.$view.fireEvent("contentready");
 	}
 
-	if (!options.selectorCallback) {
-		$.getCurrentWindow().$view.addEventListener("show", function() {
+	if (!options.selectorCallback && !loadOnly) {
+		$.$view.addEventListener("show", function() {
 			$.showActivityIndicator();
 			loadContent();
 			$.hideActivityIndicator();
@@ -135,6 +139,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 	} else {
 		loadContent();
 	}
+	
 
 	// setTimeout(function(){
 	// $.content.setParent($.contentView);
@@ -182,7 +187,7 @@ $.scrollableView.addEventListener("scroll", function(e) {
 		var color = Math.round(153 * e.currentPageAsFloat);
 		color = Math.max(color, 16);
 		color = Math.min(color, 153);
-		console.info(color + " " + color.toString(16));
+		// console.info(color + " " + color.toString(16));
 		$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
 		// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
 		// $.$view.setBackgroundColor("transparent");
