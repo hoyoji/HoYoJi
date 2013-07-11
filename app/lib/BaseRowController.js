@@ -5,7 +5,7 @@
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 			var hasDetail = $.$attrs.hasDetail === undefined ? $.$view.hasDetail : $.$attrs.hasDetail;
 			$.setSelected = function(selected){
-				
+				// 留空
 			}
 			
 			$.getChildTitle = function() {
@@ -123,22 +123,35 @@
 				
 				if(OS_IOS){
 					var childButtonImage = "/images/childButton@2x.png";
+					var openChildButton = Ti.UI.createButton({
+						// title : ">",
+						image : childButtonImage,
+						height : Ti.UI.FILL,
+						width : 42,
+						backgroundColor : "transparent",
+						color : "transparent",
+						right : 0,
+						borderWidth : 0,
+						borderColor : null,
+						// borderRadius : 0,
+						style : 0
+					});
 				} else {
 					var childButtonImage = "/images/childButton.png";
+					var openChildButton = Ti.UI.createButton({
+						// title : ">",
+						image : childButtonImage,
+						height : Ti.UI.FILL,
+						width : 42,
+						backgroundColor : "transparent",
+						color : "transparent",
+						right : 0,
+						// borderWidth : 0,
+						borderColor : null,
+						// borderRadius : 0,
+						style : 0
+					});
 				}
-				var openChildButton = Ti.UI.createButton({
-					// title : ">",
-					image : childButtonImage,
-					height : Ti.UI.FILL,
-					width : 42,
-					backgroundColor : "transparent",
-					color : "transparent",
-					right : 0,
-					borderWidth : 0,
-					borderColor : null,
-					borderRadius : 0,
-					style : 0
-				});
 				$.$view.add(openChildButton);
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
@@ -158,22 +171,34 @@
 				if(OS_IOS){
 					var detailExpandButtonImage = "/images/detailExpandButton@2x.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton@2x.png";
+					var openDetailButton = Ti.UI.createButton({
+						// title : "+",
+						image : detailExpandButtonImage,
+						height : Ti.UI.FILL,
+						width : 42,
+						backgroundColor : "transparent",
+						left : 0,
+						borderWidth : 0,
+						borderColor : null,
+						// borderRadius : 0,
+						style : 0
+					});		
 				} else {
 					var detailExpandButtonImage = "/images/detailExpandButton.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton.png";
+					var openDetailButton = Ti.UI.createButton({
+						// title : "+",
+						image : detailExpandButtonImage,
+						height : Ti.UI.FILL,
+						width : 42,
+						backgroundColor : "transparent",
+						left : 0,
+						// borderWidth : 0,
+						borderColor : null,
+						// borderRadius : 0,
+						style : 0
+					});
 				}
-				var openDetailButton = Ti.UI.createButton({
-					// title : "+",
-					image : detailExpandButtonImage,
-					height : Ti.UI.FILL,
-					width : 42,
-					backgroundColor : "transparent",
-					left : 0,
-					borderWidth : 0,
-					borderColor : null,
-					borderRadius : 0,
-					style : 0
-				});
 				$.$view.add(openDetailButton);
 				$.content.setLeft(42);
 				openDetailButton.addEventListener("singletap", function(e) {
