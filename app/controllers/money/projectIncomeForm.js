@@ -125,7 +125,7 @@ if ($.saveableMode === "read") {
 			friendUserId : Alloy.Models.User.id
 		});
 		projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
-		projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + newAmount);
+		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + newAmount);
 		projectShareAuthorization.xAddToSave($);
 		editData.push(projectShareAuthorization.toJSON());
 

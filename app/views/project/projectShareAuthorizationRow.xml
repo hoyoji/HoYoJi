@@ -31,12 +31,12 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow"
 					id="apportionedTotalText" autoInit="false"
 					bindModel = "$.$model"
-					bindAttribute = "getApportionedTotalText()"
+					bindAttribute = "getSettlementText()"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow"
 					id="apportionedTotalMoney" autoInit="false"
 					bindModel = "$.$model"
-					bindAttribute = "getApportionedTotalMoney()"
+					bindAttribute = "getSettlementMoney()"
 				/>
 			</View>
 		</View>

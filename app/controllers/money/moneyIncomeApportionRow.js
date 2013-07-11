@@ -22,10 +22,11 @@ $.$model.on("_xchange:amount", refreshAmount);
 $.$model.on("_xchange:apportionType", updateApportionType);
 $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:amount", refreshAmount);
-	$.$model.off("_xchange:apportionTyp", updateApportionType);
+	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
 $.removeMember.addEventListener("singletap", function() {
+	e.cancelBubble = true;
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
@@ -36,6 +37,14 @@ $.removeMember.addEventListener("singletap", function() {
 	}
 });
 
+$.amount.$view.addEventListener("singletap",function(e){
+	e.cancelBubble = true;
+});
+
+$.apportionType.label.addEventListener("singletap",function(e){
+	e.cancelBubble = true;
+});
+
 $.$view.addEventListener("singletap", function(e) {
 	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
 		if ($.$model.xGet("apportionType") === "Fixed") {
@@ -43,7 +52,7 @@ $.$view.addEventListener("singletap", function(e) {
 		} else if ($.$model.xGet("apportionType") === "Average") {
 			$.$model.xSet("apportionType", "Fixed");
 		}
-		$.apportionType.field.fireEvent("change");
+		// $.apportionType.field.fireEvent("change");
 	}
 });
 

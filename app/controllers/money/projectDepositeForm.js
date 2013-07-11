@@ -173,7 +173,7 @@ if ($.saveableMode === "read") {
 					friendUserId : Alloy.Models.User.id
 				});
 				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
-				projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + newAmount);
+				// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + newAmount);
 				projectShareAuthorization.xAddToSave($);
 	
 				if (oldMoneyAccount === newMoneyAccount) {

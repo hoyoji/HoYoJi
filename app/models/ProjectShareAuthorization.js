@@ -213,37 +213,54 @@ exports.definition = {
 				
 			},
 			getActualTotalMoney : function(){
-				var getActualTotal = 0;
-				if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
-					getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
-					return getActualTotal;
-				}else{
-					getActualTotal = this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense");
-					return getActualTotal;
-				}
+				// var getActualTotal = 0;
+				// if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
+					// getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
+					// return getActualTotal;
+				// }else{
+					// getActualTotal = this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense");
+					// return getActualTotal;
+				// }
+				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
+				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
+				return actualTotalExpense - actualTotalIncome;
 				
 			},
-			getApportionedTotalText : function(){
-				var getApportionedTotal = 0;
-				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
-				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
-				if(apportionedTotalIncome - apportionedTotalExpense <= 0){
-					return "应该支出 : ";
-				}else{
+			getSettlementText : function(){
+				// var getApportionedTotal = 0;
+				// var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
+				// var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
+				// if(apportionedTotalIncome - apportionedTotalExpense <= 0){
+					// return "应该支出 : ";
+				// }else{
+					// return "应该收入 : ";
+				// }
+				var settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
+				if (settlementMoney < 0) {
 					return "应该收入 : ";
+				}else{
+					return "应该支出: ";
 				}
 			},
 			getApportionedTotalMoney : function(){
-				var getApportionedTotal = 0;
+				// var getApportionedTotal = 0;
 				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
-				if(apportionedTotalIncome - apportionedTotalExpense <= 0){
-					getApportionedTotal = apportionedTotalExpense - apportionedTotalIncome;
-					return getApportionedTotal;
-				}else{
-					getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
-					return getApportionedTotal;
+				// if(apportionedTotalIncome - apportionedTotalExpense <= 0){
+					// getApportionedTotal = apportionedTotalExpense - apportionedTotalIncome;
+					// return getApportionedTotal;
+				// }else{
+					// getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
+					// return getApportionedTotal;
+				// }
+				return apportionedTotalExpense - apportionedTotalIncome;
+			},
+			getSettlementMoney : function(){
+				var settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
+				if (settlementMoney < 0) {
+					settlementMoney = -settlementMoney;
 				}
+				return settlementMoney;
 			},
 			getSharePercentage : function(){
 				if (this.xGet("state") === "Wait") {
