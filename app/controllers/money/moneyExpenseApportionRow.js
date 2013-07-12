@@ -66,6 +66,7 @@ function editApportionType() {
 		updateAmount();
 	}
 }
+
 $.$model.on("_xchange:apportionType", editApportionType);
 $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", editApportionType);

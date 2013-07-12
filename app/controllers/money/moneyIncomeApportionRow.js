@@ -25,7 +25,7 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function() {
+$.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
