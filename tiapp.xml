@@ -11,9 +11,9 @@
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>true</prerendered-icon>
     <statusbar-style>default</statusbar-style>
-    <statusbar-hidden>true</statusbar-hidden>
+    <statusbar-hidden>false</statusbar-hidden>
     <fullscreen>false</fullscreen>
-    <navbar-hidden>false</navbar-hidden>
+    <navbar-hidden>true</navbar-hidden>
     <analytics>false</analytics>
     <guid>939ff6a3-85b7-4ecd-b2ef-7c00a36fdc97</guid>
     <property name="ti.ui.defaultunit" type="string">system</property>
