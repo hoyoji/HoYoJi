@@ -213,15 +213,18 @@ exports.definition = {
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
-				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				moneyAccount.save({
-					currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
-				}, saveOptions);
+
+				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
+					var moneyAccount = this.xGet("moneyAccount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
+					}, saveOptions);
+				}
 
 				if (self.xGet("moneyLend")) {
 					var moneyLend = self.xGet("moneyLend");
