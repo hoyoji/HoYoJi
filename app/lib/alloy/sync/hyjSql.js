@@ -226,8 +226,8 @@ function Sync(method, model, opts) {
 			qs = qs[0].split("WHERE");
 			if (_.indexOf(projectPermissionTables, table) > -1) {
 				if (table === "Project") {
-					qs[0] += " LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND main.id = joinedtable.projectId ";
-					q = 'main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" ';
+					// qs[0] += " LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND main.id = joinedtable.projectId ";
+					q = '(main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR main.id IN (SELECT projectId FROM ProjectShareAuthorization joinedtable WHERE joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '")) ';
 				} else if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory" || table === "ProjectPreExpenseBalance" || table === "ProjectPreIncomeBalance") {
 					qs[0] += " JOIN Project prj ON prj.id = main.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND prj.id = joinedtable.projectId ";
 					q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectId IS NOT NULL';

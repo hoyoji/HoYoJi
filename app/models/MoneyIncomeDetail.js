@@ -64,7 +64,6 @@ exports.definition = {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 
-					if(this.xGet("ownerUserId") === Alloy.Models.User.id){
 						var amount = self.xGet("amount");
 						var moneyAccount = self.xGet("moneyIncome").xGet("moneyAccount");
 						moneyAccount.save({
@@ -76,7 +75,6 @@ exports.definition = {
 							amount : incomeAmount - amount,
 							moneyAccount : moneyAccount
 						}, saveOptions);
-					}
 					
 					this._xDelete(xFinishCallback, options);
 				} else {

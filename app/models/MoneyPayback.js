@@ -219,13 +219,11 @@ exports.definition = {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
 
-				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
 					var moneyAccount = this.xGet("moneyAccount");
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
 					}, saveOptions);
-				}
-
+				
 				if (self.xGet("moneyLend")) {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
