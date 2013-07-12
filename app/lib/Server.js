@@ -297,6 +297,7 @@
 						}
 					});
 					dbTrans.commit();
+					Alloy.Models.User.xGet("messageBox").processNewMessages();
 					xFinishedCallback();
 				}, function(e) {
 					xErrorCallback(e);

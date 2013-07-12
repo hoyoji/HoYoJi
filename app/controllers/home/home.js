@@ -67,7 +67,6 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/moneyAddNew");
 	} else if (e.source.id === "sync") {
 		Alloy.Globals.Server.sync();
-		Alloy.Models.User.xGet("messageBox").processNewMessages();
 	} else if (e.source.id === "setting") {
 		Alloy.Globals.openWindow("setting/systemSetting");
 	} else if (e.source.id === "moneyAll") {
