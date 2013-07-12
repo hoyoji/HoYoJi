@@ -160,17 +160,17 @@ function createRowView(rowModel, collection) {
 		});
 	} else {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
-			var row = Ti.UI.createTableViewRow({
-				id : rowModel.xGet("id"),
-				// className : collection.__rowView || rowModel.config.rowView,
-				collectionId : collection.id
-			});
+		var row = Ti.UI.createTableViewRow({
+			id : rowModel.xGet("id"),
+			// className : collection.__rowView || rowModel.config.rowView,
+			collectionId : collection.id
+		});
 		// } else {
-			// var row = Ti.UI.createTableViewRow({
-				// id : rowModel.xGet("id"),
-				// className : collection.__rowView || rowModel.config.rowView,
-				// collectionId : collection.id
-			// });
+		// var row = Ti.UI.createTableViewRow({
+		// id : rowModel.xGet("id"),
+		// className : collection.__rowView || rowModel.config.rowView,
+		// collectionId : collection.id
+		// });
 		// }
 	}
 	var rowViewController;
@@ -785,22 +785,42 @@ function getSectionNameOfRowModel(sectionName) {
 }
 
 exports.setHeaderView = function(headerView) {
+	// $.headerView = headerView;
 	if (OS_ANDROID) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
-			$.$view.add(headerView);
-			$.table.setTop(60);
-			// $.table.addEventListener("scroll", function(e){
-			// if(e.firstVisibleItem !== 0){
-			// // headerView.setVisible(false);
-			// // $.table.setTop(0);
-			// } else{
-			// // headerView.setVisible(true);
-			// // $.table.setTop(60);
+		$.$view.add(headerView);
+		$.table.setTop(60);
+		// $.table.setBottom(50);
+		// var scrolling = false;
+		// $.table.addEventListener("scroll", function(e) {
+			// if (e.firstVisibleItem === 0) {
+				// if($.$view.getTop() !== 0 && scrolling === false){
+					// var animation = Titanium.UI.createAnimation();
+					// animation.top = 0;
+					// animation.bottom = 50;
+					// animation.duration = 1000;
+					// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+					// animation.addEventListener("complete", function(){
+						// scrolling = false;
+					// });
+					// scrolling = true;
+					// $.$view.animate(animation);
+				// }
+			// } else {
+				// if($.$view.getTop() !== -60 && scrolling === false){
+					// var animation = Titanium.UI.createAnimation();
+					// animation.top = -60;
+					// animation.bottom = 50;
+					// animation.duration = 1000;
+					// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+					// animation.addEventListener("complete", function(){
+						// scrolling = false;
+					// });
+					// scrolling = true;
+					// $.$view.animate(animation);
+				// }
 			// }
-			// });
-		// } else {
-			// $.table.setHeaderView(headerView);
-		// }
+		// });
 	} else {
 		$.table.setHeaderView(headerView);
 	}
@@ -1089,6 +1109,7 @@ if (OS_IOS) {
 function cancelBubble(e) {
 	e.cancelBubble = true;
 }
+
 $.table.addEventListener("scroll", cancelBubble);
 
 // var lastTotalItemCount = -1;
@@ -1101,13 +1122,13 @@ $.table.addEventListener("scroll", cancelBubble);
 // }
 exports.autoHideFooter = function(footer) {
 	// if(OS_IOS){
-		// $.table.setBottom(50);
-		// return;		
+	// $.table.setBottom(50);
+	// return;
 	// }
-	
+
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
-		var lastY;
+		var lastY, lastTop;
 		$.table.addEventListener("touchend", function(e) {
 			lastY = undefined;
 		});
@@ -1133,6 +1154,7 @@ exports.autoHideFooter = function(footer) {
 							// }
 							// autoHideAnimationId = setTimeout(function() {
 							footer.slideDown();
+
 							// }, 1);
 							lastY = e.y + 5;
 						} else if (delta > 0) {
@@ -1141,6 +1163,10 @@ exports.autoHideFooter = function(footer) {
 							// }
 							// autoHideAnimationId = setTimeout(function() {
 							footer.slideUp();
+
+							// if($.headerView && $.headerView.getRect().top <= $.headerView.getRect().height){
+							// $.headerView.setTop($.headerView.getRect().top - delta);
+							// }
 							// }, 1);
 							lastY = e.y - 5;
 						}
@@ -1181,7 +1207,7 @@ exports.autoHideFooter = function(footer) {
 
 			// adjust the % of rows scrolled before we decide to start fetching
 			// var nearEnd = theEnd * .9;
-			
+
 			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
 				clearTimeout(autoHideAnimationId);
 				autoHideAnimationId = setTimeout(function() {
@@ -1199,8 +1225,8 @@ exports.autoHideFooter = function(footer) {
 			lastDistance = distance;
 			// var footerTop = footer.$view.getRect().bottom - footer.$view.getRect().top;
 			// if(offset > 0 && distance > 0 && direction && footerTop <= 42 && footerTop >= 0){
-				// var bottom = Number(footer.$view.getBottom()) + direction;
-					// footer.$view.setBottom(Math.min(Math.max(bottom, -42), 0));
+			// var bottom = Number(footer.$view.getBottom()) + direction;
+			// footer.$view.setBottom(Math.min(Math.max(bottom, -42), 0));
 			// }
 		});
 	}

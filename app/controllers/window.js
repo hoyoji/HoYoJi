@@ -56,9 +56,9 @@ exports.open = function(contentController, loadOnly) {
 	if (loadOnly) {
 		$.$view.setVisible(false);
 	} else {
-		if (OS_ANDROID) {
-			$.$view.addEventListener('androidback', $.__androidBackFunction);
-		}
+		// if (OS_ANDROID) {
+			// $.$view.addEventListener('androidback', $.__androidBackFunction);
+		// }
 	}
 	// setTimeout(function(){
 	$.$view.open({
