@@ -27,7 +27,7 @@ var isRateExist;
 var fistChangeFlag;
 
 if ($.saveableMode === "read") {
-	// $.localAmount.setHeight(42);
+	// $.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
