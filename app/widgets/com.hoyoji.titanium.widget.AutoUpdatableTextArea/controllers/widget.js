@@ -4,7 +4,7 @@ if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
-$.hintText.setText($.$attrs.hintText || "");
+// $.hintText.setText($.$attrs.hintText || "");
 
 $.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
@@ -32,11 +32,11 @@ $.$view.addEventListener("singletap", function(e) {
 });
 
 $.setEditable = function(editable) {
-	// if (editable === false) {
-		// $.field.setHintText("");
-	// } else {
-		// $.field.setHintText($.$attrs.hintText);
-	// }
+	if (editable === false) {
+		$.hintText.setText("");
+	} else {
+		$.hintText.setText($.$attrs.hintText);
+	}
 // 
 	// if (OS_ANDROID) {
 		// if ($.$attrs.bindAttributeIsModel) {
