@@ -35,7 +35,8 @@ exports.definition = {
 			},
 			moneyExpenseApportions : {
 				type : "MoneyExpenseApportion",
-				attribute : "moneyExpense"
+				attribute : "moneyExpense",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -215,11 +216,11 @@ exports.definition = {
 						msg : "当前支出的明细不为空，不能删除"
 					});
 				} else {
-					if (this.xGet("moneyExpenseApportions").length === 1) {
-						this.xGet("moneyExpenseApportions").forEach(function(item) {
-							item._xDelete();
-						});
-					}
+					// if (this.xGet("moneyExpenseApportions").length === 1) {
+						// this.xGet("moneyExpenseApportions").forEach(function(item) {
+							// item._xDelete();
+						// });
+					// }
 						var saveOptions = _.extend({}, options);
 						saveOptions.patch = true;
 						var moneyAccount = this.xGet("moneyAccount");

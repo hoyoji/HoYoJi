@@ -36,7 +36,8 @@ exports.definition = {
 			},
 			moneyIncomeApportions : {
 				type : "MoneyIncomeApportion",
-				attribute : "moneyIncome"
+				attribute : "moneyIncome",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -206,11 +207,11 @@ exports.definition = {
 						msg : "当前收入的明细不为空，不能删除"
 					})
 				} else {
-					if (this.xGet("moneyIncomeApportions").length === 1) {
-						this.xGet("moneyIncomeApportions").forEach(function(item) {
-							item._xDelete();
-						});
-					}
+					// if (this.xGet("moneyIncomeApportions").length === 1) {
+						// this.xGet("moneyIncomeApportions").forEach(function(item) {
+							// item._xDelete();
+						// });
+					// }
 
 						var saveOptions = _.extend({}, options);
 						saveOptions.patch = true;
