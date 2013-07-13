@@ -3,7 +3,7 @@
 		<!-- <View backgroundColor="#40000000" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
 		<View id="keyboard" layout="vertical" height="252" width="Ti.UI.FILL" bottom="-252" backgroundColor="#e9f3f0">
 			<View height="42">
-					<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+					<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10" color="blue" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" right="0" />
 			</View>
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
