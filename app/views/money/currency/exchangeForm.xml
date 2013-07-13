@@ -6,7 +6,7 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true"
 			id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="本币币种" hintText="请选择本币币种"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="本币币种" hintText="请选择本币币种"
 				id="localCurrency" autoInit="false"
 				addModeEditability="noneditable"
 				editModeEditability="noneditable"
@@ -14,7 +14,7 @@
 				bindAttribute="localCurrency"
 				bindAttributeIsModel="name"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="外币币种" hintText="请选择外币币种"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="外币币种" hintText="请选择外币币种"
 				id="foreignCurrency" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="foreignCurrency"

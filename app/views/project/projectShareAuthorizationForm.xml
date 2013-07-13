@@ -5,13 +5,13 @@
 		addModeTitle="新增共享好友" readModeTitle="查看共享属性" editModeTitle="修改共享属性"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" editModeEditability="noneditable"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" editModeEditability="noneditable"
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  labelText="好友" hintText="请选择好友"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="好友" hintText="请选择好友"
 					id="friendUser" autoInit="false"
 					editModeEditability="noneditable"
 					bindModel="$.$model"

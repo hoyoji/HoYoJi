@@ -36,14 +36,14 @@
 					bindAttribute="getLocalAmount()"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户" hintText="请选择账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
 				id="moneyAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="moneyAccount"
@@ -55,7 +55,7 @@
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="债权人" hintText="无债权人"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="债权人" hintText="无债权人"
 				id="friend" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendUser"
@@ -65,7 +65,7 @@
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" labelText="债权人账户" hintText="无债权人账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="债权人账户" hintText="无债权人账户"
 				id="friendAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendAccount"

@@ -42,14 +42,14 @@
 					bindAttribute="getLocalAmount()"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="分类" hintText="请选择分类"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="分类" hintText="请选择分类"
 				id="moneyExpenseCategory" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="moneyExpenseCategory"
@@ -57,7 +57,7 @@
 				bindModelSelector="money/moneyExpenseCategoryAll"
 				bindModelSelectorParams="selectedProject:project"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账户" hintText="请选择账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
 				id="moneyAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="moneyAccount"
@@ -69,7 +69,7 @@
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  labelText="商家" hintText="无商家"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="商家" hintText="无商家"
 				id="friend" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendUser"
@@ -79,7 +79,7 @@
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" height="0" labelText="商家账户" hintText="无商家账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="商家账户" hintText="无商家账户"
 				id="friendAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendAccount"

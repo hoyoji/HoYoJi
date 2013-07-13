@@ -5,7 +5,7 @@
 		addModeTitle="新增项目" readModeTitle="项目资料" editModeTitle="修改项目"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="上级项目" hintText="无上级项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="上级项目" hintText="无上级项目"
 				id="parentProject" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="parentProject"

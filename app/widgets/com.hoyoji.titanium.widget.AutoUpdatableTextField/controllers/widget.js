@@ -12,7 +12,6 @@ if ($.$attrs.hideKeyboard) {
 	}
 }
 
-
 if ($.$attrs.passwordMask === "true") {
 	$.field.setPasswordMask(true);
 }
