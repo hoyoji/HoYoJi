@@ -3,8 +3,8 @@
 		<!-- <View backgroundColor="#40000000" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
 		<View id="keyboard" layout="vertical" height="252" width="Ti.UI.FILL" bottom="-252" backgroundColor="#e9f3f0">
 			<View height="42">
-				<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10"/>
-				<Button onSingletap="clear" onDoubletap="clear" title="C" right="0" />
+					<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" right="0" />
 			</View>
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View height="42" layout="horizontal" horizontalWrap="false">
@@ -45,8 +45,8 @@
 				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
 					<Button id="submit" onSingletap="equalToValue" onDoubletap="equalToValue" title="确定" />
 					<Button id="submitButton" onSingletap="submitValue" onDoubletap="submitValue" title="保存" />
-					<Button id="cancel" title="取消" onSingletap="cancel" onDoubletap="cancel" right="0" borderRadius="0" />
-					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" />
+					<Button id="cancel" title="取消" onSingletap="cancel" onDoubletap="cancel" borderRadius="0" />
+					<Button onSingletap="clear" onDoubletap="clear" title="C" right="0" />
 				</View>
 			</View>
 		</View>
