@@ -22,8 +22,9 @@
 				} else {
 					collection.xSearchInDb(filter);
 				}
-
-				xFinishedCallback(collection);
+				if(xFinishedCallback){
+					xFinishedCallback(collection);
+				}
 			},
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
@@ -68,7 +69,9 @@
 								}
 							}
 						});
-						xFinishedCallback(returnCollection);
+						if(xFinishedCallback){
+							xFinishedCallback(returnCollection);
+						}
 					}, xErrorCallback, "getSharedProjects");
 				// }, xErrorCallback);
 			},
@@ -113,7 +116,9 @@
 								returnCollection.push(model);
 							}
 						});
-						xFinishedCallback(returnCollection);
+						if(xFinishedCallback){
+							xFinishedCallback(returnCollection);
+						}
 					}, xErrorCallback);
 
 				// }, xErrorCallback);

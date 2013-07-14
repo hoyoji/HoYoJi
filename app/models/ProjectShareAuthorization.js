@@ -356,11 +356,9 @@ exports.definition = {
 				});
 				// 同步新增好友时，一起把该好友用户同步下来
 				if (!friendUser.id) {
-					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						if (collection.length > 0) {
-						}
-					});
+					Alloy.Globals.Server.loadData("User", [record.friendUserId]);
 				}
+				Alloy.Globals.Server.loadSharedProjects([record.projectId]);
 			}
 		});
 		return Model;
