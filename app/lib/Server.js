@@ -29,14 +29,12 @@
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
-				this.searchData("Project", projectIds, function(collection) {
-					// collection.map(function(item){
-					// item.save({wait : true});
-					// });
-					if (collection.length > 0) {
-						xFinishedCallback(collection);
-						return;
-					}
+				// this.searchData("Project", projectIds, function(collection) {
+
+					// if (collection.length > 0) {
+						// xFinishedCallback(collection);
+						// return;
+					// }
 
 					var requestData = [];
 					projectIds.forEach(function(projectId) {
@@ -57,10 +55,10 @@
 								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
 									id : id
 								});
-								model.xSet(modelData);
 								if (!model.id) {
 									model.attributes.id = id;
 								}
+								model.xSet(modelData);
 								model.save(null, {
 									silent : true,
 									syncFromServer : true
@@ -72,17 +70,14 @@
 						});
 						xFinishedCallback(returnCollection);
 					}, xErrorCallback, "getSharedProjects");
-				}, xErrorCallback);
+				// }, xErrorCallback);
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				this.searchData(modelName, filter, function(collection) {
-					// collection.map(function(item){
-					// item.save({wait : true});
-					// });
-					if (collection.length > 0) {
-						xFinishedCallback(collection);
-						return;
-					}
+				// this.searchData(modelName, filter, function(collection) {
+					// if (collection.length > 0) {
+						// xFinishedCallback(collection);
+						// return;
+					// }
 
 					var requestData = [];
 					filter.forEach(function(filter) {
@@ -107,10 +102,10 @@
 								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
 									id : id
 								});
-								model.xSet(modelData);
 								if (!model.id) {
 									model.attributes.id = id;
 								}
+								model.xSet(modelData);
 								model.save(null, {
 									silent : true,
 									syncFromServer : true
@@ -121,7 +116,7 @@
 						xFinishedCallback(returnCollection);
 					}, xErrorCallback);
 
-				}, xErrorCallback);
+				// }, xErrorCallback);
 			},
 			putData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
