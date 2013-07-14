@@ -17,6 +17,7 @@
     <analytics>false</analytics>
     <guid>939ff6a3-85b7-4ecd-b2ef-7c00a36fdc97</guid>
     <property name="ti.ui.defaultunit" type="string">system</property>
+    <property name="ti.android.threadstacksize" type="int">32768</property>
     <iphone>
         <orientations device="iphone">
             <orientation>Ti.UI.PORTRAIT</orientation>

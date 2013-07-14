@@ -253,7 +253,7 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") + record.amount, {
-							syncFromServer : true,
+							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
 						});
@@ -295,7 +295,7 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") - this.xGet("amount") + record.amount, {
-							syncFromServer : true,
+							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
 						});
