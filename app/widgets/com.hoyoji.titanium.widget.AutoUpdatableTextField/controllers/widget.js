@@ -34,24 +34,24 @@ if (OS_IOS) {
 
 // $.onWindowOpenDo(function() {
 
-	$.field.addEventListener("focus", function(e) {
-		e.cancelBubble = true;
-
-		if ($.saveableMode === "read") {
-			return;
-		}
-		if ($.$attrs.bindAttributeIsModel) {
-			$.field.blur();
-			if(OS_IOS){
-				$.field.fireEvent("singletap");
-			}
-		}
-		
-		// $.field.fireEvent("textfieldfocused", {
-			// bubbles : true,
-			// inputType : $.$attrs.inputType
-		// });
-	});
+	// $.field.addEventListener("focus", function(e) {
+		// e.cancelBubble = true;
+// 
+		// if ($.saveableMode === "read") {
+			// return;
+		// }
+		// if ($.$attrs.bindAttributeIsModel) {
+			// $.field.blur();
+			// if(OS_IOS){
+				// $.field.fireEvent("singletap");
+			// }
+		// }
+// 		
+		// // $.field.fireEvent("textfieldfocused", {
+			// // bubbles : true,
+			// // inputType : $.$attrs.inputType
+		// // });
+	// });
 // });
 
 $.setEditable = function(editable) {

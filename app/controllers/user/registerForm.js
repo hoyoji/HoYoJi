@@ -80,6 +80,7 @@ $.onSave = function(saveEndCB, saveErrorCB){
 }
 
 $.onWindowCloseDo(function(){
+	$.$model = null;
 	Alloy.Globals.DataStore.initStore();
 })
 
