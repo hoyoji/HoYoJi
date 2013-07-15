@@ -5,8 +5,8 @@ $.makeContextMenu = function() {
 		headerTitle : "分摊明细操作"
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
-		$.deleteModel();
-	}));
+				$.deleteModel();
+			},!$.$model.canDelete()));
 
 	return menuSection;
 }
