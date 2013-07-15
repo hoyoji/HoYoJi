@@ -49,22 +49,22 @@ function addSharePercentage(projectShareAuthorization) {
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
-	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		state : "Wait"
-	});
+	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		// state : "Wait"
+	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
-			fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-			fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-		} else {
-			averageSharePercentageCollections.push(waitProjectShareAuthorization);
-		}
-	});
+	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
+		// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+			// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+		// } else {
+			// averageSharePercentageCollections.push(waitProjectShareAuthorization);
+		// }
+	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
 			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
@@ -84,24 +84,24 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
-	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		state : "Wait"
-	});
+	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		// state : "Wait"
+	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
-				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-			} else {
-				averageSharePercentageCollections.push(waitProjectShareAuthorization);
-			}
-		}
-	});
+	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
+		// if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
+			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+			// } else {
+				// averageSharePercentageCollections.push(waitProjectShareAuthorization);
+			// }
+		// }
+	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
 			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
@@ -122,13 +122,19 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 			});
 		} else {
 			var averageLength = averageSharePercentageCollections.length;
-			var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
-			var averagePercentage = averageTotalPercentage / averageLength;
-			averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
-				averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
-				editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
-				averageSharePercentageCollection.xAddToSave($);
-			});
+			if(averageLength > 0){
+				var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
+				var averagePercentage = averageTotalPercentage / averageLength;
+				averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
+					averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
+					editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
+					averageSharePercentageCollection.xAddToSave($);
+				});
+			}else{
+				var averageTotalPercentage = 100 - fixedSharePercentage;
+				projectShareAuthorization.xSet("sharePercentage", averageTotalPercentage);
+			}
+			
 		}
 	} else {
 		var averageLength = averageSharePercentageCollections.length + 1;
@@ -147,24 +153,24 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
-	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		state : "Wait"
-	});
+	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		// state : "Wait"
+	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
-				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-			} else {
-				averageSharePercentageCollections.push(waitProjectShareAuthorization);
-			}
-		}
-	});
+	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
+		// if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
+			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+			// } else {
+				// averageSharePercentageCollections.push(waitProjectShareAuthorization);
+			// }
+		// }
+	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
 			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
@@ -355,207 +361,279 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if ($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.hasChanged("sharePercentage"))) {
 					editSharePercentage($.$model, editSharePercentageAuthorization);
 				}
-				if ($.$model.hasChanged("shareAllSubProjects")) {
-					var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
+				if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
+					if ($.$model.hasChanged("shareAllSubProjects")) {
+						var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
 
-					var isSynAllProjects = true;
-					allSubProject.map(function(subProject) {
-						var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-							tableName : "Project",
-							recordId : subProject.xGet("id"),
-							operation : "create"
-						});
-						if (subProjectSyncRecord.id) {
-							isSynAllProjects = false;
-						}
-					});
-
-					if (isSynAllProjects) {
-						var projectShareAuthorizationsSearchArray = [];
-						var subProjectsArray = [];
-						var projectShareAuthorizationArray = [];
-
-						projectShareAuthorizationsSearchArray.push({
-							__dataType : "ProjectShareAuthorization",
-							projectId : $.$model.xGet("project").xGet("id"),
-							friendUserId : $.$model.xGet("friendUser").xGet("id"),
-							state : "Wait"
-						});
-						projectShareAuthorizationsSearchArray.push({
-							__dataType : "ProjectShareAuthorization",
-							projectId : $.$model.xGet("project").xGet("id"),
-							friendUserId : $.$model.xGet("friendUser").xGet("id"),
-							state : "Accept"
-						});
-
+						var isSynAllProjects = true;
 						allSubProject.map(function(subProject) {
+							var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
+								tableName : "Project",
+								recordId : subProject.xGet("id"),
+								operation : "create"
+							});
+							if (subProjectSyncRecord.id) {
+								isSynAllProjects = false;
+							}
+						});
+
+						if (isSynAllProjects) {
+							var projectShareAuthorizationsSearchArray = [];
+							var subProjectsArray = [];
+							var projectShareAuthorizationArray = [];
+
 							projectShareAuthorizationsSearchArray.push({
 								__dataType : "ProjectShareAuthorization",
-								projectId : subProject.xGet("id"),
+								projectId : $.$model.xGet("project").xGet("id"),
 								friendUserId : $.$model.xGet("friendUser").xGet("id"),
 								state : "Wait"
 							});
 							projectShareAuthorizationsSearchArray.push({
 								__dataType : "ProjectShareAuthorization",
-								projectId : subProject.xGet("id"),
+								projectId : $.$model.xGet("project").xGet("id"),
 								friendUserId : $.$model.xGet("friendUser").xGet("id"),
 								state : "Accept"
 							});
-							subProjectsArray.push(subProject);
-						});
-						if ($.$model.xGet("shareAllSubProjects")) {
-							if (allSubProject.length) {
-								Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
-									if (data[0].length > 0) {
-										for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
-											var subProjectShareAuthorization;
-											if (data[i].length === 0 && data[i + 1].length === 0) {
-												var subProjectSharedAuthorizationData = {
-													project : subProjectsArray[i / 2 - 1],
-													friendUserId : $.$model.xGet("friendUser").xGet("id"),
-													state : "Wait",
-													shareType : $.$model.xGet("shareType"),
-													remark : $.$model.xGet("remark"),
-													ownerUser : $.$model.xGet("ownerUser"),
-													shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
-												}
-												for (var attr in $.$model.config.columns) {
-													if (attr.startsWith("projectShare")) {
-														subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
-													}
-												}
-												subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
-												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-												editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
-												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
-												subProjectShareAuthorization.xAddToSave($);
 
-											}
-										}
-
-										if (subProjectShareAuthorizationIds.length) {
-											editSharePercentageAuthorization.push($.$model.toJSON());
-											Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-												Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-													Alloy.Globals.Server.sendMsg({
-														id : guid(),
-														"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-														"fromUserId" : Alloy.Models.User.xGet("id"),
-														"type" : "Project.Share.Edit",
-														"messageState" : "new",
-														"messageTitle" : "共享项目",
-														"date" : date,
-														"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
-														"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-														"messageData" : JSON.stringify({
-															shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-															projectShareAuthorizationId : $.$model.xGet("id"),
-															subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-														})
-													}, function() {
-														$.saveModel(saveEndCB, saveErrorCB, {
-															syncFromServer : true
-														});
-													}, function(e) {
-														alert(e.__summary.msg);
-													});
-												}, function(e) {
-													alert(e.__summary.msg);
-												});
-											}, function(e) {
-												alert(e.__summary.msg);
-											});
-										} else {
-											$.saveModel(saveEndCB, saveErrorCB);
-										}
-									} else if (data[1].length > 0) {
-										for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
-											var subProjectShareAuthorization;
-											if (data[i].length === 0 && data[i + 1].length === 0) {
-												var subProjectSharedAuthorizationData = {
-													project : subProjectsArray[i / 2 - 1],
-													friendUserId : $.$model.xGet("friendUser").xGet("id"),
-													state : "Accept",
-													shareType : $.$model.xGet("shareType"),
-													remark : $.$model.xGet("remark"),
-													ownerUser : $.$model.xGet("ownerUser"),
-													shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
-												}
-												for (var attr in $.$model.config.columns) {
-													if (attr.startsWith("projectShare")) {
-														subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
-													}
-												}
-												subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
-												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-												editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
-												projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
-												subProjectShareAuthorization.xAddToSave($);
-
-											}
-										}
-
-										if (subProjectShareAuthorizationIds.length) {
-											editSharePercentageAuthorization.push($.$model.toJSON());
-											Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-												Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-													Alloy.Globals.Server.sendMsg({
-														id : guid(),
-														"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-														"fromUserId" : Alloy.Models.User.xGet("id"),
-														"type" : "Project.Share.Edit",
-														"messageState" : "unread",
-														"messageTitle" : "共享项目",
-														"date" : date,
-														"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
-														"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-														"messageData" : JSON.stringify({
-															shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-															projectShareAuthorizationId : $.$model.xGet("id"),
-															subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-														})
-													}, function() {
-														$.saveModel(saveEndCB, saveErrorCB, {
-															syncFromServer : true
-														});
-													}, function(e) {
-														alert(e.__summary.msg);
-													});
-												}, function(e) {
-													alert(e.__summary.msg);
-												});
-											}, function(e) {
-												alert(e.__summary.msg);
-											});
-										} else {
-											$.saveModel(saveEndCB, saveErrorCB);
-										}
-									}
-
-								}, function(e) {
-									alert(e.__summary.msg);
+							allSubProject.map(function(subProject) {
+								projectShareAuthorizationsSearchArray.push({
+									__dataType : "ProjectShareAuthorization",
+									projectId : subProject.xGet("id"),
+									friendUserId : $.$model.xGet("friendUser").xGet("id"),
+									state : "Wait"
 								});
+								projectShareAuthorizationsSearchArray.push({
+									__dataType : "ProjectShareAuthorization",
+									projectId : subProject.xGet("id"),
+									friendUserId : $.$model.xGet("friendUser").xGet("id"),
+									state : "Accept"
+								});
+								subProjectsArray.push(subProject);
+							});
+							if ($.$model.xGet("shareAllSubProjects")) {
+								if (allSubProject.length) {
+									Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
+										if (data[0].length > 0) {
+											for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
+												var subProjectShareAuthorization;
+												if (data[i].length === 0 && data[i + 1].length === 0) {
+													var subProjectSharedAuthorizationData = {
+														project : subProjectsArray[i / 2 - 1],
+														friendUserId : $.$model.xGet("friendUser").xGet("id"),
+														state : "Wait",
+														shareType : $.$model.xGet("shareType"),
+														remark : $.$model.xGet("remark"),
+														ownerUser : $.$model.xGet("ownerUser"),
+														shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+													}
+													for (var attr in $.$model.config.columns) {
+														if (attr.startsWith("projectShare")) {
+															subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
+														}
+													}
+													subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
+													subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+													editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+													projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+													subProjectShareAuthorization.xAddToSave($);
+
+												}
+											}
+
+											if (subProjectShareAuthorizationIds.length) {
+												editSharePercentageAuthorization.push($.$model.toJSON());
+												Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
+													Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+														Alloy.Globals.Server.sendMsg({
+															id : guid(),
+															"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+															"fromUserId" : Alloy.Models.User.xGet("id"),
+															"type" : "Project.Share.Edit",
+															"messageState" : "new",
+															"messageTitle" : "共享项目",
+															"date" : date,
+															"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
+															"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+															"messageData" : JSON.stringify({
+																shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+																projectShareAuthorizationId : $.$model.xGet("id"),
+																subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+															})
+														}, function() {
+															$.saveModel(saveEndCB, saveErrorCB, {
+																syncFromServer : true
+															});
+														}, function(e) {
+															alert(e.__summary.msg);
+														});
+													}, function(e) {
+														alert(e.__summary.msg);
+													});
+												}, function(e) {
+													alert(e.__summary.msg);
+												});
+											} else {
+												$.saveModel(saveEndCB, saveErrorCB);
+											}
+										} else if (data[1].length > 0) {
+											for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
+												var subProjectShareAuthorization;
+												if (data[i].length === 0 && data[i + 1].length === 0) {
+													var subProjectSharedAuthorizationData = {
+														project : subProjectsArray[i / 2 - 1],
+														friendUserId : $.$model.xGet("friendUser").xGet("id"),
+														state : "Accept",
+														shareType : $.$model.xGet("shareType"),
+														remark : $.$model.xGet("remark"),
+														ownerUser : $.$model.xGet("ownerUser"),
+														shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+													}
+													for (var attr in $.$model.config.columns) {
+														if (attr.startsWith("projectShare")) {
+															subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
+														}
+													}
+													subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
+													subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+													editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+													projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+													subProjectShareAuthorization.xAddToSave($);
+
+												}
+											}
+
+											if (subProjectShareAuthorizationIds.length) {
+												editSharePercentageAuthorization.push($.$model.toJSON());
+												Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
+													Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+														Alloy.Globals.Server.sendMsg({
+															id : guid(),
+															"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+															"fromUserId" : Alloy.Models.User.xGet("id"),
+															"type" : "Project.Share.Edit",
+															"messageState" : "unread",
+															"messageTitle" : "共享项目",
+															"date" : date,
+															"detail" : "用户" + Alloy.Models.User.xGet("userName") + "共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
+															"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+															"messageData" : JSON.stringify({
+																shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+																projectShareAuthorizationId : $.$model.xGet("id"),
+																subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+															})
+														}, function() {
+															$.saveModel(saveEndCB, saveErrorCB, {
+																syncFromServer : true
+															});
+														}, function(e) {
+															alert(e.__summary.msg);
+														});
+													}, function(e) {
+														alert(e.__summary.msg);
+													});
+												}, function(e) {
+													alert(e.__summary.msg);
+												});
+											} else {
+												$.saveModel(saveEndCB, saveErrorCB);
+											}
+										}
+
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								} else {
+									$.saveModel(saveEndCB, saveErrorCB);
+								}
 							} else {
-								$.saveModel(saveEndCB, saveErrorCB);
+								allSubProject.map(function(subProject) {
+									var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+										projectId : subProject.xGet("id"),
+										friendUserId : $.$model.xGet("friendUserId")
+									});
+									if (subProjectShareAuthorization && subProjectShareAuthorization.id && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
+										// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+										// subProjectShareAuthorization._xDelete();
+										subProjectShareAuthorization.xSet("state", "Delete");
+										subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+										subProjectShareAuthorization.xAddToSave($);
+										editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+										deleteSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+									}
+								});
+								if (subProjectShareAuthorizationIds.length) {
+									editSharePercentageAuthorization.push($.$model.toJSON());
+									Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+										Alloy.Globals.Server.sendMsg({
+											id : guid(),
+											"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+											"fromUserId" : Alloy.Models.User.xGet("id"),
+											"type" : "Project.Share.Edit",
+											"messageState" : "unread",
+											"messageTitle" : "共享项目",
+											"date" : date,
+											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
+											"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+											"messageData" : JSON.stringify({
+												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+												projectShareAuthorizationId : $.$model.xGet("id"),
+												subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+											})
+										}, function() {
+											$.saveModel(saveEndCB, saveErrorCB, {
+												syncFromServer : true
+											});
+										}, function(e) {
+											alert(e.__summary.msg);
+										});
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								} else {
+									$.saveModel(saveEndCB, saveErrorCB);
+								}
 							}
 						} else {
-							allSubProject.map(function(subProject) {
-								var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-									projectId : subProject.xGet("id"),
-									friendUserId : $.$model.xGet("friendUserId")
+							alert("子项目未同步，清同步再共享");
+						}
+
+					} else {
+						editSharePercentageAuthorization.push($.$model.toJSON());
+						if ($.$model.xGet("shareAllSubProjects")) {
+							Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function() {
+								$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+									var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+										projectId : subProject.xGet("id"),
+										friendUserId : $.$model.xGet("friendUserId")
+									});
+									subProjectShareAuthorizations.map(function(subProjectShareAuthorization) {
+										if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
+											var data = {
+												shareType : $.$model.xGet("shareType"),
+												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+												sharePercentageType : $.$model.xGet("sharePercentageType"),
+												sharePercentage : $.$model.xGet("sharePercentage")
+											}
+											for (var attr in $.$model.config.columns) {
+												if (attr.startsWith("projectShare")) {
+													data[attr] = $.$model.xGet(attr);
+												}
+											}
+
+											var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
+											var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
+											subProjectShareAuthorization.xSet(data);
+											if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))) {
+												editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+											}
+											editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+											subProjectShareAuthorization.xSave($);
+
+										}
+									});
 								});
-								if (subProjectShareAuthorization && subProjectShareAuthorization.id && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
-									// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-									// subProjectShareAuthorization._xDelete();
-									subProjectShareAuthorization.xSet("state", "Delete");
-									subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-									subProjectShareAuthorization.xAddToSave($);
-									editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-									deleteSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
-								}
 							});
-							if (subProjectShareAuthorizationIds.length) {
-								editSharePercentageAuthorization.push($.$model.toJSON());
+							if ($.$model.xGet("state") === "Accept") {
 								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 									Alloy.Globals.Server.sendMsg({
 										id : guid(),
@@ -565,12 +643,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"messageState" : "unread",
 										"messageTitle" : "共享项目",
 										"date" : date,
-										"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + $.$model.xGet("project").xGet("name") + "的子项目给您",
+										"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") + "的权限",
 										"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 										"messageData" : JSON.stringify({
 											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-											projectShareAuthorizationId : $.$model.xGet("id"),
-											subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+											projectShareAuthorizationId : $.$model.xGet("id")
 										})
 									}, function() {
 										$.saveModel(saveEndCB, saveErrorCB, {
@@ -583,124 +660,65 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									alert(e.__summary.msg);
 								});
 							} else {
-								$.saveModel(saveEndCB, saveErrorCB);
+								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+									$.saveModel(saveEndCB, saveErrorCB, {
+										syncFromServer : true
+									});
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
+							}
+
+						} else {
+							if ($.$model.xGet("state") === "Accept") {
+								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+									Alloy.Globals.Server.sendMsg({
+										id : guid(),
+										"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+										"fromUserId" : Alloy.Models.User.xGet("id"),
+										"type" : "Project.Share.Edit",
+										"messageState" : "unread",
+										"messageTitle" : "共享项目",
+										"date" : date,
+										"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") + "的权限",
+										"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+										"messageData" : JSON.stringify({
+											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+											projectShareAuthorizationId : $.$model.xGet("id")
+										})
+									}, function() {
+										$.saveModel(saveEndCB, saveErrorCB, {
+											syncFromServer : true
+										});
+									}, function(e) {
+										alert(e.__summary.msg);
+									});
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
+							} else {
+								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+									$.saveModel(saveEndCB, saveErrorCB, {
+										syncFromServer : true
+									});
+								}, function(e) {
+									alert(e.__summary.msg);
+								});
 							}
 						}
-					} else {
-						alert("子项目未同步，清同步再共享");
 					}
-
-				} else {
+				}else{
 					editSharePercentageAuthorization.push($.$model.toJSON());
-					if ($.$model.xGet("shareAllSubProjects")) {
-						Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function() {
-							$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
-								var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-									projectId : subProject.xGet("id"),
-									friendUserId : $.$model.xGet("friendUserId")
-								});
-								subProjectShareAuthorizations.map(function(subProjectShareAuthorization) {
-									if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
-										var data = {
-											shareType : $.$model.xGet("shareType"),
-											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-											sharePercentageType : $.$model.xGet("sharePercentageType"),
-											sharePercentage : $.$model.xGet("sharePercentage")
-										}
-										for (var attr in $.$model.config.columns) {
-											if (attr.startsWith("projectShare")) {
-												data[attr] = $.$model.xGet(attr);
-											}
-										}
-
-										var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
-										var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
-										subProjectShareAuthorization.xSet(data);
-										if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))) {
-											editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
-										}
-										editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-										subProjectShareAuthorization.xSave($);
-
-									}
-								});
-							});
+					Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+						$.saveModel(saveEndCB, saveErrorCB, {
+							syncFromServer : true
 						});
-						if ($.$model.xGet("state") === "Accept") {
-							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-								Alloy.Globals.Server.sendMsg({
-									id : guid(),
-									"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-									"fromUserId" : Alloy.Models.User.xGet("id"),
-									"type" : "Project.Share.Edit",
-									"messageState" : "unread",
-									"messageTitle" : "共享项目",
-									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") + "的权限",
-									"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-									"messageData" : JSON.stringify({
-										shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-										projectShareAuthorizationId : $.$model.xGet("id")
-									})
-								}, function() {
-									$.saveModel(saveEndCB, saveErrorCB, {
-										syncFromServer : true
-									});
-								}, function(e) {
-									alert(e.__summary.msg);
-								});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						} else {
-							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						}
-
-					} else {
-						if ($.$model.xGet("state") === "Accept") {
-							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-								Alloy.Globals.Server.sendMsg({
-									id : guid(),
-									"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-									"fromUserId" : Alloy.Models.User.xGet("id"),
-									"type" : "Project.Share.Edit",
-									"messageState" : "unread",
-									"messageTitle" : "共享项目",
-									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目" + $.$model.xGet("project").xGet("name") + "的权限",
-									"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-									"messageData" : JSON.stringify({
-										shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-										projectShareAuthorizationId : $.$model.xGet("id")
-									})
-								}, function() {
-									$.saveModel(saveEndCB, saveErrorCB, {
-										syncFromServer : true
-									});
-								}, function(e) {
-									alert(e.__summary.msg);
-								});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						} else {
-							Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						}
-					}
+					}, function(e) {
+						alert(e.__summary.msg);
+					});
 				}
 			}
+
 		}
 	} else {
 		alert("股份不能小于零");
