@@ -65,7 +65,7 @@ $.onWindowCloseDo(function() {
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.moneyAccount.$view.setHeight(0);
-	$.localAmount.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 } else {

@@ -878,7 +878,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 			a = findObject(a.id);
 			b = findObject(b.id);
 			if (!a || !b) {
-				return 0;
+				return -1;
 			}
 
 			a = a.xDeepGet(sortByField);
@@ -1046,7 +1046,7 @@ $.onWindowOpenDo(function() {
 		if (!$.getCurrentWindow().$attrs.selectedModel) {
 			titleLabel.setColor("blue");
 		}
-		if ($.table.data.length > 0) {
+		if ($.getRowsCount() > 0) {
 			$.table.insertRowBefore(0, row);
 		} else {
 			$.table.appendRow(row);

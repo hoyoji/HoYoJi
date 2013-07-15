@@ -71,6 +71,7 @@
 							this.db.close();
 							this.db = null;
 							this.trigger("commit");
+							Ti.App.fireEvent("updateSyncCount");
 						}
 					},
 					rollback : function() {
@@ -83,13 +84,13 @@
 					}
 				};
 				_.extend(dbTrans, Backbone.Events);
-				function updateSyncCount() {
-					dbTrans.off("commit", updateSyncCount);
-					Ti.App.fireEvent("updateSyncCount");
-				}
-
-
-				dbTrans.on("commit", updateSyncCount);
+				// function updateSyncCount() {
+					// dbTrans.off("commit", updateSyncCount);
+					// Ti.App.fireEvent("updateSyncCount");
+				// }
+// 
+// 
+				// dbTrans.on("commit", updateSyncCount);
 				return dbTrans;
 			}
 		}

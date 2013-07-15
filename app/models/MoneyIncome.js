@@ -36,7 +36,8 @@ exports.definition = {
 			},
 			moneyIncomeApportions : {
 				type : "MoneyIncomeApportion",
-				attribute : "moneyIncome"
+				attribute : "moneyIncome",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -206,18 +207,19 @@ exports.definition = {
 						msg : "当前收入的明细不为空，不能删除"
 					})
 				} else {
-					if (this.xGet("moneyIncomeApportions").length === 1) {
-						this.xGet("moneyIncomeApportions").forEach(function(item) {
-							item._xDelete();
-						});
-					}
-					var moneyAccount = this.xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					var saveOptions = _.extend({}, options);
-					saveOptions.patch = true;
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") - amount
-					}, saveOptions);
+					// if (this.xGet("moneyIncomeApportions").length === 1) {
+						// this.xGet("moneyIncomeApportions").forEach(function(item) {
+							// item._xDelete();
+						// });
+					// }
+
+						var saveOptions = _.extend({}, options);
+						saveOptions.patch = true;
+						var moneyAccount = this.xGet("moneyAccount");
+						var amount = this.xGet("amount");
+						moneyAccount.save({
+							currentBalance : moneyAccount.xGet("currentBalance") - amount
+						}, saveOptions);
 					this._xDelete(xFinishCallback, options);
 				}
 			},
@@ -248,17 +250,17 @@ exports.definition = {
 						patch : true
 					});
 				}
-				var self = this;
-				var friendUser = Alloy.createModel("User").xFindInDb({
-					id : record.friendUserId
-				});
-				// 同步新增好友时，一起把该好友用户同步下来
-				if (!friendUser.id) {
-					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						if (collection.length > 0) {
-						}
-					});
-				}
+				// var self = this;
+				// var friendUser = Alloy.createModel("User").xFindInDb({
+					// id : record.friendUserId
+				// });
+				// // 同步新增好友时，一起把该好友用户同步下来
+				// if (!friendUser.id) {
+					// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						// if (collection.length > 0) {
+						// }
+					// });
+				// }
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额

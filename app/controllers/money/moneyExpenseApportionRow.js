@@ -66,6 +66,7 @@ function editApportionType() {
 		updateAmount();
 	}
 }
+
 $.$model.on("_xchange:apportionType", editApportionType);
 $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", editApportionType);
@@ -111,6 +112,9 @@ function updateAmount() {
 		averageApportions.forEach(function(item) {
 			if (item.xGet("apportionType") === "Average") {
 				item.xSet("amount", average);
+			}
+			if(item.__xDeleted){
+				item.xSet("amount", 0);
 			}
 		});
 	}

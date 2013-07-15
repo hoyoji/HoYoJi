@@ -62,7 +62,7 @@ if (!$.$model) {
 }
 
 if ($.saveableMode === "read") {
-	$.localAmountContainer.$view.setHeight(42);
+	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);

@@ -1,10 +1,10 @@
 <Alloy>
 	<View class="keyboard" zIndex="900" width="Ti.UI.FILL" height="Ti.UI.FILL" bottom="0" visible="false" backgroundColor="#99000000">
 		<!-- <View backgroundColor="#40000000" height="Ti.UI.FILL" width="Ti.UI.FILL" /> -->
-		<View id="keyboard" layout="vertical" height="210" width="Ti.UI.FILL" bottom="-210" backgroundColor="#e9f3f0">
+		<View id="keyboard" layout="vertical" height="252" width="Ti.UI.FILL" bottom="-252" backgroundColor="#e9f3f0">
 			<View height="42">
-				<Label id="display" text="" height="Ti.UI.FILL" width="80%" left="10"/>
-				<Button id="cancel" title="取消" onSingletap="cancel" onDoubletap="cancel" width="20%" right="0" borderRadius="0" />
+					<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10" color="blue" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" right="0" />
 			</View>
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View height="42" layout="horizontal" horizontalWrap="false">
@@ -12,34 +12,41 @@
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="8" />
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="9" />
 					<Button onSingletap="operation" onDoubletap="operation" title="÷" />
-					<Button onSingletap="clear" onDoubletap="clear" title="C" />
 				</View>
 				<View height="42" layout="horizontal" horizontalWrap="false">
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="4" />
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="5" />
 					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="6" />
 					<Button onSingletap="operation" onDoubletap="operation" title="×" />
-					<Button onSingletap="backspace" onDoubletap="doubleClickBackspace" onLongclick="clear" title="←" />
 				</View>
-			</View>
-			<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
-				<View width="80%" layout="vertical" height="Ti.UI.SIZE">
-					<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
-						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="1" />
-						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="2" />
-						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="3" />
-						<Button width="25%" onSingletap="operation" onDoubletap="operation" title="-" />
-					</View>
-					<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
-						<Button width="25%" onSingletap="decimal" onDoubletap="decimal" title="." />
-						<Button width="25%" class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="0" />
-						<Button width="25%" onSingletap="operation" onDoubletap="operation" title="=" />
-						<Button width="25%" onSingletap="operation" onDoubletap="operation" title="+" />
-					</View>
+				<!-- </View>
+				<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
+				<View width="80%" layout="vertical" height="Ti.UI.SIZE"> -->
+				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
+					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="1" />
+					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="2" />
+					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="3" />
+					<Button onSingletap="operation" onDoubletap="operation" title="-" />
 				</View>
+				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
+					<Button onSingletap="decimal" onDoubletap="decimal" title="." />
+					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="0" />
+					<Button onSingletap="operation" onDoubletap="operation" title="=" />
+					<Button onSingletap="operation" onDoubletap="operation" title="+" />
+				</View>
+				<!-- </View>
 				<View width="20%" height="Ti.UI.FILL" layout="vertical">
-					<Button id="submit" onSingletap="equalToValue" onDoubletap="equalToValue" title="确定" width="Ti.UI.FILL" height="50%"/>
-					<Button id="submitButton" onSingletap="submitValue" onDoubletap="submitValue" title="保存" width="Ti.UI.FILL" height="50%"/>
+				<Button id="submit" onSingletap="equalToValue" onDoubletap="equalToValue" title="确定" width="Ti.UI.FILL" height="50%"/>
+				<Button id="submitButton" onSingletap="submitValue" onDoubletap="submitValue" title="保存" width="Ti.UI.FILL" height="50%"/>
+				</View>
+				</View>
+				<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
+				<View width="80%" layout="vertical" height="Ti.UI.SIZE"> -->
+				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
+					<Button id="submit" onSingletap="equalToValue" onDoubletap="equalToValue" title="确定" />
+					<Button id="submitButton" onSingletap="submitValue" onDoubletap="submitValue" title="保存" />
+					<Button id="cancel" title="取消" onSingletap="cancel" onDoubletap="cancel" borderRadius="0" />
+					<Button onSingletap="clear" onDoubletap="clear" title="C" right="0" />
 				</View>
 			</View>
 		</View>

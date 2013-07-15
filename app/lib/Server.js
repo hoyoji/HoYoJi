@@ -22,106 +22,106 @@
 				} else {
 					collection.xSearchInDb(filter);
 				}
-
-				xFinishedCallback(collection);
+				if (xFinishedCallback) {
+					xFinishedCallback(collection);
+				}
 			},
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
-				this.searchData("Project", projectIds, function(collection) {
-					// collection.map(function(item){
-					// item.save({wait : true});
-					// });
-					if (collection.length > 0) {
-						xFinishedCallback(collection);
-						return;
-					}
+				// this.searchData("Project", projectIds, function(collection) {
 
-					var requestData = [];
-					projectIds.forEach(function(projectId) {
-						var filter = {
-							__dataType : "Project",
-							id : projectId
-						}
-						requestData.push(filter);
-					});
-					Alloy.Globals.Server.getData(requestData, function(data) {
-						var returnCollection = Alloy.createCollection("Project");
-						data = _.flatten(data);
-						data.forEach(function(record) {
-							if(record){
-								var modelData = record;
-								var id = modelData.id;
-								delete modelData.id;
-								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
-									id : id
-								});
-								model.xSet(modelData);
-								if (!model.id) {
-									model.attributes.id = id;
-								}
-								model.save(null, {
-									silent : true,
-									syncFromServer : true
-								});
-								if (modelData.__dataType === "Project") {
-									returnCollection.push(model);
-								}
-							}
-						});
-						xFinishedCallback(returnCollection);
-					}, xErrorCallback, "getSharedProjects");
-				}, xErrorCallback);
-			},
-			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
-				this.searchData(modelName, filter, function(collection) {
-					// collection.map(function(item){
-					// item.save({wait : true});
-					// });
-					if (collection.length > 0) {
-						xFinishedCallback(collection);
-						return;
-					}
+				// if (collection.length > 0) {
+				// xFinishedCallback(collection);
+				// return;
+				// }
 
-					var requestData = [];
-					filter.forEach(function(filter) {
-						if (_.isObject(filter)) {
-							filter.__dataType = modelName;
-						} else {
-							filter = {
-								__dataType : modelName,
-								id : filter
+				var requestData = [];
+				projectIds.forEach(function(projectId) {
+					var filter = {
+						__dataType : "Project",
+						id : projectId
+					}
+					requestData.push(filter);
+				});
+				Alloy.Globals.Server.getData(requestData, function(data) {
+					var returnCollection = Alloy.createCollection("Project");
+					data = _.flatten(data);
+					data.forEach(function(record) {
+						if (record) {
+							var modelData = record;
+							var id = modelData.id;
+							delete modelData.id;
+							var model = Alloy.createModel(modelData.__dataType).xFindInDb({
+								id : id
+							});
+							if (!model.id) {
+								model.attributes.id = id;
 							}
-						}
-						requestData.push(filter);
-					});
-					Alloy.Globals.Server.getData(requestData, function(data) {
-						var returnCollection = Alloy.createCollection(modelName);
-						data = _.flatten(data);
-						data.forEach(function(record) {
-							if(record){
-								var modelData = record;
-								var id = modelData.id;
-								delete modelData.id;
-								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
-									id : id
-								});
-								model.xSet(modelData);
-								if (!model.id) {
-									model.attributes.id = id;
-								}
-								model.save(null, {
-									silent : true,
-									syncFromServer : true
-								});
+							model.xSet(modelData);
+							model.save(null, {
+								silent : true,
+								syncFromServer : true
+							});
+							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-						});
+						}
+					});
+					if (xFinishedCallback) {
 						xFinishedCallback(returnCollection);
-					}, xErrorCallback);
+					}
+				}, xErrorCallback, "getSharedProjects");
+				// }, xErrorCallback);
+			},
+			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+				// this.searchData(modelName, filter, function(collection) {
+				// if (collection.length > 0) {
+				// xFinishedCallback(collection);
+				// return;
+				// }
 
+				var requestData = [];
+				filter.forEach(function(filter) {
+					if (_.isObject(filter)) {
+						filter.__dataType = modelName;
+					} else {
+						filter = {
+							__dataType : modelName,
+							id : filter
+						}
+					}
+					requestData.push(filter);
+				});
+				Alloy.Globals.Server.getData(requestData, function(data) {
+					var returnCollection = Alloy.createCollection(modelName);
+					data = _.flatten(data);
+					data.forEach(function(record) {
+						if (record) {
+							var modelData = record;
+							var id = modelData.id;
+							delete modelData.id;
+							var model = Alloy.createModel(modelData.__dataType).xFindInDb({
+								id : id
+							});
+							if (!model.id) {
+								model.attributes.id = id;
+							}
+							model.xSet(modelData);
+							model.save(null, {
+								silent : true,
+								syncFromServer : true
+							});
+							returnCollection.push(model);
+						}
+					});
+					if (xFinishedCallback) {
+						xFinishedCallback(returnCollection);
+					}
 				}, xErrorCallback);
+
+				// }, xErrorCallback);
 			},
 			putData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
@@ -169,6 +169,7 @@
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
 				this.syncPull(function() {
+					// alert("start push data");
 					self.syncPush(function(data) {
 						if (xFinishedCallback) {
 							xFinishedCallback();
@@ -215,16 +216,24 @@
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 							if (!model.isNew()) {
-								// 我们要将该记录的所有hasMany一并删除
-								for (var hasMany in model.config.hasMany) {
-									model.xGet(hasMany).forEach(function(item) {
-										item.syncDelete(null, dbTrans);
-										item._syncDelete(null, dbTrans);
-										dbTrans.db.execute(sql, [item.xGet("id")]);
+								if (model.xGet("ownerUserId") !== Alloy.Models.User.id) {
+									// dbTrans.db.execute("DELETE FROM " + record.tableName + " WHERE id = ?", [id]);
+									model.destroy({
+										syncFromServer : true,
+										dbTrans : dbTrans
 									});
+								} else {
+									// 我们要将该记录的所有hasMany一并删除
+									for (var hasMany in model.config.hasMany) {
+										model.xGet(hasMany).forEach(function(item) {
+											item.syncDelete(record, dbTrans);
+											item._syncDelete(record, dbTrans);
+											dbTrans.db.execute(sql, [item.xGet("id")]);
+										});
+									}
+									model.syncDelete(record, dbTrans);
+									model._syncDelete(record, dbTrans);
 								}
-								model.syncDelete(record, dbTrans);
-								model._syncDelete(record, dbTrans);
 							}
 							dbTrans.db.execute(sql, [id]);
 						} else {
@@ -288,7 +297,9 @@
 							rs = null;
 						}
 					});
+					// alert("start committing");
 					dbTrans.commit();
+					Alloy.Models.User.xGet("messageBox").processNewMessages();
 					xFinishedCallback();
 				}, function(e) {
 					xErrorCallback(e);

@@ -67,7 +67,7 @@ $.onWindowOpenDo(function() {
 			d = new Date(value);
 			value = String.formatTime(d, "medium");	
 		}
-		if ( typeof value === "number") {
+		if ($.$attrs.dataType === "Number" && typeof value === "number") {
 			value = value.toUserCurrency();
 		}		
 		$.label.setText(value);

@@ -81,6 +81,13 @@ function doLogin(e) {
 						id : Alloy.Models.User.xGet(belongsTo + "Id"),
 						__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type
 					})
+					if (belongsTo === "activeProject") {
+						belongsToes.push({
+							friendUserId : Alloy.Models.User.xGet("id"),
+							projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+							__dataType : "ProjectShareAuthorization"
+						})
+					}	
 				}
 			}
 			Alloy.Globals.Server.getData(belongsToes, function(data) {

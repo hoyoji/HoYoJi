@@ -28,11 +28,12 @@
 					<Label top="5" class="reportTitle" height="Ti.UI.SIZE">当日支出</Label>
 					<View layout="horizontal" height="Ti.UI.FILL" horizontalWrap="false" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" color="#c80032" width="Ti.UI.SIZE"
+							dataType="Number"
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						class="reportAmount"
 						/>
-						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" 
+						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" dataType="Number"
 							modelType="MoneyExpense" autoSync="true" 
 							totalField="SUM(main.amount * main.exchangeRate)" queryStr="dateRange:date" color="#c80032"
 							class="reportAmount"/>

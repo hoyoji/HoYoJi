@@ -35,7 +35,8 @@ exports.definition = {
 			},
 			moneyExpenseApportions : {
 				type : "MoneyExpenseApportion",
-				attribute : "moneyExpense"
+				attribute : "moneyExpense",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -215,19 +216,19 @@ exports.definition = {
 						msg : "当前支出的明细不为空，不能删除"
 					});
 				} else {
-					if (this.xGet("moneyExpenseApportions").length === 1) {
-						this.xGet("moneyExpenseApportions").forEach(function(item) {
-							item._xDelete();
-						});
-					}
-					var moneyAccount = this.xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					var saveOptions = _.extend({}, options);
-					saveOptions.patch = true;
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") + amount
-					}, saveOptions);
-
+					// if (this.xGet("moneyExpenseApportions").length === 1) {
+						// this.xGet("moneyExpenseApportions").forEach(function(item) {
+							// item._xDelete();
+						// });
+					// }
+						var saveOptions = _.extend({}, options);
+						saveOptions.patch = true;
+						var moneyAccount = this.xGet("moneyAccount");
+						var amount = this.xGet("amount");
+						moneyAccount.save({
+							currentBalance : moneyAccount.xGet("currentBalance") + amount
+						}, saveOptions);
+					
 					this._xDelete(xFinishCallback, options);
 				}
 			},
@@ -260,17 +261,17 @@ exports.definition = {
 						// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
 					});
 				}
-				var self = this;
-				var friendUser = Alloy.createModel("User").xFindInDb({
-					id : record.friendUserId
-				});
-				// 同步新增好友时，一起把该好友用户同步下来
-				if (!friendUser.id) {
-					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						if (collection.length > 0) {
-						}
-					});
-				}
+				// var self = this;
+				// var friendUser = Alloy.createModel("User").xFindInDb({
+					// id : record.friendUserId
+				// });
+				// // 同步新增好友时，一起把该好友用户同步下来
+				// if (!friendUser.id) {
+					// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						// if (collection.length > 0) {
+						// }
+					// });
+				// }
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 该记录同时存在服务器上和在本地。在服务器上被改变，但是在本地未被改变

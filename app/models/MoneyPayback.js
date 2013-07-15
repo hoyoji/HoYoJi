@@ -213,16 +213,17 @@ exports.definition = {
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
-				var moneyAccount = this.xGet("moneyAccount");
 				var amount = this.xGet("amount");
 				var paybackRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				moneyAccount.save({
-					currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
-				}, saveOptions);
 
+					var moneyAccount = this.xGet("moneyAccount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
+					}, saveOptions);
+				
 				if (self.xGet("moneyLend")) {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
@@ -252,7 +253,7 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") + record.amount, {
-							syncFromServer : true,
+							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
 						});
@@ -294,7 +295,7 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") - this.xGet("amount") + record.amount, {
-							syncFromServer : true,
+							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
 						});

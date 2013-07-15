@@ -129,42 +129,46 @@
 				});
 			}
 
-			if (OS_IOS) {
+			// if (OS_IOS) {
 				// Alloy.Globals.longpressTimeoutId = 0;
-
+				var longPressTimeout = 0;
 				$.$view.addEventListener("touchstart", function(e) {
-					if (!e.detectingLongPress) {
-						e.detectingLongPress = true;
-						Alloy.Globals.longpressTimeoutId = setTimeout(triggerOpenContextMenu, 510);
-					}
+					longPressTimeout = (new Date()).getTime();
 				});
 
 				$.$view.addEventListener("touchend", function() {
-					clearTimeout(Alloy.Globals.longpressTimeoutId);
+					longPressTimeout = 0;
 				});
-
-				// $.$view.addEventListener("touchcancel", function(){
-				// // clearTimeout(longpressTimeoutId);
-				// });
-
+// 
+				// // $.$view.addEventListener("touchcancel", function(){
+				// // // clearTimeout(longpressTimeoutId);
+				// // });
+// 
 				$.$view.addEventListener("touchmove", function() {
-					clearTimeout(Alloy.Globals.longpressTimeoutId);
+					longPressTimeout = 0;
 				});
 
 				$.$view.addEventListener("swipe", function() {
-					clearTimeout(Alloy.Globals.longpressTimeoutId);
+					longPressTimeout = 0;
 				});
-
-				$.$view.addEventListener("longpress", function(e) {
-					e.cancelBubble = true;
-				});
-
-			} else {
+// 
+				// $.$view.addEventListener("longpress", function(e) {
+					// e.cancelBubble = true;
+				// });
+// 
+			// } else {
+				$.$view.addEventListener("touchcancel", function(e){
+					if(longPressTimeout !== 0 && (new Date()).getTime() - longPressTimeout > 450){
+						e.cancelBubble = true;
+						triggerOpenContextMenu(e);
+					}
+					longPressTimeout = 0;
+				});				
 				$.$view.addEventListener("longpress", function(e) {
 					e.cancelBubble = true;
 					triggerOpenContextMenu(e);
 				});
-			}
+			// }
 
 			if ($.scrollableView) {
 				Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);

@@ -10,7 +10,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "date"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="好友"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="好友"
 					id="fromUser" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="fromUser"

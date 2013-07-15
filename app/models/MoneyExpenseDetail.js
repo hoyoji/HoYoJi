@@ -64,18 +64,18 @@ exports.definition = {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 
-					var amount = self.xGet("amount");
-					var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") + amount
-					}, saveOptions);
-
-					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
-					self.xGet("moneyExpense").save({
-						amount : expenseAmount - amount,
-						moneyAccount : moneyAccount
-					}, saveOptions);
-
+						var amount = self.xGet("amount");
+						var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
+						moneyAccount.save({
+							currentBalance : moneyAccount.xGet("currentBalance") + amount
+						}, saveOptions);
+	
+						var expenseAmount = self.xGet("moneyExpense").xGet("amount");
+						self.xGet("moneyExpense").save({
+							amount : expenseAmount - amount,
+							moneyAccount : moneyAccount
+						}, saveOptions);
+					
 					this._xDelete(xFinishCallback, options);
 				} else {
 					this._xDelete(xFinishCallback, options);

@@ -1,0 +1,33 @@
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+},
+"#hintText": {
+	color: 'gray',
+	font: {
+		fontSize: 16,
+		fontWeight: 'normal'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE
+},
+"#error": {
+	color: 'red',
+	font: {
+		fontSize: 12
+	},
+	top : 42,
+	height: 16,
+	width: "60%",
+	right : 0,
+	zIndex : 1
+}
+
+// ".container": {
+	// backgroundColor: "#f1fbfb"
+// }

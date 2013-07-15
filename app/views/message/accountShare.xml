@@ -10,7 +10,7 @@
 					addModeEditability="noneditable"
 					onSingletap = "openFriendSelector"
 				/> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField"  labelText="好友" hintText="请选择好友"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="好友" hintText="请选择好友"
 					id="friend" autoInit="false"
 					bindModel="$.$model"
 					bindAttribute="toUser"

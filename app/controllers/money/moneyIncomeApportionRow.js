@@ -25,7 +25,7 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function() {
+$.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
@@ -112,6 +112,9 @@ function updateAmount() {
 		averageApportions.forEach(function(item) {
 			if (item.xGet("apportionType") === "Average") {
 				item.xSet("amount", average);
+			}
+			if(item.__xDeleted){
+				item.xSet("amount", 0);
 			}
 		});
 	}
