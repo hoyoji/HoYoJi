@@ -6,7 +6,7 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
 		$.deleteModel();
-	}));
+	}, !$.$model.canDelete()));
 
 	return menuSection;
 }
@@ -25,23 +25,23 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function(e){
+$.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-			item.trigger("_xChange");
+			item.trigger("_xchange : amount");
 		});
 	} else {
 		$.deleteModel();
 	}
 });
 
-$.amount.$view.addEventListener("singletap",function(e){
+$.amount.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 });
 
-$.apportionType.label.addEventListener("singletap",function(e){
+$.apportionType.label.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 });
 
@@ -113,7 +113,7 @@ function updateAmount() {
 			if (item.xGet("apportionType") === "Average") {
 				item.xSet("amount", average);
 			}
-			if(item.__xDeleted){
+			if (item.__xDeleted) {
 				item.xSet("amount", 0);
 			}
 		});

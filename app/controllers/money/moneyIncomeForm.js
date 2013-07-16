@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.apportion.addEventListener("singletap", function(){
+$.apportion.addEventListener("singletap", function() {
 	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
 		selectedIncome : $.$model,
 		closeWithoutSave : true
@@ -112,9 +112,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal) / (averageApportions.length);
 	} else {
-		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
 	averageApportions.forEach(function(item) {
 		item.xSet("amount", average);
@@ -126,12 +126,12 @@ $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
-	
+
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-			$.apportion.$view.setHeight(0);
-		} else {
-			$.apportion.$view.setHeight(42);
-		}
+		$.apportion.$view.setHeight(0);
+	} else {
+		$.apportion.$view.setHeight(42);
+	}
 
 });
 $.onWindowCloseDo(function() {
@@ -313,36 +313,38 @@ if ($.saveableMode === "read") {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
-				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-					item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") + $.$model.xGet("amount"));
-					item.xAddToSave($);
-				}
-			});
-
-			if ($.$model.xGet("moneyIncomeApportions").length < 1) {
-				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-					var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-						moneyIncome : $.$model,
-						friendUser : projectShareAuthorization.xGet("friendUser"),
-						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-						apportionType : "Fixed"
-					});
-					$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+			if ($.$model.hasChanged("amount") || $.$model.isNew()) {
+				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+						item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount + $.$model.xGet("amount"));
+						item.xAddToSave($);
+					}
 				});
 			}
-		} 
+
+				if ($.$model.xGet("moneyIncomeApportions").length < 1) {
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+						var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+							moneyIncome : $.$model,
+							friendUser : projectShareAuthorization.xGet("friendUser"),
+							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+							apportionType : "Fixed"
+						});
+						$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+					});
+				}
+		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
-			// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
-			// projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + $.$model.xGet("amount"));
-			// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + $.$model.xGet("amount"));
-			// projectShareAuthorization.xAddToSave($);
+		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
+		// projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + $.$model.xGet("amount"));
+		// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + $.$model.xGet("amount"));
+		// projectShareAuthorization.xAddToSave($);
 		// }
-		
+
 		$.$model.xGet("moneyIncomeApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
-				
+
 				var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
@@ -368,7 +370,7 @@ if ($.saveableMode === "read") {
 				});
 			}
 		});
-		
+
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {

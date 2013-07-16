@@ -5,8 +5,8 @@ $.makeContextMenu = function() {
 		headerTitle : "分摊明细操作"
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
-		$.deleteModel();
-	}));
+				$.deleteModel();
+			},!$.$model.canDelete()));
 
 	return menuSection;
 }
@@ -30,7 +30,7 @@ $.removeMember.addEventListener("singletap", function(e) {
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
 		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
-			item.trigger("_xChange");
+			item.trigger("_xChange : amount");
 		});
 	} else {
 		$.deleteModel();
