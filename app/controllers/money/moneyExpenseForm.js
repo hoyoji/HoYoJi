@@ -322,23 +322,26 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
-				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-					item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
-					item.xAddToSave($);
-				}
-			});
-			if ($.$model.xGet("moneyExpenseApportions").length < 1) {
-				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-					var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-						moneyExpense : $.$model,
-						friendUser : projectShareAuthorization.xGet("friendUser"),
-						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-						apportionType : "Fixed"
-					});
-					$.$model.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+			if ($.$model.hasChanged("amount")) {
+				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - $.$model.xPrevious("amount") + $.$model.xGet("amount"));
+						item.xAddToSave($);
+					}
 				});
 			}
+			
+				if ($.$model.xGet("moneyExpenseApportions").length < 1) {
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+						var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+							moneyExpense : $.$model,
+							friendUser : projectShareAuthorization.xGet("friendUser"),
+							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+							apportionType : "Fixed"
+						});
+						$.$model.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+					});
+				}
 
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
