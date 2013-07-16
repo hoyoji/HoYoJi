@@ -179,7 +179,7 @@ if ($.saveableMode === "read") {
 							$.saveModel(saveEndCB, saveErrorCB, {
 								syncFromServer : true
 							});
-							saveEndCB(e);
+							// saveEndCB(e);
 						}, saveErrorCB);
 					}, function(e) {
 						alert(e.__summary.msg);
@@ -191,7 +191,7 @@ if ($.saveableMode === "read") {
 				alert(e.__summary.msg);
 			});
 		} else {
-			saveEndCB(e);
+			$.saveModel(saveEndCB, saveErrorCB);
 		}
 	}
 }

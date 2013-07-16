@@ -169,12 +169,12 @@ exports.setSaveableMode = function(mode) {
 		$.title.setText($.$attrs.addModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.addModeMenuButtonTitle || "保存");
 		$.menuButton.setImage(WPATH("/images/saveButton"));
-		$.menuButton.setEnabled(false);
+		// $.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "edit") {
 		$.title.setText($.$attrs.editModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
 		$.menuButton.setImage(WPATH("/images/saveButton"));
-		$.menuButton.setEnabled(false);
+		// $.menuButton.setEnabled(false);
 	} else if ($.saveableMode === "read") {
 		$.title.setText($.$attrs.readModeTitle || $.$attrs.title);
 		//$.menuButton.setTitle($.$attrs.readModeMenuButtonTitle || "菜单");
