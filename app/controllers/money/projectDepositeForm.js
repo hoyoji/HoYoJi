@@ -168,11 +168,14 @@ if ($.saveableMode === "read") {
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
 			if ($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id) {
+				var editData = [];
+				var addData = [];
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : $.$model.xGet("project").xGet("id"),
 					friendUserId : Alloy.Models.User.id
 				});
 				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
+				editData.push(projectShareAuthorization.toJSON());
 				projectShareAuthorization.xAddToSave($);
 	
 				if (oldMoneyAccount === newMoneyAccount) {
@@ -180,6 +183,7 @@ if ($.saveableMode === "read") {
 				} else {
 					oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
 					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+					editData.push(newMoneyAccount.toJSON());
 					oldMoneyAccount.xAddToSave($);
 				}
 	
@@ -192,28 +196,41 @@ if ($.saveableMode === "read") {
 							ownerUser : Alloy.Models.User
 						});
 						exchange.xAddToSave($);
+						editData.push(exchange.toJSON());
 					}
 				}
-				$.saveModel(saveEndCB, saveErrorCB);
-				var depositeIncome = Alloy.createModel("MoneyIncome", {
-					date : $.$model.xGet("date"),
-					amount : $.$model.xGet("amount"),
-					remark : $.$model.xGet("remark"),
-					ownerUser : Alloy.Models.User,
-					localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-					exchangeRate : 1,
-					incomeType : $.$model.xGet("expenseType"),
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : $.$model.xGet("project"),
-					moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
-					friendUser : $.$model.xGet("friendUser")
-				});
-				var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
-					$model : depositeIncome
-				});
-				depositeIncomeController.$view.addEventListener("contentready", function() {
-					depositeIncome.xAddToSave(depositeIncomeController.content);
-					depositeIncomeController.content.titleBar.dirtyCB();
+				addData.push($.$model.toJSON());
+				Alloy.Globals.Server.postData(addData, function(data) {
+					Alloy.Globals.Server.putData(editData, function(data) {
+						$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+						var depositeIncome = Alloy.createModel("MoneyIncome", {
+							date : $.$model.xGet("date"),
+							amount : $.$model.xGet("amount"),
+							remark : $.$model.xGet("remark"),
+							ownerUser : Alloy.Models.User,
+							localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+							exchangeRate : 1,
+							incomeType : $.$model.xGet("expenseType"),
+							moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+							project : $.$model.xGet("project"),
+							moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
+							friendUser : $.$model.xGet("friendUser"),
+							depositeId : $.$model.xGet("id")
+						});
+						var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
+							$model : depositeIncome
+						});
+						depositeIncomeController.$view.addEventListener("contentready", function() {
+							depositeIncome.xAddToSave(depositeIncomeController.content);
+							depositeIncomeController.content.titleBar.dirtyCB();
+						});
+					}, function(e) {
+						alert(e.__summary.msg);
+					});
+				}, function(e) {
+					alert(e.__summary.msg);
 				});
 			} else {
 				var date = (new Date()).toISOString();

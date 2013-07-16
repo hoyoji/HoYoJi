@@ -136,7 +136,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
-							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
 							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 							moneyExpense.xGet("moneyAccount").xAddToSave($);
 							
