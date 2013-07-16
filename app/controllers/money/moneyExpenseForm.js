@@ -120,9 +120,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (expenseAmount - fixedTotal) / (averageApportions.length - 1);
+		average = (expenseAmount - fixedTotal) / (averageApportions.length);
 	} else {
-		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
 	averageApportions.forEach(function(item) {
 		item.xSet("amount", average);
@@ -322,10 +322,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			if ($.$model.hasChanged("amount")) {
+			if ($.$model.hasChanged("amount") || $.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - $.$model.xPrevious("amount") + $.$model.xGet("amount"));
+						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount + $.$model.xGet("amount"));
 						item.xAddToSave($);
 					}
 				});

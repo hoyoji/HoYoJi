@@ -112,9 +112,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal) / (averageApportions.length);
 	} else {
-		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length - 1);
+		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
 	averageApportions.forEach(function(item) {
 		item.xSet("amount", average);
@@ -313,10 +313,10 @@ if ($.saveableMode === "read") {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			if ($.$model.hasChanged("amount")) {
+			if ($.$model.hasChanged("amount") || $.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-						item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - $.$model.xPrevious("amount") + $.$model.xGet("amount"));
+						item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount + $.$model.xGet("amount"));
 						item.xAddToSave($);
 					}
 				});

@@ -30,7 +30,7 @@ $.removeMember.addEventListener("singletap", function(e) {
 	if ($.$model.isNew()) {
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
 		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-			item.trigger("_xChange");
+			item.trigger("_xchange : amount");
 		});
 	} else {
 		$.deleteModel();
