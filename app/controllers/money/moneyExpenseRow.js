@@ -113,13 +113,6 @@ $.makeContextMenu = function() {
 					})
 				}, function() {
 					alert("删除成功，请等待回复");
-					// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					// projectId : this.xGet("project").xGet("id"),
-					// friendUserId : Alloy.Models.User.id
-					// });
-					// projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - newAmount);
-					// projectShareAuthorization.xAddToSave($);
-					// this._xDelete(xFinishCallback, options);
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
