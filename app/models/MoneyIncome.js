@@ -218,7 +218,7 @@ exports.definition = {
 					// item._xDelete();
 					// });
 					// }
-
+					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 					var moneyAccount = this.xGet("moneyAccount");
