@@ -85,17 +85,25 @@ exports.definition = {
 			validators : {
 				amount : function(xValidateComplete) {
 					var error;
+					var apportionAmount = 0;
+					this.xGet("moneyExpenseApportions").forEach(function(item) {
+						apportionAmount = item.xGet("amount");
+					});
+
 					if (isNaN(this.xGet("amount"))) {
 						error = {
 							msg : "金额只能为数字"
 						};
-					} else {
-						if (this.xGet("amount") < 0) {
-							error = {
-								msg : "金额不能为负数"
-							};
-						}
+					} else if (this.xGet("amount") < 0) {
+						error = {
+							msg : "金额不能为负数"
+						};
+					} else if (this.xGet("amount") !== apportionAmount) {
+						error = {
+							msg : "分摊总额与支出金额不相等，请修正"
+						};
 					}
+
 					xValidateComplete(error);
 				},
 				exchangeRate : function(xValidateComplete) {

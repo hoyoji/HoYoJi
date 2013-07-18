@@ -85,16 +85,23 @@ exports.definition = {
 			validators : {
 				amount : function(xValidateComplete) {
 					var error;
+					var apportionAmount = 0;
+					this.xGet("moneyIncomeApportions").forEach(function(item) {
+						apportionAmount = item.xGet("amount");
+					});
+
 					if (isNaN(this.xGet("amount"))) {
 						error = {
 							msg : "金额只能为数字"
 						};
-					} else {
-						if (this.xGet("amount") < 0) {
-							error = {
-								msg : "金额不能为负数"
-							};
-						}
+					} else if (this.xGet("amount") < 0) {
+						error = {
+							msg : "金额不能为负数"
+						};
+					} else if (this.xGet("amount") !== apportionAmount) {
+						error = {
+							msg : "分摊总额与收入金额不相等，请修正"
+						};
 					}
 					xValidateComplete(error);
 				},
@@ -191,9 +198,9 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					if(friend && friend.id){
+					if (friend && friend.id) {
 						ownerUserSymbol = friend.getDisplayName();
-					}else{
+					} else {
 						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
 					}
 				}
@@ -201,34 +208,33 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (options.syncFromServer !== true 
-					&& this.xGet("moneyIncomeDetails").length > 0) {
+				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前收入的明细不为空，不能删除"
 					})
 				} else {
 					// if (this.xGet("moneyIncomeApportions").length === 1) {
-						// this.xGet("moneyIncomeApportions").forEach(function(item) {
-							// item._xDelete();
-						// });
+					// this.xGet("moneyIncomeApportions").forEach(function(item) {
+					// item._xDelete();
+					// });
 					// }
 
-						var saveOptions = _.extend({}, options);
-						saveOptions.patch = true;
-						var moneyAccount = this.xGet("moneyAccount");
-						var amount = this.xGet("amount");
-						moneyAccount.save({
-							currentBalance : moneyAccount.xGet("currentBalance") - amount
-						}, saveOptions);
-						
-						self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") - amount
+					}, saveOptions);
+
+					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							item.save({
 								actualTotalIncome : item.xGet("actualTotalIncome") - self.xGet("amount")
 							}, saveOptions);
 						}
 					});
-						
+
 					this._xDelete(xFinishCallback, options);
 				}
 			},
@@ -261,43 +267,43 @@ exports.definition = {
 				}
 				// var self = this;
 				// var friendUser = Alloy.createModel("User").xFindInDb({
-					// id : record.friendUserId
+				// id : record.friendUserId
 				// });
 				// // 同步新增好友时，一起把该好友用户同步下来
 				// if (!friendUser.id) {
-					// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						// if (collection.length > 0) {
-						// }
-					// });
+				// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+				// if (collection.length > 0) {
+				// }
+				// });
 				// }
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
-				if(record.useDetailsTotal && this.__syncAmount !== undefined){
+				if (record.useDetailsTotal && this.__syncAmount !== undefined) {
 					record.amount = this.__syncAmount + this.xGet("moneyIncomeDetails").xSum("amount");
 				}
 				delete this.__syncAmount;
-				// 先更新老账户余额				
+				// 先更新老账户余额
 				var oldMoneyAccountBalance;
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : this.xGet("moneyAccountId")
 				});
 				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;	
+					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
 					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 						dbTrans : dbTrans,
 						patch : true
 					});
 				} else {
-					if(oldMoneyAccount.id){
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");	
+					if (oldMoneyAccount.id) {
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
 						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 							dbTrans : dbTrans,
 							patch : true
 						});
 					}
-					
+
 					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : record.moneyAccountId
 					});
@@ -312,24 +318,26 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				if(this.__syncAmount !== undefined){
+				if (this.__syncAmount !== undefined) {
 					localUpdated = true;
 					this.syncUpdate(record, dbTrans);
-					if(this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime){
-						this._syncUpdate({amount : record.amount}, dbTrans);
+					if (this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime) {
+						this._syncUpdate({
+							amount : record.amount
+						}, dbTrans);
 					}
 				}
-				
+
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					this._syncUpdate(record, dbTrans);
-					if(!localUpdated){
+					if (!localUpdated) {
 						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
-				} 
+				}
 				// 让本地修改覆盖服务器上的记录
-				
+
 			}
 		});
 		return Model;
