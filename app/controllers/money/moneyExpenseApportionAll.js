@@ -77,6 +77,9 @@ function onFooterbarTap(e) {
 }
 
 var collection;
+if(selectedExpense.xGet("moneyExpenseApportions").length > 0) {
+	selectedExpense.hasAddedApportions = true;
+}
 if (selectedExpense.hasChanged("project")) {
 	if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
 		collection = selectedExpense.xGet("moneyExpenseApportions");
