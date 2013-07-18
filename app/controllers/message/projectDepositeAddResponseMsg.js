@@ -52,7 +52,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								friendUserId : Alloy.Models.User.id
 							});
 							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount);
-							// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") - accountShareData.account.amount);
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
@@ -132,12 +131,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								friendUserId : Alloy.Models.User.id
 							});
 							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - accountShareData.account.amount);
-							// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") - accountShareData.account.amount);
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
-							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
-							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
+							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+							editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 							moneyExpense.xGet("moneyAccount").xAddToSave($);
 							
 							moneyExpense._xDelete();
@@ -274,7 +272,7 @@ function importToLocalOperate() {
 }
 
 $.onWindowOpenDo(function() {
-	if (accountShareData.accountType === "MoneyExpense") {
+	// if (accountShareData.accountType === "MoneyExpense") {
 		//创建支出
 		var accountRow1 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -344,7 +342,7 @@ $.onWindowOpenDo(function() {
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
 		$.account.add(accountRow3);
-	}
+	// }
 	$.titleBar.dirtyCB();
 
 	if ($.$model.xGet('messageState') === "unread") {

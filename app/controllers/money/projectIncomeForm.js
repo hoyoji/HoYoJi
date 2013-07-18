@@ -134,6 +134,7 @@ if ($.saveableMode === "read") {
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+			editData.push(newMoneyAccount.toJSON());
 		}
 		editData.push(newMoneyAccount.toJSON());
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
@@ -191,7 +192,18 @@ if ($.saveableMode === "read") {
 				alert(e.__summary.msg);
 			});
 		} else {
-			$.saveModel(saveEndCB, saveErrorCB);
+			addData.push($.$model.toJSON());
+			Alloy.Globals.Server.postData(addData, function(data) {
+				Alloy.Globals.Server.putData(editData, function(data) {
+					$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+				}, function(e) {
+					alert(e.__summary.msg);
+				});
+			}, function(e) {
+				alert(e.__summary.msg);
+			});
 		}
 	}
 }

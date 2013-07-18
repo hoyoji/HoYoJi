@@ -496,7 +496,7 @@ $.onWindowOpenDo(function() {
 			id : $.$model.xGet("id"),
 			messageState : "closed"
 		}], function(msgdata) {
-			if (data[0].length > 0) {
+			if (msgdata[0].length > 0) {
 				$.$model.save({
 					messageState : "closed"
 				}, {
