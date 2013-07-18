@@ -88,34 +88,21 @@ exports.definition = {
 					return "均摊";
 				}
 			},
-			// xDelete : function(xFinishCallback, options) {
-				// var self = this;
-				// if (this.xGet("moneyIncome").isNew()) {
-					// this.xGet("moneyIncome").xSet("amount", this.xGet("moneyIncome").xGet("amount") - this.xGet("amount"));
-					// this.xGet("moneyIncome").trigger("xchange:amount", this.xGet("moneyIncome"));
-					// this.xGet("moneyIncome").xGet("moneyIncomeDetails").remove(this);
-					// xFinishCallback();
-				// } else if(this.xGet("moneyIncome").xGet("useDetailsTotal")){
-					// var saveOptions = _.extend({}, options);
-					// saveOptions.patch = true;
-// 
-					// var amount = self.xGet("amount");
-					// var moneyAccount = self.xGet("moneyIncome").xGet("moneyAccount");
-					// moneyAccount.save({
-						// currentBalance : moneyAccount.xGet("currentBalance") - amount
-					// }, saveOptions);
-// 
-					// var incomeAmount = self.xGet("moneyIncome").xGet("amount");
-					// self.xGet("moneyIncome").save({
-						// amount : incomeAmount - amount,
-						// moneyAccount : moneyAccount
-					// }, saveOptions);
-// 
-					// this._xDelete(xFinishCallback, options);
-				// } else {
-					// this._xDelete(xFinishCallback, options);
-				// }
-			// },
+			xDelete : function(xFinishCallback, options) {
+				var saveOptions = _.extend({}, options);
+				saveOptions.patch = true;
+				var self = this;
+				var projectShareAuthorizations = self.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
+						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
+						projectShareAuthorization.save({
+							apportionedTotalIncome : apportionedTotalIncome - self.xGet("amount")
+						}, saveOptions);
+					}
+				});
+				this._xDelete(xFinishCallback, options);
+			},
 			canEdit : function() {
 				return this.xGet("moneyIncome").canEdit();
 			},

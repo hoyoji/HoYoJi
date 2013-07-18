@@ -217,18 +217,27 @@ exports.definition = {
 					});
 				} else {
 					// if (this.xGet("moneyExpenseApportions").length === 1) {
-						// this.xGet("moneyExpenseApportions").forEach(function(item) {
-							// item._xDelete();
-						// });
+					// this.xGet("moneyExpenseApportions").forEach(function(item) {
+					// item._xDelete();
+					// });
 					// }
-						var saveOptions = _.extend({}, options);
-						saveOptions.patch = true;
-						var moneyAccount = this.xGet("moneyAccount");
-						var amount = this.xGet("amount");
-						moneyAccount.save({
-							currentBalance : moneyAccount.xGet("currentBalance") + amount
-						}, saveOptions);
-					
+					var self = this;
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+
+					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+							item.save({
+								actualTotalExpense : item.xGet("actualTotalExpense") - self.xGet("amount")
+							}, saveOptions);
+						}
+					});
+
 					this._xDelete(xFinishCallback, options);
 				}
 			},
@@ -263,14 +272,14 @@ exports.definition = {
 				}
 				// var self = this;
 				// var friendUser = Alloy.createModel("User").xFindInDb({
-					// id : record.friendUserId
+				// id : record.friendUserId
 				// });
 				// // 同步新增好友时，一起把该好友用户同步下来
 				// if (!friendUser.id) {
-					// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						// if (collection.length > 0) {
-						// }
-					// });
+				// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+				// if (collection.length > 0) {
+				// }
+				// });
 				// }
 			},
 			syncUpdate : function(record, dbTrans) {
