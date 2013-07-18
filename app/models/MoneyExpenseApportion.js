@@ -88,34 +88,34 @@ exports.definition = {
 					return "均摊";
 				}
 			},
-			// xDelete : function(xFinishCallback, options) {
-				// var self = this;
-				// if (this.xGet("moneyExpense").isNew()) {
-					// this.xGet("moneyExpense").xSet("amount", this.xGet("moneyExpense").xGet("amount") - this.xGet("amount"));
-					// this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
-					// this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
-					// xFinishCallback();
-				// } else if(this.xGet("moneyExpense").xGet("useDetailsTotal")){
-					// var saveOptions = _.extend({}, options);
-					// saveOptions.patch = true;
-// 
-					// var amount = self.xGet("amount");
-					// var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
-					// moneyAccount.save({
-						// currentBalance : moneyAccount.xGet("currentBalance") + amount
-					// }, saveOptions);
-// 
-					// var expenseAmount = self.xGet("moneyExpense").xGet("amount");
-					// self.xGet("moneyExpense").save({
-						// amount : expenseAmount - amount,
-						// moneyAccount : moneyAccount
-					// }, saveOptions);
-// 
-					// this._xDelete(xFinishCallback, options);
-				// } else {
-					// this._xDelete(xFinishCallback, options);
-				// }
-			// },
+			xDelete : function(xFinishCallback, options) {
+				var self = this;
+				if (this.xGet("moneyExpense").isNew()) {
+					this.xGet("moneyExpense").xSet("amount", this.xGet("moneyExpense").xGet("amount") - this.xGet("amount"));
+					this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
+					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
+					xFinishCallback();
+				} else if(this.xGet("moneyExpense").xGet("useDetailsTotal")){
+					var saveOptions = _.extend({}, options);
+					saveOptions.patch = true;
+
+					var amount = self.xGet("amount");
+					var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+
+					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
+					self.xGet("moneyExpense").save({
+						amount : expenseAmount - amount,
+						moneyAccount : moneyAccount
+					}, saveOptions);
+
+					this._xDelete(xFinishCallback, options);
+				} else {
+					this._xDelete(xFinishCallback, options);
+				}
+			},
 			canEdit : function() {
 				return this.xGet("moneyExpense").canEdit();
 			},
