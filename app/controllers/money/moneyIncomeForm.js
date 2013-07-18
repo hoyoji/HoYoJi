@@ -112,7 +112,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (incomeAmount - fixedTotal) / (averageApportions.length);
+		if(averageApportions.length > 0) {
+		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+		}
 	} else {
 		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}

@@ -120,7 +120,9 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (expenseAmount - fixedTotal) / (averageApportions.length);
+		if (averageApportions.length > 0) {
+			average = (expenseAmount - fixedTotal) / (averageApportions.length - 1);
+		}
 	} else {
 		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
