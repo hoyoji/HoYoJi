@@ -87,7 +87,7 @@ exports.definition = {
 					var error;
 					var apportionAmount = 0;
 					this.xGet("moneyIncomeApportions").forEach(function(item) {
-						apportionAmount = item.xGet("amount");
+						apportionAmount = apportionAmount + item.xGet("amount");
 					});
 
 					if (isNaN(this.xGet("amount"))) {
