@@ -112,12 +112,18 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		average = (incomeAmount - fixedTotal) / (averageApportions.length);
+		if(averageApportions.length > 0) {
+		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+		}
 	} else {
 		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
 	averageApportions.forEach(function(item) {
-		item.xSet("amount", average);
+		if (item.__xDeleted) {
+			item.xSet("amount", 0);
+		} else {
+			item.xSet("amount", average);
+		}
 	});
 
 }
@@ -322,17 +328,17 @@ if ($.saveableMode === "read") {
 				});
 			}
 
-				if ($.$model.xGet("moneyIncomeApportions").length < 1) {
-					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-						var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-							moneyIncome : $.$model,
-							friendUser : projectShareAuthorization.xGet("friendUser"),
-							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-							apportionType : "Fixed"
-						});
-						$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+			if ($.$model.xGet("moneyIncomeApportions").length < 1) {
+				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+					var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+						moneyIncome : $.$model,
+						friendUser : projectShareAuthorization.xGet("friendUser"),
+						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+						apportionType : "Fixed"
 					});
-				}
+					$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+				});
+			}
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];

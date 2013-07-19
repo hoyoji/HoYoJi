@@ -77,6 +77,9 @@ function onFooterbarTap(e) {
 }
 
 var collection;
+if(selectedIncome.xGet("moneyIncomeApportions").length > 0) {
+	selectedIncome.hasAddedApportions = true;
+}
 if (selectedIncome.hasChanged("project")) {
 	if (selectedIncome.xGet("moneyIncomeApportions").length > 0) {
 		collection = selectedIncome.xGet("moneyIncomeApportions");

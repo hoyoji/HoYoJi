@@ -113,9 +113,6 @@ function updateAmount() {
 			if (item.xGet("apportionType") === "Average") {
 				item.xSet("amount", average);
 			}
-			if (item.__xDeleted) {
-				item.xSet("amount", 0);
-			}
 		});
 	}
 }
