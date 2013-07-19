@@ -93,7 +93,8 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
-					} else if (this.xGet("incomeType") !== "Deposite") {
+					} 
+					else if (this.xGet("incomeType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyIncomeApportions").forEach(function(item) {
 							if (!item.__xDeleted) {

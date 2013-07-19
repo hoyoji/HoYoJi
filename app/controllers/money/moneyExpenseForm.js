@@ -81,6 +81,7 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
 		ownerUser : Alloy.Models.User
 	});
+	
 	$.setSaveableMode("add");
 }
 
@@ -88,16 +89,6 @@ function updateAmount() {
 	$.amount.setValue($.$model.xGet("amount"));
 	$.amount.field.fireEvent("change");
 }
-
-// function setAmountEdit() {
-// if($.$model.xGet("moneyExpenseDetails").length > 0) {
-// $.amount.$attrs.editModeEditability = "noneditable";
-// $.amount.$attrs.addModeEditability = "noneditable";
-// }else {
-// $.amount.$attrs.editModeEditability = "editable";
-// $.amount.$attrs.addModeEditability = "editable";
-// }
-// }
 
 function deleteDetail(detailModel) {
 	if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
@@ -137,8 +128,6 @@ function deleteApportion(apportionModel) {
 }
 
 $.onWindowOpenDo(function() {
-	// setAmountEdit();
-	// $.$model.on("sync",setAmountEdit);
 	$.$model.on("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
 	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
@@ -151,19 +140,12 @@ $.onWindowOpenDo(function() {
 });
 
 $.onWindowCloseDo(function() {
-	// $.$model.off("sync",setAmountEdit);
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
 	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
 });
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
-	// $.exchangeRate.hide();
-	// $.moneyAccount.hide();
-	// $.friendAccount.hide();
-	// $.localAmountContainer.show();
-	// $.ownerUser.show();
-	// $.amount.hide();
 	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
@@ -177,6 +159,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
+		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
 	$.amount.field.addEventListener("singletap", function(e) {
@@ -206,7 +189,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
@@ -218,7 +200,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			setExchangeRate($.moneyAccount.getValue(), $.$model);
 		}
 	}
-
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
@@ -246,7 +227,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
-
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
@@ -286,9 +266,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		//if ($.$model.isNew() || ($.$model.xGet("moneyExpenseDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
 		if (oldMoneyAccount === newMoneyAccount) {
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+1|||" + oldAmount + "||||" + newAmount);
 		} else {
-			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+2");
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 			oldMoneyAccount.xAddToSave($);
@@ -350,7 +328,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					}
 				});
 			}
-
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
@@ -358,8 +335,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
 		// projectShareAuthorization.xAddToSave($);
 		// }
-
-		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+    	var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
