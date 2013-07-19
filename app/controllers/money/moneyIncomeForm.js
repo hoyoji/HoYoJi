@@ -2,9 +2,9 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "支出操作"
+		headerTitle : "收入操作"
 	});
-	menuSection.add($.createContextMenuItem("支出明细", function() {
+	menuSection.add($.createContextMenuItem("收入明细", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
 			selectedIncome : $.$model,
 			closeWithoutSave : true
@@ -74,6 +74,7 @@ if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+		localAmount : 0,
 		exchangeRate : 1,
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -81,7 +82,7 @@ if (!$.$model) {
 		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
 		ownerUser : Alloy.Models.User
 	});
-	
+
 	$.setSaveableMode("add");
 }
 
@@ -137,21 +138,32 @@ $.onWindowOpenDo(function() {
 	} else {
 		$.apportion.$view.setHeight(42);
 	}
-});
 
+});
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
 	$.$model.xGet("moneyIncomeApportions").off("xdelete", deleteApportion);
 });
 
-if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
+if ($.saveableMode === "read") {
+	// $.setSaveableMode("read");
+	// $.exchangeRate.hide();
+	// $.moneyAccount.hide();
+	// $.localAmountContainer.show();
+	// $.ownerUser.show();
+	// $.amount.hide();
+
 	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
+		// $.localAmountContainer.hide();
+		// $.ownerUser.hide();
+		// $.localAmountContainer.setHeight(0);
+		// $.ownerUser.setHeight(0);
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		} else {
@@ -188,7 +200,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			return "请先选择项目";
 		}
 	}
-	oldMoneyAccount = $.$model.xGet("moneyAccount");
+	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
@@ -200,6 +212,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			setExchangeRate($.moneyAccount.getValue(), $.$model);
 		}
 	}
+
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
@@ -227,6 +240,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
+
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
@@ -263,26 +277,25 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 
-		//if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !==0)) {//新增时 或者 修改时且没有明细 计算账户余额
-		if (oldMoneyAccount === newMoneyAccount) {
-			newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-		} else {
-			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-			newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
-			oldMoneyAccount.xAddToSave($);
+		//if ($.$model.isNew() || ($.$model.xGet("moneyIncomeDetails").length === 0 && newAmount !== 0)) {
+		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+		} else {//账户改变时
+			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 		}
-		// } else {
-		// if ($.$model.hasChanged("moneyAccount")) {//修改明细后再改账户计算余额
+		//} else {
+		// if ($.$model.hasChanged("moneyAccount")) {
 		// var oldAccount = $.$model.previous("moneyAccount");
 		// var newAccount = $.$model.xGet("moneyAccount");
-		// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") + $.$model.xPrevious("amount"));
-		// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") - $.$model.xGet("amount"));
+		// oldAccount.xSet("currentBalance", oldAccount.xGet("currentBalance") - $.$model.previous("amount"));
+		// newAccount.xSet("currentBalance", newAccount.xGet("currentBalance") + $.$model.xGet("amount"));
 		// oldAccount.xAddToSave($);
 		// newAccount.xAddToSave($);
 		// }
-		// }
+		//}
 		//if ($.$model.isNew()) {
-		// save all Income details
+		// save all income details
 		$.$model.xGet("moneyIncomeDetails").map(function(item) {
 			console.info("adding income detail : " + item.xGet("name") + " " + item.xGet("amount"));
 			if (item.__xDeleted) {
@@ -335,11 +348,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + $.$model.xGet("amount"));
 		// projectShareAuthorization.xAddToSave($);
 		// }
-    	var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 		$.$model.xGet("moneyIncomeApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
-
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
@@ -384,19 +396,16 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					});
 				}
 			}
-			saveEndCB(e);
+			saveEndCB(e)
 		}, function(e) {
-			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+3");
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalIncome")) {
-					projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.previous("apportionedTotalIncome"));
-				}
-				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-					item.xSet("actualTotalIncome", item.previous("actualTotalIncome"));
+					projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.previous("currentBalance"));
 				}
 			});
+			saveErrorCB(e);
 		});
 	}
 }
