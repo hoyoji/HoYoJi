@@ -131,12 +131,16 @@ if ($.saveableMode === "read") {
 
 		if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {//账户相同时，即新增和账户不改变的修改
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+			newMoneyAccount.xAddToSave($);
+			editData.push(newMoneyAccount.toJSON());
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+			oldMoneyAccount.xAddToSave($);
+			newMoneyAccount.xAddToSave($);
 			editData.push(newMoneyAccount.toJSON());
+			editData.push(oldMoneyAccount.toJSON());
 		}
-		editData.push(newMoneyAccount.toJSON());
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
@@ -164,6 +168,10 @@ if ($.saveableMode === "read") {
 				"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
 				messageData : selectedDepositeMsg.xGet("messageData")
 			}, function() {
+				// var db = Ti.Database.open("hoyoji");
+				// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+				// db.execute(sql, [selectedDepositeMsg.xGet("id")]);
+				// db.close();
 				selectedDepositeMsg.xSet("messageState","closed");
 				selectedDepositeMsg.xAddToSave($);
 				editData.push(selectedDepositeMsg.toJSON());

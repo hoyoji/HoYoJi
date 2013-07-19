@@ -3,7 +3,11 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection({headerTitle : "消息操作"});
 	menuSection.add($.createContextMenuItem("删除消息", function() {
-		$.deleteModel();
+		if($.$model.xGet("messageState") === "closed"){
+			$.deleteModel();
+		}else{
+			alert("当前消息未做处理，处理后才能删除");
+		}
 	}, isSelectMode));
 	return menuSection;
 }
