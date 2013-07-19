@@ -348,7 +348,7 @@ if ($.saveableMode === "read") {
 		// projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.xGet("apportionedTotalIncome") + $.$model.xGet("amount"));
 		// projectShareAuthorization.xAddToSave($);
 		// }
-
+		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 		$.$model.xGet("moneyIncomeApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
@@ -364,7 +364,6 @@ if ($.saveableMode === "read") {
 			} else/*if (item.hasChanged())*/
 			{
 				item.xAddToSave($);
-				var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
@@ -403,6 +402,11 @@ if ($.saveableMode === "read") {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+				if (projectShareAuthorization.hasChanged("apportionedTotalIncome")) {
+					projectShareAuthorization.xSet("apportionedTotalIncome", projectShareAuthorization.previous("currentBalance"));
+				}
+			});
 			saveErrorCB(e);
 		});
 	}
