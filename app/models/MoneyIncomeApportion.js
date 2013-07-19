@@ -55,8 +55,10 @@ exports.definition = {
 				return this.xGet("friendUser").xGet("userName");
 			},
 			getFriendDisplayName : function() {
-				var friend = Alloy.createModel("Friend").xFindInDb({friendUserId : this.xGet("friendUser").id});
-				if(friend.id){
+				var friend = Alloy.createModel("Friend").xFindInDb({
+					friendUserId : this.xGet("friendUser").id
+				});
+				if (friend.id) {
 					return friend.getDisplayName();
 				}
 				return this.getDisplayName();
@@ -72,19 +74,19 @@ exports.definition = {
 				var projectShareAuthorizations = this.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
 				var self = this;
 				var sharePercentage;
-				projectShareAuthorizations.forEach(function(item){
-					if(self.xGet("friendUser") === item.xGet("friendUser")){
+				projectShareAuthorizations.forEach(function(item) {
+					if (self.xGet("friendUser") === item.xGet("friendUser")) {
 						sharePercentage = item.xGet("sharePercentage");
 						return;
 					}
 				});
 				return sharePercentage;
-				
+
 			},
 			getApportionType : function() {
-				if(this.xGet("apportionType") === "Fixed") {
+				if (this.xGet("apportionType") === "Fixed") {
 					return "固定";
-				}else if (this.xGet("apportionType") === "Average"){
+				} else if (this.xGet("apportionType") === "Average") {
 					return "均摊";
 				}
 			},
@@ -110,64 +112,64 @@ exports.definition = {
 				return this.xGet("moneyIncome").canDelete();
 			},
 			// syncAddNew : function(record, dbTrans) {
-				// // 更新账户余额
-				// // 1. 如果收入也是新增的
-				// // 2. 收入已经存在
-// 
-				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					// id : record.moneyIncomeId
-				// });
-				// if (moneyIncome.id) {
-					// // 支出已在本地存在
-					// if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
-						// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-						// moneyIncome.__syncAmount = oldIncomeAmount + record.amount
-						// // moneyIncome.save("amount", moneyIncome.__syncAmount, {
-							// // dbTrans : dbTrans,
-							// // patch : true
-						// // });
-					// } else {
-						// moneyIncome.__syncAmount = moneyIncome.__syncAmount !== undefined ? moneyIncome.__syncAmount + record.amount : record.amount;
-					// }
-				// }
+			// // 更新账户余额
+			// // 1. 如果收入也是新增的
+			// // 2. 收入已经存在
+			//
+			// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+			// id : record.moneyIncomeId
+			// });
+			// if (moneyIncome.id) {
+			// // 支出已在本地存在
+			// if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
+			// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+			// moneyIncome.__syncAmount = oldIncomeAmount + record.amount
+			// // moneyIncome.save("amount", moneyIncome.__syncAmount, {
+			// // dbTrans : dbTrans,
+			// // patch : true
+			// // });
+			// } else {
+			// moneyIncome.__syncAmount = moneyIncome.__syncAmount !== undefined ? moneyIncome.__syncAmount + record.amount : record.amount;
+			// }
+			// }
 			// },
 			// syncUpdate : function(record, dbTrans) {
-				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					// id : record.moneyIncomeId
-				// });
-				// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-				// moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
+			// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+			// id : record.moneyIncomeId
+			// });
+			// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+			// moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount") + record.amount
 			// },
 			// syncUpdateConflict : function(record, dbTrans) {
-				// delete record.id;
-// 				
-				// // 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				// if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
-					// this.syncUpdate(record, dbTrans);
-					// this._syncUpdate(record, dbTrans);
-					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					// dbTrans.db.execute(sql, [this.xGet("id")]);
-				// }
-				// // 让本地修改覆盖服务器上的记录
+			// delete record.id;
+			//
+			// // 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+			// if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+			// this.syncUpdate(record, dbTrans);
+			// this._syncUpdate(record, dbTrans);
+			// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+			// dbTrans.db.execute(sql, [this.xGet("id")]);
+			// }
+			// // 让本地修改覆盖服务器上的记录
 			// },
 			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					// id : this.xGet("moneyIncomeId")
-				// });
-				// if (moneyIncome.id) {
-					// // 支出已在本地存在
-					// // if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
-						// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
-						// moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount");
-					// // }
-				// }
-			// },	
+			// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+			// id : this.xGet("moneyIncomeId")
+			// });
+			// if (moneyIncome.id) {
+			// // 支出已在本地存在
+			// // if (moneyIncome.xGet("moneyIncomeDetails").length > 0) {
+			// var oldIncomeAmount = moneyIncome.__syncAmount || moneyIncome.xGet("amount");
+			// moneyIncome.__syncAmount = oldIncomeAmount - this.xGet("amount");
+			// // }
+			// }
+			// },
 			// _syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// this._xDelete(xFinishedCallback, {
-					// dbTrans : dbTrans,
-					// syncFromServer : true
-				// });
-			// }			
+			// this._xDelete(xFinishedCallback, {
+			// dbTrans : dbTrans,
+			// syncFromServer : true
+			// });
+			// }
 		});
 		return Model;
 	},

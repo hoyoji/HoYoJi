@@ -27,7 +27,7 @@ $.onWindowCloseDo(function() {
 
 $.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+	if ($.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
 		if ($.$model.isNew()) {
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
