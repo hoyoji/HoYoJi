@@ -85,13 +85,6 @@ exports.definition = {
 			validators : {
 				amount : function(xValidateComplete) {
 					var error;
-					var apportionAmount = 0;
-					this.xGet("moneyIncomeApportions").forEach(function(item) {
-						if (!item.__xDeleted) {
-							apportionAmount = apportionAmount + item.xGet("amount");
-						}
-					});
-
 					if (isNaN(this.xGet("amount"))) {
 						error = {
 							msg : "金额只能为数字"
@@ -100,11 +93,20 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
-					} else if (this.xGet("amount") !== apportionAmount) {
-						error = {
-							msg : "分摊总额与收入金额不相等，请修正"
-						};
+					} else if (this.xGet("incomeType") !== "Deposite") {
+						var apportionAmount = 0;
+						this.xGet("moneyIncomeApportions").forEach(function(item) {
+							if (!item.__xDeleted) {
+								apportionAmount = apportionAmount + item.xGet("amount");
+							}
+						});
+						if (this.xGet("amount") !== apportionAmount) {
+							error = {
+								msg : "分摊总额与收入金额不相等，请修正"
+							};
+						}
 					}
+
 					xValidateComplete(error);
 				},
 				exchangeRate : function(xValidateComplete) {
