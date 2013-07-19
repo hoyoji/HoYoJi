@@ -364,7 +364,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
 
-				var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
@@ -416,7 +415,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalExpense")) {
-					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("currentBalance"));
+					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("apportionedTotalExpense"));
+				}
+				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+					item.xSet("actualTotalExpense", item.previous("actualTotalExpense"));
 				}
 			});
 		});
@@ -424,7 +426,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 }
 
 $.amount.rightButton.addEventListener("singletap", function(e) {
-	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", { 
+	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
 		selectedExpense : $.$model,
 		closeWithoutSave : true
 	});
