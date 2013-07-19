@@ -418,13 +418,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalExpense")) {
 					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("currentBalance"));
 				}
-			})
+			});
 		});
 	}
 }
 
 $.amount.rightButton.addEventListener("singletap", function(e) {
-	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
+	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", { 
 		selectedExpense : $.$model,
 		closeWithoutSave : true
 	});
