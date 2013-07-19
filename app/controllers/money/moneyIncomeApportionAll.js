@@ -21,7 +21,7 @@ function onFooterbarTap(e) {
 				});
 				if (hasMember === true) {
 					alert("该成员已存在，无需重复添加");
-				} else if($.projectShareAuthorization.xGet("state") === "Accept") {
+				} else if ($.projectShareAuthorization.xGet("state") === "Accept") {
 					var newMoneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 						moneyIncome : selectedIncome,
 						friendUser : $.projectShareAuthorization.xGet("friendUser"),
@@ -33,8 +33,8 @@ function onFooterbarTap(e) {
 					collection.forEach(function(item) {
 						item.trigger("_xchange:amount", item);
 					});
-				}
-				else{
+				} 
+				else {
 					alert("该成员尚未接受此项目，不能添加");
 				}
 			}
@@ -49,7 +49,7 @@ function onFooterbarTap(e) {
 			var existApportion = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
 				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
 			}, $);
-			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length < 1) {
+			if (existApportion.length < 1 && projectShareAuthorization.xGet("state") === "Accept") {
 				var incomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 					moneyIncome : selectedIncome,
 					friendUser : projectShareAuthorization.xGet("friendUser"),
@@ -134,7 +134,7 @@ if (selectedIncome.hasChanged("project")) {
 // selectedIncome.oldProject = selectedIncome.xGet("project");
 // }
 //
-// if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedIncome.isNew() && selectedIncome.xGet("moneyIncomeApportions").length < 2) {
+// if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedIncome.isNew() && selectedIncome.xGet("moneyIncomeApportions").length < 1) {
 // collection = selectedIncome.xGet("moneyIncomeApportions");
 // $.moneyIncomeApportionsTable.removeCollection(collection);
 // selectedIncome.xGet("moneyIncomeApportions").reset();
@@ -157,5 +157,4 @@ if (selectedIncome.hasChanged("project")) {
 // collection = selectedIncome.xGet("moneyIncomeApportions");
 // $.moneyIncomeApportionsTable.addCollection(collection);
 // }
-
 $.moneyIncomeApportionsTable.autoHideFooter($.footerBar);
