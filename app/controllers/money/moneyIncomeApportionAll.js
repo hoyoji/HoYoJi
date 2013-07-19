@@ -21,7 +21,7 @@ function onFooterbarTap(e) {
 				});
 				if (hasMember === true) {
 					alert("该成员已存在，无需重复添加");
-				} else {
+				} else if ($.projectShareAuthorization.xGet("state") === "Accept") {
 					var newMoneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 						moneyIncome : selectedIncome,
 						friendUser : $.projectShareAuthorization.xGet("friendUser"),
@@ -33,6 +33,8 @@ function onFooterbarTap(e) {
 					collection.forEach(function(item) {
 						item.trigger("_xchange:amount", item);
 					});
+				} else {
+					alert("该成员尚未接受此项目，不能添加");
 				}
 			}
 		};
@@ -46,7 +48,7 @@ function onFooterbarTap(e) {
 			var existApportion = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
 				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
 			}, $);
-			if (existApportion.length < 1) {
+			if (existApportion.length < 1 && projectShareAuthorization.xGet("state") === "Accept") {
 				var incomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 					moneyIncome : selectedIncome,
 					friendUser : projectShareAuthorization.xGet("friendUser"),
@@ -77,7 +79,7 @@ function onFooterbarTap(e) {
 }
 
 var collection;
-if(selectedIncome.xGet("moneyIncomeApportions").length > 0) {
+if (selectedIncome.xGet("moneyIncomeApportions").length > 0) {
 	selectedIncome.hasAddedApportions = true;
 }
 if (selectedIncome.hasChanged("project")) {
@@ -89,13 +91,15 @@ if (selectedIncome.hasChanged("project")) {
 
 	var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
 	selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-		var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-			moneyIncome : selectedIncome,
-			friendUser : projectShareAuthorization.xGet("friendUser"),
-			amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-			apportionType : "Fixed"
-		});
-		selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+		if (projectShareAuthorization.xGet("state") === "Accept") {
+			var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+				moneyIncome : selectedIncome,
+				friendUser : projectShareAuthorization.xGet("friendUser"),
+				amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+				apportionType : "Fixed"
+			});
+			selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+		}
 	});
 	collection = selectedIncome.xGet("moneyIncomeApportions");
 	$.moneyIncomeApportionsTable.addCollection(collection);
@@ -104,13 +108,15 @@ if (selectedIncome.hasChanged("project")) {
 	if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions) {
 		var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
 		selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-			var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-				moneyIncome : selectedIncome,
-				friendUser : projectShareAuthorization.xGet("friendUser"),
-				amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-				apportionType : "Fixed"
-			});
-			selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+			if (projectShareAuthorization.xGet("state") === "Accept") {
+				var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+					moneyIncome : selectedIncome,
+					friendUser : projectShareAuthorization.xGet("friendUser"),
+					amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+					apportionType : "Fixed"
+				});
+				selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+			}
 		});
 		collection = selectedIncome.xGet("moneyIncomeApportions");
 		$.moneyIncomeApportionsTable.addCollection(collection);

@@ -339,13 +339,15 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 			if ($.$model.xGet("moneyExpenseApportions").length < 1) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-					var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-						moneyExpense : $.$model,
-						friendUser : projectShareAuthorization.xGet("friendUser"),
-						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-						apportionType : "Fixed"
-					});
-					$.$model.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+					if (projectShareAuthorization.xGet("state") === "Accept") {
+						var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+							moneyExpense : $.$model,
+							friendUser : projectShareAuthorization.xGet("friendUser"),
+							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+							apportionType : "Fixed"
+						});
+						$.$model.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+					}
 				});
 			}
 
