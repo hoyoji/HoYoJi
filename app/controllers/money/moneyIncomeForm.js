@@ -112,8 +112,8 @@ function deleteApportion(apportionModel) {
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
-		if(averageApportions.length > 0) {
-		average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+		if (averageApportions.length > 0) {
+			average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
 		}
 	} else {
 		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
@@ -330,13 +330,15 @@ if ($.saveableMode === "read") {
 
 			if ($.$model.xGet("moneyIncomeApportions").length < 1) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-					var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-						moneyIncome : $.$model,
-						friendUser : projectShareAuthorization.xGet("friendUser"),
-						amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-						apportionType : "Fixed"
-					});
-					$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+					if (projectShareAuthorization.xGet("state") === "Accept") {
+						var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+							moneyIncome : $.$model,
+							friendUser : projectShareAuthorization.xGet("friendUser"),
+							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
+							apportionType : "Fixed"
+						});
+						$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+					}
 				});
 			}
 		}
