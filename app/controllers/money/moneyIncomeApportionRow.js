@@ -5,8 +5,8 @@ $.makeContextMenu = function() {
 		headerTitle : "分摊明细操作"
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
-				$.deleteModel();
-			},!$.$model.canDelete()));
+		$.deleteModel();
+	}, !$.$model.canDelete()));
 
 	return menuSection;
 }
@@ -27,21 +27,25 @@ $.onWindowCloseDo(function() {
 
 $.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	if ($.$model.isNew()) {
-		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
-		$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
-			item.trigger("_xChange : amount");
-		});
+	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+		if ($.$model.isNew()) {
+			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
+			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
+				item.trigger("_xChange : amount");
+			});
+		} else {
+			$.deleteModel();
+		}
 	} else {
-		$.deleteModel();
+		alert("没有权限");
 	}
 });
 
-$.amount.$view.addEventListener("singletap",function(e){
+$.amount.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 });
 
-$.apportionType.label.addEventListener("singletap",function(e){
+$.apportionType.label.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 });
 

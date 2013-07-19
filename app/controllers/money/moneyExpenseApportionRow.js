@@ -27,13 +27,17 @@ $.onWindowCloseDo(function() {
 
 $.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	if ($.$model.isNew()) {
-		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
-		$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-			item.trigger("_xchange : amount");
-		});
+	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+		if ($.$model.isNew()) {
+			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
+			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
+				item.trigger("_xchange : amount");
+			});
+		} else {
+			$.deleteModel();
+		}
 	} else {
-		$.deleteModel();
+		alert("没有权限");
 	}
 });
 
