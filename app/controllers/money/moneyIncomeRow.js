@@ -12,7 +12,7 @@ $.makeContextMenu = function() {
 			$model : "Message",
 			selectedAccount : $.$model
 		});
-	}));
+	},$.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if($.$model.xGet("incomeType") === "Deposite"){
 			if ($.$model.xGet("ownerUserId") !== Alloy.Models.User.id) {
