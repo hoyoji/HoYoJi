@@ -14,7 +14,7 @@ $.makeContextMenu = function() {
 			$model : "Message",
 			selectedAccount : $.$model
 		});
-	}));
+	},$.$model.xGet("expenseType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		if ($.$model.xGet("expenseType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") !== Alloy.Models.User.id) {
