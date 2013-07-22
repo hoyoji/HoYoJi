@@ -393,8 +393,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalExpense")) {
 					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("apportionedTotalExpense"));
 				}
-				if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-					item.xSet("actualTotalExpense", item.previous("actualTotalExpense"));
+				if (projectShareAuthorization.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.previous("actualTotalExpense"));
 				}
 			});
 		});
