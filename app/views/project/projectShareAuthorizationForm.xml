@@ -29,7 +29,7 @@
 						id="sharePercentageType" autoInit="false"
 						hightLight="false"
 						items=" 均分,固定"
-						values="average,fixed"
+						values="Average,Fixed"
 						bindModel="$.$model"
 						bindAttribute="sharePercentageType"/>
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""

@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
 			selectedExpense : $.$model
 		});
-	}));
+	},$.$model.xGet("expenseType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
 		Alloy.Globals.openWindow("message/accountShare", {
 			$model : "Message",

@@ -88,7 +88,7 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	});
 	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
 		if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
-			if(waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			if(waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
 				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
 			}else{
@@ -98,7 +98,7 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	});
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
 		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
-			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed"){
+			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
 			}else{

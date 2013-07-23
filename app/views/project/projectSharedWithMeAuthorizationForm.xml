@@ -10,6 +10,22 @@
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				/>
+				<View layout="vertical" height="Ti.UI.SIZE" width="Ti.UI.SIZE">
+					<View height="42" layout="horizontal">
+						<Label left="0" width="20%">占股(%)</Label>
+						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
+						id="sharePercentageType" autoInit="false"
+						hightLight="false"
+						items=" 均分,固定"
+						values="Average,Fixed"
+						bindModel="$.$model"
+						bindAttribute="sharePercentageType"/>
+						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
+						id="sharePercentage" autoInit="false"
+						bindModel="$.$model"
+						bindAttribute="sharePercentage"/>
+					</View>
+				</View>
 				<View height="42">
 					<Label left="0" width="40%">共享所有子项目</Label>
 					<View right="0" width="60%" layout="horizontal" horizontalWrap="false">

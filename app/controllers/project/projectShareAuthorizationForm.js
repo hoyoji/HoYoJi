@@ -58,7 +58,7 @@ function addSharePercentage(projectShareAuthorization) {
 		state : "Accept"
 	});
 	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+		// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 			// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
 			// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
 		// } else {
@@ -66,7 +66,7 @@ function addSharePercentage(projectShareAuthorization) {
 		// }
 	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
-		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 			fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
 		} else {
@@ -94,7 +94,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 	});
 	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
 		// if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
 				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
 			// } else {
@@ -104,7 +104,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
 			} else {
@@ -112,7 +112,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 			}
 		}
 	});
-	if (projectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+	if (projectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 		if ((fixedSharePercentage + projectShareAuthorization.xGet("sharePercentage")) > 100) {
 			projectShareAuthorization.xSet("sharePercentage", 100 - fixedSharePercentage);
 			averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
@@ -163,7 +163,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	});
 	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
 		// if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
 				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
 			// } else {
@@ -173,7 +173,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "fixed") {
+			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
 			} else {
@@ -198,7 +198,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var editSharePercentageAuthorization = [];
 	if ($.$model.xGet("sharePercentage") >= 0) {
 		if ($.$model.isNew()) {
-			if ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
+			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
 				alert("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
 				var projectIds = [];
@@ -358,7 +358,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.hasChanged("friendUser")) {
 				saveErrorCB("好友不能修改！");
 			} else {
-				if ($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "fixed" && $.$model.hasChanged("sharePercentage"))) {
+				if ($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.hasChanged("sharePercentage"))) {
 					editSharePercentage($.$model, editSharePercentageAuthorization);
 				}
 				if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
@@ -623,7 +623,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
 											var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
 											subProjectShareAuthorization.xSet(data);
-											if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))) {
+											if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "Fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))) {
 												editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 											}
 											editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
@@ -750,7 +750,7 @@ $.onWindowOpenDo(function() {
 });
 
 function changeSharePercentageType() {
-	if ($.$model.xGet("sharePercentageType") === "fixed") {
+	if ($.$model.xGet("sharePercentageType") === "Fixed") {
 		$.sharePercentage.field.setEnabled(true);
 	} else {
 		$.sharePercentage.field.setEnabled(false);

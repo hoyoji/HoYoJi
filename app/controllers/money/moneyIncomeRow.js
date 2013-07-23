@@ -6,7 +6,7 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("收入明细", function() {
 		Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {selectedIncome : $.$model});
-	}));
+	},$.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
 		Alloy.Globals.openWindow("message/accountShare", {
 			$model : "Message",
