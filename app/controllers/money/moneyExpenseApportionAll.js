@@ -21,7 +21,7 @@ function onFooterbarTap(e) {
 				});
 				if (hasMember === true) {
 					alert("该成员已存在，无需重复添加");
-				} else if($.projectShareAuthorization.xGet("state") === "Accept") {
+				} else if ($.projectShareAuthorization.xGet("state") === "Accept") {
 					var newMoneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
 						moneyExpense : selectedExpense,
 						friendUser : $.projectShareAuthorization.xGet("friendUser"),
@@ -33,8 +33,7 @@ function onFooterbarTap(e) {
 					collection.forEach(function(item) {
 						item.trigger("_xchange:amount", item);
 					});
-				}
-				else{
+				} else {
 					alert("该成员尚未接受此项目，不能添加");
 				}
 			}
@@ -80,16 +79,33 @@ function onFooterbarTap(e) {
 }
 
 var collection;
-if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
-	selectedExpense.hasAddedApportions = true;
-}
-if (selectedExpense.hasChanged("project")) {
-	if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
-		collection = selectedExpense.xGet("moneyExpenseApportions");
-		$.moneyExpenseApportionsTable.removeCollection(collection);
-	}
-	selectedExpense.xGet("moneyExpenseApportions").reset();
-
+// if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
+	// selectedExpense.hasAddedApportions = true;
+// }
+// if (selectedExpense.hasChanged("project")) {
+// if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
+// collection = selectedExpense.xGet("moneyExpenseApportions");
+// $.moneyExpenseApportionsTable.removeCollection(collection);
+// }
+// selectedExpense.xGet("moneyExpenseApportions").reset();
+//
+// var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
+// selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+// if (projectShareAuthorization.xGet("state") === "Accept") {
+// var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+// moneyExpense : selectedExpense,
+// friendUser : projectShareAuthorization.xGet("friendUser"),
+// amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+// apportionType : "Fixed"
+// });
+// selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+// }
+// });
+// collection = selectedExpense.xGet("moneyExpenseApportions");
+// $.moneyExpenseApportionsTable.addCollection(collection);
+// selectedExpense.hasAddedApportions = true;
+// } else {
+if (selectedExpense.xGet("moneyExpenseApportions").length < 1) {
 	var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
 	selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		if (projectShareAuthorization.xGet("state") === "Accept") {
@@ -106,27 +122,10 @@ if (selectedExpense.hasChanged("project")) {
 	$.moneyExpenseApportionsTable.addCollection(collection);
 	selectedExpense.hasAddedApportions = true;
 } else {
-	if (selectedExpense.isNew() && !selectedExpense.hasAddedApportions) {
-		var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
-		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-			if (projectShareAuthorization.xGet("state") === "Accept") {
-				var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-					moneyExpense : selectedExpense,
-					friendUser : projectShareAuthorization.xGet("friendUser"),
-					amount : selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-					apportionType : "Fixed"
-				});
-				selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
-			}
-		});
-		collection = selectedExpense.xGet("moneyExpenseApportions");
-		$.moneyExpenseApportionsTable.addCollection(collection);
-		selectedExpense.hasAddedApportions = true;
-	} else {
-		collection = selectedExpense.xGet("moneyExpenseApportions");
-		$.moneyExpenseApportionsTable.addCollection(collection);
-	}
+	collection = selectedExpense.xGet("moneyExpenseApportions");
+	$.moneyExpenseApportionsTable.addCollection(collection);
 }
+// }
 
 // if (selectedExpense.hasChanged("project") && !selectedExpense.hasChangedProject || selectedExpense.oldProject !== selectedExpense.xGet("project")) {
 // selectedExpense.hasChangedProject = true;

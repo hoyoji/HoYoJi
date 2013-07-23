@@ -81,7 +81,7 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
 		ownerUser : Alloy.Models.User
 	});
-	
+
 	$.setSaveableMode("add");
 }
 
@@ -201,6 +201,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
+
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
@@ -228,6 +229,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
+
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
@@ -240,6 +242,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		} else {
 			$.apportion.$view.setHeight(0);
+		}
+		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
+			// collection = $.$model.xGet("moneyExpenseApportions");
+			// $.moneyExpenseApportionsTable.removeCollection(collection);
+			$.$model.xGet("moneyExpenseApportions").reset();
 		}
 	});
 
@@ -335,7 +342,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
 		// projectShareAuthorization.xAddToSave($);
 		// }
-    	var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
 			if (item.__xDeleted) {
 				item.xAddToDelete($);
