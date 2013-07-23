@@ -21,7 +21,7 @@ $.apportion.addEventListener("singletap", function() {
 });
 
 function updateApportionAmount() {
-	if ($.$model.xGet("moneyExpenseApportions")) {
+	if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 		var fixedApportions = $.$model.xGet("moneyExpenseApportions").xCreateFilter({
 			apportionType : "Fixed"
 		});
@@ -38,7 +38,7 @@ function updateApportionAmount() {
 		});
 		if (averageApportions.length === 0) {
 			fixedApportions.forEach(function(item) {
-				item.xSet("amount", $.$model.xGet("amount") * (item.getSharePercentage() / 100))
+				item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100))
 			});
 		}
 	}
