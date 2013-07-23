@@ -32,13 +32,27 @@ function updateApportionAmount() {
 		fixedApportions.forEach(function(item) {
 			fixedTotal = fixedTotal + item.xGet("amount");
 		});
-		var average = ($.amount.getValue() - fixedTotal ) / averageApportions.length;
+		var averageApportionsNotDelete = [];
 		averageApportions.forEach(function(item) {
-			item.xSet("amount", average);
+			if (!item.__xDeleted) {
+				averageApportionsNotDelete.push(item);
+			}
+		});
+		var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
+		averageApportions.forEach(function(item) {
+			if (item.__xDeleted) {
+				item.xSet("amount", 0);
+			} else {
+				item.xSet("amount", average);
+			}
 		});
 		if (averageApportions.length === 0) {
 			fixedApportions.forEach(function(item) {
-				item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100))
+				if (item.__xDeleted) {
+					item.xSet("amount", 0);
+				} else {
+					item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
+				}
 			});
 		}
 	}
