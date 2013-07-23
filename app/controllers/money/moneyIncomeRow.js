@@ -15,9 +15,7 @@ $.makeContextMenu = function() {
 	},$.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if($.$model.xGet("incomeType") === "Deposite"){
-			if ($.$model.xGet("ownerUserId") !== Alloy.Models.User.id) {
-				alert("没有删除权限");
-			} else if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
+			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
 				var editData = [];
 				var accounts = [];
 				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
@@ -124,7 +122,7 @@ $.makeContextMenu = function() {
 		 }else{
 		 	$.deleteModel();
 		 }
-	},!$.$model.canDelete()));
+	},!$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 
