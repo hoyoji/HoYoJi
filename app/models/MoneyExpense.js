@@ -100,11 +100,19 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
-					} else if (this.xGet("amount") !== apportionAmount) {
-						console.info("++++++++apportionAmount++++" + apportionAmount);
-						error = {
-							msg : "分摊总额与支出金额不相等，请修正"
-						};
+					}
+					else if (this.xGet("expenseType") !== "Deposite") {
+						var apportionAmount = 0;
+						this.xGet("moneyExpenseApportions").forEach(function(item) {
+							if (!item.__xDeleted) {
+								apportionAmount = apportionAmount + item.xGet("amount");
+							}
+						});
+						if (this.xGet("amount") !== apportionAmount) {
+							error = {
+								msg : "分摊总额与支出金额不相等，请修正"
+							};
+						}
 					}
 
 					xValidateComplete(error);

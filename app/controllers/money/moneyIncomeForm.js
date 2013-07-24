@@ -46,15 +46,15 @@ function updateApportionAmount() {
 				item.xSet("amount", average);
 			}
 		});
-		if (averageApportions.length === 0) {
-			fixedApportions.forEach(function(item) {
-				if (item.__xDeleted) {
-					item.xSet("amount", 0);
-				} else {
-					item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
-				}
-			});
-		}
+		// if (averageApportions.length === 0) {
+			// fixedApportions.forEach(function(item) {
+				// if (item.__xDeleted) {
+					// item.xSet("amount", 0);
+				// } else {
+					// item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
+				// }
+			// });
+		// }
 	}
 }
 

@@ -4,11 +4,13 @@ $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "支出操作"
 	});
-	menuSection.add($.createContextMenuItem("支出明细", function() {
-		Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
-			selectedExpense : $.$model
-		});
-	},$.$model.xGet("expenseType") === "Deposite"));
+
+	// menuSection.add($.createContextMenuItem("支出明细", function() {
+		// Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
+			// selectedExpense : $.$model
+		// });
+	// },$.$model.xGet("expenseType") === "Deposite"));
+
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
 		Alloy.Globals.openWindow("message/accountShare", {
 			$model : "Message",

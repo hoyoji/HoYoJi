@@ -46,15 +46,15 @@ function updateApportionAmount() {
 				item.xSet("amount", average);
 			}
 		});
-		if (averageApportions.length === 0) {
-			fixedApportions.forEach(function(item) {
-				if (item.__xDeleted) {
-					item.xSet("amount", 0);
-				} else {
-					item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
-				}
-			});
-		}
+		// if (averageApportions.length === 0) { //改变expenseAmount时 同时改变固定分摊的金额
+			// fixedApportions.forEach(function(item) {
+				// if (item.__xDeleted) {
+					// item.xSet("amount", 0);
+				// } else {
+					// item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
+				// }
+			// });
+		// }
 	}
 }
 
@@ -152,7 +152,7 @@ $.onWindowOpenDo(function() {
 		$.apportion.$view.setHeight(42);
 	}
 });
-
+updat
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
