@@ -152,7 +152,7 @@ $.onWindowOpenDo(function() {
 		$.apportion.$view.setHeight(42);
 	}
 });
-updat
+
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
