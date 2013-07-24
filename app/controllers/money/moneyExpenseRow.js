@@ -4,11 +4,13 @@ $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "支出操作"
 	});
+
 	// menuSection.add($.createContextMenuItem("支出明细", function() {
 		// Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
 			// selectedExpense : $.$model
 		// });
-	// }));
+	// },$.$model.xGet("expenseType") === "Deposite"));
+
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
 		Alloy.Globals.openWindow("message/accountShare", {
 			$model : "Message",
@@ -17,9 +19,7 @@ $.makeContextMenu = function() {
 	},$.$model.xGet("expenseType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		if ($.$model.xGet("expenseType") === "Deposite") {
-			if ($.$model.xGet("ownerUserId") !== Alloy.Models.User.id) {
-				alert("没有删除权限");
-			} else if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
+			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
 				var editData = [];
 				var accounts = [];
 				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
@@ -120,7 +120,7 @@ $.makeContextMenu = function() {
 		} else {
 			$.deleteModel();
 		}
-	}, !$.$model.canDelete()));
+	}, !$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 
