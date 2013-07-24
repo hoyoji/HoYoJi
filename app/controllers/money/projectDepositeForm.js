@@ -202,30 +202,35 @@ if ($.saveableMode === "read") {
 				addData.push($.$model.toJSON());
 				Alloy.Globals.Server.postData(addData, function(data) {
 					Alloy.Globals.Server.putData(editData, function(data) {
-						$.saveModel(saveEndCB, saveErrorCB, {
-								syncFromServer : true
+						// $.saveModel(saveEndCB, saveErrorCB, {
+								// syncFromServer : true
+							// });
+						$.saveModel(function(e) {
+							var depositeIncome = Alloy.createModel("MoneyIncome", {
+								date : $.$model.xGet("date"),
+								amount : $.$model.xGet("amount"),
+								remark : $.$model.xGet("remark"),
+								ownerUser : Alloy.Models.User,
+								localCurrency : Alloy.Models.User.xGet("activeCurrency"),
+								exchangeRate : 1,
+								incomeType : $.$model.xGet("expenseType"),
+								moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+								project : $.$model.xGet("project"),
+								moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
+								friendUser : $.$model.xGet("friendUser"),
+								depositeId : $.$model.xGet("id")
 							});
-						var depositeIncome = Alloy.createModel("MoneyIncome", {
-							date : $.$model.xGet("date"),
-							amount : $.$model.xGet("amount"),
-							remark : $.$model.xGet("remark"),
-							ownerUser : Alloy.Models.User,
-							localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-							exchangeRate : 1,
-							incomeType : $.$model.xGet("expenseType"),
-							moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-							project : $.$model.xGet("project"),
-							moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
-							friendUser : $.$model.xGet("friendUser"),
-							depositeId : $.$model.xGet("id")
-						});
-						var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
-							$model : depositeIncome
-						});
-						depositeIncomeController.$view.addEventListener("contentready", function() {
-							depositeIncome.xAddToSave(depositeIncomeController.content);
-							depositeIncomeController.content.titleBar.dirtyCB();
-						});
+							var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
+								$model : depositeIncome
+							});
+							depositeIncomeController.$view.addEventListener("contentready", function() {
+								depositeIncome.xAddToSave(depositeIncomeController.content);
+								depositeIncomeController.content.titleBar.dirtyCB();
+							});
+							saveEndCB(e);
+						}, function(e) {
+							saveErrorCB(e);
+						}, {syncFromServer : true});
 					}, function(e) {
 						alert(e.__summary.msg);
 					});

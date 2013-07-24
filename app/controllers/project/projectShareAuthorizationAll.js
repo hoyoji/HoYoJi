@@ -94,7 +94,12 @@ function openAddShareFriend(){
 $.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
 
 var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter(function(model){
-	return model.xGet("projectId") === selectedProject.xGet("id") && (model.xGet("state") === "Wait" ||  model.xGet("state") === "Accept");
+	if($.getCurrentWindow().$attrs.selectorCallback){
+		return model.xGet("projectId") === selectedProject.xGet("id") 
+			&& model.xGet("state") === "Accept";
+	} else {
+		return model.xGet("projectId") === selectedProject.xGet("id") && (model.xGet("state") === "Wait" ||  model.xGet("state") === "Accept");
+	}
 }, $);
 $.myProjectShareAuthorizationsTable.addCollection(collection);
 $.myProjectShareAuthorizationsTable.autoHideFooter($.footerBar);
