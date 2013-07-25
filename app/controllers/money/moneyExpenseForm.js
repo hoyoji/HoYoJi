@@ -38,6 +38,25 @@ function updateApportionAmount() {
 				averageApportionsNotDelete.push(item);
 			}
 		});
+
+
+//// 以上部分可改成如下, 這樣免去了使用filter, 並且可以減少使用循環：		
+//		var averageApportions = [];
+//		var fixedTotal = 0;
+//		var averageApportionsNotDelete = [];
+//		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+//			if(item.xGet("apportionType") === "Fixed"){
+//				fixedTotal = fixedTotal + item.xGet("amount");
+//			} else if(item.xGet("apportionType") === "Average"){
+//				averageApportions.push(item);
+//				if (!item.__xDeleted) {
+//					averageApportionsNotDelete.push(item);
+//				}
+//			}
+//		});
+///////////////////////////////////////////////////////////////////
+
+		
 		var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
 		averageApportions.forEach(function(item) {
 			if (item.__xDeleted) {
@@ -79,6 +98,7 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
