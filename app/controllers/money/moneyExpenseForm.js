@@ -53,8 +53,7 @@ function updateApportionAmount() {
 				}
 			}
 		});
-///////////////////////////////////////////////////////////////////
-		
+
 		var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
 		averageApportions.forEach(function(item) {
 			if (item.__xDeleted) {
@@ -96,7 +95,6 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -280,23 +278,38 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 			// collection = $.$model.xGet("moneyExpenseApportions");
 			// $.moneyExpenseApportionsTable.removeCollection(collection);
-			if ( $.project.getValue() !== oldProject && !projectFirstChangeFlag) {
+			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
 				projectFirstChangeFlag = true;
-				console.info("projectFirstChangeFlag++++++"+projectFirstChangeFlag);
+				console.info("projectFirstChangeFlag++++++" + projectFirstChangeFlag);
 				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-					oldApportions.push(item);
+					// oldApportions.push(item);
+					if (item.isNew()) {
+						console.info("aaaaaaaaaaaaaaa");
+						$.$model.xGet("moneyExpenseApportions").remove(item);
+					} else {
+						item.__xDeletedHidden = true;
+						console.info("bbbbbbbbbbbbb");
+					}
 				});
 			}
-			$.$model.xGet("moneyExpenseApportions").reset();
-			console.info("reset++++++");
+			// $.$model.xGet("moneyExpenseApportions").reset();
+			// console.info("reset++++++");
 		}
-		if ($.project.getValue() === oldProject && oldApportions.length > 0) {
-			console.info("oldApportions1++++++"+oldApportions.length);
-			oldApportions.forEach(function(item) {
-				$.$model.xGet("moneyExpenseApportions").add(item);
+		if ($.project.getValue() === oldProject) {
+			// console.info("oldApportions1++++++"+oldApportions.length);
+			// oldApportions.forEach(function(item) {
+			// $.$model.xGet("moneyExpenseApportions").add(item);
+			// });
+			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+				if (item.isNew()) {
+					$.$model.xGet("moneyExpenseApportions").remove(item);
+				} else {
+					item.__xDeletedHidden = false;
+				}
 			});
+
 		}
-		 
+
 	});
 
 	$.friend.field.addEventListener("change", function() {
@@ -362,16 +375,44 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			if ($.$model.hasChanged("amount") || $.$model.isNew()) {
+			if ($.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount + $.$model.xGet("amount"));
+						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
 						item.xAddToSave($);
 					}
 				});
+			} else {
+				if ($.$model.hasChanged("project")) {
+					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount);
+							item.xAddToSave($);
+						}
+					});
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+							item.xAddToSave($);
+						}
+					});
+				} else {
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount + $.$model.xGet("amount"));
+							item.xAddToSave($);
+						}
+					});
+				}
 			}
 
-			if ($.$model.xGet("moneyExpenseApportions").length < 1) {
+			var moneyExpenseApportionsArray = [];
+			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+				if (!item.__xDeletedHidden) {
+					moneyExpenseApportionsArray.push(item);
+				}
+			});
+			if (moneyExpenseApportionsArray.length < 1) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("state") === "Accept") {
 						var moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
@@ -391,44 +432,72 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
 		// projectShareAuthorization.xAddToSave($);
 		// }
-		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
-		$.$model.xGet("moneyExpenseApportions").map(function(item) {
-			if (item.__xDeleted) {
-				item.xAddToDelete($);
+		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
+			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
+			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+			$.$model.xGet("moneyExpenseApportions").map(function(item) {
+				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
+				if (item.__xDeletedHidden) {
+					item.xAddToDelete($);
 
-				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
-					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
-						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xGet("amount"));
-						projectShareAuthorization.xAddToSave($);
-					}
-				});
-			} else/*if (item.hasChanged())*/
-			{
-				item.xAddToSave($);
-				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
-					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
-						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						if (item.isNew() || $.$model.hasChanged("project")) {
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
-							console.info("+++++xPrevious1++" + item.xPrevious("amount"));
-						} else {
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount") + item.xGet("amount"));
-							console.info("+++++xPrevious2++" + item.xPrevious("amount"));
+					oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount"));
+							projectShareAuthorization.xAddToSave($);
 						}
-						projectShareAuthorization.xAddToSave($);
-					}
-				});
-			}
-		});
-		
-		if ($.$model.hasChanged("project") && oldApportions.length > 0) {
-			console.info("oldApportions2++++++"+oldApportions.length);
-			oldApportions.forEach(function(item) {
-				item.xDelete();
+					});
+				} else/*if (item.hasChanged())*/
+				{
+					item.xAddToSave($);
+
+					newProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				}
+			});
+		} else {
+			var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+			$.$model.xGet("moneyExpenseApportions").map(function(item) {
+				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
+				if (item.__xDeleted) {
+					item.xAddToDelete($);
+
+					projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						console.info("++++++++++++aas++++" + (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")));
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							console.info("++++++++++++aasd++++");
+							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+							console.info("+++++delete0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xGet("amount"));
+							console.info("+++++delete1++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				} else/*if (item.hasChanged())*/
+				{
+					item.xAddToSave($);
+					projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+							if (item.isNew() || $.$model.hasChanged("project")) {
+								console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
+								console.info("+++++xPrevious1++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+							} else {
+								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount") + item.xGet("amount"));
+								console.info("+++++xPrevious2++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+							}
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				}
 			});
 		}
-
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {

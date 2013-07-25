@@ -78,26 +78,30 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
-	var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		state : "Wait"
-	});
+	var localProjectShareAuthorization = null;
+	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
+		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
+		// state : "Wait"
+	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
-		if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
-			if(waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
-				fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-				fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-			}else{
-				averageSharePercentageCollections.push(waitProjectShareAuthorization);
-			}
-		}
-	});
+	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
+		// if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			// if(waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
+				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
+				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
+			// }else{
+				// averageSharePercentageCollections.push(waitProjectShareAuthorization);
+			// }
+		// }
+	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
 		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
+			if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
+				localProjectShareAuthorization = acceptProjectShareAuthorization;
+			}
 			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
@@ -108,14 +112,23 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	});
 	var averageLength = averageSharePercentageCollections.length;
 	var averageTotalPercentage = 100 - fixedSharePercentage;
-	var averagePercentage = averageTotalPercentage/averageLength;
-	averageSharePercentageCollections.map(function(averageSharePercentageCollection){
-		averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
-		editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
-		averageSharePercentageCollection.xSave({
-						syncFromServer : true
-					});
-	});
+	
+	if(averageLength > 0){
+		var averagePercentage = averageTotalPercentage/averageLength;
+		averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+			averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
+			editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
+			averageSharePercentageCollection.xSave({
+							syncFromServer : true
+						});
+		});
+	}else{
+		localProjectShareAuthorization.xSet("sharePercentage" , localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
+		editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
+		localProjectShareAuthorization.xSave({
+							syncFromServer : true
+						});
+	}
 }
 // function setWaitForAccept() {
 	// if ($.$model.xGet("state") === "Wait") {
