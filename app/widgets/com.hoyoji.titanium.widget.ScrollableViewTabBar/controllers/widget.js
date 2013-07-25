@@ -98,12 +98,16 @@ exports.init = function(scView) {
 	$.hightlight.setLeft(currentTab / numberOfTabs * 100 + "%");
 
 	// scrollableView.addEventListener("scrollEnd", hightLightTab);
+	var scrollTimeout = 0;
 	scrollableView.addEventListener("scroll", function(e) {
 		if (e.source !== scrollableView) {
 			return;
 		}
 		// exports.animateShowTabBar();
-		$.hightlight.setLeft(e.currentPageAsFloat * $.hightlight.getSize().width);
+		clearTimeout(scrollTimeout);
+		scrollTimeout = setTimeout(function(){
+			$.hightlight.setLeft(e.currentPageAsFloat * $.hightlight.getSize().width);
+		}, 10);
 		// clearTimeout(hideTimeoutId);
 	});
 	// setTimeout(exports.animateHideTabBar, 1000);

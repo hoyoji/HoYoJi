@@ -1,6 +1,6 @@
 <Alloy>
 	<Window class="container">
-		<!-- <Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar" imagesFolder="/images/mainWindow"/> -->
+		<Widget id="tabBar" src="com.hoyoji.titanium.widget.ScrollableViewTabBar"/>
 		<ScrollableView id="scrollableView" currentPage="1" showPagingControl="false" top="0">
 			<View id="page1">
 				<Label width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0"/>

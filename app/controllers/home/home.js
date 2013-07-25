@@ -1,63 +1,74 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-// var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	// id : "refreshButton",
-	// left : 5,
-	// height : Ti.UI.FILL,
-	// width : 45,
-	// image : "/images/home/sync"
-// });
-// refreshButton.addEventListener("singletap", function(e) {
-	// e.cancelBubble = true;
-	// Alloy.Globals.Server.sync();
-	// Alloy.Models.User.xGet("messageBox").processNewMessages();
-// });
-// $.titleBar.setBackButton(refreshButton);
-// 
-// var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	// id : "settingButton",
-	// right : 15,
-	// height : Ti.UI.FILL,
-	// width : 45,
-	// image : "/images/home/setting"
-// });
-// settingButton.addEventListener("singletap", function() {
-	// Alloy.Globals.openWindow("setting/systemSetting");
-// });
-// $.titleBar.setMenuButton(settingButton);
-
-var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	id : "projectButton",
+var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "refreshButton",
 	left : 5,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/projectAll",
-	parentController : $,
-	currentWindow : $.__currentWindow,
-	autoInit : "false"
+	image : "/images/home/sync"
 });
-projectButton.UIInit();
-projectButton.addEventListener("singletap", function(e) {
+refreshButton.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
-	$.getCurrentWindow().scrollableView.scrollToView(0);
+	Alloy.Globals.Server.sync();
+	Alloy.Models.User.xGet("messageBox").processNewMessages();
 });
-$.titleBar.setBackButton(projectButton);
+$.titleBar.setBackButton(refreshButton);
 
-var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	id : "friendButton",
+function refreshSyncCount() {
+	var syncCount = Alloy.Globals.getClientSyncCount();
+	refreshButton.setBubbleCount(syncCount);
+}
+
+refreshSyncCount();
+Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
+$.onWindowCloseDo(function() {
+	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
+});
+
+var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	id : "settingButton",
 	right : 15,
 	height : Ti.UI.FILL,
 	width : 45,
-	image : "/images/home/friendAll",
-	parentController : $,
-	currentWindow : $.__currentWindow,
-	autoInit : "false"
+	image : "/images/home/setting"
 });
-projectButton.UIInit();
-friendButton.addEventListener("singletap", function() {
-	$.getCurrentWindow().scrollableView.scrollToView(2);
+settingButton.addEventListener("singletap", function() {
+	Alloy.Globals.openWindow("setting/systemSetting");
 });
-$.titleBar.setMenuButton(friendButton);
+$.titleBar.setMenuButton(settingButton);
+
+// var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	// id : "projectButton",
+	// left : 5,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// image : "/images/home/projectAll",
+	// parentController : $,
+	// currentWindow : $.__currentWindow,
+	// autoInit : "false"
+// });
+// projectButton.UIInit();
+// projectButton.addEventListener("singletap", function(e) {
+	// e.cancelBubble = true;
+	// $.getCurrentWindow().scrollableView.scrollToView(0);
+// });
+// $.titleBar.setBackButton(projectButton);
+// 
+// var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	// id : "friendButton",
+	// right : 15,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// image : "/images/home/friendAll",
+	// parentController : $,
+	// currentWindow : $.__currentWindow,
+	// autoInit : "false"
+// });
+// projectButton.UIInit();
+// friendButton.addEventListener("singletap", function() {
+	// $.getCurrentWindow().scrollableView.scrollToView(2);
+// });
+// $.titleBar.setMenuButton(friendButton);
 
 
 function onFooterbarTap(e) {
@@ -113,18 +124,6 @@ $.makeContextMenu = function() {
 	// }));
 	return menuSection;
 }
-
-function refreshSyncCount() {
-	var syncCount = Alloy.Globals.getClientSyncCount();
-	$.footerBar.sync.setBubbleCount(syncCount);
-}
-
-refreshSyncCount();
-Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
-$.onWindowCloseDo(function() {
-	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
-});
-
 
 $.activityTable = Alloy.createController("home/activityView", {
     id: "activityTable",
