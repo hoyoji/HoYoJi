@@ -618,17 +618,18 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"messageData" : $.$model.xGet("messageData")
 									}, function() {
 										// $.$model.xSet("messageState" , "closed");
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
+										Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function() {
+											$.saveModel(saveEndCB, saveErrorCB, {
+												syncFromServer : true
+											});
+											saveEndCB("您接受了 " + fromUser.xGet("userName") + "共享的项目");
+											return;
 										});
-										saveEndCB("您接受了 " + fromUser.xGet("userName") + " 分享的项目");
-										return;
 									}, function(e) {
 										saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
 										return;
 									});
-								});
-
+								}, saveErrorCB);
 							}, function(e) {
 								alert(e.__summary.msg);
 							});
