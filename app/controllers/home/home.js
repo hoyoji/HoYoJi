@@ -38,56 +38,69 @@ settingButton.addEventListener("singletap", function() {
 $.titleBar.setMenuButton(settingButton);
 
 // var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	// id : "projectButton",
-	// left : 5,
-	// height : Ti.UI.FILL,
-	// width : 45,
-	// image : "/images/home/projectAll",
-	// parentController : $,
-	// currentWindow : $.__currentWindow,
-	// autoInit : "false"
+// id : "projectButton",
+// left : 5,
+// height : Ti.UI.FILL,
+// width : 45,
+// image : "/images/home/projectAll",
+// parentController : $,
+// currentWindow : $.__currentWindow,
+// autoInit : "false"
 // });
 // projectButton.UIInit();
 // projectButton.addEventListener("singletap", function(e) {
-	// e.cancelBubble = true;
-	// $.getCurrentWindow().scrollableView.scrollToView(0);
+// e.cancelBubble = true;
+// $.getCurrentWindow().scrollableView.scrollToView(0);
 // });
 // $.titleBar.setBackButton(projectButton);
-// 
+//
 // var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	// id : "friendButton",
-	// right : 15,
-	// height : Ti.UI.FILL,
-	// width : 45,
-	// image : "/images/home/friendAll",
-	// parentController : $,
-	// currentWindow : $.__currentWindow,
-	// autoInit : "false"
+// id : "friendButton",
+// right : 15,
+// height : Ti.UI.FILL,
+// width : 45,
+// image : "/images/home/friendAll",
+// parentController : $,
+// currentWindow : $.__currentWindow,
+// autoInit : "false"
 // });
 // projectButton.UIInit();
 // friendButton.addEventListener("singletap", function() {
-	// $.getCurrentWindow().scrollableView.scrollToView(2);
+// $.getCurrentWindow().scrollableView.scrollToView(2);
 // });
 // $.titleBar.setMenuButton(friendButton);
-
 
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		// Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
 		// Alloy.Globals.openLightWindow($.getCurrentWindow(), "money/moneyAddNew");
 		Alloy.Globals.openWindow("money/moneyAddNew");
-	} else if (e.source.id === "sync") {
-		Alloy.Globals.Server.sync();
-	} else if (e.source.id === "setting") {
-		Alloy.Globals.openWindow("setting/systemSetting");
-	} else if (e.source.id === "moneyAll") {
+		// } else if (e.source.id === "sync") {
+		// Alloy.Globals.Server.sync();
+		// } else if (e.source.id === "setting") {
+		// Alloy.Globals.openWindow("setting/systemSetting");
+	} else if (e.source.id === "transactions") {
 		Alloy.Globals.openWindow("money/moneyAll");
 	} else if (e.source.id === "messageAll") {
 		Alloy.Globals.openWindow("message/messageAll");
-	} else if (e.source.id === "projectAll") {
-		Alloy.Globals.openWindow("project/projectAll");
-	} else if (e.source.id === "friendAll") {
-		Alloy.Globals.openWindow("friend/friendAll");
+		// } else if (e.source.id === "projectAll") {
+		// Alloy.Globals.openWindow("project/projectAll");
+		// } else if (e.source.id === "friendAll") {
+		// Alloy.Globals.openWindow("friend/friendAll");
+	} else if (e.source.id === "moneyAccounts") {
+		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
+	} else if (e.source.id === "report") {
+		var d = new Date();
+		Alloy.Globals.openWindow("money/report/transactionReport", {
+			queryOptions : {
+				dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+				dateTo : d.getUTCTimeOfDateEnd().toISOString()
+			}
+		});
+	} else if(e.source.id === "currencies") {
+		Alloy.Globals.openWindow("money/currency/currencyAll");
+	} else if(e.source.id === "exchanges") {
+		Alloy.Globals.openWindow("money/currency/exchangeAll");
 	}
 }
 
@@ -126,10 +139,10 @@ $.makeContextMenu = function() {
 }
 
 $.activityTable = Alloy.createController("home/activityView", {
-    id: "activityTable",
-    top: "0",
-    bottom: "0",
-    autoInit: "false",
+	id : "activityTable",
+	top : "0",
+	bottom : "0",
+	autoInit : "false",
 	parentController : $,
 	currentWindow : $.__currentWindow
 });
@@ -140,7 +153,7 @@ $.activityTable.transactionsTable.autoHideFooter($.footerBar);
 
 // // setTimeout(function(){
 // var footerBarWindow = Alloy.createController("footerBarWindow",{
-	// autoInit : false
+// autoInit : false
 // });
 // footerBarWindow.UIInit(footerBarWindow, footerBarWindow);
 // footerBarWindow.$view.open();

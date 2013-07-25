@@ -9,7 +9,7 @@
 		 -->
 		 </View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" controlSlideDown="true"
-		buttons="查找,排序,日流水;个人流水;项目流水;日流水;周流水;月流水,报表,账户" imagesFolder="/images/money/moneyAll"
-		ids="transactionsSearchTable,sort,transactionsTable;personalTransactions;projectTransactions;dateTransactions;weekTransactions;monthTransactions,report,moneyAccount"/>
+		buttons="排序,个人流水,项目流水,日流水;日流水;周流水;月流水,查找" imagesFolder="/images/money/moneyAll"
+		ids="sort,personalTransactions,projectTransactions,transactionsTable;dateTransactions;weekTransactions;monthTransactions,transactionsSearchTable"/>
 	</View>
 </Alloy>

@@ -52,3 +52,12 @@ function doQuery(queryController) {
 	searchMoneyReturns.xSearchInDb(queryController.getQueryString());
 	searchMoneyPaybacks.xSearchInDb(queryController.getQueryString());
 }
+
+function onFooterbarTap(e) {
+	if (e.source.id === "searchTransactions") {
+		exports.doSearch();
+	}
+}
+
+exports.doSearch();
+
