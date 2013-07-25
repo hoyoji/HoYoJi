@@ -105,7 +105,6 @@ exports.definition = {
 						}, saveOptions);
 					}
 				});
-			
 				this._xDelete(xFinishCallback, options);
 			},
 			canEdit : function() {

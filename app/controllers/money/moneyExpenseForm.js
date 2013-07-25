@@ -408,7 +408,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if ($.$model.hasChanged("project") && oldApportions.length > 0) {
 			console.info("oldApportions2++++++"+oldApportions.length);
 			oldApportions.forEach(function(item) {
-				item.xAddToDelete($);
+				item.xDelete();
 			});
 		}
 
