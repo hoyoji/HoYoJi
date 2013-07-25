@@ -39,24 +39,22 @@ function updateApportionAmount() {
 			}
 		});
 
+		//// 以上部分可改成如下, 這樣免去了使用filter, 並且可以減少使用循環：
+		//		var averageApportions = [];
+		//		var fixedTotal = 0;
+		//		var averageApportionsNotDelete = [];
+		//		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+		//			if(item.xGet("apportionType") === "Fixed"){
+		//				fixedTotal = fixedTotal + item.xGet("amount");
+		//			} else if(item.xGet("apportionType") === "Average"){
+		//				averageApportions.push(item);
+		//				if (!item.__xDeleted) {
+		//					averageApportionsNotDelete.push(item);
+		//				}
+		//			}
+		//		});
+		///////////////////////////////////////////////////////////////////
 
-//// 以上部分可改成如下, 這樣免去了使用filter, 並且可以減少使用循環：		
-//		var averageApportions = [];
-//		var fixedTotal = 0;
-//		var averageApportionsNotDelete = [];
-//		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-//			if(item.xGet("apportionType") === "Fixed"){
-//				fixedTotal = fixedTotal + item.xGet("amount");
-//			} else if(item.xGet("apportionType") === "Average"){
-//				averageApportions.push(item);
-//				if (!item.__xDeleted) {
-//					averageApportionsNotDelete.push(item);
-//				}
-//			}
-//		});
-///////////////////////////////////////////////////////////////////
-
-		
 		var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
 		averageApportions.forEach(function(item) {
 			if (item.__xDeleted) {
@@ -98,7 +96,6 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -283,23 +280,36 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 			// collection = $.$model.xGet("moneyExpenseApportions");
 			// $.moneyExpenseApportionsTable.removeCollection(collection);
-			if ( $.project.getValue() !== oldProject && !projectFirstChangeFlag) {
+			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
 				projectFirstChangeFlag = true;
-				console.info("projectFirstChangeFlag++++++"+projectFirstChangeFlag);
+				console.info("projectFirstChangeFlag++++++" + projectFirstChangeFlag);
 				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-					oldApportions.push(item);
+					// oldApportions.push(item);
+					if (item.isNew()) {
+						$.$model.xGet("moneyExpenseApportions").remove(item);
+					} else {
+						item.__xDeletedHidden  = true;
+					}
 				});
 			}
-			$.$model.xGet("moneyExpenseApportions").reset();
-			console.info("reset++++++");
+			// $.$model.xGet("moneyExpenseApportions").reset();
+			// console.info("reset++++++");
 		}
-		if ($.project.getValue() === oldProject && oldApportions.length > 0) {
-			console.info("oldApportions1++++++"+oldApportions.length);
-			oldApportions.forEach(function(item) {
-				$.$model.xGet("moneyExpenseApportions").add(item);
+		if ($.project.getValue() === oldProject) {
+			// console.info("oldApportions1++++++"+oldApportions.length);
+			// oldApportions.forEach(function(item) {
+			// $.$model.xGet("moneyExpenseApportions").add(item);
+			// });
+			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+				if (item.isNew()) {
+					$.$model.xGet("moneyExpenseApportions").remove(item);
+				} else {
+					item.__xDeletedHidden  = false;
+				}
 			});
+
 		}
-		 
+
 	});
 
 	$.friend.field.addEventListener("change", function() {
@@ -396,7 +406,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// }
 		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 		$.$model.xGet("moneyExpenseApportions").map(function(item) {
-			if (item.__xDeleted) {
+			if (item.__xDeleted || item.__xDeletedHidden) {
 				item.xAddToDelete($);
 
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
@@ -424,13 +434,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				});
 			}
 		});
-		
-		if ($.$model.hasChanged("project") && oldApportions.length > 0) {
-			console.info("oldApportions2++++++"+oldApportions.length);
-			oldApportions.forEach(function(item) {
-				item.xDelete();
-			});
-		}
 
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {

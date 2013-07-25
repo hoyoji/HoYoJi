@@ -122,7 +122,9 @@ if (selectedExpense.xGet("moneyExpenseApportions").length < 1) {
 	$.moneyExpenseApportionsTable.addCollection(collection);
 	selectedExpense.hasAddedApportions = true;
 } else {
-	collection = selectedExpense.xGet("moneyExpenseApportions");
+	collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model){
+		return model.__xDeletedHidden !== true;
+	});
 	$.moneyExpenseApportionsTable.addCollection(collection);
 }
 // }
