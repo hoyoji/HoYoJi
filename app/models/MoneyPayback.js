@@ -219,11 +219,11 @@ exports.definition = {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
 
-					var moneyAccount = this.xGet("moneyAccount");
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
-					}, saveOptions);
-				
+				var moneyAccount = this.xGet("moneyAccount");
+				moneyAccount.save({
+					currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
+				}, saveOptions);
+
 				if (self.xGet("moneyLend")) {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
@@ -238,16 +238,18 @@ exports.definition = {
 				// 1. 如果账户也是新增的
 				// 2. 账户已经存在
 
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.moneyAccountId
-				});
-				if (moneyAccount.id) {
-					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount + record.interest, {
-						dbTrans : dbTrans,
-						patch : true
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.moneyAccountId
 					});
+					if (moneyAccount.id) {
+						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount + record.interest, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
 				}
-				if(record.moneyLendId){
+				if (record.moneyLendId) {
 					var moneyLend = Alloy.createModel("MoneyLend").xFindInDb({
 						id : record.moneyLendId
 					});
@@ -261,35 +263,37 @@ exports.definition = {
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var oldMoneyAccountBalance;
-				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : this.xGet("moneyAccountId")
-				});
-				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest;
-					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-						dbTrans : dbTrans,
-						patch : true
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var oldMoneyAccountBalance;
+					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : this.xGet("moneyAccountId")
 					});
-				} else {
-					if(oldMoneyAccount.id){
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest");
+					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest;
 						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 							dbTrans : dbTrans,
 							patch : true
 						});
-					}
-					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-						id : record.moneyAccountId
-					});
-					if (newMoneyAccount.id) {
-						newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount + record.interest, {
-							dbTrans : dbTrans,
-							patch : true
+					} else {
+						if (oldMoneyAccount.id) {
+							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest");
+							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
+						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+							id : record.moneyAccountId
 						});
+						if (newMoneyAccount.id) {
+							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount + record.interest, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 					}
 				}
-				if(record.moneyLendId){
+				if (record.moneyLendId) {
 					var moneyLend = Alloy.createModel("MoneyLend").xFindInDb({
 						id : record.moneyLendId
 					});
@@ -304,7 +308,7 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					delete record.id;
 					this.syncUpdate(record, dbTrans);
 					this._syncUpdate(record, dbTrans);

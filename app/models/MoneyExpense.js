@@ -251,7 +251,7 @@ exports.definition = {
 					projectShareAuthorizations.forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalExpense = item.xGet("actualTotalExpense") - self.xGet("amount");
-							item.xSet("actualTotalExpense" ,actualTotalExpense);
+							item.xSet("actualTotalExpense", actualTotalExpense);
 							item.save({
 								actualTotalExpense : actualTotalExpense
 							}, saveOptions);
@@ -278,29 +278,19 @@ exports.definition = {
 				// 该记录在本地没有，服务器上有。我们需要更新账户余额
 				// 2. 如果账户也是新增的, 我们不用更新账户余额，直接拿服务器上的余额即可
 				// 3. 如果账户已经存在本地，我们更新该余额
-
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.moneyAccountId
-				});
-				if (moneyAccount.id) {
-					// 3. 如果账户已经存在本地，我们更新该余额
-					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
-						dbTrans : dbTrans,
-						patch : true
-						// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.moneyAccountId
 					});
+					if (moneyAccount.id) {
+						// 3. 如果账户已经存在本地，我们更新该余额
+						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
+							dbTrans : dbTrans,
+							patch : true
+							// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
+						});
+					}
 				}
-				// var self = this;
-				// var friendUser = Alloy.createModel("User").xFindInDb({
-				// id : record.friendUserId
-				// });
-				// // 同步新增好友时，一起把该好友用户同步下来
-				// if (!friendUser.id) {
-				// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-				// if (collection.length > 0) {
-				// }
-				// });
-				// }
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 该记录同时存在服务器上和在本地。在服务器上被改变，但是在本地未被改变
@@ -312,37 +302,39 @@ exports.definition = {
 				}
 				delete this.__syncAmount;
 
-				// 先更新老账户余额
-				var oldMoneyAccountBalance;
-				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : this.xGet("moneyAccountId")
-				});
-				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-					// 账户没有改变
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
-					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-						dbTrans : dbTrans,
-						patch : true
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					// 先更新老账户余额
+					var oldMoneyAccountBalance;
+					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : this.xGet("moneyAccountId")
 					});
-				} else {
-					// 帐户改变了
-					if (oldMoneyAccount.id) {
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
+					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
+						// 账户没有改变
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
 						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 							dbTrans : dbTrans,
 							patch : true
 						});
-					}
+					} else {
+						// 帐户改变了
+						if (oldMoneyAccount.id) {
+							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
+							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 
-					// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
-					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-						id : record.moneyAccountId
-					});
-					if (newMoneyAccount.id) {
-						newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
-							dbTrans : dbTrans,
-							patch : true
+						// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
+						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+							id : record.moneyAccountId
 						});
+						if (newMoneyAccount.id) {
+							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 					}
 				}
 			},

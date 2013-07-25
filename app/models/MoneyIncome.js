@@ -262,6 +262,7 @@ exports.definition = {
 				// 1. 如果账户也是新增的
 				// 2. 账户已经存在
 
+				if (record.ownerUserId === Alloy.Models.User.id) {
 				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					id : record.moneyAccountId
 				});
@@ -271,25 +272,18 @@ exports.definition = {
 						patch : true
 					});
 				}
-				// var self = this;
-				// var friendUser = Alloy.createModel("User").xFindInDb({
-				// id : record.friendUserId
-				// });
-				// // 同步新增好友时，一起把该好友用户同步下来
-				// if (!friendUser.id) {
-				// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-				// if (collection.length > 0) {
-				// }
-				// });
-				// }
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
+				
 				if (record.useDetailsTotal && this.__syncAmount !== undefined) {
 					record.amount = this.__syncAmount + this.xGet("moneyIncomeDetails").xSum("amount");
 				}
 				delete this.__syncAmount;
+				
+				if (record.ownerUserId === Alloy.Models.User.id) {
 				// 先更新老账户余额
 				var oldMoneyAccountBalance;
 				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -319,6 +313,7 @@ exports.definition = {
 							patch : true
 						});
 					}
+				}
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {

@@ -44,7 +44,7 @@
 			<!-- <Require id="activityTable" src="home/activityView" top="0" bottom="0" autoInit="false"/> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="同步,账务,记一笔,消息,设置" imagesFolder="/images/home"
-		ids="sync,moneyAll,moneyAddNew,messageAll,setting"/>
+		buttons="账务,记一笔,消息" imagesFolder="/images/home"
+		ids="moneyAll,moneyAddNew,messageAll"/>
 	</View>
 </Alloy>

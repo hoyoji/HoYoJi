@@ -75,8 +75,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 		}
 
-	} else {//从form打开时，不自动保存，把amount传回expenseForm
-		if (expense.xGet("moneyExpenseDetails").length > 0) {//获取moneyExpenseAmount，如果有amount就等于amount 没有的话设成0
+	} else {
+		//从form打开时，不自动保存，把amount传回expenseForm
+		if (expense.xGet("moneyExpenseDetails").length > 0) {
+			//获取moneyExpenseAmount，如果有amount就等于amount 没有的话设成0
 			expenseAmount = expense.xGet("amount");
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseDetails").forEach(function(item) {
 				if (!item.__xDeleted) {
