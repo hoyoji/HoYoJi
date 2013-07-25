@@ -100,8 +100,7 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
-					}
-					else if (this.xGet("expenseType") !== "Deposite") {
+					} else if (this.xGet("expenseType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyExpenseApportions").forEach(function(item) {
 							if (!item.__xDeleted) {
@@ -249,10 +248,13 @@ exports.definition = {
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
 
-					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
+					projectShareAuthorizations.forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+							var actualTotalExpense = item.xGet("actualTotalExpense") - self.xGet("amount");
+							item.xSet("actualTotalExpense" ,actualTotalExpense);
 							item.save({
-								actualTotalExpense : item.xGet("actualTotalExpense") - self.xGet("amount")
+								actualTotalExpense : actualTotalExpense
 							}, saveOptions);
 						}
 					});

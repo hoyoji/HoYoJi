@@ -64,13 +64,13 @@ function updateApportionAmount() {
 			}
 		});
 		// if (averageApportions.length === 0) { //改变expenseAmount时 同时改变固定分摊的金额
-			// fixedApportions.forEach(function(item) {
-				// if (item.__xDeleted) {
-					// item.xSet("amount", 0);
-				// } else {
-					// item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
-				// }
-			// });
+		// fixedApportions.forEach(function(item) {
+		// if (item.__xDeleted) {
+		// item.xSet("amount", 0);
+		// } else {
+		// item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
+		// }
+		// });
 		// }
 	}
 }
@@ -101,6 +101,7 @@ var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
 var fistChangeFlag;
+var oldApportions = [];
 
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
@@ -260,7 +261,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
-
+	var projectFirstChangeFlag;
+	var oldProject = $.$model.xGet("project");
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
@@ -274,11 +276,27 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		} else {
 			$.apportion.$view.setHeight(0);
 		}
+
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 			// collection = $.$model.xGet("moneyExpenseApportions");
 			// $.moneyExpenseApportionsTable.removeCollection(collection);
+			if ( $.project.getValue() !== oldProject && !projectFirstChangeFlag) {
+				projectFirstChangeFlag = true;
+				console.info("projectFirstChangeFlag++++++"+projectFirstChangeFlag);
+				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+					oldApportions.push(item);
+				});
+			}
 			$.$model.xGet("moneyExpenseApportions").reset();
+			console.info("reset++++++");
 		}
+		if ($.project.getValue() === oldProject && oldApportions.length > 0) {
+			console.info("oldApportions1++++++"+oldApportions.length);
+			oldApportions.forEach(function(item) {
+				$.$model.xGet("moneyExpenseApportions").add(item);
+			});
+		}
+		 
 	});
 
 	$.friend.field.addEventListener("change", function() {
@@ -391,16 +409,25 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						if (item.isNew()) {
+						if (item.isNew() || $.$model.hasChanged("project")) {
 							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
+							console.info("+++++xPrevious1++" + item.xPrevious("amount"));
 						} else {
 							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount") + item.xGet("amount"));
+							console.info("+++++xPrevious2++" + item.xPrevious("amount"));
 						}
 						projectShareAuthorization.xAddToSave($);
 					}
 				});
 			}
 		});
+		
+		if ($.$model.hasChanged("project") && oldApportions.length > 0) {
+			console.info("oldApportions2++++++"+oldApportions.length);
+			oldApportions.forEach(function(item) {
+				item.xDelete();
+			});
+		}
 
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
