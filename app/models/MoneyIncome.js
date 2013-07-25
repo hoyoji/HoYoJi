@@ -97,7 +97,7 @@ exports.definition = {
 					else if (this.xGet("incomeType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyIncomeApportions").forEach(function(item) {
-							if (!item.__xDeleted) {
+							if (!item.__xDeleted && !item.__xDeletedHidden) {
 								apportionAmount = apportionAmount + item.xGet("amount");
 							}
 						});
@@ -234,7 +234,7 @@ exports.definition = {
 
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
-							item.xSet("actualTotalIncome" ,actualTotalExpense);
+							item.xSet("actualTotalIncome" ,actualTotalIncome);
 							item.save({
 								actualTotalIncome : item.xGet("actualTotalIncome") - self.xGet("amount")
 							}, saveOptions);

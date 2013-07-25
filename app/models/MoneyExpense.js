@@ -85,13 +85,6 @@ exports.definition = {
 			validators : {
 				amount : function(xValidateComplete) {
 					var error;
-					var apportionAmount = 0;
-					this.xGet("moneyExpenseApportions").forEach(function(item) {
-						if (!item.__xDeleted) {
-							apportionAmount = apportionAmount + item.xGet("amount");
-						}
-					});
-
 					if (isNaN(this.xGet("amount"))) {
 						error = {
 							msg : "金额只能为数字"
@@ -103,11 +96,17 @@ exports.definition = {
 					} else if (this.xGet("expenseType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyExpenseApportions").forEach(function(item) {
-							if (!item.__xDeleted) {
+							if (!item.__xDeleted && !item.__xDeletedHidden) {
+								console.info("++++++++++++++__xDeleted+++"+item.__xDeleted);
+								console.info("++++++++++++++__xDeletedHidden+++"+item.__xDeletedHidden);
+								console.info("+++++++++++" + (!item.__xDeleted || !item.__xDeletedHidden));
 								apportionAmount = apportionAmount + item.xGet("amount");
+								console.info("++++++amount++++" + item.xGet("amount"));
 							}
 						});
 						if (this.xGet("amount") !== apportionAmount) {
+							console.info("++++++++++++++amount+++"+this.xGet("amount"));
+								console.info("++++++++++++++apportionAmount+++"+apportionAmount);
 							error = {
 								msg : "分摊总额与支出金额不相等，请修正"
 							};

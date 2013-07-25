@@ -14,7 +14,7 @@ function onFooterbarTap(e) {
 				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
 				var hasMember;
 				oldCollection.forEach(function(item) {
-					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser")) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden) {
 						hasMember = true;
 						return;
 					}
@@ -31,7 +31,9 @@ function onFooterbarTap(e) {
 					selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
 					collection = selectedExpense.xGet("moneyExpenseApportions");
 					collection.forEach(function(item) {
-						item.trigger("_xchange:amount", item);
+						if (!item.__xDeletedHidden) {
+							item.trigger("_xchange:amount", item);
+						}
 					});
 				} else {
 					alert("该成员尚未接受此项目，不能添加");
@@ -46,7 +48,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "addAllExpenseApportionMember") {
 		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 			var existApportion = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
-				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser");
+				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden;
 			}, $);
 			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length < 1) {
 				var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
@@ -64,13 +66,18 @@ function onFooterbarTap(e) {
 		// alert("只有全部项目成员都参与才能按占股摊");
 		// }else {
 		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
-			item.xSet("amount", selectedExpense.xGet("amount") * (item.getSharePercentage() / 100));
-			item.xSet("apportionType", "Fixed");
+			if (!item.__xDeletedHidden) {
+				item.xSet("amount", selectedExpense.xGet("amount") * (item.getSharePercentage() / 100));
+				item.xSet("apportionType", "Fixed");
+			}
 		});
 		// }
 
 	} else if (e.source.id === "halve") {
-		var collections = selectedExpense.xGet("moneyExpenseApportions");
+		var collections = [];
+		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
+			collections.push(item);
+		});
 		collections.forEach(function(item) {
 			item.xSet("amount", selectedExpense.xGet("amount") / collections.length);
 			item.xSet("apportionType", "Average");
@@ -80,7 +87,7 @@ function onFooterbarTap(e) {
 
 var collection;
 // if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
-	// selectedExpense.hasAddedApportions = true;
+// selectedExpense.hasAddedApportions = true;
 // }
 // if (selectedExpense.hasChanged("project")) {
 // if (selectedExpense.xGet("moneyExpenseApportions").length > 0) {
@@ -105,7 +112,13 @@ var collection;
 // $.moneyExpenseApportionsTable.addCollection(collection);
 // selectedExpense.hasAddedApportions = true;
 // } else {
-if (selectedExpense.xGet("moneyExpenseApportions").length < 1) {
+var moneyExpenseApportionsArray = [];
+selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
+	if (!item.__xDeletedHidden) {
+		moneyExpenseApportionsArray.push(item);
+	}
+});
+if (moneyExpenseApportionsArray.length < 1) {
 	var selectedExpenseAmount = selectedExpense.xGet("amount") || 0;
 	selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 		if (projectShareAuthorization.xGet("state") === "Accept") {
@@ -118,11 +131,13 @@ if (selectedExpense.xGet("moneyExpenseApportions").length < 1) {
 			selectedExpense.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
 		}
 	});
-	collection = selectedExpense.xGet("moneyExpenseApportions");
+	collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
+		return model.__xDeletedHidden !== true;
+	});
 	$.moneyExpenseApportionsTable.addCollection(collection);
 	selectedExpense.hasAddedApportions = true;
 } else {
-	collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model){
+	collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
 		return model.__xDeletedHidden !== true;
 	});
 	$.moneyExpenseApportionsTable.addCollection(collection);
