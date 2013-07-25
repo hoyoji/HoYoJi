@@ -127,7 +127,7 @@ exports.definition = {
 			},
 			getTransferOut : function() {
 				var transferOut = this.xGet("transferOut");
-				return  transferOut.xGet("name") + "(" + transferOut.xGet("currency").xGet("code") + ")转出";
+				return transferOut.xGet("name") + "(" + transferOut.xGet("currency").xGet("code") + ")转出";
 			},
 			getTransferIn : function() {
 				var transferIn = this.xGet("transferIn");
@@ -160,93 +160,96 @@ exports.definition = {
 				// 1. 如果账户也是新增的
 				// 2. 账户已经存在
 
-				var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.transferInId
-				});
-				if (moneyAccountIn.id) {
-					moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
-						dbTrans : dbTrans,
-						patch : true
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.transferInId
 					});
-				}
+					if (moneyAccountIn.id) {
+						moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
 
-				var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.transferOutId
-				});
-				if (moneyAccountOut.id) {
-					moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
-						dbTrans : dbTrans,
-						patch : true
+					var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.transferOutId
 					});
+					if (moneyAccountOut.id) {
+						moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
-				var oldMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : this.xGet("transferInId")
-				});
-				if(this.xGet("transferInId") === record.transferInId){
-					// if(oldMoneyAccountIn.id){
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var oldMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : this.xGet("transferInId")
+					});
+					if (this.xGet("transferInId") === record.transferInId) {
+						// if(oldMoneyAccountIn.id){
 						oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount") + record.transferInAmount, {
 							dbTrans : dbTrans,
 							patch : true
 						});
-					// }
-				} else {
-					if(oldMoneyAccountIn.id){
-						oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount"), {
-							dbTrans : dbTrans,
-							patch : true
+						// }
+					} else {
+						if (oldMoneyAccountIn.id) {
+							oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount"), {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
+
+						var newMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
+							id : record.transferInId
 						});
+						if (newMoneyAccountIn.id) {
+							newMoneyAccountIn.save("currentBalance", newMoneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 					}
-					
-					var newMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
-						id : record.transferInId
+
+					var oldMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : this.xGet("transferOutId")
 					});
-					if(newMoneyAccountIn.id){
-						newMoneyAccountIn.save("currentBalance", newMoneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+					if (this.xGet("transferOutId") === record.transferOutId) {
+						// if(oldMoneyAccountOut.id){
+						oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount") - record.transferOutAmount, {
 							dbTrans : dbTrans,
 							patch : true
 						});
-					}					
-				}
-				
-				
-				var oldMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : this.xGet("transferOutId")
-				});
-				if(this.xGet("transferOutId") === record.transferOutId){
-				// if(oldMoneyAccountOut.id){
-					oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount") - record.transferOutAmount, {
-						dbTrans : dbTrans,
-						patch : true
-					});
-				// }
-				} else {
-					if(oldMoneyAccountOut.id){
-						oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount"), {
-							dbTrans : dbTrans,
-							patch : true
+						// }
+					} else {
+						if (oldMoneyAccountOut.id) {
+							oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount"), {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
+
+						var newMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
+							id : record.transferOutId
 						});
-					}
-					
-					var newMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
-						id : record.transferOutId
-					});
-					if(newMoneyAccountOut.id){
-						newMoneyAccountOut.save("currentBalance", newMoneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						if (newMoneyAccountOut.id) {
+							newMoneyAccountOut.save("currentBalance", newMoneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 					}
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					delete record.id;
 					this.syncUpdate(record, dbTrans);
 					this._syncUpdate(record, dbTrans);
-					
+
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				}

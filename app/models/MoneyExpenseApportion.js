@@ -98,6 +98,8 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount"));
+						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount"));
 						projectShareAuthorization.save({
 							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount")
 						}, saveOptions);

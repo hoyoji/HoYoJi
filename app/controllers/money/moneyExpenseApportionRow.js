@@ -99,13 +99,18 @@ if ($.$model.isNew()) {
 }
 
 function updateAmount() {
-	if ($.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").length > 0) {
+	var moneyExpenseApportionsArray = [];
+	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item){
+		if(!item.__xDeletedHidden){
+			moneyExpenseApportionsArray.push(item);
+		}
+	});
+	if (moneyExpenseApportionsArray.length > 0) {
 		var expense = $.$model.xGet("moneyExpense");
 		var expenseAmount = expense.xGet("amount") || 0;
-		var moneyExpenseApportions = expense.xGet("moneyExpenseApportions");
 		var averageApportions = [];
 		var fixedTotal = 0;
-		moneyExpenseApportions.forEach(function(item) {
+		moneyExpenseApportionsArray.forEach(function(item) {
 			if (item.xGet("apportionType") === "Fixed") {
 				fixedTotal = fixedTotal + item.xGet("amount");
 			} else {

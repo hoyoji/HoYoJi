@@ -12,7 +12,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "amount"
 			/>
-			<Widget id="apportionType" src="com.hoyoji.titanium.widget.AutoBindLabel" width="30%" top="36" left="180" height="20"
+			<Widget id="apportionType" src="com.hoyoji.titanium.widget.AutoBindLabel" width="30%" top="36" left="240" height="20" color="#6e6d6d" font="fontSize:12"
 				autoInit="false" 
 			bindModel="$.$model"
 			bindAttribute="getApportionType()"
