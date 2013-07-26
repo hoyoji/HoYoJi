@@ -1,17 +1,17 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "账务设置"
-	});
-	menuSection.add($.createContextMenuItem("货币设置", function() {
-		Alloy.Globals.openWindow("money/currency/currencyAll");
-	}));
-	menuSection.add($.createContextMenuItem("汇率设置", function() {
-		Alloy.Globals.openWindow("money/currency/exchangeAll");
-	}));
-	return menuSection;
-}
+// $.makeContextMenu = function() {
+	// var menuSection = Ti.UI.createTableViewSection({
+		// headerTitle : "账务设置"
+	// });
+	// menuSection.add($.createContextMenuItem("货币设置", function() {
+		// Alloy.Globals.openWindow("money/currency/currencyAll");
+	// }));
+	// menuSection.add($.createContextMenuItem("汇率设置", function() {
+		// Alloy.Globals.openWindow("money/currency/exchangeAll");
+	// }));
+	// return menuSection;
+// }
 
 $.getCurrentWindow().$view.addEventListener("contentready", function(){
 	$.transactionsTable = Alloy.createController("money/transactionsView", {
@@ -104,19 +104,20 @@ function onFooterbarTap(e) {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse);
 	} else if (e.source.id === "transactionsSearchTable") {
-		$.titleBar.setTitle("查找");
-		if(!$.transactionsSearchTable){		
-			$.transactionsSearchTable = Alloy.createController("money/transactionsSearch", {
-			    id: "transactionsSearchTable",
-			    autoInit: "false",
-			    parentController : $,
-			    currentWindow : $.__currentWindow
-			});
-			$.transactionsSearchTable.setParent($.__views.body);
-			$.transactionsSearchTable.UIInit();
-			$.transactionsSearchTable.transactionsSearchTable.autoHideFooter($.footerBar);
-		}
-		$.transactionsSearchTable.doSearch();
+		Alloy.Globals.openWindow("money/transactionsSearch");
+		// $.titleBar.setTitle("查找流水");
+		// if(!$.transactionsSearchTable){		
+			// $.transactionsSearchTable = Alloy.createController("money/transactionsSearch", {
+			    // id: "transactionsSearchTable",
+			    // autoInit: "false",
+			    // parentController : $,
+			    // currentWindow : $.__currentWindow
+			// });
+			// $.transactionsSearchTable.setParent($.__views.body);
+			// $.transactionsSearchTable.UIInit();
+			// $.transactionsSearchTable.transactionsSearchTable.autoHideFooter($.footerBar);
+		// }
+		// $.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
