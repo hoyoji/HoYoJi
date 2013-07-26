@@ -234,9 +234,10 @@ exports.definition = {
 
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+							var actualTotalIncome = item.xGet("actualTotalIncome") - self.xGet("amount");
 							item.xSet("actualTotalIncome" ,actualTotalIncome);
 							item.save({
-								actualTotalIncome : item.xGet("actualTotalIncome") - self.xGet("amount")
+								actualTotalIncome : actualTotalIncome
 							}, saveOptions);
 						}
 					});
