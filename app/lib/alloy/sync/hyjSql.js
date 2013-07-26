@@ -530,7 +530,6 @@ function Sync(method, model, opts) {
 				opts.dbTrans.on("commit", commitTrans);
 				opts.dbTrans.on("rollback", rollbackTrans);
 			}
-
 		} else {
 			_.isFunction(opts.success) && opts.success(resp);
 			if (method === "read") {
@@ -539,8 +538,9 @@ function Sync(method, model, opts) {
 				Ti.App.fireEvent("updateSyncCount");
 			}
 		}
-	} else
+	} else {
 		_.isFunction(opts.error) && opts.error(model, error);
+	}
 }
 
 function GetMigrationFor(dbname, table) {
