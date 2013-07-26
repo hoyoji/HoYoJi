@@ -635,12 +635,9 @@ function installDatabase(config) {
 }
 
 var _ = require("alloy/underscore")._, util = require("alloy/sync/util"),
-// XModel = require("XModel").XModel,
-// XCollection = require("XCollection").XCollection,
 ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
 	config : {},
-	Model : {},
-	Collection : {}
+	Model : {}
 };
 
 module.exports.beforeModelCreate = function(config, name) {
@@ -652,12 +649,12 @@ module.exports.beforeModelCreate = function(config, name) {
 	config.adapter.db_name = "hoyoji";
 	config.adapter.collection_name = name;
 	config.adapter.db_file && installDatabase(config);
-	if (!config.adapter.idAttribute) {
-		Ti.API.info("No config.adapter.idAttribute specified for table \"" + config.adapter.collection_name + "\"");
-		Ti.API.info("Adding \"" + ALLOY_ID_DEFAULT + "\" to uniquely identify rows");
-		config.columns[ALLOY_ID_DEFAULT] = "TEXT";
-		config.adapter.idAttribute = ALLOY_ID_DEFAULT;
-	}
+	// if (!config.adapter.idAttribute) {
+		// Ti.API.info("No config.adapter.idAttribute specified for table \"" + config.adapter.collection_name + "\"");
+		// Ti.API.info("Adding \"" + ALLOY_ID_DEFAULT + "\" to uniquely identify rows");
+		// config.columns[ALLOY_ID_DEFAULT] = "TEXT UNIQUE";
+		// config.adapter.idAttribute = ALLOY_ID_DEFAULT;
+	// }
 	cache.config[name] = config;
 	return config;
 };
@@ -673,13 +670,13 @@ module.exports.afterModelCreate = function(Model, name) {
 	return Model;
 };
 
-module.exports.afterCollectionCreate = function(Collection) {
-	if (cache.Collection[Collection.prototype.config.adapter.collection_name])
-		return cache.Collection[Collection.prototype.config.adapter.collection_name];
-	Collection || ( Collection = {});
-	// _.extend(Collection.prototype, XCollection);
-	cache.Collection[Collection.prototype.config.adapter.collection_name] = Collection;
-	return Collection;
-}
+// module.exports.afterCollectionCreate = function(Collection) {
+	// if (cache.Collection[Collection.prototype.config.adapter.collection_name])
+		// return cache.Collection[Collection.prototype.config.adapter.collection_name];
+	// Collection || ( Collection = {});
+	// // _.extend(Collection.prototype, XCollection);
+	// cache.Collection[Collection.prototype.config.adapter.collection_name] = Collection;
+	// return Collection;
+// }
 
 module.exports.sync = Sync;
