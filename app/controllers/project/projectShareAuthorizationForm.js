@@ -505,7 +505,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 															shareType : $.$model.xGet("shareType"),
 															remark : $.$model.xGet("remark"),
 															ownerUser : $.$model.xGet("ownerUser"),
-															shareAllSubProjects : $.$model.xGet("shareAllSubProjects")
+															shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+															sharePercentageType : $.$model.xGet("sharePercentageType"),
+															sharePercentage : $.$model.xGet("sharePercentage")
 														}
 														for (var attr in $.$model.config.columns) {
 															if (attr.startsWith("projectShare")) {
