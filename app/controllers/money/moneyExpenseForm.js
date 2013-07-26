@@ -398,7 +398,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
-			$.$model.xGet("moneyExpenseApportions").map(function(item) {
+			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
 				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
 				if (item.__xDeletedHidden) {
 					item.xAddToDelete($);
@@ -425,7 +425,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			});
 		} else {
 			var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
-			$.$model.xGet("moneyExpenseApportions").map(function(item) {
+			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
 				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
 				if (item.__xDeleted) {
 					item.xAddToDelete($);
