@@ -175,7 +175,6 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 }
 
 if ($.$model.isNew()) {
-	changeSharePercentageType();
 	addSharePercentage($.$model);
 }
 

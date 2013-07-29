@@ -604,7 +604,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							$.$model.xSet("messageState", "closed");
 							editProjectShareAuthorizationArray.push($.$model.toJSON());
 							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-								Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
+								
 									Alloy.Globals.Server.sendMsg({
 										id : guid(),
 										"toUserId" : $.$model.xGet("fromUserId"),
@@ -617,19 +617,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"messageBoxId" : fromUser.xGet("messageBoxId"),
 										"messageData" : $.$model.xGet("messageData")
 									}, function() {
-										// $.$model.xSet("messageState" , "closed");
-										Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function() {
-											$.saveModel(saveEndCB, saveErrorCB, {
-												syncFromServer : true
-											});
-											saveEndCB("您接受了 " + fromUser.xGet("userName") + "共享的项目");
-											return;
-										});
+										$.saveModel(function(e) {
+											Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
+												saveEndCB("接受成功");
+												return;
+											}, saveErrorCB);
+										}, function(e) {
+											saveErrorCB(e);
+										}, {syncFromServer : true});
 									}, function(e) {
 										saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
 										return;
 									});
-								}, saveErrorCB);
+								
 							}, function(e) {
 								alert(e.__summary.msg);
 							});

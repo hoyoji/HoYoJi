@@ -39,9 +39,9 @@ $.onWindowOpenDo(function() {
 	// Alloy.Globals.cacheWindow($, "money/moneyAddNew");
 });
 
-if (Alloy.Models.User.xGet("messageBox")) {
-	Alloy.Models.User.xGet("messageBox").processNewMessages();
-}
+// if (Alloy.Models.User.xGet("messageBox")) {
+	// Alloy.Models.User.xGet("messageBox").processNewMessages();
+// }
 
 var page1Loaded = false, page3Loaded = false;
 
