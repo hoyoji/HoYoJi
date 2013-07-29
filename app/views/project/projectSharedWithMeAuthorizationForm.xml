@@ -14,14 +14,14 @@
 					<View height="42" layout="horizontal">
 						<Label left="0" width="20%">占股(%)</Label>
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
-						id="sharePercentageType" autoInit="false"
+						id="sharePercentageType"
 						hightLight="false"
 						items=" 均分,固定"
 						values="Average,Fixed"
 						bindModel="$.$model"
 						bindAttribute="sharePercentageType"/>
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
-						id="sharePercentage" autoInit="false"
+						id="sharePercentage"
 						bindModel="$.$model"
 						bindAttribute="sharePercentage"/>
 					</View>
