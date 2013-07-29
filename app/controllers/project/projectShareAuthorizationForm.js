@@ -174,6 +174,11 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	}
 }
 
+if ($.$model.isNew()) {
+	changeSharePercentageType();
+	addSharePercentage($.$model);
+}
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	setExpenseDetailAndIncomeDetailAuthorization();
 	var subProjectShareAuthorizationIds = [];
@@ -699,7 +704,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}
 						}
 					}else{
-						alert("好友接受共享之后才能修改");
+						alert("修改失败，好友未接受共享");
+						$.getCurrentWindow().$view.close();
 					}
 					
 				}else{
@@ -740,7 +746,6 @@ $.convertUser2FriendModel = function(userModel) {
 }
 $.onWindowOpenDo(function() {
 	if ($.$model.isNew()) {
-		changeSharePercentageType();
 		addSharePercentage($.$model);
 	}
 });

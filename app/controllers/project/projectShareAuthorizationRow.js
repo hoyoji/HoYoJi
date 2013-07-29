@@ -4,6 +4,12 @@ $.onRowTap = function(e){
 	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 		Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {$model : $.$model});
 		return false;
+	} else if($.$model.xGet("friendUserId") === Alloy.Models.User.id){
+		Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {
+			$model : $.$model,
+			saveableMode : "read"
+		});
+		return false;
 	}
 }
 
