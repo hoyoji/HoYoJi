@@ -10,7 +10,6 @@ var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", nul
 refreshButton.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	Alloy.Globals.Server.sync();
-	Alloy.Models.User.xGet("messageBox").processNewMessages();
 });
 $.titleBar.setBackButton(refreshButton);
 

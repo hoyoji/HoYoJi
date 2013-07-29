@@ -200,6 +200,7 @@
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
 					}, {
+						wait : true,
 						syncFromServer : true,
 						patch : true,
 						dbTrans : dbTrans
@@ -219,6 +220,7 @@
 								if (model.xGet("ownerUserId") !== Alloy.Models.User.id) {
 									// dbTrans.db.execute("DELETE FROM " + record.tableName + " WHERE id = ?", [id]);
 									model.destroy({
+										wait : true,
 										syncFromServer : true,
 										dbTrans : dbTrans
 									});
@@ -336,6 +338,7 @@
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
 					}, {
+						wait : true,
 						syncFromServer : true,
 						patch : true,
 						dbTrans : dbTrans

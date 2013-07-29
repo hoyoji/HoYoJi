@@ -404,6 +404,7 @@
 										item.xReset();
 									}
 									delete item.__xDeleted;
+									delete item.__xDeletedHidden;
 								});
 								toBeRemoved.forEach(function(item){
 									c.remove(item);
