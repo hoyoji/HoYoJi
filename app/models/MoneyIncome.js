@@ -101,7 +101,7 @@ exports.definition = {
 								apportionAmount = apportionAmount + item.xGet("amount");
 							}
 						});
-						if (this.xGet("amount") !== apportionAmount) {
+						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
 							error = {
 								msg : "分摊总额与收入金额不相等，请修正"
 							};

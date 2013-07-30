@@ -104,7 +104,7 @@ exports.definition = {
 								console.info("++++++amount++++" + item.xGet("amount"));
 							}
 						});
-						if (this.xGet("amount") !== apportionAmount) {
+						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
 							console.info("++++++++++++++amount+++" + this.xGet("amount"));
 							console.info("++++++++++++++apportionAmount+++" + apportionAmount);
 							error = {
