@@ -17,7 +17,7 @@ $.makeContextMenu = function() {
 	}));
 	menuSection.add($.createContextMenuItem("删除借出", function() {
 		$.deleteModel();
-	}, !$.$model.canDelete()));
+	}, !$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 

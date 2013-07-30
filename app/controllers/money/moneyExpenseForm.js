@@ -436,7 +436,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							console.info("++++++++++++aasd++++");
 							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
 							console.info("+++++delete0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xGet("amount"));
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount"));
 							console.info("+++++delete1++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
 							projectShareAuthorization.xAddToSave($);
 						}

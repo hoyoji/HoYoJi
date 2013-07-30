@@ -6,7 +6,7 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("删除还款", function() {
 		$.deleteModel();
-	}));
+	}, !$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 

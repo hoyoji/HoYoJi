@@ -467,7 +467,7 @@ var projectFirstChangeFlag;
 							console.info("++++++++++++aasd++++");
 							var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
 							console.info("+++++delete0++" + projectShareAuthorization.xGet("apportionedTotalIncome"));
-							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - item.xGet("amount"));
+							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - item.xPrevious("amount"));
 							console.info("+++++delete1++" + projectShareAuthorization.xGet("apportionedTotalIncome"));
 							projectShareAuthorization.xAddToSave($);
 						}
