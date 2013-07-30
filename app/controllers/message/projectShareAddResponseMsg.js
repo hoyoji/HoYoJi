@@ -152,53 +152,6 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 	authorizationDetailRow2.add(projectShareMoneyIncomeEditAuthorizationLabel);
 	authorizationDetailRow2.add(projectShareMoneyIncomeDeleteAuthorizationLabel);
 
-	// //创建转账权限
-	// var authorizationDetailRow3 = Titanium.UI.createView({
-	// layout : "horizontal",
-	// horizontalWrap : false,
-	// height : "42"
-	// });
-	// var projectShareMoneyTransferAuthorizationLabel = Ti.UI.createLabel({
-	// text : "转账",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
-	// var projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyTransferOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
-	// var projectShareMoneyTransferAddNewAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyTransferAddNew") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
-	// var projectShareMoneyTransferEditAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyTransferEdit") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
-	// var projectShareMoneyTransferDeleteAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyTransferDelete") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
-	// authorizationDetailRow3.add(projectShareMoneyTransferAuthorizationLabel);
-	// authorizationDetailRow3.add(projectShareMoneyTransferOwnerDataOnlyAuthorizationLabel);
-	// authorizationDetailRow3.add(projectShareMoneyTransferAddNewAuthorizationLabel);
-	// authorizationDetailRow3.add(projectShareMoneyTransferEditAuthorizationLabel);
-	// authorizationDetailRow3.add(projectShareMoneyTransferDeleteAuthorizationLabel);
-
 	//创建借入权限
 	var authorizationDetailRow4 = Titanium.UI.createView({
 		layout : "horizontal",
@@ -542,7 +495,6 @@ $.onWindowCloseDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-	// var projectShareData = JSON.parse($.$model.xGet("messageData"));
 	Alloy.Globals.Server.getData([{
 		__dataType : "Message",
 		id : $.$model.xGet("id"),
@@ -604,37 +556,38 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							$.$model.xSet("messageState", "closed");
 							editProjectShareAuthorizationArray.push($.$model.toJSON());
 							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-								
-									Alloy.Globals.Server.sendMsg({
-										id : guid(),
-										"toUserId" : $.$model.xGet("fromUserId"),
-										"fromUserId" : $.$model.xGet("toUserId"),
-										"type" : "Project.Share.Accept",
-										"messageState" : "new",
-										"messageTitle" : "共享回复",
-										"date" : date,
-										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
-										"messageBoxId" : fromUser.xGet("messageBoxId"),
-										"messageData" : $.$model.xGet("messageData")
-									}, function() {
-										$.saveModel(function(e) {
-											Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
-												saveEndCB("接受成功");
-												return;
-											}, saveErrorCB);
-										}, function(e) {
-											saveErrorCB(e);
-										}, {syncFromServer : true});
+								Alloy.Globals.Server.sendMsg({
+									id : guid(),
+									"toUserId" : $.$model.xGet("fromUserId"),
+									"fromUserId" : $.$model.xGet("toUserId"),
+									"type" : "Project.Share.Accept",
+									"messageState" : "new",
+									"messageTitle" : "共享回复",
+									"date" : date,
+									"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
+									"messageBoxId" : fromUser.xGet("messageBoxId"),
+									"messageData" : $.$model.xGet("messageData")
+								}, function() {
+									$.saveModel(function(e) {
+										Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
+											saveEndCB("接受成功");
+											return;
+										}, saveErrorCB);
 									}, function(e) {
-										saveErrorCB("接受分享项目失败,请重新发送 : " + e.__summary.msg);
-										return;
+										saveErrorCB(e);
+									}, {
+										syncFromServer : true
 									});
-								
+								}, function(e) {
+									saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
+									return;
+								});
+
 							}, function(e) {
 								alert(e.__summary.msg);
 							});
 						} else {
-							saveErrorCB("接受分享项目失败，用户取消了该项目的分享");
+							saveErrorCB("接受共享项目失败，用户取消了该项目的分享");
 							return;
 						}
 					}, saveErrorCB);
@@ -682,14 +635,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "unread",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您分享的项目",
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目",
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
-									saveEndCB("您拒绝了" + fromUser.xGet("userName") + "分享的项目");
+									saveEndCB("您拒绝了" + fromUser.xGet("userName") + "共享的项目");
 									return;
 								}, function(e) {
-									saveErrorCB("拒绝分享项目失败,请重新发送 : " + e.__summary.msg);
+									saveErrorCB("拒绝共享项目失败,请重新发送 : " + e.__summary.msg);
 									return;
 								});
 
@@ -697,7 +650,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								alert(e.__summary.msg);
 							});
 						} else {
-							saveErrorCB("拒绝分享项目失败，用户取消了该项目的分享");
+							saveErrorCB("拒绝共享项目失败，用户取消了该项目的分享");
 							return;
 						}
 					}, saveErrorCB);

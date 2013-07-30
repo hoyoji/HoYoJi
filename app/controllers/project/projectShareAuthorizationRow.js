@@ -17,7 +17,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "共享属性操作"
 	});
-
 	// menuSection.add($.createContextMenuItem("共享详细", function() {
 		// Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
 			// $model : $.$model
@@ -85,24 +84,10 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
 	var localProjectShareAuthorization = null;
-	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		// state : "Wait"
-	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization){
-		// if(waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
-			// if(waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
-				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-			// }else{
-				// averageSharePercentageCollections.push(waitProjectShareAuthorization);
-			// }
-		// }
-	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
 		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
 			if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
