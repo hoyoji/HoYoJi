@@ -41,30 +41,14 @@ function setExpenseDetailAndIncomeDetailAuthorization() {
 	}
 }
 
-if ($.$model.isNew()) {
-	addSharePercentage($.$model);
-}
-
 function addSharePercentage(projectShareAuthorization) {
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
-	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		// state : "Wait"
-	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
-			// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-			// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-		// } else {
-			// averageSharePercentageCollections.push(waitProjectShareAuthorization);
-		// }
-	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
@@ -156,24 +140,10 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	var fixedSharePercentageCollections = [];
 	var fixedSharePercentage = 0;
 	var localProjectShareAuthorization = null;
-	// var waitProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
-		// projectId : projectShareAuthorization.xGet("project").xGet("id"),
-		// state : "Wait"
-	// });
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	// waitProjectShareAuthorizations.map(function(waitProjectShareAuthorization) {
-		// if (waitProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
-			// if (waitProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
-				// fixedSharePercentage = fixedSharePercentage + waitProjectShareAuthorization.xGet("sharePercentage");
-				// fixedSharePercentageCollections.push(waitProjectShareAuthorization);
-			// } else {
-				// averageSharePercentageCollections.push(waitProjectShareAuthorization);
-			// }
-		// }
-	// });
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
 			if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
@@ -202,6 +172,10 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 		editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 		localProjectShareAuthorization.xAddToSave($);
 	}
+}
+
+if ($.$model.isNew()) {
+	addSharePercentage($.$model);
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
@@ -729,7 +703,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}
 						}
 					}else{
-						alert("好友接受共享之后才能修改");
+						alert("修改失败，好友未接受共享");
+						$.getCurrentWindow().$view.close();
 					}
 					
 				}else{
@@ -770,7 +745,7 @@ $.convertUser2FriendModel = function(userModel) {
 }
 $.onWindowOpenDo(function() {
 	if ($.$model.isNew()) {
-		changeSharePercentageType();
+		addSharePercentage($.$model);
 	}
 });
 
