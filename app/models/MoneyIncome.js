@@ -98,7 +98,7 @@ exports.definition = {
 						var apportionAmount = 0;
 						this.xGet("moneyIncomeApportions").forEach(function(item) {
 							if (!item.__xDeleted && !item.__xDeletedHidden) {
-								apportionAmount = apportionAmount + item.xGet("amount");
+								apportionAmount = apportionAmount + Number(item.xGet("amount").toFixed(2));
 							}
 						});
 						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
@@ -211,6 +211,55 @@ exports.definition = {
 				}
 
 				return ownerUserSymbol;
+			},
+			// setAmount : function(amount){
+			// amount = amount || 0;
+			// if(this.xGet("moneyExpenseDetails").length > 0){
+			// amount = 0;
+			// this.xGet("moneyExpenseDetails").map(function(item){
+			// amount += item.xGet("amount");
+			// })
+			// }
+			// this.xSet("amount", amount);
+			// },
+			generateIncomeApportions : function() {
+				var self = this;
+				var moneyIncomeApportionsArray = [];
+				this.xGet("moneyIncomeApportions").forEach(function(item) {
+					if (!item.__xDeletedHidden) {
+						moneyIncomeApportionsArray.push(item);
+					}
+				});
+				if (moneyIncomeApportionsArray.length === 0) {// 生成分摊
+					var amountTotal = 0, moneyIncomeApportion, amount;
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+						moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+							moneyIncome : self,
+							friendUser : self.xGet("ownerUser"),
+							amount : Number(self.xGet("amount")) || 0,
+							apportionType : "Average"
+						});
+						self.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+					} else {
+						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							if (projectShareAuthorization.xGet("state") === "Accept") {
+								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
+									moneyIncome : self,
+									friendUser : projectShareAuthorization.xGet("friendUser"),
+									amount : amount,
+									apportionType : "Fixed"
+								});
+								self.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+								amountTotal += amount;
+							}
+						});
+						if (amountTotal !== self.xGet("amount")) {
+							moneyIncomeApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						}
+					}
+					this.hasAddedApportions = true;
+				}
 			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {

@@ -34,14 +34,16 @@ function updateApportionAmount() {
 			} else if (item.xGet("apportionType") === "Average") {
 				// averageApportions.push(item);
 				// if (!item.__xDeleted) {
-					averageApportionsNotDelete.push(item);
+				averageApportionsNotDelete.push(item);
 				// }
 			}
 		});
 
 		if (averageApportionsNotDelete.length > 0) {
+			console.info("++++++++++++averageApportionsNotDelete++++++" + averageApportionsNotDelete.length);
 			var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
-			average = Number(average.toFixed(2)); // 分摊取两位小数
+			average = Number(average.toFixed(2));
+			// 分摊取两位小数
 			var averageTotal = 0;
 			averageApportionsNotDelete.forEach(function(item) {
 				item.xSet("amount", average);
@@ -140,6 +142,10 @@ function deleteApportion(apportionModel) {
 }
 
 $.onWindowOpenDo(function() {
+	$.$model.on("xchange:amount", updateAmount);
+	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
+	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
+
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
 		$.apportion.$view.setHeight(0);
 	} else {
@@ -147,9 +153,6 @@ $.onWindowOpenDo(function() {
 	}
 });
 
-$.$model.on("xchange:amount", updateAmount);
-$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
-$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
@@ -289,7 +292,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			});
 
 		}
-
 	});
 
 	$.friend.field.addEventListener("change", function() {
@@ -447,13 +449,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+							console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
 							if (item.isNew() || $.$model.hasChanged("project")) {
 								console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
 								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
-								console.info("+++++xPrevious1++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+								console.info("+++++xPrevious1++" + projectShareAuthorization.xGet("apportionedTotalExpense") + "__________" + item.xGet("amount"));
 							} else {
 								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount") + item.xGet("amount"));
-								console.info("+++++xPrevious2++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
+								console.info("+++++xPrevious2++" + projectShareAuthorization.xGet("apportionedTotalExpense") +"++++xPrevious++++"+item.xPrevious("amount") +"+++++++++++amount+++" + item.xGet("amount"));
 							}
 							projectShareAuthorization.xAddToSave($);
 						}
@@ -461,6 +464,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				}
 			});
 		}
+		
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {
@@ -483,7 +487,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 			saveEndCB(e);
 		}, function(e) {
-			console.info("||||||||||||||||||||||||||||||||||||||||||||||||||||||||+3");
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {

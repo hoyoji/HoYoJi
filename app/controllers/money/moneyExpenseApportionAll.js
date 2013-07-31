@@ -66,6 +66,7 @@ function onFooterbarTap(e) {
 		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
 			if (!item.__xDeletedHidden && !item.__xDeleted) {
 				var amount = Number((selectedExpense.xGet("amount") * (item.getSharePercentage() / 100)).toFixed(2));
+				console.info("+++++caoAmount+++"+ amount);
 				item.xSet("amount", amount);
 				item.xSet("apportionType", "Fixed");
 				lastItem = item;
@@ -85,6 +86,7 @@ function onFooterbarTap(e) {
 		});
 		if(apportions.length > 0) {
 			var amount = Number((selectedExpense.xGet("amount") / apportions.length).toFixed(2));
+			console.info("+++++aveAmount+++"+ amount);
 			var amountTotal = 0;
 			apportions.forEach(function(item){
 				item.xSet("amount", amount);

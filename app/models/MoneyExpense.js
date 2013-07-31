@@ -97,16 +97,11 @@ exports.definition = {
 						var apportionAmount = 0;
 						this.xGet("moneyExpenseApportions").forEach(function(item) {
 							if (!item.__xDeleted && !item.__xDeletedHidden) {
-								console.info("++++++++++++++__xDeleted+++" + item.__xDeleted);
-								console.info("++++++++++++++__xDeletedHidden+++" + item.__xDeletedHidden);
-								console.info("+++++++++++" + (!item.__xDeleted || !item.__xDeletedHidden));
-								apportionAmount = apportionAmount + item.xGet("amount");
+								apportionAmount = apportionAmount + Number(item.xGet("amount").toFixed(2));
 								console.info("++++++amount++++" + item.xGet("amount"));
 							}
 						});
 						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
-							console.info("++++++++++++++amount+++" + this.xGet("amount"));
-							console.info("++++++++++++++apportionAmount+++" + apportionAmount);
 							error = {
 								msg : "分摊总额与支出金额不相等，请修正"
 							};
@@ -237,21 +232,31 @@ exports.definition = {
 				});
 				if (moneyExpenseApportionsArray.length === 0) {// 生成分摊
 					var amountTotal = 0, moneyExpenseApportion, amount;
-					this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-						if (projectShareAuthorization.xGet("state") === "Accept") {
-							amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
-							moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
-								moneyExpense : self,
-								friendUser : projectShareAuthorization.xGet("friendUser"),
-								amount : amount,
-								apportionType : "Fixed"
-							});
-							self.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
-							amountTotal += amount;
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+						moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+							moneyExpense : self,
+							friendUser : self.xGet("ownerUser"),
+							amount : Number(self.xGet("amount")) || 0,
+							apportionType : "Average"
+						});
+						self.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+					} else {
+						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							if (projectShareAuthorization.xGet("state") === "Accept") {
+								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								moneyExpenseApportion = Alloy.createModel("MoneyExpenseApportion", {
+									moneyExpense : self,
+									friendUser : projectShareAuthorization.xGet("friendUser"),
+									amount : amount,
+									apportionType : "Fixed"
+								});
+								self.xGet("moneyExpenseApportions").add(moneyExpenseApportion);
+								amountTotal += amount;
+							}
+						});
+						if (amountTotal !== self.xGet("amount")) {
+							moneyExpenseApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
 						}
-					});
-					if (amountTotal !== self.xGet("amount")) {
-						moneyExpenseApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
 					}
 					this.hasAddedApportions = true;
 				}

@@ -22,39 +22,38 @@ $.apportion.addEventListener("singletap", function() {
 
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyIncomeApportions").length > 0) {
-		var fixedApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
-			apportionType : "Fixed"
-		});
-		var averageApportions = $.$model.xGet("moneyIncomeApportions").xCreateFilter({
-			apportionType : "Average"
-		});
 		var fixedTotal = 0;
-		fixedApportions.forEach(function(item) {
-			fixedTotal = fixedTotal + item.xGet("amount");
-		});
 		var averageApportionsNotDelete = [];
-		averageApportions.forEach(function(item){
-			if(!item.__xDeleted){
-				averageApportionsNotDelete.push(item);
-			}
-		});
-		var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
-		averageApportions.forEach(function(item) {
-			if (item.__xDeleted) {
+		$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
+			if (item.__xDeletedHidden) {
+				// skip these
+			} else if (item.__xDeleted) {
 				item.xSet("amount", 0);
-			} else {
-				item.xSet("amount", average);
+			} else if (item.xGet("apportionType") === "Fixed") {
+				fixedTotal = fixedTotal + item.xGet("amount");
+			} else if (item.xGet("apportionType") === "Average") {
+				// averageApportions.push(item);
+				// if (!item.__xDeleted) {
+				averageApportionsNotDelete.push(item);
+				// }
 			}
 		});
-		// if (averageApportions.length === 0) {
-			// fixedApportions.forEach(function(item) {
-				// if (item.__xDeleted) {
-					// item.xSet("amount", 0);
-				// } else {
-					// item.xSet("amount", $.amount.getValue() * (item.getSharePercentage() / 100));
-				// }
-			// });
-		// }
+
+		if (averageApportionsNotDelete.length > 0) {
+			console.info("++++++++++++averageApportionsNotDelete++++++" + averageApportionsNotDelete.length);
+			var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
+			average = Number(average.toFixed(2));
+			// 分摊取两位小数
+			var averageTotal = 0;
+			averageApportionsNotDelete.forEach(function(item) {
+				item.xSet("amount", average);
+				averageTotal += average;
+			});
+			// 把分不尽的加到最后一个人身上
+			if (averageTotal !== $.amount.getValue() - fixedTotal) {
+				averageApportionsNotDelete[averageApportionsNotDelete.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+			}
+		}
 	}
 }
 
@@ -89,7 +88,6 @@ if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyIncome", {
 		date : (new Date()).toISOString(),
 		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
-		localAmount : 0,
 		exchangeRate : 1,
 		incomeType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -140,7 +138,7 @@ function deleteApportion(apportionModel) {
 			item.xSet("amount", average);
 		}
 	});
-
+	
 }
 
 $.onWindowOpenDo(function() {
@@ -153,8 +151,8 @@ $.onWindowOpenDo(function() {
 	} else {
 		$.apportion.$view.setHeight(42);
 	}
-
 });
+
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
@@ -162,23 +160,12 @@ $.onWindowCloseDo(function() {
 });
 
 if ($.saveableMode === "read") {
-	// $.setSaveableMode("read");
-	// $.exchangeRate.hide();
-	// $.moneyAccount.hide();
-	// $.localAmountContainer.show();
-	// $.ownerUser.show();
-	// $.amount.hide();
-
 	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
-		// $.localAmountContainer.hide();
-		// $.ownerUser.hide();
-		// $.localAmountContainer.setHeight(0);
-		// $.ownerUser.setHeight(0);
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		} else {
@@ -228,7 +215,6 @@ if ($.saveableMode === "read") {
 		}
 	}
 
-
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
@@ -256,7 +242,7 @@ if ($.saveableMode === "read") {
 		}
 	}
 
-var projectFirstChangeFlag;
+	var projectFirstChangeFlag;
 	var oldProject = $.$model.xGet("project");
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
@@ -271,6 +257,7 @@ var projectFirstChangeFlag;
 		} else {
 			$.apportion.$view.setHeight(0);
 		}
+		
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
 			// collection = $.$model.xGet("moneyIncomeApportions");
 			// $.moneyIncomeApportionsTable.removeCollection(collection);
@@ -333,6 +320,7 @@ var projectFirstChangeFlag;
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+			oldMoneyAccount.xAddToSave($);
 		}
 		//} else {
 		// if ($.$model.hasChanged("moneyAccount")) {
@@ -400,25 +388,8 @@ var projectFirstChangeFlag;
 				}
 			}
 
-			var moneyIncomeApportionsArray = [];
-			$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
-				if (!item.__xDeletedHidden) {
-					moneyIncomeApportionsArray.push(item);
-				}
-			});
-			if (moneyIncomeApportionsArray.length < 1) {
-				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-					if (projectShareAuthorization.xGet("state") === "Accept") {
-						var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-							moneyIncome : $.$model,
-							friendUser : projectShareAuthorization.xGet("friendUser"),
-							amount : $.$model.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
-							apportionType : "Fixed"
-						});
-						$.$model.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
-					}
-				});
-			}
+			// 生成分摊
+			$.$model.generateIncomeApportions();
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
