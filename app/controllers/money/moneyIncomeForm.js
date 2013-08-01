@@ -14,10 +14,14 @@ $.makeContextMenu = function() {
 }
 
 $.apportion.addEventListener("singletap", function() {
-	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
-		selectedIncome : $.$model,
-		closeWithoutSave : true
-	});
+	if ($.amount.getValue()) {
+		Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
+			selectedIncome : $.$model,
+			closeWithoutSave : true
+		});
+	} else {
+		alert("请先输入金额");
+	}
 });
 
 function updateApportionAmount() {
