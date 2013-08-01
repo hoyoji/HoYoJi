@@ -62,115 +62,47 @@ function onFooterbarTap(e) {
 		});
 
 	} else if (e.source.id === "sharePercentage") {
-		// if(selectedIncome.xGet("moneyIncomeApportions").length !== selectedIncome.xGet("project").xGet("projectShareAuthorizations").length) {
-		// alert("只有全部项目成员都参与才能按占股摊");
-		// }else {
+		var amountTotal = 0, lastItem;
 		selectedIncome.xGet("moneyIncomeApportions").forEach(function(item) {
-			if (!item.__xDeletedHidden) {
-				item.xSet("amount", selectedIncome.xGet("amount") * (item.getSharePercentage() / 100));
+			if (!item.__xDeletedHidden && !item.__xDeleted) {
+				var amount = Number((selectedIncome.xGet("amount") * (item.getSharePercentage() / 100)).toFixed(2));
+				item.xSet("amount", amount);
 				item.xSet("apportionType", "Fixed");
+				lastItem = item;
+				amountTotal += amount;
 			}
 		});
-		// }
-
-	} else if (e.source.id === "halve") {
-		var collections = [];
-		selectedIncome.xGet("moneyIncomeApportions").forEach(function(item) {
-			collections.push(item);
-		});
-		collections.forEach(function(item) {
-			item.xSet("amount", selectedIncome.xGet("amount") / collections.length);
-			item.xSet("apportionType", "Average");
-		});
-	}
-}
-
-var collection;
-// if (selectedIncome.xGet("moneyIncomeApportions").length > 0) {
-// selectedIncome.hasAddedApportions = true;
-// }
-// if (selectedIncome.hasChanged("project")) {
-// if (selectedIncome.xGet("moneyIncomeApportions").length > 0) {
-// collection = selectedIncome.xGet("moneyIncomeApportions");
-// $.moneyIncomeApportionsTable.removeCollection(collection);
-// }
-// selectedIncome.xGet("moneyIncomeApportions").reset();
-//
-// var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
-// selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-// if (projectShareAuthorization.xGet("state") === "Accept") {
-// var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-// moneyIncome : selectedIncome,
-// friendUser : projectShareAuthorization.xGet("friendUser"),
-// amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-// apportionType : "Fixed"
-// });
-// selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
-// }
-// });
-// collection = selectedIncome.xGet("moneyIncomeApportions");
-// $.moneyIncomeApportionsTable.addCollection(collection);
-// selectedIncome.hasAddedApportions = true;
-// } else {
-var moneyIncomeApportionsArray = [];
-selectedIncome.xGet("moneyIncomeApportions").forEach(function(item) {
-	if (!item.__xDeletedHidden) {
-		moneyIncomeApportionsArray.push(item);
-	}
-});
-if (moneyIncomeApportionsArray.length < 1) {
-	var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
-	selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-		if (projectShareAuthorization.xGet("state") === "Accept") {
-			var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-				moneyIncome : selectedIncome,
-				friendUser : projectShareAuthorization.xGet("friendUser"),
-				amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-				apportionType : "Fixed"
-			});
-			selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
+		// 把分不尽的小数部分加到最后一个人身上
+		if (amountTotal !== selectedIncome.xGet("amount") && lastItem) {
+			lastItem.xSet("amount", lastItem.xGet("amount") + (selectedIncome.xGet("amount") - amountTotal));
 		}
-	});
-	collection = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
-		return model.__xDeletedHidden !== true;
-	});
-	$.moneyIncomeApportionsTable.addCollection(collection);
-	selectedIncome.hasAddedApportions = true;
-} else {
-	collection = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
-		return model.__xDeletedHidden !== true;
-	});
-	$.moneyIncomeApportionsTable.addCollection(collection);
+	} else if (e.source.id === "halve") {
+		var apportions = [];
+		selectedIncome.xGet("moneyIncomeApportions").forEach(function(item) {
+				if (!item.__xDeletedHidden && !item.__xDeleted) {
+					apportions.push(item);
+				}
+		});
+		if(apportions.length > 0) {
+			var amount = Number((selectedIncome.xGet("amount") / apportions.length).toFixed(2));
+			var amountTotal = 0;
+			apportions.forEach(function(item){
+				item.xSet("amount", amount);
+				item.xSet("apportionType", "Average");
+				amountTotal += amount;
+			});
+			// 把分不尽的小数部分加到最后一个人身上
+			if(amountTotal !== selectedIncome.xGet("amount")){
+				apportions[apportions.length - 1].xSet("amount", amount + (selectedIncome.xGet("amount") - amountTotal));
+			}
+		}
+	}
 }
-// }
 
-// if (selectedIncome.hasChanged("project") && !selectedIncome.hasChangedProject || selectedIncome.oldProject !== selectedIncome.xGet("project")) {
-// selectedIncome.hasChangedProject = true;
-// selectedIncome.hasAddedApportions = false;
-// selectedIncome.oldProject = selectedIncome.xGet("project");
-// }
-//
-// if (selectedIncome.isNew() && !selectedIncome.hasAddedApportions || !selectedIncome.isNew() && selectedIncome.xGet("moneyIncomeApportions").length < 1) {
-// collection = selectedIncome.xGet("moneyIncomeApportions");
-// $.moneyIncomeApportionsTable.removeCollection(collection);
-// selectedIncome.xGet("moneyIncomeApportions").reset();
-//
-// selectedIncome.hasAddedApportions = true;
-// var selectedIncomeAmount = selectedIncome.xGet("amount") || 0;
-// selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-// var moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
-// moneyIncome : selectedIncome,
-// friendUser : projectShareAuthorization.xGet("friendUser"),
-// amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
-// apportionType : "Fixed"
-// });
-// selectedIncome.xGet("moneyIncomeApportions").add(moneyIncomeApportion);
-// });
-// collection = selectedIncome.xGet("moneyIncomeApportions");
-// $.moneyIncomeApportionsTable.addCollection(collection);
-//
-// } else {
-// collection = selectedIncome.xGet("moneyIncomeApportions");
-// $.moneyIncomeApportionsTable.addCollection(collection);
-// }
+selectedIncome.generateIncomeApportions();
+var collection = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
+	return model.__xDeletedHidden !== true;
+});
+$.moneyIncomeApportionsTable.addCollection(collection);
+
 $.moneyIncomeApportionsTable.autoHideFooter($.footerBar);
