@@ -202,9 +202,6 @@ if ($.saveableMode === "read") {
 				addData.push($.$model.toJSON());
 				Alloy.Globals.Server.postData(addData, function(data) {
 					Alloy.Globals.Server.putData(editData, function(data) {
-						// $.saveModel(saveEndCB, saveErrorCB, {
-								// syncFromServer : true
-							// });
 						$.saveModel(function(e) {
 							var depositeIncome = Alloy.createModel("MoneyIncome", {
 								date : $.$model.xGet("date"),
@@ -265,7 +262,6 @@ if ($.saveableMode === "read") {
 						depositeProject : $.$model.xGet("project")
 					})
 				}, function() {
-					// saveEndCB(e);
 					var projectDepositeMsg = Alloy.createModel("Message", {
 						toUserId : $.$model.xGet("friendUser").xGet("id"),
 						fromUserId : Alloy.Models.User.id,

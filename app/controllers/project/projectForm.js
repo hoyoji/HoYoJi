@@ -19,13 +19,15 @@ if ($.$model.isNew()) {
 	}).xAddToSave($);
 	$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 	
+	//创建项目时默认创建充值收入分类
 	var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 		name : "充值收入",
 		project : $.$model,
 		ownerUser : Alloy.Models.User
 	}).xAddToSave($);
 	$.$model.xSet("depositeIncomeCategory",depositeIncomeCategory);
-
+	
+	//创建项目时默认创建充值支出分类
 	var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 		name : "充值支出",
 		project : $.$model,
@@ -33,6 +35,7 @@ if ($.$model.isNew()) {
 	}).xAddToSave($);
 	$.$model.xSet("depositeExpenseCategory",depositeExpenseCategory);
 	
+	//创建项目的时候同时创建共享给自己的ProjectShareAuthorization
 	Alloy.createModel("ProjectShareAuthorization", {
 			project : $.$model,
 			state : "Accept",

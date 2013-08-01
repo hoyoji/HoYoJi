@@ -15,11 +15,6 @@ var onFooterbarTap = function(e) {
 
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet('messageState') !== "closed") {
-		// var friendlength = Alloy.createCollection("Friend").xSearchInDb({
-		// friendUserId : $.$model.xGet("fromUser").xGet("id"),
-		// friendCategoryId : Alloy.Models.User.xGet("defaultFriendCategory").xGet("id")
-		// }).length;
-
 		Alloy.Globals.Server.getData([{
 			__dataType : "Friend",
 			friendUserId : $.$model.xGet("fromUserId"),
