@@ -22,6 +22,7 @@ var selectedProject = $.$attrs.selectedProject;
 // }
 
 function openAddShareFriend(){
+	//创建ProjectShareAuthorization共享项目给好友
 	Alloy.Globals.openWindow("project/projectShareAuthorizationForm", {
 		$model : "ProjectShareAuthorization",
 		data : {
@@ -94,6 +95,7 @@ function openAddShareFriend(){
 $.titleBar.bindXTable($.myProjectShareAuthorizationsTable);
 
 var collection = selectedProject.xGet("projectShareAuthorizations").xCreateFilter(function(model){
+	//如果打开选择成员的时候，不显示等待接受的成员
 	if($.getCurrentWindow().$attrs.selectorCallback){
 		return model.xGet("projectId") === selectedProject.xGet("id") 
 			&& model.xGet("state") === "Accept";
@@ -107,6 +109,7 @@ $.myProjectShareAuthorizationsTable.autoHideFooter($.footerBar);
 function onFooterbarTap(e){
 	if(e.source.id === "addShareFriend"){
 		if(selectedProject.xGet("ownerUserId") === Alloy.Models.User.id){
+			//如果有资料未同步，在添加共享成员时需先同步
 			var syncCount = Alloy.Globals.getClientSyncCount();
 			if(syncCount === 0){
 				openAddShareFriend();

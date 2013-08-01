@@ -89,10 +89,10 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 		state : "Accept"
 	});
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization){
+		if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
+			localProjectShareAuthorization = acceptProjectShareAuthorization;
+		}
 		if(acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")){
-			if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
-				localProjectShareAuthorization = acceptProjectShareAuthorization;
-			}
 			if(acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed"){
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
 				fixedSharePercentageCollections.push(acceptProjectShareAuthorization);
@@ -105,14 +105,25 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	var averageTotalPercentage = 100 - fixedSharePercentage;
 	
 	if(averageLength > 0){
-		var averagePercentage = averageTotalPercentage/averageLength;
+		var averagePercentage = Number((averageTotalPercentage/averageLength).toFixed(2));
+		var toFixedAveragePercentage = 0;
 		averageSharePercentageCollections.map(function(averageSharePercentageCollection){
+			toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
 			averageSharePercentageCollection.xSet("sharePercentage" , averagePercentage);
 			editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 			averageSharePercentageCollection.xSave({
 							syncFromServer : true
 						});
 		});
+		if(averageTotalPercentage !== toFixedAveragePercentage){
+			if(localProjectShareAuthorization){
+				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
+				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
+				localProjectShareAuthorization.xSave({
+							syncFromServer : true
+						});
+			}
+		}
 	}else{
 		localProjectShareAuthorization.xSet("sharePercentage" , localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 		editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
