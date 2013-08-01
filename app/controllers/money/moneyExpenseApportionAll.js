@@ -14,7 +14,7 @@ function onFooterbarTap(e) {
 				var oldCollection = selectedExpense.xGet("moneyExpenseApportions");
 				var hasMember;
 				oldCollection.forEach(function(item) {
-					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden && !item.__xDeleted) {
 						hasMember = true;
 						return;
 					}
@@ -51,7 +51,7 @@ function onFooterbarTap(e) {
 				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden;
 			}, $);
 			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length === 0) {
-				var amount = Number((selectedExpenseAmount * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+				var amount = Number((selectedExpense.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
 				var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
 					moneyExpense : selectedExpense,
 					friendUser : projectShareAuthorization.xGet("friendUser"),

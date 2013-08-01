@@ -293,7 +293,7 @@ exports.definition = {
 				if (settlementMoney < 0) {
 					settlementMoney = -settlementMoney;
 				}
-				return settlementMoney;
+				return Number(settlementMoney.toFixed(2));
 			},
 			getSharePercentage : function() {
 				if (this.xGet("state") === "Wait") {

@@ -14,7 +14,7 @@ function onFooterbarTap(e) {
 				var oldCollection = selectedIncome.xGet("moneyIncomeApportions");
 				var hasMember;
 				oldCollection.forEach(function(item) {
-					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden && !item.__xDeleted) {
 						hasMember = true;
 						return;
 					}
@@ -54,7 +54,7 @@ function onFooterbarTap(e) {
 				var incomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 					moneyIncome : selectedIncome,
 					friendUser : projectShareAuthorization.xGet("friendUser"),
-					amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+					amount : selectedIncome.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
 					apportionType : "Fixed"
 				});
 				selectedIncome.xGet("moneyIncomeApportions").add(incomeApportion);

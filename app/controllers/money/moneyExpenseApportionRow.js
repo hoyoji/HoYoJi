@@ -29,10 +29,9 @@ $.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 		if ($.$model.isNew()) {
+			$.$model.__xDeletedHidden = true;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
-			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-				item.trigger("_xchange : amount");
-			});
+			updateAmount();
 		} else {
 			$.deleteModel();
 		}
