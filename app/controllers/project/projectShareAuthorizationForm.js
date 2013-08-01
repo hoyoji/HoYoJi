@@ -87,6 +87,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 		同事把均分的 ProjectShareAuthorization保存到数组averageSharePercentageCollections中
 	*/
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
+		//把查找出共享给自己的projectShareAuthorization保存起来
 		if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
 			localProjectShareAuthorization = acceptProjectShareAuthorization;
 		}
@@ -129,12 +130,10 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 				});
 				if(averageTotalPercentage !== toFixedAveragePercentage){
 					if(localProjectShareAuthorization){
-						alert(localProjectShareAuthorization.xGet("id")+"||1");
 						localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 						editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 						localProjectShareAuthorization.xAddToSave($);
 					}else{
-						alert(localProjectShareAuthorization.xGet("id")+"||2");
 						projectShareAuthorization.xSet("sharePercentage", Number((projectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 					}
 				}
