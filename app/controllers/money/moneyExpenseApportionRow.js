@@ -1,5 +1,12 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.onWindowOpenDo(function() {
+ if($.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User){
+ 	$.amount.$view.setHeight(0);
+ 	$.localAmount.$view.setHeight(28);
+ }
+});
+
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "分摊明细操作"
@@ -29,10 +36,9 @@ $.removeMember.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 		if ($.$model.isNew()) {
+			$.$model.__xDeletedHidden = true;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").remove($.$model);
-			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-				item.trigger("_xchange : amount");
-			});
+			updateAmount();
 		} else {
 			$.deleteModel();
 		}
@@ -50,13 +56,17 @@ $.apportionType.label.addEventListener("singletap", function(e) {
 });
 
 $.$view.addEventListener("singletap", function(e) {
-	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
-		if ($.$model.xGet("apportionType") === "Fixed") {
-			$.$model.xSet("apportionType", "Average");
-		} else if ($.$model.xGet("apportionType") === "Average") {
-			$.$model.xSet("apportionType", "Fixed");
+	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
+			if ($.$model.xGet("apportionType") === "Fixed") {
+				$.$model.xSet("apportionType", "Average");
+			} else if ($.$model.xGet("apportionType") === "Average") {
+				$.$model.xSet("apportionType", "Fixed");
+			}
+			// $.apportionType.label.fireEvent("change");
 		}
-		// $.apportionType.label.fireEvent("change");
+	} else {
+		alert("没有权限");
 	}
 });
 
@@ -78,16 +88,22 @@ $.onWindowCloseDo(function() {
 
 var oldAmount;
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("apportionType") === "Fixed") {
+	if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
-			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
-		} else {
-			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
+			var fixedTotal = 0;
+			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
+				if (!item.__xDeletedHidden && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
+					fixedTotal = fixedTotal + item.xGet("amount");
+				}
+			});
+			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
+				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
+			} else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
 			}
 		}
@@ -100,8 +116,8 @@ if ($.$model.isNew()) {
 
 function updateAmount() {
 	var moneyExpenseApportionsArray = [];
-	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item){
-		if(!item.__xDeletedHidden){
+	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
+		if (!item.__xDeletedHidden) {
 			moneyExpenseApportionsArray.push(item);
 		}
 	});
@@ -128,5 +144,6 @@ function updateAmount() {
 
 $.name.UIInit($, $.getCurrentWindow());
 $.apportionType.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 

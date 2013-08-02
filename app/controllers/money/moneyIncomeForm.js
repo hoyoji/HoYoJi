@@ -14,10 +14,14 @@ $.makeContextMenu = function() {
 }
 
 $.apportion.addEventListener("singletap", function() {
-	Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
-		selectedIncome : $.$model,
-		closeWithoutSave : true
-	});
+	if ($.amount.getValue()) {
+		Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
+			selectedIncome : $.$model,
+			closeWithoutSave : true
+		});
+	} else {
+		alert("请先输入金额");
+	}
 });
 
 function updateApportionAmount() {
@@ -117,28 +121,32 @@ function deleteApportion(apportionModel) {
 	var averageApportions = [];
 	var fixedTotal = 0;
 	moneyIncomeApportions.forEach(function(item) {
-		if (item.xGet("apportionType") === "Fixed") {
-			fixedTotal = fixedTotal + item.xGet("amount");
+		if (!item.__xDeleted && !item.__xDeletedHidden) {
+			if (item.xGet("apportionType") === "Fixed") {
+				fixedTotal = fixedTotal + item.xGet("amount");
+			} else {
+				averageApportions.push(item);
+			}
 		} else {
-			averageApportions.push(item);
+			item.xSet("amount", 0);
 		}
 	});
 	var average = 0;
 	if (apportionModel.xGet("apportionType") === "Average") {
 		if (averageApportions.length > 0) {
-			average = (incomeAmount - fixedTotal) / (averageApportions.length - 1);
+			average = (incomeAmount - fixedTotal) / averageApportions.length;
 		}
 	} else {
 		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
 	}
+	var averageTotal = 0;
 	averageApportions.forEach(function(item) {
-		if (item.__xDeleted) {
-			item.xSet("amount", 0);
-		} else {
-			item.xSet("amount", average);
-		}
+		item.xSet("amount", average);
+		averageTotal += average;
 	});
-	
+	if ((averageTotal !== $.amount.getValue() - fixedTotal) && averageApportions.length > 3) {
+		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+	}
 }
 
 $.onWindowOpenDo(function() {
@@ -215,6 +223,7 @@ if ($.saveableMode === "read") {
 		}
 	}
 
+
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
@@ -257,7 +266,7 @@ if ($.saveableMode === "read") {
 		} else {
 			$.apportion.$view.setHeight(0);
 		}
-		
+
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
 			// collection = $.$model.xGet("moneyIncomeApportions");
 			// $.moneyIncomeApportionsTable.removeCollection(collection);

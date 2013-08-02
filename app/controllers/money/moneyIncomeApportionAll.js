@@ -4,6 +4,15 @@ $.moneyIncomeApportionsTable.UIInit($, $.getCurrentWindow());
 
 var selectedIncome = $.$attrs.selectedIncome;
 
+$.onWindowOpenDo(function() {
+	if (selectedIncome.xGet("ownerUser") !== Alloy.Models.User) {
+		$.footerBar.addIncomeApportionMember.setEnabled(false);
+		$.footerBar.addAllIncomeApportionMember.setEnabled(false);
+		$.footerBar.sharePercentage.setEnabled(false);
+		$.footerBar.average.setEnabled(false);
+	}
+});
+
 function onFooterbarTap(e) {
 	if (e.source.id === "addIncomeApportionMember") {
 		var attributes = {
@@ -14,7 +23,7 @@ function onFooterbarTap(e) {
 				var oldCollection = selectedIncome.xGet("moneyIncomeApportions");
 				var hasMember;
 				oldCollection.forEach(function(item) {
-					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden) {
+					if (item.xGet("friendUser") === $.projectShareAuthorization.xGet("friendUser") && !item.__xDeletedHidden && !item.__xDeleted) {
 						hasMember = true;
 						return;
 					}
@@ -54,7 +63,7 @@ function onFooterbarTap(e) {
 				var incomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 					moneyIncome : selectedIncome,
 					friendUser : projectShareAuthorization.xGet("friendUser"),
-					amount : selectedIncomeAmount * (projectShareAuthorization.xGet("sharePercentage") / 100),
+					amount : selectedIncome.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100),
 					apportionType : "Fixed"
 				});
 				selectedIncome.xGet("moneyIncomeApportions").add(incomeApportion);
@@ -76,7 +85,7 @@ function onFooterbarTap(e) {
 		if (amountTotal !== selectedIncome.xGet("amount") && lastItem) {
 			lastItem.xSet("amount", lastItem.xGet("amount") + (selectedIncome.xGet("amount") - amountTotal));
 		}
-	} else if (e.source.id === "halve") {
+	} else if (e.source.id === "average") {
 		var apportions = [];
 		selectedIncome.xGet("moneyIncomeApportions").forEach(function(item) {
 				if (!item.__xDeletedHidden && !item.__xDeleted) {
