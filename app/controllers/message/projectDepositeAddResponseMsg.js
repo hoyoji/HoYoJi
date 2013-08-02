@@ -3,13 +3,27 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 var accountShareData = JSON.parse($.$model.xGet("messageData"));
 var datetime = new Date(accountShareData.account.date);
 var operation = "";
+//把删除充值和接受充值用一个view来实现，
 var onFooterbarTap = function(e) {
 	if (e.source.id === "accept") {
-		if ($.$model.xGet('messageState') === "closed") {
-			alert("您不能重复接受充值");
-		} else {
-			importToLocalOperate();
-		}
+		Alloy.Globals.Server.getData([{
+			__dataType : "Message",
+			id : $.$model.xGet("id"),
+			messageState : "closed"
+		}], function(data) {
+			if (data[0].length > 0) {
+				saveErrorCB("操作失败，消息已过期");
+			} else {
+				importToLocalOperate();
+			}
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
+		// if ($.$model.xGet('messageState') === "closed") {
+			// alert("您不能重复接受充值");
+		// } else {
+			// importToLocalOperate();
+		// }
 	} else if(e.source.id === "rejectAccept"){
 		operation = "rejectAccept";
 		$.titleBar.save();
@@ -26,6 +40,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
 	
 	if(operation === "delete"){
+		//删除充值
 		if (accountShareData.accountType === "MoneyExpense") {
 			var accounts = [];
 			var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
@@ -187,6 +202,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 		}
 	}else if(operation === "rejectAccept"){
+		//拒绝接受充值
 		$.$model.xSet("messageState","closed");
 		editData.push($.$model.toJSON());
 		var date = (new Date()).toISOString();
@@ -212,6 +228,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			alert(e.__summary.msg);
 		});
 	}else if(operation === "rejectDelete"){
+		//拒绝删除
 		$.$model.xSet("messageState","closed");
 		editData.push($.$model.toJSON());
 		var date = (new Date()).toISOString();
@@ -368,6 +385,7 @@ $.onWindowOpenDo(function() {
 		}], function(data) {
 			if (data[0].length === 0) {
 				if($.$model.xGet('messageState') !== "closed"){
+					//查找消息类型动态生成footerBar
 					if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
 						$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
 							onSingletap:"onFooterbarTap",

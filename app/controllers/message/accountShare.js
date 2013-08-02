@@ -10,6 +10,7 @@ $.$model.xSet("messageState", "closed");
 $.$model.xSet("messageTitle", Alloy.Models.User.xGet("userName"));
 
 $.onWindowOpenDo(function() {
+	//windowOpen的时候打开动态创建账务的信息
 	if(selectedAccount.config.adapter.collection_name === "MoneyExpense"){
 		
 		$.$model.xSet("detail", "分享支出");
@@ -564,6 +565,7 @@ $.onWindowOpenDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	//把账务发送给好友，所以好友不能为空
 	if($.$model.xGet("toUser") && $.$model.xGet("toUser").xGet("id")){
 		var date = (new Date()).toISOString();
 		var account = {};

@@ -25,60 +25,71 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
-			var editSharePercentageAuthorization = [];
-			var subProjectShareAuthorizationIds = [];
-			
-			deleteSharePercentage($.$model,editSharePercentageAuthorization);
-			
-			$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
-				var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : subProject.xGet("id"),
-					friendUserId : $.$model.xGet("friendUserId")
-				});
-				if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
-					subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-					// subProjectShareAuthorization._xDelete();
-					subProjectShareAuthorization.xSet("state", "Delete");
-					subProjectShareAuthorization.xSave({
-						syncFromServer : true
+			if($.$model.xGet("actualTotalIncome") === 0 
+			&& $.$model.xGet("actualTotalExpense") === 0 
+			&& $.$model.xGet("apportionedTotalIncome") === 0 
+			&& $.$model.xGet("apportionedTotalExpense") === 0 
+			&& $.$model.xGet("sharedTotalIncome") === 0 
+			&& $.$model.xGet("sharedTotalExpense") === 0){
+				var editSharePercentageAuthorization = [];
+				var subProjectShareAuthorizationIds = [];
+				
+				deleteSharePercentage($.$model,editSharePercentageAuthorization);
+				
+				$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : subProject.xGet("id"),
+						friendUserId : $.$model.xGet("friendUserId")
 					});
-					deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
-					editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-				}
-			});
-			$.$model.xSet("state", "Delete");
-			editSharePercentageAuthorization.push($.$model.toJSON());
-			Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-				Alloy.Globals.Server.sendMsg({
-					id : guid(),
-					"toUserId" : $.$model.xGet("friendUserId"),
-					"fromUserId" : Alloy.Models.User.xGet("id"),
-					"type" : "Project.Share.Delete",
-					"messageState" : "unread",
-					"messageTitle" : Alloy.Models.User.xGet("userName"),
-					"date" : (new Date()).toISOString(),
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "给您",
-					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-					"messageData" : JSON.stringify({
-						shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-						projectShareAuthorizationId : $.$model.xGet("id"),
-						subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-					})
-				}, function() {
-					$.$model.xSave({
-						syncFromServer : true
+					if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
+						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+						// subProjectShareAuthorization._xDelete();
+						subProjectShareAuthorization.xSet("state", "Delete");
+						subProjectShareAuthorization.xSave({
+							syncFromServer : true
+						});
+						deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+						editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+					}
+				});
+				$.$model.xSet("state", "Delete");
+				editSharePercentageAuthorization.push($.$model.toJSON());
+				Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+					Alloy.Globals.Server.sendMsg({
+						id : guid(),
+						"toUserId" : $.$model.xGet("friendUserId"),
+						"fromUserId" : Alloy.Models.User.xGet("id"),
+						"type" : "Project.Share.Delete",
+						"messageState" : "unread",
+						"messageTitle" : Alloy.Models.User.xGet("userName"),
+						"date" : (new Date()).toISOString(),
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "给您",
+						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+						"messageData" : JSON.stringify({
+							shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+							projectShareAuthorizationId : $.$model.xGet("id"),
+							subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+						})
+					}, function() {
+						$.$model.xSave({
+							syncFromServer : true
+						});
+					}, function(e) {
+						alert(e.__summary.msg);
 					});
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-			}, function(e) {
-				alert(e.__summary.msg);
-			});
+			}else{
+				alert("该成员在这个项目下跟其他成员有账务往来，不能移除");
+			}
+			
 		});
 	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 
+//移除共享时重新计算其他成员的股份
 function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuthorization){
 	var averageSharePercentageCollections = [];
 	var fixedSharePercentageCollections = [];
