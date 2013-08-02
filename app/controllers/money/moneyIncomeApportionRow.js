@@ -57,7 +57,7 @@ $.$view.addEventListener("singletap", function(e) {
 			$.$model.xSet("apportionType", "Fixed");
 		}
 		// $.apportionType.field.fireEvent("change");
-	}
+	}}
 	else {
 		alert("没有权限");
 	}
