@@ -49,6 +49,7 @@ $.apportionType.label.addEventListener("singletap", function(e) {
 });
 
 $.$view.addEventListener("singletap", function(e) {
+	if ($.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
 	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
 		if ($.$model.xGet("apportionType") === "Fixed") {
 			$.$model.xSet("apportionType", "Average");
@@ -56,6 +57,9 @@ $.$view.addEventListener("singletap", function(e) {
 			$.$model.xSet("apportionType", "Fixed");
 		}
 		// $.apportionType.field.fireEvent("change");
+	}
+	else {
+		alert("没有权限");
 	}
 });
 
@@ -77,7 +81,7 @@ $.onWindowCloseDo(function() {
 
 var oldAmount;
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("apportionType") === "Fixed") {
+	if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	}

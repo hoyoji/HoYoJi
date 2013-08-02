@@ -49,13 +49,17 @@ $.apportionType.label.addEventListener("singletap", function(e) {
 });
 
 $.$view.addEventListener("singletap", function(e) {
-	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
-		if ($.$model.xGet("apportionType") === "Fixed") {
-			$.$model.xSet("apportionType", "Average");
-		} else if ($.$model.xGet("apportionType") === "Average") {
-			$.$model.xSet("apportionType", "Fixed");
+	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
+			if ($.$model.xGet("apportionType") === "Fixed") {
+				$.$model.xSet("apportionType", "Average");
+			} else if ($.$model.xGet("apportionType") === "Average") {
+				$.$model.xSet("apportionType", "Fixed");
+			}
+			// $.apportionType.label.fireEvent("change");
 		}
-		// $.apportionType.label.fireEvent("change");
+	} else {
+		alert("没有权限");
 	}
 });
 
@@ -77,7 +81,7 @@ $.onWindowCloseDo(function() {
 
 var oldAmount;
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("apportionType") === "Fixed") {
+	if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 		$.amount.$attrs.editModeEditability = "editable";
 		$.amount.$attrs.addModeEditability = "editable";
 	}
@@ -92,8 +96,7 @@ $.onWindowOpenDo(function() {
 			});
 			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
 				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
-			}
-			else if ($.amount.getValue() !== oldAmount) {
+			} else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
 			}
 		}

@@ -4,6 +4,15 @@ $.moneyExpenseApportionsTable.UIInit($, $.getCurrentWindow());
 
 var selectedExpense = $.$attrs.selectedExpense;
 
+$.onWindowOpenDo(function() {
+	if (selectedExpense.xGet("ownerUser") === Alloy.Models.User) {
+		$.footerBar.addExpenseApportionMember.setEnabled(false);
+		$.footerBar.addAllExpenseApportionMember.setEnabled(false);
+		$.footerBar.sharePercentage.setEnabled(false);
+		$.footerBar.average.setEnabled(false);
+	}
+});
+
 function onFooterbarTap(e) {
 	if (e.source.id === "addExpenseApportionMember") {
 		var attributes = {

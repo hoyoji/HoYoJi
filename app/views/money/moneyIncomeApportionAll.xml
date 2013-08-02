@@ -9,6 +9,6 @@
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="添加成员,添加所有成员,按占股分摊,平均分摊" imagesFolder="/images/money/moneyIncomeDetailAll"
-		ids="addIncomeApportionMember,addAllIncomeApportionMember,sharePercentage,halve"/>
+		ids="addIncomeApportionMember,addAllIncomeApportionMember,sharePercentage,average"/>
 	</View>
 </Alloy>

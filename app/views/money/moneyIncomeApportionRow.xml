@@ -10,7 +10,7 @@
 				id="amount" autoInit="false"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"
-			bindAttribute = "amount"
+			bindAttribute = "getAmount()"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="30%" top="36" left="240" height="20" color="#6e6d6d" font="fontSize:12"
 				id="apportionType" autoInit="false"
