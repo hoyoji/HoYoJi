@@ -12,16 +12,19 @@ $.onWindowOpenDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	//去服务器上查找好友，如果存在则不需要再添加
 	Alloy.Globals.Server.getData([{__dataType : "Friend", friendUserId : $.$model.xGet("toUser").xGet("id") , ownerUserId : Alloy.Models.User.id}], function(data){
 		if (data[0].length > 0) {
 			alert("好友已经添加成功，不需要再发送消息！");
 		}else{
+			//在查找好友已经把要添加的用的user加载到本地，直接可以在本地数据库查找
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("toUser").xGet("id")});
 			if(!toUser.id){
 				$.$model.xGet("toUser").xAddToSave($);
 			}
 			var date = (new Date()).toISOString();
 			$.$model.xSet("date", date);
+			//发送请求消息给好友
 			Alloy.Globals.Server.sendMsg({
 				id : guid(),
 				"toUserId" : $.$model.xGet("toUser").xGet("id"),

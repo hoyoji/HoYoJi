@@ -100,6 +100,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 			}
 		}
 	});
+	//当前传入的projectShareAuthorization的股份分固定和均分两种情况考虑
 	if (projectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 		var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 		var averageLength = averageSharePercentageCollections.length;
@@ -113,14 +114,14 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 				localProjectShareAuthorization.xSet("sharePercentage", localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
-			}else{
-				projectShareAuthorization.xSet("sharePercentage", projectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 			}
 			
 		} else {
+			//如果没有平均占股的成员，把平均占股加到本地缓冲
 			if(averageLength > 0){
 				var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 				var toFixedAveragePercentage = 0;
+				//
 				var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(2));
 				averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
 					toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
@@ -128,13 +129,12 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 					editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 					averageSharePercentageCollection.xAddToSave($);
 				});
+				//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
 				if(averageTotalPercentage !== toFixedAveragePercentage){
 					if(localProjectShareAuthorization){
 						localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 						editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 						localProjectShareAuthorization.xAddToSave($);
-					}else{
-						projectShareAuthorization.xSet("sharePercentage", Number((projectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 					}
 				}
 			}else{
@@ -142,8 +142,6 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 					localProjectShareAuthorization.xSet("sharePercentage", localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 					editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 					localProjectShareAuthorization.xAddToSave($);
-				}else{
-					projectShareAuthorization.xSet("sharePercentage", projectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 				}
 			}
 		}
@@ -159,14 +157,12 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 			averageSharePercentageCollection.xAddToSave($);
 		});
 		projectShareAuthorization.xSet("sharePercentage", averagePercentage);
-		
+		//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
 		if(averageTotalPercentage !== toFixedAveragePercentage){
 			if(localProjectShareAuthorization){
 				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
-			}else{
-				projectShareAuthorization.xSet("sharePercentage", Number((projectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
 			}
 		}
 	}
@@ -401,11 +397,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.hasChanged("friendUser")) {
 				saveErrorCB("好友不能修改！");
 			} else {
+				//占股类型有变，或者占股类型是fixed且占股有变，即重新计算占股
 				if ($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.hasChanged("sharePercentage"))) {
 					editSharePercentage($.$model, editSharePercentageAuthorization);
 				}
+				//如果是共享给自己分开考虑
 				if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
 					if($.$model.xGet("state") === "Accept"){
+						//检查projectShareAuthorization是否有改变，如果有改变，且当前是true，即要新增子项目的projectShareAuthorization，如果当前是false，即要移除子项目的projectShareAuthorization
 						if ($.$model.hasChanged("shareAllSubProjects")) {
 							var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
 	
@@ -459,6 +458,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
 											if (data[0].length > 0) {
 												for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
+													//创建子项目的projectShareAuthorization
 													var subProjectShareAuthorization;
 													if (data[i].length === 0 && data[i + 1].length === 0) {
 														var subProjectSharedAuthorizationData = {
@@ -594,6 +594,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										$.saveModel(saveEndCB, saveErrorCB);
 									}
 								} else {
+									//移除子项目的projectShareAuthorization
 									allSubProject.map(function(subProject) {
 										var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 											projectId : subProject.xGet("id"),
@@ -741,6 +742,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 					
 				}else{
+					//修改共享给自己的占股
 					editSharePercentageAuthorization.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
 						$.saveModel(saveEndCB, saveErrorCB, {

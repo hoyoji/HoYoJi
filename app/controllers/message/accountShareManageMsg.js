@@ -4,6 +4,7 @@ var accountShareData = JSON.parse($.$model.xGet("messageData"));
 var datetime = new Date(accountShareData.account.date);
 var onFooterbarTap = function(e) {
 	if (e.source.id === "importToLocal") {
+		//在导入一次账务之后就把当前消息状态设置为“closed”,第二次打开时，如果是closed就提示是否要重新导入账务
 		if ($.$model.xGet('messageState') === "closed") {
 			Alloy.Globals.confirm("导入账务", "重复导入账务？", function(){
 				importToLocalOperate();
@@ -558,6 +559,7 @@ $.onWindowOpenDo(function() {
 });
 
 function importToLocalOperate() {
+	//导入账务
 	if (accountShareData.accountType === "MoneyExpense") {
 		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
 			var account = Alloy.createModel("MoneyIncome", {

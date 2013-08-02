@@ -462,6 +462,7 @@ $.onWindowOpenDo(function() {
 		});
 	}
 	$.showHideAuthorization.hide();
+	//如果消息状态是new即把set为read,且显示出footerBar
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({
 			messageState : "read"
@@ -495,6 +496,7 @@ $.onWindowCloseDo(function() {
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+	//服务器上查找当前消息，如果已经是closed，则提示消息过期
 	Alloy.Globals.Server.getData([{
 		__dataType : "Message",
 		id : $.$model.xGet("id"),
