@@ -72,7 +72,7 @@ if ($.saveableMode === "read") {
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
-	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
+	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
@@ -142,6 +142,7 @@ if ($.saveableMode === "read") {
 		} else {//账户改变时
 			oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount - oldInterest);
 			newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount + newInterest);
+			oldMoneyAccount.xAddToSave($);
 		}
 
 		if (moneyLend) {//更新已收款
