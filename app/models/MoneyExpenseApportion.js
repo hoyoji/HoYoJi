@@ -64,7 +64,7 @@ exports.definition = {
 				return this.getDisplayName();
 			},
 			getAmount : function() {
-				if (this.xGet("ownerUser") === Alloy.Models.User) {
+				if (this.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
 				} else {
 					return this.xGet("moneyExpense").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();

@@ -5,7 +5,7 @@ $.moneyIncomeApportionsTable.UIInit($, $.getCurrentWindow());
 var selectedIncome = $.$attrs.selectedIncome;
 
 $.onWindowOpenDo(function() {
-	if (selectedIncome.xGet("ownerUser") === Alloy.Models.User) {
+	if (selectedIncome.xGet("ownerUser") !== Alloy.Models.User) {
 		$.footerBar.addIncomeApportionMember.setEnabled(false);
 		$.footerBar.addAllIncomeApportionMember.setEnabled(false);
 		$.footerBar.sharePercentage.setEnabled(false);

@@ -1,5 +1,12 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
+$.onWindowOpenDo(function() {
+ if($.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User){
+ 	$.amount.$view.setHeight(0);
+ 	$.localAmount.$view.setHeight(28);
+ }
+});
+
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "分摊明细操作"
@@ -137,5 +144,6 @@ function updateAmount() {
 
 $.name.UIInit($, $.getCurrentWindow());
 $.apportionType.UIInit($, $.getCurrentWindow());
+$.localAmount.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 

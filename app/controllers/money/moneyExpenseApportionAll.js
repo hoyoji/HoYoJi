@@ -5,7 +5,7 @@ $.moneyExpenseApportionsTable.UIInit($, $.getCurrentWindow());
 var selectedExpense = $.$attrs.selectedExpense;
 
 $.onWindowOpenDo(function() {
-	if (selectedExpense.xGet("ownerUser") === Alloy.Models.User) {
+	if (selectedExpense.xGet("ownerUser") !== Alloy.Models.User) {		
 		$.footerBar.addExpenseApportionMember.setEnabled(false);
 		$.footerBar.addAllExpenseApportionMember.setEnabled(false);
 		$.footerBar.sharePercentage.setEnabled(false);
