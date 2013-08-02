@@ -108,7 +108,7 @@ exports.definition = {
 			},
 			getCurrentBalance : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
-					return this.xGet("currentBalance");
+					return Number(this.xGet("currentBalance").toFixed(2));
 				}
 			},
         	syncAddNew: function(record, dbTrans) {
