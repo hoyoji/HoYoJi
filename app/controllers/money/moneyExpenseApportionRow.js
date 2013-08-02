@@ -83,10 +83,17 @@ $.onWindowOpenDo(function() {
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.amount.getValue() > $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
-			alert("分摊金额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新输入");
-		} else {
-			if ($.$model.xGet("apportionType") === "Fixed" && $.amount.getValue() && $.amount.getValue() !== oldAmount) {
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
+			var fixedTotal = 0;
+			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
+				if (!item.__xDeletedHidden && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
+					fixedTotal = fixedTotal + item.xGet("amount");
+				}
+			});
+			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
+				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
+			}
+			else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
 			}
 		}
@@ -99,8 +106,8 @@ if ($.$model.isNew()) {
 
 function updateAmount() {
 	var moneyExpenseApportionsArray = [];
-	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item){
-		if(!item.__xDeletedHidden){
+	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
+		if (!item.__xDeletedHidden) {
 			moneyExpenseApportionsArray.push(item);
 		}
 	});
