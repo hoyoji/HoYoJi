@@ -16,6 +16,13 @@
 				id="name" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="name"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="结算币种" hintText="请选择结算币种"
+				id="currency" autoInit="false"
+				editModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="currency"
+				bindAttributeIsModel="name"
+				bindModelSelector="money/currency/currencyAll"/>				
 			</ScrollView>
 		</View>
 	</View>
