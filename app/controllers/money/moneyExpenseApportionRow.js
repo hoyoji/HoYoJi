@@ -94,14 +94,16 @@ $.onWindowOpenDo(function() {
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
+		console.info("++++++focus+"+$.amount.field.focus());
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.amount.field.focus()) {
 			var fixedTotal = 0;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-				if (!item.__xDeletedHidden && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
+				if (!item.__xDeletedHidden && !item.__xDeleted && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
 					fixedTotal = fixedTotal + item.xGet("amount");
 				}
 			});
 			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
+				console.info("++amountValue++"+ $.amount.getValue() + "++++fixedTotal+++"+fixedTotal);
 				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
 			} else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
@@ -112,12 +114,12 @@ $.onWindowOpenDo(function() {
 
 if ($.$model.isNew()) {
 	updateAmount();
-}
+} 
 
 function updateAmount() {
 	var moneyExpenseApportionsArray = [];
 	$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
-		if (!item.__xDeletedHidden) {
+		if (!item.__xDeletedHidden && !item.__xDeleted) {
 			moneyExpenseApportionsArray.push(item);
 		}
 	});
@@ -146,4 +148,6 @@ $.name.UIInit($, $.getCurrentWindow());
 $.apportionType.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
+$.sharePercentage.UIInit($, $.getCurrentWindow());
+$.picture.UIInit($, $.getCurrentWindow());
 
