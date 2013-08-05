@@ -5,7 +5,7 @@ $.moneyExpenseApportionsTable.UIInit($, $.getCurrentWindow());
 var selectedExpense = $.$attrs.selectedExpense;
 
 $.onWindowOpenDo(function() {
-	if (selectedExpense.xGet("ownerUser") !== Alloy.Models.User) {		
+	if (selectedExpense.xGet("ownerUser") !== Alloy.Models.User) {
 		$.footerBar.addExpenseApportionMember.setEnabled(false);
 		$.footerBar.addAllExpenseApportionMember.setEnabled(false);
 		$.footerBar.sharePercentage.setEnabled(false);
@@ -60,52 +60,58 @@ function onFooterbarTap(e) {
 				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden;
 			}, $);
 			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length === 0) {
-				var amount = Number((selectedExpense.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+				// var amount = Number((selectedExpense.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
 				var expenseApportion = Alloy.createModel("MoneyExpenseApportion", {
 					moneyExpense : selectedExpense,
 					friendUser : projectShareAuthorization.xGet("friendUser"),
-					amount : amount,
-					apportionType : "Fixed"
+					amount : 0,
+					apportionType : "Average"
 				});
 				selectedExpense.xGet("moneyExpenseApportions").add(expenseApportion);
 			}
 		});
 	} else if (e.source.id === "sharePercentage") {
-		var amountTotal = 0, lastItem;
+		var amountTotal = 0;
+		var apportions = [];
 		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
 			if (!item.__xDeletedHidden && !item.__xDeleted) {
-				var amount = Number((selectedExpense.xGet("amount") * (item.getSharePercentage() / 100)).toFixed(2));
-				console.info("+++++caoAmount+++"+ amount);
-				item.xSet("amount", amount);
-				item.xSet("apportionType", "Fixed");
-				lastItem = item;
-				amountTotal += amount;
+				apportions.push(item);
 			}
 		});
-		// 把分不尽的小数部分加到最后一个人身上
-		if(amountTotal !== selectedExpense.xGet("amount") && lastItem){
-			lastItem.xSet("amount", lastItem.xGet("amount") + (selectedExpense.xGet("amount") - amountTotal));
+		if (apportions.length > 0) {
+			for (var i = 0; i < apportions.length - 1; i++) {
+				var amount = Number((selectedExpense.xGet("amount") * (apportions[i].getSharePercentage() / 100)).toFixed(2));
+				apportions[i].xSet("amount", amount);
+				apportions[i].xSet("apportionType", "Fixed");
+				amountTotal += amount;
+			}
+			// 把分不尽的小数部分加到最后一个人身上
+			// if ((amountTotal + amount) !== selectedExpense.xGet("amount")) {
+				apportions[apportions.length - 1].xSet("apportionType", "Fixed");
+				apportions[apportions.length - 1].xSet("amount", (selectedExpense.xGet("amount") - amountTotal));
+			// }
 		}
 	} else if (e.source.id === "average") {
 		var apportions = [];
 		selectedExpense.xGet("moneyExpenseApportions").forEach(function(item) {
-				if (!item.__xDeletedHidden && !item.__xDeleted) {
-					apportions.push(item);
-				}
-		});
-		if(apportions.length > 0) {
-			var amount = Number((selectedExpense.xGet("amount") / apportions.length).toFixed(2));
-			console.info("+++++aveAmount+++"+ amount);
-			var amountTotal = 0;
-			apportions.forEach(function(item){
-				item.xSet("amount", amount);
-				item.xSet("apportionType", "Average");
-				amountTotal += amount;
-			});
-			// 把分不尽的小数部分加到最后一个人身上
-			if(amountTotal !== selectedExpense.xGet("amount")){
-				apportions[apportions.length - 1].xSet("amount", amount + (selectedExpense.xGet("amount") - amountTotal));
+			if (!item.__xDeletedHidden && !item.__xDeleted) {
+				apportions.push(item);
 			}
+		});
+		if (apportions.length > 0) {
+			var amount = Number((selectedExpense.xGet("amount") / apportions.length).toFixed(2));
+			console.info("+++++aveAmount+++" + amount);
+			var amountTotal = 0;
+			for (var i = 0; i < apportions.length - 1; i++) {
+				apportions[i].xSet("amount", amount);
+				apportions[i].xSet("apportionType", "Average");
+				amountTotal += amount;
+			}
+			// 把分不尽的小数部分加到最后一个人身上
+			// if ((amountTotal + amount) !== selectedExpense.xGet("amount")) {
+				apportions[apportions.length - 1].xSet("apportionType", "Average");
+				apportions[apportions.length - 1].xSet("amount", (selectedExpense.xGet("amount") - amountTotal));
+			// }
 		}
 	}
 }

@@ -94,10 +94,10 @@ $.onWindowOpenDo(function() {
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyIncome").xGet("amount") && $.$model.xGet("apportionType") === "Fixed") {
+		if ($.amount.getValue() && $.$model.xGet("moneyIncome").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.amount.field.focus()) {
 			var fixedTotal = 0;
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
-				if (!item.__xDeletedHidden && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
+				if (!item.__xDeletedHidden && !item.__xDeleted && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
 					fixedTotal = fixedTotal + item.xGet("amount");
 				}
 			});
@@ -118,7 +118,7 @@ if ($.$model.isNew()) {
 function updateAmount() {
 	var moneyIncomeApportionsArray = [];
 	$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item){
-		if(!item.__xDeletedHidden){
+		if(!item.__xDeletedHidden && !item.__xDeleted){
 			moneyIncomeApportionsArray.push(item);
 		}
 	});
