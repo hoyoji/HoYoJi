@@ -20,7 +20,7 @@ $.apportion.addEventListener("singletap", function() {
 			closeWithoutSave : true
 		});
 	} else {
-		alert("请先输入金额");
+		alert("请先输入金额，再调整分摊");
 	}
 });
 

@@ -1,10 +1,34 @@
 ".container": {
 	backgroundColor: "white"
 }
-".apportionType": {
+
+"#name": {
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	}
+}
+
+"#apportionType": {
 	color: "#6e6d6d",
 	font: {
-		fontSize: 9,
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
+
+"#sharePercentage": {
+	color: "#6e6d6d",
+	font: {
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
+
+"#sharePercentageLabel": {
+	color: "#6e6d6d",
+	font: {
+		fontSize: 12,
 		fontWeight: 'normal'
 	}
 }

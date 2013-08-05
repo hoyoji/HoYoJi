@@ -18,7 +18,7 @@ function sendAddFriendMessage(friendlength){
 		if ($.$model.xGet("newFriendAuthentication") === "none") {
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("id")});
 			if(!toUser.id){
-				$.$model.xSave();
+				$.$model.save();
 			}
 			var date = (new Date()).toISOString();
 			Alloy.Globals.Server.sendMsg({
