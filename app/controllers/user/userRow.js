@@ -16,14 +16,18 @@ function sendAddFriendMessage(friendlength){
 		alert("不能重复添加好友！");
 	} else {
 		if ($.$model.xGet("newFriendAuthentication") === "none") {
+			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("id")});
+			if(!toUser.id){
+				$.$model.xSave();
+			}
 			var date = (new Date()).toISOString();
-			// $.$model.xSet("date", date);
 			Alloy.Globals.Server.sendMsg({
+				id : guid(),
 				"toUserId" : $.$model.xGet("id"),
 				"fromUserId" : Alloy.Models.User.id,
 				"type" : "System.Friend.AutoAdd",
 				"messageState" : "new",
-				"messageTitle" : Alloy.Models.User.xGet("userName") + "添加您为好友",
+				"messageTitle" : "好友请求",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "添加您为好友",
 				"messageBoxId" : $.$model.xGet("messageBoxId")
