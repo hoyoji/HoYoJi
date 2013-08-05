@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
 		$.deleteModel();
-	}, !$.$model.canDelete()));
+	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User));
 
 	return menuSection;
 }

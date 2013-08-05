@@ -235,7 +235,7 @@ exports.definition = {
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
-				return actualTotalMoney;
+				return Number(actualTotalMoney.toFixed(2));
 
 			},
 			getSettlementText : function() {

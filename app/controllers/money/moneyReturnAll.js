@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyReturnForm", {
 			selectedBorrow : selectedBorrow
 		});
-	}));
+	},selectedBorrow && selectedBorrow.xGet("ownerUser") !== Alloy.Models.User));
 	return menuSection;
 }
 
@@ -29,6 +29,12 @@ $.moneyReturnsTable.autoHideFooter($.footerBar);
 		// $.footerBar.$view.hide();
 	// }
 // });
+
+$.onWindowOpenDo(function() {
+	if (selectedBorrow && selectedBorrow.xGet("ownerUser") !== Alloy.Models.User) {
+		$.footerBar.addMoneyReturn.setEnabled(false);
+	}
+});
 
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyReturn") {
