@@ -592,7 +592,7 @@ function importToLocalOperate() {
 				moneyIncomeDetails.push(moneyIncomeDetail)
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			// moneyIncomeDetails.xAddToSave(accountShareMsgController.content);
@@ -626,7 +626,7 @@ function importToLocalOperate() {
 				moneyExpenseDetails.push(moneyExpenseDetail);
 			});
 			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);		
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			// moneyExpenseDetails.xAddToSave(accountShareMsgController.content);
@@ -664,7 +664,7 @@ function importToLocalOperate() {
 				moneyExpenseDetails.push(moneyExpenseDetail);
 			});
 			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -698,7 +698,7 @@ function importToLocalOperate() {
 				moneyIncomeDetails.push(moneyIncomeDetail);
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}
@@ -719,7 +719,7 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -737,7 +737,7 @@ function importToLocalOperate() {
 					project : Alloy.Models.User.xGet("activeProject")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}
@@ -759,7 +759,7 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -800,7 +800,7 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -819,7 +819,7 @@ function importToLocalOperate() {
 					interest : 0
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}
@@ -842,7 +842,7 @@ function importToLocalOperate() {
 					friendUser : $.$model.xGet("fromUser")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -861,7 +861,7 @@ function importToLocalOperate() {
 					interest : 0
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}
