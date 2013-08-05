@@ -777,7 +777,7 @@ function importToLocalOperate() {
 					project : Alloy.Models.User.xGet("activeProject")
 				}
 			});
-			accountShareMsgController.addEventListener("contentready", function(){
+			accountShareMsgController.$view.addEventListener("contentready", function(){
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}

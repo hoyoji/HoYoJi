@@ -511,7 +511,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "User",
 				id : $.$model.xGet("fromUserId")
 			}], function(data) {
-
 				var userData = data[0][0];
 				var id = userData.id;
 				var fromUser = Alloy.createModel("User").xFindInDb({
