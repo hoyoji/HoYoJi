@@ -3,7 +3,7 @@
 			<!-- <View class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5"> -->
 			<ImageView id="messageImage" left="5" width="38" height="38"/>
 			<View width="Ti.UI.SIZE" height="Ti.UI.FILL" layout="horizontal" left="48" horizontalWrap="false">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="16" left="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="30" left="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow"
 				id="messageTitle" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "messageTitle"
@@ -18,7 +18,7 @@
 				/>
 			</View>
 			<View width="Ti.UI.SIZE" height="Ti.UI.FILL" layout="horizontal" left="48" horizontalWrap="false">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="46" width="250" height="14" class="firstRow"
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="57" width="250" height="14" class="firstRow"
 					id="detail" autoInit="false"
 					bindModel = "$.$model"
 					bindAttribute = "detail" 

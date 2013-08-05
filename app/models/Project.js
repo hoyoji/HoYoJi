@@ -62,6 +62,37 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getActualTotalMoney : function() {
+				var actualTotalExpense = 0;
+				var actualTotalIncome = 0;
+				this.xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("state") === "Accept") {
+						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
+						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+					}
+				});
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				if (actualTotalMoney < 0) {
+					actualTotalMoney = -actualTotalMoney;
+				}
+				return Number(actualTotalMoney.toFixed(2));
+			},
+			getActualTotalMoneyType : function() {
+				var actualTotalExpense = 0;
+				var actualTotalIncome = 0;
+				this.xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("state") === "Accept") {
+						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
+						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+					}
+				});
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				if (actualTotalMoney < 0) {
+					return false;
+				}else{
+					return true;
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除当前激活的项目"});

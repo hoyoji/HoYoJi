@@ -19,3 +19,4 @@ $.getChildTitle = function() {
 }
 
 $.nickName.UIInit($, $.getCurrentWindow());
+$.picture.UIInit($, $.getCurrentWindow());

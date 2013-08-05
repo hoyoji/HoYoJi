@@ -1,8 +1,11 @@
 <Alloy>
-	<View class="container" height="42" openForm="friend/friendForm"><!-- hasChild="getSharedWithHerProjects():project/projectShareRow" -->
+	<View class="container" height="84" openForm="friend/friendForm"><!-- hasChild="getSharedWithHerProjects():project/projectShareRow" -->
 			<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
-			<ImageView id="userImage" left="5" width="38" height="38"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="48" top="10" width="Ti.UI.SIZE"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
+					id="picture" autoInit="false"
+					bindModel = "$.$model.friendUser"
+					bindAttribute = "pictureId"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="30" width="Ti.UI.SIZE"
 				id="nickName" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "getDisplayName()"
