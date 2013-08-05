@@ -20,8 +20,8 @@
 				bindModel = "$.$model"
 				bindAttribute = "getActualTotalText()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="20" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-				id="actualTotalMoney" autoInit="false"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="20" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="actualTotalMoney" autoInit="false" dataType="Number"
 				bindModel = "$.$model"
 				bindAttribute = "getActualTotalMoney()"
 			/>
@@ -30,8 +30,8 @@
 				bindModel = "$.$model"
 				bindAttribute = "getSettlementText()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="52" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-				id="apportionedTotalMoney" autoInit="false"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="52" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="apportionedTotalMoney" autoInit="false" dataType="Number"
 				bindModel = "$.$model"
 				bindAttribute = "getSettlementMoney()"
 			/>
