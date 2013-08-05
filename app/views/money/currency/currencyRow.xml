@@ -1,28 +1,30 @@
 <Alloy>
 	<View class="container" height="42" openForm="money/currency/currencyForm">
-		
+
 		<View id="content" class="row-content" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
-			<View layout="horizontal" horizontalWrap="false" left="10" width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
-				id="name" autoInit="false"
-				bindModel = "$.$model"
-				bindAttribute = "name"
-				/>
-			</View>
+			<!-- <View layout="horizontal" horizontalWrap="false" left="10" width="Ti.UI.SIZE"> -->
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10" top="0" width="Ti.UI.SIZE" height="42"
+			id="name" autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "name"
+			/>
+			<!-- </View>
 			<View layout="horizontal" horizontalWrap="false" right="20"  width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="21"
-				id="code" autoInit="false"
-				bindModel = "$.$model"
-				bindAttribute = "code"
-				/>
-			</View>
+			-->
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="21" right="20"
+			id="code" autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "code"
+			/>
+			<!-- </View>
 			<View layout="horizontal" horizontalWrap="false" right="20" width="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="21"  width="Ti.UI.SIZE" height="21" class="secondRow"
-				id="symbol" autoInit="false"
-				bindModel = "$.$model"
-				bindAttribute = "symbol"
-				/>
-			</View>
+			-->
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="21"  width="Ti.UI.SIZE" height="21" right="20" class="secondRow"
+			id="symbol" autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "symbol"
+			/>
+			<!-- </View> -->
 			<Label id="check" visible="false" color="black" right="5">√</Label>
 		</View>
 	</View>
