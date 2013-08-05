@@ -146,4 +146,6 @@ $.name.UIInit($, $.getCurrentWindow());
 $.apportionType.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
+$.sharePercentage.UIInit($, $.getCurrentWindow());
+$.picture.UIInit($, $.getCurrentWindow());
 
