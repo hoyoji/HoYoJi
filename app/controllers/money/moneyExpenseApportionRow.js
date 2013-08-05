@@ -114,7 +114,7 @@ $.onWindowOpenDo(function() {
 
 if ($.$model.isNew()) {
 	updateAmount();
-}
+} 
 
 function updateAmount() {
 	var moneyExpenseApportionsArray = [];
