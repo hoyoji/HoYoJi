@@ -19,7 +19,7 @@ $.apportion.addEventListener("singletap", function() {
 			selectedExpense : $.$model,
 			closeWithoutSave : true
 		});
-	}else{
+	} else {
 		alert("请先输入金额,再调整分摊");
 	}
 });
@@ -108,12 +108,14 @@ function updateAmount() {
 	$.amount.field.fireEvent("change");
 }
 
-function deleteDetail(detailModel) {
-	if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
-		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
-		updateAmount();
-	}
-}
+/*//隐藏功能,使用明细金额作为收支金额
+ function deleteDetail(detailModel) {
+ if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
+ $.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+ updateAmount();
+ }
+ }
+ */
 
 function deleteApportion(apportionModel) {
 	var expenseAmount = $.$model.xGet("amount");
@@ -151,7 +153,7 @@ function deleteApportion(apportionModel) {
 
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
-	$.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);
+	// $.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
@@ -163,7 +165,7 @@ $.onWindowOpenDo(function() {
 
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
-	$.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);
+	// $.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
 });
 
@@ -184,26 +186,27 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
-	$.amount.field.addEventListener("singletap", function(e) {
-		if ($.$model.xGet("moneyExpenseDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
-			if (!fistChangeFlag) {
-				fistChangeFlag = 1;
-			}
-		}
-	});
+	/* //隐藏功能,使用明细金额作为收支金额
+	 $.amount.field.addEventListener("singletap", function(e) {
+	 if ($.$model.xGet("moneyExpenseDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
+	 if (!fistChangeFlag) {
+	 fistChangeFlag = 1;
+	 }
+	 }
+	 });
 
-	$.amount.beforeOpenKeyboard = function(confirmCB) {
-		if (fistChangeFlag === 1) {
-			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
-				fistChangeFlag = 2;
-				$.$model.xSet("useDetailsTotal", false);
-				confirmCB();
-			});
-
-		} else {
-			confirmCB();
-		}
-	}
+	 $.amount.beforeOpenKeyboard = function(confirmCB) {
+	 if (fistChangeFlag === 1) {
+	 Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
+	 fistChangeFlag = 2;
+	 $.$model.xSet("useDetailsTotal", false);
+	 confirmCB();
+	 });
+	 } else {
+	 confirmCB();
+	 }
+	 }
+	 */
 
 	$.moneyExpenseCategory.beforeOpenModelSelector = function() {
 		if (!$.$model.xGet("project")) {
@@ -318,6 +321,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
+			$.$model.xSet("useDetailsTotal", false);
+		}
+
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");

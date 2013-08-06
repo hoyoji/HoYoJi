@@ -19,6 +19,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var oldIncomeAmount = income.xGet("amount");
 
 	if (!$.$attrs.closeWithoutSave) {//从row打开时
+		/*
+		 //隐藏功能,使用明细金额作为收支金额
 		var moneyAccount = income.xGet("moneyAccount");
 		var newDetailAmount = $.$model.xGet("amount");
 		if (income.xGet("moneyIncomeDetails").length > 0) {
@@ -71,8 +73,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				$.saveModel(saveEndCB, saveErrorCB);
 			});
 		}
-
+*/
+$.saveModel(saveEndCB, saveErrorCB);
 	} else {
+		if (!oldIncomeAmount && oldIncomeAmount !== 0) {//去掉使用明细金额作为收支金额，在新增收支的form新增明细时检测form里没有amount，则使用明细总额为form的amount
+			$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
+		}
 		if (income.xGet("moneyIncomeDetails").length > 0) {
 			incomeAmount = income.xGet("amount");
 			$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
@@ -81,9 +87,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			});
 		}
-		if (!oldIncomeAmount || $.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+		if ($.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
 			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
-		} else {
+		} 
+		/*
+		//隐藏功能,使用明细金额作为收支金额
+		else {
 			Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
 				$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
 				incomeAmount = detailTotal;
@@ -91,8 +100,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				//增改的时候计算amount
 				income.trigger("xchange:amount", income);
 			});
-
 		}
+		*/
 		$.$model.trigger("xchange:amount", $.$model);
 		$.$model.trigger("xchange:name", $.$model);
 
