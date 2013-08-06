@@ -27,7 +27,7 @@
 				sortByField="foreignCurrency.name" groupByField="localCurrency.name" bottom="0" top="42"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="新增汇率" imagesFolder="/images/money/currency/exchange"
-		ids="addExchange"/>
+		buttons="新增汇率,更新全部汇率" imagesFolder="/images/money/currency/exchange"
+		ids="addExchange,updateAllExchanges"/>
 	</View>
 </Alloy>

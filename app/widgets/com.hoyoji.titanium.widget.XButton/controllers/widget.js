@@ -33,10 +33,30 @@ exports.addEventListener = function(eventName, callback) {
 exports.setEnabled = function(b) {
 	$.$view.setEnabled(b);
 	enabled = b;
+	if(!$.disabledMask){
+		$.disabledMask = Ti.UI.createView({
+			width : Ti.UI.FILL,
+			height : Ti.UI.FILL,
+			zIndex : 9999
+		});
+		$.disabledMask.addEventListener("touchstart", function(e){
+			e.cancelBubble = true;
+		});
+		$.disabledMask.addEventListener("touchend", function(e){
+			e.cancelBubble = true;
+		});
+		$.disabledMask.addEventListener("singletap", function(e){
+			e.cancelBubble = true;
+		});
+		$.$view.add($.disabledMask);
+	}	
 	if(b){
 		$.$view.setOpacity(1);
+		$.disabledMask.setVisible(false);
 	} else {
 		$.$view.setOpacity(0.3);
+		$.disabledMask.setVisible(true);
+		$.$view.setBackgroundColor("transparent");
 	}
 }
 
