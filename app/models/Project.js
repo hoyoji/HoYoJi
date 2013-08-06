@@ -73,22 +73,29 @@ exports.definition = {
 						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
 					}
 				});
-				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
-				if (actualTotalMoney < 0) {
-					actualTotalMoney = -actualTotalMoney;
-				}
+				this._actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				var actualTotalMoney = Math.abs(this._actualTotalMoney);
+				// if (actualTotalMoney < 0) {
+					// actualTotalMoney = -actualTotalMoney;
+				// }
 				return Number(actualTotalMoney.toFixed(2));
 			},
-			getActualTotalMoneyType : function() {
-				var actualTotalExpense = 0;
-				var actualTotalIncome = 0;
-				this.xGet("projectShareAuthorizations").forEach(function(item) {
-					if (item.xGet("state") === "Accept") {
-						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
-						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
-					}
-				});
-				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
+			getActualTotalMoneyType : function(cached) {
+				var actualTotalMoney;
+				if(this._actualTotalMoney && cached){
+					actualTotalMoney = this._actualTotalMoney;
+				} else {
+					var actualTotalExpense = 0;
+					var actualTotalIncome = 0;
+					this.xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("state") === "Accept") {
+							actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
+							actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+						}
+					});
+					
+					actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				}
 				if (actualTotalMoney > 0) {
 					return false;
 				}else{
