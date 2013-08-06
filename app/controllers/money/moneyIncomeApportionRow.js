@@ -135,7 +135,7 @@ function updateAmount() {
 			}
 		});
 		if (averageApportions.length > 0) {
-			var average = (incomeAmount - fixedTotal) / averageApportions.length;
+			var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
 			var averageTotal = 0;
 			for (var i = 0; i < averageApportions.length - 1; i++) {
 				averageApportions[i].xSet("amount", average);
