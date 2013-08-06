@@ -68,7 +68,11 @@ $.onWindowOpenDo(function() {
 			value = String.formatTime(d, "medium");	
 		}
 		if ($.$attrs.dataType === "Number" && typeof value === "number") {
-			value = value.toUserCurrency();
+			if($.$attrs.toFixed){
+				value = value.toFixed(Number($.$attrs.toFixed));
+			} else {
+				value = value.toUserCurrency();
+			}
 		}		
 		$.label.setText(value);
 	}

@@ -15,7 +15,7 @@ function changeForeignAmount() {
 	var rate = $.$model.xGet("rate");
 	var symbol = $.$model.xGet("foreignCurrency").xGet("symbol");
 	if (!isNaN(localCurrencyAmount)) {
-		var foreignCurrencyAmount = (localCurrencyAmount / rate).toUserCurrency();
+		var foreignCurrencyAmount = (localCurrencyAmount * rate).toUserCurrency();
 		$.foreignCurrencyAmount.setText("折算：" + symbol + foreignCurrencyAmount);
 	} else {
 		alert("请输入正确数字");
