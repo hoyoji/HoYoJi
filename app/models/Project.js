@@ -89,7 +89,7 @@ exports.definition = {
 					}
 				});
 				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
-				if (actualTotalMoney < 0) {
+				if (actualTotalMoney > 0) {
 					return false;
 				}else{
 					return true;

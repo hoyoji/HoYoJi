@@ -50,6 +50,7 @@
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
+				<Label width="100%" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限解释：自己表示只能访问自己的数据，增表示可以在这个项目下新增数据，改表示可以在这个项目下修改自己创建的数据，删表示可以在这个项目下删除自己创建的数据。</Label>
 				<View layout="vertical" height="Ti.UI.SIZE" id="shareAllProjectAuthorizationView" visible="false">
 					<View height="42" layout="horizontal">
 						<Label width="20%">权限</Label>
@@ -273,8 +274,7 @@
 							bindAttribute="projectShareMoneyPaybackDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">支出分类</Label>
-							<Label width="20%"></Label>
+							<Label left="0" width="40%">支出分类</Label>
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 							hightLight="false"
@@ -298,8 +298,8 @@
 							bindAttribute="projectShareMoneyExpenseCategoryDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收入分类</Label>
-							<Label width="20%"></Label>
+							<Label left="0" width="40%">收入分类</Label>
+							<!-- <Label width="20%"></Label> -->
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 							hightLight="false"
