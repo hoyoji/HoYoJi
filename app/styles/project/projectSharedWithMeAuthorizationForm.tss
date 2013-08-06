@@ -3,3 +3,10 @@
 	color : "black",
 	fontSize : 12
 }
+
+".firstRow": {
+	color: "#6e6d6d",
+	font: {
+		fontWeight: 'normal'
+	}
+}
