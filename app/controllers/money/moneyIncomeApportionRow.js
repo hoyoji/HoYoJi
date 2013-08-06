@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
 		$.deleteModel();
-	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User));
+	}, $.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User));
 
 	return menuSection;
 }
@@ -134,12 +134,17 @@ function updateAmount() {
 				averageApportions.push(item);
 			}
 		});
-		var average = (incomeAmount - fixedTotal) / averageApportions.length;
-		averageApportions.forEach(function(item) {
-			if (item.xGet("apportionType") === "Average") {
-				item.xSet("amount", average);
+		if (averageApportions.length > 0) {
+			var average = (incomeAmount - fixedTotal) / averageApportions.length;
+			var averageTotal = 0;
+			for (var i = 0; i < averageApportions.length - 1; i++) {
+				averageApportions[i].xSet("amount", average);
+				averageTotal += average;
 			}
-		});
+			if (averageApportions.length > 1) {
+				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyIncome").xGet("amount") - averageTotal);
+			}
+		}
 	}
 }
 

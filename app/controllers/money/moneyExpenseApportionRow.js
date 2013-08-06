@@ -1,10 +1,10 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onWindowOpenDo(function() {
- if($.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User){
- 	$.amount.$view.setHeight(0);
- 	$.localAmount.$view.setHeight(28);
- }
+	if ($.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User) {
+		$.amount.$view.setHeight(0);
+		$.localAmount.$view.setHeight(28);
+	}
 });
 
 $.makeContextMenu = function() {
@@ -94,7 +94,7 @@ $.onWindowOpenDo(function() {
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		console.info("++++++focus+"+$.amount.field.focus());
+		console.info("++++++focus+" + $.amount.field.focus());
 		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.amount.field.focus()) {
 			var fixedTotal = 0;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
@@ -103,7 +103,7 @@ $.onWindowOpenDo(function() {
 				}
 			});
 			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
-				console.info("++amountValue++"+ $.amount.getValue() + "++++fixedTotal+++"+fixedTotal);
+				console.info("++amountValue++" + $.amount.getValue() + "++++fixedTotal+++" + fixedTotal);
 				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
 			} else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
@@ -114,7 +114,7 @@ $.onWindowOpenDo(function() {
 
 if ($.$model.isNew()) {
 	updateAmount();
-} 
+}
 
 function updateAmount() {
 	var moneyExpenseApportionsArray = [];
@@ -135,12 +135,17 @@ function updateAmount() {
 				averageApportions.push(item);
 			}
 		});
-		var average = (expenseAmount - fixedTotal) / averageApportions.length;
-		averageApportions.forEach(function(item) {
-			if (item.xGet("apportionType") === "Average") {
-				item.xSet("amount", average);
+		if (averageApportions.length > 0) {
+			var average = (expenseAmount - fixedTotal) / averageApportions.length;
+			var averageTotal = 0;
+			for (var i = 0; i < averageApportions.length - 1; i++) {
+				averageApportions[i].xSet("amount", average);
+				averageTotal += average;
 			}
-		});
+			if (averageApportions.length > 1) {
+				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal);
+			}
+		}
 	}
 }
 
