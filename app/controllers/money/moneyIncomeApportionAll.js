@@ -57,7 +57,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "addAllIncomeApportionMember") {
 		selectedIncome.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 			var existApportion = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
-				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden;
+				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden && !model.__xDeleted;
 			}, $);
 			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length === 0) {
 				var incomeApportion = Alloy.createModel("MoneyIncomeApportion", {
@@ -86,10 +86,10 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			// if ((amountTotal + amount) !== selectedIncome.xGet("amount")) {
+			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Fixed");
 				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
-			// }
+			}
 		}
 	} else if (e.source.id === "average") {
 		var apportions = [];
@@ -108,10 +108,10 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			// if ((amountTotal + amount) !== selectedIncome.xGet("amount")) {
+			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Average");
 				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
-			// }
+			}
 		}
 	}
 }

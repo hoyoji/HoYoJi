@@ -48,7 +48,7 @@ function onFooterbarTap(e) {
 					alert("该成员尚未接受此项目，不能添加");
 				}
 			}
-		};
+		};  
 		attributes.title = "好友";
 		attributes.selectModelType = "ProjectShareAuthorization";
 		attributes.selectModelCanBeNull = false;
@@ -57,7 +57,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "addAllExpenseApportionMember") {
 		selectedExpense.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 			var existApportion = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
-				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden;
+				return model.xGet("friendUser") === projectShareAuthorization.xGet("friendUser") && !model.__xDeletedHidden && !model.__xDeleted;
 			}, $);
 			if (projectShareAuthorization.xGet("state") === "Accept" && existApportion.length === 0) {
 				// var amount = Number((selectedExpense.xGet("amount") * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
@@ -86,10 +86,10 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			// if ((amountTotal + amount) !== selectedExpense.xGet("amount")) {
+			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Fixed");
 				apportions[apportions.length - 1].xSet("amount", (selectedExpense.xGet("amount") - amountTotal));
-			// }
+			}
 		}
 	} else if (e.source.id === "average") {
 		var apportions = [];
@@ -108,10 +108,10 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			// if ((amountTotal + amount) !== selectedExpense.xGet("amount")) {
+			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Average");
 				apportions[apportions.length - 1].xSet("amount", (selectedExpense.xGet("amount") - amountTotal));
-			// }
+			}
 		}
 	}
 }
