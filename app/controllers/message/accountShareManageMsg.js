@@ -580,7 +580,6 @@ function importToLocalOperate() {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
 				$model : account
 			});
-			account.xAddToSave(accountShareMsgController.content);
 			accountShareData.accountDetails.map(function(accountDetail) {
 				var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
 					name : accountDetail.name,
@@ -593,6 +592,7 @@ function importToLocalOperate() {
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
 			accountShareMsgController.$view.addEventListener("contentready", function(){
+				account.xAddToSave(accountShareMsgController.content);
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			// moneyIncomeDetails.xAddToSave(accountShareMsgController.content);
@@ -614,7 +614,6 @@ function importToLocalOperate() {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
 				$model : account
 			});
-			account.xAddToSave(accountShareMsgController.content);
 			accountShareData.accountDetails.map(function(accountDetail) {
 				var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
 					name : accountDetail.name,
@@ -627,6 +626,7 @@ function importToLocalOperate() {
 			});
 			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);		
 			accountShareMsgController.$view.addEventListener("contentready", function(){
+				account.xAddToSave(accountShareMsgController.content);
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			// moneyExpenseDetails.xAddToSave(accountShareMsgController.content);
@@ -652,7 +652,6 @@ function importToLocalOperate() {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
 				$model : account
 			});
-			account.xAddToSave(accountShareMsgController.content);
 			accountShareData.accountDetails.map(function(accountDetail) {
 				var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
 					name : accountDetail.name,
@@ -665,6 +664,7 @@ function importToLocalOperate() {
 			});
 			account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
 			accountShareMsgController.$view.addEventListener("contentready", function(){
+				account.xAddToSave(accountShareMsgController.content);
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			} else {
@@ -686,7 +686,6 @@ function importToLocalOperate() {
 			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
 				$model : account
 			});
-			account.xAddToSave(accountShareMsgController.content);
 			accountShareData.accountDetails.map(function(accountDetail) {
 				var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
 					name : accountDetail.name,
@@ -699,6 +698,7 @@ function importToLocalOperate() {
 			});
 			account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
 			accountShareMsgController.$view.addEventListener("contentready", function(){
+				account.xAddToSave(accountShareMsgController.content);
 				accountShareMsgController.content.titleBar.dirtyCB();
 			});
 			}

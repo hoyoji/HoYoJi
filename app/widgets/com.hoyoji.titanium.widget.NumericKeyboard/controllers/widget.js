@@ -11,7 +11,7 @@ exports.close = function() {
 	
 	activeTextField = null;
 	var animation = Titanium.UI.createAnimation();
-	animation.bottom = -168;
+	animation.bottom = -252;
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener("complete", function(){
@@ -19,7 +19,7 @@ exports.close = function() {
 	});
 	$.keyboard.animate(animation);
 }
-
+52
 function cancelBubbleTouchStart(e){
 		e.cancelBubble = true;
 }
