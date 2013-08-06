@@ -5,40 +5,36 @@
 				id="picture" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "pictureId"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" top="42" left="66" width="100" height="Ti.UI.SIZE" class="firstRow"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" top="57" left="66" width="100" height="Ti.UI.SIZE" class="firstRow"
 				bindModel = "$.$model" autoInit="false"
 				bindAttribute = "getSharePercentage()"
 			/>
 			<!-- <Label id="checkAccept" visible="false" color="#6e6d6d" top="15" left="66" class="firstRow">等待接受</Label> -->
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="20" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="30" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="secondRow"
 				id="friendDisplayName" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "getFriendDisplayName()"
 			/>
-			<View top="16" right="5" layout="horizontal" horizontalWrap="false" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow"
-					id="actualTotalText" autoInit="false"
-					bindModel = "$.$model"
-					bindAttribute = "getActualTotalText()"
-				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow"
-					id="actualTotalMoney" autoInit="false"
-					bindModel = "$.$model"
-					bindAttribute = "getActualTotalMoney()"
-				/>
-			</View>
-			<View top="36" right="5" layout="horizontal" horizontalWrap="false" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow"
-					id="apportionedTotalText" autoInit="false"
-					bindModel = "$.$model"
-					bindAttribute = "getSettlementText()"
-				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow"
-					id="apportionedTotalMoney" autoInit="false"
-					bindModel = "$.$model"
-					bindAttribute = "getSettlementMoney()"
-				/>
-			</View>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="10" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="actualTotalText" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "getActualTotalText()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="20" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="actualTotalMoney" autoInit="false" dataType="Number"
+				bindModel = "$.$model"
+				bindAttribute = "getActualTotalMoney()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="42" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="apportionedTotalText" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "getSettlementText()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="52" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				id="apportionedTotalMoney" autoInit="false" dataType="Number"
+				bindModel = "$.$model"
+				bindAttribute = "getSettlementMoney()"
+			/>
 		</View>
 	</View>
 </Alloy>

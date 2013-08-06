@@ -10,6 +10,8 @@ $.onRowTap = function(e){
 			saveableMode : "read"
 		});
 		return false;
+	}else{
+		alert("只能查看自己的权限");
 	}
 }
 

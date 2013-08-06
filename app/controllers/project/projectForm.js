@@ -5,6 +5,9 @@ $.onWindowOpenDo(function() {
 });
 
 if ($.$model.isNew()) {
+	$.$model.xSet("currencyId", "CNY");
+	$.$model.xGet("currency");
+	
 	var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 		name : "日常收入",
 		project : $.$model,
@@ -110,4 +113,5 @@ if ($.$model.isNew()) {
 
 $.parentProject.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
+$.currency.UIInit($, $.getCurrentWindow());
 

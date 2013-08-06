@@ -5,6 +5,7 @@ exports.definition = {
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
+			currencyId : "TEXT NOT NULL",
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
 			depositeIncomeCategoryId : "TEXT",
@@ -19,6 +20,7 @@ exports.definition = {
 		belongsTo : {
 			ownerUser : { type : "User", attribute : "projects" },
 			parentProject : { type : "Project", attribute : "subProjects" },
+			currency : {type : "Currency", attribute : null},
 			defaultIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
 			defaultExpenseCategory : {type : "MoneyExpenseCategory", attribute : null},
 			depositeIncomeCategory : {type : "MoneyIncomeCategory", attribute : null},
@@ -60,6 +62,37 @@ exports.definition = {
 						};
 					}
 					xValidateComplete(error);
+				}
+			},
+			getActualTotalMoney : function() {
+				var actualTotalExpense = 0;
+				var actualTotalIncome = 0;
+				this.xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("state") === "Accept") {
+						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
+						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+					}
+				});
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				if (actualTotalMoney < 0) {
+					actualTotalMoney = -actualTotalMoney;
+				}
+				return Number(actualTotalMoney.toFixed(2));
+			},
+			getActualTotalMoneyType : function() {
+				var actualTotalExpense = 0;
+				var actualTotalIncome = 0;
+				this.xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("state") === "Accept") {
+						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
+						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+					}
+				});
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				if (actualTotalMoney < 0) {
+					return false;
+				}else{
+					return true;
 				}
 			},
 			xDelete : function(xFinishCallback, options) {

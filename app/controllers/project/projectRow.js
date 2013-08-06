@@ -63,4 +63,17 @@ $.makeContextMenu = function(e, isSelectMode) {
 	return menuSection;
 }
 
+if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+	$.projectImage.setImage("/images/project/projectAll/myProjectsTable@2x.png");
+}else{
+	$.projectImage.setImage("/images/project/projectAll/sharedWithMeTable@2x.png");
+}
+
+if($.$model.getActualTotalMoneyType()){
+	$.actualTotalMoney.label.setColor("#329600");
+}else{
+	$.actualTotalMoney.label.setColor("#c80032");
+}
+
 $.projectName.UIInit($, $.getCurrentWindow());
+$.actualTotalMoney.UIInit($, $.getCurrentWindow());

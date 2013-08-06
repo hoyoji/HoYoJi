@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-var activeProject = Alloy.createModel("Project", {name : "我的收支", ownerUser : $.$model}).xAddToSave($);
+var activeProject = Alloy.createModel("Project", {name : "我的收支", currencyId : "CNY", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeProject", activeProject);
 	
 Alloy.createModel("ProjectShareAuthorization", {
