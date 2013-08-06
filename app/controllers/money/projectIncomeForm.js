@@ -29,7 +29,7 @@ var fistChangeFlag;
 if ($.saveableMode === "read") {
 	// $.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
-	$.amount.$view.setHeight(0);
+	$.amount.$view.setHeight(42);
 	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
