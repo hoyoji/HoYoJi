@@ -404,6 +404,13 @@ $.onWindowOpenDo(function() {
 						});
 						$.footerBar.setParent($.$view);
 						$.footerBar.on("singletap", onFooterbarTap);
+					} else if($.$model.xGet('type') === "Project.Deposite.DeleteResponse"){
+						$.$model.save({
+							messageState : "closed"
+						}, {
+							wait : true,
+							patch : true
+						});
 					}
 				}
 				
