@@ -141,9 +141,7 @@ function updateAmount() {
 				averageApportions[i].xSet("amount", average);
 				averageTotal += average;
 			}
-			if (averageApportions.length > 1) {
 				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyIncome").xGet("amount") - averageTotal);
-			}
 		}
 	}
 }
