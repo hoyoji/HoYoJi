@@ -18,7 +18,7 @@ $.searchButton.addEventListener("singletap", function(e) {
 	loading = true;
 	$.userCollection.reset();
 	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
-	Alloy.Globals.Server.getData([{
+	Alloy.Globals.Server.findData([{
 		__dataType : "User",
 		userName : $.search.getValue()
 	}], function(data) {

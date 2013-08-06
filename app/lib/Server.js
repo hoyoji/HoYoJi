@@ -29,6 +29,9 @@
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
 			},
+			findData : function(data, xFinishedCallback, xErrorCallback, target) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData");
+			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
 				// this.searchData("Project", projectIds, function(collection) {
 
