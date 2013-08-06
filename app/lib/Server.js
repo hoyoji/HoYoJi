@@ -409,13 +409,17 @@
 									successCB(exchanges);
 								}
 							} else {
-								errorCount ++;
-								errorCB('获取汇率出错');
+								if(errorCount === 0){
+									errorCount ++;
+									errorCB('获取汇率出错');
+								}
 							}
 						});
 					} catch(e) {
-						 errorCount ++;
-						errorCB(e);
+						if(errorCount === 0){
+							errorCount ++;
+							errorCB(e);
+						}
 					}
 				});
 			}			
