@@ -71,15 +71,16 @@ if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 
 $.onWindowOpenDo(function() {
 	setActualTotalMoneyColor();
-	$.$model.on("sync",setActualTotalMoneyColor);
+	$.$model.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.off("sync",setActualTotalMoneyColor);
+	$.$model.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
 });
 
 function setActualTotalMoneyColor(){
-	if($.$model.getActualTotalMoneyType()){
+	$.actualTotalMoney.refresh();
+	if($.$model.getActualTotalMoneyType(true)){
 		$.actualTotalMoney.label.setColor("#329600");
 	}else{
 		$.actualTotalMoney.label.setColor("#c80032");
