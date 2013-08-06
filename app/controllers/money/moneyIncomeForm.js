@@ -153,7 +153,7 @@ function deleteApportion(apportionModel) {
 
 $.onWindowOpenDo(function() {
 	$.$model.on("xchange:amount", updateAmount);
-	$.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);
+	// $.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
 
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
@@ -165,7 +165,7 @@ $.onWindowOpenDo(function() {
 
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
-	$.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);
+	// $.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyIncomeApportions").off("xdelete", deleteApportion);
 });
 
