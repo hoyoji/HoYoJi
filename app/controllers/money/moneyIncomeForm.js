@@ -108,12 +108,14 @@ function updateAmount() {
 	$.amount.field.fireEvent("change");
 }
 
+/*//隐藏功能,使用明细金额作为收支金额
 function deleteDetail(detailModel) {
 	if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
 		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
 		updateAmount();
 	}
 }
+*/
 
 function deleteApportion(apportionModel) {
 	var incomeAmount = $.$model.xGet("amount");
@@ -184,6 +186,7 @@ if ($.saveableMode === "read") {
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
+/* //隐藏功能,使用明细金额作为收支金额
 	$.amount.field.addEventListener("singletap", function(e) {
 		if ($.$model.xGet("moneyIncomeDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
 			if (!fistChangeFlag) {
@@ -204,6 +207,7 @@ if ($.saveableMode === "read") {
 			confirmCB();
 		}
 	}
+ */
 
 	$.moneyIncomeCategory.beforeOpenModelSelector = function() {
 		if (!$.$model.xGet("project")) {
@@ -318,6 +322,10 @@ if ($.saveableMode === "read") {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
+			$.$model.xSet("useDetailsTotal", false);
+		}
+		
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
