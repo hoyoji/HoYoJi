@@ -136,13 +136,14 @@ function updateAmount() {
 			}
 		});
 		if (averageApportions.length > 0) {
-			var average = (expenseAmount - fixedTotal) / averageApportions.length;
+			var average = Number(((expenseAmount - fixedTotal) / averageApportions.length).toFixed(2));
 			var averageTotal = 0;
 			for (var i = 0; i < averageApportions.length - 1; i++) {
 				averageApportions[i].xSet("amount", average);
 				averageTotal += average;
 			}
 			if (averageApportions.length > 1) {
+				console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyExpense").xGet("amount") - averageTotal));
 				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal);
 			}
 		}
