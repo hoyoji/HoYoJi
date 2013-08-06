@@ -779,6 +779,9 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 }
 $.onWindowOpenDo(function() {
+	if($.$model.xGet("friendUserId") !== Alloy.Models.User.id){
+		$.explainAuthorizationLabel.setVisible(true);
+	}
 	if ($.$model.isNew()) {
 		addSharePercentage($.$model);
 	}

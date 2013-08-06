@@ -404,7 +404,7 @@ $.onWindowOpenDo(function() {
 						});
 						$.footerBar.setParent($.$view);
 						$.footerBar.on("singletap", onFooterbarTap);
-					} else if($.$model.xGet('type') === "Project.Deposite.DeleteResponse"){
+					} else if($.$model.xGet('type') === "Project.Deposite.DeleteResponse" || $.$model.xGet('type') === "Project.Deposite.Response"){
 						$.$model.save({
 							messageState : "closed"
 						}, {
