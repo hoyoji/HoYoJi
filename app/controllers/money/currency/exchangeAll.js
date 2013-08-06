@@ -2,7 +2,6 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.exchangesTable.UIInit($, $.getCurrentWindow());
 
-var localCurrency = Alloy.Models.User.xGet("activeCurrency");
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增汇率", function() {
@@ -16,7 +15,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 // $.titleBar.bindXTable($.exchangesTable);
 
-var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({localCurrency : Alloy.Models.User.xGet("activeCurrency")}, $);
+var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({}, $);
 $.exchangesTable.addCollection(collection);
 $.exchangesTable.autoHideFooter($.footerBar);
 
@@ -26,5 +25,5 @@ function onFooterbarTap(e){
 	}
 }
 
-$.localCurrencySymbol.UIInit($, $.getCurrentWindow());
-$.localCurrencyName.UIInit($, $.getCurrentWindow());
+// $.localCurrencySymbol.UIInit($, $.getCurrentWindow());
+// $.localCurrencyName.UIInit($, $.getCurrentWindow());
