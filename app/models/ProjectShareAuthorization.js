@@ -237,7 +237,7 @@ exports.definition = {
 				}
 				var projectCurrency = this.xGet("project").xGet("currency");
 					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchanges = userCurrency.getExchanges(projectCurrency);
 					var exchange = 1;
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");
@@ -287,7 +287,7 @@ exports.definition = {
 				// console.info("apportionedTotalExpense+++++++" + apportionedTotalExpense + "+++++++++apportionedTotalIncome" + apportionedTotalIncome)
 				var projectCurrency = this.xGet("project").xGet("currency");
 					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchanges = userCurrency.getExchanges(projectCurrency);
 					var exchange = 1;
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");

@@ -69,7 +69,7 @@ exports.definition = {
 				} else {
 					var projectCurrency = this.xGet("moneyExpense").xGet("project").xGet("currency");
 					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchanges = userCurrency.getExchanges(projectCurrency);
 					var exchange = 1;
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");

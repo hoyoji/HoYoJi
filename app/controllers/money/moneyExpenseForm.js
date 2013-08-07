@@ -192,7 +192,7 @@ $.onWindowCloseDo(function() {
 });
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
-	$.localAmountContainer.setHeight(42);
+	$.localAmountContainer.setHeight(84);
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
@@ -258,7 +258,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = model.xGet("project").xGet("currency").getExchanges(moneyAccount.xGet("currency"));
+			var exchanges = moneyAccount.xGet("currency").getExchanges(model.xGet("project").xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
@@ -386,8 +386,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrency : $.$model.xGet("project").xGet("currency"),
-					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					foreignCurrency : $.$model.xGet("project").xGet("currency"),
 					rate : $.$model.xGet("exchangeRate"),
 					ownerUser : Alloy.Models.User
 				});
@@ -552,6 +552,7 @@ $.picture.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
+$.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
