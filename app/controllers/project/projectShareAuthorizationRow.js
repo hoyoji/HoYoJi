@@ -122,7 +122,7 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 	var averageTotalPercentage = 100 - fixedSharePercentage;
 	
 	if(averageLength > 0){
-		var averagePercentage = Number((averageTotalPercentage/averageLength).toFixed(2));
+		var averagePercentage = Number((averageTotalPercentage/averageLength).toFixed(4));
 		var toFixedAveragePercentage = 0;
 		averageSharePercentageCollections.map(function(averageSharePercentageCollection){
 			toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
@@ -134,7 +134,7 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 		});
 		if(averageTotalPercentage !== toFixedAveragePercentage){
 			if(localProjectShareAuthorization){
-				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
+				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xSave({
 							syncFromServer : true

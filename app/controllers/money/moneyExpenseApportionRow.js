@@ -86,6 +86,13 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", editApportionType);
 });
 
+$.amount.field.addEventListener("singletap",function(){
+	console.info("+++focus+"+ $.amount.field.focus());
+	if($.$model.xGet("apportionType") === "Fixed"){
+		$.$model.apportionFocus = true;
+	}
+});
+
 var oldAmount;
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
@@ -95,7 +102,8 @@ $.onWindowOpenDo(function() {
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
 		console.info("++++++focus+" + $.amount.field.focus());
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.amount.field.focus()) {
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.$model.apportionFocus) {
+			$.$model.apportionFocus = false;
 			var fixedTotal = 0;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
 				if (!item.__xDeletedHidden && !item.__xDeleted && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
@@ -142,10 +150,10 @@ function updateAmount() {
 				averageApportions[i].xSet("amount", average);
 				averageTotal += average;
 			}
-			if (averageApportions.length > 1) {
-				console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyExpense").xGet("amount") - averageTotal));
-				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal);
-			}
+
+			console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyExpense").xGet("amount") - averageTotal));
+			averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal - fixedTotal);
+
 		}
 	}
 }

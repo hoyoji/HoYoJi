@@ -86,10 +86,8 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Fixed");
 				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
-			}
 		}
 	} else if (e.source.id === "average") {
 		var apportions = [];
@@ -108,10 +106,8 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-			if (apportions.length > 1) {
 				apportions[apportions.length - 1].xSet("apportionType", "Average");
 				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
-			}
 		}
 	}
 }
