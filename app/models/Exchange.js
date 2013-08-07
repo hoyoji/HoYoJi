@@ -49,9 +49,9 @@ exports.definition = {
 							};
 						}
 
-						var currencyPositive = Alloy.Models.User.xGet("exchanges").xCreateFilter({
-							localCurrency : localCurrency,
-							foreignCurrency : foreignCurrency
+						var currencyPositive = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : localCurrency.xGet("id"),
+							foreignCurrencyId : foreignCurrency.xGet("id")
 						});
 						// var currencyNegative = Alloy.Models.User.xGet("exchanges").xCreateFilter({
 						// localCurrency : foreignCurrency,
@@ -59,21 +59,22 @@ exports.definition = {
 						// });
 						// if(currencyPositive.length>0 || currencyNegative.length>0){
 						if (this.isNew()) {
-							if (currencyPositive.length > 0) {
+							if (currencyPositive.id) {
 								error = {
 									msg : "新增失败，汇率已存在"
 								};
 							}
 						} else {
-							if (currencyPositive.length > 0 && this.xGet("id") !== currencyPositive.at(0).xGet("id")) {
+							if (currencyPositive.id && this.xGet("id") !== currencyPositive.id) {
 								error = {
 									msg : "修改失败，币种已存在"
 								};
-							} else if (currencyPositive.length > 1 && this.xGet("id") === currencyPositive.at(0).xGet("id")) {
-								error = {
-									msg : "修改失败，币种已存在"
-								};
-							}
+							} 
+							// else if (currencyPositive.length > 1 && this.xGet("id") === currencyPositive.at(0).xGet("id")) {
+								// error = {
+									// msg : "修改失败，币种已存在"
+								// };
+							// }
 						}
 					}
 					xValidateComplete(error);
@@ -100,6 +101,9 @@ exports.definition = {
 			},
 			getForeignCurrency : function() {
 				return this.xGet("foreignCurrency").xGet("name");
+			},
+			getLocalCurrency : function() {
+				return this.xGet("localCurrency").xGet("name");
 			},
 			getAutoUpdate : function() {
 				if(this.xGet("autoUpdate")){

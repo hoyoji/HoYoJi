@@ -8,5 +8,9 @@
 				sortByField="name" sortReverse="true" pageSize="10"
 				bottom="0" top="0"/>
 		</View>
+
+		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
+        	buttons="添加币种" imagesFolder="/images/money/currency/currencyAll"
+        	ids="addCurrency"/>		
 	</View>
 </Alloy>

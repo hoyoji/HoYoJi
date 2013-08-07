@@ -1,0 +1,9 @@
+".container": {
+	backgroundColor: "#f5f5f5"
+}
+".secondRow": {
+	font: {
+		fontSize: 10,
+		fontWeight: 'normal'
+	}
+}

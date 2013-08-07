@@ -1,5 +1,6 @@
 ( function() {
 		var dataUrl = "http://2.money.app100697798.twsapp.com/";
+		Ti.include('suds.js');
 		exports.Server = {
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				//var msg = Alloy.createModel("Message");
@@ -28,6 +29,9 @@
 			},
 			getData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
+			},
+			findData : function(data, xFinishedCallback, xErrorCallback, target) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData");
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
 				// this.searchData("Project", projectIds, function(collection) {
@@ -348,6 +352,76 @@
 					dbTrans.commit();
 					xFinishedCallback();
 				}, xErrorCallback, "syncPush");
-			}
+			},
+			getExchangeRate : function(fromCurrency, toCurrency, successCB, errorCB) {
+				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
+				var callparams = {
+					FromCurrency : fromCurrency,
+					ToCurrency : toCurrency
+				};
+
+				var suds = new SudsClient({
+					endpoint : url,
+					targetNamespace : 'http://www.webserviceX.NET/'
+				});
+
+				try {
+					suds.invoke('ConversionRate', callparams, function(xmlDoc) {
+						var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
+						if (results && results.length > 0) {
+							var result = results.item(0);
+							successCB(Number(results.item(0).text).toFixed(4));
+						} else {
+							errorCB('获取汇率出错');
+						}
+					});
+				} catch(e) {
+					errorCB(e);
+				}
+			},
+			getExchangeRates : function(exchanges, successCB, errorCB) {
+				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
+				var exchangesCount = exchanges.length;
+				var successCount = 0, errorCount = 0;
+				
+				exchanges.forEach(function(exchange){
+					if(errorCount > 0){
+						return;
+					}
+					var callparams = {
+						FromCurrency : exchange.fromCurrency,
+						ToCurrency : exchange.toCurrency
+					};
+	
+					var suds = new SudsClient({
+						endpoint : url,
+						targetNamespace : 'http://www.webserviceX.NET/'
+					});
+	
+					try {
+						suds.invoke('ConversionRate', callparams, function(xmlDoc) {
+							var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
+							if (results && results.length > 0) {
+								var result = results.item(0);
+								exchange.rate = Number(results.item(0).text).toFixed(4);
+								successCount ++;
+								if(successCount === exchangesCount){
+									successCB(exchanges);
+								}
+							} else {
+								if(errorCount === 0){
+									errorCount ++;
+									errorCB('获取汇率出错');
+								}
+							}
+						});
+					} catch(e) {
+						if(errorCount === 0){
+							errorCount ++;
+							errorCB(e);
+						}
+					}
+				});
+			}			
 		}
 	}());

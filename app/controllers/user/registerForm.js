@@ -1,5 +1,10 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
+activeCurrency.attributes["id"] = "CNY";
+
+$.$model.xSet("activeCurrency", activeCurrency);
+
 var activeProject = Alloy.createModel("Project", {name : "我的收支", currencyId : "CNY", ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeProject", activeProject);
 	
@@ -18,9 +23,6 @@ $.$model.xSet("defaultFriendCategory", defaultFriendCategory);
 var messageBox = Alloy.createModel("MessageBox", {ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("messageBox", messageBox);
 
-// var activeCurrency = Alloy.createModel("Currency", {name : "人民币", symbol : "￥", code : "CNY", ownerUser : $.$model}).xAddToSave($);
-// activeCurrency.attributes["id"] = "CNY";
-$.$model.xSet("activeCurrencyId", "CNY");
 
 var activeMoneyAccount = Alloy.createModel("MoneyAccount", {name : "现金", currencyId : "CNY", currentBalance : 0, sharingType : "Private", accountType : "Cash",ownerUser : $.$model}).xAddToSave($);
 $.$model.xSet("activeMoneyAccount", activeMoneyAccount);

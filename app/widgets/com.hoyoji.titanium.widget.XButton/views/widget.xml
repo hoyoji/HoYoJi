@@ -8,7 +8,5 @@
 		<!-- <Button id="button" width="Ti.UI.FILL" height="Ti.UI.FILL"
 			backgroundColor="transparent" backgroundImage="none" zIndex="3" color="transparent"/> -->
 		<Label id="title"/>
-		<!-- <View id="disabledMask" backgroundColor="#40FFFFFF" 
-			width="Ti.UI.FILL" height="Ti.UI.FILL" visible="false"></View> -->
 	</View>
 </Alloy>
