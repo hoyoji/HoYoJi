@@ -372,13 +372,27 @@
 							var result = results.item(0);
 							successCB(Number(results.item(0).text).toFixed(4));
 						} else {
-							errorCB('获取汇率出错');
+							errorCB({
+								__summary : {
+									msg : '获取汇率出错'
+								}
+							});
 						}
 					}, function(e) {
-						errorCB("连接服务器出错：" + e.code);
+						errorCB({
+							__summary : {
+								msg : "连接服务器出错：" + e.code,
+								code : e.code
+							}
+						});
 					});
 				} catch(e) {
-					errorCB(e);
+					errorCB({
+						__summary : {
+							msg : "连接服务器出错：" + e.code,
+							code : e.code
+						}
+					});
 				}
 			},
 			getExchangeRates : function(exchanges, successCB, errorCB) {
@@ -413,19 +427,33 @@
 							} else {
 								if (errorCount === 0) {
 									errorCount++;
-									errorCB('获取汇率出错');
+									errorCB({
+										__summary : {
+											msg : '获取汇率出错'
+										}
+									});
 								}
 							}
 						}, function(e) {
 							if (errorCount === 0) {
 								errorCount++;
-								errorCB("连接服务器出错：" + e.code);
+								errorCB({
+									__summary : {
+										msg : "连接服务器出错：" + e.code,
+										code : e.code
+									}
+								});
 							}
 						});
 					} catch(e) {
 						if (errorCount === 0) {
 							errorCount++;
-							errorCB(e);
+							errorCB({
+								__summary : {
+									msg : "连接服务器出错：" + e.code,
+									code : e.code
+								}
+							});
 						}
 					}
 				});
