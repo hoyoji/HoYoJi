@@ -24,6 +24,29 @@ $.apportion.addEventListener("singletap", function() {
 	}
 });
 
+$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if(!$.$model.xGet("moneyAccount")){
+		alert("请选择账户");
+		return;
+	}
+	if(!$.$model.xGet("project")){
+		alert("请选择项目");
+		return;
+	}
+	Alloy.Globals.Server.getExchangeRate(
+		$.$model.xGet("moneyAccount").xGet("currency").id,
+		$.$model.xGet("project").xGet("currency").id,
+		function(rate){
+			$.exchangeRate.setValue(rate);
+			$.exchangeRate.field.fireEvent("change");
+		},
+		function(e){
+			alert(e);
+		}
+	);
+});
+
+
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 		var fixedTotal = 0;

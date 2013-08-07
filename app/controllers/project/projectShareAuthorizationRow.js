@@ -27,6 +27,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	menuSection.add($.createContextMenuItem("移除共享", function() {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
+			//如果projectShareAuthorization中的数据都为0说明跟好友间没有账务往来，允许删除
 			if($.$model.xGet("actualTotalIncome") === 0 
 			&& $.$model.xGet("actualTotalExpense") === 0 
 			&& $.$model.xGet("apportionedTotalIncome") === 0 
@@ -35,9 +36,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 			&& $.$model.xGet("sharedTotalExpense") === 0){
 				var editSharePercentageAuthorization = [];
 				var subProjectShareAuthorizationIds = [];
-				
+				//重新计算计算其他成员的占股
 				deleteSharePercentage($.$model,editSharePercentageAuthorization);
-				
+				//把子项目移除共享
 				$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
 					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 						projectId : subProject.xGet("id"),
@@ -50,13 +51,16 @@ $.makeContextMenu = function(e, isSelectMode) {
 						subProjectShareAuthorization.xSave({
 							syncFromServer : true
 						});
+						//重新计算计算子项目其他成员的占股
 						deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
 						editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
 					}
 				});
 				$.$model.xSet("state", "Delete");
 				editSharePercentageAuthorization.push($.$model.toJSON());
+				//去服务器上修改刚刚移除共享的成员
 				Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+					//发送移除消息给好友
 					Alloy.Globals.Server.sendMsg({
 						id : guid(),
 						"toUserId" : $.$model.xGet("friendUserId"),
@@ -65,7 +69,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 						"messageState" : "unread",
 						"messageTitle" : Alloy.Models.User.xGet("userName"),
 						"date" : (new Date()).toISOString(),
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再分享项目" + $.$model.xGet("project").xGet("name") + "给您",
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "已经将您移除出共享项目：项目" + $.$model.xGet("project").xGet("name"),
 						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 						"messageData" : JSON.stringify({
 							shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),

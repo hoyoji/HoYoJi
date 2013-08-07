@@ -51,8 +51,12 @@
 			}
 
 			$.convertModelValue = function(value) {
-				if ( typeof value === "number") {
-					return value.toUserCurrency();
+				if (typeof value === "number") {
+					if($.$attrs.toFixed){
+						return 	value.toFixed(Number($.$attrs.toFixed));
+					} else {
+						return value.toUserCurrency();
+					}
 				}
 				return value;
 			}

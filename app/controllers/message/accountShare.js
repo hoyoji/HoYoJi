@@ -59,27 +59,27 @@ $.onWindowOpenDo(function() {
 		accountRow2.add(accountAmountLabel);
 		accountRow2.add(accountAmountContentLabel);
 		
-		var accountRow3 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountExpenseTypeLabel = Ti.UI.createLabel({
-			text : "是否预付：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountExpenseTypeContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("expenseType"),
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountExpenseTypeLabel);
-		accountRow3.add(accountExpenseTypeContentLabel);
+		// var accountRow3 = Titanium.UI.createView({
+			// layout : "horizontal",
+			// horizontalWrap : false,
+			// height : "42"
+		// });
+		// var accountExpenseTypeLabel = Ti.UI.createLabel({
+			// text : "是否预付：",
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "30%"
+		// });
+		// var accountExpenseTypeContentLabel = Ti.UI.createLabel({
+			// text : selectedAccount.xGet("expenseType"),
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "70%"
+		// });
+		// accountRow3.add(accountExpenseTypeLabel);
+		// accountRow3.add(accountExpenseTypeContentLabel);
 		
 		var accountRow4 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -104,7 +104,7 @@ $.onWindowOpenDo(function() {
 		accountRow4.add(accountDetailContentLabel);
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
-		$.account.add(accountRow3);
+		// $.account.add(accountRow3);
 		$.account.add(accountRow4);
 		
 		$.accountDetails = [];
@@ -165,27 +165,27 @@ $.onWindowOpenDo(function() {
 		accountRow2.add(accountAmountLabel);
 		accountRow2.add(accountAmountContentLabel);
 		
-		var accountRow3 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "是否预收：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : selectedAccount.xGet("incomeType"),
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountIncomeTypeLabel);
-		accountRow3.add(accountIncomeTypeContentLabel);
+		// var accountRow3 = Titanium.UI.createView({
+			// layout : "horizontal",
+			// horizontalWrap : false,
+			// height : "42"
+		// });
+		// var accountIncomeTypeLabel = Ti.UI.createLabel({
+			// text : "是否预收：",
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "30%"
+		// });
+		// var accountIncomeTypeContentLabel = Ti.UI.createLabel({
+			// text : selectedAccount.xGet("incomeType"),
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "70%"
+		// });
+		// accountRow3.add(accountIncomeTypeLabel);
+		// accountRow3.add(accountIncomeTypeContentLabel);
 		
 		var accountRow4 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -211,7 +211,7 @@ $.onWindowOpenDo(function() {
 		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
-		$.account.add(accountRow3);
+		// $.account.add(accountRow3);
 		$.account.add(accountRow4);
 		
 		$.accountDetails = [];
@@ -271,28 +271,28 @@ $.onWindowOpenDo(function() {
 		accountRow2.add(accountAmountLabel);
 		accountRow2.add(accountAmountContentLabel);
 		
-		var accountRow3 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "还款时间：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var returnDate = new Date(selectedAccount.xGet("returnDate"));
-		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : String.formatDate(returnDate, "medium") + " " + String.formatTime(returnDate, "medium"),
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountIncomeTypeLabel);
-		accountRow3.add(accountIncomeTypeContentLabel);
+		// var accountRow3 = Titanium.UI.createView({
+			// layout : "horizontal",
+			// horizontalWrap : false,
+			// height : "42"
+		// });
+		// var accountIncomeTypeLabel = Ti.UI.createLabel({
+			// text : "还款时间：",
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "30%"
+		// });
+		// var returnDate = new Date(selectedAccount.xGet("returnDate"));
+		// var accountIncomeTypeContentLabel = Ti.UI.createLabel({
+			// text : String.formatDate(returnDate, "medium") + " " + String.formatTime(returnDate, "medium"),
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "70%"
+		// });
+		// accountRow3.add(accountIncomeTypeLabel);
+		// accountRow3.add(accountIncomeTypeContentLabel);
 		
 		var accountRow4 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -318,7 +318,7 @@ $.onWindowOpenDo(function() {
 		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
-		$.account.add(accountRow3);
+		// $.account.add(accountRow3);
 		$.account.add(accountRow4);
 	}else if(selectedAccount.config.adapter.collection_name === "MoneyLend"){
 		$.$model.xSet("detail", "分享借出");
@@ -367,28 +367,28 @@ $.onWindowOpenDo(function() {
 		accountRow2.add(accountAmountLabel);
 		accountRow2.add(accountAmountContentLabel);
 		
-		var accountRow3 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountIncomeTypeLabel = Ti.UI.createLabel({
-			text : "收款时间：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var paybackDate = new Date(selectedAccount.xGet("paybackDate"));
-		var accountIncomeTypeContentLabel = Ti.UI.createLabel({
-			text : String.formatDate(paybackDate, "medium") + " " + String.formatTime(paybackDate, "medium"),
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountIncomeTypeLabel);
-		accountRow3.add(accountIncomeTypeContentLabel);
+		// var accountRow3 = Titanium.UI.createView({
+			// layout : "horizontal",
+			// horizontalWrap : false,
+			// height : "42"
+		// });
+		// var accountIncomeTypeLabel = Ti.UI.createLabel({
+			// text : "收款时间：",
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "30%"
+		// });
+		// var paybackDate = new Date(selectedAccount.xGet("paybackDate"));
+		// var accountIncomeTypeContentLabel = Ti.UI.createLabel({
+			// text : String.formatDate(paybackDate, "medium") + " " + String.formatTime(paybackDate, "medium"),
+			// height : 42,
+			// color : "gray",
+			// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+			// width : "70%"
+		// });
+		// accountRow3.add(accountIncomeTypeLabel);
+		// accountRow3.add(accountIncomeTypeContentLabel);
 		
 		var accountRow4 = Titanium.UI.createView({
 			layout : "horizontal",
@@ -414,7 +414,7 @@ $.onWindowOpenDo(function() {
 		
 		$.account.add(accountRow1);
 		$.account.add(accountRow2);
-		$.account.add(accountRow3);
+		// $.account.add(accountRow3);
 		$.account.add(accountRow4);
 	}else if(selectedAccount.config.adapter.collection_name === "MoneyPayback"){
 		$.$model.xSet("detail", "分享收款");
@@ -573,6 +573,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			account[attr] = selectedAccount.xGet(attr);
 		}
 		$.$model.xSet("date", date);
+		//如果发送的账务是支出或者收入，要把明细也一起放到JSON发给好友
 		if(selectedAccount.config.adapter.collection_name === "MoneyExpense" || selectedAccount.config.adapter.collection_name === "MoneyIncome"){
 			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,

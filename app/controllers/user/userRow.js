@@ -16,6 +16,7 @@ function sendAddFriendMessage(friendlength){
 		alert("不能重复添加好友！");
 	} else {
 		if ($.$model.xGet("newFriendAuthentication") === "none") {
+			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("id")});
 			if(!toUser.id){
 				$.$model.save();
@@ -32,15 +33,18 @@ function sendAddFriendMessage(friendlength){
 				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "添加您为好友",
 				"messageBoxId" : $.$model.xGet("messageBoxId")
 			}, function() {
+				//本地创建好友
 				var friend = Alloy.createModel("Friend", {
 					ownerUser : Alloy.Models.User,
 					friendUser : $.$model,
 					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				});
+				//吧本地创建的好友传上服务器
 				Alloy.Globals.Server.postData(
 				[friend.toJSON()], function(data) {
+					//保存之前创建的本地好友
 					friend.xSave();
-					alert("不需要用户验证,可以直接添加");
+					alert("用户不需要验证,可以直接添加");
 				}, function(e) {
 					alert(e.__summary.msg);
 				});

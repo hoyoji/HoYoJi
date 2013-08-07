@@ -3,31 +3,31 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的汇率"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
-			<View id="localCurrencyView" height="42"  top="0" left="0" backgroundColor="#f1fbfb">
-				<View width="Ti.UI.SIZE" left="0" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
+			<!-- <View id="localCurrencyView" height="42"  top="0" left="0" backgroundColor="#f1fbfb"> -->
+				<!-- <View width="Ti.UI.SIZE" left="0" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
 					<Label color="black" width="Ti.UI.SIZE">本币：</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencyName"
 					id="localCurrencyName" autoInit="false"
 					bindModel = "User"
 					bindAttribute = "activeCurrency.name"
 					/>
-				</View>
-				<View width="Ti.UI.SIZE" right="8" height="Ti.UI.FILL" layout="horizontal" horizontalWrap="false">
-					<Label color="black" width="Ti.UI.SIZE">换算金额：</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencySymbol"
+				</View> -->
+				<View width="Ti.UI.FILL" height="42" top="0" left="0" layout="horizontal" horizontalWrap="false" backgroundColor="#f1fbfb">
+					<Label color="black" width="Ti.UI.SIZE" left="5">换算金额：</Label>
+					<!-- <Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="localCurrencySymbol"
 					id="localCurrencySymbol" autoInit="false"
 					bindModel = "User"
 					bindAttribute = "activeCurrency.symbol"
-					/>
-					<TextField id="localCurrencyAmount" width="Ti.UI.SIZE" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
+					/> -->
+					<TextField id="localCurrencyAmount" width="Ti.UI.FILL" keyboardType="Titanium.UI.KEYBOARD_NUMBER_PAD" value="100"/>
 				</View>
-			</View>
+			<!-- </View> -->
 			<Widget src="com.hoyoji.titanium.widget.XTableView" 
 				id="exchangesTable" autoInit="false" 
-				sortByField="foreignCurrency.name" bottom="0" top="42"/>
+				sortByField="foreignCurrency.name" groupByField="localCurrency.name" bottom="0" top="42"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="新增汇率" imagesFolder="/images/money/currency/exchange"
-		ids="addExchange"/>
+		buttons="新增汇率,更新全部汇率" imagesFolder="/images/money/currency/exchange"
+		ids="addExchange,updateAllExchanges"/>
 	</View>
 </Alloy>

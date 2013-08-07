@@ -140,6 +140,7 @@ exports.definition = {
 					if (options.dbTrans) {
 						options.dbTrans.xCommitStart();
 					}
+					//去服务器上查找与该好友之间有没有共享存在
 					Alloy.Globals.Server.getData([{
 						__dataType : "ProjectShareAuthorization",
 						ownerUserId : Alloy.Models.User.id,
@@ -159,6 +160,7 @@ exports.definition = {
 								msg : "您与该好友有共享项目,请移除共享再删除"
 							});
 						} else {
+							//发送删除消息给好友
 							Alloy.Globals.Server.sendMsg({
 								id : guid(),
 								"toUserId" : self.xGet("friendUserId"),
@@ -170,6 +172,7 @@ exports.definition = {
 								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 								"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
 							}, function() {
+								//在服务器上删除该好友
 								Alloy.Globals.Server.deleteData([{
 									__dataType : "Friend",
 									id : self.xGet("id")

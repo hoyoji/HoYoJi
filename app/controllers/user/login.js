@@ -76,7 +76,7 @@ function doLogin(e) {
 			// 下载一些用户必须的资料
 			var belongsToes = [];
 			for (var belongsTo in Alloy.Models.User.config.belongsTo) {
-				if (belongsTo !== "activeCurrency" && Alloy.Models.User.xGet(belongsTo + "Id")) { // Currency 应该在本地就有了
+				if (Alloy.Models.User.xGet(belongsTo + "Id")) { 
 					belongsToes.push({
 						id : Alloy.Models.User.xGet(belongsTo + "Id"),
 						__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type

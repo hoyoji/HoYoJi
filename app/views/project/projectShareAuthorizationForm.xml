@@ -3,8 +3,8 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
 		addModeTitle="新增共享好友" readModeTitle="查看共享属性" editModeTitle="修改共享属性"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+		<View id="body" top="50" bottom="50" left="10" right="10" height="Ti.UI.SIZE" backgroundColor="#e1e1e1">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0" height="Ti.UI.SIZE">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" editModeEditability="noneditable"
 				id="project" autoInit="false"
 				bindModel="$.$model"
@@ -50,7 +50,7 @@
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
-				<Label width="100%" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限解释：自己表示只能访问自己的数据，增表示可以在这个项目下新增数据，改表示可以在这个项目下修改自己创建的数据，删表示可以在这个项目下删除自己创建的数据。</Label>
+				<Label id="explainAuthorizationLabel" width="100%" textAlign="TEXT_ALIGNMENT_LEFT" visible="false" class="firstRow">权限说明：\n自己--表示只能访问自己的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
 				<View layout="vertical" height="Ti.UI.SIZE" id="shareAllProjectAuthorizationView" visible="false">
 					<View height="42" layout="horizontal">
 						<Label width="20%">权限</Label>
@@ -59,7 +59,7 @@
 						<Label width="20%">改</Label>
 						<Label width="20%">删</Label>
 					</View>
-					<View layout="vertical">
+					<View layout="vertical" height="Ti.UI.SIZE">
 						<View height="42" layout="horizontal">
 							<Label left="0" width="20%">支出</Label>
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
@@ -274,7 +274,8 @@
 							bindAttribute="projectShareMoneyPaybackDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="40%">支出分类</Label>
+							<Label left="0" width="30%">支出分类</Label>
+							<Label width="10%"></Label>
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 							hightLight="false"
@@ -298,8 +299,8 @@
 							bindAttribute="projectShareMoneyExpenseCategoryDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="40%">收入分类</Label>
-							<!-- <Label width="20%"></Label> -->
+							<Label left="0" width="30%">收入分类</Label>
+							<Label width="10%"></Label>
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 							hightLight="false"

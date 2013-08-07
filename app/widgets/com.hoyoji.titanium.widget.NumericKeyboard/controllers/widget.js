@@ -15,7 +15,8 @@ exports.close = function() {
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	animation.addEventListener("complete", function(){
-		$.widget.setVisible(false);
+		// $.widget.setVisible(false);
+		$.widget.hide();
 	});
 	$.keyboard.animate(animation);
 }
