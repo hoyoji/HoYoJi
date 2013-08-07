@@ -28,21 +28,26 @@
 				bindModel="$.$model"
 				bindAttribute="amount"/>
 				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">
-					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
-					id="localAmount" autoInit="false"
-					bindModel="$.$model"
-					bindAttribute="getLocalAmount()"/>
-					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
+					<View height="42" top="0">
+						<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
+						id="projectAmount" autoInit="false"
+						hintText="请输入金额"
+						bindModel="$.$model"
+						bindAttribute="getProjectAmount()"/>
+						<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+					</View>
+					<View height="42" top="42">
+						<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">折算</Label>
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
+						id="localAmount" autoInit="false"
+						hintText="请输入金额"
+						bindModel="$.$model"
+						bindAttribute="getLocalAmount()"/>
+						<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+					</View>
 				</View>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
-				id="project" autoInit="false"
-				bindModel="$.$model"
-				bindAttribute="project"
-				bindAttributeIsModel="name"
-				bindModelSelector="project/projectAll"
-				/>
-				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
 				id="moneyAccount" autoInit="false"
 				bindModel="$.$model"
@@ -50,11 +55,18 @@
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率"
-				id="exchangeRate" autoInit="false"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
+				id="exchangeRate" toFixed="4"
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
+				id="project" autoInit="false"
+				bindModel="$.$model"
+				bindAttribute="project"
+				bindAttributeIsModel="name"
+				bindModelSelector="project/projectAll"
+				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="债务人" hintText="无债务人"
 				id="friend" autoInit="false"
 				bindModel="$.$model"

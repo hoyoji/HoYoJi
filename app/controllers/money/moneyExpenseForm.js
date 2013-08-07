@@ -46,7 +46,6 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	);
 });
 
-
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 		var fixedTotal = 0;

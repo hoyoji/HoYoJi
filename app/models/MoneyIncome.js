@@ -11,7 +11,6 @@ exports.definition = {
 			projectId : "TEXT NOT NULL",
 			pictureId : "TEXT",
 			moneyIncomeCategoryId : "TEXT NOT NULL",
-			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
 			remark : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
@@ -64,10 +63,6 @@ exports.definition = {
 			moneyIncomeCategory : {
 				type : "MoneyIncomeCategory",
 				attribute : "moneyIncomes"
-			},
-			localCurrency : {
-				type : "Currency",
-				attribute : null
 			},
 			ownerUser : {
 				type : "User",
@@ -164,7 +159,14 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				var exchange = 1;
+				if(exchanges.length){
+					exchange = exchanges.at(0).xGet("rate");
+				}
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")/exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -176,14 +178,23 @@ exports.definition = {
 				var currencySymbol = null;
 				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
-					var localCurrency = this.xGet("localCurrency");
+					var localCurrency = Alloy.Models.User.xGet("activeCurrency");
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code");
+						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
+				// else{
+					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
+				// }
 				return currencySymbol;
+			},
+			getProjectAmount : function() {
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
+			},
+			getProjectCurrencyAmount : function() {
+				return this.xGet("amount")*this.xGet("exchangeRate");
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -214,9 +225,9 @@ exports.definition = {
 			},
 			// setAmount : function(amount){
 			// amount = amount || 0;
-			// if(this.xGet("moneyExpenseDetails").length > 0){
+			// if(this.xGet("moneyIncomeDetails").length > 0){
 			// amount = 0;
-			// this.xGet("moneyExpenseDetails").map(function(item){
+			// this.xGet("moneyIncomeDetails").map(function(item){
 			// amount += item.xGet("amount");
 			// })
 			// }
