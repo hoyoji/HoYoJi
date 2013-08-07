@@ -235,7 +235,14 @@ exports.definition = {
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
-				return Number(actualTotalMoney.toFixed(2));
+				var projectCurrency = this.xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchange = 1;
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+				return Number((actualTotalMoney/exchange).toFixed(2));
 
 			},
 			getSettlementText : function() {
@@ -278,7 +285,14 @@ exports.definition = {
 				// return getApportionedTotal;
 				// }
 				// console.info("apportionedTotalExpense+++++++" + apportionedTotalExpense + "+++++++++apportionedTotalIncome" + apportionedTotalIncome)
-				return apportionedTotalExpense - apportionedTotalIncome;
+				var projectCurrency = this.xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchange = 1;
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+				return Number(((apportionedTotalExpense - apportionedTotalIncome)/exchange).toFixed(2));
 			},
 			getSettlementMoney : function() {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;

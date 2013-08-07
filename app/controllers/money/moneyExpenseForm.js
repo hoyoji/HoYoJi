@@ -91,7 +91,6 @@ var oldApportions = [];
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
 		date : (new Date()).toISOString(),
-		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeRate : 1,
 		expenseType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -146,7 +145,7 @@ function deleteApportion(apportionModel) {
 		item.xSet("amount", average);
 		averageTotal += average;
 	});
-	if ((averageTotal !== $.amount.getValue() - fixedTotal) && averageApportions.length > 3) {
+	if ((averageTotal !== $.$model.xGet("amount") - fixedTotal) && averageApportions.length > 3) {
 		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
 	}
 }
@@ -179,7 +178,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
 		} else {
-			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -231,12 +230,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	function setExchangeRate(moneyAccount, model, setToModel) {
 		var exchangeRateValue;
-		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
+		if (moneyAccount.xGet("currency") === model.xGet("project").xGet("currency")) {
 			isRateExist = true;
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
+			var exchanges = model.xGet("project").xGet("currency").getExchanges(moneyAccount.xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
@@ -258,6 +257,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	var oldProject = $.$model.xGet("project");
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
+			updateExchangeRate();
 			var defaultExpenseCategory = $.project.getValue().xGet("defaultExpenseCategory");
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
@@ -363,7 +363,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrency : $.$model.xGet("localCurrency"),
+					localCurrency : $.$model.xGet("project").xGet("currency"),
 					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
 					rate : $.$model.xGet("exchangeRate"),
 					ownerUser : Alloy.Models.User
@@ -376,7 +376,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			if ($.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.getProjectCurrencyAmount());
 						item.xAddToSave($);
 					}
 				});
@@ -384,20 +384,20 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				if ($.$model.hasChanged("project")) {
 					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount);
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount*$.$model.xPrevious("exchangeRate"));
 							item.xAddToSave($);
 						}
 					});
 					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.xGet("amount"));
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.getProjectCurrencyAmount());
 							item.xAddToSave($);
 						}
 					});
 				} else {
 					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount + $.$model.xGet("amount"));
+							item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") - oldAmount*$.$model.xPrevious("exchangeRate") + $.$model.getProjectCurrencyAmount());
 							item.xAddToSave($);
 						}
 					});
@@ -424,7 +424,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
 						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount"));
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount")*item.xGet("moneyExpense").xPrevious("exchangeRate"));
 							projectShareAuthorization.xAddToSave($);
 						}
 					});
@@ -435,7 +435,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					newProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
 						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount")*item.xGet("moneyExpense").xGet("exchangeRate"));
 							projectShareAuthorization.xAddToSave($);
 						}
 					});
@@ -454,7 +454,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							console.info("++++++++++++aasd++++");
 							var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
 							console.info("+++++delete0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
-							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount"));
+							projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount")*item.xGet("moneyExpense").xPrevious("exchangeRate"));
 							console.info("+++++delete1++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
 							projectShareAuthorization.xAddToSave($);
 						}
@@ -468,10 +468,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
 							if (item.isNew() || $.$model.hasChanged("project")) {
 								console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalExpense"));
-								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount"));
+								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense + item.xGet("amount")*item.xGet("moneyExpense").xGet("exchangeRate"));
 								console.info("+++++xPrevious1++" + projectShareAuthorization.xGet("apportionedTotalExpense") + "__________" + item.xGet("amount"));
 							} else {
-								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount") + item.xGet("amount"));
+								projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - item.xPrevious("amount")*item.xGet("moneyExpense").xPrevious("exchangeRate") + item.xGet("amount")*item.xGet("moneyExpense").xGet("exchangeRate"));
 								console.info("+++++xPrevious2++" + projectShareAuthorization.xGet("apportionedTotalExpense") + "++++xPrevious++++" + item.xPrevious("amount") + "+++++++++++amount+++" + item.xGet("amount"));
 							}
 							projectShareAuthorization.xAddToSave($);
@@ -533,7 +533,7 @@ $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());

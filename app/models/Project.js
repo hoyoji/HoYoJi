@@ -95,6 +95,9 @@ exports.definition = {
 					return true;
 				}
 			},
+			getProjectNameCurrency : function() {
+				return this.xGet("name") + "(" + this.xGet("currency").xGet("code") + ")";
+			},
 			xDelete : function(xFinishCallback, options) {
 				if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除当前激活的项目"});

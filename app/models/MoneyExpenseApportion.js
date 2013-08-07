@@ -67,7 +67,14 @@ exports.definition = {
 				if (this.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
 				} else {
-					return this.xGet("moneyExpense").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();
+					var projectCurrency = this.xGet("moneyExpense").xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = projectCurrency.getExchanges(userCurrency);
+					var exchange = 1;
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+					return this.xGet("moneyExpense").xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate") / exchange).toUserCurrency();
 				}
 			},
 			getSharePercentage : function() {
@@ -98,10 +105,10 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount"));
-						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount"));
+						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate"));
+						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount")
+							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate")
 						}, saveOptions);
 					}
 				});
