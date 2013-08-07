@@ -18,15 +18,15 @@ function SudsClient(_options) {
   }
 
   function isAppceleratorTitanium() {
-    try {
-      if (Titanium) {
+    // try {
+      // if (Titanium) {
         return true;
-      } else {
-        return false;
-      }
-    } catch(e) {
-      return false;
-    }
+      // } else {
+        // return false;
+      // }
+    // } catch(e) {
+      // return false;
+    // }
   }
   
   //A generic extend function - thanks MooTools
@@ -121,7 +121,7 @@ function SudsClient(_options) {
   },_options);
   
   // Invoke a web service
-  this.invoke = function(_soapAction,_body,_callback) {    
+  this.invoke = function(_soapAction,_body,_callback, _errorCallback) {    
     //Build request body 
     var body = _body;
     
@@ -149,6 +149,7 @@ function SudsClient(_options) {
     xhr.onload = function() {
       _callback.call(this, xmlDomFromString(this.responseText));
     };
+    xhr.onerror = _errorCallback;
     xhr.open('POST',config.endpoint);
 		xhr.setRequestHeader('Content-Type', 'text/xml');
 		xhr.setRequestHeader('SOAPAction', soapAction);
