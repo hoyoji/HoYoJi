@@ -799,9 +799,9 @@ $.onWindowOpenDo(function() {
 
 function changeSharePercentageType() {
 	if ($.$model.xGet("sharePercentageType") === "Fixed") {
-		$.sharePercentage.field.setEnabled(true);
+		$.sharePercentage.field.setVisible(true);
 	} else {
-		$.sharePercentage.field.setEnabled(false);
+		$.sharePercentage.field.setVisible(false);
 	}
 }
 
