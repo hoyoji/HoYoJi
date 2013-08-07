@@ -214,9 +214,9 @@ exports.definition = {
 			getActualTotalText : function() {
 				var getActualTotal = 0;
 				if (this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0) {
-					return "实际支出 : ";
+					return "实际支出";
 				} else {
-					return "实际收入 : ";
+					return "实际收入";
 				}
 
 			},
@@ -268,9 +268,9 @@ exports.definition = {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
 				};
 				if (settlementMoney > 0) {
-					return "应该支出 : ";
+					return "应该支出";
 				} else {
-					return "应该收入 : ";
+					return "应该收入";
 				}
 			},
 			getApportionedTotalMoney : function() {
@@ -313,7 +313,7 @@ exports.definition = {
 				if (this.xGet("state") === "Wait") {
 					return "等待接受";
 				} else {
-					return "占股 : " + this.xGet("sharePercentage");
+					return "占股 : " + this.xGet("sharePercentage") + "%";
 				}
 			},
 			xDelete : function(xFinishCallback, options) {

@@ -8,7 +8,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "name" />
 			
-			<Label class="firstRow" top="15" right="0">结余:</Label>
+			<Label class="firstRow" top="15" right="0">结余</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="30" class="secondRow" right="0"
 				id="actualTotalMoney" autoInit="false" dataType="Number"
 				bindModel = "$.$model"
