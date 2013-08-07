@@ -68,6 +68,8 @@ function onFooterbarTap(e) {
 				$.footerBar.updateAllExchanges.setEnabled(true);
 				$.footerBar.updateAllExchanges.hideActivityIndicator();
 			})
+		} else {
+			alert("没有需要更新的汇率");
 		}
 	}
 }
