@@ -67,7 +67,14 @@ exports.definition = {
 				if (this.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("moneyIncome").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
 				} else {
-					return this.xGet("moneyIncome").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyIncome").xGet("exchangeRate")).toUserCurrency();
+					var projectCurrency = this.xGet("moneyIncome").xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = userCurrency.getExchanges(projectCurrency);
+					var exchange = 1;
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+					return this.xGet("moneyIncome").xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyIncome").xGet("exchangeRate") / exchange).toUserCurrency();
 				}
 			},
 			getSharePercentage : function() {
@@ -98,8 +105,9 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
+						projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalIncome : apportionedTotalIncome - self.xGet("amount")
+							apportionedTotalIncome : apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate")
 						}, saveOptions);
 					}
 				});

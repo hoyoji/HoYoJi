@@ -9,7 +9,6 @@ exports.definition = {
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
 			pictureId : "TEXT",
-			localCurrencyId : "TEXT NOT NULL",
 			exchangeRate : "REAL NOT NULL",
 			interest : "REAL NOT　NULL",
 			remark : "TEXT",
@@ -45,10 +44,6 @@ exports.definition = {
 			},
 			picture : {
 				type : "Picture",
-				attribute : null
-			},
-			localCurrency : {
-				type : "Currency",
 				attribute : null
 			},
 			moneyBorrow : {
@@ -177,14 +172,23 @@ exports.definition = {
 				var currencySymbol = null;
 				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
-					var localCurrency = this.xGet("localCurrency");
+					var localCurrency = Alloy.Models.User.xGet("activeCurrency");
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code");
+						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
+				// else{
+					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
+				// }
 				return currencySymbol;
+			},
+			getProjectAmount : function() {
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
+			},
+			getProjectCurrencyAmount : function() {
+				return this.xGet("amount")*this.xGet("exchangeRate");
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;

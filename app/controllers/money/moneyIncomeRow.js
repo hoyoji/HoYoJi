@@ -6,7 +6,7 @@ $.makeContextMenu = function() {
 	});
 
 	// menuSection.add($.createContextMenuItem("收入明细", function() {
-		// Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {selectedIncome : $.$model});
+	// Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {selectedIncome : $.$model});
 	// },$.$model.xGet("incomeType") === "Deposite"));
 
 	menuSection.add($.createContextMenuItem("发送给好友", function() {
@@ -14,9 +14,9 @@ $.makeContextMenu = function() {
 			$model : "Message",
 			selectedAccount : $.$model
 		});
-	},$.$model.xGet("incomeType") === "Deposite"));
+	}, $.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
-		if($.$model.xGet("incomeType") === "Deposite"){
+		if ($.$model.xGet("incomeType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
 				var editData = [];
 				var accounts = [];
@@ -44,11 +44,15 @@ $.makeContextMenu = function() {
 								});
 								projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - $.$model.xGet("amount"));
 								editData.push(projectShareAuthorization.toJSON());
-								projectShareAuthorization.xSave({syncFromServer : true});
+								projectShareAuthorization.xSave({
+									syncFromServer : true
+								});
 
 								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
 								editData.push(moneyExpense.xGet("moneyAccount").toJSON());
-								moneyExpense.xGet("moneyAccount").xSave({syncFromServer : true});
+								moneyExpense.xGet("moneyAccount").xSave({
+									syncFromServer : true
+								});
 
 								moneyExpense._xDelete();
 							}
@@ -63,12 +67,16 @@ $.makeContextMenu = function() {
 									});
 									projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - $.$model.xGet("amount"));
 									editData.push(projectShareAuthorization.toJSON());
-									projectShareAuthorization.xSave({syncFromServer : true});
+									projectShareAuthorization.xSave({
+										syncFromServer : true
+									});
 
 									$.$model.xGet("moneyAccount").xSet("currentBalance", $.$model.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
 									editData.push($.$model.xGet("moneyAccount").toJSON());
-									$.$model.xGet("moneyAccount").xSave({syncFromServer : true});
-									
+									$.$model.xGet("moneyAccount").xSave({
+										syncFromServer : true
+									});
+
 									Alloy.Globals.Server.putData(editData, function(data) {
 										$.$model._xDelete();
 									}, function(e) {
@@ -94,7 +102,7 @@ $.makeContextMenu = function() {
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-			} else{
+			} else {
 				var account = {};
 				for (var attr in $.$model.config.columns) {
 					account[attr] = $.$model.xGet(attr);
@@ -121,19 +129,24 @@ $.makeContextMenu = function() {
 					alert(e.__summary.msg);
 				});
 			}
-		 }else{
-		 	$.deleteModel();
-		 }
-	},!$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
+		} else {
+			$.deleteModel();
+		}
+	}, !$.$model.canDelete() || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
 }
 
-$.onRowTap = function(e){
-	if($.$model.xGet("incomeType") === "Deposite"){
-		Alloy.Globals.openWindow("money/projectIncomeForm", {$model : $.$model, saveableMode : "read"});
+$.onRowTap = function(e) {
+	if ($.$model.xGet("incomeType") === "Deposite") {
+		Alloy.Globals.openWindow("money/projectIncomeForm", {
+			$model : $.$model,
+			saveableMode : "read"
+		});
 		return false;
-	}else{
-		Alloy.Globals.openWindow("money/moneyIncomeForm", {$model : $.$model});
+	} else {
+		Alloy.Globals.openWindow("money/moneyIncomeForm", {
+			$model : $.$model
+		});
 		return false;
 	}
 }
