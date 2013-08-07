@@ -7,7 +7,7 @@
 			bindModel="$.$model"
 			bindAttribute="getLocalCurrency()"
 			/>
-			<Label text="->" top="42" width="60" height="28" left="10">
+			<Label text="➥" top="42" width="60" height="28" left="10">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="42" width="Ti.UI.SIZE" height="28" left="30"
 			id="foreignCurrency" autoInit="false"
 			bindModel="$.$model"

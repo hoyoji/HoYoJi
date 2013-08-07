@@ -20,7 +20,7 @@ exports.close = function() {
 	});
 	$.keyboard.animate(animation);
 }
-52
+
 function cancelBubbleTouchStart(e){
 		e.cancelBubble = true;
 }

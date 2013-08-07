@@ -32,7 +32,7 @@
 					id="autoUpdate" autoInit="false"
 					hightLight="false"
 					items="是,否"
-					values="true,false"
+					values="1,0"
 					bindModel="$.$model"
 					bindAttribute="autoUpdate"/>
 				</View>
