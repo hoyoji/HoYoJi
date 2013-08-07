@@ -525,7 +525,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				var editProjectShareAuthorizationArray = [];
 				if (operation === "agree") {
 
-					var projectCurrencyIds = [];
+					var projectCurrencyIds = projectShareData.projectCurrencyIds;
 
 					function getAllCurrencies(successCB, errorCB) {
 						var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length;

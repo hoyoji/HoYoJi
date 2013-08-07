@@ -6,6 +6,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "pictureId"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" top="57" left="66" width="100" height="Ti.UI.SIZE" class="firstRow"
+				dataType="Number" toFixed="4"
 				bindModel = "$.$model" autoInit="false"
 				bindAttribute = "getSharePercentage()"
 			/>
