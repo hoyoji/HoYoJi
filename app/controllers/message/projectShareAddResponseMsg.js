@@ -533,7 +533,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							if (errorCount > 0) {
 								return;
 							}
-							if (currencyId === Alloy.Models.User.xGet("localCurrencyId")) {
+							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
 								projectCurrencyIdsCount++;
 								return;
 							}
@@ -550,6 +550,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									delete currencyData.id;
 									currency = Alloy.createModel("Currency", currencyData);
 									currency.attributes["id"] = id;
+									
+									currency.xSet("ownerUser", Alloy.Models.User);
+									currency.xSet("ownerUserId", Alloy.Models.User.id);
 									currency.save();
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
@@ -571,23 +574,24 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							if (errorCount > 0) {
 								return;
 							}
-							if (currencyId === Alloy.Models.User.xGet("localCurrencyId")) {
+							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
 								projectCurrencyIdsCount++;
 								return;
 							}
 							var exchange = Alloy.createModel("Exchange").xFindInDb({
 								localCurrencyId : currencyId,
-								foreignCurrencyId : Alloy.Models.User.xGet("localCurrencyId")
+								foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
 							});
 							if (!exchange.id) {
-								Alloy.Globals.Server.getExchangeRate(currencyId, Alloy.Models.User.xGet("localCurrencyId"), function(rate) {
+								Alloy.Globals.Server.getExchangeRate(currencyId, Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
 
 									exchange = Alloy.createModel("Exchange", {
-										localCurrency : currencyId,
-										foreignCurrencyId : Alloy.Models.User.xGet("localCurrencyId"),
+										localCurrencyId : currencyId,
+										foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
 										rate : rate
 									});
-																		
+									exchange.xSet("ownerUser", Alloy.Models.User);
+									exchange.xSet("ownerUserId", Alloy.Models.User.id);
 									exchange.save();
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {

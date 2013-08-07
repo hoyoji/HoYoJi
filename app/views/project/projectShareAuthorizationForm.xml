@@ -50,7 +50,7 @@
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
-				<Label id="explainAuthorizationLabel" width="100%" textAlign="TEXT_ALIGNMENT_LEFT" visible="false" class="firstRow">权限说明：\n自己--表示只能访问自己的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
+				<Label id="explainAuthorizationLabel" width="100%" textAlign="TEXT_ALIGNMENT_LEFT" visible="false" class="firstRow">权限说明：\n自己--表示好友在这个项目下只能访问自己的账务;\n增--表示好友在这个项目下可以新增账务;\n改--表示好友在这个项目下可以修改自己创建的账务;\n删--表示好友在这个项目下可以删除自己创建的账务。</Label>
 				<View layout="vertical" height="Ti.UI.SIZE" id="shareAllProjectAuthorizationView" visible="false">
 					<View height="42" layout="horizontal">
 						<Label width="20%">权限</Label>
