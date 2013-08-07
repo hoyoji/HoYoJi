@@ -67,7 +67,7 @@ function addSharePercentage(projectShareAuthorization) {
 	var averageLength = averageSharePercentageCollections.length + 1;
 	var averageTotalPercentage = 100 - fixedSharePercentage;
 	var averagePercentage = averageTotalPercentage / averageLength;
-	projectShareAuthorization.xSet("sharePercentage", Number(averagePercentage).toFixed(2));
+	projectShareAuthorization.xSet("sharePercentage", Number(averagePercentage).toFixed(4));
 	$.sharePercentageTotal = averageTotalPercentage;
 }
 
@@ -122,7 +122,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 				var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 				var toFixedAveragePercentage = 0;
 				//
-				var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(2));
+				var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
 				averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
 					toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
 					averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
@@ -132,7 +132,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 				//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
 				if(averageTotalPercentage !== toFixedAveragePercentage){
 					if(localProjectShareAuthorization){
-						localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
+						localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 						editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 						localProjectShareAuthorization.xAddToSave($);
 					}
@@ -148,7 +148,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 	} else {
 		var averageLength = averageSharePercentageCollections.length + 1;
 		var averageTotalPercentage = 100 - fixedSharePercentage;
-		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(2));
+		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
 		var toFixedAveragePercentage = averagePercentage;
 		averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
 			toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
@@ -160,7 +160,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 		//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
 		if(averageTotalPercentage !== toFixedAveragePercentage){
 			if(localProjectShareAuthorization){
-				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
+				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
 			}
@@ -197,7 +197,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	var averageTotalPercentage = 100 - fixedSharePercentage;
 	
 	if(averageLength > 0){
-		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(2));
+		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
 		var toFixedAveragePercentage = 0;
 		averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
 			toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
@@ -207,7 +207,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 		});
 		if(averageTotalPercentage !== toFixedAveragePercentage){
 			if(localProjectShareAuthorization){
-				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(2)));
+				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
 			}
@@ -235,8 +235,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
 				alert("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
-				var projectIds = [];
+				var projectIds = [],projectCurrencyIds = [];
+				
 				projectIds.push($.$model.xGet("project").xGet("id"));
+				projectCurrencyIds.push($.$model.xGet("project").xGet("currencyId"));
 				var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
 				// var isSynAllProjects = true;
 				// var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
@@ -329,6 +331,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
 									subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
 									projectIds.push(subProjectShareAuthorization.xGet("project").xGet("id"));
+									projectCurrencyIds.push(subProjectShareAuthorization.xGet("project").xGet("currencyId"));
 									projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 									subProjectShareAuthorization.xAddToSave($);
 
@@ -353,7 +356,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 											projectShareAuthorizationId : $.$model.xGet("id"),
 											subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
-											projectIds : projectIds
+											projectIds : projectIds,
+											projectCurrencyIds : projectCurrencyIds
 										})
 									}, function() {
 										//在本地创建一条相同的消息
@@ -370,7 +374,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 												projectShareAuthorizationId : $.$model.xGet("id"),
 												subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
-												projectIds : projectIds
+												projectIds : projectIds,
+												projectCurrencyIds : projectCurrencyIds
 											}),
 											ownerUser : Alloy.Models.User
 										}).xAddToSave($);
