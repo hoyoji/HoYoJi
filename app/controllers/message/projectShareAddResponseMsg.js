@@ -526,6 +526,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				if (operation === "agree") {
 					var projectIds = [];
 					var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+					//从服务器上load全部共享的projectShareAuthorization
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
 						if (collection.length > 0) {
 							var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
@@ -540,6 +541,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									projectIds.push(projectShareAuthorization.xGet("projectId"));
 								}
 							}
+							//把全部子项目的projectShareAuthorization的state设置为Accept。
 							projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
 								var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 								if (subProjectShareAuthorization.xGet("state") === "Wait") {
@@ -565,11 +567,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "new",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
+									"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:项目" + projectShareAuthorization.xGet("name"),
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
 									$.saveModel(function(e) {
+										//把与项目相关的资料全部下载下来
 										Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
 											saveEndCB("接受成功");
 											return;
@@ -594,6 +597,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}, saveErrorCB);
 				} else if (operation === "reject") {
 					var projectShareIds = _.union([projectShareData.projectShareAuthorizationId], projectShareData.subProjectShareAuthorizationIds);
+					//从服务器上load全部共享的projectShareAuthorization
 					Alloy.Globals.Server.loadData("ProjectShareAuthorization", projectShareIds, function(collection) {
 						if (collection.length > 0) {
 							var projectShareAuthorization = collection.get(projectShareData.projectShareAuthorizationId);
@@ -607,6 +611,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								editProjectShareAuthorizationArray.push(projectShareAuthorization.toJSON());
 							}
 							if (projectShareData.shareAllSubProjects) {
+								//把全部子项目的projectShareAuthorization的state设置为Reject。
 								projectShareData.subProjectShareAuthorizationIds.map(function(subProjectShareAuthorizationId) {
 									var subProjectShareAuthorization = collection.get(subProjectShareAuthorizationId);
 									if (subProjectShareAuthorization.xGet("state") === "Wait") {
@@ -627,6 +632,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								patch : true
 							});
 							editProjectShareAuthorizationArray.push($.$model.toJSON());
+							//去服务器上修改数据
 							Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
@@ -636,7 +642,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "unread",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目",
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目:项目" + projectShareAuthorization.xGet("name"),
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {

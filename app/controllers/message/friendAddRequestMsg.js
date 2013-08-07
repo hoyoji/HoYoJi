@@ -17,7 +17,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (data[0].length > 0) {
 			alert("好友已经添加成功，不需要再发送消息！");
 		}else{
-			//在查找好友已经把要添加的用的user加载到本地，直接可以在本地数据库查找
+			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("toUser").xGet("id")});
 			if(!toUser.id){
 				$.$model.xGet("toUser").xAddToSave($);

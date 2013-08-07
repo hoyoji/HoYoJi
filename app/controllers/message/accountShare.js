@@ -573,6 +573,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			account[attr] = selectedAccount.xGet(attr);
 		}
 		$.$model.xSet("date", date);
+		//如果发送的账务是支出或者收入，要把明细也一起放到JSON发给好友
 		if(selectedAccount.config.adapter.collection_name === "MoneyExpense" || selectedAccount.config.adapter.collection_name === "MoneyIncome"){
 			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,

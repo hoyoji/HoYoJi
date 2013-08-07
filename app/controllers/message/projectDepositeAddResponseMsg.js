@@ -38,11 +38,12 @@ var onFooterbarTap = function(e) {
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
-	
+	//删除充值
 	if(operation === "delete"){
-		//删除充值
+		//好友先删除充值支出
 		if (accountShareData.accountType === "MoneyExpense") {
 			var accounts = [];
+			//本地数据库查找对应的充值收入
 			var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
 				depositeId : accountShareData.account.id
 			});
@@ -50,6 +51,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyIncome",
 				depositeId : accountShareData.account.id
 			});
+			//本地数据库查找充值支出
 			var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
 				id : accountShareData.account.id
 			});
@@ -57,6 +59,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyExpense",
 				id : accountShareData.account.id
 			});
+			//去服务器上查找对应的充值支出和充值收入
 			Alloy.Globals.Server.getData(accounts, function(data) {
 				if (data[0].length > 0) {
 					Alloy.Globals.Server.deleteData(
@@ -74,13 +77,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 							moneyIncome.xGet("moneyAccount").xAddToSave($);
 							
-							moneyIncome._xDelete();
 						}
 						if (data[1].length > 0) {
 							$.$model.xSet("messageState","closed");
 							editData.push($.$model.toJSON());
 							var date = (new Date()).toISOString();
 							Alloy.Globals.Server.putData(editData, function(data) {
+								//充值支出不是自己创建的，发送一条消息到服务器上去删除
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
 									"toUserId" : $.$model.xGet("fromUserId"),
@@ -93,6 +96,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									messageData : $.$model.xGet("messageData")
 								}, function() {
+									moneyIncome._xDelete();
 									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
 									saveEndCB("删除充值成功");
 								}, function(e) {
@@ -115,13 +119,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						wait : true,
 						patch : true
 					});
-					alert("已经删除成功");
+					alert("已经删除充值成功");
 				}
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
 		}else if(accountShareData.accountType === "MoneyIncome"){
 			var accounts = [];
+			//在本地查找充值支出
 			var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
 				id : accountShareData.account.depositeId
 			});
@@ -129,6 +134,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyExpense",
 				id : accountShareData.account.depositeId
 			});
+			//在本地查找充值收入
 			var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
 				id : accountShareData.account.id
 			});
@@ -136,6 +142,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyIncome",
 				id : accountShareData.account.id
 			});
+			//在服务器上查找相应的充值支出和充值收入
 			Alloy.Globals.Server.getData(accounts, function(data) {
 				if (data[0].length > 0) {
 					Alloy.Globals.Server.deleteData(
@@ -153,13 +160,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 							moneyExpense.xGet("moneyAccount").xAddToSave($);
 							
-							moneyExpense._xDelete();
 						}
 						if (data[1].length > 0) {
 							$.$model.xSet("messageState","closed");
 							editData.push($.$model.toJSON());
 							var date = (new Date()).toISOString();
 							Alloy.Globals.Server.putData(editData, function(data) {
+								//充值收入不是自己创建的，发送一条消息到服务器上去删除
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
 									"toUserId" : $.$model.xGet("fromUserId"),
@@ -172,6 +179,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									messageData : $.$model.xGet("messageData")
 								}, function() {
+									moneyExpense._xDelete();
 									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
 									saveEndCB("删除充值成功");
 								}, function(e) {
@@ -258,6 +266,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 
 function importToLocalOperate() {
+	//接受充值
 	if (accountShareData.accountType === "MoneyExpense") {
 		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject)
 		var account = Alloy.createModel("MoneyIncome", {
