@@ -160,7 +160,7 @@ exports.definition = {
 			getLocalAmount : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				var exchanges = projectCurrency.getExchanges(userCurrency);
+				var exchanges = userCurrency.getExchanges(projectCurrency);
 				var exchange = 1;
 				if(exchanges.length){
 					exchange = exchanges.at(0).xGet("rate");
@@ -181,13 +181,16 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") +" "+ this.xGet("amount");
+						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
 					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
 				// }
 				return currencySymbol;
+			},
+			getProjectAmount : function() {
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
 			},
 			getProjectCurrencyAmount : function() {
 				return this.xGet("amount")*this.xGet("exchangeRate");
