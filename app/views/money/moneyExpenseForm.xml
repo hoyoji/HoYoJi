@@ -46,7 +46,7 @@
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
-				bindAttributeIsModel="name"
+				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="分类" hintText="请选择分类"
@@ -65,7 +65,7 @@
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
-				id="exchangeRate" autoInit="false" toFixed="4"
+				id="exchangeRate" toFixed="4"
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->

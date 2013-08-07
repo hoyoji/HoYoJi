@@ -87,7 +87,7 @@ $.saveModel(saveEndCB, saveErrorCB);
 				}
 			});
 		}
-		if ($.$model.xGet("moneyIncome").xGet("useDetailsTotal")) {
+		if ($.$model.xGet("moneyIncome").xGet("useDetailsTotal") === true) {
 			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
 		} 
 		/*
