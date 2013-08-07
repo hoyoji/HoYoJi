@@ -88,8 +88,7 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
-					} 
-					else if (this.xGet("incomeType") !== "Deposite") {
+					} else if (this.xGet("incomeType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyIncomeApportions").forEach(function(item) {
 							if (!item.__xDeleted && !item.__xDeletedHidden) {
@@ -163,10 +162,10 @@ exports.definition = {
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 				var exchanges = userCurrency.getExchanges(projectCurrency);
 				var exchange = 1;
-				if(exchanges.length){
+				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")/exchange).toUserCurrency();
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -182,19 +181,19 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
-					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
+				// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
 				// }
 				return currencySymbol;
 			},
 			getProjectAmount : function() {
-				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -294,8 +293,8 @@ exports.definition = {
 
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
-							var actualTotalIncome = item.xGet("actualTotalIncome") - self.xGet("amount");
-							item.xSet("actualTotalIncome" ,actualTotalIncome);
+							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
+							item.xSet("actualTotalIncome", actualTotalIncome);
 							item.save({
 								actualTotalIncome : actualTotalIncome
 							}, saveOptions);
@@ -324,57 +323,57 @@ exports.definition = {
 				// 2. 账户已经存在
 
 				if (record.ownerUserId === Alloy.Models.User.id) {
-				var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : record.moneyAccountId
-				});
-				if (moneyAccount.id) {
-					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-						dbTrans : dbTrans,
-						patch : true
+					var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : record.moneyAccountId
 					});
-				}
+					if (moneyAccount.id) {
+						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
+							dbTrans : dbTrans,
+							patch : true
+						});
+					}
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
 				// 如果本地的支出没有明细，我们直接使用服务器上的支出金额
-				
+
 				if (record.useDetailsTotal && this.__syncAmount !== undefined) {
 					record.amount = this.__syncAmount + this.xGet("moneyIncomeDetails").xSum("amount");
 				}
 				delete this.__syncAmount;
-				
+
 				if (record.ownerUserId === Alloy.Models.User.id) {
-				// 先更新老账户余额
-				var oldMoneyAccountBalance;
-				var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-					id : this.xGet("moneyAccountId")
-				});
-				if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-					oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
-					oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-						dbTrans : dbTrans,
-						patch : true
+					// 先更新老账户余额
+					var oldMoneyAccountBalance;
+					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						id : this.xGet("moneyAccountId")
 					});
-				} else {
-					if (oldMoneyAccount.id) {
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
+					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
+						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
 						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
 							dbTrans : dbTrans,
 							patch : true
 						});
-					}
+					} else {
+						if (oldMoneyAccount.id) {
+							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
+							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 
-					var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-						id : record.moneyAccountId
-					});
-					if (newMoneyAccount.id) {
-						newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
-							dbTrans : dbTrans,
-							patch : true
+						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+							id : record.moneyAccountId
 						});
+						if (newMoneyAccount.id) {
+							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
+								dbTrans : dbTrans,
+								patch : true
+							});
+						}
 					}
-				}
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
