@@ -374,6 +374,8 @@
 						} else {
 							errorCB('获取汇率出错');
 						}
+					}, function(e) {
+						errorCB("连接服务器出错：" + e.code);
 					});
 				} catch(e) {
 					errorCB(e);
@@ -383,45 +385,50 @@
 				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
 				var exchangesCount = exchanges.length;
 				var successCount = 0, errorCount = 0;
-				
-				exchanges.forEach(function(exchange){
-					if(errorCount > 0){
+
+				exchanges.forEach(function(exchange) {
+					if (errorCount > 0) {
 						return;
 					}
 					var callparams = {
 						FromCurrency : exchange.fromCurrency,
 						ToCurrency : exchange.toCurrency
 					};
-	
+
 					var suds = new SudsClient({
 						endpoint : url,
 						targetNamespace : 'http://www.webserviceX.NET/'
 					});
-	
+
 					try {
 						suds.invoke('ConversionRate', callparams, function(xmlDoc) {
 							var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
 							if (results && results.length > 0) {
 								var result = results.item(0);
 								exchange.rate = Number(results.item(0).text).toFixed(4);
-								successCount ++;
-								if(successCount === exchangesCount){
+								successCount++;
+								if (successCount === exchangesCount) {
 									successCB(exchanges);
 								}
 							} else {
-								if(errorCount === 0){
-									errorCount ++;
+								if (errorCount === 0) {
+									errorCount++;
 									errorCB('获取汇率出错');
 								}
 							}
+						}, function(e) {
+							if (errorCount === 0) {
+								errorCount++;
+								errorCB("连接服务器出错：" + e.code);
+							}
 						});
 					} catch(e) {
-						if(errorCount === 0){
-							errorCount ++;
+						if (errorCount === 0) {
+							errorCount++;
 							errorCB(e);
 						}
 					}
 				});
-			}			
+			}
 		}
 	}());
