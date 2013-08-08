@@ -149,7 +149,14 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toUserCurrency();
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				var exchange = 1;
+				if(exchanges.length){
+					exchange = exchanges.at(0).xGet("rate");
+				}
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")/exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");

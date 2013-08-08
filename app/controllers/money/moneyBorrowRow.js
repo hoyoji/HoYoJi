@@ -22,7 +22,6 @@ $.makeContextMenu = function() {
 $.picture.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
-$.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmountLabel.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());
