@@ -534,7 +534,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								return;
 							}
 							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
-								console.info("|||||||||||||||||||||||1");
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
@@ -542,7 +541,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									return;
 								}
 							}
-							console.info("|||||||||||||||||||||||2");
 							var currency = Alloy.createModel("Currency").xFindInDb({
 								id : currencyId
 							});

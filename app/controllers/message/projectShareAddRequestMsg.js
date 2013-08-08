@@ -15,10 +15,6 @@ $.allAuthorization.addEventListener("click", function(e) {
 	}
 });
 
-$.onWindowOpenDo(function() {
-	$.showHideAuthorization.hide();
-});
-
 $.date.UIInit($, $.getCurrentWindow());
 $.toUser.UIInit($, $.getCurrentWindow());
 $.sharePercentageType.UIInit($, $.getCurrentWindow());
