@@ -261,7 +261,7 @@ $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.interest.UIInit($, $.getCurrentWindow());
