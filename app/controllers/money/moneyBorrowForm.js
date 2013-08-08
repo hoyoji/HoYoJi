@@ -133,7 +133,7 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.$view.setHeight(42);
 		}
 		if (setToModel) {
-			project.xGet("moneyExpense").xSet("exchangeRate", exchangeRateValue);
+			$.$model.xSet("exchangeRate", exchangeRateValue);
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
