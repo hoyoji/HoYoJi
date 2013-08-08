@@ -62,7 +62,7 @@
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
-				bindAttributeIsModel="name"
+				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="债务人" hintText="无债务人"

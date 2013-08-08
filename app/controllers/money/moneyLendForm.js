@@ -114,6 +114,7 @@ if ($.saveableMode === "read") {
 
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+	$.project.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
