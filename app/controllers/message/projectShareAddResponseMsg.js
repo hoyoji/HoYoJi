@@ -534,9 +534,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								return;
 							}
 							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
+								console.info("|||||||||||||||||||||||1");
 								projectCurrencyIdsCount++;
-								return;
+								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+									successCB();
+								}else{
+									return;
+								}
 							}
+							console.info("|||||||||||||||||||||||2");
 							var currency = Alloy.createModel("Currency").xFindInDb({
 								id : currencyId
 							});
@@ -577,7 +583,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}
 							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
 								projectCurrencyIdsCount++;
-								return;
+								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+									successCB();
+								}else{
+									return;
+								}
 							}
 							var exchange = Alloy.createModel("Exchange").xFindInDb({
 								localCurrencyId : currencyId,
@@ -663,7 +673,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"messageState" : "new",
 										"messageTitle" : "共享回复",
 										"date" : date,
-										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:项目" + projectShareAuthorization.xGet("name"),
+										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
 										"messageBoxId" : fromUser.xGet("messageBoxId"),
 										"messageData" : $.$model.xGet("messageData")
 									}, function() {
@@ -741,7 +751,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "unread",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目:项目" + projectShareAuthorization.xGet("name"),
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目",
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {

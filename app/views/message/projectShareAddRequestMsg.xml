@@ -16,20 +16,34 @@
 				bindAttribute="toUser"
 				bindAttributeIsModel="userName"
 				/>
+				<View height="42" width="Ti.UI.SIZE" layout="horizontal">
+					<Label left="0" width="20%">占股(%)</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
+					id="sharePercentageType" autoInit="false"
+					hightLight="false"
+					items=" 均分,固定"
+					values="Average,Fixed"
+					bindModel="$.projectShareAuthorizations"
+					bindAttribute="sharePercentageType"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
+					id="sharePercentage" autoInit="false"
+					bindModel="$.projectShareAuthorizations"
+					bindAttribute="sharePercentage"/>
+				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84"
 					id="msgDetail" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical">
-					<Button left="0" id="allAuthorization" title="打开详细权限"/>
+					<Button id="allAuthorization" title="打开详细权限"/>
 					<View id="showHideAuthorization" layout="vertical">
 						<View height="42">
-							<Label left="0" width="20%">共享所有子项目</Label>
-							<View right="0" width="80%" layout="horizontal" horizontalWrap="false">
+							<Label left="0" width="40%">共享所有子项目</Label>
+							<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								id="shareAllSubProjects" autoInit="false"
 								hightLight="false"
-								items=" ,√"
+								items="否,是"
 								values="0,1"
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="shareAllSubProjects"/>
@@ -257,8 +271,8 @@
 								bindAttribute="projectShareMoneyPaybackDelete"/>
 							</View>
 							<View height="42" layout="horizontal">
-								<Label left="0" width="20%">支出分类</Label>
-								<Label width="20%"></Label>
+								<Label left="0" width="30%">支出分类</Label>
+								<Label width="10%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 								hightLight="false"
@@ -282,8 +296,8 @@
 								bindAttribute="projectShareMoneyExpenseCategoryDelete"/>
 							</View>
 							<View height="42" layout="horizontal">
-								<Label left="0" width="20%">收入分类</Label>
-								<Label width="20%"></Label>
+								<Label left="0" width="30%">收入分类</Label>
+								<Label width="10%"></Label>
 								<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 								id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 								hightLight="false"

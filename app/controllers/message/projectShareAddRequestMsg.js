@@ -21,6 +21,8 @@ $.onWindowOpenDo(function() {
 
 $.date.UIInit($, $.getCurrentWindow());
 $.toUser.UIInit($, $.getCurrentWindow());
+$.sharePercentageType.UIInit($, $.getCurrentWindow());
+$.sharePercentage.UIInit($, $.getCurrentWindow());
 $.msgDetail.UIInit($, $.getCurrentWindow());
 $.shareAllSubProjects.UIInit($, $.getCurrentWindow());
 $.projectShareMoneyExpenseOwnerDataOnly.UIInit($, $.getCurrentWindow());
