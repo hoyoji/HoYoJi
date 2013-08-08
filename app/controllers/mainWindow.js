@@ -24,6 +24,7 @@ $.onWindowCloseDo(function() {
 	Alloy.Models.User = null;
 	Alloy.Globals.mainWindow = null;
 	Alloy.Globals.DataStore.initStore();
+	delete Alloy.Globals.currentUserDatabaseName;
 });
 // 
 $.home = Alloy.createController("home/home", {
