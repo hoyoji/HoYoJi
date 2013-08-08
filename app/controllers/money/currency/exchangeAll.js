@@ -19,6 +19,15 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({}, $);
 $.exchangesTable.addCollection(collection);
 $.exchangesTable.autoHideFooter($.footerBar);
+$.exchangesTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
+	collection.xSearchInDb({}, {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	successCB();
+}
+$.exchangesTable.fetchNextPage();
 
 function onFooterbarTap(e) {
 	if (e.source.id === "addExchange") {
@@ -29,11 +38,14 @@ function onFooterbarTap(e) {
 			}
 		});
 	} else if (e.source.id === "updateAllExchanges") {
-		var exchanges = Alloy.Models.User.xGet("exchanges").map(function(exchange) {
-			return {
-				id : exchange.xGet("id"),
-				fromCurrency : exchange.xGet("localCurrencyId"),
-				toCurrency : exchange.xGet("foreignCurrencyId")
+		var exchanges = [];
+		Alloy.Models.User.xGet("exchanges").forEach(function(exchange) {
+			if(exchange.xGet("autoUpdate")){
+				exchanges.push({
+					id : exchange.xGet("id"),
+					fromCurrency : exchange.xGet("localCurrencyId"),
+					toCurrency : exchange.xGet("foreignCurrencyId")
+				});
 			}
 		});
 		if (exchanges.length > 0) {
@@ -56,6 +68,8 @@ function onFooterbarTap(e) {
 				$.footerBar.updateAllExchanges.setEnabled(true);
 				$.footerBar.updateAllExchanges.hideActivityIndicator();
 			})
+		} else {
+			alert("没有需要更新的汇率");
 		}
 	}
 }

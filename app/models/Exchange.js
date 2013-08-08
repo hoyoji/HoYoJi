@@ -5,11 +5,14 @@ exports.definition = {
 			localCurrencyId : "TEXT NOT NULL",
 			foreignCurrencyId : "TEXT NOT NULL",
 			rate : "REAL NOT NULL",
-			autoUpdate : "TEXT",
+			autoUpdate : "INTEGER",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
 			lastClientUpdateTime : "INTEGER"
+		},
+		defaults : {
+			autoUpdate : 1
 		},
 		belongsTo : {
 			localCurrency : {

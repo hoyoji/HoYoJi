@@ -26,13 +26,13 @@
 				id="rate" autoInit="false" toFixed="4"
 				bindModel="$.$model"
 				bindAttribute="rate"/>
-				<View height="42">
-					<Label left="0" width="30%" height="Ti.UI.FILL" backgroundColor="#f5f5f5">自动更新</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE"
+				<View height="42" backgroundColor="#f5f5f5">
+					<Label left="5" width="30%" height="Ti.UI.FILL" >自动更新</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" left="30%" width="Ti.UI.SIZE" 
 					id="autoUpdate" autoInit="false"
 					hightLight="false"
 					items="是,否"
-					values="true,false"
+					values="1,0"
 					bindModel="$.$model"
 					bindAttribute="autoUpdate"/>
 				</View>

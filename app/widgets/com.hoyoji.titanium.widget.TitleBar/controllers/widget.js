@@ -130,9 +130,9 @@ exports.saveStartCB = function() {
 	}
 }
 
-exports.saveEndCB = function() {
+exports.saveEndCB = function(msg) {
 	exports.cleanCB();
-	showMsg("保存成功");
+	showMsg(msg || "保存成功");
 	console.info("Titlebar saveEndCB");
 	
 	$.menuButton.hideActivityIndicator();

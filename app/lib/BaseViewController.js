@@ -19,7 +19,7 @@
 						// hide the progress notification
 						console.info("end saving ...");
 						if (e.sourceController.saveEndCB) {
-							e.sourceController.saveEndCB();
+							e.sourceController.saveEndCB(e);
 						}
 						var isSaveableContainer = $.$attrs.saveableContainer === "true" || $.$view.saveableContainer === "true";
 						if (isSaveableContainer) {
