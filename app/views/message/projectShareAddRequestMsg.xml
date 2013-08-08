@@ -16,27 +16,13 @@
 				bindAttribute="toUser"
 				bindAttributeIsModel="userName"
 				/>
-				<View height="42" width="Ti.UI.SIZE" layout="horizontal">
-					<Label left="0" width="20%">占股(%)</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
-					id="sharePercentageType" autoInit="false"
-					hightLight="false"
-					items=" 均分,固定"
-					values="Average,Fixed"
-					bindModel="$.projectShareAuthorizations"
-					bindAttribute="sharePercentageType"/>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
-					id="sharePercentage" autoInit="false"
-					bindModel="$.projectShareAuthorizations"
-					bindAttribute="sharePercentage"/>
-				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="详细信息" height="84"
 					id="msgDetail" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="detail"/>
 				<View layout="vertical">
 					<Button id="allAuthorization" title="打开详细权限"/>
-					<View id="showHideAuthorization" layout="vertical">
+					<View id="showHideAuthorization" layout="vertical" visible="false">
 						<View height="42">
 							<Label left="0" width="40%">共享所有子项目</Label>
 							<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
@@ -48,6 +34,20 @@
 								bindModel="$.projectShareAuthorizations"
 								bindAttribute="shareAllSubProjects"/>
 							</View>
+						</View>
+						<View height="42" width="Ti.UI.SIZE" layout="horizontal">
+							<Label left="0" width="20%">占股(%)</Label>
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
+							id="sharePercentageType" autoInit="false"
+							hightLight="false"
+							items=" 均分,固定"
+							values="Average,Fixed"
+							bindModel="$.projectShareAuthorizations"
+							bindAttribute="sharePercentageType"/>
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
+							id="sharePercentage" autoInit="false"
+							bindModel="$.projectShareAuthorizations"
+							bindAttribute="sharePercentage"/>
 						</View>
 						<View height="42" layout="horizontal">
 							<Label width="20%">权限</Label>

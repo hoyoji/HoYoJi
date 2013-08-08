@@ -802,11 +802,13 @@ $.onWindowOpenDo(function() {
 	}
 });
 
+changeSharePercentageType();
+
 function changeSharePercentageType() {
 	if ($.$model.xGet("sharePercentageType") === "Fixed") {
-		$.sharePercentage.field.setVisible(true);
+		$.sharePercentage.field.setEnabled(true);
 	} else {
-		$.sharePercentage.field.setVisible(false);
+		$.sharePercentage.field.setEnabled(false);
 	}
 }
 
