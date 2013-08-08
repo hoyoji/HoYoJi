@@ -139,6 +139,24 @@ $.onRowTap = function(e) {
 	}
 }
 
+$.onWindowOpenDo(function() {
+	$.$model.xGet("project").on("sync",projectRefresh);
+	$.$model.xGet("moneyExpenseCategory").on("sync",categoryRefresh);
+});
+
+$.onWindowCloseDo(function() {
+	$.$model.xGet("project").off("sync",projectRefresh);
+	$.$model.xGet("moneyExpenseCategory").off("sync",categoryRefresh);
+});
+
+function projectRefresh() {
+	$.projectName.refresh();
+}
+
+function categoryRefresh() {
+	$.expenseCategoryName.refresh();
+}
+
 $.picture.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
