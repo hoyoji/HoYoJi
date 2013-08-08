@@ -151,6 +151,24 @@ $.onRowTap = function(e) {
 	}
 }
 
+$.onWindowOpenDo(function() {
+	$.$model.xGet("project").on("sync",projectRefresh);
+	$.$model.xGet("moneyIncomeCategory").on("sync",categoryRefresh);
+});
+
+$.onWindowCloseDo(function() {
+	$.$model.xGet("project").off("sync",projectRefresh);
+	$.$model.xGet("moneyIncomeCategory").off("sync",categoryRefresh);
+});
+
+function projectRefresh() {
+	$.projectName.refresh();
+}
+
+function categoryRefresh() {
+	$.moneyIncomeCategory.refresh();
+}
+
 $.picture.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());

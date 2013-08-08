@@ -16,9 +16,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 
 function setActiveCurrency(){
 	if(Alloy.Models.User.xGet("activeCurrency") === $.$model){
-		$.check.show();
+		$.check.setVisible(true);
 	} else {
-		$.check.hide();
+		$.check.setVisible(false);
 	}
 }
 
