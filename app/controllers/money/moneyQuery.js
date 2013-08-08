@@ -6,13 +6,13 @@ $.queryOptions = {
 	dateTo : date.getUTCTimeOfDateEnd().toISOString()
 };
 
-$.onWindowOpenDo(function(){
-	if($.getCurrentWindow().$attrs.queryOptions){
-		_.extend($.queryOptions,$.getCurrentWindow().$attrs.queryOptions);
+$.onWindowOpenDo(function() {
+	if ($.getCurrentWindow().$attrs.queryOptions) {
+		_.extend($.queryOptions, $.getCurrentWindow().$attrs.queryOptions);
 	}
 });
 
-exports.getQueryString = function(){
+exports.getQueryString = function() {
 	var filterStr = "";
 	for (var f in $.queryOptions) {
 		var value = $.queryOptions[f]
@@ -24,10 +24,10 @@ exports.getQueryString = function(){
 			filterStr += f + " IS NULL ";
 		} else if (_.isNumber(value)) {
 			filterStr += f + " = " + value + " ";
-		} else if(value !== undefined) {
-			if(f === "main.dateFrom"){
+		} else if (value !== undefined) {
+			if (f === "main.dateFrom") {
 				filterStr += "main.date >= '" + value + "' ";
-			} else if(f === "main.dateTo"){
+			} else if (f === "main.dateTo") {
 				filterStr += "main.date <= '" + value + "' ";
 			} else {
 				filterStr += f + " = '" + value + "' ";
@@ -36,15 +36,18 @@ exports.getQueryString = function(){
 	}
 	return filterStr;
 }
-
-function doQuery(){
-	if($.getCurrentWindow().$attrs.selectorCallback){
-		$.getCurrentWindow().$attrs.selectorCallback($);
+function doQuery() {
+	if ($.queryOptions.dateFrom > $.queryOptions.dateTo) {
+		alert("结束时间必须在开始时间之后");
+	} else {
+		if ($.getCurrentWindow().$attrs.selectorCallback) {
+			$.getCurrentWindow().$attrs.selectorCallback($);
+		}
+		$.getCurrentWindow().close();
 	}
-	$.getCurrentWindow().close();
 }
 
-function close(){
+function close() {
 	$.getCurrentWindow().close();
 }
 
