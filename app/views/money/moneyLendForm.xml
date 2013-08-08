@@ -27,26 +27,24 @@
 				id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
-				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">
+				<View id="projectAmountContainer" height="0" backgroundColor="#f5f5f5">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
-					<View height="42" top="0">
-						<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
-						id="projectAmount" autoInit="false"
-						hintText="请输入金额"
-						bindModel="$.$model"
-						bindAttribute="getProjectAmount()"/>
-						<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
-					</View>
-					<View height="42" top="42">
-						<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">折算</Label>
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
-						id="localAmount" autoInit="false"
-						hintText="请输入金额"
-						bindModel="$.$model"
-						bindAttribute="getLocalAmount()"/>
-						<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
-					</View>
+					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
+					id="projectAmount" autoInit="false"
+					hintText="请输入金额"
+					bindModel="$.$model"
+					bindAttribute="getProjectAmount()"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+				</View>
+				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">
+					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">折算</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
+					id="localAmount" autoInit="false"
+					hintText="请输入金额"
+					bindModel="$.$model"
+					bindAttribute="getLocalAmount()"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
 				id="moneyAccount" autoInit="false"

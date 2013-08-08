@@ -81,7 +81,10 @@ $.onWindowCloseDo(function() {
 if ($.saveableMode === "read") {
 	// $.setSaveableMode("read");
 	$.moneyAccount.$view.setHeight(0);
-	$.localAmountContainer.setHeight(42);
+	$.projectAmountContainer.setHeight(42);
+	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		$.localAmountContainer.setHeight(42);
+	}
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 } else {
@@ -210,10 +213,11 @@ $.picture.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
+$.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.paybackDate.UIInit($, $.getCurrentWindow());
