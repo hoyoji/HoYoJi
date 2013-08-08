@@ -191,7 +191,10 @@ $.onWindowCloseDo(function() {
 });
 
 if ($.saveableMode === "read") {
-	$.localAmountContainer.setHeight(84);
+	$.projectAmountContainer.setHeight(42);
+	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		$.localAmountContainer.setHeight(42);
+	}
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
 	$.moneyAccount.$view.setHeight(0);
