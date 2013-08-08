@@ -240,7 +240,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 
 	function updateExchangeRate(e) {
-		if ($.moneyAccount.getValue()) {
+		if ($.moneyAccount.getValue() && $.project.getValue()) {
 			setExchangeRate($.moneyAccount.getValue(), $.project.getValue());
 		}
 	}
@@ -255,7 +255,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = moneyAccount.xGet("currency").getExchanges(model.xGet("project").xGet("currency"));
+			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
@@ -266,7 +266,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.$view.setHeight(42);
 		}
 		if (setToModel) {
-			model.xSet("exchangeRate", exchangeRateValue);
+			$.$model.xSet("exchangeRate", exchangeRateValue);
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
