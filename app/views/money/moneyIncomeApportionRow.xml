@@ -28,11 +28,10 @@
 			bindModel = "$.$model"
 			bindAttribute = "getAmount()"
 			/>
-			<Label id="sharePercentageLabel" text="占股:" top="59" left="66"  width="Ti.UI.SIZE" height="Ti.UI.SIZE"></Label>
-			<Widget id="sharePercentage" src="com.hoyoji.titanium.widget.AutoBindLabel" top="59" left="106" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+			<Widget id="sharePercentage" src="com.hoyoji.titanium.widget.AutoBindLabel" top="59" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				autoInit="false"
 			bindModel = "$.$model"
-			bindAttribute = "getSharePercentage()"
+			bindAttribute = "getSharePercentageRow()"
 			/>
 			<Label id="removeMember" right="0" height="90"  width="10%" backgroundColor="red">del<Label/>
 		</View>
