@@ -78,7 +78,15 @@ exports.definition = {
 				// if (actualTotalMoney < 0) {
 					// actualTotalMoney = -actualTotalMoney;
 				// }
-				return Number(actualTotalMoney.toFixed(2));
+				
+				var projectCurrency = this.xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = userCurrency.getExchanges(projectCurrency);
+					var exchange = 1;
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+				return Number((actualTotalMoney/exchange).toFixed(2));
 			},
 			getActualTotalMoneyType : function(cached) {
 				var actualTotalMoney;
