@@ -88,7 +88,18 @@ exports.definition = {
 					}
 				});
 				return sharePercentage;
-
+			},
+			getSharePercentageRow : function() {
+				var projectShareAuthorizations = this.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
+				var self = this;
+				var sharePercentage;
+				projectShareAuthorizations.forEach(function(item) {
+					if (self.xGet("friendUser") === item.xGet("friendUser")) {
+						sharePercentage = item.xGet("sharePercentage");
+						return;
+					}
+				});
+				return "占股：" + sharePercentage + "%";
 			},
 			getApportionType : function() {
 				if (this.xGet("apportionType") === "Fixed") {
