@@ -26,6 +26,28 @@ $.onWindowOpenDo(function() {
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 });
 
+$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if(!$.$model.xGet("transferOut")){
+		alert("请选择转出账户");
+		return;
+	}
+	if(!$.$model.xGet("transferIn")){
+		alert("请选择转入账户");
+		return;
+	}
+	Alloy.Globals.Server.getExchangeRate(
+		$.$model.xGet("transferOut").xGet("currency").id,
+		$.$model.xGet("transferIn").xGet("currency").id,
+		function(rate){
+			$.exchangeRate.setValue(rate);
+			$.exchangeRate.field.fireEvent("change");
+		},
+		function(e){
+			alert(e);
+		}
+	);
+});
+
 var createRate;
 $.transferOut.field.addEventListener("change", updateExchangeRate);
 $.transferIn.field.addEventListener("change", updateExchangeRate);
@@ -249,7 +271,7 @@ $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.transferOut.UIInit($, $.getCurrentWindow());
 $.transferIn.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.transferInAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
