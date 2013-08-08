@@ -11,21 +11,19 @@
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				/>
-				<View layout="vertical" height="Ti.UI.SIZE" width="Ti.UI.SIZE">
-					<View height="42" layout="horizontal">
-						<Label left="0" width="20%">占股(%)</Label>
-						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
-						id="sharePercentageType" autoInit="false"
-						hightLight="false"
-						items=" 均分,固定"
-						values="Average,Fixed"
-						bindModel="$.$model"
-						bindAttribute="sharePercentageType"/>
-						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
-						id="sharePercentage" autoInit="false"
-						bindModel="$.$model"
-						bindAttribute="sharePercentage"/>
-					</View>
+				<View height="42" layout="horizontal" width="Ti.UI.SIZE">
+					<Label left="0" width="20%">占股(%)</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%" height="42"
+					id="sharePercentageType" autoInit="false"
+					hightLight="false"
+					items=" 均分,固定"
+					values="Average,Fixed"
+					bindModel="$.$model"
+					bindAttribute="sharePercentageType"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" width="60%" labelText=""
+					id="sharePercentage" autoInit="false"
+					bindModel="$.$model"
+					bindAttribute="sharePercentage"/>
 				</View>
 				<View height="42">
 					<Label left="0" width="40%">共享所有子项目</Label>
@@ -39,7 +37,9 @@
 						bindAttribute="shareAllSubProjects"/>
 					</View>
 				</View>
-				<Label width="100%" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n自己--表示只能访问自己的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
+				<View height="Ti.UI.SIZE" width="Ti.UI.SIZE">
+				<Label width="100%" left="10" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n自己--表示只能访问自己的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
+				</View>
 				<View layout="vertical" height="Ti.UI.SIZE">
 					<View height="42" layout="horizontal">
 						<Label width="20%">权限</Label>

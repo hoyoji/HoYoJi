@@ -35,7 +35,7 @@
 			</ScrollView>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="查询"
+		buttons="查询" imagesFolder="/images/money/report"
 		ids="transactionsSummuryQuery"/>
 	</View>
 </Alloy>

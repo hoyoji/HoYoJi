@@ -10,6 +10,19 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.onWindowOpenDo(function() {
+	$.$model.xGet("project").on("sync",projectRefresh);
+});
+
+$.onWindowCloseDo(function() {
+	$.$model.xGet("project").off("sync",projectRefresh);
+});
+
+function projectRefresh() {
+	$.project.refresh();
+}
+
+
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.interest.UIInit($, $.getCurrentWindow());

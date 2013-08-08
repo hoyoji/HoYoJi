@@ -16,10 +16,22 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
+$.onWindowOpenDo(function() {
+	$.$model.xGet("project").on("sync",projectRefresh);
+});
+
+$.onWindowCloseDo(function() {
+	$.$model.xGet("project").off("sync",projectRefresh);
+});
+
+function projectRefresh() {
+	$.projectName.refresh();
+}
+
+
 $.picture.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
-$.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmountLabel.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());

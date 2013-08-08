@@ -2,7 +2,17 @@
 	backgroundColor: "#e1e1e1"
 }
 "Label" : {
-	textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	backgroundColor: "#f5f5f5",
 	color : "black",
 	fontSize : 12
+}
+"View" : {
+	backgroundColor: "#f5f5f5"
+}
+".firstRow": {
+	backgroundColor: "#f5f5f5",
+	color: "#6e6d6d",
+	font: {
+		fontWeight: 'normal'
+	}
 }
