@@ -166,7 +166,7 @@ function projectRefresh() {
 }
 
 function categoryRefresh() {
-	$.incomeCategoryName.refresh();
+	$.moneyIncomeCategory.refresh();
 }
 
 $.picture.UIInit($, $.getCurrentWindow());

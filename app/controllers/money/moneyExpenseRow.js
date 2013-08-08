@@ -154,13 +154,13 @@ function projectRefresh() {
 }
 
 function categoryRefresh() {
-	$.expenseCategoryName.refresh();
+	$.moneyExpenseCategory.refresh();
 }
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
-$.expenseCategoryName.UIInit($, $.getCurrentWindow());
+$.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.localAmountLabel.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());
