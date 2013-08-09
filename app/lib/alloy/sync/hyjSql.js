@@ -641,12 +641,20 @@ ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
 };
 
 module.exports.beforeModelCreate = function(config, name) {
-	if (cache.config[name])
-		return cache.config[name];
+	if (cache.config[name]){
+		if(cache.config[name].db_name === Alloy.Globals.DataStore.getDbName()){
+			return cache.config[name];
+		} else {
+			config.adapter.db_name = Alloy.Globals.currentUserDatabaseName;
+			delete cache.Model[name];
+		}
+	}
 	if (Ti.Platform.osname === "mobileweb" || typeof Ti.Database == "undefined")
 		throw "No support for Titanium.Database in MobileWeb environment.";
 	config.adapter.idAttribute = "id";
-	config.adapter.db_name = "hoyoji";
+	if(!config.adapter.db_name){
+		config.adapter.db_name = Alloy.Globals.DataStore.getDbName();
+	}
 	config.adapter.collection_name = name;
 	config.adapter.db_file && installDatabase(config);
 	// if (!config.adapter.idAttribute) {
