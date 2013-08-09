@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.apportion.addEventListener("singletap", function() {
+$.project.rightButton.addEventListener("singletap", function() {
 	if ($.amount.getValue()) {
 		Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
 			selectedIncome : $.$model,
@@ -178,9 +178,9 @@ $.onWindowOpenDo(function() {
 	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
 
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.apportion.$view.setHeight(0);
+		$.project.rightButton.setHeight(0);
 	} else {
-		$.apportion.$view.setHeight(42);
+		$.project.rightButton.setHeight(42);
 	}
 });
 
@@ -288,12 +288,12 @@ if ($.saveableMode === "read") {
 			$.moneyIncomeCategory.setValue(defaultIncomeCategory);
 			$.moneyIncomeCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
-				$.apportion.$view.setHeight(0);
+				$.project.rightButton.setHeight(0);
 			} else {
-				$.apportion.$view.setHeight(42);
+				$.project.rightButton.setHeight(42);
 			}
 		} else {
-			$.apportion.$view.setHeight(0);
+			$.project.rightButton.setHeight(0);
 		}
 
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
@@ -563,5 +563,5 @@ $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
-$.apportion.UIInit($, $.getCurrentWindow());
+// $.apportion.UIInit($, $.getCurrentWindow());
 

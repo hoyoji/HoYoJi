@@ -58,7 +58,7 @@
 				id="exchangeRate" toFixed="4"
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目" rightButtonText="分摊"
 				id="project" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="project"
@@ -106,9 +106,9 @@
 				id="remark" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
-				<Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
+				<!-- <Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
 				height="0" width="100%" title="多人分摊" autoInit="false"
-				backgroundColor="green" image="none" />
+				backgroundColor="green" image="none" /> -->
 			</ScrollView>
 		</View>
 	</View>

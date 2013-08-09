@@ -100,7 +100,7 @@ exports.definition = {
 						return;
 					}
 				});
-				return "占股：" + sharePercentage + "%";
+				return "占股:" + sharePercentage + "%";
 
 			},
 			getApportionType : function() {
