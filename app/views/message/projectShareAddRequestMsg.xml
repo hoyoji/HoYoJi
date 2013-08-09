@@ -22,7 +22,7 @@
 				bindAttribute="detail"/>
 				<View layout="vertical">
 					<Button id="allAuthorization" title="打开详细权限"/>
-					<View id="showHideAuthorization" layout="vertical" visible="false">
+					<View id="showHideAuthorization" layout="vertical">
 						<View height="42">
 							<Label left="0" width="40%">共享所有子项目</Label>
 							<View right="0" width="60%" layout="horizontal" horizontalWrap="false">

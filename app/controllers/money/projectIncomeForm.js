@@ -2,6 +2,28 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedDepositeMsg = $.$attrs.selectedDepositeMsg;
 
+$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if(!$.$model.xGet("moneyAccount")){
+		alert("请选择账户");
+		return;
+	}
+	if(!$.$model.xGet("project")){
+		alert("请选择项目");
+		return;
+	}
+	Alloy.Globals.Server.getExchangeRate(
+		$.$model.xGet("moneyAccount").xGet("currency").id,
+		$.$model.xGet("project").xGet("currency").id,
+		function(rate){
+			$.exchangeRate.setValue(rate);
+			$.exchangeRate.field.fireEvent("change");
+		},
+		function(e){
+			alert(e);
+		}
+	);
+});
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -52,7 +74,7 @@ if ($.saveableMode === "read") {
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
-		oldAmount = $.$model.xGet("amount")
+		oldAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
 	}
 
 	function updateExchangeRate(e) {
@@ -117,9 +139,9 @@ if ($.saveableMode === "read") {
 		var addData = [];
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
-		var newAmount = $.$model.xGet("amount");
+		var newAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
-		
+		//查找共享给我的projectShareAuthorization
 		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 			projectId : $.$model.xGet("project").xGet("id"),
 			friendUserId : Alloy.Models.User.id
