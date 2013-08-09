@@ -595,8 +595,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								Alloy.Globals.Server.getExchangeRate(currencyId, Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
 
 									exchange = Alloy.createModel("Exchange", {
-										localCurrencyId : currencyId,
-										foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+										localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+										foreignCurrencyId : currencyId,
 										rate : rate
 									});
 									exchange.xSet("ownerUser", Alloy.Models.User);
