@@ -588,8 +588,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								}
 							}
 							var exchange = Alloy.createModel("Exchange").xFindInDb({
-								localCurrencyId : currencyId,
-								foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
+								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+								foreignCurrencyId : currencyId
 							});
 							if (!exchange.id) {
 								Alloy.Globals.Server.getExchangeRate(currencyId, Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
