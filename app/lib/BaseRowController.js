@@ -4,10 +4,10 @@
 			var errorLabel, childrenCollections, detailCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;
 			var hasDetail = $.$attrs.hasDetail === undefined ? $.$view.hasDetail : $.$attrs.hasDetail;
-			$.setSelected = function(selected){
+			$.setSelected = function(selected) {
 				// 留空
 			}
-			
+
 			$.getChildTitle = function() {
 				var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
 				return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
@@ -19,6 +19,7 @@
 					openChildButton.setEnabled(true);
 				}
 			}
+
 
 			$.getChildCollections = function() {
 				if (!childrenCollections) {
@@ -120,8 +121,8 @@
 				return count;
 			}
 			if (hasChild) {
-				
-				if(OS_IOS){
+
+				if (OS_IOS) {
 					var childButtonImage = "/images/childButton@2x.png";
 					var openChildButton = Ti.UI.createButton({
 						// title : ">",
@@ -168,7 +169,7 @@
 			}
 
 			if (hasDetail) {
-				if(OS_IOS){
+				if (OS_IOS) {
 					var detailExpandButtonImage = "/images/detailExpandButton@2x.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton@2x.png";
 					var openDetailButton = Ti.UI.createButton({
@@ -182,7 +183,7 @@
 						borderColor : null,
 						// borderRadius : 0,
 						style : 0
-					});		
+					});
 				} else {
 					var detailExpandButtonImage = "/images/detailExpandButton.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton.png";
@@ -241,7 +242,7 @@
 				});
 				enableOpenDetailButton();
 			}
-			
+
 			function showErrorMsg(msg) {
 				if (!errorLabel) {
 					errorLabel = Ti.UI.createLabel({
@@ -285,79 +286,83 @@
 				$.content.setOpacity("0.3");
 				errorLabel.animate(animation);
 			}
+
 			function showDeletedMsg(animate) {
-					var msgLabel = Ti.UI.createLabel({
-						text : "已被移除",
-						height : Ti.UI.FILL,
-						width : Ti.UI.FILL,
-						top : "-100%",
-						color : "red",
-						backgroundColor : "#40000000",
-						textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
-					});
-					$.$view.add(msgLabel);
+				var msgLabel = Ti.UI.createLabel({
+					text : "已被移除",
+					height : Ti.UI.FILL,
+					width : Ti.UI.FILL,
+					top : "-100%",
+					color : "red",
+					backgroundColor : "#40000000",
+					textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
+				});
+				$.$view.add(msgLabel);
 
-					msgLabel.addEventListener("longpress", function(e) {
-						e.cancelBubble = true;
-					});
-					msgLabel.addEventListener("click", function(e) {
-						e.cancelBubble = true;
-					});
-					msgLabel.addEventListener("singletap", function(e) {
-						e.cancelBubble = true;
-					});
+				msgLabel.addEventListener("longpress", function(e) {
+					e.cancelBubble = true;
+				});
+				msgLabel.addEventListener("click", function(e) {
+					e.cancelBubble = true;
+				});
+				msgLabel.addEventListener("singletap", function(e) {
+					e.cancelBubble = true;
+				});
 
-					if(animate){
-						var animation = Titanium.UI.createAnimation();
-						animation.duration = 300;
-						animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-						animation.top = "0";
-						msgLabel.animate(animation);
-					} else {
-						msgLabel.setTop(0);						
-					}
-					$.content.setOpacity("0.3");
+				if (animate) {
+					var animation = Titanium.UI.createAnimation();
+					animation.duration = 300;
+					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
+					animation.top = "0";
+					msgLabel.animate(animation);
+				} else {
+					msgLabel.setTop(0);
+				}
+				$.content.setOpacity("0.3");
 			}
+
 
 			$.deleteModel = function() {
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
 					// var deleteFunc = $.$model.xDelete || $.$model._xDelete;
-					if($.getCurrentWindow().$attrs.closeWithoutSave){
+					if ($.getCurrentWindow().$attrs.closeWithoutSave) {
 						$.$model.__xDeleted = true;
 						showDeletedMsg(true);
 						$.$model.trigger("xdelete", $.$model);
-						return;	
+						return;
 					}
-					
+
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
 					dbTrans.begin();
-					
-					var options = {dbTrans : dbTrans, wait : true};
+
+					var options = {
+						dbTrans : dbTrans,
+						wait : true
+					};
 					$.$model.xDelete.call($.$model, function(error) {
 						if (error) {
 							// alert(error.msg);
 							dbTrans.rollback();
 							showErrorMsg(error.msg);
-						} 
+						}
 					}, options);
-					
+
 					dbTrans.commit();
 				});
 			}
-
-			if($.$model.__xDeleted){
-				showDeletedMsg(false);			
+			if ($.$model.__xDeleted) {
+				showDeletedMsg(false);
 			}
-			
+
 			// var rowHasRendered = false;
 			// $.$view.addEventListener("postlayout", function(){
-				// rowHasRendered = true;
+			// rowHasRendered = true;
 			// })
-//  			
+			//
 			var isRemoving = false;
 			function removeRow(row, collection) {
-				if(collection.isFetching || collection.isFiltering){
+				if (collection.isFetching || collection.isFiltering) {
 					return;
 				}
 				if (row === $.$model) {
@@ -376,19 +381,19 @@
 								// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
 
 								// if ($.$model.id) {
-									// animation.left = "-100%";
+								// animation.left = "-100%";
 								// } else {
-									// animation.opacity = "0.5";
-									// animation.height = 0;
-									// animation.width = 0;
+								// animation.opacity = "0.5";
+								// animation.height = 0;
+								// animation.width = 0;
 								// }
 								// animation.addEventListener('complete', function() {
-									$.$view.fireEvent("click", {
-										bubbles : true,
-										deleteRow : true,
-										sectionRowId : $.$model.xGet("id"),
-										rowHasRendered : true
-									});
+								$.$view.fireEvent("click", {
+									bubbles : true,
+									deleteRow : true,
+									sectionRowId : $.$model.xGet("id"),
+									rowHasRendered : true
+								});
 								// });
 								// $.$view.animate(animation);
 							}
@@ -400,6 +405,7 @@
 							});
 						}
 					}
+
 
 					$.remove();
 					// $.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
@@ -420,7 +426,7 @@
 					$.setSelected(true);
 				}
 			});
-			
+
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
 			$.onWindowCloseDo(function() {
 				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
@@ -440,37 +446,39 @@
 					return;
 				}
 
-				if ($.getCurrentWindow().$attrs.beforeSelectorCallback){
-					if($.getCurrentWindow().$attrs.beforeSelectorCallback($.$model) === false){
+				if ($.getCurrentWindow().$attrs.beforeSelectorCallback) {
+					$.getCurrentWindow().$attrs.beforeSelectorCallback($.$model, openSelector);
+				} else {
+					openSelector();
+				}
+				function openSelector() {
+					if ($.getCurrentWindow().$attrs.selectorCallback) {
+						console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
+						if ($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name) {
+							if ($.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model) {
+								showErrorMsg("该记录不能作为" + $.getCurrentWindow().$attrs.title);
+								return;
+							}
+
+							$.getCurrentWindow().$attrs.selectorCallback($.$model);
+							$.getCurrentWindow().close();
+						}
 						return;
 					}
-				}
-				
-				if ($.getCurrentWindow().$attrs.selectorCallback) {
-					console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
-					if ($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name) {
-						if ($.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model) {
-							showErrorMsg("该记录不能作为" + $.getCurrentWindow().$attrs.title);
-							return;
-						}
 
-						$.getCurrentWindow().$attrs.selectorCallback($.$model);
-						$.getCurrentWindow().close();
+					var form = $.$attrs.openForm || $.$view.openForm, openForm;
+					if ($.onRowTap) {
+						openForm = $.onRowTap(e);
 					}
-					return;
+
+					if (form && openForm !== false) {
+						Alloy.Globals.openWindow(form, {
+							$model : $.$model,
+							closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave
+						});
+					}
 				}
 
-				var form = $.$attrs.openForm || $.$view.openForm, openForm;
-				if ($.onRowTap) {
-					openForm = $.onRowTap(e);
-				}
-
-				if (form && openForm !== false) {
-					Alloy.Globals.openWindow(form, {
-						$model : $.$model,
-						closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave
-					});
-				}
 			});
 		}
 	}());
