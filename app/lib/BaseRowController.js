@@ -440,6 +440,12 @@
 					return;
 				}
 
+				if ($.getCurrentWindow().$attrs.beforeSelectorCallback){
+					if($.getCurrentWindow().$attrs.beforeSelectorCallback($.$model) === false){
+						return;
+					}
+				}
+				
 				if ($.getCurrentWindow().$attrs.selectorCallback) {
 					console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
 					if ($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name) {

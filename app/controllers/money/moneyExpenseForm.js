@@ -99,6 +99,16 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+$.beforeProjectSelectorCallback = function(project){
+	if(project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")){
+		if(project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0){
+			alert("没有找到该项目与用户本币的转换汇率，请手动增加该汇率");
+			return false;
+		};
+	}
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -256,7 +266,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.$view.setHeight(0);
 		} else {
 			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
-			if (exchanges.length) {
+			if (exchanges.length > 0) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
 			} else {

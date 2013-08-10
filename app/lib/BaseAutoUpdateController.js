@@ -180,6 +180,9 @@
 								$.field.fireEvent("change");
 							}
 						};
+						if ($.$attrs.bindModelBeforeSelectorCallback) {
+							attributes.beforeSelectorCallback = $.getParentController()[$.$attrs.bindModelBeforeSelectorCallback];
+						}
 						if ($.$attrs.bindModelSelectorParams) {
 							var params = $.$attrs.bindModelSelectorParams.split(",");
 							for (var i = 0; i < params.length; i++) {
