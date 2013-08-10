@@ -318,7 +318,13 @@
 				$.field.setRight(48);
 				$.$view.add($.rightButton); 
 			}
-
+			
+			$.showRightButton = function(){
+				$.rightButton.setVisible(true);
+			}
+			$.hideRightButton = function(){
+				$.rightButton.setVisible(false);
+			}
 			// $.setSaveableMode($.saveableMode);
 
 			if ($.$attrs.bindAttribute) {

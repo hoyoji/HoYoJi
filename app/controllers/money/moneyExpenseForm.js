@@ -197,9 +197,9 @@ $.onWindowOpenDo(function() {
 	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.project.rightButton.setHeight(0);
+		$.project.hideRightButton();
 	} else {
-		$.project.rightButton.setHeight(42);
+		$.project.showRightButton();
 	}
 });
 
@@ -306,12 +306,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
-				$.project.rightButton.setHeight(0);
+				$.project.hideRightButton();
 			} else {
-				$.project.rightButton.setHeight(42);
+				$.project.showRightButton();
 			}
 		} else {
-			$.project.rightButton.setHeight(0);
+			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
