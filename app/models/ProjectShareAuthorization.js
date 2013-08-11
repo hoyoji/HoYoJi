@@ -373,6 +373,23 @@ exports.definition = {
 					// Alloy.Globals.Server.loadData("User", [record.friendUserId]);
 				// }
 				// Alloy.Globals.Server.loadSharedProjects([record.projectId]);
+			},
+			syncUpdateConflict : function(record, dbTrans) {
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					delete record.id;
+					this._syncUpdate(record, dbTrans);
+					
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					// 让本地修改覆盖服务器上的记录
+					// 但是取服务器上的占股比例
+					if(record.sharePercentage !== this.xGet("sharePercentage")){
+						this.syncUpdate({sharePercentage : record.sharePercentage}, dbTrans);
+						this._syncUpdate({sharePercentage : record.sharePercentage}, dbTrans);
+					}
+				}
 			}
 		});
 		return Model;
