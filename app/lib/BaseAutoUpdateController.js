@@ -321,9 +321,11 @@
 			
 			$.showRightButton = function(){
 				$.rightButton.setVisible(true);
+				$.field.setRight(48);
 			}
 			$.hideRightButton = function(){
 				$.rightButton.setVisible(false);
+				$.field.setRight(0);
 			}
 			// $.setSaveableMode($.saveableMode);
 
