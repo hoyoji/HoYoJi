@@ -142,7 +142,7 @@ exports.definition = {
 					localCurrencyId : record.localCurrencyId,
 					foreignCurrencyId : record.foreignCurrencyId
 				});
-				if (exchange.id) {
+				if (exchange.id && exchange.id !== record.id) {
 					// 该币种组合的汇率已经存在，把本地的删掉
 					exchange.xDelete(null, {
 						dbTrans : dbTrans,
