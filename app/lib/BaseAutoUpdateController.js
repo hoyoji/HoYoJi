@@ -180,6 +180,9 @@
 								$.field.fireEvent("change");
 							}
 						};
+						if ($.$attrs.bindModelBeforeSelectorCallback) {
+							attributes.beforeSelectorCallback = $.getParentController()[$.$attrs.bindModelBeforeSelectorCallback];
+						}
 						if ($.$attrs.bindModelSelectorParams) {
 							var params = $.$attrs.bindModelSelectorParams.split(",");
 							for (var i = 0; i < params.length; i++) {
@@ -315,7 +318,15 @@
 				$.field.setRight(48);
 				$.$view.add($.rightButton); 
 			}
-
+			
+			$.showRightButton = function(){
+				$.rightButton.setVisible(true);
+				$.field.setRight(48);
+			}
+			$.hideRightButton = function(){
+				$.rightButton.setVisible(false);
+				$.field.setRight(0);
+			}
 			// $.setSaveableMode($.saveableMode);
 
 			if ($.$attrs.bindAttribute) {

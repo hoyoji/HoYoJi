@@ -254,7 +254,10 @@
 								// 该记录同时在本地和服务器被修改过
 								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
 								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
-								if (operation === "update") {
+								if (operation !== "delete") {
+									if (operation === "create") {
+										dbTrans.db.execute("UPDATE ClientSyncTable SET operation = 'update' WHERE recordId = ? AND operation = 'create'", [record.id]);
+									}
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
 									});

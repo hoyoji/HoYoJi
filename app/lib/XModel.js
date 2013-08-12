@@ -473,7 +473,6 @@
 					}
 				}
 				if (!error) {
-					options = options || {};
 					options.wait = true;
 					
 					var outerTransaction = options.dbTrans;

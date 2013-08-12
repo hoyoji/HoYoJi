@@ -7,13 +7,14 @@ $.projectShareAuthorizations = Alloy.createModel("ProjectShareAuthorization").xF
 
 $.allAuthorization.addEventListener("click", function(e) {
 	if ($.showHideAuthorization.getVisible()) {
-		$.showHideAuthorization.hide();
+		$.showHideAuthorization.setVisible(false);
 		e.source.setTitle("打开详细权限");
 	} else {
-		$.showHideAuthorization.show();
+		$.showHideAuthorization.setVisible(true);
 		e.source.setTitle("关闭详细权限");
 	}
 });
+$.showHideAuthorization.setVisible(false);
 
 $.date.UIInit($, $.getCurrentWindow());
 $.toUser.UIInit($, $.getCurrentWindow());

@@ -13,13 +13,13 @@
 					}
 					$.__savingCount++;
 				},
-				saveEnd : function(e) {
+				saveEnd : function(e, msg) {
 					$.__savingCount--;
 					if ($.__savingCount === 0) {
 						// hide the progress notification
 						console.info("end saving ...");
 						if (e.sourceController.saveEndCB) {
-							e.sourceController.saveEndCB(e);
+							e.sourceController.saveEndCB(msg);
 						}
 						var isSaveableContainer = $.$attrs.saveableContainer === "true" || $.$view.saveableContainer === "true";
 						if (isSaveableContainer) {
@@ -194,8 +194,8 @@
 						$.saveStart(e);
 						setTimeout(function() {
 							// try{
-							saveCB(function() {
-								$.saveEnd(e);
+							saveCB(function(msg) {
+								$.saveEnd(e, msg);
 							}, function(msg) {
 								$.saveError(e, msg);
 							});
