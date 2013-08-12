@@ -537,9 +537,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
-								}else{
-									return;
 								}
+								return;
+								
 							}
 							var currency = Alloy.createModel("Currency").xFindInDb({
 								id : currencyId
@@ -583,9 +583,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
-								}else{
-									return;
 								}
+								return;
+								
 							}
 							var exchange = Alloy.createModel("Exchange").xFindInDb({
 								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
