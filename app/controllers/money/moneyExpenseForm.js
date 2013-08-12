@@ -103,10 +103,10 @@ $.convertUser2FriendModel = function(userModel) {
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0) {
-			Alloy.Globals.Server.getExchangeRate(project.xGet("currency").id, Alloy.Models.User.xGet("activeCurrency").id, function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : project.xGet("currencyId"),
-					foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					foreignCurrencyId : project.xGet("currencyId"),
 					rate : rate
 				});
 				exchange.xSet("ownerUser", Alloy.Models.User);
@@ -123,6 +123,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 }
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;

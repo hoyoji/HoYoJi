@@ -3,7 +3,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var date = new Date();
 $.queryOptions = {
 	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString()
+	dateTo : date.getUTCTimeOfDateEnd().toISOString(),
+	project : Alloy.Models.User.xGet("activeProject")
 };
 
 $.onWindowOpenDo(function() {
@@ -29,7 +30,10 @@ exports.getQueryString = function() {
 				filterStr += "main.date >= '" + value + "' ";
 			} else if (f === "main.dateTo") {
 				filterStr += "main.date <= '" + value + "' ";
-			} else {
+			} else if (f === "main.project") {
+				filterStr += "main.project = '" + value + "' ";
+			} 
+			else {
 				filterStr += f + " = '" + value + "' ";
 			}
 		}

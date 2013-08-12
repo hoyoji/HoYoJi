@@ -64,6 +64,7 @@
 				bindAttribute="project"
 				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
+				bindModelBeforeSelectorCallback="beforeProjectSelectorCallback"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="债权人" hintText="无债权人"
 				id="friend" autoInit="false"
