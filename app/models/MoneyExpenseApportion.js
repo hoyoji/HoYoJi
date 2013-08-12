@@ -74,7 +74,7 @@ exports.definition = {
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");
 					}
-					return this.xGet("moneyExpense").xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate") / exchange).toUserCurrency();
 				}
 			},
 			getSharePercentage : function() {
