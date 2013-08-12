@@ -190,7 +190,7 @@ exports.definition = {
 				return currencySymbol;
 			},
 			getProjectAmount : function() {
-				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount") * this.xGet("exchangeRate");
+				return Number(this.xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount")*this.xGet("exchangeRate")).toFixed(2));
 			},
 			getProjectCurrencyAmount : function() {
 				return this.xGet("amount") * this.xGet("exchangeRate");
