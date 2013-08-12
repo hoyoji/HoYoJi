@@ -16,13 +16,13 @@
 				id="dateTo" autoInit="false"
 				bindModel="$.queryOptions"
 				bindAttribute="dateTo" />
-				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
 				bindModel="$.queryOptions"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyExpenseCategory" labelText="分类" hintText="请选择分类"
+				<!--<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyExpenseCategory" labelText="分类" hintText="请选择分类"
 				bindModel="$.queryOptions"
 				bindAttribute="moneyExpenseCategory"
 				bindAttributeIsModel="name"
