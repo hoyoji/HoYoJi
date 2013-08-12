@@ -16,7 +16,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180"  width="30%" height="28"
+			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180"  width="30%" height="28" hideFormRowBottom="true"
 				id="amount" autoInit="false"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"

@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 }
 
-$.apportion.addEventListener("singletap", function() {
+$.project.rightButton.addEventListener("singletap", function() {
 	if ($.amount.getValue()) {
 		Alloy.Globals.openWindow("money/moneyExpenseApportionAll", {
 			selectedExpense : $.$model,
@@ -99,6 +99,30 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+$.beforeProjectSelectorCallback = function(project, successCallback) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0) {
+			Alloy.Globals.Server.getExchangeRate(project.xGet("currency").id, Alloy.Models.User.xGet("activeCurrency").id, function(rate) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : project.xGet("currencyId"),
+					foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					rate : rate
+				});
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				successCallback();
+			}, function(e) {
+				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+			});
+		} else {
+			successCallback();
+		}
+	} else {
+		successCallback();
+	}
+}
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -173,9 +197,9 @@ $.onWindowOpenDo(function() {
 	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.apportion.$view.setHeight(0);
+		$.project.hideRightButton();
 	} else {
-		$.apportion.$view.setHeight(42);
+		$.project.showRightButton();
 	}
 });
 
@@ -256,7 +280,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.$view.setHeight(0);
 		} else {
 			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
-			if (exchanges.length) {
+			if (exchanges.length > 0) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
 			} else {
@@ -282,12 +306,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
-				$.apportion.$view.setHeight(0);
+				$.project.hideRightButton();
 			} else {
-				$.apportion.$view.setHeight(42);
+				$.project.showRightButton();
 			}
 		} else {
-			$.apportion.$view.setHeight(0);
+			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
@@ -554,9 +578,9 @@ $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-// $.exchangeRate.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
-$.apportion.UIInit($, $.getCurrentWindow());
+// $.apportion.UIInit($, $.getCurrentWindow());
 
