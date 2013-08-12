@@ -152,7 +152,7 @@ if ($.saveableMode === "read") {
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
-		oldAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
+		oldAmount = $.$model.xGet("amount");
 	}
 
 	function updateExchangeRate(e) {
@@ -234,10 +234,10 @@ if ($.saveableMode === "read") {
 				projectShareAuthorization.xAddToSave($);
 	
 				if (oldMoneyAccount === newMoneyAccount) {
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount * $.$model.xPrevious("exchangeRate"));
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 				} else {
 					oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount * $.$model.xPrevious("exchangeRate"));
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 					editData.push(newMoneyAccount.toJSON());
 					oldMoneyAccount.xAddToSave($);
 				}
