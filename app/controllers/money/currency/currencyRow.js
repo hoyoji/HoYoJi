@@ -27,7 +27,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 							foreignCurrencyId : project.xGet("currencyId")
 						});
 						if (!exchange.id) {
-							Alloy.Globals.Server.getExchangeRate(project.xGet("currencyId"), $.$model.xGet("id"), function(rate) {
+							Alloy.Globals.Server.getExchangeRate($.$model.xGet("id"), project.xGet("currencyId"), function(rate) {
 
 								exchange = Alloy.createModel("Exchange", {
 									localCurrencyId : $.$model.xGet("id"),
