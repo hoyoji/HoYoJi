@@ -74,9 +74,10 @@ if (!$.$model) {
 		expenseType : "Deposite"
 	});
 	$.setSaveableMode("add");
-} else {
-	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
-}
+} 
+// else {
+	// $.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
+// }
 
 if ($.saveableMode === "read") {
 	$.localAmountContainer.setHeight(42);
@@ -86,13 +87,47 @@ if ($.saveableMode === "read") {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
-			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 		} else {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
 	});
+	
+	function updateExchangeRate(e) {
+		if ($.moneyAccount.getValue() && $.project.getValue()) {
+			setExchangeRate($.moneyAccount.getValue(), $.project.getValue());
+		}
+	}
+
+
+	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+
+	function setExchangeRate(moneyAccount, project, setToModel) {
+		var exchangeRateValue;
+		if (moneyAccount.xGet("currency") === project.xGet("currency")) {
+			isRateExist = true;
+			exchangeRateValue = 1;
+			$.exchangeRate.$view.setHeight(0);
+		} else {
+			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
+			if (exchanges.length) {
+				isRateExist = true;
+				exchangeRateValue = exchanges.at(0).xGet("rate");
+			} else {
+				isRateExist = false;
+				exchangeRateValue = null;
+			}
+			$.exchangeRate.$view.setHeight(42);
+		}
+		if (setToModel) {
+			$.$model.xSet("exchangeRate", exchangeRateValue);
+		} else {
+			$.exchangeRate.setValue(exchangeRateValue);
+			$.exchangeRate.field.fireEvent("change");
+		}
+	}
 
 	$.amount.beforeOpenKeyboard = function(confirmCB) {
 		if (fistChangeFlag === 1) {
@@ -121,22 +156,22 @@ if ($.saveableMode === "read") {
 	}
 
 	function updateExchangeRate(e) {
-		if ($.moneyAccount.getValue()) {
-			setExchangeRate($.moneyAccount.getValue(), $.$model);
+		if ($.moneyAccount.getValue() && $.project.getValue()) {
+			setExchangeRate($.moneyAccount.getValue(), $.project.getValue());
 		}
 	}
 
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
-	function setExchangeRate(moneyAccount, model, setToModel) {
+	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
-		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
+		if (moneyAccount.xGet("currency") === project.xGet("currency")) {
 			isRateExist = true;
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
+			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
@@ -147,7 +182,7 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.$view.setHeight(42);
 		}
 		if (setToModel) {
-			model.xSet("exchangeRate", exchangeRateValue);
+			$.$model.xSet("exchangeRate", exchangeRateValue);
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
@@ -157,6 +192,7 @@ if ($.saveableMode === "read") {
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
+			updateExchangeRate();
 			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
 			$.moneyExpenseCategory.setValue(depositeExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
@@ -182,7 +218,7 @@ if ($.saveableMode === "read") {
 		if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
 			var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 			var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
-			var newAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
+			var newAmount = $.$model.xGet("amount");
 			var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 			
 			//比较收款人是不是当前用户，如果是则不需要发送消息。
@@ -193,15 +229,15 @@ if ($.saveableMode === "read") {
 					projectId : $.$model.xGet("project").xGet("id"),
 					friendUserId : Alloy.Models.User.id
 				});
-				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount);
+				projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount * $.$model.xPrevious("exchangeRate"));
 				editData.push(projectShareAuthorization.toJSON());
 				projectShareAuthorization.xAddToSave($);
 	
 				if (oldMoneyAccount === newMoneyAccount) {
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount * $.$model.xPrevious("exchangeRate"));
 				} else {
 					oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount * $.$model.xPrevious("exchangeRate"));
 					editData.push(newMoneyAccount.toJSON());
 					oldMoneyAccount.xAddToSave($);
 				}
@@ -322,6 +358,6 @@ $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
+// $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
 

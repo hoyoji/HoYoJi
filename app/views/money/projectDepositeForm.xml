@@ -39,12 +39,23 @@
 					bindAttribute="getLocalAmount()"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
+					id="moneyAccount" autoInit="false"
+				bindModel="$.$model"
+				bindAttribute="moneyAccount"
+				bindAttributeIsModel="getAccountNameCurrency()"
+				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
+					id="exchangeRate" toFixed="4"
+				bindModel="$.$model"
+				bindAttribute="exchangeRate"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
 					id="project" autoInit="false"
 					editModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="project"
-				bindAttributeIsModel="name"
+				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="分类" hintText="请选择分类"
@@ -57,17 +68,6 @@
 				addModeEditability="noneditable"
 				editModeEditability="noneditable"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="账户" hintText="请选择账户"
-					id="moneyAccount" autoInit="false"
-				bindModel="$.$model"
-				bindAttribute="moneyAccount"
-				bindAttributeIsModel="getAccountNameCurrency()"
-				bindModelSelector="money/moneyAccount/moneyAccountAll"
-				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
-					id="exchangeRate" autoInit="false" toFixed="4"
-				bindModel="$.$model"
-				bindAttribute="exchangeRate"/>
 				<!-- <Button id="updateRate">更新本地汇率</Button> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="friendUser" labelText="收款人" hintText="请选择收款人" hideKeyboard="true"
 				onSingletap="openFriendSelector" autoInit="false"
