@@ -164,4 +164,4 @@ $.localAmount.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.sharePercentage.UIInit($, $.getCurrentWindow());
 $.picture.UIInit($, $.getCurrentWindow());
-
+$.moneySymbol.UIInit($, $.getCurrentWindow());
