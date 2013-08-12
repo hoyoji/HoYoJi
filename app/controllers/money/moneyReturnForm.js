@@ -19,6 +19,31 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+$.beforeProjectSelectorCallback = function(project, successCallback) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0) {
+			Alloy.Globals.Server.getExchangeRate(project.xGet("currency").id, Alloy.Models.User.xGet("activeCurrency").id, function(rate) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : project.xGet("currencyId"),
+					foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					rate : rate
+				});
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				successCallback();
+			}, function(e) {
+				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+			});
+		} else {
+			successCallback();
+		}
+	} else {
+		successCallback();
+	}
+}
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;

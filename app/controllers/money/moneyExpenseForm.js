@@ -123,6 +123,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 }
+
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
