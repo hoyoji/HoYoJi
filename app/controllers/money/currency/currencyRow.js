@@ -6,6 +6,53 @@ $.makeContextMenu = function(e, isSelectMode) {
 		if($.$model !== Alloy.Models.User.xGet("activeCurrency")) {
 			Alloy.Models.User.xSet("activeCurrency",$.$model);
 			Alloy.Models.User.save({activeCurrencyId : $.$model.xGet("id")},{wait : true, patch : true});
+			
+				// function getAllExchanges(successCB, errorCB) {
+					// var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length;
+					
+					Alloy.Models.User.xGet("projects").forEach(function(project) {
+						// if (errorCount > 0) {
+							// return;
+						// }
+						if (project.xGet("currencyId") === $.$model.xGet("id")) {
+							// projectCurrencyIdsCount++;
+							// if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+								// successCB();
+							// }else{
+								return;
+							// }
+						}
+						var exchange = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : $.$model.xGet("id"),
+							foreignCurrencyId : project.xGet("currencyId")
+						});
+						if (!exchange.id) {
+							Alloy.Globals.Server.getExchangeRate(project.xGet("currencyId"), $.$model.xGet("id"), function(rate) {
+
+								exchange = Alloy.createModel("Exchange", {
+									localCurrencyId : $.$model.xGet("id"),
+									foreignCurrencyId : project.xGet("currencyId"),
+									rate : rate
+								});
+								exchange.xSet("ownerUser", Alloy.Models.User);
+								exchange.xSet("ownerUserId", Alloy.Models.User.id);
+								exchange.save();
+								// projectCurrencyIdsCount++;
+								// if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+									// successCB();
+								// }
+							}, function(e) {
+								// errorCount++;
+								errorCB(e)
+							});
+
+						} 
+						// else {
+							// projectCurrencyIdsCount++;
+						// }
+					})
+				// }
+
 		}
 	},isSelectMode));
 	// menuSection.add($.createContextMenuItem("删除币种", function() {

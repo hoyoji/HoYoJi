@@ -16,7 +16,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="5" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="5" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				id="actualTotalText" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "getActualTotalText()"
@@ -26,7 +26,7 @@
 				bindModel = "$.$model"
 				bindAttribute = "getActualTotalMoney()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="42" right="0" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="42" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				id="apportionedTotalText" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "getSettlementText()"
