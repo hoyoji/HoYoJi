@@ -37,7 +37,7 @@ $.convertUser2FriendModel = function(userModel) {
 
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0) {
+		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0) {
 			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
