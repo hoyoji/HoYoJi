@@ -149,14 +149,14 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
+				var exchange = 1;
 				var projectCurrency = this.xGet("project").xGet("currency");
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 				var exchanges = userCurrency.getExchanges(projectCurrency);
-				var exchange = 1;
-				if(exchanges.length){
+				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")/exchange).toUserCurrency();
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -169,19 +169,19 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
-					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
+				// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
 				// }
 				return currencySymbol;
 			},
 			getProjectAmount : function() {
-				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;

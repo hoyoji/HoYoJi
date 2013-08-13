@@ -16,7 +16,13 @@
 			bindModel = "$.$model"
 			bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget id="amount" src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180"  width="30%" height="28" hideFormRowBottom="true"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="140" width="30%" height="28"
+			id="moneySymbol" autoInit="false"
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel = "$.$model"
+			bindAttribute = "getMoneySymbol()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" left="180"  width="30%" height="28" hideFormRowBottom="true"
 				id="amount" autoInit="false"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"

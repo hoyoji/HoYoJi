@@ -195,6 +195,7 @@
 						if($.$attrs.bindModelSelectorConvert2Model && $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]){
 							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
 						}
+						if($.$attrs.bindModel.config){
 						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
 						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
 						attributes.selectedModel = selectedModel;
@@ -203,7 +204,7 @@
 								&& $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute 
 								&& $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? 
 								$.$attrs.bindModel : null;
-						
+						}
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}

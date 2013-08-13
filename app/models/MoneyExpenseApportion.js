@@ -108,6 +108,13 @@ exports.definition = {
 					return "均摊";
 				}
 			},
+			getMoneySymbol : function() {
+				if (this.xGet("ownerUser") === Alloy.Models.User || !this.xGet("ownerUser")) {
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol");
+				}else{
+					return "";
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
@@ -116,10 +123,10 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate"));
-						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate"));
+						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
+						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount")*self.xGet("moneyExpense").xGet("exchangeRate")
+							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate")
 						}, saveOptions);
 					}
 				});

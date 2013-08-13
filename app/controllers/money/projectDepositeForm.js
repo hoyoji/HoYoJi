@@ -39,7 +39,7 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 }
 function openFriendSelector() {
-	$.friendUser.field.blur();
+	// $.friendUser.field.blur();
 	var attributes = {
 		selectedProject : $.$model.xGet("project"),
 		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,

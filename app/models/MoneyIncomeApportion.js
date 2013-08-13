@@ -110,6 +110,13 @@ exports.definition = {
 					return "均摊";
 				}
 			},
+			getMoneySymbol : function() {
+				if (this.xGet("ownerUser") === Alloy.Models.User || !this.xGet("ownerUser")) {
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol");
+				}else{
+					return "";
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;

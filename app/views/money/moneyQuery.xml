@@ -16,7 +16,8 @@
 				id="dateTo" autoInit="false"
 				bindModel="$.queryOptions"
 				bindAttribute="dateTo" />
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="project" labelText="项目" hintText="请选择项目"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="项目" hintText="请选择项目"
+				id="project" autoInit="false"
 				bindModel="$.queryOptions"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
