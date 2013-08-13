@@ -160,20 +160,12 @@ if ($.saveableMode === "read") {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
-			$.$model.trigger("xchange:exchangeRate", $.$model);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
-
-function refreshExchangeRate() {
-	$.exchangeRate.refresh();
-}
-$.$model.on("xchange:exchangeRate", refreshExchangeRate);
-$.onWindowCloseDo(function() {
-	$.$model.off("xchange:exchangeRate", refreshExchangeRate);
-});
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
