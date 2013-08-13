@@ -7,6 +7,12 @@ $.searchButton.addEventListener("singletap", function(e) {
 	if (loading) {
 		return;
 	}
+	if(!$.search.getValue()){
+		alert("请输入货币查询条件");
+		$.search.focus();
+		return;
+	}
+	
 	loading = true;
 	$.currenciesCollection.reset();
 	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
