@@ -298,6 +298,7 @@ if ($.saveableMode === "read") {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");

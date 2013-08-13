@@ -16,7 +16,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "getFriendDisplayName()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="165" width="30%" height="28"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="140" width="30%" height="28"
 			id="moneySymbol" autoInit="false"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"

@@ -292,6 +292,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");

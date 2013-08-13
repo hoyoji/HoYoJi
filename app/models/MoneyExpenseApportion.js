@@ -109,7 +109,7 @@ exports.definition = {
 				}
 			},
 			getMoneySymbol : function() {
-				if (this.xGet("ownerUser") === Alloy.Models.User) {
+				if (this.xGet("ownerUser") === Alloy.Models.User || !this.xGet("ownerUser")) {
 					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol");
 				}else{
 					return "";
