@@ -22,7 +22,7 @@
 
 					if (OS_IOS) {
 						$.$view.removeEventListener("postlayout", animateOpen);
-						animation.addEventListener("complete", function(){
+						animation.addEventListener("complete", function() {
 							$.$view.setHeight(height);
 						});
 					}
@@ -38,7 +38,7 @@
 					$.$view.addEventListener("postlayout", animateOpen);
 					$.$view.setHeight(1);
 				}
-				if(OS_ANDROID){
+				if (OS_ANDROID) {
 					animateOpen();
 				}
 			}
@@ -51,9 +51,9 @@
 			}
 
 			$.convertModelValue = function(value) {
-				if (typeof value === "number") {
-					if($.$attrs.toFixed){
-						return 	value.toFixed(Number($.$attrs.toFixed));
+				if ( typeof value === "number") {
+					if ($.$attrs.toFixed) {
+						return value.toFixed(Number($.$attrs.toFixed));
 					} else {
 						return value.toUserCurrency();
 					}
@@ -148,32 +148,32 @@
 				}
 			}
 			// $.error.addEventListener("singletap", function(){
-				// $.hideErrorMsg();
-				// $.field.fireEvent("singletap");
+			// $.hideErrorMsg();
+			// $.field.fireEvent("singletap");
 			// });
 			$.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
 				if ($.saveableMode === "read") {
 					return;
-				}else if($.saveableMode === "edit" && $.$attrs.editModeEditability === "noneditable"){
+				} else if ($.saveableMode === "edit" && $.$attrs.editModeEditability === "noneditable") {
 					return;
-				}else if($.saveableMode === "add" && $.$attrs.addModeEditability === "noneditable"){
+				} else if ($.saveableMode === "add" && $.$attrs.addModeEditability === "noneditable") {
 					return;
 				}
 				if ($.$attrs.bindAttributeIsModel) {
 					// open bindModelSelector
 					if ($.$attrs.bindModelSelector) {
-						if($.beforeOpenModelSelector){
+						if ($.beforeOpenModelSelector) {
 							var retMsg = $.beforeOpenModelSelector();
-							if(retMsg){
+							if (retMsg) {
 								$.showErrorMsg(retMsg);
 								return;
 							}
 						}
 						var attributes = {
 							selectorCallback : function(model) {
-								if($.$attrs.bindModelSelectorConvertSelectedModel && $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel]){
+								if ($.$attrs.bindModelSelectorConvertSelectedModel && $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel]) {
 									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model);
 								}
 								$.setValue(model);
@@ -192,26 +192,24 @@
 						}
 						attributes.title = $.label.getText();
 						var selectedModel = $.$attrs.bindModel;
-						if($.$attrs.bindModelSelectorConvert2Model && $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]){
+						if ($.$attrs.bindModelSelectorConvert2Model && $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]) {
 							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
 						}
-						if($.$attrs.bindModel.config){
-						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
-						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
 						attributes.selectedModel = selectedModel;
-						attributes.selectModelCanNotBeChild = 
-								$.$attrs.bindModel.config.hasMany 
-								&& $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute 
-								&& $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? 
-								$.$attrs.bindModel : null;
+						if ($.$attrs.bindModel.config) {
+							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+							attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
+							attributes.selectModelCanNotBeChild = $.$attrs.bindModel.config.hasMany && $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute && $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? $.$attrs.bindModel : null;
+						} else {
+							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType;
 						}
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
 			});
 
-			$.refresh = function(){
-				if($.updateField){
+			$.refresh = function() {
+				if ($.updateField) {
 					$.updateField();
 				}
 			}
@@ -253,45 +251,45 @@
 						model.xSet ? model.xSet(attribute, $.__bindAttributeIsModel) : model[attribute] = $.__bindAttributeIsModel;
 					} else {
 						var val = $.getValue();
-						if(model.xSet){
+						if (model.xSet) {
 							if ((model.config.columns[attribute] && (model.config.columns[attribute].contains("REAL") || model.config.columns[attribute].contains("INTEGER"))) || $.$attrs.dataType === "Number") {
-								if(val){
+								if (val) {
 									val = Number(val);
 									if (_.isNaN(val)) {
 										$.showErrorMsg("请输入数值");
 										return;
-									}	
+									}
 								}
 							}
 							model.xSet(attribute, val);
 						} else {
 							model[attribute] = val;
 						}
-						if($.$attrs.autoSave === "true"){
+						if ($.$attrs.autoSave === "true") {
 							model._xSave();
 						}
 					}
-					if(model.xGet){
+					if (model.xGet) {
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
 						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
 							// if (bindAttributeIsModel && model.xGet("id") !== model.previous(attribute + "Id")) {
-								$.becameDirty();
+							$.becameDirty();
 							// }
-						}	
+						}
 					}
 				}
 				$.field.addEventListener("change", updateModel);
-				if(model.xGet){
+				if (model.xGet) {
 					model.on("error", handleError);
 					model.on("sync", $.updateField);
-	
+
 					// clean up listener upon window close to prevent memory leak
 					$.onWindowCloseDo(function() {
 						model.off(null, $.updateField);
 						model.off(null, handleError);
 						// if (!$.getCurrentWindow().$attrs.closeWithoutSave && model.hasChanged(attribute) && $.__dirtyCount > 0) {
-								// model.xSet(attribute, model.xPrevious(attribute));
+						// model.xSet(attribute, model.xPrevious(attribute));
 						// }
 					});
 				}
@@ -302,13 +300,13 @@
 			if ($.$attrs.value) {
 				$.setValue($.$attrs.value);
 			}
-			if($.label){
+			if ($.label) {
 				if ($.$attrs.labelText) {
 					$.label.setText($.$attrs.labelText);
 				}
 			}
-			
-			if($.$attrs.rightButtonText){
+
+			if ($.$attrs.rightButtonText) {
 				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
 				$.rightButton = Ti.UI.createButton({
 					title : $.$attrs.rightButtonText,
@@ -317,14 +315,14 @@
 					height : 38
 				});
 				$.field.setRight(48);
-				$.$view.add($.rightButton); 
+				$.$view.add($.rightButton);
 			}
-			
-			$.showRightButton = function(){
+
+			$.showRightButton = function() {
 				$.rightButton.setVisible(true);
 				$.field.setRight(48);
 			}
-			$.hideRightButton = function(){
+			$.hideRightButton = function() {
 				$.rightButton.setVisible(false);
 				$.field.setRight(0);
 			}
@@ -333,39 +331,39 @@
 			if ($.$attrs.bindAttribute) {
 				var model = $.$attrs.bindModel;
 				if (model && typeof model === "string") {
-						var resolveBindModelFromSaveable = function(saveableController) {
-							console.info("resolved bindModel from saveable " + model);
-							var path = model.split(".");
-							// if (path[0] === "$") {
-								model = saveableController;
-							// } else {
-								// model = Alloy.Models[path[0]];
-							// }
-	
-							for (var i = 1; i < path.length; i++) {
-								if (model.xGet) {
-									model = model.xGet(path[i]);
-								} else {
-									model = model[path[i]];
-								}
-							}
-							$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
-						}
-						$.onWindowOpenDo(function() {
-							if(!model.startsWith("$.")){
-								resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
+					var resolveBindModelFromSaveable = function(saveableController) {
+						console.info("resolved bindModel from saveable " + model);
+						var path = model.split(".");
+						// if (path[0] === "$") {
+						model = saveableController;
+						// } else {
+						// model = Alloy.Models[path[0]];
+						// }
+
+						for (var i = 1; i < path.length; i++) {
+							if (model.xGet) {
+								model = model.xGet(path[i]);
 							} else {
-								resolveBindModelFromSaveable($.getParentController());
-								
-								// $.$view.fireEvent("resolvesaveablemodel", {
-									// bubbles : true,
-									// callback : function($) {
-										// resolveBindModelFromSaveable($);
-									// }
-								// });
+								model = model[path[i]];
 							}
-						});
-					
+						}
+						$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
+					}
+					$.onWindowOpenDo(function() {
+						if (!model.startsWith("$.")) {
+							resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
+						} else {
+							resolveBindModelFromSaveable($.getParentController());
+
+							// $.$view.fireEvent("resolvesaveablemodel", {
+							// bubbles : true,
+							// callback : function($) {
+							// resolveBindModelFromSaveable($);
+							// }
+							// });
+						}
+					});
+
 				} else if (model && typeof model === "object") {
 					$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 				} else {

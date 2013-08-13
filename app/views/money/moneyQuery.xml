@@ -22,6 +22,7 @@
 				bindAttribute="project"
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
+				bindModelSelectorConvertType="Project"
 				/>
 				<!--<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="moneyExpenseCategory" labelText="分类" hintText="请选择分类"
 				bindModel="$.queryOptions"
@@ -41,6 +42,7 @@
 				bindAttribute="friend"
 				bindAttributeIsModel="getDisplayName()"
 				bindModelSelector="friend/friendAll"
+				bindModelSelectorConvertType="Friend"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" id="friendAccount" labelText="商家账户" hintText="无商家账户"
 				bindModel="$.queryOptions"
@@ -48,6 +50,7 @@
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="setting/moneyAccount/moneyAccountAll"
 				bindModelSelectorParams="selectedFriend:friend"
+				bindModelSelectorConvertType="Project"
 				/>
 				<View height="42">
 				<Label left="0" width="30%" height="Ti.UI.FILL">是否预支</Label>
