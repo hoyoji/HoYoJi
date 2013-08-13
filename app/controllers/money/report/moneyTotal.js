@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var totalField = $.$attrs.totalField || "SUM(main.amount)", value = 0, query,
-querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main ";
+var totalField = $.$attrs.totalField || "SUM(main.amount / IFNULL(ex.rate, 1))", value = 0, query,
+querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' ";
 
 exports.query = function(queryStr){
 	var	queryStr = queryStr || $.$attrs.queryStr;

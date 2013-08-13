@@ -3,6 +3,7 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 $.onRowTap = function(){
 	var currency = Alloy.createModel("Currency").xFindInDb({ id : $.$model.xGet("id")});
 	if(!currency.id){
+		delete $.$model.id; // add it as new record
 		$.$model.xSet("ownerUser", Alloy.Models.User);
 		$.$model.xSet("ownerUserId", Alloy.Models.User.id);
 		$.$model.save();

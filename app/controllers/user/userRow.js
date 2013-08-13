@@ -19,6 +19,7 @@ function sendAddFriendMessage(friendlength){
 			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("id")});
 			if(!toUser.id){
+				delete $.$model.id; // add it as new record
 				$.$model.save();
 			}
 			var date = (new Date()).toISOString();

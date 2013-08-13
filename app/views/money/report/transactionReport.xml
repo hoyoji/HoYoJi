@@ -6,27 +6,27 @@
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<View height="42">
 					<Label left="5" width="30%">总收入</Label>
-					<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总支出</Label>
-					<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="SUM(main.amount * main.exchangeRate/ IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总借入</Label>
-					<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总还款</Label>
-					<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总借出</Label>
-					<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总收款</Label>
-					<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.amount * main.exchangeRate)" right="5"/>
+					<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">结余</Label>
