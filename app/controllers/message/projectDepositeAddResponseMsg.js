@@ -268,13 +268,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 function importToLocalOperate() {
 	//接受充值
 	if (accountShareData.accountType === "MoneyExpense") {
-		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject)
+		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject);
+		var amount = accountShareData.account.amount * accountShareData.account.exchangeRate;
 		var account = Alloy.createModel("MoneyIncome", {
 			date : (new Date()).toISOString(),
-			amount : accountShareData.account.amount,
 			remark : accountShareData.account.remark,
 			ownerUser : Alloy.Models.User,
-			localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 			exchangeRate : 1,
 			incomeType : accountShareData.account.expenseType,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -286,7 +285,9 @@ function importToLocalOperate() {
 
 		var accountShareMsgController = Alloy.Globals.openWindow("money/projectIncomeForm", {
 			$model : account,
-			selectedDepositeMsg : $.$model
+			selectedDepositeMsg : $.$model,
+			depositeAmount : accountShareData.account.amount,
+			depositeExchangeRate : accountShareData.account.exchangeRate
 		});
 		// $.$model.xSet("messageState", "closed");
 		// $.$model.xAddToSave(accountShareMsgController.content);

@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User) {
-		$.amount.$view.setHeight(0);
+		$.amountView.setHeight(0);
 		$.localAmount.$view.setHeight(28);
 	}
 });

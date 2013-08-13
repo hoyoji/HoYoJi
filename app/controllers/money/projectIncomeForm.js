@@ -1,7 +1,8 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedDepositeMsg = $.$attrs.selectedDepositeMsg;
-
+var depositeExchangeRate = $.$attrs.depositeExchangeRate;
+var depositeAmount = $.$attrs.depositeAmount;
 $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if(!$.$model.xGet("moneyAccount")){
 		alert("请选择账户");
@@ -43,6 +44,30 @@ $.convertUser2FriendModel = function(userModel) {
 	}
 	return userModel;
 }
+
+$.beforeProjectSelectorCallback = function(project, successCallback) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (project.xGet("currency").getExchanges(Alloy.Models.User.xGet("activeCurrency")).length === 0) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					foreignCurrencyId : project.xGet("currencyId"),
+					rate : rate
+				});
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				successCallback();
+			}, function(e) {
+				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+			});
+		} else {
+			successCallback();
+		}
+	} else {
+		successCallback();
+	}
+}
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -56,9 +81,13 @@ if ($.saveableMode === "read") {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
-			setExchangeRate($.$model.xGet("moneyAccount"), $.$model, true);
+			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
+			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
+				$.$model.xSet("amount" , (depositeAmount * depositeExchangeRate)/$.$model.xGet("exchangeRate"));
+				$.amount.refresh();
+			}
 		} else {
-			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -74,26 +103,26 @@ if ($.saveableMode === "read") {
 	if ($.saveableMode === "add") {
 		oldAmount = 0
 	} else {
-		oldAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
+		oldAmount = $.$model.xGet("amount");
 	}
-
+	
 	function updateExchangeRate(e) {
-		if ($.moneyAccount.getValue()) {
-			setExchangeRate($.moneyAccount.getValue(), $.$model);
+		if ($.moneyAccount.getValue() && $.project.getValue()) {
+			setExchangeRate($.moneyAccount.getValue(), $.project.getValue());
 		}
 	}
 
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
-	function setExchangeRate(moneyAccount, model, setToModel) {
+	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
-		if (moneyAccount.xGet("currency") === model.xGet("localCurrency")) {
+		if (moneyAccount.xGet("currency") === project.xGet("currency")) {
 			isRateExist = true;
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = model.xGet("localCurrency").getExchanges(moneyAccount.xGet("currency"));
+			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
 			if (exchanges.length) {
 				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
@@ -104,7 +133,8 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.$view.setHeight(42);
 		}
 		if (setToModel) {
-			model.xSet("exchangeRate", exchangeRateValue);
+			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
@@ -139,14 +169,14 @@ if ($.saveableMode === "read") {
 		var addData = [];
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
-		var newAmount = $.$model.xGet("amount") * $.$model.xPrevious("exchangeRate");
+		var newAmount = $.$model.xGet("amount");
 		var oldCurrentBalance = oldMoneyAccount.xGet("currentBalance");
 		//查找共享给我的projectShareAuthorization
 		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 			projectId : $.$model.xGet("project").xGet("id"),
 			friendUserId : Alloy.Models.User.id
 		});
-		projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount);
+		projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xPrevious("exchangeRate"));
 		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + newAmount);
 		projectShareAuthorization.xAddToSave($);
 		editData.push(projectShareAuthorization.toJSON());
@@ -166,7 +196,7 @@ if ($.saveableMode === "read") {
 		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 			if ($.$model.xGet("exchangeRate")) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrency : $.$model.xGet("localCurrency"),
+					localCurrency : $.$model.xGet("project").xGet("localCurrency"),
 					foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
 					rate : $.$model.xGet("exchangeRate"),
 					ownerUser : Alloy.Models.User

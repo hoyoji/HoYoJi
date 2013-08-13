@@ -227,6 +227,7 @@ if ($.saveableMode === "read") {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
+			
 		} else {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);

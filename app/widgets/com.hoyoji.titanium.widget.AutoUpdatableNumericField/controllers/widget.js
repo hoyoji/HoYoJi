@@ -10,6 +10,9 @@ if ($.$attrs.fieldColor) {
 if($.$attrs.hideFormRowBottom){
 	$.formRowBottom.setHeight(0);
 }
+if($.$attrs.leftSize){
+	$.field.setLeft($.$attrs.leftSize);
+}
 function openKeyboard() {
 	if ($.getParentController().titleBar) {
 		$.getCurrentWindow().openNumericKeyboard($, function() {
