@@ -230,7 +230,10 @@
 					}
 				}
 			}
-
+			
+			if($.$attrs.autoInit !== "false"){
+				$.showActivityIndicator();
+			}
 
 			$.$view.addEventListener("registerwindowevent", registerWindowEvent);
 
@@ -256,6 +259,9 @@
 							$.$view.fireEvent("winopen", {
 								bubbles : false
 							});
+							if($.$attrs.autoInit !== "false"){
+								$.hideActivityIndicator();
+							}
 							// }
 
 							winController.$view.addEventListener("close", $.triggerWindowCloseEvent);
@@ -275,12 +281,14 @@
 				$.__currentWindow = $.$attrs.currentWindow;
 			}
 			if ($.$attrs.autoInit !== "false") {
+							
 				if ($.__parentController && $.__currentWindow) {
 					$.$view.fireEvent("winopen", {
 						bubbles : false
 					});
 					$.__currentWindow.$view.addEventListener("close", $.triggerWindowCloseEvent);
 				} else {
+					$.showActivityIndicator();
 					$.$view.addEventListener("postlayout", detectWindow);
 				}
 			}

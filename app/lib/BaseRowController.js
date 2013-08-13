@@ -442,7 +442,7 @@
 
 			$.$view.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;
-				if (!$.getCurrentWindow() || isRemoving) {
+				if (!$.__currentWindow || isRemoving) {
 					return;
 				}
 

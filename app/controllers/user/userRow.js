@@ -61,11 +61,5 @@ function sendAddFriendMessage(friendlength){
 		}
 	}
 }
-// $.onWindowOpenDo(function(){
-// $.$model.on("change", function(){
-// $.userName.setText($.$model.xGet("userName"));
-// });
-// $.userName.setText($.$model.xGet("userName"));
-// });
 
-// $.userName.autoInit($, $.getCurrentWindow());
+$.userName.UIInit($, $.getCurrentWindow());

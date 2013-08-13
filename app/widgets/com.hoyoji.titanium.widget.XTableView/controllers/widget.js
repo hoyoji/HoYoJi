@@ -455,11 +455,9 @@ var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField;
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
-	//$.showActivityIndicator("正在加载...");
-	$.fetchNextPageButton.setText("正在加载更多...");
+	$.fetchNextPageButton.setText("加载更多...");
 
-	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField
-	)) {
+	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField)) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
 		sortedArray_groupByField = groupByField;
@@ -504,8 +502,6 @@ exports.fetchNextPage = function(tableRowsCount) {
 			$.sort(null, null, null, true, newRows);
 		}
 
-		//$.hideActivityIndicator();
-
 		showNoDataIndicator();
 	}
 
@@ -541,7 +537,6 @@ exports.getRowsCount = function() {
 exports.addCollection = function(collection, rowView) {
 	$.showActivityIndicator("正在加载...");
 
-	console.info("xTableView adding collection " + collection.length);
 	if (rowView) {
 		collection.__rowView = rowView;
 	}
@@ -579,7 +574,7 @@ exports.addCollection = function(collection, rowView) {
 	collection.on("xFetchEnd", refreshCollection);
 	collection.on("xSetFilterEnd", refreshCollection);
 
-	showNoDataIndicator($.table.data.length);
+	showNoDataIndicator();
 	$.hideActivityIndicator();
 }
 var clearCollections = function() {

@@ -1,7 +1,6 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onRowTap = function(){
-	
 	var currency = Alloy.createModel("Currency").xFindInDb({ id : $.$model.xGet("id")});
 	if(!currency.id){
 		$.$model.xSet("ownerUser", Alloy.Models.User);
@@ -15,3 +14,8 @@ $.onRowTap = function(){
 	
 	return false;
 }
+
+
+$.name.UIInit($, $.getCurrentWindow());
+$.symbol.UIInit($, $.getCurrentWindow());
+$.code.UIInit($, $.getCurrentWindow());
