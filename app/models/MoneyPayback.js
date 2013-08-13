@@ -163,17 +163,13 @@ exports.definition = {
 			},
 			getLocalAmount : function() {
 				var exchange = 1;
-				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
-					exchange = this.xGet("exchangeRate");
-				} else {
-					var projectCurrency = this.xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = userCurrency.getExchanges(projectCurrency);
-					if (exchanges.length) {
-						exchange = exchanges.at(0).xGet("rate");
-					}
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				if (exchanges.length) {
+					exchange = exchanges.at(0).xGet("rate");
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")/exchange).toUserCurrency();
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -186,19 +182,19 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") +" "+ accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
-					// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
+				// currencySymbol = this.xGet("project").xGet("currency").xGet("code") + " " + this.xGet("amount")*this.xGet("exchangeRate");
 				// }
 				return currencySymbol;
 			},
 			getProjectAmount : function() {
-				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount")*this.xGet("exchangeRate");
+				return this.xGet("amount") * this.xGet("exchangeRate");
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
