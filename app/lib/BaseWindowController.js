@@ -55,9 +55,9 @@
 						var menuHeader = null;
 						if ($.mainWindow) {
 							title = "记一笔";
-							menuHeader = [$.createContextMenuItem("设置", function() {
-								Alloy.Globals.openWindow("setting/systemSetting");
-							})];
+							// menuHeader = [$.createContextMenuItem("设置", function() {
+								// Alloy.Globals.openWindow("setting/systemSetting");
+							// })];
 							menuFooter = [$.createContextMenuItem(title, function(){	
 								Alloy.Globals.openWindow("money/moneyAddNew");
 							})];
@@ -82,6 +82,7 @@
 			if ($.$view.contextMenu !== "false") {
 				$.__views.contextMenu = Alloy.createWidget("com.hoyoji.titanium.widget.ContextMenu", "widget", {
 					id : "contextMenu",
+					autoInit : "false",
 					parentController : $,
 					currentWindow : $
 				});
