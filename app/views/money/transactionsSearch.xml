@@ -4,7 +4,7 @@
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsSearchTable" 
 			autoInit="false"
-			sortByField="date" sortReverse="true" groupByField="date" pageSize="7" bottom="0" top="0"/>
+			sortByField="date" sortReverse="true" groupByField="date" pageSize="10" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
 		buttons="查找" imagesFolder="/images/money/moneyAll"
