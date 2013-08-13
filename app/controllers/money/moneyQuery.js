@@ -30,8 +30,8 @@ exports.getQueryString = function() {
 				filterStr += "main.date >= '" + value + "' ";
 			} else if (f === "main.dateTo") {
 				filterStr += "main.date <= '" + value + "' ";
-			} else if (f === "main.project") {
-				filterStr += "main.project = '" + value + "' ";
+			} else if (f === "main.projectId") {
+				filterStr += "main.projectId = '" + value.id + "' ";
 			} 
 			else {
 				filterStr += f + " = '" + value + "' ";
@@ -60,3 +60,4 @@ $.close.addEventListener("singletap", close);
 
 $.dateFrom.UIInit($, $.getCurrentWindow());
 $.dateTo.UIInit($, $.getCurrentWindow());
+$.project.UIInit($, $.getCurrentWindow());
