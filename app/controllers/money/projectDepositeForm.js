@@ -64,7 +64,6 @@ var fistChangeFlag;
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpense", {
 		date : (new Date()).toISOString(),
-		localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 		exchangeRate : 1,
 		expenseType : "Ordinary",
 		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
@@ -89,7 +88,7 @@ if ($.saveableMode === "read") {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 		} else {
-			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("localCurrency")) {
+			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
@@ -123,6 +122,7 @@ if ($.saveableMode === "read") {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
@@ -183,6 +183,7 @@ if ($.saveableMode === "read") {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
@@ -245,7 +246,7 @@ if ($.saveableMode === "read") {
 				if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 					if ($.$model.xGet("exchangeRate")) {
 						var exchange = Alloy.createModel("Exchange", {
-							localCurrency : $.$model.xGet("localCurrency"),
+							localCurrency : $.$model.xGet("project").xGet("currency"),
 							foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
 							rate : $.$model.xGet("exchangeRate"),
 							ownerUser : Alloy.Models.User
@@ -263,7 +264,6 @@ if ($.saveableMode === "read") {
 								amount : $.$model.xGet("amount"),
 								remark : $.$model.xGet("remark"),
 								ownerUser : Alloy.Models.User,
-								localCurrency : Alloy.Models.User.xGet("activeCurrency"),
 								exchangeRate : $.$model.xGet("exchangeRate"),
 								incomeType : $.$model.xGet("expenseType"),
 								moneyAccount : $.$model.xGet("moneyAccount"),
@@ -296,10 +296,8 @@ if ($.saveableMode === "read") {
 					account[attr] = $.$model.xGet(attr);
 				}
 				//account还没有保存到数据库，所以要手动添加含id的字段.
-				account["localCurrencyId"] = $.$model.xGet("localCurrency").xGet("id");
 				account["projectId"] = $.$model.xGet("project").xGet("id");
 				account["moneyExpenseCategoryId"] = $.$model.xGet("moneyExpenseCategory").xGet("id");
-				account["localCurrencyId"] = $.$model.xGet("localCurrency").xGet("id");
 				account["moneyAccountId"] = $.$model.xGet("moneyAccount").xGet("id");
 				
 				//发送消息给好友
