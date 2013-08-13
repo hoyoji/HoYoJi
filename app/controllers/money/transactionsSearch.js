@@ -34,15 +34,7 @@ function doQuery(_queryController) {
 	queryOptions = _queryController.queryOptions;
 	queryController = _queryController;
 	$.transactionsSearchTable.resetTable(); // clear all the table rows and reset all the collections
-	// searchMoneyExpenses.reset();
-	// searchMoneyIncomes.reset();
-	// searchMoneyTransferOuts.reset();
-	// searchMoneyTransferIns.reset();
-	// searchMoneyBorrows.reset();
-	// searchMoneyLends.reset();
-	// searchMoneyReturns.reset();
-	// searchMoneyPaybacks.reset();
-	
+
 	// searchMoneyExpenses.xSearchInDb(queryController.getQueryString());
 	// searchMoneyIncomes.xSearchInDb(queryController.getQueryString());
 	// searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString());
