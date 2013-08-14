@@ -86,6 +86,7 @@ function openDepositeAccountSelector() {
 		selectorCallback : function(model) {
 			$.depositeFriendAccount = model;
 			$.depositeAccount.setValue($.depositeFriendAccount.getAccountNameCurrency());
+			updateDepositeExchangeRate();
 		}
 	};
 	attributes.title = "账户";
@@ -196,8 +197,8 @@ if ($.saveableMode === "read") {
 	}
 	
 	function updateDepositeExchangeRate(e) {
-		if ($.depositeFriendAccount.getValue() && $.project.getValue()) {
-			setDepositeExchangeRate($.depositeFriendAccount.getValue(), $.project.getValue());
+		if ($.depositeAccount.getValue() && $.project.getValue()) {
+			setDepositeExchangeRate($.depositeAccount.getValue(), $.project.getValue());
 		}
 	}
 
@@ -210,7 +211,7 @@ if ($.saveableMode === "read") {
 			depositeExchangeRateValue = 1;
 			$.depositeAccountExchangeRate.$view.setHeight(0);
 		} else {
-			var exchanges = $.depositeFriendAccount.getExchanges(project.xGet("currency"));
+			var exchanges = $.depositeFriendAccount.xGet("currency").getExchanges(project.xGet("currency"));
 			if (exchanges.length) {
 				isDepositeRateExist = true;
 				depositeExchangeRateValue = exchanges.at(0).xGet("rate");
@@ -220,13 +221,14 @@ if ($.saveableMode === "read") {
 			}
 			$.depositeAccountExchangeRate.$view.setHeight(42);
 		}
-		if (setToModel) {
-			$.$model.xSet("exchangeRate", depositeExchangeRateValue);
-			$.depositeAccountExchangeRate.refresh();
-		} else {
-			$.exchangeRate.setValue(depositeExchangeRateValue);
+		// if (setToModel) {
+			// // $.$model.xSet("exchangeRate", depositeExchangeRateValue);
+			// $.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
+			// $.depositeAccountExchangeRate.refresh();
+		// } else {
+			$.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
 			$.depositeAccountExchangeRate.field.fireEvent("change");
-		}
+		// }
 	}
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
@@ -235,6 +237,9 @@ if ($.saveableMode === "read") {
 			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
 			$.moneyExpenseCategory.setValue(depositeExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
+			if ($.depositeFriendAccount && $.depositeFriendAccount.xGet("id")) {
+				
+			}
 		}
 	});
 
@@ -303,28 +308,27 @@ if ($.saveableMode === "read") {
 						}
 					}
 					addData.push($.$model.toJSON());
+					var depositeIncome = Alloy.createModel("MoneyIncome", {
+						date : $.$model.xGet("date"),
+						amount : $.$model.xGet("amount"),
+						remark : $.$model.xGet("remark"),
+						ownerUser : Alloy.Models.User,
+						exchangeRate : $.depositeAccountExchangeRate.getValue(),
+						incomeType : $.$model.xGet("expenseType"),
+						moneyAccount : $.depositeFriendAccount,
+						project : $.$model.xGet("project"),
+						moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
+						friendUser : $.$model.xGet("friendUser"),
+						depositeId : $.$model.xGet("id")
+					});
+					depositeIncome.xAddToSave($);
+					addData.push(depositeIncome.toJSON());
+					
+					// $.depositeFriendAccount.xSet("currentBalance", $.depositeFriendAccount.xGet("currentBalance") + newAmount);
+					// $.depositeFriendAccount.xAddToSave($);
+					// editData.push($.depositeFriendAccount.toJSON());
 
 					$.saveModel(function(e) {
-
-						var depositeIncome = Alloy.createModel("MoneyIncome", {
-							date : $.$model.xGet("date"),
-							amount : $.$model.xGet("amount"),
-							remark : $.$model.xGet("remark"),
-							ownerUser : Alloy.Models.User,
-							exchangeRate : $.$model.xGet("exchangeRate"),
-							incomeType : $.$model.xGet("expenseType"),
-							moneyAccount : $.depositeFriendAccount,
-							project : $.$model.xGet("project"),
-							moneyIncomeCategory : $.$model.xGet("project").xGet("depositeIncomeCategory"),
-							friendUser : $.$model.xGet("friendUser"),
-							depositeId : $.$model.xGet("id")
-						});
-						depositeIncome.xAddToSave($);
-						addData.push(depositeIncome.toJSON());
-						
-						$.depositeFriendAccount.xSet("currentBalance", $.depositeFriendAccount.xGet("currentBalance") + newAmount);
-						$.depositeFriendAccount.xAddToSave($);
-						editData.push($.depositeFriendAccount.toJSON());
 						// var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
 							// $model : depositeIncome
 						// });

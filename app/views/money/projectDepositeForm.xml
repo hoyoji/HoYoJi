@@ -73,7 +73,7 @@
 				onSingletap="openFriendSelector" autoInit="false"
 				editModeEditability="noneditable"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="depositeAccount" height="0" labelText="账户" hintText="请选择存入账户" hideKeyboard="true"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="depositeAccount" height="0" labelText="存入账户" hintText="请选择存入账户" hideKeyboard="true"
 				onSingletap="openDepositeAccountSelector" autoInit="false"
 				editModeEditability="noneditable"
 				/>
