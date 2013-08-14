@@ -30,7 +30,7 @@ exports.getQueryString = function() {
 				filterStr += "main.date >= '" + value + "' ";
 			} else if (f === "main.dateTo") {
 				filterStr += "main.date <= '" + value + "' ";
-			} else if (f === "main.project") {
+			} else if (f === "main.projectId") {
 				filterStr += "main.projectId = '" + value.id + "' ";
 			} 
 			else {
