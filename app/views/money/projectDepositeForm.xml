@@ -77,6 +77,10 @@
 				onSingletap="openDepositeAccountSelector" autoInit="false"
 				editModeEditability="noneditable"
 				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="存入汇率" hintText="请输入存入汇率" rightButtonText="更新"
+					id="depositeAccountExchangeRate" toFixed="4"
+					editModeEditability="noneditable"
+					/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 					id="remark" autoInit="false"
 				bindModel="$.$model"

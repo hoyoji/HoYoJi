@@ -20,6 +20,23 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
+$.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if (!$.depositeFriendAccount) {
+		alert("请选择存入账户");
+		return;
+	}
+	if (!$.$model.xGet("project")) {
+		alert("请选择项目");
+		return;
+	}
+	Alloy.Globals.Server.getExchangeRate($.depositeFriendAccount.xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+		$.depositeAccountExchangeRate.setValue(rate);
+		$.depositeAccountExchangeRate.field.fireEvent("change");
+	}, function(e) {
+		alert(e);
+	});
+});
+
 // $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 // if (selectedFriendModel) {
 // return selectedFriendModel.xGet("friendUser");
@@ -81,6 +98,7 @@ function openDepositeAccountSelector() {
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
+var isDepositeRateExist;
 var fistChangeFlag;
 
 if (!$.$model) {
@@ -149,7 +167,6 @@ if ($.saveableMode === "read") {
 		}
 	}
 
-
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
@@ -177,10 +194,42 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
+	
+	function updateDepositeExchangeRate(e) {
+		if ($.depositeFriendAccount.getValue() && $.project.getValue()) {
+			setDepositeExchangeRate($.depositeFriendAccount.getValue(), $.project.getValue());
+		}
+	}
 
+	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+	
+	function setDepositeExchangeRate(moneyAccount, project, setToModel) {
+		var depositeExchangeRateValue;
+		if ($.depositeFriendAccount.xGet("currency") === project.xGet("currency")) {
+			isDepositeRateExist = true;
+			depositeExchangeRateValue = 1;
+			$.depositeAccountExchangeRate.$view.setHeight(0);
+		} else {
+			var exchanges = $.depositeFriendAccount.getExchanges(project.xGet("currency"));
+			if (exchanges.length) {
+				isDepositeRateExist = true;
+				depositeExchangeRateValue = exchanges.at(0).xGet("rate");
+			} else {
+				isDepositeRateExist = false;
+				depositeExchangeRateValue = null;
+			}
+			$.depositeAccountExchangeRate.$view.setHeight(42);
+		}
+		if (setToModel) {
+			$.$model.xSet("exchangeRate", depositeExchangeRateValue);
+			$.depositeAccountExchangeRate.refresh();
+		} else {
+			$.exchangeRate.setValue(depositeExchangeRateValue);
+			$.depositeAccountExchangeRate.field.fireEvent("change");
+		}
+	}
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
-		alert("4")
 		if ($.project.getValue()) {
 			updateExchangeRate();
 			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
