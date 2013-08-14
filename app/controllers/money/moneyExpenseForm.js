@@ -326,9 +326,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyExpenseCategory.setValue(defaultExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
-				$.project.hideRightButton();
-			} else {
 				$.project.showRightButton();
+			} else {
+				$.project.hideRightButton();
 			}
 		} else {
 			$.project.hideRightButton();
