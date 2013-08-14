@@ -116,7 +116,17 @@ function doLogin(e) {
 								friendUserId : Alloy.Models.User.xGet("id"),
 								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
 								__dataType : "ProjectShareAuthorization"
-							})
+							});
+							belongsToes.push({
+								// parentExpenseCategoryId : null,
+								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								__dataType : "MoneyExpenseCategory"
+							});
+							belongsToes.push({
+								// parentIncomeCategoryId : null,
+								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								__dataType : "MoneyIncomeCategory"
+							});							
 						}
 					}
 				}
