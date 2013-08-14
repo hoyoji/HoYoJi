@@ -296,6 +296,7 @@
 					}
 				}
 				this.set(d, c);
+				this.trigger("_xchange", this);
 				if(!c.xsilent){
 					for(var attr in d){
 						this.trigger("_xchange:"+attr, this);

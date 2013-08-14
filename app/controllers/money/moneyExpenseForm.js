@@ -193,10 +193,6 @@ function deleteApportion(apportionModel) {
 }
 
 $.onWindowOpenDo(function() {
-	$.$model.on("xchange:amount", updateAmount);
-	// $.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
-	$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
-
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
 		$.project.hideRightButton();
 	} else {
@@ -204,10 +200,32 @@ $.onWindowOpenDo(function() {
 	}
 });
 
+var detailsDirty = false, apportionsDirty = false;
+function updateDetails(){
+	if(!detailsDirty){
+		$.becameDirty();
+		detailsDirty = true;
+	}
+}
+function updateApportions(){
+	if(!apportionsDirty){
+		$.becameDirty();
+		apportionsDirty = true;
+	}
+}
+
+$.$model.on("xchange:amount", updateAmount);
+// $.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
+$.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
+$.$model.xGet("moneyExpenseApportions").on("add _xchange xdelete", updateApportions);
+$.$model.xGet("moneyExpenseDetails").on("add _xchange xdelete", updateDetails);
+
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	// $.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
+	$.$model.xGet("moneyExpenseApportions").off("add _xchange xdelete", updateApportions);
+	$.$model.xGet("moneyExpenseDetails").off("add _xchange xdelete", updateDetails);
 });
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
@@ -546,6 +564,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 						wait : true
 					});
 				}
+			}
+			
+			if(detailsDirty){
+				$.becameClean();
+			}
+			if(apportionsDirty){
+				$.becameClean();
 			}
 			saveEndCB(e);
 		}, function(e) {
