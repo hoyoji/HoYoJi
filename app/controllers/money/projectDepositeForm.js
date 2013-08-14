@@ -195,6 +195,14 @@ if ($.saveableMode === "read") {
 		}
 	}
 	
+	function updateDepositeExchangeRate(e) {
+		if ($.depositeFriendAccount.getValue() && $.project.getValue()) {
+			setDepositeExchangeRate($.depositeFriendAccount.getValue(), $.project.getValue());
+		}
+	}
+
+	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+	
 	function setDepositeExchangeRate(moneyAccount, project, setToModel) {
 		var depositeExchangeRateValue;
 		if ($.depositeFriendAccount.xGet("currency") === project.xGet("currency")) {
