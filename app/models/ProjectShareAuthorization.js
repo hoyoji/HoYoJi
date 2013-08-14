@@ -245,6 +245,9 @@ exports.definition = {
 				return Number((actualTotalMoney/exchange).toFixed(2));
 
 			},
+			getCurrencyActualTotalMoney : function(){
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoney();
+			},
 			getSettlementText : function() {
 				// var getApportionedTotal = 0;
 				// var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
@@ -294,6 +297,7 @@ exports.definition = {
 					}
 				return Number(((apportionedTotalExpense - apportionedTotalIncome)/exchange).toFixed(2));
 			},
+			
 			getSettlementMoney : function() {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
@@ -308,6 +312,9 @@ exports.definition = {
 					settlementMoney = -settlementMoney;
 				}
 				return Number(settlementMoney.toFixed(2));
+			},
+			getCurrencySettlementMoney : function(){
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();
 			},
 			getSharePercentage : function() {
 				if (this.xGet("state") === "Wait") {

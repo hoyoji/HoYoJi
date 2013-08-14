@@ -24,7 +24,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="20" right="5" color="#c80032" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				id="actualTotalMoney" autoInit="false" dataType="Number"
 				bindModel = "$.$model"
-				bindAttribute = "getActualTotalMoney()"
+				bindAttribute = "getCurrencyActualTotalMoney()"
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow" top="42" right="5" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				id="apportionedTotalText" autoInit="false"
@@ -34,7 +34,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow" top="57" right="5" color="#329600" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 				id="apportionedTotalMoney" autoInit="false" dataType="Number"
 				bindModel = "$.$model"
-				bindAttribute = "getSettlementMoney()"
+				bindAttribute = "getCurrencySettlementMoney()"
 			/>
 		</View>
 	</View>
