@@ -70,4 +70,10 @@ function calculateTotalBalance() {
 	$.totalBalance.setText(totalBalance.toUserCurrency());
 }
 
-$.localCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.incomeTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.expenseTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.borrowTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
