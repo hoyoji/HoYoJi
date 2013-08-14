@@ -326,7 +326,7 @@ if ($.saveableMode === "read") {
 			var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
 			$.moneyIncomeCategory.setValue(defaultIncomeCategory);
 			$.moneyIncomeCategory.field.fireEvent("change");
-			if ($.project.getValue().xGet("projectShareAuthorizations").length < 2) {
+			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
 			} else {
 				$.project.hideRightButton();

@@ -69,3 +69,11 @@ function calculateTotalBalance() {
 	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - $.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();
 	$.totalBalance.setText(totalBalance.toUserCurrency());
 }
+
+$.incomeTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.expenseTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.borrowTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
