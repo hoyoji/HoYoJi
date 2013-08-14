@@ -6,7 +6,14 @@
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<View height="42">
 					<Label left="5" width="30%">总收入</Label>
-					<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" right="5"/>
+					<View id="money" layout="horizontal" horizontalWrap="false" left="180" width="30%">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE" 
+						id="localCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" />
+					</View>
 				</View>
 				<View height="42">
 					<Label left="5" width="30%">总支出</Label>
