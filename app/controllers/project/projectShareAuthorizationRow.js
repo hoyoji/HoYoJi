@@ -157,6 +157,19 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 // $.onWindowOpenDo(function() {
 	// setWaitForAccept();
 // });
+setActualTotalMoneyColor();
+function setActualTotalMoneyColor(){
+	if($.$model.getActualTotalText() === "实际支出"){
+		$.actualTotalMoney.label.setColor("#c80032");
+	}else{
+		$.actualTotalMoney.label.setColor("#329600");
+	}
+	if($.$model.getSettlementText() === "应该支出"){
+		$.apportionedTotalMoney.label.setColor("#c80032");
+	}else{
+		$.apportionedTotalMoney.label.setColor("#329600");
+	}
+}
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.sharePercentage.UIInit($, $.getCurrentWindow());

@@ -73,23 +73,10 @@
 				onSingletap="openFriendSelector" autoInit="false"
 				editModeEditability="noneditable"
 				/>
-				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" id="friendAccount" labelText="商家账户" hintText="无商家账户"
-				bindModel="$.$model"
-				bindAttribute="friendAccount"
-				bindAttributeIsModel="getAccountNameCurrency()"
-				bindModelSelector="money/moneyAccount/moneyAccountAll"
-				bindModelSelectorParams="selectedFriendUser:friendUser"
-				/> -->
-				<!-- <View height="42" backgroundColor="#f5f5f5">
-					<Label left="8" width="30%" height="Ti.UI.FILL" id="expenseTypeLabel">是否预支</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="70%"
-					hightLight="false"
-					items="否,是"
-					values="Ordinary,PreExpense"
-					bindModel="$.$model"
-					bindAttribute="expenseType"/>
-					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
-				</View> -->
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="depositeAccount" height="0" labelText="账户" hintText="请选择存入账户" hideKeyboard="true"
+				onSingletap="openDepositeAccountSelector" autoInit="false"
+				editModeEditability="noneditable"
+				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 					id="remark" autoInit="false"
 				bindModel="$.$model"

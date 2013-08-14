@@ -139,16 +139,20 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
 		}
+		if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
+			$.$model.xSet("amount" , (depositeAmount * depositeExchangeRate)/$.$model.xGet("exchangeRate"));
+			$.amount.refresh();
+		}
 	}
 
 
-	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
-		if ($.project.getValue()) {
-			var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
-			$.moneyIncomeCategory.setValue(defaultIncomeCategory);
-			$.moneyIncomeCategory.field.fireEvent("change");
-		}
-	});
+	// $.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
+		// if ($.project.getValue()) {
+			// var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
+			// $.moneyIncomeCategory.setValue(defaultIncomeCategory);
+			// $.moneyIncomeCategory.field.fireEvent("change");
+		// }
+	// });
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
