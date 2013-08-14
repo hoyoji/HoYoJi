@@ -220,7 +220,7 @@ exports.definition = {
 				}
 
 			},
-			getActualTotalMoney : function() {
+			getActualTotalMoney : function() {//真实数据，未四舍五入
 				// var getActualTotal = 0;
 				// if(this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0){
 				// getActualTotal = this.xGet("actualTotalExpense") - this.xGet("actualTotalIncome");
@@ -235,18 +235,20 @@ exports.definition = {
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
-				var projectCurrency = this.xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = userCurrency.getExchanges(projectCurrency);
-					var exchange = 1;
-					if (exchanges.length) {
-						exchange = exchanges.at(0).xGet("rate");
-					}
-				return Number((actualTotalMoney/exchange).toFixed(2));
-
+				return actualTotalMoney;
 			},
-			getCurrencyActualTotalMoney : function(){
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoney();
+			getActualTotalMoneyToShow : function() {//界面显示
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				var exchange = 1;
+				if (exchanges.length) {
+					exchange = exchanges.at(0).xGet("rate");
+				}
+				return Number((this.getActualTotalMoney() / exchange).toFixed(2));
+			},
+			getCurrencyActualTotalMoney : function() {
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
 			},
 			getSettlementText : function() {
 				// var getApportionedTotal = 0;
@@ -277,43 +279,43 @@ exports.definition = {
 				}
 			},
 			getApportionedTotalMoney : function() {
-				// var getApportionedTotal = 0;
 				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
-				// if(apportionedTotalIncome - apportionedTotalExpense <= 0){
-				// getApportionedTotal = apportionedTotalExpense - apportionedTotalIncome;
-				// return getApportionedTotal;
-				// }else{
-				// getApportionedTotal = apportionedTotalIncome - apportionedTotalExpense;
-				// return getApportionedTotal;
-				// }
-				// console.info("apportionedTotalExpense+++++++" + apportionedTotalExpense + "+++++++++apportionedTotalIncome" + apportionedTotalIncome)
-				var projectCurrency = this.xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = userCurrency.getExchanges(projectCurrency);
-					var exchange = 1;
-					if (exchanges.length) {
-						exchange = exchanges.at(0).xGet("rate");
-					}
-				return Number(((apportionedTotalExpense - apportionedTotalIncome)/exchange).toFixed(2));
+
 			},
-			
+			getApportionedTotalMoneyToShow : function() {
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				var exchange = 1;
+				if (exchanges.length) {
+					exchange = exchanges.at(0).xGet("rate");
+				}
+				return Number(((this.getApportionedTotalMoney()) / exchange).toFixed(2));
+			},
 			getSettlementMoney : function() {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
 				var settlementMoney = 0;
 				if (actualTotalExpense > actualTotalIncome) {
 					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
-					} else {
+				} else {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
 				}
 
 				if (settlementMoney < 0) {
 					settlementMoney = -settlementMoney;
 				}
-				return Number(settlementMoney.toFixed(2));
+				var projectCurrency = this.xGet("project").xGet("currency");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var exchanges = userCurrency.getExchanges(projectCurrency);
+				var exchange = 1;
+				if (exchanges.length) {
+					exchange = exchanges.at(0).xGet("rate");
+				}
+				return Number((settlementMoney / exchange).toFixed(2));
 			},
-			getCurrencySettlementMoney : function(){
+			getCurrencySettlementMoney : function() {
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();
 			},
 			getSharePercentage : function() {
@@ -377,24 +379,28 @@ exports.definition = {
 				});
 				// // 同步新增好友时，一起把该好友用户同步下来
 				// if (!friendUser.id) {
-					// Alloy.Globals.Server.loadData("User", [record.friendUserId]);
+				// Alloy.Globals.Server.loadData("User", [record.friendUserId]);
 				// }
 				// Alloy.Globals.Server.loadSharedProjects([record.projectId]);
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					delete record.id;
 					this._syncUpdate(record, dbTrans);
-					
+
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
 					// 让本地修改覆盖服务器上的记录
 					// 但是取服务器上的占股比例
-					if(record.sharePercentage !== this.xGet("sharePercentage")){
-						this.syncUpdate({sharePercentage : record.sharePercentage}, dbTrans);
-						this._syncUpdate({sharePercentage : record.sharePercentage}, dbTrans);
+					if (record.sharePercentage !== this.xGet("sharePercentage")) {
+						this.syncUpdate({
+							sharePercentage : record.sharePercentage
+						}, dbTrans);
+						this._syncUpdate({
+							sharePercentage : record.sharePercentage
+						}, dbTrans);
 					}
 				}
 			}
