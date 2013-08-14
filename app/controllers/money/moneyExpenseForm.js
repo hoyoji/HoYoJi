@@ -568,9 +568,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			
 			if(detailsDirty){
 				$.becameClean();
+				detailsDirty = false;
 			}
 			if(apportionsDirty){
 				$.becameClean();
+				apportionsDirty = false;
 			}
 			saveEndCB(e);
 		}, function(e) {
