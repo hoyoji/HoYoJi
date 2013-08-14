@@ -281,7 +281,7 @@ exports.definition = {
 			getApportionedTotalMoney : function() {
 				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
-
+				return apportionedTotalExpense - apportionedTotalIncome;
 			},
 			getApportionedTotalMoneyToShow : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
