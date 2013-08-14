@@ -373,7 +373,7 @@ if ($.saveableMode === "read") {
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
-			$.friendAccount.$view.setHeight(42);
+			$.friendAccount.$view.setHeight(0);//暂时隐藏好友账户
 			$.friendAccount.setValue("");
 			$.friendAccount.field.fireEvent("change");
 		} else {
