@@ -112,7 +112,7 @@ exports.definition = {
 			},
 			getMoneySymbol : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User || !this.xGet("ownerUser")) {
-					return this.xGet("moneyIncome").xGet("moneyAccount").xGet("currency");
+					return this.xGet("moneyIncome").xGet("moneyAccount").xGet("currency").xGet("symbol");
 				}else{
 					return "";
 				}
