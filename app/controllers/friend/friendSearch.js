@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.usersTable.UIInit($, $.getCurrentWindow());
+
 // $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 // var menuSection = Ti.UI.createTableViewSection();
 // menuSection.add($.createContextMenuItem("新增好友分类", function() {
@@ -15,6 +17,12 @@ $.searchButton.addEventListener("singletap", function(e) {
 	if (loading) {
 		return;
 	}
+	if(!$.search.getValue()){
+		alert("请输入好友查询条件");
+		$.search.focus();
+		return;
+	}
+	
 	loading = true;
 	$.userCollection.reset();
 	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
@@ -23,10 +31,11 @@ $.searchButton.addEventListener("singletap", function(e) {
 		userName : $.search.getValue()
 	}], function(data) {
 		data[0].forEach(function(userData) {
-			var id = userData.id;
+			var id = userData.id; // prevent it to be added to dataStore during object initialization
 			delete userData.id;
 			var user = Alloy.createModel("User", userData);
 			user.attributes["id"] = id;
+			user.id = id;
 			$.userCollection.add(user);
 		});
 		loading = false;
@@ -37,3 +46,14 @@ $.searchButton.addEventListener("singletap", function(e) {
 	// }
 	$.search.blur();
 });
+
+$.userCollection = Alloy.createCollection("User");
+$.usersTable.addCollection($.userCollection);
+
+$.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
+	// collection.xSearchInDb({}, {
+		// offset : offset,
+		// limit : limit,
+		// orderBy : orderBy
+	// });
+}

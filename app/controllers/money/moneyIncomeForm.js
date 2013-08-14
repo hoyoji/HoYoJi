@@ -25,25 +25,20 @@ $.project.rightButton.addEventListener("singletap", function() {
 });
 
 $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
-	if(!$.$model.xGet("moneyAccount")){
+	if (!$.$model.xGet("moneyAccount")) {
 		alert("请选择账户");
 		return;
 	}
-	if(!$.$model.xGet("project")){
+	if (!$.$model.xGet("project")) {
 		alert("请选择项目");
 		return;
 	}
-	Alloy.Globals.Server.getExchangeRate(
-		$.$model.xGet("moneyAccount").xGet("currency").id,
-		$.$model.xGet("project").xGet("currency").id,
-		function(rate){
-			$.exchangeRate.setValue(rate);
-			$.exchangeRate.field.fireEvent("change");
-		},
-		function(e){
-			alert(e);
-		}
-	);
+	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+		$.exchangeRate.setValue(rate);
+		$.exchangeRate.field.fireEvent("change");
+	}, function(e) {
+		alert(e);
+	});
 });
 
 function updateApportionAmount() {
@@ -128,7 +123,6 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -155,13 +149,13 @@ function updateAmount() {
 }
 
 /*//隐藏功能,使用明细金额作为收支金额
-function deleteDetail(detailModel) {
-	if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
-		$.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
-		updateAmount();
-	}
-}
-*/
+ function deleteDetail(detailModel) {
+ if ($.$model.xGet("useDetailsTotal") || $.$model.isNew() && !$.$model.hasChanged("useDetailsTotal")) {
+ $.$model.xSet("amount", $.$model.xGet("amount") - detailModel.xGet("amount"));
+ updateAmount();
+ }
+ }
+ */
 
 function deleteApportion(apportionModel) {
 	var incomeAmount = $.$model.xGet("amount");
@@ -198,10 +192,6 @@ function deleteApportion(apportionModel) {
 }
 
 $.onWindowOpenDo(function() {
-	$.$model.on("xchange:amount", updateAmount);
-	// $.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
-	$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
-
 	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
 		$.project.hideRightButton();
 	} else {
@@ -209,10 +199,32 @@ $.onWindowOpenDo(function() {
 	}
 });
 
+var detailsDirty = false, apportionsDirty = false;
+function updateDetails(){
+	if(!detailsDirty){
+		$.becameDirty();
+		detailsDirty = true;
+	}
+}
+function updateApportions(){
+	if(!apportionsDirty){
+		$.becameDirty();
+		apportionsDirty = true;
+	}
+}
+
+$.$model.on("xchange:amount", updateAmount);
+// $.$model.xGet("moneyIncomeDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
+$.$model.xGet("moneyIncomeApportions").on("xdelete", deleteApportion);
+$.$model.xGet("moneyIncomeApportions").on("add _xchange xdelete", updateApportions);
+$.$model.xGet("moneyIncomeDetails").on("add _xchange xdelete", updateDetails);
+
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
 	// $.$model.xGet("moneyIncomeDetails").off("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyIncomeApportions").off("xdelete", deleteApportion);
+	$.$model.xGet("moneyIncomeApportions").off("add _xchange xdelete", updateApportions);
+	$.$model.xGet("moneyIncomeDetails").off("add _xchange xdelete", updateDetails);
 });
 
 if ($.saveableMode === "read") {
@@ -227,7 +239,7 @@ if ($.saveableMode === "read") {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
-			
+
 		} else {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);
@@ -236,28 +248,28 @@ if ($.saveableMode === "read") {
 		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
-/* //隐藏功能,使用明细金额作为收支金额
-	$.amount.field.addEventListener("singletap", function(e) {
-		if ($.$model.xGet("moneyIncomeDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
-			if (!fistChangeFlag) {
-				fistChangeFlag = 1;
-			}
-		}
-	});
+	/* //隐藏功能,使用明细金额作为收支金额
+	 $.amount.field.addEventListener("singletap", function(e) {
+	 if ($.$model.xGet("moneyIncomeDetails").length > 0 && $.$model.xGet("useDetailsTotal")) {
+	 if (!fistChangeFlag) {
+	 fistChangeFlag = 1;
+	 }
+	 }
+	 });
 
-	$.amount.beforeOpenKeyboard = function(confirmCB) {
-		if (fistChangeFlag === 1) {
-			Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
-				fistChangeFlag = 2;
-				$.$model.xSet("useDetailsTotal", false);
-				confirmCB();
-			});
+	 $.amount.beforeOpenKeyboard = function(confirmCB) {
+	 if (fistChangeFlag === 1) {
+	 Alloy.Globals.confirm("修改金额", "确定要修改并使用新金额？", function() {
+	 fistChangeFlag = 2;
+	 $.$model.xSet("useDetailsTotal", false);
+	 confirmCB();
+	 });
 
-		} else {
-			confirmCB();
-		}
-	}
- */
+	 } else {
+	 confirmCB();
+	 }
+	 }
+	 */
 
 	$.moneyIncomeCategory.beforeOpenModelSelector = function() {
 		if (!$.$model.xGet("project")) {
@@ -377,7 +389,7 @@ if ($.saveableMode === "read") {
 		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
 			$.$model.xSet("useDetailsTotal", false);
 		}
-		
+
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
@@ -437,7 +449,7 @@ if ($.saveableMode === "read") {
 				if ($.$model.hasChanged("project")) {
 					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount*$.$model.xPrevious("exchangeRate"));
+							item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount * $.$model.xPrevious("exchangeRate"));
 							item.xAddToSave($);
 						}
 					});
@@ -450,7 +462,7 @@ if ($.saveableMode === "read") {
 				} else {
 					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount*$.$model.xPrevious("exchangeRate") + $.$model.getProjectCurrencyAmount());
+							item.xSet("actualTotalIncome", item.xGet("actualTotalIncome") - oldAmount * $.$model.xPrevious("exchangeRate") + $.$model.getProjectCurrencyAmount());
 							item.xAddToSave($);
 						}
 					});
@@ -477,7 +489,7 @@ if ($.saveableMode === "read") {
 					oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
 						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 							var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
-							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - item.xPrevious("amount")*item.xGet("moneyIncome").xPrevious("exchangeRate"));
+							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - item.xPrevious("amount") * item.xGet("moneyIncome").xPrevious("exchangeRate"));
 							projectShareAuthorization.xAddToSave($);
 						}
 					});
@@ -488,7 +500,7 @@ if ($.saveableMode === "read") {
 					newProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
 						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 							var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
-							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome + item.xGet("amount")*item.xGet("moneyIncome").xGet("exchangeRate"));
+							projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome + item.xGet("amount") * item.xGet("moneyIncome").xGet("exchangeRate"));
 							projectShareAuthorization.xAddToSave($);
 						}
 					});
@@ -552,6 +564,15 @@ if ($.saveableMode === "read") {
 						wait : true
 					});
 				}
+			}
+			
+			if(detailsDirty){
+				$.becameClean();
+				detailsDirty = false;
+			}
+			if(apportionsDirty){
+				$.becameClean();
+				apportionsDirty = false;
 			}
 			saveEndCB(e)
 		}, function(e) {

@@ -1,18 +1,22 @@
 <Alloy>
-	<Collection id="currencyCollection" src="Currency" instance="true"/>
 	<View class="container" title="添加币种" >
 	<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加币种"/>
-		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 		<View top="0" height="Ti.UI.SIZE">
 		 <SearchBar id="search" barColor="#000" showCancel="false" height="42" hintText="请币种名称或代码" left="0" width="80%"/>
 		 <Button id="searchButton" title="查找" height="42" right="0" width="20%" />
 		</View>
-		<TableView id="searchCurrencyTable" dataCollection="$.currencyCollection" bottom="0" top="50">
+		
+		<Widget src="com.hoyoji.titanium.widget.XTableView" 
+			id="currenciesTable" autoInit="false"
+			sortByField="name" pageSize="10" bottom="0" top="50"/> 
+			
+		<!-- <TableView id="searchCurrencyTable" dataCollection="$.currencyCollection" bottom="0" top="50">
 			<TableViewRow>
 				<Require src="money/currency/currencyAllRow"/>
 			</TableViewRow>
-		</TableView>
+		</TableView> -->
 	</View>
 	</View>
 </Alloy>

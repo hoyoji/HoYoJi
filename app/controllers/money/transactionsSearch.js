@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.transactionsSearchTable.UIInit($, $.getCurrentWindow());
 
-var queryOptions = {};
+var queryOptions = {}, queryController = null;
 
 exports.doSearch = function() {
 	Alloy.Globals.openWindow("money/moneyQuery", {
@@ -30,27 +30,21 @@ $.transactionsSearchTable.addCollection(searchMoneyLends);
 $.transactionsSearchTable.addCollection(searchMoneyReturns, "money/moneyReturnRow");
 $.transactionsSearchTable.addCollection(searchMoneyPaybacks, "money/moneyPaybackRow");
 
-function doQuery(queryController) {
-	queryOptions = queryController.queryOptions;
-	
+function doQuery(_queryController) {
+	queryOptions = _queryController.queryOptions;
+	queryController = _queryController;
 	$.transactionsSearchTable.resetTable(); // clear all the table rows and reset all the collections
-	// searchMoneyExpenses.reset();
-	// searchMoneyIncomes.reset();
-	// searchMoneyTransferOuts.reset();
-	// searchMoneyTransferIns.reset();
-	// searchMoneyBorrows.reset();
-	// searchMoneyLends.reset();
-	// searchMoneyReturns.reset();
-	// searchMoneyPaybacks.reset();
+
+	// searchMoneyExpenses.xSearchInDb(queryController.getQueryString());
+	// searchMoneyIncomes.xSearchInDb(queryController.getQueryString());
+	// searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString());
+	// searchMoneyTransferIns.xSearchInDb(queryController.getQueryString());
+	// searchMoneyBorrows.xSearchInDb(queryController.getQueryString());
+	// searchMoneyLends.xSearchInDb(queryController.getQueryString());
+	// searchMoneyReturns.xSearchInDb(queryController.getQueryString());
+	// searchMoneyPaybacks.xSearchInDb(queryController.getQueryString());
 	
-	searchMoneyExpenses.xSearchInDb(queryController.getQueryString());
-	searchMoneyIncomes.xSearchInDb(queryController.getQueryString());
-	searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString());
-	searchMoneyTransferIns.xSearchInDb(queryController.getQueryString());
-	searchMoneyBorrows.xSearchInDb(queryController.getQueryString());
-	searchMoneyLends.xSearchInDb(queryController.getQueryString());
-	searchMoneyReturns.xSearchInDb(queryController.getQueryString());
-	searchMoneyPaybacks.xSearchInDb(queryController.getQueryString());
+	$.transactionsSearchTable.fetchNextPage();
 }
 
 function onFooterbarTap(e) {
@@ -59,5 +53,56 @@ function onFooterbarTap(e) {
 	}
 }
 
-exports.doSearch();
+$.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
+	// collection.xSearchInDb({}, {
+		// offset : offset,
+		// limit : limit,
+		// orderBy : orderBy
+	// });
 
+	searchMoneyExpenses.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyIncomes.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyTransferIns.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyBorrows.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyLends.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyReturns.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyPaybacks.xSearchInDb(queryController.getQueryString(), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});	
+	
+	successCB();
+}
+
+
+exports.doSearch();
