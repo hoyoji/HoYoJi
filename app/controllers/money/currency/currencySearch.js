@@ -27,7 +27,11 @@ $.searchButton.addEventListener("singletap", function(e) {
 			data[0].forEach(function(currencyData) {
 				var id = currencyData.id;
 				delete currencyData.id;
-				currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+				try{
+					currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+				} catch(e){
+					currencyData.symbol = currencyData.code;
+				}
 				var currency = Alloy.createModel("Currency", currencyData);
 				currency.attributes["id"] = id;
 				currency.id = id;
