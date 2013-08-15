@@ -19,10 +19,10 @@ var currentItemIndex = -1;
 	for (i=0;i<items.length ;i++){
 		labels.push(Ti.UI.createLabel({
 			text :　items[i],
-			borderWidth : 1,
+			borderWidth : 0,
 			width : labelWidth,
 			height : Ti.UI.FILL,
-			borderColor : "blue",
+			// borderColor : "blue",
 			backgroundColor : "white",
 			color : "black",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
