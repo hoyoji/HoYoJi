@@ -172,26 +172,34 @@
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
+				var activityWindow = Alloy.createController("activityMask");
+				activityWindow.open("正在同步...");
+				
 				this.syncPull(function() {
 					// alert("start push data");
 					self.syncPush(function(data) {
 						if (xFinishedCallback) {
 							xFinishedCallback();
 						}
-						alert("sync finished");
+						// activityWindow.close();
+						activityWindow.showMsg("同步完成");
+						//alert("sync finished");
 					}, function(e) {
 						if (xErrorCallback) {
 							xErrorCallback(e);
 						}
-						alert("sync error : " + e.__summary.msg);
+						// activityWindow.close();
+						activityWindow.showMsg("同步错误：" + e.__summary.msg);
+						//alert("sync error : " + e.__summary.msg);
 					});
 				}, function(e) {
 					if (xErrorCallback) {
 						xErrorCallback(e);
 					}
-					alert("sync error " + e.__summary.msg);
+					// activityWindow.close();
+					activityWindow.showMsg("同步错误：" + e.__summary.msg);
+					//alert("sync error " + e.__summary.msg);
 				});
-
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback) {
 				this.getData(Alloy.Models.User.xGet("lastSyncTime"), function(data) {
