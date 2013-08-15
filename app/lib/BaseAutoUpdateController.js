@@ -196,6 +196,7 @@
 							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
 						}
 						attributes.selectedModel = selectedModel;
+						attributes.selectModelCanBeNull = $.$attrs.bindModelSelectModelCanBeNull;
 						if ($.$attrs.bindModel.config) {
 							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
 							attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");

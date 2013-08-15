@@ -59,43 +59,45 @@ $.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy,
 		// limit : limit,
 		// orderBy : orderBy
 	// });
+	
+	var queryString = queryController.getQueryString();
 
-	searchMoneyExpenses.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyExpenses.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyIncomes.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyIncomes.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyTransferOuts.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyTransferOuts.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyTransferIns.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyTransferIns.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyBorrows.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyBorrows.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyLends.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyLends.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyReturns.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyReturns.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyPaybacks.xSearchInDb(queryController.getQueryString(), {
+	searchMoneyPaybacks.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
