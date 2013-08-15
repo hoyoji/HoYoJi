@@ -196,6 +196,7 @@
 							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
 						}
 						attributes.selectedModel = selectedModel;
+						attributes.selectModelCanBeNull = $.$attrs.bindModelSelectModelCanBeNull;
 						if ($.$attrs.bindModel.config) {
 							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
 							attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
@@ -308,14 +309,28 @@
 
 			if ($.$attrs.rightButtonText) {
 				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
-				$.rightButton = Ti.UI.createButton({
+				// $.rightButton = Ti.UI.createButton({
+					// title : $.$attrs.rightButtonText,
+					// right : 8,
+					// width : 40,
+					// height : 38
+				// });
+				// $.$view.add($.rightButton);
+			
+				$.rightButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					title : $.$attrs.rightButtonText,
+					borderRadius : 0,
+					height : Ti.UI.FILL,
+					width : 42,
 					right : 8,
-					width : Ti.UI.SIZE,
-					height : 38
+					// color : "black",
+					backgroundColor : "gray",
+					image : $.$attrs.rightButtonImage
 				});
+				// $.rightButton.$view.setRight(0);
 				$.field.setRight(48);
-				$.$view.add($.rightButton);
+				$.rightButton.setParent($.$view);
+				
 			}
 
 			$.showRightButton = function() {

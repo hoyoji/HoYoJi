@@ -3,8 +3,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var date = new Date();
 $.queryOptions = {
 	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString(),
-	project : Alloy.Models.User.xGet("activeProject")
+	dateTo : date.getUTCTimeOfDateEnd().toISOString()
+	// project : Alloy.Models.User.xGet("activeProject")
 };
 
 $.onWindowOpenDo(function() {
@@ -17,13 +17,15 @@ exports.getQueryString = function() {
 	var filterStr = "";
 	for (var f in $.queryOptions) {
 		var value = $.queryOptions[f]
+		if (_.isNull(value)) {
+			// filterStr += f + " IS NULL ";
+			continue;
+		} 
 		if (filterStr) {
 			filterStr += " AND "
 		}
 		f = "main." + f;
-		if (_.isNull(value)) {
-			filterStr += f + " IS NULL ";
-		} else if (_.isNumber(value)) {
+		if (_.isNumber(value)) {
 			filterStr += f + " = " + value + " ";
 		} else if (value !== undefined) {
 			if (f === "main.dateFrom") {

@@ -12,6 +12,10 @@ exports.getTitle = function() {
 	return $.title.getText();
 }
 
+exports.setHeight = function(h) {
+	$.buttonView.setHeight(h);
+}
+
 exports.fireEvent = function(eventName, options) {
 	// options = options || {};
 	// _.extend(options, {source : { getTitle : exports.getTitle()}});
@@ -56,7 +60,7 @@ exports.setEnabled = function(b) {
 	} else {
 		$.$view.setOpacity(0.3);
 		$.disabledMask.setVisible(true);
-		$.$view.setBackgroundColor("transparent");
+		$.$view.setBackgroundColor($.$attrs.backgroundColor);
 	}
 }
 
@@ -102,9 +106,10 @@ if ($.$attrs.id) {
 if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
-// if ($.$attrs.color) {
-// $.$view.setColor($.$attrs.color);
-// }
+if ($.$attrs.color) {
+	$.title.setColor($.$attrs.color);
+}
+
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }
@@ -137,7 +142,7 @@ $.$view.addEventListener("touchend", function(e) {
 	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
-		$.$view.setBackgroundColor("transparent");
+		$.$view.setBackgroundColor($.$attrs.backgroundColor);
 	}
 });
 
@@ -167,7 +172,7 @@ function redirectEvent(view) {
 
 $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
-	$.$view.setBackgroundColor("transparent");
+	$.$view.setBackgroundColor($.$attrs.backgroundColor);
 });
 //
 // $.$view.addEventListener("touchcancel", function(e){
@@ -175,7 +180,7 @@ $.$view.addEventListener("longpress", function(e) {
 // });
 
 $.$view.addEventListener("touchmove", function(e) {
-	$.$view.setBackgroundColor("transparent");
+	$.$view.setBackgroundColor($.$attrs.backgroundColor);
 });
 
 redirectEvent($.imageView);

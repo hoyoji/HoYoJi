@@ -13,6 +13,8 @@ $.searchButton.addEventListener("singletap", function(e) {
 		return;
 	}
 	
+	$.searchButton.setEnabled(false);
+	$.searchButton.showActivityIndicator();
 	loading = true;
 	$.currenciesCollection.reset();
 	// if($.userCollection.xSearchInDb({userName : $.search.getValue()}).length === 1){
@@ -30,8 +32,12 @@ $.searchButton.addEventListener("singletap", function(e) {
 			currency.id = id;
 			$.currenciesCollection.add(currency);
 		});
+	$.searchButton.setEnabled(true);
+	$.searchButton.hideActivityIndicator();
 		loading = false;
 	}, function(e) {
+	$.searchButton.setEnabled(true);
+	$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
 	});
