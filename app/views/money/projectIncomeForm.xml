@@ -55,7 +55,7 @@
 				editModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="project"
-				bindAttributeIsModel="name"
+				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
 				bindModelBeforeSelectorCallback="beforeProjectSelectorCallback"
 				/>

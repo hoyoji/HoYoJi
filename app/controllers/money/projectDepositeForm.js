@@ -124,10 +124,10 @@ if ($.saveableMode === "read") {
 		$.moneyAccount.$view.setHeight(42);
 		$.exchangeRate.$view.setHeight(42);
 	}else{
+		$.localAmountContainer.setHeight(42);
 		$.amount.$view.setHeight(0);
 		$.moneyAccount.$view.setHeight(0);
 	}
-	$.localAmountContainer.setHeight(42);
 	$.ownerUser.setHeight(42);
 	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
 } else {
