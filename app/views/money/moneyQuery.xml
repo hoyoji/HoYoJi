@@ -25,7 +25,7 @@
 				bindModelSelectorConvertType="Project"
 				bindModelSelectModelCanBeNull="true"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="流水类型"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="流水"
 				id="transactionDisplayType" autoInit="false"
 				items="个人流水,项目流水"
 				values="Personal,Project"
