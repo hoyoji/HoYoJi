@@ -41,6 +41,13 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
+$.details.addEventListener("singletap", function(e) {
+	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
+			selectedExpense : $.$model,
+			closeWithoutSave : true
+		});
+});
+
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 		var fixedTotal = 0;
@@ -123,7 +130,6 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 }
-
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -201,14 +207,15 @@ $.onWindowOpenDo(function() {
 });
 
 var detailsDirty = false, apportionsDirty = false;
-function updateDetails(){
-	if(!detailsDirty){
+function updateDetails() {
+	if (!detailsDirty) {
 		$.becameDirty();
 		detailsDirty = true;
 	}
 }
-function updateApportions(){
-	if(!apportionsDirty){
+
+function updateApportions() {
+	if (!apportionsDirty) {
 		$.becameDirty();
 		apportionsDirty = true;
 	}
@@ -372,7 +379,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
-			$.friendAccount.$view.setHeight(0);//暂时隐藏好友账户
+			$.friendAccount.$view.setHeight(0);
+			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
 			$.friendAccount.field.fireEvent("change");
 		} else {
@@ -565,12 +573,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					});
 				}
 			}
-			
-			if(detailsDirty){
+
+			if (detailsDirty) {
 				$.becameClean();
 				detailsDirty = false;
 			}
-			if(apportionsDirty){
+			if (apportionsDirty) {
 				$.becameClean();
 				apportionsDirty = false;
 			}

@@ -31,11 +31,14 @@
 				<View id="projectAmountContainer" height="0" backgroundColor="#f5f5f5">
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
-					id="projectAmount" autoInit="false"
-					hintText="请输入金额"
-					bindModel="$.$model"
-					bindAttribute="getProjectAmount()"/>
+					<View id="projectAmountView" layout="horizontal" horizontalWrap="false"  width="70%" right="0">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" 
+						id="projectAmount" autoInit="false"
+						hintText="请输入金额"
+						bindModel="$.$model"
+						bindAttribute="getProjectAmount()"/>
+						<Button id="details" width="Ti.UI.SIZE" height="38" left="60%">明细</Button>
+					</View>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">

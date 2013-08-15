@@ -41,6 +41,13 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
+$.details.addEventListener("singletap", function(e) {
+	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
+			selectedExpense : $.$model,
+			closeWithoutSave : true
+		});
+});
+
 function updateApportionAmount() {
 	if ($.$model.xGet("moneyIncomeApportions").length > 0) {
 		var fixedTotal = 0;
