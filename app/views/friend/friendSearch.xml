@@ -3,9 +3,10 @@
 	<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="添加好友"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
-		<View top="0" height="Ti.UI.SIZE">
-		 <SearchBar id="search" barColor="#000" showCancel="false" height="42" hintText="请输入好友账户名" left="0" width="80%"/>
-		 <Button id="searchButton" title="查找" height="42" right="0" width="20%" />
+		<View top="0" height="Ti.UI.SIZE" backgroundColor="#e9f3f0">
+		 <SearchBar id="search" barColor="#e9f3f0" showCancel="false" height="42" hintText="请输入好友账户名" left="0" width="80%"/>
+		 <!-- <Button id="searchButton" title="查找" height="42" right="0" width="20%" /> -->
+		 <Widget src="com.hoyoji.titanium.widget.XButton" right="0" width="20%" height="42" id="searchButton" image="/images/friend/friendSearch/friendSearch"/>
 		</View>
 		<Widget src="com.hoyoji.titanium.widget.XTableView" 
 			id="usersTable" autoInit="false"

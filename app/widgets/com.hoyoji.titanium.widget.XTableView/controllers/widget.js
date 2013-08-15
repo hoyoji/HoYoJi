@@ -143,7 +143,6 @@ $.$view.addEventListener("click", function(e) {
 			$.trigger("endchangingrow");
 		}
 
-
 		$.table.addEventListener("postlayout", deleteRowPostLayout);
 	} else {
 		$.__changingRow = false;
@@ -451,11 +450,11 @@ function collapseAllHasDetailSections() {
 	}
 }
 
-var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField;
+var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField, currentPageNumber = 0;
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
-	$.fetchNextPageButton.setText("加载更多...");
+	$.fetchNextPageButton.setText("正在加载更多...");
 
 	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField)) {
 		sortedArray_sortByField = sortByField;
@@ -463,6 +462,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 		sortedArray_groupByField = groupByField;
 		$.table.setData([]);
 		tableRowsCount = 0;
+		currentPageNumber = 0;
 	} else {
 		tableRowsCount = tableRowsCount || exports.getRowsCount();
 	}
