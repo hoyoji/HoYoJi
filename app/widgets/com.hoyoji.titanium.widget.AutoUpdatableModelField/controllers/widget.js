@@ -35,7 +35,6 @@ $.getValue = function() {
 }
 
 $.setValue = function(value) {
-	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
 	$.__bindAttributeIsModel = value;
 	if ($.$attrs.bindAttributeIsModel && value) {
 		if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
