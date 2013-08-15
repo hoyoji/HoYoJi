@@ -311,7 +311,7 @@
 				$.rightButton = Ti.UI.createButton({
 					title : $.$attrs.rightButtonText,
 					right : 8,
-					width : 40,
+					width : Ti.UI.SIZE,
 					height : 38
 				});
 				$.field.setRight(48);
