@@ -7,12 +7,12 @@ $.searchButton.addEventListener("singletap", function(e) {
 	if (loading) {
 		return;
 	}
-	if(!$.search.getValue()){
+	if (!$.search.getValue()) {
 		alert("请输入货币查询条件");
 		$.search.focus();
 		return;
 	}
-	
+
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	loading = true;
@@ -32,12 +32,12 @@ $.searchButton.addEventListener("singletap", function(e) {
 			currency.id = id;
 			$.currenciesCollection.add(currency);
 		});
-	$.searchButton.setEnabled(true);
-	$.searchButton.hideActivityIndicator();
+		$.searchButton.setEnabled(true);
+		$.searchButton.hideActivityIndicator();
 		loading = false;
 	}, function(e) {
-	$.searchButton.setEnabled(true);
-	$.searchButton.hideActivityIndicator();
+		$.searchButton.setEnabled(true);
+		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
 	});
@@ -45,15 +45,13 @@ $.searchButton.addEventListener("singletap", function(e) {
 	$.search.blur();
 });
 
-
 $.currenciesCollection = Alloy.createCollection("Currency");
 $.currenciesTable.addCollection($.currenciesCollection, "money/currency/currencyAllRow");
 
-
-$.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
+$.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
 	// collection.xSearchInDb({}, {
-		// offset : offset,
-		// limit : limit,
-		// orderBy : orderBy
+	// offset : offset,
+	// limit : limit,
+	// orderBy : orderBy
 	// });
 }
