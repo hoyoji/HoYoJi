@@ -283,6 +283,8 @@ if ($.saveableMode === "read") {
 						friendUserId : Alloy.Models.User.id
 					});
 					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount * $.$model.xPrevious("exchangeRate"));
+					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xPrevious("exchangeRate"));
+					
 					editData.push(projectShareAuthorization.toJSON());
 					projectShareAuthorization.xAddToSave($);
 
@@ -308,9 +310,11 @@ if ($.saveableMode === "read") {
 						}
 					}
 					addData.push($.$model.toJSON());
+					
+					var incomeMoney = (newAmount * $.$model.xGet("exchangeRate"))/$.depositeAccountExchangeRate.getValue();
 					var depositeIncome = Alloy.createModel("MoneyIncome", {
 						date : $.$model.xGet("date"),
-						amount : $.$model.xGet("amount"),
+						amount : incomeMoney,
 						remark : $.$model.xGet("remark"),
 						ownerUser : Alloy.Models.User,
 						exchangeRate : $.depositeAccountExchangeRate.getValue(),
@@ -323,7 +327,9 @@ if ($.saveableMode === "read") {
 					});
 					depositeIncome.xAddToSave($);
 					addData.push(depositeIncome.toJSON());
-					
+					$.depositeFriendAccount.xSet("currentBalance", $.depositeFriendAccount.xGet("currentBalance") + incomeMoney);
+					editData.push($.depositeFriendAccount.toJSON());
+					$.depositeFriendAccount.xAddToSave($);
 					// $.depositeFriendAccount.xSet("currentBalance", $.depositeFriendAccount.xGet("currentBalance") + newAmount);
 					// $.depositeFriendAccount.xAddToSave($);
 					// editData.push($.depositeFriendAccount.toJSON());
