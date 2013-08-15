@@ -32,12 +32,12 @@
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
 					<View id="projectAmountView" layout="horizontal" horizontalWrap="false"  width="70%" right="0">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" 
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"
 						id="projectAmount" autoInit="false"
 						hintText="请输入金额"
 						bindModel="$.$model"
 						bindAttribute="getProjectAmount()"/>
-						<Button id="details" width="Ti.UI.SIZE" height="38" left="60%">明细</Button>
+						<Widget id="details" src="com.hoyoji.titanium.widget.XButton" width="42" height="Ti.UI.FILL" borderRadius="0" left="60%" backgroundColor="gray" color="white" title="明细"/>
 					</View>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
