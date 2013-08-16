@@ -1,15 +1,18 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onRowTap = function(e) {
-	Alloy.Globals.Server.getData([{__dataType : "Friend", friendUserId : $.$model.xGet("id") , ownerUserId : Alloy.Models.User.id}], function(data){
+	Alloy.Globals.Server.getData([{
+		__dataType : "Friend",
+		friendUserId : $.$model.xGet("id"),
+		ownerUserId : Alloy.Models.User.id
+	}], function(data) {
 		sendAddFriendMessage(data[0].length);
-	}, function(e){
+	}, function(e) {
 		alert(e.__summary.msg);
 	});
 	return false;
 }
-
-function sendAddFriendMessage(friendlength){
+function sendAddFriendMessage(friendlength) {
 	if ($.$model.xGet("id") === Alloy.Models.User.id) {
 		alert("不能添加自己为好友！");
 	} else if (friendlength > 0) {
@@ -17,9 +20,12 @@ function sendAddFriendMessage(friendlength){
 	} else {
 		if ($.$model.xGet("newFriendAuthentication") === "none") {
 			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
-			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("id")});
-			if(!toUser.id){
-				delete $.$model.id; // add it as new record
+			var toUser = Alloy.createModel("User").xFindInDb({
+				id : $.$model.xGet("id")
+			});
+			if (!toUser.id) {
+				delete $.$model.id;
+				// add it as new record
 				$.$model.save();
 			}
 			var date = (new Date()).toISOString();
@@ -41,8 +47,7 @@ function sendAddFriendMessage(friendlength){
 					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				});
 				//吧本地创建的好友传上服务器
-				Alloy.Globals.Server.postData(
-				[friend.toJSON()], function(data) {
+				Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
 					//保存之前创建的本地好友
 					friend.xSave();
 					alert("用户不需要验证,可以直接添加");
@@ -55,7 +60,7 @@ function sendAddFriendMessage(friendlength){
 				ownerUser : Alloy.Models.User
 			});
 			newMessage.xSet("toUser", $.$model);
-			newMessage.xSet("detail", "用户"+Alloy.Models.User.xGet("userName")+"请求将您添加为好友");
+			newMessage.xSet("detail", "用户" + Alloy.Models.User.xGet("userName") + "请求将您添加为好友");
 			Alloy.Globals.openWindow("message/friendAddRequestMsg", {
 				$model : newMessage
 			});
@@ -64,3 +69,5 @@ function sendAddFriendMessage(friendlength){
 }
 
 $.userName.UIInit($, $.getCurrentWindow());
+
+
