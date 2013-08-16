@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 		$.deleteModel();
 	}));
 	return menuSection;
-}
+};
 
 $.onWindowOpenDo(function() {
 	$.$model.xGet("project").on("sync",projectRefresh);

@@ -16,7 +16,7 @@ $.makeContextMenu = function() {
 	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User));
 
 	return menuSection;
-}
+};
 function refreshAmount() {
 	$.amount.refresh();
 }

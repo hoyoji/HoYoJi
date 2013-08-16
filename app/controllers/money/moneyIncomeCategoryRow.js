@@ -4,7 +4,7 @@ $.setSelected = function(selected){
 	if(selected){
 		$.categoryName.$view.setColor("blue");
 	}
-}
+};
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({headerTitle : "收入分类操作"});
@@ -12,6 +12,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 		$.deleteModel();
 	}, isSelectMode || !$.$model.canDelete()));
 	return menuSection;
-}
+};
 
 $.categoryName.UIInit($, $.getCurrentWindow());

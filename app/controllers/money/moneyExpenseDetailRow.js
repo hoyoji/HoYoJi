@@ -11,7 +11,7 @@ $.makeContextMenu = function() {
 			},!$.$model.canDelete()));
 	
 	return menuSection;
-}
+};
 
 function updateAmount() {
 	$.amount.refresh();

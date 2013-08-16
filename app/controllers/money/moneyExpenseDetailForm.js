@@ -118,7 +118,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveEndCB();
 		$.getCurrentWindow().close();
 	}
-}
+};
 
 $.name.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());

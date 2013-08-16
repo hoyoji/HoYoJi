@@ -122,7 +122,7 @@ $.makeContextMenu = function() {
 		}
 	}, !$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
-}
+};
 
 $.onRowTap = function(e) {
 	if ($.$model.xGet("expenseType") === "Deposite") {
@@ -137,7 +137,7 @@ $.onRowTap = function(e) {
 		});
 		return false;
 	}
-}
+};
 
 $.onWindowOpenDo(function() {
 	$.$model.xGet("project").on("sync",projectRefresh);

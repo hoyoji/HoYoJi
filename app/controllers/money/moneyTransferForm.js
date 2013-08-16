@@ -264,7 +264,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
 		saveErrorCB(e);
 	});
-}
+};
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());

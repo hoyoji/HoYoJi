@@ -37,7 +37,7 @@ $.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback){
 		return;
 	}
 	callback();
-}
+};
 		
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAccount") {
@@ -56,7 +56,7 @@ function onFooterbarTap(e) {
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 			dateTo : d.getUTCTimeOfDateEnd().toISOString()
-		}
+		};
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "weekTransactions") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
@@ -68,7 +68,7 @@ function onFooterbarTap(e) {
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
 			dateTo : d.getUTCTimeOfWeekEnd().toISOString()
-		}
+		};
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "monthTransactions") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
@@ -80,7 +80,7 @@ function onFooterbarTap(e) {
 		timeFilter = {
 			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
 			dateTo : d.getUTCTimeOfMonthEnd().toISOString()
-		}
+		};
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
 		Alloy.Models.User.save({defaultTransactionDisplayType : "Personal"},{

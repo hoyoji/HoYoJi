@@ -12,7 +12,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		});
 	},selectedBorrow && selectedBorrow.xGet("ownerUser") !== Alloy.Models.User));
 	return menuSection;
-}
+};
 
 // $.titleBar.bindXTable($.moneyReturnsTable);
 
