@@ -93,6 +93,7 @@ if ($.saveableMode === "read") {
 			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 				$.$model.xSet("amount" , (depositeAmount * depositeExchangeRate)/$.$model.xGet("exchangeRate"));
 				$.amount.refresh();
+				alert($.$model.xGet("exchangeRate"));
 			}
 		} else {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
@@ -288,6 +289,7 @@ $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow()); 

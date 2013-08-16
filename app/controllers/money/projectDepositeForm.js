@@ -318,6 +318,20 @@ if ($.saveableMode === "read") {
 							editData.push(exchange.toJSON());
 						}
 					}
+					
+					if (isDepositeRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+						if ($.depositeAccountExchangeRate.getValue()) {
+							var depositeExchange = Alloy.createModel("Exchange", {
+								localCurrency : $.$model.xGet("project").xGet("currency"),
+								foreignCurrency : $.depositeFriendAccount.xGet("currency"),
+								rate : $.depositeAccountExchangeRate.getValue(),
+								ownerUser : Alloy.Models.User
+							});
+							depositeExchange.xAddToSave($);
+							editData.push(depositeExchange.toJSON());
+						}
+					}
+					
 					addData.push($.$model.toJSON());
 					
 					var incomeMoney = (newAmount * $.$model.xGet("exchangeRate"))/$.depositeAccountExchangeRate.getValue();
