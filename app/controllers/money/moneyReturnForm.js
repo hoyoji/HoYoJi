@@ -6,7 +6,7 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	} else {
 		return null;
 	}
-}
+};
 
 $.convertUser2FriendModel = function(userModel) {
 	if (userModel) {
@@ -18,7 +18,7 @@ $.convertUser2FriendModel = function(userModel) {
 		}
 	}
 	return userModel;
-}
+};
 
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
@@ -42,7 +42,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	} else {
 		successCallback();
 	}
-}
+};
 
 var oldAmount;
 var oldMoneyAccount;
@@ -115,9 +115,9 @@ if ($.saveableMode === "read") {
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
 	if ($.saveableMode === "add") {
-		oldAmount = 0
+		oldAmount = 0;
 	} else {
-		oldAmount = $.$model.xGet("amount")
+		oldAmount = $.$model.xGet("amount");
 	}
 	var oldInterest = $.$model.xGet("interest") || 0;
 
@@ -274,7 +274,7 @@ if ($.saveableMode === "read") {
 			}
 			saveErrorCB(e);
 		});
-	}
+	};
 }
 
 $.picture.UIInit($, $.getCurrentWindow());
@@ -285,7 +285,7 @@ $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-// $.exchangeRate.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.interest.UIInit($, $.getCurrentWindow());

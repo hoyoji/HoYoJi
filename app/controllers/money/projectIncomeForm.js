@@ -31,7 +31,7 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	} else {
 		return null;
 	}
-}
+};
 
 $.convertUser2FriendModel = function(userModel) {
 	if (userModel) {
@@ -43,7 +43,7 @@ $.convertUser2FriendModel = function(userModel) {
 		}
 	}
 	return userModel;
-}
+};
 
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
@@ -67,7 +67,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	} else {
 		successCallback();
 	}
-}
+};
 var oldAmount;
 var oldMoneyAccount;
 var isRateExist;
@@ -109,10 +109,10 @@ if ($.saveableMode === "read") {
 		if (!$.$model.xGet("project")) {
 			return "请先选择项目";
 		}
-	}
+	};
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 	if ($.saveableMode === "add") {
-		oldAmount = 0
+		oldAmount = 0;
 	} else {
 		oldAmount = $.$model.xGet("amount");
 	}
@@ -279,7 +279,7 @@ if ($.saveableMode === "read") {
 		}else{
 			alert("不能保存，汇率不能为空")
 		}
-	}
+	};
 }
 
 $.picture.UIInit($, $.getCurrentWindow());

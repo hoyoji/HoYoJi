@@ -16,7 +16,7 @@ $.onWindowOpenDo(function() {
 exports.getQueryString = function() {
 	var filterStr = "";
 	for (var f in $.queryOptions) {
-		var value = $.queryOptions[f]
+		var value = $.queryOptions[f];
 		if (_.isNull(value)) {
 			continue;
 		} 
@@ -45,7 +45,8 @@ exports.getQueryString = function() {
 		}
 	}
 	return filterStr;
-}
+};
+
 function doQuery() {
 	if ($.queryOptions.dateFrom > $.queryOptions.dateTo) {
 		alert("结束时间必须在开始时间之后");

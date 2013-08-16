@@ -9,7 +9,7 @@ exports.doSearch = function() {
 		selectorCallback : doQuery,
 		queryOptions : queryOptions
 	});
-}
+};
 
 
 var searchMoneyExpenses = Alloy.createCollection("MoneyExpense");
@@ -104,7 +104,7 @@ $.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy,
 	});	
 	
 	successCB();
-}
+};
 
 
 exports.doSearch();

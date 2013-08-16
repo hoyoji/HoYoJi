@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyIncomeDetailForm", {selectedIncome : selectedIncome, closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave});
 	},!selectedIncome.canAddNew()));
 	return menuSection;
-}
+};
 
 // $.titleBar.bindXTable($.moneyIncomeDetailsTable);
 

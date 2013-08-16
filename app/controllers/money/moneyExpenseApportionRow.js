@@ -12,11 +12,11 @@ $.makeContextMenu = function() {
 		headerTitle : "分摊明细操作"
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
-		$.deleteModel();
+		deleteApportion();
 	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User));
 
 	return menuSection;
-}
+};
 function refreshAmount() {
 	$.amount.refresh();
 }
@@ -32,8 +32,7 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", updateApportionType);
 });
 
-$.removeMember.addEventListener("singletap", function(e) {
-	e.cancelBubble = true;
+function deleteApportion() {
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
 		if ($.$model.isNew()) {
 			$.$model.__xDeletedHidden = true;
@@ -45,7 +44,7 @@ $.removeMember.addEventListener("singletap", function(e) {
 	} else {
 		alert("没有权限");
 	}
-});
+}
 
 $.amount.$view.addEventListener("singletap", function(e) {
 	e.cancelBubble = true;
@@ -57,7 +56,7 @@ $.apportionType.label.addEventListener("singletap", function(e) {
 
 $.$view.addEventListener("singletap", function(e) {
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
-		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view || e.source !== $.removeMember.$view) {
+		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
 			if ($.$model.xGet("apportionType") === "Fixed") {
 				$.$model.xSet("apportionType", "Average");
 			} else if ($.$model.xGet("apportionType") === "Average") {

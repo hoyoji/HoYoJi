@@ -6,7 +6,7 @@ var currentFilter = null;
 
 exports.setHeaderView = function(headerView){
 	$.transactionsTable.setHeaderView(headerView);
-}
+};
 
 function searchData(collection, offset, limit, orderBy){
 	if(Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal"){
@@ -50,7 +50,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 	searchData(moneyReturns, offset, limit, orderBy);
 	searchData(moneyPaybacks, offset, limit, orderBy);	
 	successCB();
-}
+};
 
 exports.doFilter = function (filter) {
 	if(filter){
@@ -65,15 +65,15 @@ exports.doFilter = function (filter) {
 	setFilter(moneyReturns);
 	setFilter(moneyPaybacks);
 	$.transactionsTable.fetchNextPage();
-}
+};
 
 exports.sort = function(sortField, sortReverse, groupByField){
 	$.transactionsTable.sort(sortField, sortReverse, groupByField || "date");
-}
+};
 
 exports.fetchNextPage = function(){
 	$.transactionsTable.fetchNextPage();
-}
+};
 
 var moneyIncomes = Alloy.createCollection("MoneyIncome");
 var moneyExpenses = Alloy.createCollection("MoneyExpense");

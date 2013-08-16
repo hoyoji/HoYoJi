@@ -111,7 +111,7 @@ $.saveModel(saveEndCB, saveErrorCB);
 		saveEndCB();
 		$.getCurrentWindow().$view.close();
 	}
-}
+};
 
 $.name.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());

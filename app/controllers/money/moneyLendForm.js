@@ -12,7 +12,7 @@ $.makeContextMenu = function() {
 		}));
 	}
 	return menuSection;
-}
+};
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
@@ -20,7 +20,7 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	} else {
 		return null;
 	}
-}
+};
 
 $.convertUser2FriendModel = function(userModel) {
 	if (userModel) {
@@ -32,7 +32,7 @@ $.convertUser2FriendModel = function(userModel) {
 		}
 	}
 	return userModel;
-}
+};
 
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
@@ -56,7 +56,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	} else {
 		successCallback();
 	}
-}
+};
 
 var oldAmount;
 var oldMoneyAccount;
@@ -126,9 +126,9 @@ if ($.saveableMode === "read") {
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 	if ($.saveableMode === "add") {
-		oldAmount = 0
+		oldAmount = 0;
 	} else {
-		oldAmount = $.$model.xGet("amount")
+		oldAmount = $.$model.xGet("amount");
 	}
 
 	function updateExchangeRate(e) {
@@ -160,7 +160,7 @@ if ($.saveableMode === "read") {
 		}
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
-			$.$model.trigger("xchange:exchangeRate", $.$model);
+			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
@@ -240,7 +240,7 @@ $.onWindowCloseDo(function() {
 			}
 			saveErrorCB(e);
 		});
-	}
+	};
 }
 
 $.picture.UIInit($, $.getCurrentWindow());
@@ -251,7 +251,7 @@ $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
-// $.exchangeRate.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.paybackDate.UIInit($, $.getCurrentWindow());

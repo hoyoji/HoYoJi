@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyExpenseDetailForm", {selectedExpense : selectedExpense, closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave});
 	},!selectedExpense.canAddNew()));
 	return menuSection;
-}
+};
 
 $.footerBar.addExpenseDetail.setEnabled(selectedExpense.canAddNew());
 

@@ -152,17 +152,17 @@ if ($.saveableMode === "read") {
 		} else {
 			confirmCB();
 		}
-	}
+	};
 
 	$.moneyExpenseCategory.beforeOpenModelSelector = function() {
 		if (!$.$model.xGet("project")) {
 			return "请先选择项目";
 		}
-	}
+	};
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
 
 	if ($.saveableMode === "add") {
-		oldAmount = 0
+		oldAmount = 0;
 	} else {
 		oldAmount = $.$model.xGet("amount");
 	}
@@ -439,7 +439,7 @@ if ($.saveableMode === "read") {
 			saveErrorCB("请选择收款人！");
 		}
 
-	}
+	};
 }
 
 $.picture.UIInit($, $.getCurrentWindow());

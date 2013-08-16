@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {$model : "MoneyExpenseCategory", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
 	},!selectedProject.canExpenseCategoryAddNew()));
 	return menuSection;
-}
+};
 
 $.titleBar.bindXTable($.moneyExpenseCategoriesTable);
 
