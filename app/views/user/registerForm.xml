@@ -1,0 +1,53 @@
+<Alloy>
+	<View class="container" saveableContainer="true"  width="100%" height="100%">
+	<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
+	<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar"
+		addModeTitle="注册用户" readModeTitle="用户资料" editModeTitle="修改用户"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+		<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名"  keyboardType="Ti.UI.KEYBOARD_ASCII"
+				id="userName" autoInit="false"
+			editModeEditability="noneditable"
+			bindModel="$.$model"
+			bindAttribute="userName"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true"
+				id="password" autoInit="false"
+			bindModel="$.$model"
+			bindAttribute="password"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="确认密码" hintText="请再次输入密码" passwordMask="true"
+				id="password2" autoInit="false"
+			bindModel="$.$model"
+			bindAttribute="password2"/>
+			<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
+			items="18,30,40,50,60"
+			bindModel="$.$model"
+			bindAttribute="age"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="生日" hintText="请输入生日"
+			items="18世纪,19世纪,20世纪"
+			values="18-,19-,20-"
+			bindModel="$.$model"
+			bindAttribute="birthday"/>
+			<View height="42">
+				<Label left="0" width="30%">个人情况</Label>
+				<View right="0" width="70%" layout="horizontal" horizontalWrap="false">
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="33%"
+					hightLight="false"
+					items="男,女"
+					values="M,F"
+					bindModel="$.$model"
+					bindAttribute="birthday"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="33%"
+					items="成年,成年"
+					values="18-,18+"
+					bindModel="$.$model"
+					bindAttribute="birthday"/>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="33%"
+					items="单身,已婚"
+					values="S,M"
+					bindModel="$.$model"
+					bindAttribute="birthday"/>
+				</View>
+			</View> -->
+		</ScrollView>
+	</View></View>
+</Alloy>
