@@ -13,7 +13,7 @@
 			sortByField="userName" pageSize="10" bottom="0" top="50"/> 
 		<!-- <TableView id="searchUserTable" dataCollection="$.userCollection" bottom="0" top="50">
 			<TableViewRow>
-				<Require src="user/userRow"/>
+				<Require src="user/huserRow"/>
 			</TableViewRow>
 		</TableView> -->
 	</View>
