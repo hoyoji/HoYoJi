@@ -274,7 +274,6 @@ function importToLocalOperate() {
 			date : (new Date()).toISOString(),
 			remark : accountShareData.account.remark,
 			ownerUser : Alloy.Models.User,
-			exchangeRate : 1,
 			incomeType : accountShareData.account.expenseType,
 			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
 			project : depositeProject,
