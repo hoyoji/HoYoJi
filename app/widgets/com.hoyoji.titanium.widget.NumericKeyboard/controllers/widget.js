@@ -269,8 +269,7 @@ function equalToValue() {
 			pendingOp = "=";
 		}
 	}
-	// activeTextField.setValue($.display.getText());
-	$.display.setText($.display.getText());
+	activeTextField.setValue($.display.getText());
 	activeTextField.field.fireEvent("change");
 	exports.close();
 	clear();
