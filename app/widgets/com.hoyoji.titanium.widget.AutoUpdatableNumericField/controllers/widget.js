@@ -84,7 +84,7 @@ $.setValue = function(value) {
 		$.hintText.setHeight(42);
 	}
 	$.field.setText(value || "");
-}
+};
 
 $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
@@ -94,7 +94,7 @@ $.getValue = function() {
 		return null;
 	}
 	return Number($.field.getText());
-}
+};
 
 $.setEditable = function(editable) {
 	// if (editable === false) {
@@ -104,6 +104,6 @@ $.setEditable = function(editable) {
 	// }
 	//
 	// // $.field.setEditable(editable);
-}
+};
 
 $.setSaveableMode($.saveableMode);
