@@ -552,7 +552,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									var currencyData = data[0][0];
 									var id = currencyData.id;
 									delete currencyData.id;
-									currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+									try{
+										currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+									} catch (e){
+										currencyData.symbol = currencyData.code;
+									}
 									currency = Alloy.createModel("Currency", currencyData);
 									currency.attributes["id"] = id;
 									
