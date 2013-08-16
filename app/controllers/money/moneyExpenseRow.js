@@ -67,7 +67,7 @@ $.makeContextMenu = function() {
 									editData.push(projectShareAuthorization.toJSON());
 									projectShareAuthorization.xSave({syncFromServer : true});
 
-									$.$model.xGet("moneyAccount").xSet("currentBalance", $.$model.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
+									$.$model.xGet("moneyAccount").xSet("currentBalance", $.$model.xGet("moneyAccount").xGet("currentBalance") + $.$model.xGet("amount"));
 									editData.push($.$model.xGet("moneyAccount").toJSON());
 									$.$model.xGet("moneyAccount").xSave({syncFromServer : true});
 									

@@ -127,8 +127,8 @@ if ($.saveableMode === "read") {
 		$.localAmountContainer.setHeight(42);
 		$.amount.$view.setHeight(0);
 		$.moneyAccount.$view.setHeight(0);
+		$.ownerUser.setHeight(42);
 	}
-	$.ownerUser.setHeight(42);
 	$.friendUser.setValue($.$model.xGet("friendUser").getFriendDisplayName());
 } else {
 	$.onWindowOpenDo(function() {
@@ -294,12 +294,12 @@ if ($.saveableMode === "read") {
 					projectShareAuthorization.xAddToSave($);
 
 					if (oldMoneyAccount === newMoneyAccount) {
-						newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+						newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
 						newMoneyAccount.xAddToSave($);
 						editData.push(newMoneyAccount.toJSON());
 					} else {
-						oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-						newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+						oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
+						newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
 						oldMoneyAccount.xAddToSave($);
 						newMoneyAccount.xAddToSave($);
 						editData.push(newMoneyAccount.toJSON());
