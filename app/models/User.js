@@ -55,7 +55,7 @@ exports.definition = {
 			defaultFriendCategory : {type : "FriendCategory", attribute : null},
 			messageBox : {type : "MessageBox", attribute : null}
 		},
-		rowView : "user/userRow",
+		rowView : "user/huserRow",
 		adapter : {
 			type : "hyjSql"
 		}
