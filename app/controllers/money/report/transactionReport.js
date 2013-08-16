@@ -27,11 +27,16 @@ exports.getQueryString = function() {
 	for (var f in queryOptions) {
 		var value = queryOptions[f]
 		if (_.isNull(value)) {
-			// filterStr += f + " IS NULL ";
 			continue;
 		}
+		if (f === "transactionDisplayType"){
+			if(value === "Personal"){
+				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
+			} 
+			continue;
+		} 		
 		if (filterStr) {
-			filterStr += " AND "
+			filterStr += " AND ";
 		}
 		f = "main." + f;
 		if (_.isNumber(value)) {

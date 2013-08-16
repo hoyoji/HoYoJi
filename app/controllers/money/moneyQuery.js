@@ -3,8 +3,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var date = new Date();
 $.queryOptions = {
 	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString()
-	// project : Alloy.Models.User.xGet("activeProject")
+	dateTo : date.getUTCTimeOfDateEnd().toISOString(),
+	transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 };
 
 $.onWindowOpenDo(function() {
@@ -18,11 +18,16 @@ exports.getQueryString = function() {
 	for (var f in $.queryOptions) {
 		var value = $.queryOptions[f]
 		if (_.isNull(value)) {
-			// filterStr += f + " IS NULL ";
+			continue;
+		} 
+		if (f === "transactionDisplayType"){
+			if(value === "Personal"){
+				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
+			} 
 			continue;
 		} 
 		if (filterStr) {
-			filterStr += " AND "
+			filterStr += " AND ";
 		}
 		f = "main." + f;
 		if (_.isNumber(value)) {
@@ -34,8 +39,7 @@ exports.getQueryString = function() {
 				filterStr += "main.date <= '" + value + "' ";
 			} else if (f === "main.project") {
 				filterStr += "main.projectId = '" + value.id + "' ";
-			} 
-			else {
+			} else {
 				filterStr += f + " = '" + value + "' ";
 			}
 		}
@@ -63,3 +67,4 @@ $.close.addEventListener("singletap", close);
 $.dateFrom.UIInit($, $.getCurrentWindow());
 $.dateTo.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
+$.transactionDisplayType.UIInit($, $.getCurrentWindow());

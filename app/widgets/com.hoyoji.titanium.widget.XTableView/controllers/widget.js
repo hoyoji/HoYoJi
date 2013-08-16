@@ -592,6 +592,11 @@ var clearCollections = function() {
 	$.table.setData([]);
 	showNoDataIndicator(0);
 }
+
+exports.clearAllCollections = function(){
+	clearCollections();
+}
+
 function refreshCollectionOnChange(model) {
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true);
