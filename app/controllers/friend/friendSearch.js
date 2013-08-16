@@ -12,7 +12,7 @@ $.usersTable.UIInit($, $.getCurrentWindow());
 // }));
 // return menuSection;
 // }
-var loading;
+var loading, searchCriteria;
 $.searchButton.addEventListener("singletap", function(e) {
 	if (loading) {
 		return;
@@ -22,7 +22,7 @@ $.searchButton.addEventListener("singletap", function(e) {
 		$.search.focus();
 		return;
 	}
-	
+	searchCriteria = $.search.getValue();
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	loading = true;
@@ -30,8 +30,11 @@ $.searchButton.addEventListener("singletap", function(e) {
 	$.usersTable.clearAllCollections();
 
 	Alloy.Globals.Server.findData([{
+		userName : searchCriteria,
 		__dataType : "User",
-		userName : $.search.getValue()
+		__offset : 0,
+		__limit : Number($.usersTable.$attrs.pageSize),
+		__orderBy : $.usersTable.$attrs.sortByField
 	}], function(data) {
 		if(data[0].length > 0){
 			$.userCollection = Alloy.createCollection("User");
@@ -61,3 +64,38 @@ $.searchButton.addEventListener("singletap", function(e) {
 	$.search.blur();
 });
 
+$.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
+	// collection.xSearchInDb({}, {
+		// offset : offset,
+		// limit : limit,
+		// orderBy : orderBy
+	// });
+
+	Alloy.Globals.Server.findData([{
+		userName : searchCriteria,
+		__dataType : "User",
+		__offset : offset,
+		__limit : limit,
+		__orderBy : orderBy
+	}], function(data) {
+		if(data[0].length > 0){			
+			data[0].forEach(function(userData) {
+				var id = userData.id; // prevent it to be added to dataStore during object initialization
+				delete userData.id;
+				var user = Alloy.createModel("User", userData);
+				user.attributes["id"] = id;
+				user.id = id;
+				$.userCollection.add(user);
+			});			
+		}
+		successCB();
+		$.searchButton.setEnabled(true);
+		$.searchButton.hideActivityIndicator();
+		loading = false;
+	}, function(e) {
+		$.searchButton.setEnabled(true);
+		$.searchButton.hideActivityIndicator();
+		loading = false;
+		alert(e.__summary.msg);
+	});
+}

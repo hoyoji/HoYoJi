@@ -48,7 +48,7 @@ $.makeContextMenu = function() {
 									syncFromServer : true
 								});
 
-								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - moneyExpense.xGet("amount"));
+								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
 								editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 								moneyExpense.xGet("moneyAccount").xSave({
 									syncFromServer : true
