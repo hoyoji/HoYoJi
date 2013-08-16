@@ -6,21 +6,21 @@ exports.setTitle = function(title) {
 	// $.button.setTitle(title);
 	$.title.setVisible(true);
 	$.imageView.setTop(2);
-}
+};
 
 exports.getTitle = function() {
 	return $.title.getText();
-}
+};
 
 exports.setHeight = function(h) {
 	$.buttonView.setHeight(h);
-}
+};
 
 exports.fireEvent = function(eventName, options) {
 	// options = options || {};
 	// _.extend(options, {source : { getTitle : exports.getTitle()}});
 	$.$view.fireEvent(eventName, options);
-}
+};
 
 exports.addEventListener = function(eventName, callback) {
 	$.$view.addEventListener(eventName, function(e) {
@@ -32,7 +32,7 @@ exports.addEventListener = function(eventName, callback) {
 			e.cancelBubble = true;
 		}
 	});
-}
+};
 
 exports.setEnabled = function(b) {
 	$.$view.setEnabled(b);
@@ -62,7 +62,7 @@ exports.setEnabled = function(b) {
 		$.disabledMask.setVisible(true);
 		$.$view.setBackgroundColor($.$attrs.backgroundColor);
 	}
-}
+};
 
 exports.setBubbleCount = function(count) {
 	if (count > 0) {
@@ -72,7 +72,7 @@ exports.setBubbleCount = function(count) {
 	}
 
 	$.bubbleCount.setText("  " + count + "  ");
-}
+};
 
 exports.setImage = function(imagePath) {
 	var imgPath;
@@ -83,11 +83,11 @@ exports.setImage = function(imagePath) {
 	// }
 	$.imageView.setImage(imgPath);
 	// $.button.setBackgroundImage("transparent");
-}
+};
 
 exports.setVisible = function(visible) {
 	$.buttonView.setVisible(visible);
-}
+};
 
 if ($.$attrs.id) {
 	$.id = $.$attrs.id;
