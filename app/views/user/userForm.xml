@@ -9,5 +9,8 @@
                 		bindModel="$.$model"
                 		bindAttribute="newFriendAuthentication"/>
              </ScrollView>
-	</View></View>
+		</View>
+	</View>
 </Alloy>
+
+
