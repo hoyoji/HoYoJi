@@ -42,13 +42,13 @@ $.makeContextMenu = function() {
 									projectId : $.$model.xGet("projectId"),
 									friendUserId : Alloy.Models.User.id
 								});
-								projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - $.$model.xGet("amount"));
+								projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate"));
 								editData.push(projectShareAuthorization.toJSON());
 								projectShareAuthorization.xSave({
 									syncFromServer : true
 								});
 
-								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
+								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - moneyExpense.xGet("amount"));
 								editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 								moneyExpense.xGet("moneyAccount").xSave({
 									syncFromServer : true
@@ -65,7 +65,7 @@ $.makeContextMenu = function() {
 										projectId : $.$model.xGet("projectId"),
 										friendUserId : Alloy.Models.User.id
 									});
-									projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - $.$model.xGet("amount"));
+									projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - $.$model.xGet("amount") * $.$model.xGet("exchangeRate"));
 									editData.push(projectShareAuthorization.toJSON());
 									projectShareAuthorization.xSave({
 										syncFromServer : true

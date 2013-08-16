@@ -50,7 +50,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 						// else {
 							// projectCurrencyIdsCount++;
 						// }
-					})
+					});
+					alert("需退出重新登录，显示的金额才会换成本币显示。")
 				// }
 
 		}

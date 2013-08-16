@@ -294,12 +294,16 @@ if ($.saveableMode === "read") {
 					projectShareAuthorization.xAddToSave($);
 
 					if (oldMoneyAccount === newMoneyAccount) {
-						newMoneyAccount.xSet("currentBalance", newCurrentBalance + oldAmount - newAmount);
-					} else {
-						oldMoneyAccount.xSet("currentBalance", oldCurrentBalance + oldAmount);
-						newMoneyAccount.xSet("currentBalance", newCurrentBalance - newAmount);
+						newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+						newMoneyAccount.xAddToSave($);
 						editData.push(newMoneyAccount.toJSON());
+					} else {
+						oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+						newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
 						oldMoneyAccount.xAddToSave($);
+						newMoneyAccount.xAddToSave($);
+						editData.push(newMoneyAccount.toJSON());
+						editData.push(oldMoneyAccount.toJSON());
 					}
 
 					if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
