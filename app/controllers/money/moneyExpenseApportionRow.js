@@ -85,9 +85,9 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", editApportionType);
 });
 
-$.amount.field.addEventListener("singletap",function(){
-	console.info("+++focus+"+ $.amount.field.focus());
-	if($.$model.xGet("apportionType") === "Fixed"){
+$.amount.field.addEventListener("singletap", function() {
+	console.info("+++focus+" + $.amount.field.focus());
+	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.$model.apportionFocus = true;
 	}
 });
@@ -142,17 +142,21 @@ function updateAmount() {
 				averageApportions.push(item);
 			}
 		});
-		if (averageApportions.length > 0) {
-			var average = Number(((expenseAmount - fixedTotal) / averageApportions.length).toFixed(2));
-			var averageTotal = 0;
-			for (var i = 0; i < averageApportions.length - 1; i++) {
-				averageApportions[i].xSet("amount", average);
-				averageTotal += average;
+		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > $.$model.xGet("moneyExpense").xGet("amount"))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
+			alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
+		} else {
+			if (averageApportions.length > 0) {
+				var average = Number(((expenseAmount - fixedTotal) / averageApportions.length).toFixed(2));
+				var averageTotal = 0;
+				for (var i = 0; i < averageApportions.length - 1; i++) {
+					averageApportions[i].xSet("amount", average);
+					averageTotal += average;
+				}
+
+				console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyExpense").xGet("amount") - averageTotal));
+				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal - fixedTotal);
+
 			}
-
-			console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyExpense").xGet("amount") - averageTotal));
-			averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyExpense").xGet("amount") - averageTotal - fixedTotal);
-
 		}
 	}
 }
