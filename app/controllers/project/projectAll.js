@@ -25,11 +25,11 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		}));
 	}
 	return menuSection;
-}
+};
 
 $.getChildTitle = function() {
 	return $.$model.xGet("name");
-}
+};
 function onFooterbarTap(e) {
 	if (e.source.id === "newProject") {
 		Alloy.Globals.openWindow("project/projectForm", {

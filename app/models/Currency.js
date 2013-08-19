@@ -114,5 +114,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

@@ -1,10 +1,10 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onWindowOpenDo(function() {
- if($.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User){
- 	$.amountView.setHeight(0);
- 	$.localAmount.$view.setHeight(28);
- }
+	if ($.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User) {
+		$.amountView.setHeight(0);
+		$.localAmount.$view.setHeight(28);
+	}
 });
 
 $.makeContextMenu = function() {
@@ -57,15 +57,15 @@ $.apportionType.label.addEventListener("singletap", function(e) {
 
 $.$view.addEventListener("singletap", function(e) {
 	if ($.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
-	if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
-		if ($.$model.xGet("apportionType") === "Fixed") {
-			$.$model.xSet("apportionType", "Average");
-		} else if ($.$model.xGet("apportionType") === "Average") {
-			$.$model.xSet("apportionType", "Fixed");
+		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
+			if ($.$model.xGet("apportionType") === "Fixed") {
+				$.$model.xSet("apportionType", "Average");
+			} else if ($.$model.xGet("apportionType") === "Average") {
+				$.$model.xSet("apportionType", "Fixed");
+			}
+			// $.apportionType.field.fireEvent("change");
 		}
-		// $.apportionType.field.fireEvent("change");
-	}}
-	else {
+	} else {
 		alert("没有权限");
 	}
 });
@@ -86,10 +86,9 @@ $.onWindowCloseDo(function() {
 	$.$model.off("_xchange:apportionType", editApportionType);
 });
 
-
-$.amount.field.addEventListener("singletap",function(){
-	console.info("+++focus+"+ $.amount.field.focus());
-	if($.$model.xGet("apportionType") === "Fixed"){
+$.amount.field.addEventListener("singletap", function() {
+	console.info("+++focus+" + $.amount.field.focus());
+	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.$model.apportionFocus = true;
 	}
 });
@@ -111,8 +110,7 @@ $.onWindowOpenDo(function() {
 			});
 			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyIncome").xGet("amount")) {
 				alert("分摊总额大于实际收入金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新调整");
-			}
-			else if ($.amount.getValue() !== oldAmount) {
+			} else if ($.amount.getValue() !== oldAmount) {
 				updateAmount();
 			}
 		}
@@ -125,8 +123,8 @@ if ($.$model.isNew()) {
 
 function updateAmount() {
 	var moneyIncomeApportionsArray = [];
-	$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item){
-		if(!item.__xDeletedHidden && !item.__xDeleted){
+	$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
+		if (!item.__xDeletedHidden && !item.__xDeleted) {
 			moneyIncomeApportionsArray.push(item);
 		}
 	});
@@ -142,14 +140,18 @@ function updateAmount() {
 				averageApportions.push(item);
 			}
 		});
-		if (averageApportions.length > 0) {
-			var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
-			var averageTotal = 0;
-			for (var i = 0; i < averageApportions.length - 1; i++) {
-				averageApportions[i].xSet("amount", average);
-				averageTotal += average;
-			}
+		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > $.$model.xGet("moneyIncome").xGet("amount"))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
+			alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新调整");
+		} else {
+			if (averageApportions.length > 0) {
+				var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
+				var averageTotal = 0;
+				for (var i = 0; i < averageApportions.length - 1; i++) {
+					averageApportions[i].xSet("amount", average);
+					averageTotal += average;
+				}
 				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyIncome").xGet("amount") - averageTotal - fixedTotal);
+			}
 		}
 	}
 }

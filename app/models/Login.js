@@ -30,5 +30,5 @@ exports.definition = {
 		
 		return Collection;
 	}
-}
+};
 

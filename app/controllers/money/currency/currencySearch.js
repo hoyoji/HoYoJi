@@ -93,4 +93,4 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		loading = false;
 		alert(e.__summary.msg);
 	});
-}
+};

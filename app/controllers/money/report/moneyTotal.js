@@ -25,7 +25,7 @@ exports.query = function(queryStr){
 		query = querySelect;
 	}
 	exports.refresh();
-}
+};
 
 exports.refresh = function(){
 	var config = Alloy.createModel($.$attrs.modelType).config,
@@ -35,11 +35,11 @@ exports.refresh = function(){
 	model.fetch({query : query});
 	value = model.get("TOTAL") || 0;
 	$.moneyTotal.setText(value.toUserCurrency());
-}
+};
 
 exports.getValue = function(){
 	return value;
-}
+};
 
 if($.$attrs.autoSync === "true"){
 	exports.query();

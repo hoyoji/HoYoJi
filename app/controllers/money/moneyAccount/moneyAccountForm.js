@@ -17,7 +17,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}).xAddToSave($);
 	}
 	$.saveModel(saveEndCB, saveErrorCB);
-}
+};
 
 $.name.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());

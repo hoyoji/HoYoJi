@@ -89,7 +89,7 @@ exports.definition = {
 						} else if (this.xGet("amount") < this.xGet("returnedAmount")) {
 							error = {
 								msg : "借入金额小于已还款金额 ，请重新输入"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -149,15 +149,19 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-				var exchange = 1;
+				var exchange = null;
 				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
 					exchange = this.xGet("exchangeRate");
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = userCurrency.getExchanges(projectCurrency);
-					if (exchanges.length) {
-						exchange = exchanges.at(0).xGet("rate");
+					if (projectCurrency === userCurrency) {
+						exchange = 1;
+					} else {
+						var exchanges = userCurrency.getExchanges(projectCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
 					}
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
@@ -214,7 +218,7 @@ exports.definition = {
 				if (options.syncFromServer !== true && this.xGet("moneyReturns").length > 0) {
 					xFinishCallback({
 						msg : "当前借入的还款明细不为空，不能删除"
-					})
+					});
 				} else {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
@@ -296,5 +300,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

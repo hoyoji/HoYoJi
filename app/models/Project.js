@@ -233,4 +233,4 @@ exports.definition = {
 		});
 		return Collection;
 	}
-}
+};

@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	// }, isSelectMode));
 
 	return menuSection;
-}
+};
 function changeForeignAmount() {
 	var parentController = $.getParentController().getParentController();
 	var localCurrencyAmount = parentController.localCurrencyAmount.getValue();

@@ -7,7 +7,7 @@ if($.$model.isNew()){
 $.onSave = function(saveEndCB, saveErrorCB){
 	$.$model.attributes["id"]  = $.$model.xGet("code");
 	$.saveModel(saveEndCB, saveErrorCB);
-}
+};
 
 $.name.UIInit($, $.getCurrentWindow());
 $.symbol.UIInit($, $.getCurrentWindow());

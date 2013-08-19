@@ -71,7 +71,7 @@ exports.definition = {
 						if (this.xGet("date") < moneyBorrow.xGet("date")) {
 							error = {
 								msg : "还款日不能在借入日之前（" + moneyBorrow.xGet("date") + "）"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -103,7 +103,7 @@ exports.definition = {
 						if (this.xGet("amount") * returnRate / borrowRate > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -163,15 +163,19 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-				var exchange = 1;
+				var exchange = null;
 				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
 					exchange = this.xGet("exchangeRate");
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-					var exchanges = userCurrency.getExchanges(projectCurrency);
-					if (exchanges.length) {
-						exchange = exchanges.at(0).xGet("rate");
+					if (projectCurrency === userCurrency) {
+						exchange = 1;
+					} else {
+						var exchanges = userCurrency.getExchanges(projectCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
 					}
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
@@ -344,5 +348,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 
