@@ -53,5 +53,5 @@ exports.definition = {
 		
 		return Collection;
 	}
-}
+};
 

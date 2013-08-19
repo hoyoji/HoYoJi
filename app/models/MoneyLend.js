@@ -89,7 +89,7 @@ exports.definition = {
 						} else if (this.xGet("amount") < this.xGet("paybackedAmount")) {
 							error = {
 								msg : "借出金额小于已收款金额 ，请重新输入"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -218,7 +218,7 @@ exports.definition = {
 				if (options.syncFromServer !== true && this.xGet("moneyPaybacks").length > 0) {
 					xFinishCallback({
 						msg : "当前借出的收款明细不为空，不能删除"
-					})
+					});
 				} else {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
@@ -303,5 +303,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

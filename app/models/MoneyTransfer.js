@@ -108,7 +108,7 @@ exports.definition = {
 					if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
 						error = {
 							msg : "转出账户和转入账户不能相同"
-						}
+						};
 					}
 					xValidateComplete(error);
 				},
@@ -117,7 +117,7 @@ exports.definition = {
 					if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
 						error = {
 							msg : "转入账户和转出账户不能相同"
-						}
+						};
 					}
 					xValidateComplete(error);
 				}
@@ -265,5 +265,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

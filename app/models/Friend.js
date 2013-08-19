@@ -232,4 +232,4 @@ exports.definition = {
 		});
 		return Collection;
 	}
-}
+};

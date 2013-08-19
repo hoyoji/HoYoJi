@@ -167,4 +167,4 @@ exports.definition = {
 		});
 		return Collection;
 	}
-}
+};

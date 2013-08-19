@@ -44,7 +44,7 @@ exports.definition = {
 					if (!foreignCurrency) {
 						error = {
 							msg : "外币不能为空"
-						}
+						};
 					} else {
 						if (localCurrency.xGet("id") === foreignCurrency.xGet("id")) {
 							error = {
@@ -161,5 +161,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

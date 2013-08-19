@@ -20,9 +20,9 @@ exports.definition = {
 					filterStr = filter;
 				} else {
 					for (var f in filter) {
-						var value = filter[f]
+						var value = filter[f];
 						if (filterStr) {
-							filterStr += " AND "
+							filterStr += " AND ";
 						}
 						f = "main." + f;
 						if (_.isNull(value) || value === undefined) {
@@ -53,5 +53,5 @@ exports.definition = {
 		
 		return Collection;
 	}
-}
+};
 

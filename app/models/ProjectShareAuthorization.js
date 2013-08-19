@@ -413,4 +413,4 @@ exports.definition = {
 		});
 		return Collection;
 	}
-}
+};

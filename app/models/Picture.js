@@ -106,5 +106,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 

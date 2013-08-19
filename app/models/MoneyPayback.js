@@ -71,7 +71,7 @@ exports.definition = {
 						if (this.xGet("date") < moneyLend.xGet("date")) {
 							error = {
 								msg : "收款日不能在借出日之前（" + moneyLend.xGet("date") + "）"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -102,7 +102,7 @@ exports.definition = {
 						if (this.xGet("amount") * paybackRate / lendRate > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
-							}
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -346,5 +346,5 @@ exports.definition = {
 
 		return Collection;
 	}
-}
+};
 
