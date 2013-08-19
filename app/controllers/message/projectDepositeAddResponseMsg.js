@@ -293,6 +293,14 @@ function importToLocalOperate() {
 		accountShareMsgController.$view.addEventListener("contentready", function() {
 			account.xAddToSave(accountShareMsgController.content);
 			accountShareMsgController.content.titleBar.dirtyCB();
+			
+			function accountSync(){
+				$.getCurrentWindow().close();
+			}
+			account.on("sync",accountSync);
+			$.onWindowCloseDo(function(){
+				account.off("sync",accountSync);
+			})
 		});
 	}
 }
