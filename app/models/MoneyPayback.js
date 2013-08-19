@@ -163,11 +163,15 @@ exports.definition = {
 			},
 			getLocalAmount : function() {
 				var exchange = 1;
-				var projectCurrency = this.xGet("project").xGet("currency");
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				var exchanges = userCurrency.getExchanges(projectCurrency);
-				if (exchanges.length) {
-					exchange = exchanges.at(0).xGet("rate");
+				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
+					exchange = this.xGet("exchangeRate");
+				} else {
+					var projectCurrency = this.xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var exchanges = userCurrency.getExchanges(projectCurrency);
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
