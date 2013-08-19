@@ -50,7 +50,7 @@ exports.definition = {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("moneyExpense").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
 				} else {
-					return this.xGet("moneyExpense").xGet("localCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();
+					return this.xGet("moneyExpense").xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyExpense").xGet("exchangeRate")).toUserCurrency();
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
