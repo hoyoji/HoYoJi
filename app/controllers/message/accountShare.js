@@ -578,13 +578,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,
 				account : account,
-				currencyCode : $.$model.xGet("moneyAccount").xGet("currency").xGet("code"),
+				currencyCode : selectedAccount.xGet("moneyAccount").xGet("currency").xGet("code"),
 				accountDetails : $.accountDetails
 			}));
 		}else{
 			$.$model.xSet("messageData", JSON.stringify({
 				accountType : selectedAccount.config.adapter.collection_name,
-				currencyCode : $.$model.xGet("moneyAccount").xGet("currency").xGet("code"),
+				currencyCode : selectedAccount.xGet("moneyAccount").xGet("currency").xGet("code"),
 				account : account
 			}));
 		}

@@ -560,305 +560,389 @@ $.onWindowOpenDo(function() {
 
 function importToLocalOperate() {
 	//导入账务
-	if (accountShareData.accountType === "MoneyExpense") {
-		//如果分享支出账务的收款人是自己。则导入为收入到本地，否则导入一条支出
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var account = Alloy.createModel("MoneyIncome", {
-				date : accountShareData.account.date,
-				amount : accountShareData.account.amount,
-				remark : accountShareData.account.remark,
-				ownerUser : Alloy.Models.User,
-				exchangeRate : 1,
-				incomeType : accountShareData.account.expenseType,
-				moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-				project : Alloy.Models.User.xGet("activeProject"),
-				moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
-				friendUser : $.$model.xGet("fromUser")
+	var currencyId = accountShareData.currencyCode;
+	var currency = Alloy.createModel("Currency").xFindInDb({
+		id : currencyId
+	});
+	
+	if (!currency.id) {
+		Alloy.Globals.Server.getData([{
+			__dataType : "CurrencyAll",
+			id : currencyId
+		}], function(data) {
+			var currencyData = data[0][0];
+			var id = currencyData.id;
+			delete currencyData.id;
+			try{
+				currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+			} catch (e){
+				currencyData.symbol = currencyData.code;
+			}
+			currency = Alloy.createModel("Currency", currencyData);
+			currency.attributes["id"] = id;
+			
+			currency.xSet("ownerUser", Alloy.Models.User);
+			currency.xSet("ownerUserId", Alloy.Models.User.id);
+			currency.save();
+			
+			
+			var exchange = Alloy.createModel("Exchange").xFindInDb({
+				localCurrencyId : currencyId,
+				foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
 			});
+			if (!exchange.id) {
+				Alloy.Globals.Server.getExchangeRate(currency.xGet("id") , Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
 
-			var moneyIncomeDetails = [];
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
-				$model : account
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareData.accountDetails.map(function(accountDetail) {
-					var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
-						name : accountDetail.name,
-						amount : accountDetail.amount,
-						moneyIncome : account,
-						remark : accountDetail.remark,
-						ownerUser : Alloy.Models.User
-					}).xAddToSave(accountShareMsgController.content);
-					moneyIncomeDetails.push(moneyIncomeDetail);
+					exchange = Alloy.createModel("Exchange", {
+						localCurrencyId : currencyId,
+						foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+						rate : rate
+					});
+					exchange.xSet("ownerUser", Alloy.Models.User);
+					exchange.xSet("ownerUserId", Alloy.Models.User.id);
+					exchange.save();
+					
+					var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
+					importToLocal(changeToMoneyAccountMoney , rate);
+				}, function(e) {
+					errorCount++;
+					errorCB(e)
 				});
-				account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-				account.xAddToSave(accountShareMsgController.content);
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-			// moneyIncomeDetails.xAddToSave(accountShareMsgController.content);
-		} else {
-			var account = Alloy.createModel("MoneyExpense", {
-				date : accountShareData.account.date,
-				amount : accountShareData.account.amount,
-				remark : accountShareData.account.remark,
-				ownerUser : Alloy.Models.User,
-				exchangeRate : 1,
-				expenseType : accountShareData.account.expenseType,
-				moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-				project : Alloy.Models.User.xGet("activeProject"),
-				moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null
-			});
 
-			var moneyExpenseDetails = [];
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
-				$model : account
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareData.accountDetails.map(function(accountDetail) {
-					var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
-						name : accountDetail.name,
-						amount : accountDetail.amount,
-						moneyExpense : account,
-						remark : accountDetail.remark,
-						ownerUser : Alloy.Models.User
-					}).xAddToSave(accountShareMsgController.content);
-					moneyExpenseDetails.push(moneyExpenseDetail);
+			} else {
+				var changeToMoneyAccountMoney = accountShareData.account.amount * exchange.xGet("rate");
+				importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
+			}
+		}, function(e) {
+			errorCB(e)
+		});
+	} else {
+		var exchange = Alloy.createModel("Exchange").xFindInDb({
+			localCurrencyId : currencyId,
+			foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
+		});
+		if (!exchange.id) {
+			Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
+
+				exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : currencyId,
+					foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					rate : rate
 				});
-				account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
-				account.xAddToSave(accountShareMsgController.content);
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-			// moneyExpenseDetails.xAddToSave(accountShareMsgController.content);
-		}
-
-	} else if (accountShareData.accountType === "MoneyIncome") {
-		//如果分享收入账务的付款人是自己。则导入为支出到本地，否则导入一条收入
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var account = Alloy.createModel("MoneyExpense", {
-				date : accountShareData.account.date,
-				amount : accountShareData.account.amount,
-				remark : accountShareData.account.remark,
-				ownerUser : Alloy.Models.User,
-				exchangeRate : 1,
-				expenseType : accountShareData.account.incomeType,
-				moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-				project : Alloy.Models.User.xGet("activeProject"),
-				moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
-				friendUser : $.$model.xGet("fromUser")
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				
+				var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
+				importToLocal(changeToMoneyAccountMoney , rate);
+			}, function(e) {
+				errorCount++;
+				errorCB(e)
 			});
 
-			var moneyExpenseDetails = [];
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
-				$model : account
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareData.accountDetails.map(function(accountDetail) {
-					var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
-						name : accountDetail.name,
-						amount : accountDetail.amount,
-						moneyExpense : account,
-						remark : accountDetail.remark,
-						ownerUser : Alloy.Models.User
-					}).xAddToSave(accountShareMsgController.content);
-					moneyExpenseDetails.push(moneyExpenseDetail);
-				});
-				account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
-				account.xAddToSave(accountShareMsgController.content);
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
 		} else {
-			var account = Alloy.createModel("MoneyIncome", {
-				date : accountShareData.account.date,
-				amount : accountShareData.account.amount,
-				remark : accountShareData.account.remark,
-				ownerUser : Alloy.Models.User,
-				localAmount : 0,
-				exchangeRate : 1,
-				incomeType : accountShareData.account.incomeType,
-				moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-				project : Alloy.Models.User.xGet("activeProject"),
-				moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null
-			});
-
-			var moneyIncomeDetails = [];
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
-				$model : account
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareData.accountDetails.map(function(accountDetail) {
-					var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
-						name : accountDetail.name,
-						amount : accountDetail.amount,
-						moneyIncome : account,
-						remark : accountDetail.remark,
-						ownerUser : Alloy.Models.User
-					}).xAddToSave(accountShareMsgController.content);
-					moneyIncomeDetails.push(moneyIncomeDetail);
-				});
-				account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
-				account.xAddToSave(accountShareMsgController.content);
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
+			var changeToMoneyAccountMoney = accountShareData.account.amount * exchange.xGet("rate");
+			importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
 		}
-	} else if (accountShareData.accountType === "MoneyBorrow") {
-		//如果分享借入账务的借款人是自己。则导入为借入到本地，否则导入一条借出
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
-				$model : "MoneyLend",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					paybackDate : accountShareData.account.returnDate,
-					exchangeRate : 1,
-					paybackedAmount : 0,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					friendUser : $.$model.xGet("fromUser")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		} else {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
-				$model : "MoneyBorrow",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					returnDate : accountShareData.account.returnDate,
-					exchangeRate : 1,
-					returnedAmount : 0,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		}
-
-	} else if (accountShareData.accountType === "MoneyLend") {
-		//如果分享借出账务的收款人是自己。则导入为借出到本地，否则导入一条借入
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
-				$model : "MoneyBorrow",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					returnDate : accountShareData.account.paybackDate,
-					exchangeRate : 1,
-					returnedAmount : 0,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					friendUser : $.$model.xGet("fromUser")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		} else {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
-				$model : "MoneyLend",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					paybackDate : accountShareData.account.paybackDate,
-					exchangeRate : 1,
-					paybackedAmount : 0,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		}
-
-	} else if (accountShareData.accountType === "MoneyPayback") {
-		//如果分享还款账务的收款人是自己。则导入为借出到收款，否则导入一条还款
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
-				$model : "MoneyReturn",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					exchangeRate : accountShareData.account.exchangeRate,
-					exchangeRate : 1,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyBorrow : null,
-					interest : 0,
-					friendUser : $.$model.xGet("fromUser")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		} else {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
-				$model : "MoneyPayback",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					exchangeRate : accountShareData.account.exchangeRate,
-					exchangeRate : 1,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyLend : null,
-					interest : 0
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		}
-
-	} else if (accountShareData.accountType === "MoneyReturn") {
-		//如果分享收款账务的收款人是自己。则导入为借出到还款，否则导入一条收款
-		if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
-				$model : "MoneyPayback",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					exchangeRate : accountShareData.account.exchangeRate,
-					exchangeRate : 1,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyLend : null,
-					interest : 0,
-					friendUser : $.$model.xGet("fromUser")
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		} else {
-			var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
-				$model : "MoneyReturn",
-				data : {
-					date : accountShareData.account.date,
-					amount : accountShareData.account.amount,
-					remark : accountShareData.account.remark,
-					exchangeRate : accountShareData.account.exchangeRate,
-					exchangeRate : 1,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyBorrow : null,
-					interest : 0
-				}
-			});
-			accountShareMsgController.$view.addEventListener("contentready", function() {
-				accountShareMsgController.content.titleBar.dirtyCB();
-			});
-		}
-
 	}
+	function importToLocal(amount,exchangeRate){
+		if (accountShareData.accountType === "MoneyExpense") {
+		//如果分享支出账务的收款人是自己。则导入为收入到本地，否则导入一条支出
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var account = Alloy.createModel("MoneyIncome", {
+					date : accountShareData.account.date,
+					amount : amount,
+					remark : accountShareData.account.remark,
+					ownerUser : Alloy.Models.User,
+					exchangeRate : exchangeRate,
+					incomeType : accountShareData.account.expenseType,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+					friendUser : $.$model.xGet("fromUser")
+				});
+	
+				var moneyIncomeDetails = [];
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
+					$model : account
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareData.accountDetails.map(function(accountDetail) {
+						var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
+							name : accountDetail.name,
+							amount : accountDetail.amount,
+							moneyIncome : account,
+							remark : accountDetail.remark,
+							ownerUser : Alloy.Models.User
+						}).xAddToSave(accountShareMsgController.content);
+						moneyIncomeDetails.push(moneyIncomeDetail);
+					});
+					account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
+					account.xAddToSave(accountShareMsgController.content);
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+				// moneyIncomeDetails.xAddToSave(accountShareMsgController.content);
+			} else {
+				var account = Alloy.createModel("MoneyExpense", {
+					date : accountShareData.account.date,
+					amount : amount,
+					remark : accountShareData.account.remark,
+					ownerUser : Alloy.Models.User,
+					exchangeRate : exchangeRate,
+					expenseType : accountShareData.account.expenseType,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null
+				});
+	
+				var moneyExpenseDetails = [];
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
+					$model : account
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareData.accountDetails.map(function(accountDetail) {
+						var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
+							name : accountDetail.name,
+							amount : accountDetail.amount,
+							moneyExpense : account,
+							remark : accountDetail.remark,
+							ownerUser : Alloy.Models.User
+						}).xAddToSave(accountShareMsgController.content);
+						moneyExpenseDetails.push(moneyExpenseDetail);
+					});
+					account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
+					account.xAddToSave(accountShareMsgController.content);
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+				// moneyExpenseDetails.xAddToSave(accountShareMsgController.content);
+			}
+	
+		} else if (accountShareData.accountType === "MoneyIncome") {
+			//如果分享收入账务的付款人是自己。则导入为支出到本地，否则导入一条收入
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var account = Alloy.createModel("MoneyExpense", {
+					date : accountShareData.account.date,
+					amount : amount,
+					remark : accountShareData.account.remark,
+					ownerUser : Alloy.Models.User,
+					exchangeRate : exchangeRate,
+					expenseType : accountShareData.account.incomeType,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
+					friendUser : $.$model.xGet("fromUser")
+				});
+	
+				var moneyExpenseDetails = [];
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyExpenseForm", {
+					$model : account
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareData.accountDetails.map(function(accountDetail) {
+						var moneyExpenseDetail = Alloy.createModel("MoneyExpenseDetail", {
+							name : accountDetail.name,
+							amount : accountDetail.amount,
+							moneyExpense : account,
+							remark : accountDetail.remark,
+							ownerUser : Alloy.Models.User
+						}).xAddToSave(accountShareMsgController.content);
+						moneyExpenseDetails.push(moneyExpenseDetail);
+					});
+					account.xGet("moneyExpenseDetails").add(moneyExpenseDetails);
+					account.xAddToSave(accountShareMsgController.content);
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			} else {
+				var account = Alloy.createModel("MoneyIncome", {
+					date : accountShareData.account.date,
+					amount : amount,
+					remark : accountShareData.account.remark,
+					ownerUser : Alloy.Models.User,
+					localAmount : 0,
+					exchangeRate : exchangeRate,
+					incomeType : accountShareData.account.incomeType,
+					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null
+				});
+	
+				var moneyIncomeDetails = [];
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyIncomeForm", {
+					$model : account
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareData.accountDetails.map(function(accountDetail) {
+						var moneyIncomeDetail = Alloy.createModel("MoneyIncomeDetail", {
+							name : accountDetail.name,
+							amount : accountDetail.amount,
+							moneyIncome : account,
+							remark : accountDetail.remark,
+							ownerUser : Alloy.Models.User
+						}).xAddToSave(accountShareMsgController.content);
+						moneyIncomeDetails.push(moneyIncomeDetail);
+					});
+					account.xGet("moneyIncomeDetails").add(moneyIncomeDetails);
+					account.xAddToSave(accountShareMsgController.content);
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			}
+		} else if (accountShareData.accountType === "MoneyBorrow") {
+			//如果分享借入账务的借款人是自己。则导入为借入到本地，否则导入一条借出
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
+					$model : "MoneyLend",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						paybackDate : accountShareData.account.returnDate,
+						exchangeRate : exchangeRate,
+						paybackedAmount : 0,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						friendUser : $.$model.xGet("fromUser")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			} else {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
+					$model : "MoneyBorrow",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						returnDate : accountShareData.account.returnDate,
+						exchangeRate : exchangeRate,
+						returnedAmount : 0,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			}
+	
+		} else if (accountShareData.accountType === "MoneyLend") {
+			//如果分享借出账务的收款人是自己。则导入为借出到本地，否则导入一条借入
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyBorrowForm", {
+					$model : "MoneyBorrow",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						returnDate : accountShareData.account.paybackDate,
+						exchangeRate : exchangeRate,
+						returnedAmount : 0,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						friendUser : $.$model.xGet("fromUser")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			} else {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyLendForm", {
+					$model : "MoneyLend",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						paybackDate : accountShareData.account.paybackDate,
+						exchangeRate : exchangeRate,
+						paybackedAmount : 0,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			}
+	
+		} else if (accountShareData.accountType === "MoneyPayback") {
+			//如果分享还款账务的收款人是自己。则导入为借出到收款，否则导入一条还款
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
+					$model : "MoneyReturn",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						exchangeRate : exchangeRate,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						moneyBorrow : null,
+						interest : 0,
+						friendUser : $.$model.xGet("fromUser")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			} else {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
+					$model : "MoneyPayback",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						exchangeRate : exchangeRate,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						moneyLend : null,
+						interest : 0
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			}
+	
+		} else if (accountShareData.accountType === "MoneyReturn") {
+			//如果分享收款账务的收款人是自己。则导入为借出到还款，否则导入一条收款
+			if (accountShareData.account.friendUserId === Alloy.Models.User.id) {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyPaybackForm", {
+					$model : "MoneyPayback",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						exchangeRate : exchangeRate,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						moneyLend : null,
+						interest : 0,
+						friendUser : $.$model.xGet("fromUser")
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			} else {
+				var accountShareMsgController = Alloy.Globals.openWindow("money/moneyReturnForm", {
+					$model : "MoneyReturn",
+					data : {
+						date : accountShareData.account.date,
+						amount : amount,
+						remark : accountShareData.account.remark,
+						exchangeRate : exchangeRate,
+						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("activeProject"),
+						moneyBorrow : null,
+						interest : 0
+					}
+				});
+				accountShareMsgController.$view.addEventListener("contentready", function() {
+					accountShareMsgController.content.titleBar.dirtyCB();
+				});
+			}
+	
+		}
+	}
+	
 }
