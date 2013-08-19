@@ -281,7 +281,7 @@ exports.definition = {
 				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前收入的明细不为空，不能删除"
-					})
+					});
 				} else {
 					// if (this.xGet("moneyIncomeApportions").length === 1) {
 					// this.xGet("moneyIncomeApportions").forEach(function(item) {
