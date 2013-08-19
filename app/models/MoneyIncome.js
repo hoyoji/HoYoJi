@@ -158,17 +158,28 @@ exports.definition = {
 				}
 			},
 			getLocalAmount : function() {
-				var exchange;
-				var projectCurrency = this.xGet("project").xGet("currency");
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				if (projectCurrency === userCurrency) {
-					exchange = 1;
+				// var exchange;
+				// var projectCurrency = this.xGet("project").xGet("currency");
+				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				// if (projectCurrency === userCurrency) {
+					// exchange = 1;
+				// } else {
+					// var exchanges = userCurrency.getExchanges(projectCurrency);
+					// if (exchanges.length) {
+						// exchange = exchanges.at(0).xGet("rate");
+					// } else {
+						// throw new Error("找不到汇率");
+					// }
+				// }
+				var exchange = 1;
+				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
+					exchange = this.xGet("exchangeRate");
 				} else {
+					var projectCurrency = this.xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 					var exchanges = userCurrency.getExchanges(projectCurrency);
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");
-					} else {
-						throw new Error("找不到汇率");
 					}
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toFixed(2);
@@ -281,7 +292,7 @@ exports.definition = {
 				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前收入的明细不为空，不能删除"
-					})
+					});
 				} else {
 					// if (this.xGet("moneyIncomeApportions").length === 1) {
 					// this.xGet("moneyIncomeApportions").forEach(function(item) {
