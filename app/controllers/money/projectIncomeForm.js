@@ -207,8 +207,8 @@ if ($.saveableMode === "read") {
 			if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 				if ($.$model.xGet("exchangeRate")) {
 					var exchange = Alloy.createModel("Exchange", {
-						localCurrency : $.$model.xGet("project").xGet("currency"),
-						foreignCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+						localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+						foreignCurrency : $.$model.xGet("project").xGet("currency"),
 						rate : $.$model.xGet("exchangeRate"),
 						ownerUser : Alloy.Models.User
 					});
