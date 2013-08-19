@@ -13,7 +13,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		});
 	}));
 	return menuSection;
-}
+};
 // $.titleBar.bindXTable($.exchangesTable);
 
 var collection = Alloy.Models.User.xGet("exchanges").xCreateFilter({}, $);
@@ -26,7 +26,7 @@ $.exchangesTable.beforeFetchNextPage = function(offset, limit, orderBy, successC
 		orderBy : orderBy
 	});
 	successCB();
-}
+};
 $.exchangesTable.fetchNextPage();
 
 function onFooterbarTap(e) {
@@ -67,7 +67,7 @@ function onFooterbarTap(e) {
 				alert(e);
 				$.footerBar.updateAllExchanges.setEnabled(true);
 				$.footerBar.updateAllExchanges.hideActivityIndicator();
-			})
+			});
 		} else {
 			alert("没有需要更新的汇率");
 		}

@@ -14,7 +14,7 @@ $.setSelected = function(selected){
 	if(selected){
 		$.projectName.$view.setColor("blue");
 	}
-}
+};
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
@@ -61,7 +61,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 	}));
 
 	return menuSection;
-}
+};
 
 if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 	$.projectImage.setImage("/images/project/projectAll/myProjectsTable@2x.png");

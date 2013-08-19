@@ -3,7 +3,7 @@ $.setSelected = function(selected){
 	if(selected){
 		$.accountName.$view.setColor("blue");
 	}
-}
+};
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
@@ -17,7 +17,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 			,isSelectMode));
 	
 	return menuSection;
-}
+};
 
 $.accountName.UIInit($, $.getCurrentWindow());
 $.symbol.UIInit($, $.getCurrentWindow());

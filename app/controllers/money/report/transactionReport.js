@@ -25,7 +25,7 @@ function onFooterbarTap(e) {
 exports.getQueryString = function() {
 	var filterStr = "";
 	for (var f in queryOptions) {
-		var value = queryOptions[f]
+		var value = queryOptions[f];
 		if (_.isNull(value)) {
 			continue;
 		}
@@ -54,7 +54,7 @@ exports.getQueryString = function() {
 		}
 	}
 	return filterStr;
-}
+};
 function doQuery(queryController) {
 	queryOptions = queryController.queryOptions;
 	exports.refresh();
@@ -70,7 +70,7 @@ exports.refresh = function() {
 	$.moneyLendTotal.query(queryStr);
 	$.moneyPaybackTotal.query(queryStr);
 	calculateTotalBalance();
-}
+};
 function calculateTotalBalance() {
 	var totalBalance = 0;
 	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - $.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();

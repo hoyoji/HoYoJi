@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/currency/currencySearch");
 	}));
 	return menuSection;
-}
+};
 
 // $.titleBar.bindXTable($.currenciesTable);
 
@@ -26,7 +26,7 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		orderBy : orderBy
 	});
 	successCB();
-}
+};
 $.currenciesTable.fetchNextPage();
 
 function onFooterbarTap(e){

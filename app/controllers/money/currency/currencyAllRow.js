@@ -14,7 +14,7 @@ $.onRowTap = function(){
 	}
 	
 	return false;
-}
+};
 
 
 $.name.UIInit($, $.getCurrentWindow());

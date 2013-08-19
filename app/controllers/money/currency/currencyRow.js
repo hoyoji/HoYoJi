@@ -43,7 +43,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 								// }
 							}, function(e) {
 								// errorCount++;
-								errorCB(e)
+								errorCB(e);
 							});
 
 						} 
@@ -51,7 +51,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 							// projectCurrencyIdsCount++;
 						// }
 					});
-					alert("需退出重新登录，显示的金额才会换成本币显示。")
+					alert("需退出重新登录，显示的金额才会换成本币显示。");
 				// }
 
 		}
@@ -60,7 +60,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		// $.deleteModel();
 	// },isSelectMode));
 	return menuSection;
-}
+};
 
 function setActiveCurrency(){
 	if(Alloy.Models.User.xGet("activeCurrency") === $.$model){

@@ -16,7 +16,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		});
 	}));
 	return menuSection;
-}
+};
 // $.titleBar.bindXTable($.moneyAccountsTable);
 
 var collection;
