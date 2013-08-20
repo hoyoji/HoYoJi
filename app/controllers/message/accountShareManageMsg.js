@@ -561,41 +561,77 @@ $.onWindowOpenDo(function() {
 function importToLocalOperate() {
 	//导入账务
 	var currencyId = accountShareData.currencyCode;
-	var currency = Alloy.createModel("Currency").xFindInDb({
-		id : currencyId
-	});
-	
-	if (!currency.id) {
-		Alloy.Globals.Server.getData([{
-			__dataType : "CurrencyAll",
+	if (currencyId === Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")) {
+		alert(currencyId+"|"+Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"));
+		var rate = 1;
+		importToLocal(accountShareData.account.amount , rate);
+	}else{
+		var currency = Alloy.createModel("Currency").xFindInDb({
 			id : currencyId
-		}], function(data) {
-			var currencyData = data[0][0];
-			var id = currencyData.id;
-			delete currencyData.id;
-			try{
-				currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
-			} catch (e){
-				currencyData.symbol = currencyData.code;
-			}
-			currency = Alloy.createModel("Currency", currencyData);
-			currency.attributes["id"] = id;
-			
-			currency.xSet("ownerUser", Alloy.Models.User);
-			currency.xSet("ownerUserId", Alloy.Models.User.id);
-			currency.save();
-			
-			
+		});
+		
+		if (!currency.id) {
+			Alloy.Globals.Server.getData([{
+				__dataType : "CurrencyAll",
+				id : currencyId
+			}], function(data) {
+				var currencyData = data[0][0];
+				var id = currencyData.id;
+				delete currencyData.id;
+				try{
+					currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+				} catch (e){
+					currencyData.symbol = currencyData.code;
+				}
+				currency = Alloy.createModel("Currency", currencyData);
+				currency.attributes["id"] = id;
+				
+				currency.xSet("ownerUser", Alloy.Models.User);
+				currency.xSet("ownerUserId", Alloy.Models.User.id);
+				currency.save();
+				
+				
+				var exchange = Alloy.createModel("Exchange").xFindInDb({
+					localCurrencyId : currencyId,
+					foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")
+				});
+				if (!exchange.id) {
+					Alloy.Globals.Server.getExchangeRate(currency.xGet("id") , Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
+	
+						exchange = Alloy.createModel("Exchange", {
+							localCurrencyId : currencyId,
+							foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"),
+							rate : rate
+						});
+						exchange.xSet("ownerUser", Alloy.Models.User);
+						exchange.xSet("ownerUserId", Alloy.Models.User.id);
+						exchange.save();
+						
+						var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
+						importToLocal(changeToMoneyAccountMoney , rate);
+					}, function(e) {
+						errorCount++;
+						errorCB(e)
+					});
+	
+				} else {
+					var changeToMoneyAccountMoney = accountShareData.account.amount * exchange.xGet("rate");
+					importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
+				}
+			}, function(e) {
+				errorCB(e)
+			});
+		} else {
 			var exchange = Alloy.createModel("Exchange").xFindInDb({
 				localCurrencyId : currencyId,
-				foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
+				foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")
 			});
 			if (!exchange.id) {
-				Alloy.Globals.Server.getExchangeRate(currency.xGet("id") , Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
-
+				Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
+	
 					exchange = Alloy.createModel("Exchange", {
 						localCurrencyId : currencyId,
-						foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+						foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"),
 						rate : rate
 					});
 					exchange.xSet("ownerUser", Alloy.Models.User);
@@ -608,43 +644,14 @@ function importToLocalOperate() {
 					errorCount++;
 					errorCB(e)
 				});
-
+	
 			} else {
 				var changeToMoneyAccountMoney = accountShareData.account.amount * exchange.xGet("rate");
 				importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
 			}
-		}, function(e) {
-			errorCB(e)
-		});
-	} else {
-		var exchange = Alloy.createModel("Exchange").xFindInDb({
-			localCurrencyId : currencyId,
-			foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId")
-		});
-		if (!exchange.id) {
-			Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), Alloy.Models.User.xGet("activeCurrencyId"), function(rate) {
-
-				exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : currencyId,
-					foreignCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					rate : rate
-				});
-				exchange.xSet("ownerUser", Alloy.Models.User);
-				exchange.xSet("ownerUserId", Alloy.Models.User.id);
-				exchange.save();
-				
-				var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
-				importToLocal(changeToMoneyAccountMoney , rate);
-			}, function(e) {
-				errorCount++;
-				errorCB(e)
-			});
-
-		} else {
-			var changeToMoneyAccountMoney = accountShareData.account.amount * exchange.xGet("rate");
-			importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
 		}
 	}
+	
 	function importToLocal(amount,exchangeRate){
 		if (accountShareData.accountType === "MoneyExpense") {
 		//如果分享支出账务的收款人是自己。则导入为收入到本地，否则导入一条支出
