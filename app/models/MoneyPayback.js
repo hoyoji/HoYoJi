@@ -228,7 +228,22 @@ exports.definition = {
 				return ownerUserSymbol;
 			},
 			getInterest : function() {
-				return this.xGet("localCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate")).toUserCurrency();
+				var exchange = null;
+				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
+					exchange = this.xGet("exchangeRate");
+				} else {
+					var projectCurrency = this.xGet("project").xGet("currency");
+					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					if (projectCurrency === userCurrency) {
+						exchange = 1;
+					} else {
+						var exchanges = userCurrency.getExchanges(projectCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+				}
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate")/exchange).toUserCurrency();
 			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
