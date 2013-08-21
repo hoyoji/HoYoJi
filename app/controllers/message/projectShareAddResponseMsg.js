@@ -573,6 +573,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 							} else {
 								projectCurrencyIdsCount++;
+								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+									successCB();
+								}
 							}
 						})
 					}
@@ -617,6 +620,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 							} else {
 								projectCurrencyIdsCount++;
+								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+									successCB();
+								}
 							}
 						})
 					}
