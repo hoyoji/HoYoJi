@@ -205,39 +205,49 @@ if ($.saveableMode === "read") {
 				editData.push(oldMoneyAccount.toJSON());
 			}
 			
-			var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
-				localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-				foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
-			});
-			if (!exchange.id) {
-				Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId") , $.$model.xGet("project").xGet("currencyId"), function(rate) {
-
-					activeToProjectExchange = Alloy.createModel("Exchange", {
-						localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-						foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
-						rate : rate
-					});
-					activeToProjectExchange.xSet("ownerUser", Alloy.Models.User);
-					activeToProjectExchange.xSet("ownerUserId", Alloy.Models.User.id);
-					activeToProjectExchange.save();
-					addData.push(activeToProjectExchange.toJSON());
-				}, function(e) {
-					errorCB(e)
-				});
-
-			}
 			if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 				if ($.$model.xGet("exchangeRate")) {
-					var exchange = Alloy.createModel("Exchange", {
-						localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-						foreignCurrency : $.$model.xGet("project").xGet("currency"),
-						rate : $.$model.xGet("exchangeRate"),
-						ownerUser : Alloy.Models.User
+					var exchange = Alloy.createModel("Exchange").xFindInDb({
+						localCurrencyId : $.$model.xGet("moneyAccount").xGet("currency"),
+						foreignCurrencyId : $.$model.xGet("project").xGet("currency")
 					});
-					exchange.xAddToSave($);
-					addData.push(exchange.toJSON());
+
+					if (!exchange.id) {
+						var exchange = Alloy.createModel("Exchange", {
+							localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+							foreignCurrency : $.$model.xGet("project").xGet("currency"),
+							rate : $.$model.xGet("exchangeRate"),
+							ownerUser : Alloy.Models.User
+						});
+						exchange.xSave();
+						addData.push(exchange.toJSON());
+					}
 				}
 			}
+			if(Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")){
+				var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
+					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
+				});
+				if (!activeToProjectExchange.id) {
+					Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId") , $.$model.xGet("project").xGet("currencyId"), function(rate) {
+	
+						activeToProjectExchange = Alloy.createModel("Exchange", {
+							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
+							rate : rate
+						});
+						activeToProjectExchange.xSet("ownerUser", Alloy.Models.User);
+						activeToProjectExchange.xSet("ownerUserId", Alloy.Models.User.id);
+						activeToProjectExchange.save();
+						addData.push(activeToProjectExchange.toJSON());
+					}, function(e) {
+						errorCB(e)
+					});
+	
+				}
+			}
+			
 
 			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 				var date = (new Date()).toISOString();
