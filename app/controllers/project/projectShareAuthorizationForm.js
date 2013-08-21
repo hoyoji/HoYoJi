@@ -128,6 +128,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 					averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
 					editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 					averageSharePercentageCollection.xAddToSave($);
+					alert("2" + projectShareAuthorization.xGet("project").xGet("name") + "|" +averageTotalPercentage + "|" +averagePercentage +"|"+averageSharePercentageCollections.length + "|" + averageSharePercentageCollection.xGet("sharePercentage"));
 				});
 				//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
 				if(averageTotalPercentage !== toFixedAveragePercentage){

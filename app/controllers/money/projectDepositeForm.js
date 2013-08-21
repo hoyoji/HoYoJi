@@ -37,25 +37,52 @@ $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function
 	});
 });
 
-// $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
-// if (selectedFriendModel) {
-// return selectedFriendModel.xGet("friendUser");
-// } else {
-// return null;
-// }
-// }
-//
-// $.convertUser2FriendModel = function(userModel) {
-// if (userModel) {
-// var friend = Alloy.createModel("Friend").xFindInDb({
-// friendUserId : userModel.id
-// });
-// if (friend.id) {
-// return friend;
-// }
-// }
-// return userModel;
-// }
+
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
+		return selectedFriendModel.xGet("friendUser");
+	} else {
+		return null;
+	}
+
+}
+
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
+			return friend;
+		}
+	}
+	return userModel;
+}
+
+$.beforeProjectSelectorCallback = function(project, successCallback) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					foreignCurrencyId : project.xGet("currencyId"),
+					rate : rate
+				});
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				successCallback();
+			}, function(e) {
+				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+			});
+		} else {
+			successCallback();
+		}
+	} else {
+		successCallback();
+	}
+};
+
 function openFriendSelector() {
 	// $.friendUser.field.blur();
 	var attributes = {

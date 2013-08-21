@@ -562,7 +562,6 @@ function importToLocalOperate() {
 	//导入账务
 	var currencyId = accountShareData.currencyCode;
 	if (currencyId === Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")) {
-		alert(currencyId+"|"+Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"));
 		var rate = 1;
 		importToLocal(accountShareData.account.amount , rate);
 	}else{
@@ -610,7 +609,6 @@ function importToLocalOperate() {
 						var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
 						importToLocal(changeToMoneyAccountMoney , rate);
 					}, function(e) {
-						errorCount++;
 						errorCB(e)
 					});
 	
@@ -641,7 +639,6 @@ function importToLocalOperate() {
 					var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
 					importToLocal(changeToMoneyAccountMoney , rate);
 				}, function(e) {
-					errorCount++;
 					errorCB(e)
 				});
 	
