@@ -263,7 +263,7 @@ function Sync(method, model, opts) {
 				}
 			} else if (table === "MoneyAccount") {
 				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime");
-				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'"
+				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
 				} else {

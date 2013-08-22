@@ -42,7 +42,7 @@ $.onWindowOpenDo(function() {
 
 	$.refresh = function(){
 		updatePicture(model);
-	}
+	};
 	
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);

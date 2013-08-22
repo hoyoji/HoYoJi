@@ -32,7 +32,7 @@ $.hintText.addEventListener("singletap", function(e){
 
 $.getValue = function() {
 	return $.__bindAttributeIsModel;
-}
+};
 
 $.setValue = function(value) {
 	$.__bindAttributeIsModel = value;
@@ -50,7 +50,7 @@ $.setValue = function(value) {
 	} else {
 		$.hintText.setVisible(false);
 	}
-}
+};
 
 $.setEditable = function(editable) {
 	if (editable === false) {
@@ -59,6 +59,6 @@ $.setEditable = function(editable) {
 	} else {
 		$.hintText.setVisible(true);
 	}
-}
+};
 
 $.setSaveableMode($.saveableMode);

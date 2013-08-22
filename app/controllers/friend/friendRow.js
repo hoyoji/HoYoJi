@@ -4,7 +4,7 @@ $.setSelected = function(selected){
 	if(selected){
 		$.nickName.$view.setColor("blue");
 	}
-}
+};
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection({headerTitle : "好友操作"});
@@ -12,11 +12,11 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		$.deleteModel();
 	}, isSelectMode));
 	return menuSection;
-}
+};
 
 $.getChildTitle = function() {
 	return $.$model.xGet("friendUser").xGet("userName");
-}
+};
 
 $.nickName.UIInit($, $.getCurrentWindow());
 $.picture.UIInit($, $.getCurrentWindow());

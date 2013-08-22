@@ -42,7 +42,7 @@ $.field.addEventListener("singletap", function(e){
 
 $.getValue = function(e){
 	return values[currentItemIndex];
-}
+};
 
 $.setValue = function(value) {
     $.__bindAttributeIsModel = value;

@@ -323,7 +323,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 										sharePercentageType : $.$model.xGet("sharePercentageType"),
 										sharePercentage : $.$model.xGet("sharePercentage")
-									}
+									};
 									for (var attr in $.$model.config.columns) {
 										if (attr.startsWith("projectShare")) {
 											subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
@@ -482,7 +482,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 															shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 															sharePercentageType : $.$model.xGet("sharePercentageType"),
 															sharePercentage : $.$model.xGet("sharePercentage")
-														}
+														};
 														for (var attr in $.$model.config.columns) {
 															if (attr.startsWith("projectShare")) {
 																subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
@@ -546,7 +546,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 															shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 															sharePercentageType : $.$model.xGet("sharePercentageType"),
 															sharePercentage : $.$model.xGet("sharePercentage")
-														}
+														};
 														for (var attr in $.$model.config.columns) {
 															if (attr.startsWith("projectShare")) {
 																subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
@@ -677,7 +677,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 													sharePercentageType : $.$model.xGet("sharePercentageType"),
 													sharePercentage : $.$model.xGet("sharePercentage")
-												}
+												};
 												for (var attr in $.$model.config.columns) {
 													if (attr.startsWith("projectShare")) {
 														data[attr] = $.$model.xGet(attr);
@@ -774,14 +774,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	} else {
 		alert("股份不能小于零");
 	}
-}
+};
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
 	} else {
 		return null;
 	}
-}
+};
 
 $.convertUser2FriendModel = function(userModel) {
 	if (userModel) {
@@ -793,7 +794,8 @@ $.convertUser2FriendModel = function(userModel) {
 		}
 	}
 	return userModel;
-}
+};
+
 $.onWindowOpenDo(function() {
 	if($.$model.xGet("friendUserId") !== Alloy.Models.User.id){
 		$.explainAuthorizationLabel.setVisible(true);

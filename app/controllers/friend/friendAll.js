@@ -13,7 +13,8 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}));
 	return menuSection;
-}
+};
+
 $.titleBar.bindXTable($.friendCategoriesTable);
 
 var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null}, $);

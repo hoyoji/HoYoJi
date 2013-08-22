@@ -44,8 +44,7 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	} else {
 		return null;
 	}
-
-}
+};
 
 $.convertUser2FriendModel = function(userModel) {
 	if (userModel) {
@@ -57,7 +56,7 @@ $.convertUser2FriendModel = function(userModel) {
 		}
 	}
 	return userModel;
-}
+};
 
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {

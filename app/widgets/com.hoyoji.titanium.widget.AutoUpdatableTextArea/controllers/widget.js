@@ -45,14 +45,14 @@ $.setEditable = function(editable) {
 	// }
 // 
 	// $.field.setEditable(editable);
+};
 
-}
 $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
 		return $.__bindAttributeIsModel;
 	}
 	return $.field.getText();
-}
+};
 
 $.setValue = function(value) {
 	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
@@ -71,6 +71,6 @@ $.setValue = function(value) {
 		$.hintText.setHeight(42);
 	}
 	$.field.setText(value || "");
-}
+};
 
 $.setSaveableMode($.saveableMode);

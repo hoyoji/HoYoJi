@@ -29,11 +29,11 @@ exports.close = function() {
 	hideDatePicker.duration = 300;
 	hideDatePicker.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.widget.animate(hideDatePicker);
-}
+};
 
 var cancelTouchStart = function(e){
 	e.cancelBubble = true;
-}
+};
 
 exports.open = function(textField) {//绑定textField
 	// if(!activeTextField){
@@ -71,7 +71,7 @@ exports.open = function(textField) {//绑定textField
 			updateFieldValue();
 		}
 	}
-}
+};
 
 function updateFieldValue(){
 		if(activeTextField){

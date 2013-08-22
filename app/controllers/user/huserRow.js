@@ -11,7 +11,8 @@ $.onRowTap = function(e) {
 		alert(e.__summary.msg);
 	});
 	return false;
-}
+};
+
 function sendAddFriendMessage(friendlength) {
 	if ($.$model.xGet("id") === Alloy.Models.User.id) {
 		alert("不能添加自己为好友！");

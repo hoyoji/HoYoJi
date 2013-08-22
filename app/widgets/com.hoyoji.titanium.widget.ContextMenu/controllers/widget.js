@@ -72,7 +72,7 @@ exports.close = function() {
 				$.firstScrollableView = null;
 		}					
 	}
-}
+};
 
 exports.open = function(menuSections, menuHeader, menuFooter) {
 	    // if(Ti.Platform.model != 'Kindle Fire'){
@@ -107,4 +107,4 @@ exports.open = function(menuSections, menuHeader, menuFooter) {
 		$.table.setData(menuSections);
 		$.header.setData(menuHeader);
 		$.footer.setData(menuFooter);
-}
+};

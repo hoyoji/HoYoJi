@@ -109,7 +109,7 @@ $.onWindowOpenDo(function() {
 		
 		$.accountDetails = [];
 		selectedAccount.xGet("moneyExpenseDetails").map(function(moneyExpenseDetail){
-			var moneyExpenseDetailArray = {}
+			var moneyExpenseDetailArray = {};
 			for (var attr in moneyExpenseDetail.config.columns) {
 				moneyExpenseDetailArray[attr] = moneyExpenseDetail.xGet(attr);
 			}
@@ -216,7 +216,7 @@ $.onWindowOpenDo(function() {
 		
 		$.accountDetails = [];
 		selectedAccount.xGet("moneyIncomeDetails").map(function(moneyIncomeDetail){
-			var moneyIncomeDetailArray = {}
+			var moneyIncomeDetailArray = {};
 			for (var attr in moneyIncomeDetail.config.columns) {
 				moneyIncomeDetailArray[attr] = moneyIncomeDetail.xGet(attr);
 			}
@@ -608,7 +608,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}else{
 		saveErrorCB("请选择好友！");
 	}
-}
+};
 // function openFriendSelector(){
 	// $.selectFriend.field.blur();
 	// var attributes = {
@@ -631,7 +631,7 @@ $.convertSelectedFriend2UserModel = function(selectedFriendModel){
 	}else{
 		return null;
 	}
-}
+};
 
 $.convertUser2FriendModel = function(userModel){
 	if(userModel){
@@ -641,7 +641,7 @@ $.convertUser2FriendModel = function(userModel){
 		}
 	}
 	return userModel;
-}
+};
 
 $.friend.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());

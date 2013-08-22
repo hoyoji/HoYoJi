@@ -37,7 +37,7 @@ $.setEditable = function(editable) {
 	// }
 
 	// $.field.setEditable(editable);
-}
+};
 
 var datetime = null;
 
@@ -50,7 +50,7 @@ $.getValue = function() {
 	} else {
 		return null;
 	}
-}
+};
 
 $.setValue = function(value) {
 	console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
@@ -64,19 +64,19 @@ $.setValue = function(value) {
 	}
 	value = this.convertModelValue(value);
 	$.field.setText(value || "");
-}
+};
 
 
 $.getDateTime = function(){
 	return datetime;
-}
+};
 
 $.convertModelValue = function(value) {
 	if(value){
 		datetime = new Date(value); 
-		return String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium")
+		return String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium");
 	}
 	return datetime = null;
-}
+};
 
 $.setSaveableMode($.saveableMode);

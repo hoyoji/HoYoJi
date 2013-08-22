@@ -40,14 +40,14 @@ $.setEditable = function(editable) {
 	// }
 // 
 	// $.field.setEditable(editable);
+};
 
-}
 $.getValue = function() {
 	if ($.$attrs.bindAttributeIsModel) {
 		return $.__bindAttributeIsModel;
 	}
 	return selectedValue;
-}
+};
 
 var selectedValue = null;
 $.setValue = function(value) {
@@ -63,7 +63,7 @@ $.setValue = function(value) {
 	selectedValue = value;
 	value = this.convertModelValue(value);
 	$.field.setText(value || "");
-}
+};
 
 $.convertModelValue = function(value){
 	var index = values.indexOf(value);
@@ -71,6 +71,6 @@ $.convertModelValue = function(value){
 		return null;
 	}
 	return items[index];
-}
+};
 
 $.setSaveableMode($.saveableMode);

@@ -13,7 +13,7 @@ $.onRowTap = function(e){
 	}else{
 		alert("只能查看自己的权限");
 	}
-}
+};
 
 $.makeContextMenu = function(e, isSelectMode) {
 	var menuSection = Ti.UI.createTableViewSection({
@@ -93,7 +93,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		});
 	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;
-}
+};
 
 //移除共享时重新计算其他成员的股份
 function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuthorization){

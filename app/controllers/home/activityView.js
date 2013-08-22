@@ -190,7 +190,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 	searchData(moneyPaybacks, offset, limit, orderBy);
 	searchData(receivedMessages, offset, limit, orderBy);
 	successCB();
-}
+};
 
 exports.doFilter = function() {
 	setFilter(moneyIncomes);
@@ -203,14 +203,15 @@ exports.doFilter = function() {
 	setFilter(moneyPaybacks);
 	receivedMessages.xSetFilter(function(model) {
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-			&& model.xGet("toUserId") === Alloy.Models.User.id)
+			&& model.xGet("toUserId") === Alloy.Models.User.id);
 	});
 	$.transactionsTable.fetchNextPage();
-}
+};
 
 exports.sort = function(sortField, sortReverse, groupByField) {
 	$.transactionsTable.sort(sortField, sortReverse);
-}
+};
+
 var moneyIncomes = Alloy.createCollection("MoneyIncome");
 var moneyExpenses = Alloy.createCollection("MoneyExpense");
 var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");

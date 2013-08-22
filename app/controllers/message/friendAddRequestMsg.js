@@ -45,7 +45,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}, function(e){
 		alert(e.__summary.msg);
 	});
-}
+};
 
 $.onWindowOpenDo(function(){
 	$.titleBar.dirtyCB();

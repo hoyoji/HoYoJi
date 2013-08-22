@@ -8,7 +8,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		patch : true,
 		success : saveEndCB
 	});
-}
+};
 
 $.newFriendAuthentication.UIInit($, $.getCurrentWindow());
 

@@ -19,7 +19,7 @@ exports.close = function() {
 		$.widget.hide();
 	});
 	$.keyboard.animate(animation);
-}
+};
 
 function cancelBubbleTouchStart(e){
 		e.cancelBubble = true;
@@ -51,7 +51,7 @@ exports.open = function(textField, saveCB, bottom) {
 	} else {
 		return;
 	}
-}
+};
 
 var accum = 0;
 var flagNewNum = false;

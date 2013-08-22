@@ -97,6 +97,6 @@ $.makeContextMenu = function(e, isSelectMode) {
 	// },projectIsSharedToMe));
 	
 	return menuSection;
-}
+};
 
 $.name.UIInit($, $.getCurrentWindow());

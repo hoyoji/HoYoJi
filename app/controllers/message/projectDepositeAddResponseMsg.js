@@ -34,7 +34,7 @@ var onFooterbarTap = function(e) {
 		operation = "rejectDelete";
 		$.titleBar.save();
 	}
-}
+};
 
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
@@ -262,7 +262,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			alert(e.__summary.msg);
 		});
 	}
-}
+};
 
 
 function importToLocalOperate() {
@@ -300,7 +300,7 @@ function importToLocalOperate() {
 			account.on("sync",accountSync);
 			$.onWindowCloseDo(function(){
 				account.off("sync",accountSync);
-			})
+			});
 		});
 	}
 }

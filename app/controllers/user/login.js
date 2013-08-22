@@ -110,7 +110,7 @@ function doLogin(e) {
 						belongsToes.push({
 							id : Alloy.Models.User.xGet(belongsTo + "Id"),
 							__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type
-						})
+						});
 						if (belongsTo === "activeProject") {
 							belongsToes.push({
 								friendUserId : Alloy.Models.User.xGet("id"),

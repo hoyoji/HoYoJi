@@ -33,7 +33,7 @@ exports.close = function() {
 	} else {
 		$.scrollableView.scrollToView(0);
 	}
-}
+};
 
 exports.openCachedWindow = function(contentController) {
 	$.$view.setVisible(true);
@@ -50,7 +50,7 @@ exports.openCachedWindow = function(contentController) {
 	$.scrollableView.addEventListener("scrollend", fireShowEvent);
 	$.scrollableView.scrollToView(1);
 	// }, 100);
-}
+};
 
 exports.open = function(contentController, loadOnly) {
 	if (OS_ANDROID) {
@@ -83,7 +83,7 @@ exports.open = function(contentController, loadOnly) {
 	// });
 	// }
 	// $.$view.animate(animation);
-}
+};
 
 exports.openWin = function(contentController, options, loadOnly) {
 	options = options || {};
@@ -140,7 +140,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 	// $.content.UIInit();
 	// }, 100);
 	// $.scrollableView.addView($.content.$view);
-}
+};
 //
 // var touchend = false;
 // $.$view.addEventListener('touchend', function(e) {

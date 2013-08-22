@@ -98,4 +98,4 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 		loading = false;
 		alert(e.__summary.msg);
 	});
-}
+};

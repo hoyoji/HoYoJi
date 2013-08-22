@@ -6,7 +6,7 @@ exports.setImage = function(image){
 		imgPath = image + "@2x.png";
 	} 
 	$.imageView.setImage(imgPath);
-}
+};
 
 if(!$.$attrs.backButtonHidden){
 	$.backButton.setVisible(true);
@@ -24,13 +24,13 @@ exports.setBackButton = function(xButton){
 	$.$view.remove($.backButton.$view);
 	$.backButton = xButton;
 	xButton.setParent($.$view);
-}
+};
 
 exports.setMenuButton = function(xButton){
 	$.$view.remove($.menuButton.$view);
 	$.menuButton = xButton;
 	xButton.setParent($.$view);
-}
+};
 
 var boundXTable = null;
 exports.bindXTable = function(xTable){
@@ -42,8 +42,8 @@ exports.bindXTable = function(xTable){
 	xTable.$view.addEventListener("navigatedown", XTableNavigateDown);
 	xTable.$view.addEventListener("navigateup", XTableNavigateUp);	
 	setUpChildTableTitle(xTable.getLastTableTitle());
+};
 
-}
 function XTableNavigateDown(e){
 	$.childTableTitle.setText(e.childTableTitle);
 	$.title.hide();
@@ -86,11 +86,11 @@ $.tableNavButton.addEventListener('singletap', function(e) {
 exports.setTitle = function(title){
 	$.$attrs.title = title;
 	$.title.setText($.$attrs.title);	
-}
+};
 
 exports.getTitle = function(){
 	return $.$attrs.title;	
-}
+};
 
 exports.dirtyCB = function() {
 	// if($.saveableMode === "edit"){
@@ -104,7 +104,7 @@ exports.dirtyCB = function() {
 		// $.menuButton.setEnabled(true);
 		// Alloy.Globals.alloyAnimation.flash($.menuButton);
 	// }
-}
+};
 
 exports.cleanCB = function() {
 	$.menuButton.setEnabled(false);
@@ -117,7 +117,7 @@ exports.cleanCB = function() {
 		// // $.menuButton.setImage(WPATH("/images/saveButton"));
 		// $.menuButton.setEnabled(false);
 	// }
-}
+};
 
 exports.saveStartCB = function() {
 	// $.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
@@ -128,7 +128,7 @@ exports.saveStartCB = function() {
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(false);
 	}
-}
+};
 
 exports.saveEndCB = function(msg) {
 	exports.cleanCB();
@@ -140,7 +140,7 @@ exports.saveEndCB = function(msg) {
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(true);
 	}
-}
+};
 
 exports.saveErrorCB = function(msg) {
 	showMsg(msg || "出错啦...");
@@ -161,7 +161,7 @@ exports.saveErrorCB = function(msg) {
 	if($.$attrs.backButtonHidden !== "true"){
 		$.backButton.setEnabled(true);
 	}	
-}
+};
 
 exports.setSaveableMode = function(mode) {
 	$.saveableMode = mode;
@@ -183,7 +183,7 @@ exports.setSaveableMode = function(mode) {
 	} else {
 		alert("$.we.should.not.be.here.! " + mode);
 	}
-}
+};
 
 var showMsg = function(msg){
 	var animation = Titanium.UI.createAnimation();
@@ -206,7 +206,7 @@ var showMsg = function(msg){
 	$.msg.setText(msg);
 	$.title.hide();
 	$.msg.animate(animation);
-}
+};
 
 $.menuButton.addEventListener('singletap', function(e) {
 	e.cancelBubble = true;
@@ -232,7 +232,7 @@ exports.save = function(){
 		bubbles : true,
 		sourceController : exports
 	});
-}
+};
 
 exports.setSaveableMode($.$attrs.saveableMode || "read");
 

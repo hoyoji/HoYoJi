@@ -32,7 +32,7 @@ $.login = Alloy.createController("user/login", {
 	autoInit : "false",
 	currentWindow : $,
 	parentController : $
-})
+});
 $.login.setParent($.body);
 $.login.UIInit();
 

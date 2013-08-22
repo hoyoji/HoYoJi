@@ -242,7 +242,7 @@ if ($.saveableMode === "read") {
 						activeToProjectExchange.save();
 						addData.push(activeToProjectExchange.toJSON());
 					}, function(e) {
-						errorCB(e)
+						errorCB(e);
 					});
 	
 				}
@@ -309,7 +309,7 @@ if ($.saveableMode === "read") {
 				});
 			}
 		}else{
-			alert("不能保存，汇率不能为空")
+			alert("不能保存，汇率不能为空");
 		}
 	};
 }

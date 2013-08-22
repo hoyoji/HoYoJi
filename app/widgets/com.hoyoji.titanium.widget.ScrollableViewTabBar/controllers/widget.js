@@ -20,7 +20,7 @@ exports.animateHideTabBar = function() {
 	});
 
 	$.tabsContainer.animate(animation);
-}
+};
 
 exports.animateShowTabBar = function() {
 	if (!isExpanded) {
@@ -33,7 +33,7 @@ exports.animateShowTabBar = function() {
 
 		$.tabsContainer.animate(animation);
 	}
-}
+};
 
 function blockTouchStart(e) {
 	e.cancelBubble = true;
@@ -111,4 +111,4 @@ exports.init = function(scView) {
 		// clearTimeout(hideTimeoutId);
 	});
 	// setTimeout(exports.animateHideTabBar, 1000);
-}
+};

@@ -19,7 +19,7 @@ var onFooterbarTap = function(e) {
 			});
 		}
 	}
-}
+};
 
 $.fromUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
@@ -609,7 +609,7 @@ function importToLocalOperate() {
 						var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
 						importToLocal(changeToMoneyAccountMoney , rate);
 					}, function(e) {
-						errorCB(e)
+						errorCB(e);
 					});
 	
 				} else {
@@ -617,7 +617,7 @@ function importToLocalOperate() {
 					importToLocal(changeToMoneyAccountMoney , exchange.xGet("rate"));
 				}
 			}, function(e) {
-				errorCB(e)
+				errorCB(e);
 			});
 		} else {
 			var exchange = Alloy.createModel("Exchange").xFindInDb({
@@ -639,7 +639,7 @@ function importToLocalOperate() {
 					var changeToMoneyAccountMoney = accountShareData.account.amount * rate;
 					importToLocal(changeToMoneyAccountMoney , rate);
 				}, function(e) {
-					errorCB(e)
+					errorCB(e);
 				});
 	
 			} else {

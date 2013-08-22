@@ -10,7 +10,8 @@ var open = function() {
 	animation.duration = 300;
 	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 	$.slideDownButtons.animate(animation);
-}
+};
+
 var close = function() {
 	if (lastButton !== currentButton) {
 		lastButton.setColor("black");
@@ -29,7 +30,8 @@ var close = function() {
 		lastButton.setHeight(42);
 	});
 	$.slideDownButtons.animate(animation);
-}
+};
+
 var slideDown = function(src) {
 	if (!slideViews[src]) {
 		slideViews[src] = Alloy.createController(src);
@@ -46,12 +48,11 @@ var slideDown = function(src) {
 		animation.duration = 500;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 		currentSlide.$view.animate(animation);
-	}
+	};
 	currentSlide.$view.addEventListener("postlayout", animateSlideDown);
 	currentSlide.$view.setTop("99%");
 	currentSlide.$view.setZIndex(1);
-
-}
+};
 
 $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
@@ -77,7 +78,7 @@ var selectSlide = function(e) {
 		currentButton.setHeight("60");
 	}
 	e.cancelBubble = true;
-}
+};
 
 $.$view.addEventListener("touchmove", selectSlide);
 $.$view.addEventListener("touchend", close);
@@ -85,7 +86,7 @@ $.$view.addEventListener("touchend", close);
 if ($.$attrs.slides) {
 	slides = $.$attrs.slides.split(",");
 	var titles = $.$attrs.titles.split(",");
-	var width = (1 / slides.length * 100) + "%"
+	var width = (1 / slides.length * 100) + "%";
 	for (var i = 0; i < slides.length; i++) {
 		var button = Ti.UI.createButton({
 			title : titles[i],

@@ -46,7 +46,7 @@ $.onWindowOpenDo(function() {
 
 	$.refresh = function(){
 		updateLabel(model);
-	}
+	};
 	
 	function updateLabel(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute), d;

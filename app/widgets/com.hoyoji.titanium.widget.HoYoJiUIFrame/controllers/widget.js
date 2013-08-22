@@ -11,16 +11,16 @@ if(attrs.hasHeader === "false"){
 
 exports.showHeader = function(){
 	$.headerBar.show();
-}
+};
 
 exports.hideHeader = function(){
 	$.headerBar.hide();
-}
+};
 
 exports.showFooter = function(){
 	$.footerBar.show();
-}
+};
 
 exports.hideFooter = function(){
 	$.footerBar.hide();
-}
+};

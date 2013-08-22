@@ -11,7 +11,7 @@ var onFooterbarTap = function(e) {
 	} else if (e.source.id === "ignore") {
 		$.getCurrentWindow().close();
 	}
-}
+};
 
 $.onWindowOpenDo(function() {
 	//去服务器上查找好友，如果能找到的话就把该消息状态设置为已读
@@ -85,8 +85,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}, function(e) {
 		alert(e.__summary.msg);
 	});
+};
 
-}
 function addFriend(saveEndCB, saveErrorCB) {
 	// var setOtherRequestMsgToRead = function() {
 		// var messages = Alloy.createCollection("Message").xSearchInDb({

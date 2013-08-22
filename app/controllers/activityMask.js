@@ -23,11 +23,11 @@ $.open = function(msg) {
 
 	activityIndicator.show();
 	$.activityView.open();
-}
+};
 
 $.close = function() {
 	$.activityView.close();
-}
+};
 
 $.showMsg = function(msg) {
 	activityIndicator.hide();
@@ -68,5 +68,5 @@ $.showMsg = function(msg) {
 		$.msgView.add($.confirmButton);
 	}
 	$.msgView.show();
-}
+};
 

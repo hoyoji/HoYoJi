@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		}
 	}, isSelectMode));
 	return menuSection;
-}
+};
 
 $.onRowTap = function(e){
 	if($.$model.xGet("fromUserId") === Alloy.Models.User.id){
@@ -47,8 +47,7 @@ $.onRowTap = function(e){
 		}
 		
 	}
-	
-}
+};
 
 $.onWindowOpenDo(function() {
 	setImageEdit();

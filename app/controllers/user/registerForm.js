@@ -110,12 +110,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}, "registerUser");
 	// }
 	// });
-}
+};
 
 $.onWindowCloseDo(function() {
 	$.$model = null;
 	// Alloy.Globals.DataStore.initStore();
-})
+});
 
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());

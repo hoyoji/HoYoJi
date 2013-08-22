@@ -14,7 +14,7 @@ exports.close = function(e) {
 			animated : false
 		});
 	});
-}
+};
 
 $.onWindowCloseDo(function() {
 	if (Alloy.Globals.openedWindow["money/moneyAddNew"]) {

@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", data : { parentFriendCategory : sourceModel }});
 	}));
 	return menuSection;
-}
+};
 
 $.titleBar.bindXTable($.friendCategoriesTable);
 

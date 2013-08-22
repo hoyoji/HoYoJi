@@ -159,7 +159,7 @@ exports.slideDown = function() {
 		
 		$.$view.animate(animation);
 	}
-}
+};
 
 exports.slideUp = function() {
 	if(OS_ANDROID){
@@ -180,4 +180,4 @@ exports.slideUp = function() {
 		
 		$.$view.animate(animation);
 	}
-}
+};

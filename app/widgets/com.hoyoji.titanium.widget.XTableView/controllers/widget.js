@@ -366,7 +366,7 @@ function addRowToSection(rowModel, collection, index) {
 
 function addRow(rowModel, collection) {
 	function doAddRow() {
-		$.off("endchangingrow", doAddRow)
+		$.off("endchangingrow", doAddRow);
 		if ($.__changingRow) {
 			$.on("endchanggingrow", doAddRow);
 			return;
@@ -393,7 +393,8 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 		}
 		hasDetailSections[sectionRowId].collections.push(collections[i]);
 	}
-}
+};
+
 function getSectionIndexByRowIndex(index) {
 	var sectionIndex = 0;
 	var sectionSize = $.table.data[sectionIndex].rows.length;
@@ -437,7 +438,8 @@ exports.collapseHasDetailSection = function(rowIndex, sectionRowId) {
 		}
 	}
 	hasDetailSections[sectionRowId].collections = [];
-}
+};
+
 function collapseAllHasDetailSections() {
 	var pos = -1;
 	for (var s = 0; s < $.table.data.length; s++) {
@@ -476,7 +478,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 						record : item,
 						collection : collections[i]
 					});
-				})
+				});
 			}
 		}
 
@@ -513,7 +515,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 	} else {
 		doFetchNextPage();
 	}
-}
+};
 
 exports.getDataCount = function() {
 	var count = 0;
@@ -523,16 +525,16 @@ exports.getDataCount = function() {
 		}
 	}
 	return count;
-}
+};
 
 exports.getRowsCount = function() {
 	var sectionsSize = $.table.data.length;
 	var count = 0;
 	for (var i = 0; i < sectionsSize; i++) {
-		count += $.table.data[i].rows.length
+		count += $.table.data[i].rows.length;
 	}
 	return count;
-}
+};
 
 exports.addCollection = function(collection, rowView) {
 	$.showActivityIndicator("正在加载...");
@@ -576,7 +578,8 @@ exports.addCollection = function(collection, rowView) {
 
 	showNoDataIndicator();
 	$.hideActivityIndicator();
-}
+};
+
 var clearCollections = function() {
 	for (var i = 0; i < collections.length; i++) {
 		if (collections[i]) {
@@ -591,11 +594,11 @@ var clearCollections = function() {
 	collections = [];
 	$.table.setData([]);
 	showNoDataIndicator(0);
-}
+};
 
 exports.clearAllCollections = function(){
 	clearCollections();
-}
+};
 
 function refreshCollectionOnChange(model) {
 	if (this.__compareFilter(model)) {
@@ -641,7 +644,8 @@ exports.resetTable = function() {
 	}
 	$.table.setData([]);
 	showNoDataIndicator(0);
-}
+};
+
 var resetCollection = function(collection, options) {
 	var data = $.table.data.slice(0);
 	options.previousModels.forEach(function(model) {
@@ -663,7 +667,7 @@ var resetCollection = function(collection, options) {
 	});
 	$.table.setData(data);
 	showNoDataIndicator(data.length);
-}
+};
 
 exports.removeCollection = function(collection) {
 	collection.off("add", addRow);
@@ -674,11 +678,11 @@ exports.removeCollection = function(collection) {
 	var index = _.indexOf(collections, collection);
 	collections[index] = null;
 	collections.splice(index, 1);
-}
+};
 
 exports.getCollections = function() {
 	return collections;
-}
+};
 
 exports.close = function() {
 	var animation = Titanium.UI.createAnimation();
@@ -690,7 +694,7 @@ exports.close = function() {
 		$.parent.remove($.$view);
 	});
 	$.$view.animate(animation);
-}
+};
 
 exports.open = function(top) {
 	if (top === undefined)
@@ -703,11 +707,10 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
-
-
-	$.$view.setTop("99%")
+	$.$view.setTop("99%");
 	animate();
-}
+};
+
 function getLastTable() {
 	var lastTable = $;
 	while (lastTable.detailsTable) {
@@ -741,12 +744,12 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	});
 
 	$.detailsTable.backNavTitle = theBackNavTitle;
-	$.detailsTable.previousBackNavTitle = $.backNavTitle
+	$.detailsTable.previousBackNavTitle = $.backNavTitle;
 
 	for (var i = 0; i < collections.length; i++) {
 		$.detailsTable.addCollection(collections[i]);
 	}
-}
+};
 
 exports.navigateUp = function() {
 	var lastTable = $, parentTable;
@@ -765,7 +768,8 @@ exports.navigateUp = function() {
 		parentTable.detailsTable = null;
 		lastTable.close();
 	}
-}
+};
+
 function findObject(id) {
 	for (var c = 0; c < collections.length; c++) {
 		//for (var i = 0; i < collections[c].length; i++) {
@@ -824,7 +828,7 @@ exports.setHeaderView = function(headerView) {
 	} else {
 		$.table.setHeaderView(headerView);
 	}
-}
+};
 
 exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
 
@@ -855,7 +859,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	data = _.flatten(data, true);
 	if (appendRows && appendRows.length > 0) {
 		appendRows.forEach(function(row) {
-			data.push(row)
+			data.push(row);
 		});
 	}
 	if (removedRows && removedRows.length > 0) {
@@ -902,7 +906,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 			var section = createSection(sectionTitle, sectionIndex);
 			sectionData[sectionTitle].forEach(function(row) {
 				section.add(row);
-			})
+			});
 			data.push(section);
 			sectionIndex++;
 		}
@@ -911,7 +915,8 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	// showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
 
-}
+};
+
 function createSection(sectionTitle, sectionIndex) {
 	var section;
 
@@ -1090,15 +1095,16 @@ function showNoDataIndicator(hasData) {
 
 exports.getPageSize = function() {
 	return pageSize;
-}
+};
 
 exports.getOrderBy = function() {
 	return sortByField;
-}
+};
 
 exports.getSortOrder = function() {
 	return sortReverse ? "DESC" : "ASC";
-}
+};
+
 if (OS_IOS) {
 	$.table.footerView.addEventListener("touchstart", function(e) {
 		e.cancelBubble = true;
@@ -1230,5 +1236,5 @@ exports.autoHideFooter = function(footer) {
 			// }
 		});
 	}
-}
+};
 

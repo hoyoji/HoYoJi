@@ -135,7 +135,7 @@ $.makeContextMenu = function() {
 	// Alloy.Globals.openWindow("money/moneyLendForm");
 	// }));
 	return menuSection;
-}
+};
 
 $.activityTable = Alloy.createController("home/activityView", {
 	id : "activityTable",

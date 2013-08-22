@@ -10,7 +10,8 @@ var onFooterbarTap = function(e) {
 	} else if (e.source.id === "ignore") {
 		$.getCurrentWindow().close();
 	}
-}
+};
+
 var operation = "";
 var firstClickShowAuthorization = true;
 var projectShareData = JSON.parse($.$model.xGet("messageData"));
@@ -569,7 +570,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									}
 								}, function(e) {
 									errorCount++;
-									errorCB(e)
+									errorCB(e);
 								});
 							} else {
 								projectCurrencyIdsCount++;
@@ -577,7 +578,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									successCB();
 								}
 							}
-						})
+						});
 					}
 
 					function getAllExchanges(successCB, errorCB) {
@@ -615,7 +616,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									}
 								}, function(e) {
 									errorCount++;
-									errorCB(e)
+									errorCB(e);
 								});
 
 							} else {
@@ -624,7 +625,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									successCB();
 								}
 							}
-						})
+						});
 					}
 
 					getAllCurrencies(function() {
@@ -786,8 +787,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}, function(e) {
 		alert(e.__summary.msg);
 	});
-
-}
+};
 
 $.date.UIInit($, $.getCurrentWindow());
 $.fromUser.UIInit($, $.getCurrentWindow());
