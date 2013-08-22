@@ -117,7 +117,7 @@
 								if (saveEndCB) {
 									saveEndCB();
 								}
-							}
+							};
 							var errorCB = function(model, error) {
 								hasError = true;
 								$.$model.off("sync", successCB);
@@ -130,7 +130,7 @@
 								if (saveErrorCB) {
 									saveErrorCB(errMsg);
 								}
-							}
+							};
 
 							$.$model.on("sync", successCB);
 							$.$model.on("error", errorCB);
@@ -204,5 +204,5 @@
 				e.cancelBubble = true;
 				e.callback($);
 			});
-		}
+		};
 	}());

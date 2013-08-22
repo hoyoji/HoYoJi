@@ -5,7 +5,7 @@
 
 		exports.Utils.alert = function(message) {
 			alert(message);
-		}
+		};
 
 		exports.Utils.confirm = function(title, msg, confirmCB, cancelCB) {
 			var dialog = Ti.UI.createAlertDialog({
@@ -24,7 +24,7 @@
 			});
 
 			dialog.show();
-		}
+		};
 		// exports.defaultModelTransformFunction = function(model) {
 		// var transform = model.toJSON();
 		// transform.$model = model;
@@ -44,7 +44,7 @@
 				}
 			}
 			return win;
-		}
+		};
 
 		exports.Utils.openLightWindow = function(baseWindow, windowName, options, loadOnly) {
 			var win = Alloy.Globals.openingWindow[windowName];
@@ -59,7 +59,7 @@
 				}
 			}
 			return win;
-		}
+		};
 
 		exports.Utils.cacheWindow = function(baseWindow, windowName, options) {
 			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
@@ -75,12 +75,12 @@
 
 				Alloy.Globals.openedWindow[windowName].$view.addEventListener("close", reCacheWindow);
 			}
-		}
+		};
 
 		exports.Utils.openCachedWindow = function(baseWindow, windowName) {
 			exports.Utils.cacheWindow(baseWindow, windowName);
 			Alloy.Globals.openedWindow[windowName].openCachedWindow();
-		}
+		};
 
 		exports.Utils.getClientSyncCount = function() {
 			var config = Alloy.createModel("ClientSyncTable").config, Model = Alloy.M("ClientSyncTable", {
@@ -93,7 +93,7 @@
 				query : query
 			});
 			return model.get("TOTAL") || 0;
-		}
+		};
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
 			// scView.addEventListener("scroll", function(){
@@ -152,7 +152,7 @@
 					view.addEventListener("textfieldfocused", function(e) {
 						scView.fireEvent("textfieldfocused", e);
 					});
-				})
+				});
 			} 
 			// else {
 					// scView.addEventListener("opencontextmenu", function(e) {
@@ -162,7 +162,7 @@
 						// }
 					// });
 			// }
-		}
+		};
 
 		String.prototype.contains = function(it) {
 			return this.indexOf(it) != -1;
@@ -184,32 +184,32 @@
 
 		Number.prototype.toFixed2 = function() {
 			return this.toFixed(2);
-		}
+		};
 
 		Number.prototype.toUserCurrency = function() {
 			if (this) {
 				return this.toFixed2();
 			}
 			return this;
-		}
+		};
 
 		Date.prototype.getTimeStamp = function() {
 			return Math.floor(this.getTime() / 1000);
-		}
+		};
 
 		Date.prototype.getUTCTimeOfDate = function() {
 			return Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds(), this.getUTCMilliseconds());
-		}
+		};
 
 		Date.prototype.getUTCTimeOfDateStart = function() {
 			return (new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 
 		Date.prototype.getUTCTimeOfDateEnd = function() {
 			return (new Date(this.getFullYear(), this.getMonth(), this.getDate(), 24, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 
 		Date.prototype.getUTCTimeOfWeekStart = function() {
 			var first = this.getDate() - this.getDay();
@@ -217,7 +217,7 @@
 			var firstday = new Date(this.setDate(first));
 			return (new Date(firstday.getFullYear(), firstday.getMonth(), firstday.getDate(), 0, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 
 		Date.prototype.getUTCTimeOfWeekEnd = function() {
 			var first = this.getDate() - this.getDay();
@@ -227,56 +227,56 @@
 			var lastday = new Date(this.setDate(last));
 			return (new Date(lastday.getFullYear(), lastday.getMonth(), lastday.getDate(), 24, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 
 		Date.prototype.getUTCTimeOfMonthStart = function() {
 			return (new Date(this.getFullYear(), this.getMonth(), 1, 0, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 
 		Date.prototype.getUTCTimeOfMonthEnd = function() {
 			return (new Date(this.getFullYear(), this.getMonth() + 1, 0, 24, 0, 0));
 			// + hyj.timeZoneOffset;
-		}
+		};
 		Date.prototype.toUserDateString = function() {
 			//return (new Date(this.getTime()-hyj.timeZoneOffset)).toISOString().replace(/(.+)T.+/i,"$1");
 			//return this.toISOString().replace(/(.+)T.+/i,"$1");
 
 			return this.getFullYear() + "-" + (this.getMonth() + 1).make2Digits() + "-" + this.getDate().make2Digits();
-		}
+		};
 
 		Date.prototype.toUserShortTimeString = function() {
 			//return (new Date(this.getTime()-hyj.timeZoneOffset)).toISOString().replace(/.+T(.+)\..+$/i,"$1");
 			//   return this.toISOString().replace(/.+T(.+)\..+$/i,"$1");
 
 			return this.getHours().make2Digits() + ":" + this.getMinutes().make2Digits();
-		}
+		};
 
 		Date.prototype.toUserDateTimeString = function() {
 			//return (new Date(this.getTime()-hyj.timeZoneOffset)).toISOString().replace(/(.+)T(.+)\..+$/i,"$1 $2");
 			//return this.toISOString().replace(/(.+)T(.+)\..+$/i,"$1 $2");
 
 			return this.getFullYear() + "-" + (this.getMonth() + 1).make2Digits() + "-" + this.getDate().make2Digits() + " " + this.getHours().make2Digits() + ":" + this.getMinutes().make2Digits() + ":" + this.getSeconds().make2Digits();
-		}
+		};
 
 		Date.prototype.toUserDateShortTimeString = function() {
 			//return this.toISODateShortTimeString();
 			return this.getFullYear() + "-" + (this.getMonth() + 1).make2Digits() + "-" + this.getDate().make2Digits() + " " + this.getHours().make2Digits() + ":" + this.getMinutes().make2Digits();
-		}
+		};
 		sqlOR = function() {
 			var str = "(" + arguments[0];
 			for (var i = 1; i < arguments.length; i++) {
 				str += " OR " + arguments[i];
 			}
 			return str + ")";
-		}
+		};
 		sqlAND = function() {
 			var str = "(" + arguments[0];
 			for (var i = 1; i < arguments.length; i++) {
 				str += " AND " + arguments[i];
 			}
 			return str + ")";
-		}
+		};
 
 		String.prototype.sqlNE = function(value) {
 			if (value === null || value === undefined) {
@@ -285,7 +285,7 @@
 				return this + " <> " + value;
 			}
 			return this + " <> '" + value + "'";
-		}
+		};
 		String.prototype.sqlEQ = function(value) {
 			if (value === null || value === undefined) {
 				return this + " IS NULL";
@@ -293,44 +293,44 @@
 				return this + " = " + value;
 			}
 			return this + " = '" + value + "'";
-		}
+		};
 		String.prototype.sqlLT = function(value) {
 			if (_.isNumber(value)) {
 				return this + " < " + value;
 			}
 			return this + " < '" + value + "'";
-		}
+		};
 		String.prototype.sqlLE = function(value) {
 			if (_.isNumber(value)) {
 				return this + " <= " + value;
 			}
 			return this + " <= '" + value + "'";
-		}
+		};
 		String.prototype.sqlGT = function(value) {
 			if (_.isNumber(value)) {
 				return this + " > " + value;
 			}
 			return this + " > '" + value + "'";
-		}
+		};
 		String.prototype.sqlGE = function(value) {
 			if (_.isNumber(value)) {
 				return this + " >= " + value;
 			}
 			return this + " >= '" + value + "'";
-		}
+		};
 		// IOS doesn't support bind
 		if (!Function.prototype.bind) {
 			Function.prototype.bind = function(obj) {
 				if ( typeof this !== 'function')
-					throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")
+					throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
 
 				var slice = Array.prototype.slice, args = slice.call(arguments, 1), self = this, nop = function() {
 				}, bound = function() {
 					if (nop.prototype && this instanceof nop) {
-						var result = self.apply(new nop, args.concat(slice.call(arguments)))
-						return (Object(result) === result) ? result : self
+						var result = self.apply(new nop, args.concat(slice.call(arguments)));
+						return (Object(result) === result) ? result : self;
 					} else {
-						return self.apply(obj, args.concat(slice.call(arguments)))
+						return self.apply(obj, args.concat(slice.call(arguments)));
 					};
 				};
 

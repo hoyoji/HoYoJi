@@ -9,7 +9,7 @@
 					$.menuButton.setEnabled(true);
 					console.info("titlebar dirtyCB");
 				}
-			}
+			};
 
 			exports.cleanCB = function() {
 				if ($.saveableMode !== "read") {
@@ -18,13 +18,13 @@
 					$.menuButton.setEnabled(false);
 					console.info("titlebar cleanCB");
 				}
-			}
+			};
 
 			exports.saveStartCB = function() {
 				$.menuButton.setTitle($.$attrs.savingModeMenuButtonTitle || "saving");
 				$.menuButton.setEnabled(false);
 				$.backButton.setEnabled(false);
-			}
+			};
 			exports.saveEndCB = function() {
 				exports.cleanCB();
 				showMsg("保存成功");
@@ -32,7 +32,7 @@
 
 				$.menuButton.setEnabled(false);
 				$.backButton.setEnabled(true);
-			}
+			};
 			exports.saveErrorCB = function() {
 				showMsg("出错啦...");
 				console.info("Titlebar saveErrorCB");
@@ -40,7 +40,7 @@
 				$.menuButton.setTitle($.$attrs.editModeMenuButtonTitle || "保存");
 				$.menuButton.setEnabled(true);
 				$.backButton.setEnabled(true);
-			}
+			};
 			var showMsg = function(msg) {
 				var animation = Titanium.UI.createAnimation();
 				animation.top = "0";
@@ -63,7 +63,7 @@
 				$.msg.setText(msg);
 				$.title.hide();
 				$.msg.animate(animation);
-			}
+			};
 			$.onWindowOpenDo(function() {
 				$.widget.fireEvent("registerdirtycallback", {
 					bubbles : true,
@@ -80,5 +80,5 @@
 				});
 			});
 
-		}
+		};
 	}());

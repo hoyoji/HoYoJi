@@ -27,7 +27,7 @@
 								if (win.__dirtyCount === 0) {
 									win.close();
 								}
-							}
+							};
 							$.$view.fireEvent("registerwindowevent", {
 								bubbles : true,
 								windowEvent : "becameclean",
@@ -221,5 +221,5 @@
 					});
 				});
 			}
-		}
+		};
 	}());

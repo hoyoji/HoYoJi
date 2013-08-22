@@ -313,5 +313,5 @@
 			$.onWindowCloseDo(function() {
 				$.destroy();
 			});
-		}
+		};
 	}());

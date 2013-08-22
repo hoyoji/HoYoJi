@@ -18,7 +18,7 @@
 						//}
 					}
 					
-					this._previousAttributes = _.clone(this.attributes)
+					this._previousAttributes = _.clone(this.attributes);
 					this.changed = {};
 				    this._silent = {};
 				    this._pending = {};						
@@ -469,7 +469,7 @@
 							};
 							break;
 						} else {
-							cascadeDeletions.push(hasMany)
+							cascadeDeletions.push(hasMany);
 						}
 					}
 				}
@@ -543,9 +543,9 @@
 						}
 					}
 					for (var f in filter) {
-						var value = filter[f]
+						var value = filter[f];
 						if (filterStr) {
-							filterStr += " AND "
+							filterStr += " AND ";
 						}
 						f = "main." + f;
 						if (_.isNull(value) || value === undefined) {
@@ -658,5 +658,5 @@
 				}
 				// 让本地修改覆盖服务器上的记录
 			}
-		}
+		};
 	}());

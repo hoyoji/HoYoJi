@@ -46,7 +46,7 @@
 					var filter = {
 						__dataType : "Project",
 						id : projectId
-					}
+					};
 					requestData.push(filter);
 				});
 				Alloy.Globals.Server.getData(requestData, function(data) {
@@ -94,7 +94,7 @@
 						filter = {
 							__dataType : modelName,
 							id : filter
-						}
+						};
 					}
 					requestData.push(filter);
 				});
@@ -258,7 +258,7 @@
 							rs = dbTrans.db.execute(sql, [record.id]);
 							if (rs.rowCount > 0) {
 								var operation = rs.fieldByName("operation");
-								rs.close()
+								rs.close();
 								// 该记录同时在本地和服务器被修改过
 								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
 								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
@@ -469,5 +469,5 @@
 					}
 				});
 			}
-		}
+		};
 	}());

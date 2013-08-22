@@ -6,12 +6,12 @@
 			var hasDetail = $.$attrs.hasDetail === undefined ? $.$view.hasDetail : $.$attrs.hasDetail;
 			$.setSelected = function(selected) {
 				// 留空
-			}
+			};
 
 			$.getChildTitle = function() {
 				var hasChildTitle = $.$attrs.hasChildTitle || $.$view.hasChildTitle || "name";
 				return hasChildTitle ? $.$model.xGet(hasChildTitle) : "";
-			}
+			};
 			function enableOpenChildButton() {
 				if (getChildCount() === 0) {
 					openChildButton.setEnabled(false);
@@ -49,7 +49,7 @@
 					}
 				}
 				return childrenCollections;
-			}
+			};
 			var getChildCount = function() {
 				var count = 0;
 				if (!childrenCollections) {
@@ -59,7 +59,7 @@
 					count += childrenCollections[i].length;
 				}
 				return count;
-			}
+			};
 			function enableOpenDetailButton() {
 				if (getDetailCount() === 0) {
 					openDetailButton.setEnabled(false);
@@ -85,7 +85,7 @@
 					detailCollections = [];
 					for (var i = 0; i < details.length; i++) {
 						var collection;
-						var ch = details[i].split(":")
+						var ch = details[i].split(":");
 						if (ch.length > 1) {
 							details[i] = ch[0];
 						}
@@ -109,7 +109,7 @@
 					}
 				}
 				return detailCollections;
-			}
+			};
 			var getDetailCount = function() {
 				var count = 0;
 				if (!detailCollections) {
@@ -119,7 +119,7 @@
 					count += detailCollections[i].length;
 				}
 				return count;
-			}
+			};
 			if (hasChild) {
 
 				if (OS_IOS) {
@@ -350,7 +350,7 @@
 
 					dbTrans.commit();
 				});
-			}
+			};
 			if ($.$model.__xDeleted) {
 				showDeletedMsg(false);
 			}
@@ -480,5 +480,5 @@
 				}
 
 			});
-		}
+		};
 	}());

@@ -16,7 +16,7 @@
 				var total = 0;
 				this.forEach(function(item){
 					total += item.xPrevious(field);
-				})
+				});
 				return total;
 			},
 			xCreateFilter : function(filter, winController) {
@@ -202,9 +202,9 @@
 				} 
 				else {
 					for (var f in filter) {
-						var value = filter[f]
+						var value = filter[f];
 						if (filterStr) {
-							filterStr += " AND "
+							filterStr += " AND ";
 						}
 						f = "main." + f;
 						if (_.isNull(value) || value === undefined) {
@@ -229,5 +229,5 @@
 				});
 				return this;
 			}
-		}
+		};
 	}());

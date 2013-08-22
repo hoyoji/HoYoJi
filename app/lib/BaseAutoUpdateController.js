@@ -13,7 +13,7 @@
 				animation.duration = 200;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.widget.animate(animation);
-			}
+			};
 
 			$.show = function() {
 				var height = $.$attrs.height !== undefined ? $.$attrs.height : $.widget.getHeight();
@@ -41,14 +41,14 @@
 				if (OS_ANDROID) {
 					animateOpen();
 				}
-			}
+			};
 
 			$.getValue = function() {
 				if ($.$attrs.bindAttributeIsModel) {
 					return $.__bindAttributeIsModel;
 				}
 				return Alloy.Globals.alloyString.trim($.field.getValue());
-			}
+			};
 
 			$.convertModelValue = function(value) {
 				if ( typeof value === "number") {
@@ -59,7 +59,7 @@
 					}
 				}
 				return value;
-			}
+			};
 
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
@@ -73,7 +73,7 @@
 				}
 				value = this.convertModelValue(value);
 				$.field.setValue(value || "");
-			}
+			};
 
 			$.setEditable = function(editable) {
 				if ($.$attrs.bindAttributeIsModel) {
@@ -81,7 +81,7 @@
 				} else {
 					$.field.setEnabled(editable);
 				}
-			}
+			};
 
 			$.setSaveableMode = function(saveableMode) {
 				$.saveableMode = saveableMode || "edit";
@@ -126,7 +126,7 @@
 							$.$view.show();
 					}
 				}
-			}
+			};
 			$.showErrorMsg = function(msg) {
 				$.error.setText(msg);
 				$.__errorShowing = true;
@@ -136,7 +136,7 @@
 				animation.duration = 300;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.error.animate(animation);
-			}
+			};
 			$.hideErrorMsg = function() {
 				if ($.__errorShowing) {
 					$.__errorShowing = false;
@@ -146,7 +146,7 @@
 					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 					$.error.animate(animation);
 				}
-			}
+			};
 			// $.error.addEventListener("singletap", function(){
 			// $.hideErrorMsg();
 			// $.field.fireEvent("singletap");
@@ -213,7 +213,7 @@
 				if ($.updateField) {
 					$.updateField();
 				}
-			}
+			};
 
 			$.init = function(model, attribute, bindAttributeIsModel, bindModelSelector) {
 				$.$attrs.bindModel = model;
@@ -238,14 +238,14 @@
 					} else {
 						$.hideErrorMsg();
 					}
-				}
+				};
 				$.updateField = function() {
 					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
 
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
 					}
-				}
+				};
 				var updateModel = function(e) {
 					$.hideErrorMsg();
 					if (bindAttributeIsModel) {
@@ -279,7 +279,7 @@
 							// }
 						}
 					}
-				}
+				};
 				$.field.addEventListener("change", updateModel);
 				if (model.xGet) {
 					model.on("error", handleError);
@@ -294,7 +294,7 @@
 						// }
 					});
 				}
-			}
+			};
 			if ($.$attrs.editable) {
 				$.setEditable($.$attrs.editable);
 			}
@@ -336,11 +336,11 @@
 			$.showRightButton = function() {
 				$.rightButton.setVisible(true);
 				$.field.setRight(48);
-			}
+			};
 			$.hideRightButton = function() {
 				$.rightButton.setVisible(false);
 				$.field.setRight(0);
-			}
+			};
 			// $.setSaveableMode($.saveableMode);
 
 			if ($.$attrs.bindAttribute) {
@@ -363,7 +363,7 @@
 							}
 						}
 						$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
-					}
+					};
 					$.onWindowOpenDo(function() {
 						if (!model.startsWith("$.")) {
 							resolveBindModelFromSaveable(Alloy.Models[model.split(".")[0]]);
@@ -386,5 +386,5 @@
 					$.init(model, $.$attrs.bindAttribute, $.$attrs.bindAttributeIsModel, $.$attrs.bindModelSelector);
 				}
 			}
-		}
+		};
 	}());
