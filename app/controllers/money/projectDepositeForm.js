@@ -37,7 +37,6 @@ $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function
 	});
 });
 
-
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -58,9 +57,11 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
+var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0) {
+		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+			loading = true;
 			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
@@ -71,6 +72,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 				exchange.xSet("ownerUserId", Alloy.Models.User.id);
 				exchange.save();
 				successCallback();
+				loading = false;
 			}, function(e) {
 				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
 			});
@@ -146,10 +148,10 @@ if (!$.$model) {
 // }
 
 if ($.saveableMode === "read") {
-	if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+	if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
 		$.moneyAccount.$view.setHeight(42);
 		$.exchangeRate.$view.setHeight(42);
-	}else{
+	} else {
 		$.localAmountContainer.setHeight(42);
 		$.amount.$view.setHeight(0);
 		$.moneyAccount.$view.setHeight(0);
@@ -199,6 +201,7 @@ if ($.saveableMode === "read") {
 		}
 	}
 
+
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
@@ -226,15 +229,16 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
-	
+
 	function updateDepositeExchangeRate(e) {
 		if ($.depositeAccount.getValue() && $.project.getValue()) {
 			setDepositeExchangeRate($.depositeAccount.getValue(), $.project.getValue());
 		}
 	}
 
+
 	$.moneyAccount.field.addEventListener("change", updateDepositeExchangeRate);
-	
+
 	function setDepositeExchangeRate(moneyAccount, project, setToModel) {
 		var depositeExchangeRateValue;
 		if ($.depositeFriendAccount.xGet("currency") === project.xGet("currency")) {
@@ -253,14 +257,15 @@ if ($.saveableMode === "read") {
 			$.depositeAccountExchangeRate.$view.setHeight(42);
 		}
 		// if (setToModel) {
-			// // $.$model.xSet("exchangeRate", depositeExchangeRateValue);
-			// $.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
-			// $.depositeAccountExchangeRate.refresh();
+		// // $.$model.xSet("exchangeRate", depositeExchangeRateValue);
+		// $.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
+		// $.depositeAccountExchangeRate.refresh();
 		// } else {
-			$.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
-			$.depositeAccountExchangeRate.field.fireEvent("change");
+		$.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
+		$.depositeAccountExchangeRate.field.fireEvent("change");
 		// }
 	}
+
 
 	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
 		if ($.project.getValue()) {
@@ -269,7 +274,7 @@ if ($.saveableMode === "read") {
 			$.moneyExpenseCategory.setValue(depositeExpenseCategory);
 			$.moneyExpenseCategory.field.fireEvent("change");
 			if ($.depositeFriendAccount && $.depositeFriendAccount.xGet("id")) {
-				
+
 			}
 		}
 	});
@@ -315,7 +320,7 @@ if ($.saveableMode === "read") {
 					});
 					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount * $.$model.xPrevious("exchangeRate"));
 					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xPrevious("exchangeRate"));
-					
+
 					editData.push(projectShareAuthorization.toJSON());
 					projectShareAuthorization.xAddToSave($);
 
@@ -344,7 +349,7 @@ if ($.saveableMode === "read") {
 							editData.push(exchange.toJSON());
 						}
 					}
-					
+
 					if (isDepositeRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 						if ($.depositeAccountExchangeRate.getValue()) {
 							var depositeExchange = Alloy.createModel("Exchange", {
@@ -357,10 +362,10 @@ if ($.saveableMode === "read") {
 							editData.push(depositeExchange.toJSON());
 						}
 					}
-					
+
 					addData.push($.$model.toJSON());
-					
-					var incomeMoney = (newAmount * $.$model.xGet("exchangeRate"))/$.depositeAccountExchangeRate.getValue();
+
+					var incomeMoney = (newAmount * $.$model.xGet("exchangeRate")) / $.depositeAccountExchangeRate.getValue();
 					var depositeIncome = Alloy.createModel("MoneyIncome", {
 						date : $.$model.xGet("date"),
 						amount : incomeMoney,
@@ -385,13 +390,13 @@ if ($.saveableMode === "read") {
 
 					$.saveModel(function(e) {
 						// var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
-							// $model : depositeIncome
+						// $model : depositeIncome
 						// });
 						// depositeIncomeController.$view.addEventListener("contentready", function() {
-							// depositeIncome.xAddToSave(depositeIncomeController.content);
-							// depositeIncomeController.content.titleBar.dirtyCB();
+						// depositeIncome.xAddToSave(depositeIncomeController.content);
+						// depositeIncomeController.content.titleBar.dirtyCB();
 						// });
-						
+
 						Alloy.Globals.Server.postData(addData, function(data) {
 							Alloy.Globals.Server.putData(editData, function(data) {
 								saveEndCB(e);
