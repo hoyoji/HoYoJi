@@ -237,30 +237,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				alert("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
 				var projectIds = [], projectCurrencyIds = [];
-
 				projectIds.push($.$model.xGet("project").xGet("id"));
 				projectCurrencyIds.push($.$model.xGet("project").xGet("currencyId"));
 				var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
-				// var isSynAllProjects = true;
-				// var syncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-				// tableName : "Project",
-				// recordId : $.$model.xGet("project").xGet("id"),
-				// operation : "create"
-				// });
-				// if(syncRecord.id){
-				// isSynAllProjects = false;
-				// }else{
-				// subProjects.map(function(subProject){
-				// var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
-				// tableName : "Project",
-				// recordId : subProject.xGet("id"),
-				// operation : "create"
-				// });
-				// if(subProjectSyncRecord.id){
-				// isSynAllProjects = false;
-				// }
-				// });
-				// }
 				//检查有没有选择好友
 				if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
 					//新增共享
@@ -420,7 +399,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
 
 							var isSynAllProjects = true;
-							allSubProject.map(function(subProject) {
+							allSubProject.forEach(function(subProject) {
 								var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
 									tableName : "Project",
 									recordId : subProject.xGet("id"),
@@ -698,38 +677,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									});
 									doSave();
 								}, doSave);
-								function doSave() {
-									Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-										Alloy.Globals.Server.sendMsg({
-											id : guid(),
-											"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-											"fromUserId" : Alloy.Models.User.xGet("id"),
-											"type" : "Project.Share.Edit",
-											"messageState" : "unread",
-											"messageTitle" : "共享项目",
-											"date" : date,
-											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目权限:项目" + $.$model.xGet("project").xGet("name"),
-											"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-											"messageData" : JSON.stringify({
-												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-												projectShareAuthorizationId : $.$model.xGet("id")
-											})
-										}, function() {
-											$.saveModel(saveEndCB, saveErrorCB, {
-												syncFromServer : true
-											});
-										}, function(e) {
-											alert(e.__summary.msg);
-										});
-									}, function(e) {
-										alert(e.__summary.msg);
-									});
-								}
-
 							} else {
-
+								doSave();
+							}
+							function doSave() {
 								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-									sendMsg(type,messageState,detail,messageData)
 									Alloy.Globals.Server.sendMsg({
 										id : guid(),
 										"toUserId" : $.$model.xGet("friendUser").xGet("id"),

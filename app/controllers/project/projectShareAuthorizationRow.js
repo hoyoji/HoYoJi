@@ -39,10 +39,11 @@ $.makeContextMenu = function(e, isSelectMode) {
 				//重新计算计算其他成员的占股
 				deleteSharePercentage($.$model,editSharePercentageAuthorization);
 				//把子项目移除共享
-				$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+				$.$model.xGet("project").xGetDescendents("subProjects").forEach(function(subProject) {
 					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 						projectId : subProject.xGet("id"),
-						friendUserId : $.$model.xGet("friendUserId")
+						friendUserId : $.$model.xGet("friendUserId"),
+						state : "Accept"
 					});
 					if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
 						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
