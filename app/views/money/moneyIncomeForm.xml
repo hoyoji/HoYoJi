@@ -23,7 +23,7 @@
 				id="date" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="date"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="金额" hintText="请输入金额" showRightButton="true" rightButtonText="明细"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="金额" hintText="请输入金额" rightButtonText="明细"
 				id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="amount"/>
