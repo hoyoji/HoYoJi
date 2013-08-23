@@ -56,6 +56,7 @@ exports.doFilter = function (filter) {
 	if(filter){
 		currentFilter = filter;
 	}
+	$.transactionsTable.resetTable();
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
 	setFilter(moneyTransferOuts);
