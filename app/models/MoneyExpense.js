@@ -202,7 +202,7 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
@@ -253,12 +253,18 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			generateExpenseApportions : function() {
+			generateExpenseApportions : function(saveMode) {
 				var self = this;
 				var moneyExpenseApportionsArray = [];
 				this.xGet("moneyExpenseApportions").forEach(function(item) {
-					if (!item.__xDeletedHidden) {
-						moneyExpenseApportionsArray.push(item);
+					if (saveMode) {//分摊全删以后 保存时重新生成分摊
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyExpenseApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyExpenseApportionsArray.push(item);
+						}
 					}
 				});
 				if (moneyExpenseApportionsArray.length === 0) {// 生成分摊
@@ -306,6 +312,7 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
+					// saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
@@ -316,7 +323,7 @@ exports.definition = {
 					projectShareAuthorizations.forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
-							item.xSet("actualTotalExpense", actualTotalExpense);
+							// item.xSet("actualTotalExpense", actualTotalExpense);
 							item.save({
 								actualTotalExpense : actualTotalExpense
 							}, saveOptions);

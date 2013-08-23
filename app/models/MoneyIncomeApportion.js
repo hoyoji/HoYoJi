@@ -125,7 +125,7 @@ exports.definition = {
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
-						projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
+						// projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
 						projectShareAuthorization.save({
 							apportionedTotalIncome : apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate")
 						}, saveOptions);

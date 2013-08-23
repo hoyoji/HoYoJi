@@ -118,12 +118,13 @@ exports.definition = {
 			xDelete : function(xFinishCallback, options) {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
+				// saveOptions.wait = true;
 				var self = this;
 				var projectShareAuthorizations = self.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
+						// projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
 						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
 						projectShareAuthorization.save({
 							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate")

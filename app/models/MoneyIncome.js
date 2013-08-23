@@ -162,14 +162,14 @@ exports.definition = {
 				// var projectCurrency = this.xGet("project").xGet("currency");
 				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 				// if (projectCurrency === userCurrency) {
-					// exchange = 1;
+				// exchange = 1;
 				// } else {
-					// var exchanges = userCurrency.getExchanges(projectCurrency);
-					// if (exchanges.length) {
-						// exchange = exchanges.at(0).xGet("rate");
-					// } else {
-						// throw new Error("找不到汇率");
-					// }
+				// var exchanges = userCurrency.getExchanges(projectCurrency);
+				// if (exchanges.length) {
+				// exchange = exchanges.at(0).xGet("rate");
+				// } else {
+				// throw new Error("找不到汇率");
+				// }
 				// }
 				var exchange = null;
 				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
@@ -202,7 +202,7 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
@@ -253,12 +253,18 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			generateIncomeApportions : function() {
+			generateIncomeApportions : function(saveMode) {
 				var self = this;
 				var moneyIncomeApportionsArray = [];
 				this.xGet("moneyIncomeApportions").forEach(function(item) {
-					if (!item.__xDeletedHidden) {
-						moneyIncomeApportionsArray.push(item);
+					if (saveMode) {
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyIncomeApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyIncomeApportionsArray.push(item);
+						}
 					}
 				});
 				if (moneyIncomeApportionsArray.length === 0) {// 生成分摊
@@ -315,7 +321,7 @@ exports.definition = {
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
-							item.xSet("actualTotalIncome", actualTotalIncome);
+							// item.xSet("actualTotalIncome", actualTotalIncome);
 							item.save({
 								actualTotalIncome : actualTotalIncome
 							}, saveOptions);
