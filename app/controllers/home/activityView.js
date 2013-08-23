@@ -178,20 +178,30 @@ function setFilter(collection) {
 	});
 }
 
-$.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
-	searchData(moneyIncomes, offset, limit, orderBy);
-	searchData(moneyExpenses, offset, limit, orderBy);
-	searchData(moneyTransferOuts, offset, limit, orderBy);
-	searchData(moneyTransferIns, offset, limit, orderBy);
-	searchData(moneyBorrows, offset, limit, orderBy);
-	searchData(moneyLends, offset, limit, orderBy);
-	searchData(moneyReturns, offset, limit, orderBy);
-	searchData(moneyPaybacks, offset, limit, orderBy);
-	searchData(receivedMessages, offset, limit, orderBy);
-	successCB();
-};
+// $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
+	// searchData(moneyIncomes, offset, limit, orderBy);
+	// searchData(moneyExpenses, offset, limit, orderBy);
+	// searchData(moneyTransferOuts, offset, limit, orderBy);
+	// searchData(moneyTransferIns, offset, limit, orderBy);
+	// searchData(moneyBorrows, offset, limit, orderBy);
+	// searchData(moneyLends, offset, limit, orderBy);
+	// searchData(moneyReturns, offset, limit, orderBy);
+	// searchData(moneyPaybacks, offset, limit, orderBy);
+	// searchData(receivedMessages, offset, limit, orderBy);
+	// successCB();
+// };
 
 exports.doFilter = function() {
+	searchData(moneyIncomes, 0, 5, "date");
+	searchData(moneyExpenses, 0, 5, "date");
+	searchData(moneyTransferOuts, 0, 5, "date");
+	searchData(moneyTransferIns, 0, 5, "date");
+	searchData(moneyBorrows, 0, 5, "date");
+	searchData(moneyLends, 0, 5, "date");
+	searchData(moneyReturns, 0, 5, "date");
+	searchData(moneyPaybacks, 0, 5, "date");
+	searchData(receivedMessages, 0, 5, "date");
+
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
 	setFilter(moneyTransferOuts);
