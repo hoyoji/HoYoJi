@@ -484,11 +484,11 @@ exports.fetchNextPage = function(tableRowsCount) {
 
 		if (sortByField) {
 			sortedArray.sort(function(a, b) {
-				a = a.record.xDeepGet(sortByField);
-				b = b.record.xDeepGet(sortByField);
-				if (a < b) {
+				var va = a.record.xDeepGet(sortByField);
+				var vb = b.record.xDeepGet(sortByField);
+				if (va < vb) {
 					return sortedArray_sortReverse ? 1 : -1;
-				} else if (a > b) {
+				} else if (va > vb) {
 					return sortedArray_sortReverse ? -1 : 1;
 				}
 				return 0;
