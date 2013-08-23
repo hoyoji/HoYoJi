@@ -69,7 +69,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : accountShareData.account.projectId,
 								friendUserId : Alloy.Models.User.id
 							});
-							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount);
+							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount * accountShareData.account.exchangeRate);
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
@@ -152,11 +152,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : accountShareData.account.projectId,
 								friendUserId : Alloy.Models.User.id
 							});
-							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - accountShareData.account.amount);
+							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - accountShareData.account.amount * accountShareData.account.exchangeRate);
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
-							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + accountShareData.account.amount);
 							editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 							moneyExpense.xGet("moneyAccount").xAddToSave($);
 							

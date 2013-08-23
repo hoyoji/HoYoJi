@@ -43,7 +43,6 @@ var __alloyId75 = Ti.UI.createView({
 });
 __alloyId73.add(__alloyId75);
 var __alloyId76 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel", "widget", {
-	dataType : "Number",
 	font : {
 		fontSize : 16,
 		fontWeight : "normal"
