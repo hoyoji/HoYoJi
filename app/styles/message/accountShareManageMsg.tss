@@ -1,3 +1,6 @@
 ".container": {
 	backgroundColor: "#e1e1e1"
 }
+"View" : {
+	backgroundColor: "#f5f5f5"
+}
