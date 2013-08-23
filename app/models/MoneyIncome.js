@@ -202,7 +202,7 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
@@ -315,7 +315,7 @@ exports.definition = {
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
-							item.xSet("actualTotalIncome", actualTotalIncome);
+							// item.xSet("actualTotalIncome", actualTotalIncome);
 							item.save({
 								actualTotalIncome : actualTotalIncome
 							}, saveOptions);

@@ -177,7 +177,7 @@ exports.definition = {
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {
-						currencySymbol = accountCurrency.xGet("code") + " " + accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
+						currencySymbol = accountCurrency.xGet("symbol") + this.xGet("amount").toUserCurrency();
 					}
 				}
 				// else{
