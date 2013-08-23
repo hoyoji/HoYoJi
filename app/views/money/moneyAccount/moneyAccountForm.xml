@@ -26,7 +26,7 @@
 				values="Cash,Deposit,Credit,Online,Loan"
 				bindModel="$.$model"
 				bindAttribute="accountType"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="账号" hintText="添加账号"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="账号" hintText="添加账号"
 				id="accountNumber" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="accountNumber"/>

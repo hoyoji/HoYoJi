@@ -481,7 +481,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 
 			// 生成分摊
-			$.$model.generateExpenseApportions();
+			$.$model.generateExpenseApportions(true);
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];

@@ -97,7 +97,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
-if ($.saveableMode === "read") {
+if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	// $.setSaveableMode("read");
 	$.moneyAccount.$view.setHeight(0);
 	$.projectAmountContainer.setHeight(42);

@@ -236,152 +236,184 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
 				alert("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
-				var projectIds = [], projectCurrencyIds = [];
-				projectIds.push($.$model.xGet("project").xGet("id"));
-				projectCurrencyIds.push($.$model.xGet("project").xGet("currencyId"));
-				var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
-				//检查有没有选择好友
-				if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
-					//新增共享
-					$.$model.xSet("state", "Wait");
-					//把要去服务器上搜索的projectShareAuthorization保存起来
-					var projectShareAuthorizationsSearchArray = [];
-					//保存子项目，结合projectShareAuthorizationsSearchArray数组
-					var subProjectsArray = [];
-					//把新增的projectShareAuthorization保存起来，后面一次性传入服务器
-					var projectShareAuthorizationArray = [];
-					//把父项目共享的projectShareAuthorization先保存到数组
-					projectShareAuthorizationsSearchArray.push({
-						__dataType : "ProjectShareAuthorization",
-						projectId : $.$model.xGet("project").xGet("id"),
-						friendUserId : $.$model.xGet("friendUser").xGet("id"),
-						state : "Wait"
-					});
-					projectShareAuthorizationsSearchArray.push({
-						__dataType : "ProjectShareAuthorization",
-						projectId : $.$model.xGet("project").xGet("id"),
-						friendUserId : $.$model.xGet("friendUser").xGet("id"),
-						state : "Accept"
-					});
-					projectShareAuthorizationArray.push($.$model.toJSON());
-					//把子项目也加到搜索Array中去
-					if ($.$model.xGet("shareAllSubProjects")) {
-						subProjects.map(function(subProject) {
-							projectShareAuthorizationsSearchArray.push({
-								__dataType : "ProjectShareAuthorization",
-								projectId : subProject.xGet("id"),
-								friendUserId : $.$model.xGet("friendUser").xGet("id"),
-								state : "Wait"
-							});
-							projectShareAuthorizationsSearchArray.push({
-								__dataType : "ProjectShareAuthorization",
-								projectId : subProject.xGet("id"),
-								friendUserId : $.$model.xGet("friendUser").xGet("id"),
-								state : "Accept"
-							});
-							subProjectsArray.push(subProject);
+					function getExchange(successCB, errorCB) {
+						if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
+							successCB();
+						}
+						var exchange = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 						});
-					}
-					//去服务器上查找是否已经添加过共享给该好友
-					Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
-						if (data[0].length > 0 || data[1].length > 0) {
-							saveErrorCB("好友已在共享列表,请重新选择好友！");
+						if (!exchange.id) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+								exchange = Alloy.createModel("Exchange", {
+									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
+									rate : rate
+								});
+								exchange.xSet("ownerUser", Alloy.Models.User);
+								exchange.xSet("ownerUserId", Alloy.Models.User.id);
+								exchange.save();
+								successCB();
+							}, function(e) {
+								errorCB(e);
+							});
 						} else {
-							// 有些subProject已被共享过，不能再次共享
-							for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
-								var subProjectShareAuthorization;
-								//如果服务器上找不到共享的projectShareAuthorization，就添加一条新的projectShareAuthorization
-								if (data[i].length === 0 && data[i + 1].length === 0) {
-									var subProjectSharedAuthorizationData = {
-										project : subProjectsArray[i / 2 - 1],
-										friendUserId : $.$model.xGet("friendUser").xGet("id"),
-										state : "Wait",
-										shareType : $.$model.xGet("shareType"),
-										remark : $.$model.xGet("remark"),
-										ownerUser : $.$model.xGet("ownerUser"),
-										shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-										sharePercentageType : $.$model.xGet("sharePercentageType"),
-										sharePercentage : $.$model.xGet("sharePercentage")
-									};
-									for (var attr in $.$model.config.columns) {
-										if (attr.startsWith("projectShare")) {
-											subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
-										}
-									}
-									subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
-									subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-									projectIds.push(subProjectShareAuthorization.xGet("project").xGet("id"));
-									projectCurrencyIds.push(subProjectShareAuthorization.xGet("project").xGet("currencyId"));
-									projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
-									subProjectShareAuthorization.xAddToSave($);
+							successCB();
+						}
+					}
 
-								}
-							}
-							//把新增的projectShareAuthorization传上服务器
-							Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
-								//股份修改过的projectShareAuthorization去服务器上修改
-								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-									//发送共享消息给好友
-									Alloy.Globals.Server.sendMsg({
-										id : guid(),
-										"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-										"fromUserId" : Alloy.Models.User.xGet("id"),
-										"type" : "Project.Share.AddRequest",
-										"messageState" : "new",
-										"messageTitle" : Alloy.Models.User.xGet("userName"),
-										"date" : date,
-										"detail" : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
-										"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-										"messageData" : JSON.stringify({
+					getExchange(addProjectShareAuthorization, function(e) {
+						saveErrorCB("共享项目失败,请重新共享 : " + e.__summary.msg);
+						return;
+					});
+				function addProjectShareAuthorization(){
+					var projectIds = [], projectCurrencyIds = [];
+					projectIds.push($.$model.xGet("project").xGet("id"));
+					projectCurrencyIds.push($.$model.xGet("project").xGet("currencyId"));
+					var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
+					//检查有没有选择好友
+					if ($.$model.xGet("friendUser") && $.$model.xGet("friendUser").xGet("id")) {
+						//新增共享
+						$.$model.xSet("state", "Wait");
+						//把要去服务器上搜索的projectShareAuthorization保存起来
+						var projectShareAuthorizationsSearchArray = [];
+						//保存子项目，结合projectShareAuthorizationsSearchArray数组
+						var subProjectsArray = [];
+						//把新增的projectShareAuthorization保存起来，后面一次性传入服务器
+						var projectShareAuthorizationArray = [];
+						//把父项目共享的projectShareAuthorization先保存到数组
+						projectShareAuthorizationsSearchArray.push({
+							__dataType : "ProjectShareAuthorization",
+							projectId : $.$model.xGet("project").xGet("id"),
+							friendUserId : $.$model.xGet("friendUser").xGet("id"),
+							state : "Wait"
+						});
+						projectShareAuthorizationsSearchArray.push({
+							__dataType : "ProjectShareAuthorization",
+							projectId : $.$model.xGet("project").xGet("id"),
+							friendUserId : $.$model.xGet("friendUser").xGet("id"),
+							state : "Accept"
+						});
+						projectShareAuthorizationArray.push($.$model.toJSON());
+						//把子项目也加到搜索Array中去
+						if ($.$model.xGet("shareAllSubProjects")) {
+							subProjects.map(function(subProject) {
+								projectShareAuthorizationsSearchArray.push({
+									__dataType : "ProjectShareAuthorization",
+									projectId : subProject.xGet("id"),
+									friendUserId : $.$model.xGet("friendUser").xGet("id"),
+									state : "Wait"
+								});
+								projectShareAuthorizationsSearchArray.push({
+									__dataType : "ProjectShareAuthorization",
+									projectId : subProject.xGet("id"),
+									friendUserId : $.$model.xGet("friendUser").xGet("id"),
+									state : "Accept"
+								});
+								subProjectsArray.push(subProject);
+							});
+						}
+						//去服务器上查找是否已经添加过共享给该好友
+						Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
+							if (data[0].length > 0 || data[1].length > 0) {
+								saveErrorCB("好友已在共享列表,请重新选择好友！");
+							} else {
+								// 有些subProject已被共享过，不能再次共享
+								for (var i = 2; i < projectShareAuthorizationsSearchArray.length; i = i + 2) {
+									var subProjectShareAuthorization;
+									//如果服务器上找不到共享的projectShareAuthorization，就添加一条新的projectShareAuthorization
+									if (data[i].length === 0 && data[i + 1].length === 0) {
+										var subProjectSharedAuthorizationData = {
+											project : subProjectsArray[i / 2 - 1],
+											friendUserId : $.$model.xGet("friendUser").xGet("id"),
+											state : "Wait",
+											shareType : $.$model.xGet("shareType"),
+											remark : $.$model.xGet("remark"),
+											ownerUser : $.$model.xGet("ownerUser"),
 											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-											projectShareAuthorizationId : $.$model.xGet("id"),
-											subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
-											projectIds : projectIds,
-											projectCurrencyIds : projectCurrencyIds
-										})
-									}, function() {
-										//在本地创建一条相同的消息
-										var newSendMessage = Alloy.createModel("Message", {
-											toUser : $.$model.xGet("friendUser"),
-											fromUser : Alloy.Models.User,
-											type : "Project.Share.AddRequest",
-											messageState : "closed",
-											messageTitle : "共享项目请求",
-											date : date,
-											detail : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
-											messageBox : Alloy.Models.User.xGet("messageBox"),
-											messageData : JSON.stringify({
+											sharePercentageType : $.$model.xGet("sharePercentageType"),
+											sharePercentage : $.$model.xGet("sharePercentage")
+										};
+										for (var attr in $.$model.config.columns) {
+											if (attr.startsWith("projectShare")) {
+												subProjectSharedAuthorizationData[attr] = $.$model.xGet(attr);
+											}
+										}
+										subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization", subProjectSharedAuthorizationData);
+										subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+										projectIds.push(subProjectShareAuthorization.xGet("project").xGet("id"));
+										projectCurrencyIds.push(subProjectShareAuthorization.xGet("project").xGet("currencyId"));
+										projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
+										subProjectShareAuthorization.xAddToSave($);
+	
+									}
+								}
+								//把新增的projectShareAuthorization传上服务器
+								Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
+									//股份修改过的projectShareAuthorization去服务器上修改
+									Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+										//发送共享消息给好友
+										Alloy.Globals.Server.sendMsg({
+											id : guid(),
+											"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+											"fromUserId" : Alloy.Models.User.xGet("id"),
+											"type" : "Project.Share.AddRequest",
+											"messageState" : "new",
+											"messageTitle" : Alloy.Models.User.xGet("userName"),
+											"date" : date,
+											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
+											"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+											"messageData" : JSON.stringify({
 												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 												projectShareAuthorizationId : $.$model.xGet("id"),
 												subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
 												projectIds : projectIds,
 												projectCurrencyIds : projectCurrencyIds
-											}),
-											ownerUser : Alloy.Models.User
-										}).xAddToSave($);
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
+											})
+										}, function() {
+											//在本地创建一条相同的消息
+											var newSendMessage = Alloy.createModel("Message", {
+												toUser : $.$model.xGet("friendUser"),
+												fromUser : Alloy.Models.User,
+												type : "Project.Share.AddRequest",
+												messageState : "closed",
+												messageTitle : "共享项目请求",
+												date : date,
+												detail : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
+												messageBox : Alloy.Models.User.xGet("messageBox"),
+												messageData : JSON.stringify({
+													shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+													projectShareAuthorizationId : $.$model.xGet("id"),
+													subProjectShareAuthorizationIds : subProjectShareAuthorizationIds,
+													projectIds : projectIds,
+													projectCurrencyIds : projectCurrencyIds
+												}),
+												ownerUser : Alloy.Models.User
+											}).xAddToSave($);
+											$.saveModel(saveEndCB, saveErrorCB, {
+												syncFromServer : true
+											});
+											saveEndCB("发送成功，请等待回复");
+										}, function(e) {
+											alert(e.__summary.msg);
 										});
-										saveEndCB("发送成功，请等待回复");
 									}, function(e) {
 										alert(e.__summary.msg);
 									});
 								}, function(e) {
 									alert(e.__summary.msg);
 								});
-							}, function(e) {
-								alert(e.__summary.msg);
-							});
-						}
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-
-				} else {
-					alert("好友不能为空！");
+							}
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
+	
+					} else {
+						alert("好友不能为空！");
+					}
 				}
 			}
-
 		} else {
 			//修改共享
 			if ($.$model.hasChanged("friendUser")) {
@@ -585,20 +617,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									}
 								} else {
 									//移除子项目的projectShareAuthorization
-									allSubProject.map(function(subProject) {
+									allSubProject.forEach(function(subProject) {
 										var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 											projectId : subProject.xGet("id"),
 											friendUserId : $.$model.xGet("friendUserId")
 										});
 										if (subProjectShareAuthorization && subProjectShareAuthorization.id && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
-											subProjectShareAuthorization.xSet("state", "Delete");
-											//保存全部修改过的projectShareAuthorization
-											subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-											subProjectShareAuthorization.xAddToSave($);
-											//把修改的子项目的projectShareAuthorization保存起来，一起在服务器上更改
-											editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-											//重新计算子项目中其他成员的占股
-											deleteSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+											if(subProjectShareAuthorization.xGet("actualTotalIncome") === 0 
+												&& subProjectShareAuthorization.xGet("actualTotalExpense") === 0 
+												&& subProjectShareAuthorization.xGet("apportionedTotalIncome") === 0 
+												&& subProjectShareAuthorization.xGet("apportionedTotalExpense") === 0 
+												&& subProjectShareAuthorization.xGet("sharedTotalIncome") === 0 
+												&& subProjectShareAuthorization.xGet("sharedTotalExpense") === 0){
+												subProjectShareAuthorization.xSet("state", "Delete");
+												//保存全部修改过的projectShareAuthorization
+												subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+												subProjectShareAuthorization.xAddToSave($);
+												//把修改的子项目的projectShareAuthorization保存起来，一起在服务器上更改
+												editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+												//重新计算子项目中其他成员的占股
+												deleteSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
+											}
 										}
 									});
 									//如果不再共享的子项目为空就不发送提醒消息给好友

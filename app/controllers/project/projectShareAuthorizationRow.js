@@ -46,15 +46,21 @@ $.makeContextMenu = function(e, isSelectMode) {
 						state : "Accept"
 					});
 					if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
-						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						// subProjectShareAuthorization._xDelete();
-						subProjectShareAuthorization.xSet("state", "Delete");
-						subProjectShareAuthorization.xSave({
-							syncFromServer : true
-						});
-						//重新计算计算子项目其他成员的占股
-						deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
-						editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+						if(subProjectShareAuthorization.xGet("actualTotalIncome") === 0 
+							&& subProjectShareAuthorization.xGet("actualTotalExpense") === 0 
+							&& subProjectShareAuthorization.xGet("apportionedTotalIncome") === 0 
+							&& subProjectShareAuthorization.xGet("apportionedTotalExpense") === 0 
+							&& subProjectShareAuthorization.xGet("sharedTotalIncome") === 0 
+							&& subProjectShareAuthorization.xGet("sharedTotalExpense") === 0){
+							subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+							subProjectShareAuthorization.xSet("state", "Delete");
+							subProjectShareAuthorization.xSave({
+								syncFromServer : true
+							});
+							//重新计算计算子项目其他成员的占股
+							deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+							editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+						}
 					}
 				});
 				$.$model.xSet("state", "Delete");
