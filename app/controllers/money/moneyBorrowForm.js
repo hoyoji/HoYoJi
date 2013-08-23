@@ -106,7 +106,7 @@ $.onWindowCloseDo(function() {
 	$.$model.off("xchange:moneyAccount.currentBalance", updateAccountBalance);
 });
 
-if ($.saveableMode === "read") {
+if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	$.projectAmountContainer.setHeight(42);
 	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		$.localAmountContainer.setHeight(42);

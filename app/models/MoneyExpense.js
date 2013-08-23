@@ -253,12 +253,18 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			generateExpenseApportions : function() {
+			generateExpenseApportions : function(saveMode) {
 				var self = this;
 				var moneyExpenseApportionsArray = [];
 				this.xGet("moneyExpenseApportions").forEach(function(item) {
-					if (!item.__xDeletedHidden) {
-						moneyExpenseApportionsArray.push(item);
+					if (saveMode) {//分摊全删以后 保存时重新生成分摊
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyExpenseApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyExpenseApportionsArray.push(item);
+						}
 					}
 				});
 				if (moneyExpenseApportionsArray.length === 0) {// 生成分摊

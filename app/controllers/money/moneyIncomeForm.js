@@ -238,7 +238,7 @@ $.onWindowCloseDo(function() {
 	$.$model.xGet("moneyIncomeDetails").off("add _xchange xdelete", updateDetails);
 });
 
-if ($.saveableMode === "read") {
+if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	$.projectAmountContainer.setHeight(42);
 	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		$.localAmountContainer.setHeight(42);
@@ -481,7 +481,7 @@ if ($.saveableMode === "read") {
 			}
 
 			// 生成分摊
-			$.$model.generateIncomeApportions();
+			$.$model.generateIncomeApportions(true);
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
