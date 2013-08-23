@@ -52,9 +52,9 @@ function addSharePercentage(projectShareAuthorization) {
 		state : "Accept"
 	});
 	/*
-		 遍历查找出来的ProjectShareAuthorization，把全部固定占股相加保存起来放到fixedSharePercentage
-		同事把均分的 ProjectShareAuthorization保存到数组averageSharePercentageCollections中
-	*/
+	 遍历查找出来的ProjectShareAuthorization，把全部固定占股相加保存起来放到fixedSharePercentage
+	 同事把均分的 ProjectShareAuthorization保存到数组averageSharePercentageCollections中
+	 */
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 			fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
@@ -83,12 +83,12 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 		state : "Accept"
 	});
 	/*
-		 遍历查找出来的ProjectShareAuthorization，把全部固定占股相加保存起来放到fixedSharePercentage
-		同事把均分的 ProjectShareAuthorization保存到数组averageSharePercentageCollections中
-	*/
+	 遍历查找出来的ProjectShareAuthorization，把全部固定占股相加保存起来放到fixedSharePercentage
+	 同事把均分的 ProjectShareAuthorization保存到数组averageSharePercentageCollections中
+	 */
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
 		//把查找出共享给自己的projectShareAuthorization保存起来
-		if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
+		if (acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id) {
 			localProjectShareAuthorization = acceptProjectShareAuthorization;
 		}
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
@@ -110,36 +110,36 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 				editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 				averageSharePercentageCollection.xAddToSave($);
 			});
-			if(localProjectShareAuthorization){
+			if (localProjectShareAuthorization) {
 				localProjectShareAuthorization.xSet("sharePercentage", localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
 			}
-			
+
 		} else {
 			//如果没有平均占股的成员，把平均占股加到本地缓冲
-			if(averageLength > 0){
+			if (averageLength > 0) {
 				var averageTotalPercentage = 100 - fixedSharePercentage - projectShareAuthorization.xGet("sharePercentage");
 				var toFixedAveragePercentage = 0;
 				//
 				var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
-				averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
+				averageSharePercentageCollections.forEach(function(averageSharePercentageCollection) {
 					toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
 					averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
 					editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 					averageSharePercentageCollection.xAddToSave($);
-					alert("2" + projectShareAuthorization.xGet("project").xGet("name") + "|" +averageTotalPercentage + "|" +averagePercentage +"|"+averageSharePercentageCollections.length + "|" + averageSharePercentageCollection.xGet("sharePercentage"));
+					alert("2" + projectShareAuthorization.xGet("project").xGet("name") + "|" + averageTotalPercentage + "|" + averagePercentage + "|" + averageSharePercentageCollections.length + "|" + averageSharePercentageCollection.xGet("sharePercentage"));
 				});
 				//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
-				if(averageTotalPercentage !== toFixedAveragePercentage){
-					if(localProjectShareAuthorization){
+				if (averageTotalPercentage !== toFixedAveragePercentage) {
+					if (localProjectShareAuthorization) {
 						localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 						editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 						localProjectShareAuthorization.xAddToSave($);
 					}
 				}
-			}else{
-				if(localProjectShareAuthorization){
+			} else {
+				if (localProjectShareAuthorization) {
 					localProjectShareAuthorization.xSet("sharePercentage", localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 					editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 					localProjectShareAuthorization.xAddToSave($);
@@ -159,8 +159,8 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 		});
 		projectShareAuthorization.xSet("sharePercentage", averagePercentage);
 		//如果保留两位小数相加后的值不等于均分的总值，以共享给自己的projectShareAuthorization作为缓冲
-		if(averageTotalPercentage !== toFixedAveragePercentage){
-			if(localProjectShareAuthorization){
+		if (averageTotalPercentage !== toFixedAveragePercentage) {
+			if (localProjectShareAuthorization) {
 				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
@@ -181,7 +181,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 		state : "Accept"
 	});
 	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
-		if(acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id){
+		if (acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id) {
 			localProjectShareAuthorization = acceptProjectShareAuthorization;
 		}
 		//如果当前遍历的projectShareAuthorization不等于传入进来的projectShareAuthorization才执行，当前传入进来的projectShareAuthorization要移除，无需重新计算股份
@@ -196,8 +196,8 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	});
 	var averageLength = averageSharePercentageCollections.length;
 	var averageTotalPercentage = 100 - fixedSharePercentage;
-	
-	if(averageLength > 0){
+
+	if (averageLength > 0) {
 		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
 		var toFixedAveragePercentage = 0;
 		averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
@@ -206,15 +206,15 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 			editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
 			averageSharePercentageCollection.xAddToSave($);
 		});
-		if(averageTotalPercentage !== toFixedAveragePercentage){
-			if(localProjectShareAuthorization){
+		if (averageTotalPercentage !== toFixedAveragePercentage) {
+			if (localProjectShareAuthorization) {
 				localProjectShareAuthorization.xSet("sharePercentage", Number((localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage - toFixedAveragePercentage).toFixed(4)));
 				editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 				localProjectShareAuthorization.xAddToSave($);
 			}
 		}
-	}else{
-		localProjectShareAuthorization.xSet("sharePercentage" , localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
+	} else {
+		localProjectShareAuthorization.xSet("sharePercentage", localProjectShareAuthorization.xGet("sharePercentage") + averageTotalPercentage);
 		editSharePercentageAuthorization.push(localProjectShareAuthorization.toJSON());
 		localProjectShareAuthorization.xAddToSave($);
 	}
@@ -236,8 +236,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
 				alert("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
-				var projectIds = [],projectCurrencyIds = [];
-				
+				var projectIds = [], projectCurrencyIds = [];
+
 				projectIds.push($.$model.xGet("project").xGet("id"));
 				projectCurrencyIds.push($.$model.xGet("project").xGet("currencyId"));
 				var subProjects = $.$model.xGet("project").xGetDescendents("subProjects");
@@ -414,11 +414,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 				//如果是共享给自己分开考虑
 				if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
-					if($.$model.xGet("state") === "Accept"){
+					if ($.$model.xGet("state") === "Accept") {
 						//检查projectShareAuthorization是否有改变，如果有改变，且当前是true，即要新增子项目的projectShareAuthorization，如果当前是false，即要移除子项目的projectShareAuthorization
 						if ($.$model.hasChanged("shareAllSubProjects")) {
 							var allSubProject = $.$model.xGet("project").xGetDescendents("subProjects");
-	
+
 							var isSynAllProjects = true;
 							allSubProject.map(function(subProject) {
 								var subProjectSyncRecord = Alloy.createModel("ClientSyncTable").xFindInDb({
@@ -430,12 +430,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									isSynAllProjects = false;
 								}
 							});
-	
+
 							if (isSynAllProjects) {
 								var projectShareAuthorizationsSearchArray = [];
 								var subProjectsArray = [];
 								var projectShareAuthorizationArray = [];
-	
+
 								projectShareAuthorizationsSearchArray.push({
 									__dataType : "ProjectShareAuthorization",
 									projectId : $.$model.xGet("project").xGet("id"),
@@ -448,7 +448,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									friendUserId : $.$model.xGet("friendUser").xGet("id"),
 									state : "Accept"
 								});
-	
+
 								allSubProject.map(function(subProject) {
 									projectShareAuthorizationsSearchArray.push({
 										__dataType : "ProjectShareAuthorization",
@@ -493,10 +493,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 														editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 														projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 														subProjectShareAuthorization.xAddToSave($);
-	
+
 													}
 												}
-	
+
 												if (subProjectShareAuthorizationIds.length) {
 													editSharePercentageAuthorization.push($.$model.toJSON());
 													Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -557,10 +557,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 														editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 														projectShareAuthorizationArray.push(subProjectShareAuthorization.toJSON());
 														subProjectShareAuthorization.xAddToSave($);
-	
+
 													}
 												}
-	
+
 												if (subProjectShareAuthorizationIds.length) {
 													editSharePercentageAuthorization.push($.$model.toJSON());
 													Alloy.Globals.Server.postData(projectShareAuthorizationArray, function(data) {
@@ -597,7 +597,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													$.saveModel(saveEndCB, saveErrorCB);
 												}
 											}
-	
+
 										}, function(e) {
 											alert(e.__summary.msg);
 										});
@@ -659,19 +659,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							} else {
 								alert("子项目未同步，清同步再共享");
 							}
-	
+
 						} else {
 							editSharePercentageAuthorization.push($.$model.toJSON());
 							//如果共享全部子项目，提示要不要把修改过的权限应用到全部子项目。
 							if ($.$model.xGet("shareAllSubProjects")) {
 								Alloy.Globals.confirm("应用到所有项目", "把修改的权限应用到所有子项目？", function() {
-									$.$model.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+									$.$model.xGet("project").xGetDescendents("subProjects").forEach(function(subProject) {
 										var subProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 											projectId : subProject.xGet("id"),
 											friendUserId : $.$model.xGet("friendUserId")
 										});
-										subProjectShareAuthorizations.map(function(subProjectShareAuthorization) {
-											if (subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") && (subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
+										subProjectShareAuthorizations.forEach(function(subProjectShareAuthorization) {
+											if (//subProjectShareAuthorization && subProjectShareAuthorization.xGet("id") &&
+											(subProjectShareAuthorization.xGet("state") === "Wait" || subProjectShareAuthorization.xGet("state") === "Accept")) {
 												var data = {
 													shareType : $.$model.xGet("shareType"),
 													shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
@@ -683,49 +684,52 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 														data[attr] = $.$model.xGet(attr);
 													}
 												}
-	
+
 												var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
 												var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
 												subProjectShareAuthorization.xSet(data);
-												if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "Fixed" && ($.$model.xGet("sharePercentage") !== subProjectSharePercentageOld))) {
+												if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") !== subProjectSharePercentageOld)) {
 													editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 												}
 												editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-												subProjectShareAuthorization.xSave($);
-	
+												subProjectShareAuthorization.xAddToSave($);
 											}
 										});
 									});
-								});
-								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-									Alloy.Globals.Server.sendMsg({
-										id : guid(),
-										"toUserId" : $.$model.xGet("friendUser").xGet("id"),
-										"fromUserId" : Alloy.Models.User.xGet("id"),
-										"type" : "Project.Share.Edit",
-										"messageState" : "unread",
-										"messageTitle" : "共享项目",
-										"date" : date,
-										"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目权限:项目" + $.$model.xGet("project").xGet("name"),
-										"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-										"messageData" : JSON.stringify({
-											shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-											projectShareAuthorizationId : $.$model.xGet("id")
-										})
-									}, function() {
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
+									doSave();
+								}, doSave);
+								function doSave() {
+									Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+										Alloy.Globals.Server.sendMsg({
+											id : guid(),
+											"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+											"fromUserId" : Alloy.Models.User.xGet("id"),
+											"type" : "Project.Share.Edit",
+											"messageState" : "unread",
+											"messageTitle" : "共享项目",
+											"date" : date,
+											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "修改了项目权限:项目" + $.$model.xGet("project").xGet("name"),
+											"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+											"messageData" : JSON.stringify({
+												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+												projectShareAuthorizationId : $.$model.xGet("id")
+											})
+										}, function() {
+											$.saveModel(saveEndCB, saveErrorCB, {
+												syncFromServer : true
+											});
+										}, function(e) {
+											alert(e.__summary.msg);
 										});
 									}, function(e) {
 										alert(e.__summary.msg);
 									});
-								}, function(e) {
-									alert(e.__summary.msg);
-								});
-	
+								}
+
 							} else {
-								
+
 								Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+									sendMsg(type,messageState,detail,messageData)
 									Alloy.Globals.Server.sendMsg({
 										id : guid(),
 										"toUserId" : $.$model.xGet("friendUser").xGet("id"),
@@ -752,12 +756,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 							}
 						}
-					}else{
+					} else {
 						alert("修改失败，好友还未接受共享");
 						$.getCurrentWindow().$view.close();
 					}
-					
-				}else{
+
+				} else {
 					//修改共享给自己的占股
 					editSharePercentageAuthorization.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
@@ -774,6 +778,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	} else {
 		alert("股份不能小于零");
 	}
+	
+	function sendMsg(type,messageState,detail,messageData){
+		Alloy.Globals.Server.sendMsg({
+			id : guid(),
+			"toUserId" : $.$model.xGet("friendUser").xGet("id"),
+			"fromUserId" : Alloy.Models.User.xGet("id"),
+			"type" : type,
+			"messageState" : messageState,
+			"messageTitle" : "共享项目",
+			"date" : date,
+			"detail" : detail,
+			"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+			"messageData" : messageData
+		}, function() {
+			$.saveModel(saveEndCB, saveErrorCB, {
+				syncFromServer : true
+			});
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
+	}
+	
 };
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
@@ -797,7 +823,7 @@ $.convertUser2FriendModel = function(userModel) {
 };
 
 $.onWindowOpenDo(function() {
-	if($.$model.xGet("friendUserId") !== Alloy.Models.User.id){
+	if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
 		$.explainAuthorizationLabel.setVisible(true);
 	}
 	if ($.$model.isNew()) {
