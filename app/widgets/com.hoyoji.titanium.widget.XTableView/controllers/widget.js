@@ -397,10 +397,7 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 						collection : collections[i]
 					});
 					if(!insertPos){
-						if(!rowView)
-							insertPos = index -1;
-						else 
-							insertPos = index;
+						insertPos = index - 1;
 					}
 				} else {
 					index++;
