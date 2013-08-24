@@ -206,7 +206,8 @@ exports.definition = {
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {
 				this._xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
-					syncFromServer : true
+					syncFromServer : true,
+					wait : true
 				});
 			}
 			// ,
