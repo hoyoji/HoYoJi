@@ -634,7 +634,8 @@
 				this.save(record, {
 					dbTrans : dbTrans,
 					syncFromServer : true,
-					patch : true
+					patch : true,
+					wait : true
 				});
 			},
 			syncUpdate : function(record, dbTrans) {
