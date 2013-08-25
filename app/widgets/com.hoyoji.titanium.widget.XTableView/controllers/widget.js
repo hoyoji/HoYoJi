@@ -360,7 +360,11 @@ function addRowToSection(rowModel, collection, index) {
 			$.table.appendRow(row);
 		}
 	} else {
-		$.table.insertRowAfter(index, row);
+		try{
+			$.table.insertRowAfter(index, row);
+		} catch(e){
+			$.table.appendRow(row);
+		}
 	}
 }
 
