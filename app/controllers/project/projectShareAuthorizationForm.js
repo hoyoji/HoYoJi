@@ -361,9 +361,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											"fromUserId" : Alloy.Models.User.xGet("id"),
 											"type" : "Project.Share.AddRequest",
 											"messageState" : "new",
-											"messageTitle" : Alloy.Models.User.xGet("userName"),
+											"messageTitle" : "共享请求",
 											"date" : date,
-											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
+											"detail" : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:" + $.$model.xGet("project").xGet("name"),
 											"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 											"messageData" : JSON.stringify({
 												shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
@@ -379,9 +379,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												fromUser : Alloy.Models.User,
 												type : "Project.Share.AddRequest",
 												messageState : "closed",
-												messageTitle : "共享项目请求",
+												messageTitle : "共享请求",
 												date : date,
-												detail : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:项目" + $.$model.xGet("project").xGet("name"),
+												detail : "用户" + Alloy.Models.User.xGet("userName") + "给您共享项目:" + $.$model.xGet("project").xGet("name"),
 												messageBox : Alloy.Models.User.xGet("messageBox"),
 												messageData : JSON.stringify({
 													shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),

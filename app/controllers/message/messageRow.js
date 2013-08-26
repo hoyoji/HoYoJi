@@ -86,6 +86,7 @@ function setImageEdit(){
 	}
 }
 
+$.friendUserName.UIInit($, $.getCurrentWindow());
 $.messageTitle.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.detail.UIInit($, $.getCurrentWindow());
