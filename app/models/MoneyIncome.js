@@ -432,8 +432,8 @@ exports.definition = {
 				});
 				if (projectShareAuthorization.id) {
 					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
-					projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate - this.xGet("amount") * moneyIncome.xGet("exchangeRate") : 
-					record.amount * record.exchangeRate - this.xGet("amount") * moneyIncome.xGet("exchangeRate");
+					projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate") : 
+					record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate");
 				}				
 			},
 			syncUpdateConflict : function(record, dbTrans) {

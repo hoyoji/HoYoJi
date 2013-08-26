@@ -241,12 +241,12 @@
 									for (var hasMany in model.config.hasMany) {
 										model.xGet(hasMany).forEach(function(item) {
 											item.syncDelete(record, dbTrans);
-											item._syncDelete(record, dbTrans);
+											item._syncDelete(record, dbTrans, function(e){});
 											dbTrans.db.execute(sql, [item.xGet("id")]);
 										});
 									}
 									model.syncDelete(record, dbTrans);
-									model._syncDelete(record, dbTrans);
+									model._syncDelete(record, dbTrans, function(e){});
 								}
 							}
 							dbTrans.db.execute(sql, [id]);
