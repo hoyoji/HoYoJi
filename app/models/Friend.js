@@ -167,7 +167,7 @@ exports.definition = {
 								"fromUserId" : Alloy.Models.User.id,
 								"type" : "System.Friend.Delete",
 								"messageState" : "new",
-								"messageTitle" : Alloy.Models.User.xGet("userName"),
+								"messageTitle" : "删除好友",
 								"date" : (new Date()).toISOString(),
 								"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
 								"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")

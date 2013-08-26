@@ -47,6 +47,13 @@ exports.definition = {
 						}
 					});
 				}
+			},
+			getFriendUserName : function(){
+				if (this.xGet("toUserId") === Alloy.Models.User.id) {
+					return this.xGet("fromUser").getFriendDisplayName();
+				}else{
+					return this.xGet("toUser").getFriendDisplayName();
+				}
 			}	
 		});
 		return Model;
