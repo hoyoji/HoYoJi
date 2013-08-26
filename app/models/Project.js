@@ -146,30 +146,65 @@ exports.definition = {
 					if(acceptProjectShareAuthorizations.length > 1 || waitProjectShareAuthorizations.length > 0){
 						xFinishCallback({ msg :"项目中的共享好友不为空，不能删除"});
 					}else{
-						if(Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")){
-							Alloy.Models.User.xSet("activeProject", null);
-							Alloy.Models.User.save("activeProjectId", null, options);
+						var self = this;
+						function deleteProjectShareAuthorization(successCB, errorCB) {
+							var projectShareAuthorizations = self.xGet("projectShareAuthorizations");
+							var projectShareAuthorizationsCount = 0;
+							if(projectShareAuthorizations.length > 0){
+								var delError = false;
+								for(var i = 0; i < projectShareAuthorizations.length; i++){
+									var projectShareAuthorization = projectShareAuthorizations.at(i);
+									projectShareAuthorization._xDelete(function(err){
+										if(err){
+											delError = true;
+										}
+									}, options);
+									if(delError){
+										break;
+									} else {
+										projectShareAuthorizationsCount++;
+									}
+								}
+								if (projectShareAuthorizationsCount === projectShareAuthorizations.length) {
+									projectShareAuthorizations.reset();
+									successCB();
+								} else {
+									errorCB({__summary : {msg : "删除子数据项目共享时出错"}});
+								}
+								
+							}else{
+								successCB();
+							}
 						}
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								projectId : this.xGet("id"),
-								friendUserId : Alloy.Models.User.id
-							});
-						var moneyExpenseCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
-								id : this.xGet("depositeExpenseCategoryId")
-							});
-						var moneyIncomeCategory = Alloy.createModel("MoneyIncomeCategory").xFindInDb({
-								id : this.xGet("depositeIncomeCategoryId")
-							});
-						if(projectShareAuthorization.id){
-							projectShareAuthorization._xDelete();
-						}
-						if(moneyExpenseCategory.id){
-							moneyExpenseCategory._xDelete();
-						}
-						if(moneyIncomeCategory.id){
-							moneyIncomeCategory._xDelete();
-						}
-						this._xDelete(xFinishCallback, options);
+						deleteProjectShareAuthorization(function(e){
+							if(Alloy.Models.User.xGet("activeProjectId") === self.xGet("id")){
+								Alloy.Models.User.xSet("activeProject", null);
+								Alloy.Models.User.save("activeProjectId", null, options);
+							}
+							var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
+									id : self.xGet("depositeExpenseCategoryId")
+								});
+							var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory").xFindInDb({
+									id : self.xGet("depositeIncomeCategoryId")
+								});
+							// self.xSet("depositeIncomeCategoryId", null);
+							// self.xSet("depositeExpenseCategoryId", null);
+							// self.save();
+							
+							if(depositeExpenseCategory.id){
+								depositeExpenseCategory._xDelete(function(){},options);
+							}
+							if(depositeIncomeCategory.id){
+								depositeIncomeCategory._xDelete(function(){},options);
+							}
+							self.xGet("moneyExpenseCategories").remove(depositeExpenseCategory, {silent : true});
+							self.xGet("moneyIncomeCategories").remove(depositeIncomeCategory, {silent : true});
+							self._xDelete(xFinishCallback, options);
+						}, function(e) {
+							saveErrorCB("删除失败,请重试：" + e.__summary.msg);
+							return;
+						});
+						
 					}
 				}
 			},
