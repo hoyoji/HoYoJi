@@ -12,7 +12,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		alert("请选择项目");
 		return;
 	}
-	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.exchangeRate.setValue(rate);
 		$.exchangeRate.field.fireEvent("change");
 	}, function(e) {
@@ -29,7 +29,7 @@ $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function
 		alert("请选择项目");
 		return;
 	}
-	Alloy.Globals.Server.getExchangeRate($.depositeFriendAccount.xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+	Alloy.Globals.Server.getExchangeRate($.depositeFriendAccount.xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.depositeAccountExchangeRate.setValue(rate);
 		$.depositeAccountExchangeRate.field.fireEvent("change");
 	}, function(e) {
@@ -62,7 +62,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
 			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), project.xGet("currencyId"), function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
 					foreignCurrencyId : project.xGet("currencyId"),

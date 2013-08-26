@@ -239,27 +239,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					function getExchange(successCB, errorCB) {
 						if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
 							successCB();
-						}
-						var exchange = Alloy.createModel("Exchange").xFindInDb({
-							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
-						});
-						if (!exchange.id) {
-							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
-								exchange = Alloy.createModel("Exchange", {
-									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-									foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
-									rate : rate
-								});
-								exchange.xSet("ownerUser", Alloy.Models.User);
-								exchange.xSet("ownerUserId", Alloy.Models.User.id);
-								exchange.save();
-								successCB();
-							}, function(e) {
-								errorCB(e);
+						}else{
+							var exchange = Alloy.createModel("Exchange").xFindInDb({
+								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+								foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 							});
-						} else {
-							successCB();
+							if (!exchange.id) {
+								Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+									exchange = Alloy.createModel("Exchange", {
+										localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+										foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
+										rate : rate
+									});
+									exchange.xSet("ownerUser", Alloy.Models.User);
+									exchange.xSet("ownerUserId", Alloy.Models.User.id);
+									exchange.save();
+									successCB();
+								}, function(e) {
+									errorCB(e);
+								});
+							} else {
+								successCB();
+							}
 						}
 					}
 

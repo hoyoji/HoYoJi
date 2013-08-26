@@ -94,6 +94,9 @@
 			    // this._silent = {};
 			    // this._pending = {};
 			},
+			xRefresh : function(){
+				this.trigger("xrefresh");
+			},
 			_xSave : function(options) {
 				options = _.extend({}, options, {
 					wait : true,

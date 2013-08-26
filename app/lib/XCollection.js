@@ -33,6 +33,7 @@
                 this.__filterCollection.on("add", this.__addModel, this);
                 this.__filterCollection.on("remove", this.__removeModel, this);
                 this.__filterCollection.on("sync", this.__changeModel, this);
+                this.__filterCollection.on("xrefresh", this.__changeModel, this);
                 if(winController){
 					winController.onWindowCloseDo(function(){
 						self.xClearFilter();
@@ -44,6 +45,7 @@
 					this.__filterCollection.off("add", this.__addModel, this);
 					this.__filterCollection.off("remove", this.__removeModel, this);
 					this.__filterCollection.off("sync", this.__changeModel, this);
+					this.__filterCollection.off("xrefresh", this.__changeModel, this);
 				}
 			},			
 			xFetch : function(options) {
