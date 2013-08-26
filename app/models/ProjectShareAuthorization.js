@@ -380,22 +380,22 @@ exports.definition = {
 				// apportionedTotalExpense : "REAL NOT NULL"
 				
 				if (this.__syncActualTotalIncome !== undefined) {
-					record.actualTotalIncome = this.__syncActualTotalIncome + this.xGet("actualTotalIncome");
+					record.actualTotalIncome = this.__syncActualTotalIncome + (this.xGet("actualTotalIncome") || 0);
 				}
 				delete this.__syncActualTotalIncome;
 				
 				if (this.__syncActualTotalExpense !== undefined) {
-					record.actualTotalExpense = this.__syncActualTotalExpense + this.xGet("actualTotalExpense");
+					record.actualTotalExpense = this.__syncActualTotalExpense + (this.xGet("actualTotalExpense") || 0);
 				}
 				delete this.__syncActualTotalExpense;
 				
 				if (this.__syncApportionedTotalIncome !== undefined) {
-					record.apportionedTotalIncome = this.__syncApportionedTotalIncome + this.xGet("apportionedTotalIncome");
+					record.apportionedTotalIncome = this.__syncApportionedTotalIncome + (this.xGet("apportionedTotalIncome") || 0);
 				}
 				delete this.__syncApportionedTotalIncome;
 				
 				if (this.__syncApportionedTotalExpense !== undefined) {
-					record.apportionedTotalExpense = this.__syncApportionedTotalExpense + this.xGet("apportionedTotalExpense");
+					record.apportionedTotalExpense = this.__syncApportionedTotalExpense + (this.xGet("apportionedTotalExpense") || 0);
 				}
 				delete this.__syncApportionedTotalExpense;
 			},
