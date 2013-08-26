@@ -377,9 +377,7 @@ exports.definition = {
 				// actualTotalIncome : "REAL NOT NULL",
 				// actualTotalExpense : "REAL NOT NULL",
 				// apportionedTotalIncome : "REAL NOT NULL",
-				// apportionedTotalExpense : "REAL NOT NULL",
-				// sharedTotalIncome : "REAL NOT NULL",
-				// sharedTotalExpense : "REAL NOT NULL",
+				// apportionedTotalExpense : "REAL NOT NULL"
 				
 				if (this.__syncActualTotalIncome !== undefined) {
 					record.actualTotalIncome = this.__syncActualTotalIncome + this.xGet("actualTotalIncome");
@@ -400,17 +398,6 @@ exports.definition = {
 					record.apportionedTotalExpense = this.__syncApportionedTotalExpense + this.xGet("apportionedTotalExpense");
 				}
 				delete this.__syncApportionedTotalExpense;
-				
-				if (this.__syncSharedTotalIncome !== undefined) {
-					record.sharedTotalIncome = this.__syncSharedTotalIncome + this.xGet("sharedTotalIncome");
-				}
-				delete this.__syncSharedTotalIncome;
-				
-				if (this.__syncSharedTotalExpense !== undefined) {
-					record.sharedTotalExpense = this.__syncSharedTotalExpense + this.xGet("sharedTotalExpense");
-				}
-				delete this.__syncSharedTotalExpense;
-			
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
@@ -418,9 +405,7 @@ exports.definition = {
 				localUpdated = this.__syncActualTotalIncome !== undefined 
 								|| this.__syncActualTotalExpense !== undefined
 								||this.__syncApportionedTotalIncome !== undefined 
-								|| this.__syncApportionedTotalExpense !== undefined
-								|| this.__syncSharedTotalIncome !== undefined 
-								|| this.__syncSharedTotalExpense !== undefined;
+								|| this.__syncApportionedTotalExpense !== undefined;
 
 				if(localUpdated){
 					this.syncUpdate(record, dbTrans);
@@ -434,9 +419,7 @@ exports.definition = {
 							actualTotalIncome : record.actualTotalIncome,
 							actualTotalExpense : record.actualTotalExpense,
 							apportionedTotalIncome : record.apportionedTotalIncome,
-							apportionedTotalExpense : record.apportionedTotalExpense,
-							sharedTotalIncome : record.sharedTotalIncome,
-							sharedTotalExpense : record.sharedTotalExpense
+							apportionedTotalExpense : record.apportionedTotalExpense
 						};
 					}
 					if (record.sharePercentage !== this.xGet("sharePercentage")) {
