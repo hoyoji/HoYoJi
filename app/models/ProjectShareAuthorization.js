@@ -344,7 +344,7 @@ exports.definition = {
 					"fromUserId" : Alloy.Models.User.xGet("id"),
 					"type" : "Project.Share.Delete",
 					"messageState" : "unread",
-					"messageTitle" : Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
+					"messageTitle" : "移除共享",
 					"date" : (new Date()).toISOString(),
 					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
 					"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),

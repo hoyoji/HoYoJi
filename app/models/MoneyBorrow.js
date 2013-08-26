@@ -214,6 +214,13 @@ exports.definition = {
 
 				return ownerUserSymbol;
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyReturns").length > 0) {
 					xFinishCallback({

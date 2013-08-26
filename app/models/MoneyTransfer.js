@@ -139,6 +139,13 @@ exports.definition = {
 			getTransferInAmount : function() {
 				return this.xGet("transferIn").xGet("currency").xGet("symbol") + this.xGet("transferInAmount").toUserCurrency();
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				var transferOut = this.xGet("transferOut");
 				var transferIn = this.xGet("transferIn");

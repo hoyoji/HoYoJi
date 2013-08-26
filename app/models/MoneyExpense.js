@@ -214,7 +214,7 @@ exports.definition = {
 				return this.xGet("project").xGet("currency").xGet("symbol") + Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeRate");
+				return Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -297,6 +297,13 @@ exports.definition = {
 					}
 					this.hasAddedApportions = true;
 				}
+			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
 			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyExpenseDetails").length > 0) {

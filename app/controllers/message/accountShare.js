@@ -594,7 +594,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			"fromUserId" : Alloy.Models.User.id,
 			"type" : "Account.Share.AddRequest",
 			"messageState" : "unread",
-			"messageTitle" : Alloy.Models.User.xGet("userName"),
+			"messageTitle" : "充值请求",
 			"date" : date,
 			"detail" : $.$model.xGet("detail"),
 			"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId"),
