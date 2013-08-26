@@ -466,7 +466,7 @@
 				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
-						if (this.config.hasMany[hasMany]["cascadeDelete"] != true && this.xPrevious(hasMany).length > 0) {
+						if (this.config.hasMany[hasMany]["cascadeDelete"] != true && this.xGet(hasMany).length > 0) {
 							error = {
 								msg : "包含有相关联的子数据，删除失败"
 							};
