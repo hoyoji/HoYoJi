@@ -43,7 +43,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 			$.exchangeRate.field.fireEvent("change");
 		},
 		function(e){
-			alert(e);
+			alert(e.__summary.msg);
 		}
 	);
 });

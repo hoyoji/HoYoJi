@@ -118,7 +118,7 @@ exports.definition = {
 			xDelete : function(xFinishCallback, options) {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				// saveOptions.wait = true;
+				saveOptions.wait = true;
 				var self = this;
 				var projectShareAuthorizations = self.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {

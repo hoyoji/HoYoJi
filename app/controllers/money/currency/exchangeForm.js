@@ -17,7 +17,7 @@ $.rate.rightButton.addEventListener("singletap", function(e) {
 			$.rate.field.fireEvent("change");
 		},
 		function(e){
-			alert(e);
+			alert(e.__summary.msg);
 		}
 	);
 });

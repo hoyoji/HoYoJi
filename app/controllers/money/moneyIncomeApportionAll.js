@@ -38,12 +38,12 @@ function onFooterbarTap(e) {
 						apportionType : "Average"
 					});
 					selectedIncome.xGet("moneyIncomeApportions").add(newMoneyIncomeApportion);
-					collection = selectedIncome.xGet("moneyIncomeApportions");
-					collection.forEach(function(item) {
-						if (!item.__xDeletedHidden) {
-							item.trigger("_xchange:amount", item);
-						}
-					});
+					// collection = selectedIncome.xGet("moneyIncomeApportions");
+					// collection.forEach(function(item) {
+						// if (!item.__xDeletedHidden) {
+							// item.trigger("_xchange:amount", item);
+						// }
+					// });
 				} else {
 					alert("该成员尚未接受此项目，不能添加");
 				}

@@ -38,12 +38,12 @@ function onFooterbarTap(e) {
 						apportionType : "Average"
 					});
 					selectedExpense.xGet("moneyExpenseApportions").add(newMoneyExpenseApportion);
-					collection = selectedExpense.xGet("moneyExpenseApportions");
-					collection.forEach(function(item) {
-						if (!item.__xDeletedHidden) {
-							item.trigger("_xchange:amount", item);
-						}
-					});
+					// collection = selectedExpense.xGet("moneyExpenseApportions");
+					// collection.forEach(function(item) {
+						// if (!item.__xDeletedHidden) {
+							// item.trigger("_xchange:amount", item);
+						// }
+					// });
 				} else {
 					alert("该成员尚未接受此项目，不能添加");
 				}

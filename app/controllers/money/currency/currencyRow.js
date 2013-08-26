@@ -43,7 +43,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 								// }
 							}, function(e) {
 								// errorCount++;
-								errorCB(e);
+								alert(e.__summary.msg);
 							});
 
 						} 
