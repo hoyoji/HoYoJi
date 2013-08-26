@@ -214,7 +214,7 @@ exports.definition = {
 				return this.xGet("project").xGet("currency").xGet("symbol") + Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeRate");
+				return Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -312,23 +312,31 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
+					saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") - amount
 					}, saveOptions);
 
+var myProjectShareAuthorization;
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
-							// item.xSet("actualTotalIncome", actualTotalIncome);
-							item.save({
-								actualTotalIncome : actualTotalIncome
-							}, saveOptions);
+							item.xSet("actualTotalIncome", actualTotalIncome);
+							myProjectShareAuthorization = item;
+							// item.save({
+								// actualTotalIncome : actualTotalIncome
+							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(xFinishCallback, options);
+					this._xDelete(function(e){
+						if(e) {
+							myProjectShareAuthorization.xSet("actualTotalIncome", myProjectShareAuthorization.xPrevious("actualTotalIncome"));
+						}
+						xFinishCallback(e);
+					}, options);
 				}
 			},
 			canAddNew : function() {
