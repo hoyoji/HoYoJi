@@ -300,7 +300,7 @@ exports.definition = {
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
-				if(!remark) {
+				if (!remark) {
 					remark = "无备注";
 				}
 				return remark;
@@ -334,13 +334,13 @@ exports.definition = {
 							item.xSet("actualTotalExpense", actualTotalExpense);
 							myProjectShareAuthorization = item;
 							// item.save({
-								// actualTotalExpense : actualTotalExpense
+							// actualTotalExpense : actualTotalExpense
 							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(function(e){
-						if(e) {
+					this._xDelete(function(e) {
+						if (e) {
 							myProjectShareAuthorization.xSet("actualTotalExpense", myProjectShareAuthorization.xPrevious("actualTotalExpense"));
 						}
 						xFinishCallback(e);
@@ -376,6 +376,15 @@ exports.definition = {
 							// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
 						});
 					}
+				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
+						projectShareAuthorization.__syncActualTotalExpense + record.amount * record.exchangeRate : 
+						record.amount * record.exchangeRate;
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -422,6 +431,15 @@ exports.definition = {
 							});
 						}
 					}
+				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
+							projectShareAuthorization.__syncActualTotalExpense + record.amount * record.exchangeRate - this.xGet("amount") * moneyExpense.xGet("exchangeRate") : 
+							record.amount * record.exchangeRate - this.xGet("amount") * moneyExpense.xGet("exchangeRate");
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
