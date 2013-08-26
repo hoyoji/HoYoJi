@@ -689,10 +689,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										$.saveModel(function(e) {
 											//把与项目相关的资料全部下载下来
 											Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
-												// $.$model.xGet("project").xGetDescendents("subProjects").forEach(function(project){
-													// alert("xRefresh");
-													// project.xRefresh();
-												// });
+												projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project){
+													project.xRefresh();
+												});
 												saveEndCB("接受成功");
 												return;
 											}, saveErrorCB);

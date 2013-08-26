@@ -95,7 +95,7 @@
 			    // this._pending = {};
 			},
 			xRefresh : function(){
-				this.trigger("xrefresh");
+				this.trigger("xrefresh", this);
 			},
 			_xSave : function(options) {
 				options = _.extend({}, options, {
