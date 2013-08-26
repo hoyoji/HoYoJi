@@ -161,13 +161,13 @@ exports.definition = {
 								id : this.xGet("depositeIncomeCategoryId")
 							});
 						if(projectShareAuthorization.id){
-							projectShareAuthorization._xDelete();
+							projectShareAuthorization._xDelete(function(){}, options);
 						}
 						if(moneyExpenseCategory.id){
-							moneyExpenseCategory._xDelete();
+							moneyExpenseCategory._xDelete(function(){}, options);
 						}
 						if(moneyIncomeCategory.id){
-							moneyIncomeCategory._xDelete();
+							moneyIncomeCategory._xDelete(function(){}, options);
 						}
 						this._xDelete(xFinishCallback, options);
 					}
