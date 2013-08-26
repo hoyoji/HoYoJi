@@ -390,12 +390,21 @@
 							});
 						}
 					}, function(e) {
-						errorCB({
-							__summary : {
-								msg : "连接服务器出错：" + e.code,
-								code : e.code
-							}
-						});
+						if(e.code === 500){
+							errorCB({
+								__summary : {
+									msg : "服务器无法该汇率，请手动输入汇率",
+									code : e.code
+								}
+							});
+						} else {
+							errorCB({
+								__summary : {
+									msg : "连接服务器出错：" + e.code,
+									code : e.code
+								}
+							});	
+						}
 					});
 				} catch(e) {
 					errorCB({

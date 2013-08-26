@@ -39,7 +39,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 				successCallback();
 				loading = false;
 			}, function(e) {
-				alert("连接汇率服务器错误，无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
 			});
 		} else {
 			successCallback();
@@ -93,7 +93,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		$.exchangeRate.setValue(rate);
 		$.exchangeRate.field.fireEvent("change");
 	}, function(e) {
-		alert(e);
+		alert(e.__summary.msg);
 	});
 });
 

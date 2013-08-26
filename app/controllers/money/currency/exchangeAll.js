@@ -64,7 +64,7 @@ function onFooterbarTap(e) {
 				$.footerBar.updateAllExchanges.setEnabled(true);
 				$.footerBar.updateAllExchanges.hideActivityIndicator();
 			}, function(e) {
-				alert(e);
+				alert(e.__summary.msg);
 				$.footerBar.updateAllExchanges.setEnabled(true);
 				$.footerBar.updateAllExchanges.hideActivityIndicator();
 			});
