@@ -393,7 +393,7 @@
 						if(e.code === 500){
 							errorCB({
 								__summary : {
-									msg : "服务器无法该汇率，请手动输入汇率",
+									msg : "服务器无法获取该汇率，请手工输入",
 									code : e.code
 								}
 							});

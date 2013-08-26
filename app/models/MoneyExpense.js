@@ -312,7 +312,7 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					// saveOptions.wait = true;
+					saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
@@ -320,17 +320,24 @@ exports.definition = {
 					}, saveOptions);
 
 					var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
+					var myProjectShareAuthorization;
 					projectShareAuthorizations.forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
-							// item.xSet("actualTotalExpense", actualTotalExpense);
-							item.save({
-								actualTotalExpense : actualTotalExpense
-							}, saveOptions);
+							item.xSet("actualTotalExpense", actualTotalExpense);
+							myProjectShareAuthorization = item;
+							// item.save({
+								// actualTotalExpense : actualTotalExpense
+							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(xFinishCallback, options);
+					this._xDelete(function(e){
+						if(e) {
+							myProjectShareAuthorization.xSet("actualTotalExpense", myProjectShareAuthorization.xPrevious("actualTotalExpense"));
+						}
+						xFinishCallback(e);
+					}, options);
 				}
 			},
 			canAddNew : function() {
