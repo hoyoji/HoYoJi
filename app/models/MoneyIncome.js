@@ -298,6 +298,13 @@ exports.definition = {
 					this.hasAddedApportions = true;
 				}
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
@@ -319,20 +326,20 @@ exports.definition = {
 						currentBalance : moneyAccount.xGet("currentBalance") - amount
 					}, saveOptions);
 
-var myProjectShareAuthorization;
+					var myProjectShareAuthorization;
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
 							item.xSet("actualTotalIncome", actualTotalIncome);
 							myProjectShareAuthorization = item;
 							// item.save({
-								// actualTotalIncome : actualTotalIncome
+							// actualTotalIncome : actualTotalIncome
 							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(function(e){
-						if(e) {
+					this._xDelete(function(e) {
+						if (e) {
 							myProjectShareAuthorization.xSet("actualTotalIncome", myProjectShareAuthorization.xPrevious("actualTotalIncome"));
 						}
 						xFinishCallback(e);

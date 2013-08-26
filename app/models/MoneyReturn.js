@@ -246,6 +246,13 @@ exports.definition = {
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var amount = this.xGet("amount");

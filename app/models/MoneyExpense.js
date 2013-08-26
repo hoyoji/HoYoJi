@@ -298,6 +298,13 @@ exports.definition = {
 					this.hasAddedApportions = true;
 				}
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if(!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback && xFinishCallback({
