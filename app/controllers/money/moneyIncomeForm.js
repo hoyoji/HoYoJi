@@ -42,8 +42,8 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 });
 
 $.details.addEventListener("singletap", function(e) {
-	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
-			selectedExpense : $.$model,
+	Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
+			selectedIncome : $.$model,
 			closeWithoutSave : true
 		});
 });

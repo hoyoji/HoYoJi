@@ -206,22 +206,33 @@ exports.definition = {
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {
 				this._xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
-					syncFromServer : true
+					syncFromServer : true,
+					wait : true
 				});
-			},
-			syncAddNew : function(record, dbTrans) {
-				var self = this;
-				var friendUser = Alloy.createModel("User").xFindInDb({
-					id : record.friendUserId
-				});
-				// 同步新增好友时，一起把该好友用户同步下来
-				if (!friendUser.id) {
-					Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
-						if (collection.length > 0) {
-						}
-					});
-				}
 			}
+			// ,
+			// _syncUpdate : function(record, dbTrans) {
+				// //delete record.id;
+				// this.save(record, {
+					// dbTrans : dbTrans,
+					// syncFromServer : true,
+					// patch : true,
+					// wait : true
+				// });
+			// }			
+			// syncAddNew : function(record, dbTrans) {
+				// var self = this;
+				// var friendUser = Alloy.createModel("User").xFindInDb({
+					// id : record.friendUserId
+				// });
+				// // 同步新增好友时，一起把该好友用户同步下来
+				// if (!friendUser.id) {
+					// Alloy.Globals.Server.loadData("User", [record.friendUserId], function(collection) {
+						// if (collection.length > 0) {
+						// }
+					// });
+				// }
+			// }
 		});
 
 		return Model;

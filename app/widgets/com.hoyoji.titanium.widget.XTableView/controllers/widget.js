@@ -360,7 +360,11 @@ function addRowToSection(rowModel, collection, index) {
 			$.table.appendRow(row);
 		}
 	} else {
-		$.table.insertRowAfter(index, row);
+		try{
+			$.table.insertRowAfter(index, row);
+		} catch(e){
+			$.table.appendRow(row);
+		}
 	}
 }
 
@@ -383,15 +387,57 @@ function addRow(rowModel, collection) {
 }
 
 exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
-	var index = rowIndex;
-	var parentController = hasDetailSections[sectionRowId].parentRowController;
-	var collections = parentController.getDetailCollections();
-	for (var i = 0; i < collections.length; i++) {
-		for (var j = 0; j < collections[i].length; j++) {
-			addRowToSection(collections[i].at(j), collections[i], index);
-			index++;
+	if (hasDetailSections[sectionRowId].collections.length > 0) {
+		var index = rowIndex + 1, insertPos;	
+
+		var collections = hasDetailSections[sectionRowId].collections;
+		for (var i = 0; i < collections.length; i++) {
+			var newModelsToBeAdded = [];
+			for (var j = 0; j < collections[i].length; j++) {
+				var rowView = getRowViewByRowIndex(index);
+				if (!rowView || collections[i].at(j).id !== rowView.id) {
+					newModelsToBeAdded.push({
+						model : collections[i].at(j),
+						collection : collections[i]
+					});
+					if(!insertPos){
+						insertPos = index - 1;
+					}
+				} else {
+					index++;
+				}
+			}
+
+			for (var i = 0; i < newModelsToBeAdded.length; i++) {
+				addRowToSection(newModelsToBeAdded[i].model, newModelsToBeAdded[i].collection, insertPos);
+				insertPos++;
+			}
 		}
-		hasDetailSections[sectionRowId].collections.push(collections[i]);
+	} else {
+		var index = rowIndex;
+
+		var parentController = hasDetailSections[sectionRowId].parentRowController;
+		var collections = parentController.getDetailCollections();
+
+		for (var i = 0; i < collections.length; i++) {
+
+			for (var j = 0; j < collections[i].length; j++) {
+				addRowToSection(collections[i].at(j), collections[i], index);
+				index++;
+			}
+			// collections[i].on("add", function() {
+				// // addRowToSection(rowModel, collection);
+// 
+				// parentController.$view.fireEvent("click", {
+					// bubbles : true,
+					// expandSection : true,
+					// sectionRowId : sectionRowId
+				// });
+// 
+			// });
+			hasDetailSections[sectionRowId].collections.push(collections[i]);
+
+		}
 	}
 };
 
@@ -430,7 +476,7 @@ exports.collapseHasDetailSection = function(rowIndex, sectionRowId) {
 			if (hasDetailSections[rowId]) {
 				exports.collapseHasDetailSection(index, rowId);
 			}
-
+			// collections[c].off("add");
 			getRowViewByRowIndex(index).fireEvent("rowremoved", {
 				bubbles : false
 			});
@@ -484,11 +530,11 @@ exports.fetchNextPage = function(tableRowsCount) {
 
 		if (sortByField) {
 			sortedArray.sort(function(a, b) {
-				a = a.record.xDeepGet(sortByField);
-				b = b.record.xDeepGet(sortByField);
-				if (a < b) {
+				var va = a.record.xDeepGet(sortByField);
+				var vb = b.record.xDeepGet(sortByField);
+				if (va < vb) {
 					return sortedArray_sortReverse ? 1 : -1;
-				} else if (a > b) {
+				} else if (va > vb) {
 					return sortedArray_sortReverse ? -1 : 1;
 				}
 				return 0;
@@ -596,7 +642,7 @@ var clearCollections = function() {
 	showNoDataIndicator(0);
 };
 
-exports.clearAllCollections = function(){
+exports.clearAllCollections = function() {
 	clearCollections();
 };
 
@@ -707,6 +753,8 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
+
+
 	$.$view.setTop("99%");
 	animate();
 };
@@ -797,33 +845,33 @@ exports.setHeaderView = function(headerView) {
 		// $.table.setBottom(50);
 		// var scrolling = false;
 		// $.table.addEventListener("scroll", function(e) {
-			// if (e.firstVisibleItem === 0) {
-				// if($.$view.getTop() !== 0 && scrolling === false){
-					// var animation = Titanium.UI.createAnimation();
-					// animation.top = 0;
-					// animation.bottom = 50;
-					// animation.duration = 1000;
-					// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-					// animation.addEventListener("complete", function(){
-						// scrolling = false;
-					// });
-					// scrolling = true;
-					// $.$view.animate(animation);
-				// }
-			// } else {
-				// if($.$view.getTop() !== -60 && scrolling === false){
-					// var animation = Titanium.UI.createAnimation();
-					// animation.top = -60;
-					// animation.bottom = 50;
-					// animation.duration = 1000;
-					// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-					// animation.addEventListener("complete", function(){
-						// scrolling = false;
-					// });
-					// scrolling = true;
-					// $.$view.animate(animation);
-				// }
-			// }
+		// if (e.firstVisibleItem === 0) {
+		// if($.$view.getTop() !== 0 && scrolling === false){
+		// var animation = Titanium.UI.createAnimation();
+		// animation.top = 0;
+		// animation.bottom = 50;
+		// animation.duration = 1000;
+		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		// animation.addEventListener("complete", function(){
+		// scrolling = false;
+		// });
+		// scrolling = true;
+		// $.$view.animate(animation);
+		// }
+		// } else {
+		// if($.$view.getTop() !== -60 && scrolling === false){
+		// var animation = Titanium.UI.createAnimation();
+		// animation.top = -60;
+		// animation.bottom = 50;
+		// animation.duration = 1000;
+		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		// animation.addEventListener("complete", function(){
+		// scrolling = false;
+		// });
+		// scrolling = true;
+		// $.$view.animate(animation);
+		// }
+		// }
 		// });
 	} else {
 		$.table.setHeaderView(headerView);

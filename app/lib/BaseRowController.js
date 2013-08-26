@@ -72,12 +72,12 @@
 				if (isExpanded) {
 					$.$view.fireEvent("click", {
 						bubbles : true,
-						addRowToSection : model.xGet("id"),
+						//addRowToSection : model.xGet("id"),
+						expandSection : true,
 						sectionRowId : $.$model.xGet("id")
 					});
 				}
 			}
-
 
 			$.getDetailCollections = function() {
 				if (!detailCollections) {

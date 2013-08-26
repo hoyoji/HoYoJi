@@ -637,7 +637,8 @@
 				this.save(record, {
 					dbTrans : dbTrans,
 					syncFromServer : true,
-					patch : true
+					patch : true,
+					wait : true
 				});
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -645,7 +646,8 @@
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {
 				this.xDelete(xFinishedCallback, {
 					dbTrans : dbTrans,
-					syncFromServer : true
+					syncFromServer : true,
+					wait : true
 				});
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
