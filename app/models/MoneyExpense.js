@@ -386,8 +386,6 @@ exports.definition = {
 						projectShareAuthorization.__syncActualTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : 
 						Number((record.amount * record.exchangeRate).toFixed(2));
 				}
-				
-				
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 该记录同时存在服务器上和在本地。在服务器上被改变，但是在本地未被改变
