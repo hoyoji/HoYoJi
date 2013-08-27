@@ -100,7 +100,6 @@ $.onWindowOpenDo(function() {
 	}
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		console.info("++++++focus+" + $.amount.field.focus());
 		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.$model.apportionFocus) {
 			$.$model.apportionFocus = false;
 			var fixedTotal = 0;

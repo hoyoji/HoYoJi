@@ -144,20 +144,18 @@ exports.definition = {
 				// 1. 如果支出也是新增的
 				// 2. 支出已经存在
 
-				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-					id : record.moneyExpenseId
-				});
-				if (moneyExpense.id) {
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : moneyExpense.xGet("projectId"),
-						friendUserId : moneyExpense.xGet("friendUserId")
+						projectId : record.projectId,
+						friendUserId : record.friendUserId
 					});
 					if (projectShareAuthorization.id) {
 						projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? 
-								projectShareAuthorization.__syncApportionedTotalExpense + record.amount * record.exchangeRate : 
-								record.amount * record.exchangeRate;
+								projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : 
+								Number((record.amount * record.exchangeRate).toFixed(2));
 					}
-				}
+					
+					delete record.projectId;
+					delete record.exchangeRate;
 			},
 			syncUpdate : function(record, dbTrans) {
 				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
@@ -165,13 +163,15 @@ exports.definition = {
 				});
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : moneyExpense.xGet("projectId"),
-					friendUserId : moneyExpense.xGet("friendUserId")
+					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
 					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? 
-						projectShareAuthorization.__syncApportionedTotalExpense + record.amount * record.exchangeRate - this.xGet("amount")  * moneyExpense.xGet("exchangeRate") : 
-							record.amount * record.exchangeRate - this.xGet("amount") * moneyExpense.xGet("exchangeRate");
+						projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount")  * moneyExpense.xGet("exchangeRate")).toFixed(2)) : 
+							Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2));
 				}
+				delete record.projectId;
+				delete record.exchangeRate;
 			},
 			// syncUpdateConflict : function(record, dbTrans) {
 			// delete record.id;
