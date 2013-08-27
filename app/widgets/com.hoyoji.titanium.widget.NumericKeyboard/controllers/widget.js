@@ -48,6 +48,7 @@ exports.open = function(textField, saveCB, bottom) {
 			$.widget.setBottom(openBottom);
 			$.widget.setVisible(true);
 			$.keyboard.animate(animation);	
+			$.display.setText(activeTextField.getValue());
 	} else {
 		return;
 	}
@@ -66,7 +67,7 @@ function numPress(e) {
 		$.display.setText(e.source.getTitle());
 		flagNewNum = false;
 	} else {
-		var readout = $.display.getText();
+		var readout = $.display.getText() || "0";
 		// if(!readout){
 			// readout = 0;
 		// }else{
@@ -92,7 +93,7 @@ function doubleClickNumPress(e){
 
 //+-*/操作
 function operation(e) {
-	var readout = $.display.getText();
+	var readout = $.display.getText() || "0";
 	// if(!readout){
 		// readout = "0";
 	// }else{
