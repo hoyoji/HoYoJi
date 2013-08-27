@@ -1,7 +1,5 @@
 "Label": {
-	color: '#000',
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+	color: '#000'
 },
 
 "#label" : {

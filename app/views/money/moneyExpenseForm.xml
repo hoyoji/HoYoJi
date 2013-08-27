@@ -32,7 +32,7 @@
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">金额</Label>
 					<View id="projectAmountView" layout="horizontal" horizontalWrap="false"  width="70%" right="0">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.FILL"
 						id="projectAmount" autoInit="false"
 						hintText="请输入金额"
 						bindModel="$.$model"

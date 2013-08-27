@@ -3,9 +3,7 @@
 	font: {
 		fontSize: 16,
 		fontWeight: 'bold'
-	},
-	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+	}
 },
 
 "#error": {
