@@ -69,7 +69,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : accountShareData.account.projectId,
 								friendUserId : Alloy.Models.User.id
 							});
-							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - accountShareData.account.amount * accountShareData.account.exchangeRate);
+							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					
@@ -152,7 +152,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								projectId : accountShareData.account.projectId,
 								friendUserId : Alloy.Models.User.id
 							});
-							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - accountShareData.account.amount * accountShareData.account.exchangeRate);
+							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
 					

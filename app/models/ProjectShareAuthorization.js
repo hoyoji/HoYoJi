@@ -373,48 +373,37 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			syncUpdate : function(record, dbTrans) {
-			
+
 				// actualTotalIncome : "REAL NOT NULL",
 				// actualTotalExpense : "REAL NOT NULL",
 				// apportionedTotalIncome : "REAL NOT NULL",
 				// apportionedTotalExpense : "REAL NOT NULL"
-				
-				if (this.__syncActualTotalIncome !== undefined) {
-					record.actualTotalIncome = this.__syncActualTotalIncome + (this.xGet("actualTotalIncome") || 0);
-				}
+
+				record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
 				delete this.__syncActualTotalIncome;
-				
-				if (this.__syncActualTotalExpense !== undefined) {
-					record.actualTotalExpense = this.__syncActualTotalExpense + (this.xGet("actualTotalExpense") || 0);
-				}
+
+				record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
 				delete this.__syncActualTotalExpense;
-				
-				if (this.__syncApportionedTotalIncome !== undefined) {
-					record.apportionedTotalIncome = this.__syncApportionedTotalIncome + (this.xGet("apportionedTotalIncome") || 0);
-				}
+
+				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
 				delete this.__syncApportionedTotalIncome;
-				
-				if (this.__syncApportionedTotalExpense !== undefined) {
-					record.apportionedTotalExpense = this.__syncApportionedTotalExpense + (this.xGet("apportionedTotalExpense") || 0);
-				}
+
+				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
 				delete this.__syncApportionedTotalExpense;
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				localUpdated = this.__syncActualTotalIncome !== undefined 
-								|| this.__syncActualTotalExpense !== undefined
-								||this.__syncApportionedTotalIncome !== undefined 
-								|| this.__syncApportionedTotalExpense !== undefined;
+				localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
 
-				if(localUpdated){
+				if (localUpdated) {
 					this.syncUpdate(record, dbTrans);
-				} 
+				}
 				if (this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime) {
 					// 让本地修改覆盖服务器上的记录
 					// 但是取服务器上的占股比例
 					var updates;
-					if(localUpdated){
+					if (localUpdated) {
 						updates = {
 							actualTotalIncome : record.actualTotalIncome,
 							actualTotalExpense : record.actualTotalExpense,
@@ -426,15 +415,15 @@ exports.definition = {
 						updates = updates || {};
 						updates.sharePercentage = record.sharePercentage;
 					}
-					if(updates){
+					if (updates) {
 						this._syncUpdate(updates, dbTrans);
 					}
 				}
-				
+
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					this._syncUpdate(record, dbTrans);
-					if(!localUpdated){
+					if (!localUpdated) {
 						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}

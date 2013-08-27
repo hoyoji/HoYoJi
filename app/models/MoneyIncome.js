@@ -381,8 +381,8 @@ exports.definition = {
 				});
 				if (projectShareAuthorization.id) {
 					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
-						projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate : 
-						record.amount * record.exchangeRate;
+						projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) : 
+						Number((record.amount * record.exchangeRate).toFixed(2));
 				}				
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -432,8 +432,8 @@ exports.definition = {
 				});
 				if (projectShareAuthorization.id) {
 					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
-					projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate") : 
-					record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate");
+					projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : 
+					Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 				}				
 			},
 			syncUpdateConflict : function(record, dbTrans) {
