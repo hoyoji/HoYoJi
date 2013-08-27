@@ -390,7 +390,7 @@
 							});
 						}
 					}, function(e) {
-						if(e.code === 500){
+						if(e.code === 500 || e.code === -1){
 							errorCB({
 								__summary : {
 									msg : "服务器无法获取该汇率，请手工输入",
