@@ -214,7 +214,7 @@ exports.definition = {
 				return this.xGet("project").xGet("currency").xGet("symbol") + Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeRate");
+				return Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -298,6 +298,13 @@ exports.definition = {
 					this.hasAddedApportions = true;
 				}
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if (!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
@@ -312,23 +319,31 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
+					saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") - amount
 					}, saveOptions);
 
+					var myProjectShareAuthorization;
 					self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 							var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
-							// item.xSet("actualTotalIncome", actualTotalIncome);
-							item.save({
-								actualTotalIncome : actualTotalIncome
-							}, saveOptions);
+							item.xSet("actualTotalIncome", actualTotalIncome);
+							myProjectShareAuthorization = item;
+							// item.save({
+							// actualTotalIncome : actualTotalIncome
+							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(xFinishCallback, options);
+					this._xDelete(function(e) {
+						if (e) {
+							myProjectShareAuthorization.xSet("actualTotalIncome", myProjectShareAuthorization.xPrevious("actualTotalIncome"));
+						}
+						xFinishCallback(e);
+					}, options);
 				}
 			},
 			canAddNew : function() {
@@ -360,6 +375,15 @@ exports.definition = {
 						});
 					}
 				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
+						projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate : 
+						record.amount * record.exchangeRate;
+				}				
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
@@ -402,6 +426,15 @@ exports.definition = {
 						}
 					}
 				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
+					projectShareAuthorization.__syncActualTotalIncome + record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate") : 
+					record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate");
+				}				
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;

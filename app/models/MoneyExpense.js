@@ -214,7 +214,7 @@ exports.definition = {
 				return this.xGet("project").xGet("currency").xGet("symbol") + Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeRate");
+				return Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -298,6 +298,13 @@ exports.definition = {
 					this.hasAddedApportions = true;
 				}
 			},
+			getRemark : function() {
+				var remark = this.xGet("remark");
+				if (!remark) {
+					remark = "无备注";
+				}
+				return remark;
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (options.syncFromServer !== true && this.xGet("moneyExpenseDetails").length > 0) {
 					xFinishCallback && xFinishCallback({
@@ -327,13 +334,13 @@ exports.definition = {
 							item.xSet("actualTotalExpense", actualTotalExpense);
 							myProjectShareAuthorization = item;
 							// item.save({
-								// actualTotalExpense : actualTotalExpense
+							// actualTotalExpense : actualTotalExpense
 							// }, saveOptions);
 						}
 					});
 
-					this._xDelete(function(e){
-						if(e) {
+					this._xDelete(function(e) {
+						if (e) {
 							myProjectShareAuthorization.xSet("actualTotalExpense", myProjectShareAuthorization.xPrevious("actualTotalExpense"));
 						}
 						xFinishCallback(e);
@@ -369,6 +376,15 @@ exports.definition = {
 							// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
 						});
 					}
+				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
+						projectShareAuthorization.__syncActualTotalExpense + record.amount * record.exchangeRate : 
+						record.amount * record.exchangeRate;
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -415,6 +431,15 @@ exports.definition = {
 							});
 						}
 					}
+				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
+							projectShareAuthorization.__syncActualTotalExpense + record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate") : 
+							record.amount * record.exchangeRate - this.xGet("amount") * this.xGet("exchangeRate");
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {

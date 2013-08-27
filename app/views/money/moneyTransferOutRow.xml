@@ -42,7 +42,7 @@
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="57" left="66" right="25" height="14" class="firstRow" 
 				id="remark" autoInit="false"
 				bindModel = "$.$model"
-				bindAttribute = "remark"
+				bindAttribute = "getRemark()"
 				/>
 			<!-- </View> -->
 		</View>
