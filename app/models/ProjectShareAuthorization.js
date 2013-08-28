@@ -325,42 +325,42 @@ exports.definition = {
 					return "占股 : " + this.xGet("sharePercentage") + "%";
 				}
 			},
-			xDelete : function(xFinishCallback, options) {
-				var self = this;
-				var subProjectShareAuthorizationIds = [];
-				this.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
-					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : subProject.xGet("id"),
-						friendUserId : self.xGet("friendUserId")
-					});
-					if (subProjectShareAuthorization.id) {
-						subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						subProjectShareAuthorization._xDelete(xFinishCallback, options);
-					}
-				});
-				Alloy.Globals.Server.sendMsg({
-					id : guid(),
-					"toUserId" : self.xGet("friendUserId"),
-					"fromUserId" : Alloy.Models.User.xGet("id"),
-					"type" : "Project.Share.Delete",
-					"messageState" : "unread",
-					"messageTitle" : "移除共享",
-					"date" : (new Date()).toISOString(),
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
-					"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
-					"messageData" : JSON.stringify({
-						shareAllSubProjects : this.xGet("shareAllSubProjects"),
-						projectShareAuthorizationId : this.xGet("id"),
-						subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-					})
-				}, function() {
-					self._xDelete(xFinishCallback, options);
-				}, function(e) {
-					xFinishCallback({
-						msg : "删除出错,请重试 : " + e.__summary.msg
-					});
-				});
-			},
+			// xDelete : function(xFinishCallback, options) {
+				// var self = this;
+				// var subProjectShareAuthorizationIds = [];
+				// this.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+					// var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						// projectId : subProject.xGet("id"),
+						// friendUserId : self.xGet("friendUserId")
+					// });
+					// if (subProjectShareAuthorization.id) {
+						// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+						// subProjectShareAuthorization._xDelete(xFinishCallback, options);
+					// }
+				// });
+				// Alloy.Globals.Server.sendMsg({
+					// id : guid(),
+					// "toUserId" : self.xGet("friendUserId"),
+					// "fromUserId" : Alloy.Models.User.xGet("id"),
+					// "type" : "Project.Share.Delete",
+					// "messageState" : "unread",
+					// "messageTitle" : "移除共享",
+					// "date" : (new Date()).toISOString(),
+					// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
+					// "messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
+					// "messageData" : JSON.stringify({
+						// shareAllSubProjects : this.xGet("shareAllSubProjects"),
+						// projectShareAuthorizationId : this.xGet("id"),
+						// subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+					// })
+				// }, function() {
+					// self._xDelete(xFinishCallback, options);
+				// }, function(e) {
+					// xFinishCallback({
+						// msg : "删除出错,请重试 : " + e.__summary.msg
+					// });
+				// });
+			// },
 			canEdit : function() {
 				if (this.isNew()) {
 					return true;

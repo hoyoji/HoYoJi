@@ -44,6 +44,7 @@
 				bindAttribute="moneyAccount"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				bindModelBeforeSelectorCallback="beforeMoneyAccountSelectorCallback"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
 				id="exchangeRate" autoInit="false" toFixed="4"

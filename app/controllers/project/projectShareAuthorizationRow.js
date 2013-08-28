@@ -28,75 +28,76 @@ $.makeContextMenu = function(e, isSelectMode) {
 		// $.deleteModel();
 		Alloy.Globals.confirm("移除共享", "确定要把好友移除出共享列表？", function() {
 			//如果projectShareAuthorization中的数据都为0说明跟好友间没有账务往来，允许删除
-			if($.$model.xGet("actualTotalIncome") === 0 
-			&& $.$model.xGet("actualTotalExpense") === 0 
-			&& $.$model.xGet("apportionedTotalIncome") === 0 
-			&& $.$model.xGet("apportionedTotalExpense") === 0 
-			&& $.$model.xGet("sharedTotalIncome") === 0 
-			&& $.$model.xGet("sharedTotalExpense") === 0){
-				var editSharePercentageAuthorization = [];
-				var subProjectShareAuthorizationIds = [];
-				//重新计算计算其他成员的占股
-				deleteSharePercentage($.$model,editSharePercentageAuthorization);
-				//把子项目移除共享
-				$.$model.xGet("project").xGetDescendents("subProjects").forEach(function(subProject) {
-					var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : subProject.xGet("id"),
-						friendUserId : $.$model.xGet("friendUserId"),
-						state : "Accept"
+			// if($.$model.xGet("friendUserId") !== Alloy.Models.User.id){
+				if($.$model.xGet("actualTotalIncome") === 0 
+				&& $.$model.xGet("actualTotalExpense") === 0 
+				&& $.$model.xGet("apportionedTotalIncome") === 0 
+				&& $.$model.xGet("apportionedTotalExpense") === 0 
+				&& $.$model.xGet("sharedTotalIncome") === 0 
+				&& $.$model.xGet("sharedTotalExpense") === 0){
+					var editSharePercentageAuthorization = [];
+					var subProjectShareAuthorizationIds = [];
+					//重新计算计算其他成员的占股
+					deleteSharePercentage($.$model,editSharePercentageAuthorization);
+					//把子项目移除共享
+					$.$model.xGet("project").xGetDescendents("subProjects").forEach(function(subProject) {
+						var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : subProject.xGet("id"),
+							friendUserId : $.$model.xGet("friendUserId"),
+							state : "Accept"
+						});
+						if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
+							if(subProjectShareAuthorization.xGet("actualTotalIncome") === 0 
+								&& subProjectShareAuthorization.xGet("actualTotalExpense") === 0 
+								&& subProjectShareAuthorization.xGet("apportionedTotalIncome") === 0 
+								&& subProjectShareAuthorization.xGet("apportionedTotalExpense") === 0 
+								&& subProjectShareAuthorization.xGet("sharedTotalIncome") === 0 
+								&& subProjectShareAuthorization.xGet("sharedTotalExpense") === 0){
+								subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+								subProjectShareAuthorization.xSet("state", "Delete");
+								subProjectShareAuthorization.xSave({
+									syncFromServer : true
+								});
+								//重新计算计算子项目其他成员的占股
+								deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
+								editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
+							}
+						}
 					});
-					if (subProjectShareAuthorization && subProjectShareAuthorization.id) {
-						if(subProjectShareAuthorization.xGet("actualTotalIncome") === 0 
-							&& subProjectShareAuthorization.xGet("actualTotalExpense") === 0 
-							&& subProjectShareAuthorization.xGet("apportionedTotalIncome") === 0 
-							&& subProjectShareAuthorization.xGet("apportionedTotalExpense") === 0 
-							&& subProjectShareAuthorization.xGet("sharedTotalIncome") === 0 
-							&& subProjectShareAuthorization.xGet("sharedTotalExpense") === 0){
-							subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-							subProjectShareAuthorization.xSet("state", "Delete");
-							subProjectShareAuthorization.xSave({
+					$.$model.xSet("state", "Delete");
+					editSharePercentageAuthorization.push($.$model.toJSON());
+					//去服务器上修改刚刚移除共享的成员
+					Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+						//发送移除消息给好友
+						Alloy.Globals.Server.sendMsg({
+							id : guid(),
+							"toUserId" : $.$model.xGet("friendUserId"),
+							"fromUserId" : Alloy.Models.User.xGet("id"),
+							"type" : "Project.Share.Delete",
+							"messageState" : "unread",
+							"messageTitle" : "移除共享",
+							"date" : (new Date()).toISOString(),
+							"detail" : "用户" + Alloy.Models.User.xGet("userName") + "已经将您移除出共享项目：" + $.$model.xGet("project").xGet("name"),
+							"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+							"messageData" : JSON.stringify({
+								shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
+								projectShareAuthorizationId : $.$model.xGet("id"),
+								subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+							})
+						}, function() {
+							$.$model.xSave({
 								syncFromServer : true
 							});
-							//重新计算计算子项目其他成员的占股
-							deleteSharePercentage(subProjectShareAuthorization,editSharePercentageAuthorization);
-							editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
-						}
-					}
-				});
-				$.$model.xSet("state", "Delete");
-				editSharePercentageAuthorization.push($.$model.toJSON());
-				//去服务器上修改刚刚移除共享的成员
-				Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
-					//发送移除消息给好友
-					Alloy.Globals.Server.sendMsg({
-						id : guid(),
-						"toUserId" : $.$model.xGet("friendUserId"),
-						"fromUserId" : Alloy.Models.User.xGet("id"),
-						"type" : "Project.Share.Delete",
-						"messageState" : "unread",
-						"messageTitle" : "移除共享",
-						"date" : (new Date()).toISOString(),
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "已经将您移除出共享项目：" + $.$model.xGet("project").xGet("name"),
-						"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
-						"messageData" : JSON.stringify({
-							shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
-							projectShareAuthorizationId : $.$model.xGet("id"),
-							subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-						})
-					}, function() {
-						$.$model.xSave({
-							syncFromServer : true
+						}, function(e) {
+							alert(e.__summary.msg);
 						});
 					}, function(e) {
 						alert(e.__summary.msg);
 					});
-				}, function(e) {
-					alert(e.__summary.msg);
-				});
-			}else{
-				alert("该成员在这个项目下跟其他成员有账务往来，不能移除");
-			}
-			
+				}else{
+					alert("该成员在这个项目下跟其他成员有账务往来，不能移除");
+				}
+			// }
 		});
 	}, isSelectMode || $.$model.xGet("friendUserId") === Alloy.Models.User.id || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	return menuSection;

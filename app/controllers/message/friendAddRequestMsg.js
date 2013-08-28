@@ -20,7 +20,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
 			var toUser = Alloy.createModel("User").xFindInDb({ id : $.$model.xGet("toUser").xGet("id")});
 			if(!toUser.id){
-				$.$model.xGet("toUser").xAddToSave($);
+				delete $.$model.xGet("toUser").id;
+				$.$model.xGet("toUser").save();
 			}
 			var date = (new Date()).toISOString();
 			$.$model.xSet("date", date);

@@ -6,9 +6,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 	});
 	menuSection.add($.createContextMenuItem("设为本币", function() {
 		if ($.$model !== Alloy.Models.User.xGet("activeCurrency")) {
-			var fetchingExchanges = {};
 			function getAllExchanges(successCB, errorCB) {
-				var errorCount = 0, projectCount = 0, projectTotal = Alloy.Models.User.xGet("projects").length;
+				var errorCount = 0, projectCount = 0, projectTotal = Alloy.Models.User.xGet("projects").length,fetchingExchanges = {};
 				Alloy.Models.User.xGet("projects").forEach(function(project) {
 					if (errorCount > 0) {
 						return;

@@ -582,7 +582,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 
 					function getAllExchanges(successCB, errorCB) {
-						var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length;
+						var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length,fetchingExchanges = {};
 						projectCurrencyIds.forEach(function(currencyId) {
 							if (errorCount > 0) {
 								return;
@@ -595,31 +595,38 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								return;
 								
 							}
-							var exchange = Alloy.createModel("Exchange").xFindInDb({
-								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-								foreignCurrencyId : currencyId
-							});
-							if (!exchange.id) {
-								Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
-
-									exchange = Alloy.createModel("Exchange", {
-										localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-										foreignCurrencyId : currencyId,
-										rate : rate
+							if (fetchingExchanges[currencyId] !== true) {
+								var exchange = Alloy.createModel("Exchange").xFindInDb({
+									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									foreignCurrencyId : currencyId
+								});
+								if (!exchange.id) {
+									fetchingExchanges[currencyId] = true;
+									Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
+										exchange = Alloy.createModel("Exchange", {
+											localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+											foreignCurrencyId : currencyId,
+											rate : rate
+										});
+										exchange.xSet("ownerUser", Alloy.Models.User);
+										exchange.xSet("ownerUserId", Alloy.Models.User.id);
+										exchange.save();
+										projectCurrencyIdsCount++;
+										if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
+											successCB();
+										}
+									}, function(e) {
+										errorCount++;
+										errorCB(e);
 									});
-									exchange.xSet("ownerUser", Alloy.Models.User);
-									exchange.xSet("ownerUserId", Alloy.Models.User.id);
-									exchange.save();
+	
+								} else {
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 										successCB();
 									}
-								}, function(e) {
-									errorCount++;
-									errorCB(e);
-								});
-
-							} else {
+								}
+							}else {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();

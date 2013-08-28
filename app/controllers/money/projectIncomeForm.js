@@ -46,19 +46,22 @@ $.convertUser2FriendModel = function(userModel) {
 };
 
 var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
-$.beforeProjectSelectorCallback = function(project, successCallback) {
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+$.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
+	if (moneyAccount.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(moneyAccount.xGet("currency")).length === 0 && !loading) {
 			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, moneyAccount.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
 					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					foreignCurrencyId : project.xGet("currencyId"),
+					foreignCurrencyId : moneyAccount.xGet("currencyId"),
 					rate : rate
 				});
 				exchange.xSet("ownerUser", Alloy.Models.User);
 				exchange.xSet("ownerUserId", Alloy.Models.User.id);
 				exchange.save();
+				//改变账户后要更新金额
+				$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / rate);
+				$.amount.refresh();
 				successCallback();
 				loading = false;
 			}, function(e) {
@@ -129,6 +132,11 @@ if ($.saveableMode === "read") {
 
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
+	
+	$.exchangeRate.field.addEventListener("change", function(){
+		$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
+		$.amount.refresh();
+	});
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
@@ -150,6 +158,9 @@ if ($.saveableMode === "read") {
 		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
 			$.exchangeRate.refresh();
+			//改变汇率更新金额
+			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
+			$.amount.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
