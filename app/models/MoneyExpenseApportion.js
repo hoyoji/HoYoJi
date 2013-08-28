@@ -127,7 +127,7 @@ exports.definition = {
 						// projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
 						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalExpense : apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate")
+							apportionedTotalExpense : apportionedTotalExpense - Number((self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate")).toFixed(2))
 						}, saveOptions);
 					}
 				});

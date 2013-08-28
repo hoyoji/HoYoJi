@@ -128,7 +128,7 @@ exports.definition = {
 						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
 						// projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalIncome : apportionedTotalIncome - self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")
+							apportionedTotalIncome : apportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2))
 						}, saveOptions);
 					}
 				});
