@@ -49,7 +49,7 @@ function doLogin(e) {
 				userDatabase.set({id : data.id, "userName" : userName}, {patch : true});
 				userDatabase.save();
 				Alloy.Globals.currentUserDatabaseName = data.id;
-				loginUser();
+				loginUser(data);
 			}, function(e) {
 				// 用户验证错误或无法连接服务器，登录失败
 				loginFail(e.__summary.msg);
@@ -59,7 +59,7 @@ function doLogin(e) {
 		loginUser();
 	}
 	
-	function loginUser() {
+	function loginUser(userData) {
 		Alloy.Globals.DataStore.initStore();
 		
 		Alloy.Models.User = Alloy.createModel("User").xFindInDb({
@@ -79,12 +79,13 @@ function doLogin(e) {
 					userName : userName,
 					password : password
 				}, function(data) {
-					// 服务器验证改密码正确，我们将其保存到本地
+					// 服务器验证改密码正确，我们将其保存到本地供下次使用
 					Alloy.Models.User.save({
 						"password" : password
 					}, {
 						patch : true,
-						wait : true
+						wait : true,
+						silent : true
 					});
 					openMainWindow();
 				}, function(e) {
@@ -93,14 +94,24 @@ function doLogin(e) {
 				}, "login");
 			}
 		} else {
-			//用户不存在，到服务器上下载用户资料
-			Alloy.Globals.Server.postData({
-				userName : userName,
-				password : password
-			}, function(data) {
+			if(userData){
+				createUser(userData);	
+			} else {
+				//用户不存在，到服务器上下载用户资料
+				Alloy.Globals.Server.postData({
+					userName : userName,
+					password : password
+				}, createUser, function(e) {
+					// 用户验证错误或无法连接服务器，登录失败
+					loginFail(e.__summary.msg);
+				}, "login");
+			}
+			
+			function createUser(data){
 				// 密码验证通过，将该用户的资料保存到本地数据库
-				data.password = password;
 				// 由于服务器不会反回密码，我们将用户输入的正确密码保存
+				data.password = password;
+				
 				delete data.lastSyncTime;
 				Alloy.Models.User.set(data);
 				delete Alloy.Models.User.id;
@@ -161,10 +172,8 @@ function doLogin(e) {
 					// 无法连接服务器，登录失败
 					loginFail(e.__summary.msg);
 				});
-			}, function(e) {
-				// 用户验证错误或无法连接服务器，登录失败
-				loginFail(e.__summary.msg);
-			}, "login");
+			}
+			
 		}
 	}
 
