@@ -30,6 +30,10 @@ function doLogin(e) {
 		$.password.showErrorMsg("请输入密码");
 		return;
 	}
+	
+	$.loginButton.showActivityIndicator();
+	$.loginButton.setEnabled(false);
+	
 	password = Ti.Utils.sha1(password);
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
@@ -176,6 +180,8 @@ function openMainWindow() {
 		win.UIInit();
 		win.open();
 	}
+	$.loginButton.hideActivityIndicator();
+	$.loginButton.setEnabled(true);
 }
 
 function loginFail(msg) {
@@ -185,6 +191,8 @@ function loginFail(msg) {
 	Alloy.Models.User = null;
 	delete Alloy.Models.User;
 	alert(msg);
+	$.loginButton.hideActivityIndicator();
+	$.loginButton.setEnabled(true);
 }
 
 function openRegister(e) {
@@ -193,6 +201,9 @@ function openRegister(e) {
 	});
 }
 
+$.loginButton.addEventListener("singletap", doLogin);
+
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
+$.loginButton.UIInit($, $.getCurrentWindow());
 
