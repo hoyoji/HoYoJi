@@ -28,7 +28,7 @@ if (Ti.UI.Android){
 }
 
 $.login = Alloy.createController("user/login", {
-	top : 90,
+	top : 5,
 	autoInit : "false",
 	currentWindow : $,
 	parentController : $

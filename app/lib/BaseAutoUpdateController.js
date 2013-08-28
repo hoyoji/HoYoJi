@@ -220,8 +220,6 @@
 				$.$attrs.bindAttributeIsModel = bindAttributeIsModel;
 				$.$attrs.bindModelSelector = bindModelSelector;
 
-				console.info(" init autoupdateController ============= " + (model.xGet ? model.xGet(attribute) : model[attribute]));
-
 				var path = attribute.split(".");
 				if (path.length > 1) {
 					for (var i = 1; i < path.length - 1; i++) {

@@ -100,10 +100,10 @@ exports.definition = {
 				}
 				return this.getDisplayName();
 			},
-			_xSave : function(options){
-				this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
-				Alloy.Globals.XModel._xSave.call(this, options);
-			},
+			// _xSave : function(options){
+				// // this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
+				// Alloy.Globals.XModel._xSave.call(this, options);
+			// },
 			xGetHasMany : function(attr){
 				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
 				if (this.isNew()) {

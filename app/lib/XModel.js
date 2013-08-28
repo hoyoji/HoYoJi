@@ -100,6 +100,7 @@
 			_xSave : function(options) {
 				options = _.extend({}, options, {
 					wait : true,
+					patch : true,
 					silent : true
 				});
 				
