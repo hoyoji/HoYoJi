@@ -174,7 +174,7 @@
 				var self = this;
 				var activityWindow = Alloy.createController("activityMask");
 				activityWindow.open("正在同步...");
-				
+
 				this.syncPull(function() {
 					// alert("start push data");
 					self.syncPush(function(data) {
@@ -241,12 +241,14 @@
 									for (var hasMany in model.config.hasMany) {
 										model.xGet(hasMany).forEach(function(item) {
 											item.syncDelete(record, dbTrans);
-											item._syncDelete(record, dbTrans, function(e){});
+											item._syncDelete(record, dbTrans, function(e) {
+											});
 											dbTrans.db.execute(sql, [item.xGet("id")]);
 										});
 									}
 									model.syncDelete(record, dbTrans);
-									model._syncDelete(record, dbTrans, function(e){});
+									model._syncDelete(record, dbTrans, function(e) {
+									});
 								}
 							}
 							dbTrans.db.execute(sql, [id]);
@@ -364,7 +366,43 @@
 					xFinishedCallback();
 				}, xErrorCallback, "syncPush");
 			},
+			getExchangeRateFromGoogle : function(fromCurrency, toCurrency, successCB, errorCB) {
+				var url = "http://www.google.com/ig/calculator?hl=en&q=1" + fromCurrency + "=?" + toCurrency;
+				var client = Ti.Network.createHTTPClient({
+					// function called when the response data is available
+					onload : function(e) {
+						var rateMatch = this.responseText.match(/.+,rhs: "([^\s]+).+/);
+						successCB(Number(rateMatch[1]).toFixed(4));
+					},
+					// function called when an error occurs, including a timeout
+					onerror : function(e) {
+						if (e.code === 500 || e.code === -1) {
+							errorCB({
+								__summary : {
+									msg : "服务器无法获取该汇率，请手工输入",
+									code : e.code
+								}
+							});
+						} else {
+							errorCB({
+								__summary : {
+									msg : "连接服务器出错：" + e.code,
+									code : e.code
+								}
+							});
+						}
+					},
+					timeout : 5000 // in milliseconds
+				});
+				// Prepare the connection.
+				client.open("GET", url);
+				// Send the request.
+				client.send();
+			},
 			getExchangeRate : function(fromCurrency, toCurrency, successCB, errorCB) {
+				this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+				return;
+				
 				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
 				var callparams = {
 					FromCurrency : fromCurrency,
@@ -390,7 +428,7 @@
 							});
 						}
 					}, function(e) {
-						if(e.code === 500 || e.code === -1){
+						if (e.code === 500 || e.code === -1) {
 							errorCB({
 								__summary : {
 									msg : "服务器无法获取该汇率，请手工输入",
@@ -403,7 +441,7 @@
 									msg : "连接服务器出错：" + e.code,
 									code : e.code
 								}
-							});	
+							});
 						}
 					});
 				} catch(e) {
@@ -435,6 +473,10 @@
 					});
 
 					try {
+						
+						this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+						return;
+						
 						suds.invoke('ConversionRate', callparams, function(xmlDoc) {
 							var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
 							if (results && results.length > 0) {
