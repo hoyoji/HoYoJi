@@ -9,12 +9,12 @@ $.makeContextMenu = function() {
 			selectedLend : $.$model
 		});
 	}));
-	menuSection.add($.createContextMenuItem("发送给好友", function() {
-		Alloy.Globals.openWindow("message/accountShare", {
-			$model : "Message",
-			selectedAccount : $.$model
-		});
-	}));
+	// menuSection.add($.createContextMenuItem("发送给好友", function() {
+		// Alloy.Globals.openWindow("message/accountShare", {
+			// $model : "Message",
+			// selectedAccount : $.$model
+		// });
+	// }));
 	menuSection.add($.createContextMenuItem("删除借出", function() {
 		$.deleteModel();
 	}, !$.$model.canDelete()||$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
