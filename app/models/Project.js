@@ -86,7 +86,7 @@ exports.definition = {
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");
 					}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + Number((actualTotalMoney/exchange).toFixed(2));
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney/exchange).toFixed(2);
 			},
 			getActualTotalMoneyType : function(cached) {
 				var actualTotalMoney;
