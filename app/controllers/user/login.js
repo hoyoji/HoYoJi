@@ -154,7 +154,12 @@ function doLogin(e) {
 						// 把默认账户余额设成0，因为我们还没下载任何账务资料
 						if (modelType === "MoneyAccount") {
 							model.currentBalance = 0;
-						}
+						} else if (modelType === "ProjectShareAuthorization") {
+							model.actualTotalIncome = 0;
+							model.actualTotalExpense = 0;
+							model.apportionedTotalIncome = 0;
+							model.apportionedTotalExpense = 0;
+						}						
 						model = Alloy.createModel(modelType, model);
 						model.attributes["id"] = id;
 						model.xAddToSave($);
