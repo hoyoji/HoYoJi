@@ -233,7 +233,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if ($.$model.xGet("sharePercentage") >= 0) {
 		if ($.$model.isNew()) {
 			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
-				alert("固定股份最多不能超过" + $.sharePercentageTotal);
+				saveErrorCB("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
 					function getExchange(successCB, errorCB) {
 						if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
@@ -410,7 +410,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 	
 					} else {
-						alert("好友不能为空！");
+						saveErrorCB("好友不能为空！");
+						//alert("好友不能为空！");
+						return;
 					}
 				}
 			}
@@ -748,7 +750,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}
 						}
 					} else {
-						alert("修改失败，好友还未接受共享");
+						saveErrorCB("修改失败，好友还未接受共享");
 						$.getCurrentWindow().$view.close();
 					}
 
@@ -767,7 +769,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 		}
 	} else {
-		alert("股份不能小于零");
+		saveErrorCB("股份不能小于零");
 	}
 	
 	function sendMsg(type,messageState,detail,messageData){
