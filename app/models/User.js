@@ -117,7 +117,6 @@ exports.definition = {
 				//filter[key] = this;
 				collection.xSetFilter(filter);
 
-				console.info("xGet hasMany : " + type + collection.length);
 				var idString;
 				if (this.get('id')) {
 					idString = " = '" + this.get('id') + "' ";
@@ -133,7 +132,6 @@ exports.definition = {
 						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 					});
 				}
-				console.info("xGet hasMany gg : " + type + " " + key + " " +  collection.length);
 
 				this.attributes[attr] = collection;
 				// this.set(attr, collection, {
