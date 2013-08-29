@@ -67,11 +67,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : accountShareData.account.projectId,
 							friendUserId : Alloy.Models.User.id
 						});
-						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
+						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
 
-						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
 						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 						moneyIncome.xGet("moneyAccount").xAddToSave($);
 
@@ -80,7 +80,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						$.$model.xSet("messageState", "closed");
 						editData.push($.$model.toJSON());
 						var date = (new Date()).toISOString();
-						Alloy.Globals.Server.putData(editData, function(data) {
+						Alloy.Globals.Server.putData(editData, function(data1) {
 							Alloy.Globals.Server.deleteData([{
 								__dataType : "MoneyIncome",
 								id : data[0][0].id
@@ -113,7 +113,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							alert(e.__summary.msg);
 						});
 					} else {
-						Alloy.Globals.Server.putData(editData, function(data) {
+						Alloy.Globals.Server.putData(editData, function(data1) {
 							Alloy.Globals.Server.deleteData([{
 								__dataType : "MoneyIncome",
 								id : data[0][0].id
@@ -167,11 +167,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							projectId : accountShareData.account.projectId,
 							friendUserId : Alloy.Models.User.id
 						});
-						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
+						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
 
-						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + accountShareData.account.amount);
+						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
 						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 						moneyExpense.xGet("moneyAccount").xAddToSave($);
 
@@ -180,7 +180,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						$.$model.xSet("messageState", "closed");
 						editData.push($.$model.toJSON());
 						var date = (new Date()).toISOString();
-						Alloy.Globals.Server.putData(editData, function(data) {
+						Alloy.Globals.Server.putData(editData, function(data1) {
 							Alloy.Globals.Server.deleteData([{
 								__dataType : "MoneyExpense",
 								id : data[0][0].id
@@ -219,7 +219,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						saveEndCB("删除充值成功");
 					}
 				} else {
-					Alloy.Globals.Server.putData(editData, function(data) {
+					Alloy.Globals.Server.putData(editData, function(data1) {
 						Alloy.Globals.Server.deleteData([{
 							__dataType : "MoneyExpense",
 							id : data[0][0].id
