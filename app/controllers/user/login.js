@@ -84,8 +84,7 @@ function doLogin(e) {
 						"password" : password
 					}, {
 						patch : true,
-						wait : true,
-						silent : true
+						wait : true
 					});
 					openMainWindow();
 				}, function(e) {
@@ -160,8 +159,6 @@ function doLogin(e) {
 						model.attributes["id"] = id;
 						model.xAddToSave($);
 					});
-					// $.$model.xSet("ownerUser", Alloy.Models.User);
-					Alloy.Models.User.xSet("password", $.password.getValue());
 					$.saveCollection(function() {
 						openMainWindow();
 					}, function(e) {
