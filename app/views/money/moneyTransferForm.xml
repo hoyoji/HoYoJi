@@ -42,7 +42,7 @@
 				bindModel="$.$model"
 				bindAttribute="transferInAmount"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
-					id="project" autoInit="false"
+					id="project" autoInit="false" editModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="name"
