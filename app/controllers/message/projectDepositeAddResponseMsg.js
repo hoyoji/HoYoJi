@@ -20,17 +20,17 @@ var onFooterbarTap = function(e) {
 			alert(e.__summary.msg);
 		});
 		// if ($.$model.xGet('messageState') === "closed") {
-			// alert("您不能重复接受充值");
+		// alert("您不能重复接受充值");
 		// } else {
-			// importToLocalOperate();
+		// importToLocalOperate();
 		// }
-	} else if(e.source.id === "rejectAccept"){
+	} else if (e.source.id === "rejectAccept") {
 		operation = "rejectAccept";
 		$.titleBar.save();
-	} else if(e.source.id === "delete"){
+	} else if (e.source.id === "delete") {
 		operation = "delete";
 		$.titleBar.save();
-	} else if(e.source.id === "rejectDelete"){
+	} else if (e.source.id === "rejectDelete") {
 		operation = "rejectDelete";
 		$.titleBar.save();
 	}
@@ -39,7 +39,7 @@ var onFooterbarTap = function(e) {
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
 	//删除充值
-	if(operation === "delete"){
+	if (operation === "delete") {
 		//好友先删除充值支出
 		if (accountShareData.accountType === "MoneyExpense") {
 			var accounts = [];
@@ -62,27 +62,29 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//去服务器上查找对应的充值支出和充值收入
 			Alloy.Globals.Server.getData(accounts, function(data) {
 				if (data[0].length > 0) {
-					Alloy.Globals.Server.deleteData(
-					[{__dataType : "MoneyIncome", id : data[0][0].id}], function(data1) {
-					    if (moneyIncome && moneyIncome.xGet("id")) {
-							var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								projectId : accountShareData.account.projectId,
-								friendUserId : Alloy.Models.User.id
-							});
-							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
-							editData.push(projectShareAuthorization.toJSON());
-							projectShareAuthorization.xAddToSave($);
-					
-							moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
-							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
-							moneyIncome.xGet("moneyAccount").xAddToSave($);
-							
-						}
-						if (data[1].length > 0) {
-							$.$model.xSet("messageState","closed");
-							editData.push($.$model.toJSON());
-							var date = (new Date()).toISOString();
-							Alloy.Globals.Server.putData(editData, function(data) {
+					if (moneyIncome && moneyIncome.xGet("id")) {
+						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : accountShareData.account.projectId,
+							friendUserId : Alloy.Models.User.id
+						});
+						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
+						editData.push(projectShareAuthorization.toJSON());
+						projectShareAuthorization.xAddToSave($);
+
+						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - accountShareData.account.amount);
+						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
+						moneyIncome.xGet("moneyAccount").xAddToSave($);
+
+					}
+					if (data[1].length > 0) {
+						$.$model.xSet("messageState", "closed");
+						editData.push($.$model.toJSON());
+						var date = (new Date()).toISOString();
+						Alloy.Globals.Server.putData(editData, function(data) {
+							Alloy.Globals.Server.deleteData([{
+								__dataType : "MoneyIncome",
+								id : data[0][0].id
+							}], function(data1) {
 								//充值支出不是自己创建的，发送一条消息到服务器上去删除
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
@@ -97,7 +99,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyIncome._xDelete();
-									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+									$.saveModel(saveEndCB, saveErrorCB, {
+										syncFromServer : true
+									});
 									saveEndCB("删除充值成功");
 								}, function(e) {
 									alert(e.__summary.msg);
@@ -105,14 +109,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}, function(e) {
 								alert(e.__summary.msg);
 							});
-						}else{
-							$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
-							saveEndCB("删除充值成功");
-						}
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-				}else{
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
+					} else {
+						Alloy.Globals.Server.putData(editData, function(data) {
+							Alloy.Globals.Server.deleteData([{
+								__dataType : "MoneyIncome",
+								id : data[0][0].id
+							}], function(data1) {
+								$.saveModel(saveEndCB, saveErrorCB, {
+									syncFromServer : true
+								});
+								saveEndCB("删除充值成功");
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
+					}
+				} else {
 					$.$model.save({
 						messageState : "closed"
 					}, {
@@ -124,7 +141,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
-		}else if(accountShareData.accountType === "MoneyIncome"){
+		} else if (accountShareData.accountType === "MoneyIncome") {
 			var accounts = [];
 			//在本地查找充值支出
 			var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
@@ -145,27 +162,29 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//在服务器上查找相应的充值支出和充值收入
 			Alloy.Globals.Server.getData(accounts, function(data) {
 				if (data[0].length > 0) {
-					Alloy.Globals.Server.deleteData(
-					[{__dataType : "MoneyExpense", id : data[0][0].id}], function(data1) {
-					    if (moneyExpense && moneyExpense.xGet("id")) {
-							var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-								projectId : accountShareData.account.projectId,
-								friendUserId : Alloy.Models.User.id
-							});
-							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
-							editData.push(projectShareAuthorization.toJSON());
-							projectShareAuthorization.xAddToSave($);
-					
-							moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + accountShareData.account.amount);
-							editData.push(moneyExpense.xGet("moneyAccount").toJSON());
-							moneyExpense.xGet("moneyAccount").xAddToSave($);
-							
-						}
-						if (data[1].length > 0) {
-							$.$model.xSet("messageState","closed");
-							editData.push($.$model.toJSON());
-							var date = (new Date()).toISOString();
-							Alloy.Globals.Server.putData(editData, function(data) {
+					if (moneyExpense && moneyExpense.xGet("id")) {
+						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : accountShareData.account.projectId,
+							friendUserId : Alloy.Models.User.id
+						});
+						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2)));
+						editData.push(projectShareAuthorization.toJSON());
+						projectShareAuthorization.xAddToSave($);
+
+						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + accountShareData.account.amount);
+						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
+						moneyExpense.xGet("moneyAccount").xAddToSave($);
+
+					}
+					if (data[1].length > 0) {
+						$.$model.xSet("messageState", "closed");
+						editData.push($.$model.toJSON());
+						var date = (new Date()).toISOString();
+						Alloy.Globals.Server.putData(editData, function(data) {
+							Alloy.Globals.Server.deleteData([{
+								__dataType : "MoneyExpense",
+								id : data[0][0].id
+							}], function(data1) {
 								//充值收入不是自己创建的，发送一条消息到服务器上去删除
 								Alloy.Globals.Server.sendMsg({
 									id : guid(),
@@ -180,7 +199,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyExpense._xDelete();
-									$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+									$.saveModel(saveEndCB, saveErrorCB, {
+										syncFromServer : true
+									});
 									saveEndCB("删除充值成功");
 								}, function(e) {
 									alert(e.__summary.msg);
@@ -188,30 +209,43 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}, function(e) {
 								alert(e.__summary.msg);
 							});
-						}else{
-							$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
-							saveEndCB("删除充值成功");
-						}
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
+					} else {
+						$.saveModel(saveEndCB, saveErrorCB, {
+							syncFromServer : true
+						});
+						saveEndCB("删除充值成功");
+					}
+				} else {
+					Alloy.Globals.Server.putData(editData, function(data) {
+						Alloy.Globals.Server.deleteData([{
+							__dataType : "MoneyExpense",
+							id : data[0][0].id
+						}], function(data1) {
+							$.$model.save({
+								messageState : "closed"
+							}, {
+								wait : true,
+								patch : true
+							});
+							alert("已经删除成功");
+						}, function(e) {
+							alert(e.__summary.msg);
+						});
 					}, function(e) {
 						alert(e.__summary.msg);
 					});
-				}else{
-					$.$model.save({
-						messageState : "closed"
-					}, {
-						wait : true,
-						patch : true
-					});
-					alert("已经删除成功");
 				}
-				
+
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
 		}
-	}else if(operation === "rejectAccept"){
+	} else if (operation === "rejectAccept") {
 		//拒绝接受充值
-		$.$model.xSet("messageState","closed");
+		$.$model.xSet("messageState", "closed");
 		editData.push($.$model.toJSON());
 		var date = (new Date()).toISOString();
 		Alloy.Globals.Server.putData(editData, function(data) {
@@ -227,7 +261,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 				messageData : $.$model.xGet("messageData")
 			}, function() {
-				$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+				$.saveModel(saveEndCB, saveErrorCB, {
+					syncFromServer : true
+				});
 				saveEndCB("删除充值成功");
 			}, function(e) {
 				alert(e.__summary.msg);
@@ -235,9 +271,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}, function(e) {
 			alert(e.__summary.msg);
 		});
-	}else if(operation === "rejectDelete"){
+	} else if (operation === "rejectDelete") {
 		//拒绝删除
-		$.$model.xSet("messageState","closed");
+		$.$model.xSet("messageState", "closed");
 		editData.push($.$model.toJSON());
 		var date = (new Date()).toISOString();
 		Alloy.Globals.Server.putData(editData, function(data) {
@@ -253,7 +289,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 				messageData : $.$model.xGet("messageData")
 			}, function() {
-				$.saveModel(saveEndCB, saveErrorCB ,{syncFromServer : true});
+				$.saveModel(saveEndCB, saveErrorCB, {
+					syncFromServer : true
+				});
 				saveEndCB("删除充值成功");
 			}, function(e) {
 				alert(e.__summary.msg);
@@ -263,7 +301,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		});
 	}
 };
-
 
 function importToLocalOperate() {
 	//接受充值
@@ -293,13 +330,15 @@ function importToLocalOperate() {
 		accountShareMsgController.$view.addEventListener("contentready", function() {
 			account.xAddToSave(accountShareMsgController.content);
 			accountShareMsgController.content.titleBar.dirtyCB();
-			
-			function accountSync(){
+
+			function accountSync() {
 				$.getCurrentWindow().close();
 			}
-			account.on("sync",accountSync);
-			$.onWindowCloseDo(function(){
-				account.off("sync",accountSync);
+
+
+			account.on("sync", accountSync);
+			$.onWindowCloseDo(function() {
+				account.off("sync", accountSync);
 			});
 		});
 	}
@@ -307,75 +346,75 @@ function importToLocalOperate() {
 
 $.onWindowOpenDo(function() {
 	// if (accountShareData.accountType === "MoneyExpense") {
-		//创建支出
-		var accountRow1 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountDateLabel = Ti.UI.createLabel({
-			text : "日期：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountDateContentLabel = Ti.UI.createLabel({
-			text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow1.add(accountDateLabel);
-		accountRow1.add(accountDateContentLabel);
+	//创建支出
+	var accountRow1 = Titanium.UI.createView({
+		layout : "horizontal",
+		horizontalWrap : false,
+		height : "42"
+	});
+	var accountDateLabel = Ti.UI.createLabel({
+		text : "日期：",
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "30%"
+	});
+	var accountDateContentLabel = Ti.UI.createLabel({
+		text : String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"),
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "70%"
+	});
+	accountRow1.add(accountDateLabel);
+	accountRow1.add(accountDateContentLabel);
 
-		var accountRow2 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountAmountLabel = Ti.UI.createLabel({
-			text : "金额：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow2.add(accountAmountLabel);
-		accountRow2.add(accountAmountContentLabel);
+	var accountRow2 = Titanium.UI.createView({
+		layout : "horizontal",
+		horizontalWrap : false,
+		height : "42"
+	});
+	var accountAmountLabel = Ti.UI.createLabel({
+		text : "金额：",
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "30%"
+	});
+	var accountAmountContentLabel = Ti.UI.createLabel({
+		text : accountShareData.account.amount,
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "70%"
+	});
+	accountRow2.add(accountAmountLabel);
+	accountRow2.add(accountAmountContentLabel);
 
-		var accountRow3 = Titanium.UI.createView({
-			layout : "horizontal",
-			horizontalWrap : false,
-			height : "42"
-		});
-		var accountDetailLabel = Ti.UI.createLabel({
-			text : "备注：",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "30%"
-		});
-		var accountDetailContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.remark || "无备注",
-			height : 42,
-			color : "gray",
-			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-			width : "70%"
-		});
-		accountRow3.add(accountDetailLabel);
-		accountRow3.add(accountDetailContentLabel);
-		$.account.add(accountRow1);
-		$.account.add(accountRow2);
-		$.account.add(accountRow3);
+	var accountRow3 = Titanium.UI.createView({
+		layout : "horizontal",
+		horizontalWrap : false,
+		height : "42"
+	});
+	var accountDetailLabel = Ti.UI.createLabel({
+		text : "备注：",
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "30%"
+	});
+	var accountDetailContentLabel = Ti.UI.createLabel({
+		text : accountShareData.account.remark || "无备注",
+		height : 42,
+		color : "gray",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "70%"
+	});
+	accountRow3.add(accountDetailLabel);
+	accountRow3.add(accountDetailContentLabel);
+	$.account.add(accountRow1);
+	$.account.add(accountRow2);
+	$.account.add(accountRow3);
 	// }
 	$.titleBar.dirtyCB();
 
@@ -386,7 +425,7 @@ $.onWindowOpenDo(function() {
 			wait : true,
 			patch : true
 		});
-	}else if ($.$model.xGet('messageState') === "new") {
+	} else if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({
 			messageState : "read"
 		}, {
@@ -394,36 +433,34 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
-	if($.$model.xGet("fromUserId") !== Alloy.Models.User.id){
+	if ($.$model.xGet("fromUserId") !== Alloy.Models.User.id) {
 		Alloy.Globals.Server.getData([{
 			__dataType : "Message",
 			id : $.$model.xGet("id"),
 			messageState : "closed"
 		}], function(data) {
 			if (data[0].length === 0) {
-				if($.$model.xGet('messageState') !== "closed"){
+				if ($.$model.xGet('messageState') !== "closed") {
 					//查找消息类型动态生成footerBar
 					if ($.$model.xGet('type') === "Project.Deposite.AddRequest") {
 						$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-							onSingletap:"onFooterbarTap",
+							onSingletap : "onFooterbarTap",
 							buttons : "拒绝充值,接受充值",
-					        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+							imagesFolder : "/images/message/projectDepositeAddResponseMsg",
 							ids : "rejectAccept,accept"
 						});
 						$.footerBar.setParent($.$view);
 						$.footerBar.on("singletap", onFooterbarTap);
-					} else if($.$model.xGet('type') === "Project.Deposite.Delete"){
+					} else if ($.$model.xGet('type') === "Project.Deposite.Delete") {
 						$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", null, {
-							onSingletap:"onFooterbarTap",
+							onSingletap : "onFooterbarTap",
 							buttons : "拒绝删除,同意删除",
-					        imagesFolder : "/images/message/projectDepositeAddResponseMsg",
+							imagesFolder : "/images/message/projectDepositeAddResponseMsg",
 							ids : "rejectDelete,delete"
 						});
 						$.footerBar.setParent($.$view);
 						$.footerBar.on("singletap", onFooterbarTap);
-					} else if($.$model.xGet('type') === "Project.Deposite.DeleteResponse" 
-								|| $.$model.xGet('type') === "Project.Deposite.Response" 
-								|| $.$model.xGet('type') === "Project.Deposite.RejectAccept"){
+					} else if ($.$model.xGet('type') === "Project.Deposite.DeleteResponse" || $.$model.xGet('type') === "Project.Deposite.Response" || $.$model.xGet('type') === "Project.Deposite.RejectAccept") {
 						$.$model.save({
 							messageState : "closed"
 						}, {
@@ -432,13 +469,13 @@ $.onWindowOpenDo(function() {
 						});
 					}
 				}
-				
+
 			}
 		}, function(e) {
 			alert(e.__summary.msg);
 		});
 	}
-	
+
 });
 
 $.fromUser.UIInit($, $.getCurrentWindow());
