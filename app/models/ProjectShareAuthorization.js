@@ -245,7 +245,7 @@ exports.definition = {
 				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				return Number((this.getActualTotalMoney() / exchange).toFixed(2));
+				return (this.getActualTotalMoney() / exchange).toFixed(2);
 			},
 			getCurrencyActualTotalMoney : function() {
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
@@ -313,7 +313,7 @@ exports.definition = {
 				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				return Number((settlementMoney / exchange).toFixed(2));
+				return (settlementMoney / exchange).toFixed(2);
 			},
 			getCurrencySettlementMoney : function() {
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();

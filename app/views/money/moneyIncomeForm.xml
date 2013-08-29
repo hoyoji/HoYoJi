@@ -61,7 +61,7 @@
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目" rightButtonText="分摊"
-				id="project" autoInit="false"
+				id="project" autoInit="false" editModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="project"
 				bindAttributeIsModel="getProjectNameCurrency()"

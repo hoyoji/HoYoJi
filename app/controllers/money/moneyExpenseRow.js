@@ -11,12 +11,12 @@ $.makeContextMenu = function() {
 		// });
 	// },$.$model.xGet("expenseType") === "Deposite"));
 
-	menuSection.add($.createContextMenuItem("发送给好友", function() {
-		Alloy.Globals.openWindow("message/accountShare", {
-			$model : "Message",
-			selectedAccount : $.$model
-		});
-	},$.$model.xGet("expenseType") === "Deposite"));
+	// menuSection.add($.createContextMenuItem("发送给好友", function() {
+		// Alloy.Globals.openWindow("message/accountShare", {
+			// $model : "Message",
+			// selectedAccount : $.$model
+		// });
+	// },$.$model.xGet("expenseType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		if ($.$model.xGet("expenseType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
