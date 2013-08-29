@@ -51,7 +51,7 @@ function onFooterbarTap(e) {
 				$.sharedWithMeTable.UIInit();
 				
 				var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
-					return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject");
+					return model.xGet("ownerUserId") !== Alloy.Models.User.id && !model.xGet("parentProject"); // && model.xGet("projectShareAuthorizations").find().xGet("state") === "Accept";
 				}, $);
 
 				$.sharedWithMeTable.addCollection(sharedWithMeTableCollection);

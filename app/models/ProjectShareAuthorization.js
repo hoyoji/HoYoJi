@@ -374,6 +374,7 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 
+					var self = this;
 				// actualTotalIncome : "REAL NOT NULL",
 				// actualTotalExpense : "REAL NOT NULL",
 				// apportionedTotalIncome : "REAL NOT NULL",
@@ -390,6 +391,14 @@ exports.definition = {
 
 				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
 				delete this.__syncApportionedTotalExpense;
+				
+				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
+					function refreshProject(){
+						self.off("sync", refreshProject);
+						self.xGet("project").xRefresh();
+					}
+					this.on("sync", refreshProject);
+				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
