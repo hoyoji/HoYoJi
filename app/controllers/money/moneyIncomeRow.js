@@ -9,12 +9,12 @@ $.makeContextMenu = function() {
 	// Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {selectedIncome : $.$model});
 	// },$.$model.xGet("incomeType") === "Deposite"));
 
-	menuSection.add($.createContextMenuItem("发送给好友", function() {
-		Alloy.Globals.openWindow("message/accountShare", {
-			$model : "Message",
-			selectedAccount : $.$model
-		});
-	}, $.$model.xGet("incomeType") === "Deposite"));
+	// menuSection.add($.createContextMenuItem("发送给好友", function() {
+		// Alloy.Globals.openWindow("message/accountShare", {
+			// $model : "Message",
+			// selectedAccount : $.$model
+		// });
+	// }, $.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if ($.$model.xGet("incomeType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
