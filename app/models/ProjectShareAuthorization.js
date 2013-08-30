@@ -326,40 +326,40 @@ exports.definition = {
 				}
 			},
 			// xDelete : function(xFinishCallback, options) {
-				// var self = this;
-				// var subProjectShareAuthorizationIds = [];
-				// this.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
-					// var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						// projectId : subProject.xGet("id"),
-						// friendUserId : self.xGet("friendUserId")
-					// });
-					// if (subProjectShareAuthorization.id) {
-						// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
-						// subProjectShareAuthorization._xDelete(xFinishCallback, options);
-					// }
-				// });
-				// Alloy.Globals.Server.sendMsg({
-					// id : guid(),
-					// "toUserId" : self.xGet("friendUserId"),
-					// "fromUserId" : Alloy.Models.User.xGet("id"),
-					// "type" : "Project.Share.Delete",
-					// "messageState" : "unread",
-					// "messageTitle" : "移除共享",
-					// "date" : (new Date()).toISOString(),
-					// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
-					// "messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
-					// "messageData" : JSON.stringify({
-						// shareAllSubProjects : this.xGet("shareAllSubProjects"),
-						// projectShareAuthorizationId : this.xGet("id"),
-						// subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
-					// })
-				// }, function() {
-					// self._xDelete(xFinishCallback, options);
-				// }, function(e) {
-					// xFinishCallback({
-						// msg : "删除出错,请重试 : " + e.__summary.msg
-					// });
-				// });
+			// var self = this;
+			// var subProjectShareAuthorizationIds = [];
+			// this.xGet("project").xGetDescendents("subProjects").map(function(subProject) {
+			// var subProjectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+			// projectId : subProject.xGet("id"),
+			// friendUserId : self.xGet("friendUserId")
+			// });
+			// if (subProjectShareAuthorization.id) {
+			// subProjectShareAuthorizationIds.push(subProjectShareAuthorization.xGet("id"));
+			// subProjectShareAuthorization._xDelete(xFinishCallback, options);
+			// }
+			// });
+			// Alloy.Globals.Server.sendMsg({
+			// id : guid(),
+			// "toUserId" : self.xGet("friendUserId"),
+			// "fromUserId" : Alloy.Models.User.xGet("id"),
+			// "type" : "Project.Share.Delete",
+			// "messageState" : "unread",
+			// "messageTitle" : "移除共享",
+			// "date" : (new Date()).toISOString(),
+			// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
+			// "messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
+			// "messageData" : JSON.stringify({
+			// shareAllSubProjects : this.xGet("shareAllSubProjects"),
+			// projectShareAuthorizationId : this.xGet("id"),
+			// subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
+			// })
+			// }, function() {
+			// self._xDelete(xFinishCallback, options);
+			// }, function(e) {
+			// xFinishCallback({
+			// msg : "删除出错,请重试 : " + e.__summary.msg
+			// });
+			// });
 			// },
 			canEdit : function() {
 				if (this.isNew()) {
@@ -375,6 +375,7 @@ exports.definition = {
 			syncUpdate : function(record, dbTrans) {
 
 				var self = this;
+<<<<<<< HEAD
 				if(record.friendUserId === Alloy.Models.User.id){
 					record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
 					delete this.__syncActualTotalIncome;
@@ -391,11 +392,79 @@ exports.definition = {
 
 				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
 					function refreshProject(){
+=======
+				// actualTotalIncome : "REAL NOT NULL",
+				// actualTotalExpense : "REAL NOT NULL",
+				// apportionedTotalIncome : "REAL NOT NULL",
+				// apportionedTotalExpense : "REAL NOT NULL"
+
+				record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
+				delete this.__syncActualTotalIncome;
+
+				record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
+				delete this.__syncActualTotalExpense;
+
+				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
+				delete this.__syncApportionedTotalIncome;
+
+				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
+				delete this.__syncApportionedTotalExpense;
+
+				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
+					function refreshProject() {
+>>>>>>> a9ad03a681b4e991acb12a60773dc669943af203
 						self.off("sync", refreshProject);
 						self.xGet("project").xRefresh();
 					}
+
+
 					this.on("sync", refreshProject);
 				}
+				// delete all none-self data
+				var dataToBeDeleted = ["MoneyIncome", "MoneyExpense", "MoneyBorrow", "MoneyLend", "MoneyPayback", "MoneyReturn"];
+				dataToBeDeleted.forEach(function(table) {
+					if ((record.state === "Delete" && self.xGet("state") !== "Delete") 
+						|| record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0) {
+						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
+							if (table === "MoneyExpense") {
+								item.xGet("moneyExpenseDetails").forEach(function(detail) {
+									detail.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+								item.xGet("moneyExpenseApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+							} else if (table === "MoneyIncome") {
+								item.xGet("moneyIncomeDetails").forEach(function(detail) {
+									detail.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+								item.xGet("moneyIncomeApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+							}
+							item.destroy({
+								dbTrans : dbTrans,
+								wait : true,
+								syncFromServer : true
+							});
+						});
+					}
+				});
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;

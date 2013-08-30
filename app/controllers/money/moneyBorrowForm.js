@@ -80,6 +80,11 @@ if (!$.$model) {
 	$.returnedAmount.$view.setHeight(42);
 }
 
+if ($.saveableMode === "edit") {
+	$.project.label.setColor("#6e6d6d");
+	$.project.field.setColor("#6e6d6d");
+}
+
 $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if (!$.$model.xGet("moneyAccount")) {
 		alert("请选择账户");

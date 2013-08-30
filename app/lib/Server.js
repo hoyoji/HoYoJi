@@ -467,46 +467,45 @@
 						ToCurrency : exchange.toCurrency
 					};
 
-					var suds = new SudsClient({
-						endpoint : url,
-						targetNamespace : 'http://www.webserviceX.NET/'
-					});
+					// var suds = new SudsClient({
+						// endpoint : url,
+						// targetNamespace : 'http://www.webserviceX.NET/'
+					// });
 
 					try {
 						
 						this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
-						return;
 						
-						suds.invoke('ConversionRate', callparams, function(xmlDoc) {
-							var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
-							if (results && results.length > 0) {
-								var result = results.item(0);
-								exchange.rate = Number(results.item(0).text).toFixed(4);
-								successCount++;
-								if (successCount === exchangesCount) {
-									successCB(exchanges);
-								}
-							} else {
-								if (errorCount === 0) {
-									errorCount++;
-									errorCB({
-										__summary : {
-											msg : '获取汇率出错'
-										}
-									});
-								}
-							}
-						}, function(e) {
-							if (errorCount === 0) {
-								errorCount++;
-								errorCB({
-									__summary : {
-										msg : "连接服务器出错：" + e.code,
-										code : e.code
-									}
-								});
-							}
-						});
+						// suds.invoke('ConversionRate', callparams, function(xmlDoc) {
+							// var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
+							// if (results && results.length > 0) {
+								// var result = results.item(0);
+								// exchange.rate = Number(results.item(0).text).toFixed(4);
+								// successCount++;
+								// if (successCount === exchangesCount) {
+									// successCB(exchanges);
+								// }
+							// } else {
+								// if (errorCount === 0) {
+									// errorCount++;
+									// errorCB({
+										// __summary : {
+											// msg : '获取汇率出错'
+										// }
+									// });
+								// }
+							// }
+						// }, function(e) {
+							// if (errorCount === 0) {
+								// errorCount++;
+								// errorCB({
+									// __summary : {
+										// msg : "连接服务器出错：" + e.code,
+										// code : e.code
+									// }
+								// });
+							// }
+						// });
 					} catch(e) {
 						if (errorCount === 0) {
 							errorCount++;

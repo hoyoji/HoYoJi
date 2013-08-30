@@ -20,6 +20,11 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
+if ($.saveableMode === "edit") {
+	$.project.label.setColor("#6e6d6d");
+	$.project.field.setColor("#6e6d6d");
+}
+
 $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if (!$.depositeFriendAccount) {
 		alert("请选择存入账户");
