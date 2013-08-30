@@ -22,10 +22,10 @@
 				id="nickName" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="nickName"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="详细资料" hintText="请输入内容"
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="详细资料" hintText="请输入内容"
 				id="remark" autoInit="false" 	
 				bindModel="$.$model"
-				bindAttribute="remark"/>
+				bindAttribute="remark"/> -->
 			</ScrollView>
 		</View>
 	</View>

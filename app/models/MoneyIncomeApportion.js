@@ -159,6 +159,7 @@ exports.definition = {
 					delete record.exchangeRate;
 			},
 			syncUpdate : function(record, dbTrans) {
+				if (record.ownerUserId === Alloy.Models.User.id) {
 				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
 					id : record.moneyIncomeId
 				});
@@ -171,8 +172,10 @@ exports.definition = {
 						projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)) : 
 						Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount")  * moneyIncome.xGet("exchangeRate")).toFixed(2));
 				}
+				}
 				delete record.projectId;
-				delete record.exchangeRate;
+				delete record.exchangeRate; 
+
 			},
 			// syncUpdateConflict : function(record, dbTrans) {
 			// delete record.id;

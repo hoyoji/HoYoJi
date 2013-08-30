@@ -380,10 +380,8 @@ exports.definition = {
 					friendUserId : record.ownerUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
-						projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) : 
-						Number((record.amount * record.exchangeRate).toFixed(2));
-				}				
+					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
+				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				// 如果本地的支出已经有明细，我们不用服务器上的支出金额覆盖，而是等同步服务器上的支出明细时再更新本地支出金额
@@ -425,16 +423,15 @@ exports.definition = {
 							});
 						}
 					}
+
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : record.projectId,
+						friendUserId : record.ownerUserId
+					});
+					if (projectShareAuthorization.id) {
+						projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
+					}
 				}
-				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : record.projectId,
-					friendUserId : record.ownerUserId
-				});
-				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncActualTotalIncome = projectShareAuthorization.__syncActualTotalIncome ? 
-					projectShareAuthorization.__syncActualTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : 
-					Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
-				}				
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;

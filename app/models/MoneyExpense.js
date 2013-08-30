@@ -382,9 +382,7 @@ exports.definition = {
 					friendUserId : record.ownerUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
-						projectShareAuthorization.__syncActualTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : 
-						Number((record.amount * record.exchangeRate).toFixed(2));
+					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? projectShareAuthorization.__syncActualTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -431,15 +429,13 @@ exports.definition = {
 							});
 						}
 					}
-				}
-				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : record.projectId,
-					friendUserId : record.ownerUserId
-				});
-				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? 
-							projectShareAuthorization.__syncActualTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : 
-							Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : record.projectId,
+						friendUserId : record.ownerUserId
+					});
+					if (projectShareAuthorization.id) {
+						projectShareAuthorization.__syncActualTotalExpense = projectShareAuthorization.__syncActualTotalExpense ? projectShareAuthorization.__syncActualTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
+					}
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {

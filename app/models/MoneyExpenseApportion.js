@@ -144,34 +144,31 @@ exports.definition = {
 				// 1. 如果支出也是新增的
 				// 2. 支出已经存在
 
-					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : record.projectId,
-						friendUserId : record.friendUserId
-					});
-					if (projectShareAuthorization.id) {
-						projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? 
-								projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : 
-								Number((record.amount * record.exchangeRate).toFixed(2));
-					}
-					
-					delete record.projectId;
-					delete record.exchangeRate;
-			},
-			syncUpdate : function(record, dbTrans) {
-				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-					id : record.moneyExpenseId
-				});
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : moneyExpense.xGet("projectId"),
+					projectId : record.projectId,
 					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? 
-						projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount")  * moneyExpense.xGet("exchangeRate")).toFixed(2)) : 
-							Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 				}
 				delete record.projectId;
 				delete record.exchangeRate;
+			},
+			syncUpdate : function(record, dbTrans) {
+				if (record.ownerUserId === Alloy.Models.User.id) {
+					var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+						id : record.moneyExpenseId
+					});
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : moneyExpense.xGet("projectId"),
+						friendUserId : record.friendUserId
+					});
+					if (projectShareAuthorization.id) {
+						projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2));
+					}
+				}
+				delete record.projectId;
+				delete record.exchangeRate; 
 			},
 			// syncUpdateConflict : function(record, dbTrans) {
 			// delete record.id;
@@ -186,21 +183,21 @@ exports.definition = {
 			// // 让本地修改覆盖服务器上的记录
 			// },
 			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-					// id : this.xGet("moneyExpenseId")
-				// });
-				// if (moneyExpense.id) {
-					// // 支出已在本地存在
-					// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						// projectId : moneyExpense.xGet("projectId"),
-						// friendUserId : moneyExpense.xGet("friendUserId")
-					// });
-					// if (projectShareAuthorization.id) {
-						// projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? 
-								// projectShareAuthorization.__syncApportionedTotalExpense - this.xGet("amount") * moneyExpense.xGet("exchangeRate") : 
-								// - this.xGet("amount") * moneyExpense.xGet("exchangeRate");
-					// }
-				// }
+			// var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+			// id : this.xGet("moneyExpenseId")
+			// });
+			// if (moneyExpense.id) {
+			// // 支出已在本地存在
+			// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+			// projectId : moneyExpense.xGet("projectId"),
+			// friendUserId : moneyExpense.xGet("friendUserId")
+			// });
+			// if (projectShareAuthorization.id) {
+			// projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ?
+			// projectShareAuthorization.__syncApportionedTotalExpense - this.xGet("amount") * moneyExpense.xGet("exchangeRate") :
+			// - this.xGet("amount") * moneyExpense.xGet("exchangeRate");
+			// }
+			// }
 			// },
 			// _syncDelete : function(record, dbTrans, xFinishedCallback) {
 			// this._xDelete(xFinishedCallback, {

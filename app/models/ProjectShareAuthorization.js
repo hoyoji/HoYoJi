@@ -374,24 +374,21 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 
-					var self = this;
-				// actualTotalIncome : "REAL NOT NULL",
-				// actualTotalExpense : "REAL NOT NULL",
-				// apportionedTotalIncome : "REAL NOT NULL",
-				// apportionedTotalExpense : "REAL NOT NULL"
+				var self = this;
+				if(record.friendUserId === Alloy.Models.User.id){
+					record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
+					delete this.__syncActualTotalIncome;
+	
+					record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
+					delete this.__syncActualTotalExpense;
+	
+					record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
+					delete this.__syncApportionedTotalIncome;
+	
+					record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
+					delete this.__syncApportionedTotalExpense;
+				}
 
-				record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
-				delete this.__syncActualTotalIncome;
-
-				record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
-				delete this.__syncActualTotalExpense;
-
-				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
-				delete this.__syncApportionedTotalIncome;
-
-				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
-				delete this.__syncApportionedTotalExpense;
-				
 				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
 					function refreshProject(){
 						self.off("sync", refreshProject);
@@ -403,8 +400,10 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
-
+				if(record.friendUserId === Alloy.Models.User.id){
+					localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
+				}
+				
 				if (localUpdated) {
 					this.syncUpdate(record, dbTrans);
 				}
