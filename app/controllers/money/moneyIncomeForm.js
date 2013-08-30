@@ -154,6 +154,11 @@ if (!$.$model) {
 	$.setSaveableMode("add");
 }
 
+if ($.saveableMode === "edit") {
+	$.project.label.setColor("#6e6d6d");
+	$.project.field.setColor("#6e6d6d");
+}
+
 function updateAmount() {
 	$.amount.setValue($.$model.xGet("amount"));
 	$.amount.field.fireEvent("change");

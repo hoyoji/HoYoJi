@@ -43,9 +43,9 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 
 $.details.addEventListener("singletap", function(e) {
 	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
-			selectedExpense : $.$model,
-			closeWithoutSave : true
-		});
+		selectedExpense : $.$model,
+		closeWithoutSave : true
+	});
 });
 
 function updateApportionAmount() {
@@ -107,7 +107,8 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+var loading;
+//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
@@ -152,6 +153,11 @@ if (!$.$model) {
 	});
 
 	$.setSaveableMode("add");
+}
+
+if ($.saveableMode === "edit") {
+	$.project.label.setColor("#6e6d6d");
+	$.project.field.setColor("#6e6d6d");
 }
 
 function updateAmount() {

@@ -93,6 +93,9 @@ if ($.saveableMode === "read") {
 	}
 
 } else {
+	$.project.label.setColor("#6e6d6d");
+	$.project.field.setColor("#6e6d6d");
+	
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
