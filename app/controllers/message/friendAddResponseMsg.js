@@ -89,16 +89,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 function addFriend(saveEndCB, saveErrorCB) {
 	// var setOtherRequestMsgToRead = function() {
-		// var messages = Alloy.createCollection("Message").xSearchInDb({
-			// fromUserId : $.$model.xGet("fromUserId"),
-			// toUserId : Alloy.Models.User.id,
-			// type : "System.Friend.AddRequest",
-			// messageState : "new"
-		// })
-		// messages.map(function(message) {
-			// message.xSet("messageState", "unread");
-			// message.xAddToSave($);
-		// });
+	// var messages = Alloy.createCollection("Message").xSearchInDb({
+	// fromUserId : $.$model.xGet("fromUserId"),
+	// toUserId : Alloy.Models.User.id,
+	// type : "System.Friend.AddRequest",
+	// messageState : "new"
+	// })
+	// messages.map(function(message) {
+	// message.xSet("messageState", "unread");
+	// message.xAddToSave($);
+	// });
 	// }
 	var date = (new Date()).toISOString();
 
@@ -121,44 +121,48 @@ function addFriend(saveEndCB, saveErrorCB) {
 
 		if (operation === "addFriend") {
 			//创建好友
-			var friend = Alloy.createModel("Friend", {
-				friendUser : friendUser,
-				friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"),
-				ownerUser : Alloy.Models.User
-			});
-			friend.xAddToSave($);
-			//把创建好的好友传入服务器
-			Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
-				$.$model.xSet('messageState', "closed");
-				Alloy.Globals.Server.putData([$.$model.toJSON()], function(data) {
-					//发送添加好友回复
-					Alloy.Globals.Server.sendMsg({
-						id : guid(),
-						"toUserId" : $.$model.xGet("fromUserId"),
-						"fromUserId" : $.$model.xGet("toUserId"),
-						"type" : "System.Friend.AddResponse",
-						"messageState" : "new",
-						"messageTitle" : "好友回复",
-						"date" : date,
-						"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "同意您的好友请求",
-						"messageBoxId" : friendUser.xGet("messageBoxId")
-					}, function() {
-						// setOtherRequestMsgToRead();
+			// var friend = Alloy.createModel("Friend", {
+			// friendUser : friendUser,
+			// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"),
+			// ownerUser : Alloy.Models.User
+			// });
+			// friend.xAddToSave($);
+			// //把创建好的好友传入服务器
+			// Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
+			$.$model.xSet('messageState', "closed");
+			Alloy.Globals.Server.putData([$.$model.toJSON()], function(data) {
+				//发送添加好友回复
+				Alloy.Globals.Server.sendMsg({
+					id : guid(),
+					"toUserId" : $.$model.xGet("fromUserId"),
+					"fromUserId" : $.$model.xGet("toUserId"),
+					"type" : "System.Friend.AddResponse",
+					"messageState" : "new",
+					"messageTitle" : "好友回复",
+					"date" : date,
+					"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "同意您的好友请求",
+					"messageBoxId" : friendUser.xGet("messageBoxId")
+				}, function() {
+					// setOtherRequestMsgToRead();
+					Alloy.Globals.Server.loadData("Friend",[{
+						ownerUserId : Alloy.Models.User.id,
+						friendUserId : $.$model.xGet("fromUserId")
+					}], function(collection) {
 						$.saveModel(saveEndCB, saveErrorCB, {
 							syncFromServer : true
 						});
 						saveEndCB("添加好友成功");
-
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
+					}, saveErrorCB);
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
-
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
+
+			// }, function(e) {
+			// alert(e.__summary.msg);
+			// });
 
 		} else if (operation === "reject") {
 			//发送拒绝消息给好友
