@@ -373,9 +373,7 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			syncUpdate : function(record, dbTrans) {
-
 				var self = this;
-<<<<<<< HEAD
 				if(record.friendUserId === Alloy.Models.User.id){
 					record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
 					delete this.__syncActualTotalIncome;
@@ -392,32 +390,9 @@ exports.definition = {
 
 				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
 					function refreshProject(){
-=======
-				// actualTotalIncome : "REAL NOT NULL",
-				// actualTotalExpense : "REAL NOT NULL",
-				// apportionedTotalIncome : "REAL NOT NULL",
-				// apportionedTotalExpense : "REAL NOT NULL"
-
-				record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
-				delete this.__syncActualTotalIncome;
-
-				record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
-				delete this.__syncActualTotalExpense;
-
-				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
-				delete this.__syncApportionedTotalIncome;
-
-				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
-				delete this.__syncApportionedTotalExpense;
-
-				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
-					function refreshProject() {
->>>>>>> a9ad03a681b4e991acb12a60773dc669943af203
 						self.off("sync", refreshProject);
 						self.xGet("project").xRefresh();
 					}
-
-
 					this.on("sync", refreshProject);
 				}
 				// delete all none-self data
