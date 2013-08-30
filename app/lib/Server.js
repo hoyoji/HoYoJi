@@ -114,7 +114,7 @@
 							}
 							model.xSet(modelData);
 							model.save(null, {
-								silent : true,
+								// silent : true,
 								syncFromServer : true
 							});
 							returnCollection.push(model);

@@ -459,7 +459,24 @@ exports.definition = {
 						dbTrans.off("rollback", rollbackLoadData);
 						dbTrans.off("commit", commitLoadData);
 						dataToBeLoaded.forEach(function(table){
-							Alloy.Globals.Server.loadData(table, [{projectId : self.xGet("project").id, __NOT_FILTER__ : {ownerUserId : Alloy.Models.User.id}}]);
+							Alloy.Globals.Server.loadData(table, [{projectId : self.xGet("project").id, __NOT_FILTER__ : {ownerUserId : Alloy.Models.User.id}}], function(collection){
+							if (table === "MoneyExpense") {
+								if(collection.length > 0){
+									collection.forEach(function(item){
+										Alloy.Globals.Server.loadData("MoneyExpenseDetail", [{moneyExpenseId : item.id}]);
+										Alloy.Globals.Server.loadData("MoneyExpenseApportion", [{moneyExpenseId : item.id}]);
+									});
+								}
+							} else if (table === "MoneyIncome") {
+								if(collection.length > 0){
+									collection.forEach(function(item){
+										Alloy.Globals.Server.loadData("MoneyIncomeDetail", [{moneyIncomeId : item.id}]);
+										Alloy.Globals.Server.loadData("MoneyIncomeApportion", [{moneyIncomeId : item.id}]);
+									});
+								}
+							}
+							});
+							
 						});
 					}
 					dbTrans.on("commit", commitLoadData);
