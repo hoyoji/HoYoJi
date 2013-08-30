@@ -390,16 +390,24 @@ exports.definition = {
 
 				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
 					function refreshProject(){
+						dbTrans.off("rollback", rollback);
 						self.off("sync", refreshProject);
 						self.xGet("project").xRefresh();
 					}
+					function rollback(){
+						dbTrans.off("rollback", rollback);
+						self.off("sync", refreshProject);
+					}
 					this.on("sync", refreshProject);
+					dbTrans.on("rollback", rollback);
 				}
+				
 				// delete all none-self data
-				var dataToBeDeleted = ["MoneyIncome", "MoneyExpense", "MoneyBorrow", "MoneyLend", "MoneyPayback", "MoneyReturn"];
+				var dataToBeDeleted = ["MoneyIncome", "MoneyExpense", "MoneyBorrow", "MoneyLend", "MoneyPayback", "MoneyReturn"],
+					dataToBeLoaded = [];
 				dataToBeDeleted.forEach(function(table) {
 					if ((record.state === "Delete" && self.xGet("state") !== "Delete") 
-						|| record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0) {
+						|| (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0)) {
 						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
 							if (table === "MoneyExpense") {
 								item.xGet("moneyExpenseDetails").forEach(function(detail) {
@@ -438,8 +446,25 @@ exports.definition = {
 								syncFromServer : true
 							});
 						});
+					} else if (record["projectShare" + table + "OwnerDataOnly"] === 0 && self.xGet("projectShare" + table + "OwnerDataOnly") === 1) {
+						dataToBeLoaded.push(table);
 					}
 				});
+				if(dataToBeLoaded.length > 0){
+					function rollbackLoadData(){
+						dbTrans.off("rollback", rollbackLoadData);
+						dbTrans.off("commit", commitLoadData);
+					}
+					function commitLoadData(){
+						dbTrans.off("rollback", rollbackLoadData);
+						dbTrans.off("commit", commitLoadData);
+						dataToBeLoaded.forEach(function(table){
+							Alloy.Globals.Server.loadData(table, [{projectId : self.xGet("project").id, __NOT_FILTER__ : {ownerUserId : Alloy.Models.User.id}}]);
+						});
+					}
+					dbTrans.on("commit", commitLoadData);
+					dbTrans.on("rollback", rollbackLoadData);
+				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
