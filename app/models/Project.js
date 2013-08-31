@@ -201,7 +201,7 @@ exports.definition = {
 							self.xGet("moneyIncomeCategories").remove(depositeIncomeCategory, {silent : true});
 							self._xDelete(xFinishCallback, options);
 						}, function(e) {
-							saveErrorCB("删除失败,请重试：" + e.__summary.msg);
+							xFinishCallback(e);
 							return;
 						});
 						
@@ -268,7 +268,14 @@ exports.definition = {
 					}
 				}
 				return this.xGet("ownerUser") === Alloy.Models.User;
-			}
+			},
+			_syncDelete : function(record, dbTrans, xFinishedCallback) {
+				this._xDelete(xFinishedCallback, {
+					dbTrans : dbTrans,
+					syncFromServer : true,
+					wait : true
+				});
+			}			
 		});
 		return Model;
 	},

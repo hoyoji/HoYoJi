@@ -240,10 +240,10 @@
 									// 我们要将该记录的所有hasMany一并删除
 									for (var hasMany in model.config.hasMany) {
 										model.xGet(hasMany).forEach(function(item) {
-											item.syncDelete(record, dbTrans);
-											item._syncDelete(record, dbTrans, function(e) {
-											});
-											dbTrans.db.execute(sql, [item.xGet("id")]);
+											// item.syncDelete(record, dbTrans);
+											// item._syncDelete(record, dbTrans, function(e) {
+											// });
+											// dbTrans.db.execute(sql, [item.xGet("id")]);
 										});
 									}
 									model.syncDelete(record, dbTrans);
