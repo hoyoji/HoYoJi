@@ -374,40 +374,41 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 				var self = this;
-				if(record.friendUserId === Alloy.Models.User.id){
+				if (record.friendUserId === Alloy.Models.User.id) {
 					record.actualTotalIncome = (this.__syncActualTotalIncome || 0) + (this.xGet("actualTotalIncome") || 0);
 					delete this.__syncActualTotalIncome;
-	
+
 					record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
 					delete this.__syncActualTotalExpense;
-	
+
 					record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
 					delete this.__syncApportionedTotalIncome;
-	
+
 					record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
 					delete this.__syncApportionedTotalExpense;
 				}
 
-				if(record.state === "Delete" && this.xGet("state") !== "Delete"){
-					function refreshProject(){
+				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
+					function refreshProject() {
 						dbTrans.off("rollback", rollback);
 						self.off("sync", refreshProject);
 						self.xGet("project").xRefresh();
 					}
-					function rollback(){
+
+					function rollback() {
 						dbTrans.off("rollback", rollback);
 						self.off("sync", refreshProject);
 					}
+
+
 					this.on("sync", refreshProject);
 					dbTrans.on("rollback", rollback);
 				}
-				
+
 				// delete all none-self data
-				var dataToBeDeleted = ["MoneyIncome", "MoneyExpense", "MoneyBorrow", "MoneyLend", "MoneyPayback", "MoneyReturn"],
-					dataToBeLoaded = [];
+				var dataToBeDeleted = ["MoneyIncome"], dataToBeLoaded = [];
 				dataToBeDeleted.forEach(function(table) {
-					if ((record.state === "Delete" && self.xGet("state") !== "Delete") 
-						|| (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0)) {
+					if ((record.state === "Delete" && self.xGet("state") !== "Delete") || (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0)) {
 						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
 							if (table === "MoneyExpense") {
 								item.xGet("moneyExpenseDetails").forEach(function(detail) {
@@ -450,46 +451,62 @@ exports.definition = {
 						dataToBeLoaded.push(table);
 					}
 				});
-				if(dataToBeLoaded.length > 0){
-					function rollbackLoadData(){
+				if (dataToBeLoaded.length > 0) {
+					function rollbackLoadData() {
 						dbTrans.off("rollback", rollbackLoadData);
-						dbTrans.off("commit", commitLoadData);
+						self.off("sync", commitLoadData);
 					}
-					function commitLoadData(){
+
+					function commitLoadData() {
 						dbTrans.off("rollback", rollbackLoadData);
-						dbTrans.off("commit", commitLoadData);
-						dataToBeLoaded.forEach(function(table){
-							Alloy.Globals.Server.loadData(table, [{projectId : self.xGet("project").id, __NOT_FILTER__ : {ownerUserId : Alloy.Models.User.id}}], function(collection){
-							if (table === "MoneyExpense") {
-								if(collection.length > 0){
-									collection.forEach(function(item){
-										Alloy.Globals.Server.loadData("MoneyExpenseDetail", [{moneyExpenseId : item.id}]);
-										Alloy.Globals.Server.loadData("MoneyExpenseApportion", [{moneyExpenseId : item.id}]);
-									});
+						self.off("sync", commitLoadData);
+						dataToBeLoaded.forEach(function(table) {
+							Alloy.Globals.Server.loadData(table, [{
+								projectId : self.xGet("project").id,
+								__NOT_FILTER__ : {
+									ownerUserId : Alloy.Models.User.id
 								}
-							} else if (table === "MoneyIncome") {
-								if(collection.length > 0){
-									collection.forEach(function(item){
-										Alloy.Globals.Server.loadData("MoneyIncomeDetail", [{moneyIncomeId : item.id}]);
-										Alloy.Globals.Server.loadData("MoneyIncomeApportion", [{moneyIncomeId : item.id}]);
-									});
-								}
-							}
+							}], function(collection) {
+								console.info("a");
+								console.info("a");
+								
+								// if (collection.length > 0) {
+									// if (table === "MoneyExpense") {
+										// collection.forEach(function(item) {
+											// Alloy.Globals.Server.loadData("MoneyExpenseDetail", [{
+												// moneyExpenseId : item.id
+											// }]);
+											// Alloy.Globals.Server.loadData("MoneyExpenseApportion", [{
+												// moneyExpenseId : item.id
+											// }]);
+										// });
+									// } else if (table === "MoneyIncome") {
+										// collection.forEach(function(item) {
+											// Alloy.Globals.Server.loadData("MoneyIncomeDetail", [{
+												// moneyIncomeId : item.id
+											// }]);
+											// Alloy.Globals.Server.loadData("MoneyIncomeApportion", [{
+												// moneyIncomeId : item.id
+											// }]);
+										// });
+									// }
+								// }
 							});
-							
+
 						});
 					}
-					dbTrans.on("commit", commitLoadData);
+
+					this.on("sync", commitLoadData);
 					dbTrans.on("rollback", rollbackLoadData);
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				if(record.friendUserId === Alloy.Models.User.id){
+				if (record.friendUserId === Alloy.Models.User.id) {
 					localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
 				}
-				
+
 				if (localUpdated) {
 					this.syncUpdate(record, dbTrans);
 				}

@@ -487,7 +487,7 @@ function Sync(method, model, opts) {
 						}
 					}
 				}
-				model.id = null;
+				// model.id = null;
 				resp = model.attributes;
 			}
 			if (!opts.dbTrans) {

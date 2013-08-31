@@ -97,12 +97,12 @@
 
 		exports.Utils.patchScrollableViewOnAndroid = function(scView) {
 			// scView.addEventListener("scroll", function(){
-				// Alloy.Globals.scrollableViewScrolling = true;
+			// Alloy.Globals.scrollableViewScrolling = true;
 			// });
 			// scView.addEventListener("scrollend", function(){
-				// Alloy.Globals.scrollableViewScrolling = false;
+			// Alloy.Globals.scrollableViewScrolling = false;
 			// });
-			
+
 			if (OS_ANDROID) {
 				scView.getViews().map(function(view) {
 					view.addEventListener("longpress", function(e) {
@@ -116,10 +116,10 @@
 						scView.fireEvent("touchstart", e);
 					});
 					// view.addEventListener("touchmove", function(e) {
-						// scView.fireEvent("touchmove", e);
+					// scView.fireEvent("touchmove", e);
 					// });
 					// view.addEventListener("touchend", function(e) {
-						// scView.fireEvent("touchend", e);
+					// scView.fireEvent("touchend", e);
 					// });
 					view.addEventListener("becamedirty", function(e) {
 						scView.fireEvent("becamedirty", e);
@@ -153,14 +153,14 @@
 						scView.fireEvent("textfieldfocused", e);
 					});
 				});
-			} 
+			}
 			// else {
-					// scView.addEventListener("opencontextmenu", function(e) {
-						// if(!Alloy.Globals.contextMenuScrollableView){
-							// Alloy.Globals.contextMenuScrollableView = scView;
-							// Alloy.Globals.contextMenuScrollableViewPage = scView.currentPageAsFloat;
-						// }
-					// });
+			// scView.addEventListener("opencontextmenu", function(e) {
+			// if(!Alloy.Globals.contextMenuScrollableView){
+			// Alloy.Globals.contextMenuScrollableView = scView;
+			// Alloy.Globals.contextMenuScrollableViewPage = scView.currentPageAsFloat;
+			// }
+			// });
 			// }
 		};
 
@@ -499,7 +499,27 @@
 			// }
 			// this.trigger.apply(this, arguments);
 			// }
-
+			remove : function(models, options) {
+				var i, l, index, model;
+				options || ( options = {});
+				models = _.isArray(models) ? models.slice() : [models];
+				for ( i = 0, l = models.length; i < l; i++) {
+					model = this.getByCid(models[i]) || this.get(models[i]);
+					if (!model)
+						continue;
+					delete this._byId[model.id];
+					delete this._byCid[model.cid];
+					index = this.indexOf(model);
+					this.models.splice(index, 1);
+					this.length--;
+					if (!options.silent) {
+						options.index = index;
+						model.trigger('remove', model, this, options);
+					}
+					this._removeReference(model);
+				}
+				return this;
+			},
 			add : function(models, options) {
 				var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
 				options || ( options = {});

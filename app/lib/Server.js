@@ -99,27 +99,33 @@
 					requestData.push(filter);
 				});
 				Alloy.Globals.Server.getData(requestData, function(data) {
-					var returnCollection = Alloy.createCollection(modelName);
 					data = _.flatten(data);
-					data.forEach(function(record) {
-						if (record) {
-							var modelData = record;
-							var id = modelData.id;
-							delete modelData.id;
-							var model = Alloy.createModel(modelData.__dataType).xFindInDb({
-								id : id
-							});
-							if (!model.id) {
-								model.attributes.id = id;
+					var returnCollection = Alloy.createCollection(modelName);
+					if (data.length > 0) {
+						var dbTrans = Alloy.Globals.DataStore.createTransaction();
+						dbTrans.begin();
+						data.forEach(function(record) {
+							if (record) {
+								var modelData = record;
+								var id = modelData.id;
+								delete modelData.id;
+								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
+									id : id
+								});
+								if (!model.id) {
+									model.attributes.id = id;
+								}
+								model.xSet(modelData);
+								model.save(null, {
+									silent : true,
+									dbTrans : dbTrans,
+									syncFromServer : true
+								});
+								returnCollection.push(model);
 							}
-							model.xSet(modelData);
-							model.save(null, {
-								// silent : true,
-								syncFromServer : true
-							});
-							returnCollection.push(model);
-						}
-					});
+						});
+						dbTrans.commit();
+					}
 					if (xFinishedCallback) {
 						xFinishedCallback(returnCollection);
 					}
@@ -402,7 +408,7 @@
 			getExchangeRate : function(fromCurrency, toCurrency, successCB, errorCB) {
 				this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
 				return;
-				
+
 				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
 				var callparams = {
 					FromCurrency : fromCurrency,
@@ -468,43 +474,43 @@
 					};
 
 					// var suds = new SudsClient({
-						// endpoint : url,
-						// targetNamespace : 'http://www.webserviceX.NET/'
+					// endpoint : url,
+					// targetNamespace : 'http://www.webserviceX.NET/'
 					// });
 
 					try {
-						
+
 						this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
-						
+
 						// suds.invoke('ConversionRate', callparams, function(xmlDoc) {
-							// var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
-							// if (results && results.length > 0) {
-								// var result = results.item(0);
-								// exchange.rate = Number(results.item(0).text).toFixed(4);
-								// successCount++;
-								// if (successCount === exchangesCount) {
-									// successCB(exchanges);
-								// }
-							// } else {
-								// if (errorCount === 0) {
-									// errorCount++;
-									// errorCB({
-										// __summary : {
-											// msg : '获取汇率出错'
-										// }
-									// });
-								// }
-							// }
+						// var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
+						// if (results && results.length > 0) {
+						// var result = results.item(0);
+						// exchange.rate = Number(results.item(0).text).toFixed(4);
+						// successCount++;
+						// if (successCount === exchangesCount) {
+						// successCB(exchanges);
+						// }
+						// } else {
+						// if (errorCount === 0) {
+						// errorCount++;
+						// errorCB({
+						// __summary : {
+						// msg : '获取汇率出错'
+						// }
+						// });
+						// }
+						// }
 						// }, function(e) {
-							// if (errorCount === 0) {
-								// errorCount++;
-								// errorCB({
-									// __summary : {
-										// msg : "连接服务器出错：" + e.code,
-										// code : e.code
-									// }
-								// });
-							// }
+						// if (errorCount === 0) {
+						// errorCount++;
+						// errorCB({
+						// __summary : {
+						// msg : "连接服务器出错：" + e.code,
+						// code : e.code
+						// }
+						// });
+						// }
 						// });
 					} catch(e) {
 						if (errorCount === 0) {
