@@ -487,6 +487,7 @@ function Sync(method, model, opts) {
 						}
 					}
 				}
+				// backbonejs needs this id to remove the model from collection
 				// model.id = null;
 				resp = model.attributes;
 			}
