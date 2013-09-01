@@ -11,7 +11,7 @@
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="oldMessagesTable" bottom="42" top="42"/> -->
 			<Widget src="com.hoyoji.titanium.widget.XTableView" 
 				id="receivedMessagesTable" autoInit="false"
-				sortByField="date" groupByField="date" bottom="0" top="0"/>
+				pageSize="10" sortByField="date" sortReverse="true" groupByField="date" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
 		buttons="收件箱;全部消息;已读消息;未读消息,发件箱" imagesFolder="/images/message/messageAll"
