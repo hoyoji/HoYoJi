@@ -499,11 +499,16 @@ function collapseAllHasDetailSections() {
 }
 
 var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField, currentPageNumber = 0;
+exports.refreshTable = function(){
+	
+		
+};
+
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
-	$.fetchNextPageButton.setText("正在加载更多...");
-
+	$.fetchNextPageButton.setText("加载中...");
+	
 	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField)) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
@@ -583,8 +588,8 @@ exports.getRowsCount = function() {
 };
 
 exports.addCollection = function(collection, rowView) {
-	$.showActivityIndicator("正在加载...");
-
+	$.showActivityIndicator("加载中...");
+	
 	if (rowView) {
 		collection.__rowView = rowView;
 	}
@@ -1073,10 +1078,14 @@ function createSection(sectionTitle, sectionIndex) {
 	return section;
 }
 
+var fetchingNextPage = false;
 if (pageSize > 0) {
 	$.fetchNextPageButton.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
-		exports.fetchNextPage();
+		if(fetchingNextPage === false){
+			fetchingNextPage = true;
+			exports.fetchNextPage();
+		}
 	});
 }
 
@@ -1116,7 +1125,7 @@ function showNoDataIndicator(hasData) {
 		// __noDataIndicator.setTop(-100);
 		// }
 		if (dataCount > $.getRowsCount()) {
-			$.fetchNextPageButton.setText("加载更多...");
+			$.fetchNextPageButton.setText("更多...");
 		} else {
 			$.fetchNextPageButton.setText("无更多内容");
 		}
@@ -1139,6 +1148,7 @@ function showNoDataIndicator(hasData) {
 		// __noDataIndicator.show();
 		// }
 	}
+	fetchingNextPage = false;
 }
 
 exports.getPageSize = function() {
