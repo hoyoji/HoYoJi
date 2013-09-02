@@ -40,9 +40,9 @@ function onFooterbarTap(e) {
 					selectedIncome.xGet("moneyIncomeApportions").add(newMoneyIncomeApportion);
 					// collection = selectedIncome.xGet("moneyIncomeApportions");
 					// collection.forEach(function(item) {
-						// if (!item.__xDeletedHidden) {
-							// item.trigger("_xchange:amount", item);
-						// }
+					// if (!item.__xDeletedHidden) {
+					// item.trigger("_xchange:amount", item);
+					// }
 					// });
 				} else {
 					alert("该成员尚未接受此项目，不能添加");
@@ -86,8 +86,8 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-				apportions[apportions.length - 1].xSet("apportionType", "Fixed");
-				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
+			apportions[apportions.length - 1].xSet("apportionType", "Fixed");
+			apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
 		}
 	} else if (e.source.id === "average") {
 		var apportions = [];
@@ -106,8 +106,8 @@ function onFooterbarTap(e) {
 				amountTotal += amount;
 			}
 			// 把分不尽的小数部分加到最后一个人身上
-				apportions[apportions.length - 1].xSet("apportionType", "Average");
-				apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
+			apportions[apportions.length - 1].xSet("apportionType", "Average");
+			apportions[apportions.length - 1].xSet("amount", (selectedIncome.xGet("amount") - amountTotal));
 		}
 	}
 }

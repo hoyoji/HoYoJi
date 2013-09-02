@@ -13,7 +13,7 @@
 				bindAttribute = "symbol"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="0" width="Ti.UI.SIZE" height="42"
-				id="currentBalance" autoInit="false"
+				id="currentBalance" autoInit="false" dataType="Number"
 				bindModel="$.$model"
 				bindAttribute="getCurrentBalance()"
 				/>

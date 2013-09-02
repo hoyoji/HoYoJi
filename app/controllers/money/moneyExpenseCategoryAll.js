@@ -7,8 +7,14 @@ var selectedProject = $.$attrs.selectedProject;
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
 	menuSection.add($.createContextMenuItem("新增支出分类", function() {
-		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {$model : "MoneyExpenseCategory", data : {project : selectedProject, parentExpenseCategory : sourceModel}});
-	},!selectedProject.canExpenseCategoryAddNew()));
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {
+			$model : "MoneyExpenseCategory",
+			data : {
+				project : selectedProject,
+				parentExpenseCategory : sourceModel
+			}
+		});
+	}, !selectedProject.canExpenseCategoryAddNew()));
 	return menuSection;
 };
 
@@ -27,8 +33,13 @@ $.onWindowOpenDo(function() {
 	}
 });
 
-function onFooterbarTap(e){
-	if(e.source.id === "addExpenseCategory"){
-		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm",{$model : "MoneyExpenseCategory", data : {project : selectedProject}});
+function onFooterbarTap(e) {
+	if (e.source.id === "addExpenseCategory") {
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryForm", {
+			$model : "MoneyExpenseCategory",
+			data : {
+				project : selectedProject
+			}
+		});
 	}
 }

@@ -89,7 +89,7 @@ exports.definition = {
 			xDelete : function(xFinishCallback, options) {
 				var error;
 				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除
-				if (options.syncFromServer !== true && Alloy.Models.User.xGet("activeMoneyAccount") === this) {
+				if (Alloy.Models.User.xGet("activeMoneyAccount") === this) {
 					error = {
 						msg : "默认账户不能删除"
 					};
@@ -108,7 +108,7 @@ exports.definition = {
 			},
 			getCurrentBalance : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
-					return Number(this.xGet("currentBalance").toFixed(2));
+					return this.xGet("currentBalance").toFixed(2);
 				}
 			},
         	syncAddNew: function(record, dbTrans) {

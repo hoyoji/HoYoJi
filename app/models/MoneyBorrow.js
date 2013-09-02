@@ -222,7 +222,7 @@ exports.definition = {
 				return remark;
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (options.syncFromServer !== true && this.xGet("moneyReturns").length > 0) {
+				if (this.xGet("moneyReturns").length > 0) {
 					xFinishCallback({
 						msg : "当前借入的还款明细不为空，不能删除"
 					});
@@ -296,7 +296,15 @@ exports.definition = {
 						}
 					}
 				}
-			}
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+					var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+					var moneyAccount = this.xGet("moneyAccount");
+					var amount = this.xGet("amount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") - amount
+					}, saveOptions);
+			}			
 		});
 		return Model;
 	},

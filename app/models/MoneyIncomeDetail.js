@@ -142,13 +142,7 @@ exports.definition = {
 						moneyIncome.__syncAmount = moneyIncome.__syncAmount ? moneyIncome.__syncAmount - record.amount : - record.amount;
 
 				}
-			},	
-			_syncDelete : function(record, dbTrans, xFinishedCallback) {
-				this._xDelete(xFinishedCallback, {
-					dbTrans : dbTrans,
-					syncFromServer : true
-				});
-			}			
+			}		
 		});
 		return Model;
 	},

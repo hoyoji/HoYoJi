@@ -97,17 +97,17 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//增改的时候计算amount
 		}
 		/*
-		//隐藏功能,使用明细金额作为收支金额
-		else {
-		Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
-		$.$model.xGet("moneyExpense").xSet("useDetailsTotal", true);
-		expenseAmount = detailTotal;
-		expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
-		expense.trigger("xchange:amount", expense);
-		//增改的时候计算amount
-		});
-		}
-		*/
+		 //隐藏功能,使用明细金额作为收支金额
+		 else {
+		 Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为支出金额？", function() {
+		 $.$model.xGet("moneyExpense").xSet("useDetailsTotal", true);
+		 expenseAmount = detailTotal;
+		 expense.xSet("amount", expenseAmount - oldDetailAmount + $.$model.xGet("amount"));
+		 expense.trigger("xchange:amount", expense);
+		 //增改的时候计算amount
+		 });
+		 }
+		 */
 
 		$.$model.trigger("xchange:amount", $.$model);
 		$.$model.trigger("xchange:name", $.$model);

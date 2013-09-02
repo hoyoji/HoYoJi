@@ -646,7 +646,12 @@
 			syncUpdate : function(record, dbTrans) {
 			},
 			_syncDelete : function(record, dbTrans, xFinishedCallback) {
-				this.xDelete(xFinishedCallback, {
+				// this.xDelete(xFinishedCallback, {
+					// dbTrans : dbTrans,
+					// syncFromServer : true,
+					// wait : true
+				// });				
+				this.destroy({
 					dbTrans : dbTrans,
 					syncFromServer : true,
 					wait : true
