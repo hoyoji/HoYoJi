@@ -188,7 +188,7 @@ function backspace() {
 			}
 		} else {
 			// activeTextField.setValue("");
-			$.display.setText("");
+			$.display.setText(0);
 		}
 		// activeTextField.field.fireEvent("change");
 		setOPColor();
@@ -206,7 +206,7 @@ function clear() {
 	accum = 0;
 	pendingOp = "";
 	// activeTextField.setValue("");
-	$.display.setText("");
+	$.display.setText(0);
 	flagNewNum = true;
 	// activeTextField.field.fireEvent("change");
 	setOPColor();
