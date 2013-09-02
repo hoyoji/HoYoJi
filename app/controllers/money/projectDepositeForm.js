@@ -103,6 +103,7 @@ function openFriendSelector() {
 				$.depositeAccount.$view.setHeight(42);
 			} else {
 				$.depositeAccount.$view.setHeight(0);
+				$.depositeAccountExchangeRate.$view.setHeight(0);
 			}
 		}
 	};
