@@ -460,7 +460,10 @@ $.onWindowOpenDo(function() {
 						});
 						$.footerBar.setParent($.$view);
 						$.footerBar.on("singletap", onFooterbarTap);
-					} else if ($.$model.xGet('type') === "Project.Deposite.DeleteResponse" || $.$model.xGet('type') === "Project.Deposite.Response" || $.$model.xGet('type') === "Project.Deposite.RejectAccept") {
+					} else if ($.$model.xGet('type') === "Project.Deposite.DeleteResponse" 
+					|| $.$model.xGet('type') === "Project.Deposite.Response" 
+					|| $.$model.xGet('type') === "Project.Deposite.RejectAccept" 
+					|| $.$model.xGet('type') === "Project.Deposite.RejectDelete") {
 						$.$model.save({
 							messageState : "closed"
 						}, {
