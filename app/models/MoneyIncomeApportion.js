@@ -146,35 +146,31 @@ exports.definition = {
 				// 1. 如果收入也是新增的
 				// 2. 收入已经存在
 
-					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : record.projectId,
-						friendUserId : record.friendUserId
-					});
-					if (projectShareAuthorization.id) {
-						projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? 
-								projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) : 
-								Number((record.amount * record.exchangeRate).toFixed(2));
-					}
-					delete record.projectId;
-					delete record.exchangeRate;
-			},
-			syncUpdate : function(record, dbTrans) {
-				if (record.ownerUserId === Alloy.Models.User.id) {
-				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					id : record.moneyIncomeId
-				});
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : moneyIncome.xGet("projectId"),
+					projectId : record.projectId,
 					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? 
-						projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)) : 
-						Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount")  * moneyIncome.xGet("exchangeRate")).toFixed(2));
-				}
+					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 				}
 				delete record.projectId;
-				delete record.exchangeRate; 
+				delete record.exchangeRate;
+			},
+			syncUpdate : function(record, dbTrans) {
+				// if (record.ownerUserId === Alloy.Models.User.id) {
+					var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+						id : record.moneyIncomeId
+					});
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : moneyIncome.xGet("projectId"),
+						friendUserId : record.friendUserId
+					});
+					if (projectShareAuthorization.id) {
+						projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2));
+					}
+				// }
+				delete record.projectId;
+				delete record.exchangeRate;
 
 			},
 			// syncUpdateConflict : function(record, dbTrans) {
@@ -190,7 +186,11 @@ exports.definition = {
 			// // 让本地修改覆盖服务器上的记录
 			// },
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
-				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				var saveOptions = {
+					dbTrans : dbTrans,
+					patch : true,
+					syncFromServer : true
+				};
 				var self = this;
 				var projectShareAuthorizations = self.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
