@@ -86,7 +86,6 @@ $.onWindowCloseDo(function() {
 });
 
 $.amount.field.addEventListener("singletap", function() {
-	console.info("+++focus+" + $.amount.field.focus());
 	if ($.$model.xGet("apportionType") === "Fixed") {
 		$.$model.apportionFocus = true;
 	}

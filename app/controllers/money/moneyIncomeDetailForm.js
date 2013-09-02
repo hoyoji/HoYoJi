@@ -76,40 +76,50 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		 */
 		$.saveModel(saveEndCB, saveErrorCB);
 	} else {
-		if (!oldIncomeAmount && oldIncomeAmount !== 0) {//去掉使用明细金额作为收支金额，在新增收支的form新增明细时检测form里没有amount，则使用明细总额为form的amount
-			$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
-		}
-		if (income.xGet("moneyIncomeDetails").length > 0) {
-			incomeAmount = income.xGet("amount");
-			$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
-				if (!item.__xDeleted) {
-					detailTotal = detailTotal + item.xGet("amount");
-				}
-			});
-		}
-		if ($.$model.xGet("moneyIncome").xGet("useDetailsTotal") === true) {
-			income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
-		}
-		/*
-		 //隐藏功能,使用明细金额作为收支金额
-		 else {
-		 Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
-		 $.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
-		 incomeAmount = detailTotal;
-		 income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
-		 //增改的时候计算amount
-		 income.trigger("xchange:amount", income);
-		 });
-		 }
-		 */
-		$.$model.trigger("xchange:amount", $.$model);
-		$.$model.trigger("xchange:name", $.$model);
+		$.$model.xValidate(function() {
+			if ($.$model.__xValidationErrorCount > 0) {
+				$.$model.__xValidationError.__summary = {
+					msg : "验证错误"
+				};
+				$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+				saveErrorCB($.$model.__xValidationError.__summary.msg);
+				return;
+			}
+			if (!oldIncomeAmount && oldIncomeAmount !== 0) {//去掉使用明细金额作为收支金额，在新增收支的form新增明细时检测form里没有amount，则使用明细总额为form的amount
+				$.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
+			}
+			if (income.xGet("moneyIncomeDetails").length > 0) {
+				incomeAmount = income.xGet("amount");
+				$.$model.xGet("moneyIncome").xGet("moneyIncomeDetails").forEach(function(item) {
+					if (!item.__xDeleted) {
+						detailTotal = detailTotal + item.xGet("amount");
+					}
+				});
+			}
+			if ($.$model.xGet("moneyIncome").xGet("useDetailsTotal") === true) {
+				income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+			}
+			/*
+			 //隐藏功能,使用明细金额作为收支金额
+			 else {
+			 Alloy.Globals.confirm("修改金额", "确定要修改并使用明细总和为收入金额？", function() {
+			 $.$model.xGet("moneyIncome").xSet("useDetailsTotal", true);
+			 incomeAmount = detailTotal;
+			 income.xSet("amount", incomeAmount - oldDetailAmount + $.$model.xGet("amount"));
+			 //增改的时候计算amount
+			 income.trigger("xchange:amount", income);
+			 });
+			 }
+			 */
+			$.$model.trigger("xchange:amount", $.$model);
+			$.$model.trigger("xchange:name", $.$model);
 
-		income.trigger("xchange:amount", income);
-		// $.becameClean();
-		income.xGet("moneyIncomeDetails").add($.$model);
-		saveEndCB();
-		$.getCurrentWindow().$view.close();
+			income.trigger("xchange:amount", income);
+			// $.becameClean();
+			income.xGet("moneyIncomeDetails").add($.$model);
+			saveEndCB();
+			$.getCurrentWindow().$view.close();
+		});
 	}
 };
 
