@@ -112,7 +112,7 @@ $.makeContextMenu = function() {
 					"messageState" : "new",
 					"messageTitle" : "删除充值",
 					"date" : date,
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "删除了充值支出",
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "请求删除充值",
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 						accountType : "MoneyExpense",

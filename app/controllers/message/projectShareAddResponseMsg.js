@@ -462,7 +462,7 @@ $.onWindowOpenDo(function() {
 			alert(e.__summary.msg);
 		});
 	}
-	$.showHideAuthorization.hide();
+	// $.showHideAuthorization.hide();
 	//如果消息状态是new即把set为read,且显示出footerBar
 	if ($.$model.xGet('messageState') === "new") {
 		$.$model.save({
@@ -524,6 +524,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					fromUser.save(userData);
 				}
 				var editProjectShareAuthorizationArray = [];
+				
+				var detailArray = $.$model.xGet("detail").split(":");
+				var projectName = detailArray[1];
+				
 				if (operation === "agree") {
 
 					var projectCurrencyIds = projectShareData.projectCurrencyIds;
@@ -681,6 +685,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								$.$model.xSet("messageState", "closed");
 								editProjectShareAuthorizationArray.push($.$model.toJSON());
 								Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+									
 									Alloy.Globals.Server.sendMsg({
 										id : guid(),
 										"toUserId" : $.$model.xGet("fromUserId"),
@@ -689,7 +694,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										"messageState" : "new",
 										"messageTitle" : "共享回复",
 										"date" : date,
-										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目",
+										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:" + projectName,
 										"messageBoxId" : fromUser.xGet("messageBoxId"),
 										"messageData" : $.$model.xGet("messageData")
 									}, function() {
@@ -770,7 +775,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "unread",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目",
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目:" + projectName,
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
