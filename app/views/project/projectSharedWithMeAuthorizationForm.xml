@@ -38,41 +38,41 @@
 					</View>
 				</View>
 				<View height="Ti.UI.SIZE" width="Ti.UI.SIZE">
-				<Label width="100%" left="10" right="" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n自己--表示只能访问自己的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
+				<Label width="100%" left="10" right="" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
 				</View>
 				<View layout="vertical" height="Ti.UI.SIZE">
 					<View height="42" layout="horizontal">
-						<Label width="20%">权限</Label>
-						<Label width="20%">自己</Label>
-						<Label width="20%">增</Label>
-						<Label width="20%">改</Label>
-						<Label width="20%">删</Label>
+						<Label width="25%">权限</Label>
+						<!-- <Label width="20%">自己</Label> -->
+						<Label width="25%">增</Label>
+						<Label width="25%">改</Label>
+						<Label width="25%">删</Label>
 					</View>
 					<View layout="vertical" height="Ti.UI.SIZE">
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">支出</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">支出</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyExpenseOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyExpenseOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyExpenseOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyExpenseAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyExpenseEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -81,29 +81,29 @@
 							bindAttribute="projectShareMoneyExpenseDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收入</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">收入</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyIncomeOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyIncomeOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyIncomeOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyIncomeAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyIncomeEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -139,29 +139,29 @@
 							bindAttribute="projectShareMoneyTransferDelete"/>
 						</View> -->
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">借入</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">借入</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyBorrowOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyBorrowOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyBorrowOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyBorrowAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyBorrowAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyBorrowEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyBorrowEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyBorrowDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -170,29 +170,29 @@
 							bindAttribute="projectShareMoneyBorrowDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">借出</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">借出</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyLendOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyLendOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyLendOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyLendAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyLendAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyLendEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyLendEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyLendDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -201,29 +201,29 @@
 							bindAttribute="projectShareMoneyLendDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">还款</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">还款</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyReturnOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyReturnOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyReturnOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyReturnAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyReturnAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyReturnEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyReturnEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyReturnDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -232,29 +232,29 @@
 							bindAttribute="projectShareMoneyReturnDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="20%">收款</Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Label left="0" width="25%">收款</Label>
+							<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 							id="projectShareMoneyPaybackOwnerDataOnly" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
-							bindAttribute="projectShareMoneyPaybackOwnerDataOnly"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							bindAttribute="projectShareMoneyPaybackOwnerDataOnly"/> -->
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyPaybackAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyPaybackAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyPaybackEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyPaybackEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyPaybackDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -263,23 +263,23 @@
 							bindAttribute="projectShareMoneyPaybackDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="30%">支出分类</Label>
+							<Label left="0" width="25%">支出分类</Label>
 							<Label width="10%"></Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyExpenseCategoryAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseCategoryEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyExpenseCategoryEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseCategoryDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
@@ -290,21 +290,21 @@
 						<View height="42" layout="horizontal">
 							<Label left="0" width="30%">收入分类</Label>
 							<Label width="10%"></Label>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyIncomeCategoryAddNew"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeCategoryEdit" autoInit="false"
 							hightLight="false"
 							items=" ,√"
 							values="0,1"
 							bindModel="$.$model"
 							bindAttribute="projectShareMoneyIncomeCategoryEdit"/>
-							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
+							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeCategoryDelete" autoInit="false"
 							hightLight="false"
 							items=" ,√"
