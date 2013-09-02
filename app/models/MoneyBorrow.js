@@ -86,7 +86,7 @@ exports.definition = {
 							error = {
 								msg : "金额不能为负数"
 							};
-						} else if (this.xGet("amount") < this.xGet("returnedAmount")) {
+						} else if (this.xGet("amount") < (this.xGet("returnedAmount")/this.xGet("exchangeRate"))) {
 							error = {
 								msg : "借入金额小于已还款金额 ，请重新输入"
 							};
@@ -213,6 +213,9 @@ exports.definition = {
 				}
 
 				return ownerUserSymbol;
+			},
+			getReturnedAmount : function() {
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("returnedAmount").toUserCurrency();
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");

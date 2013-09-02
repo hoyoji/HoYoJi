@@ -78,7 +78,7 @@ if (!$.$model) {
 
 	$.setSaveableMode("add");
 } else {
-	$.returnedAmount.$view.setHeight(42);
+	$.returnedAmountView.setHeight(42);
 }
 
 if ($.saveableMode === "edit") {
