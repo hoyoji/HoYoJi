@@ -43,9 +43,9 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 
 $.details.addEventListener("singletap", function(e) {
 	Alloy.Globals.openWindow("money/moneyIncomeDetailAll", {
-			selectedIncome : $.$model,
-			closeWithoutSave : true
-		});
+		selectedIncome : $.$model,
+		closeWithoutSave : true
+	});
 });
 
 function updateApportionAmount() {
@@ -107,7 +107,8 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+var loading;
+//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
@@ -216,14 +217,15 @@ $.onWindowOpenDo(function() {
 });
 
 var detailsDirty = false, apportionsDirty = false;
-function updateDetails(){
-	if(!detailsDirty){
+function updateDetails() {
+	if (!detailsDirty) {
 		$.becameDirty();
 		detailsDirty = true;
 	}
 }
-function updateApportions(){
-	if(!apportionsDirty){
+
+function updateApportions() {
+	if (!apportionsDirty) {
 		$.becameDirty();
 		apportionsDirty = true;
 	}
@@ -389,7 +391,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
-			$.friendAccount.$view.setHeight(0);//暂时隐藏好友账户
+			$.friendAccount.$view.setHeight(0);
+			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
 			$.friendAccount.field.fireEvent("change");
 		} else {
@@ -581,12 +584,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					});
 				}
 			}
-			
-			if(detailsDirty){
+
+			if (detailsDirty) {
 				$.becameClean();
 				detailsDirty = false;
 			}
-			if(apportionsDirty){
+			if (apportionsDirty) {
 				$.becameClean();
 				apportionsDirty = false;
 			}

@@ -68,7 +68,7 @@ function onFooterbarTap(e) {
 	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
 	currentForm.date.setValue((new Date()).toISOString());
-	
+
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
 	}, 42);
