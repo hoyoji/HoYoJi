@@ -377,8 +377,18 @@
 				var client = Ti.Network.createHTTPClient({
 					// function called when the response data is available
 					onload : function(e) {
-						var rateMatch = this.responseText.match(/.+,rhs: "([^\s]+).+/);
-						successCB(Number(rateMatch[1]).toFixed(4));
+						var errorMatch = this.responseText.match(/.+,error: "(4)".+/);
+						if (errorMatch) {
+							errorCB({
+								__summary : {
+									msg : "服务器无法获取该汇率，请手工输入",
+									code : e.code
+								}
+							});
+						} else {
+							var rateMatch = this.responseText.match(/.+,rhs: "([^\s]+).+/);
+							successCB(Number(rateMatch[1]).toFixed(4));
+						}
 					},
 					// function called when an error occurs, including a timeout
 					onerror : function(e) {
@@ -406,9 +416,13 @@
 				client.send();
 			},
 			getExchangeRate : function(fromCurrency, toCurrency, successCB, errorCB) {
-				this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
-				return;
 
+				if (fromCurrency === toCurrency) {
+					successCB(1.0000);
+					return;
+				}
+
+				var self = this;
 				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
 				var callparams = {
 					FromCurrency : fromCurrency,
@@ -424,42 +438,53 @@
 					suds.invoke('ConversionRate', callparams, function(xmlDoc) {
 						var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
 						if (results && results.length > 0) {
-							var result = results.item(0);
 							successCB(Number(results.item(0).text).toFixed(4));
 						} else {
-							errorCB({
-								__summary : {
-									msg : '获取汇率出错'
-								}
-							});
+
+							self.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+
+							// errorCB({
+							// __summary : {
+							// msg : '获取汇率出错'
+							// }
+							// });
 						}
 					}, function(e) {
 						if (e.code === 500 || e.code === -1) {
-							errorCB({
-								__summary : {
-									msg : "服务器无法获取该汇率，请手工输入",
-									code : e.code
-								}
-							});
+
+							self.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+
+							// errorCB({
+							// __summary : {
+							// msg : "服务器无法获取该汇率，请手工输入",
+							// code : e.code
+							// }
+							// });
 						} else {
-							errorCB({
-								__summary : {
-									msg : "连接服务器出错：" + e.code,
-									code : e.code
-								}
-							});
+
+							self.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+
+							// errorCB({
+							// __summary : {
+							// msg : "连接服务器出错：" + e.code,
+							// code : e.code
+							// }
+							// });
 						}
 					});
 				} catch(e) {
-					errorCB({
-						__summary : {
-							msg : "连接服务器出错：" + e.code,
-							code : e.code
-						}
-					});
+					self.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
+
+					// errorCB({
+					// __summary : {
+					// msg : "连接服务器出错：" + e.code,
+					// code : e.code
+					// }
+					// });
 				}
 			},
 			getExchangeRates : function(exchanges, successCB, errorCB) {
+				var self = this;
 				var url = "http://www.webservicex.net/CurrencyConvertor.asmx";
 				var exchangesCount = exchanges.length;
 				var successCount = 0, errorCount = 0;
@@ -468,59 +493,89 @@
 					if (errorCount > 0) {
 						return;
 					}
+
+					if (exchange.fromCurrency === exchange.toCurrency) {
+						exchange.rate = 1.0000;
+						successCount++;
+						return;
+					}
+
 					var callparams = {
 						FromCurrency : exchange.fromCurrency,
 						ToCurrency : exchange.toCurrency
 					};
 
-					// var suds = new SudsClient({
-					// endpoint : url,
-					// targetNamespace : 'http://www.webserviceX.NET/'
-					// });
+					var suds = new SudsClient({
+						endpoint : url,
+						targetNamespace : 'http://www.webserviceX.NET/'
+					});
 
 					try {
-
-						this.getExchangeRateFromGoogle(fromCurrency, toCurrency, successCB, errorCB);
-
-						// suds.invoke('ConversionRate', callparams, function(xmlDoc) {
-						// var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
-						// if (results && results.length > 0) {
-						// var result = results.item(0);
-						// exchange.rate = Number(results.item(0).text).toFixed(4);
-						// successCount++;
-						// if (successCount === exchangesCount) {
-						// successCB(exchanges);
-						// }
-						// } else {
-						// if (errorCount === 0) {
-						// errorCount++;
-						// errorCB({
-						// __summary : {
-						// msg : '获取汇率出错'
-						// }
-						// });
-						// }
-						// }
-						// }, function(e) {
-						// if (errorCount === 0) {
-						// errorCount++;
-						// errorCB({
-						// __summary : {
-						// msg : "连接服务器出错：" + e.code,
-						// code : e.code
-						// }
-						// });
-						// }
-						// });
+						suds.invoke('ConversionRate', callparams, function(xmlDoc) {
+							var results = xmlDoc.documentElement.getElementsByTagName('ConversionRateResult');
+							if (results && results.length > 0) {
+								var result = results.item(0);
+								exchange.rate = Number(results.item(0).text).toFixed(4);
+								successCount++;
+								if (successCount === exchangesCount) {
+									successCB(exchanges);
+								}
+							} else {
+								if (errorCount === 0) {
+									self.getExchangeRateFromGoogle(exchange.fromCurrency, exchange.toCurrency, function(rate) {
+										exchange.rate = rate;
+										successCount++;
+										if (successCount === exchangesCount) {
+											successCB(exchanges);
+										}
+									}, function(e) {
+										errorCount++;
+										errorCB(e);
+									});
+								}
+							}
+						}, function(e) {
+							if (errorCount === 0) {
+								self.getExchangeRateFromGoogle(exchange.fromCurrency, exchange.toCurrency, function(rate) {
+									exchange.rate = rate;
+									successCount++;
+									if (successCount === exchangesCount) {
+										successCB(exchanges);
+									}
+								}, function(e) {
+									errorCount++;
+									errorCB(e);
+								});
+								//
+								// errorCount++;
+								// errorCB({
+								// __summary : {
+								// msg : "连接服务器出错：" + e.code,
+								// code : e.code
+								// }
+								// });
+							}
+						});
 					} catch(e) {
 						if (errorCount === 0) {
-							errorCount++;
-							errorCB({
-								__summary : {
-									msg : "连接服务器出错：" + e.code,
-									code : e.code
+							self.getExchangeRateFromGoogle(exchange.fromCurrency, exchange.toCurrency, function(rate) {
+								exchange.rate = rate;
+								successCount++;
+								if (successCount === exchangesCount) {
+									successCB(exchanges);
 								}
+							}, function(e) {
+								errorCount++;
+								errorCB(e);
 							});
+							//
+							// errorCount++;
+							// errorCB({
+							// __summary : {
+							// msg : "连接服务器出错：" + e.code,
+							// code : e.code
+							// }
+							// });
 						}
 					}
 				});
