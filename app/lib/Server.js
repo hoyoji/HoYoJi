@@ -377,7 +377,7 @@
 				var client = Ti.Network.createHTTPClient({
 					// function called when the response data is available
 					onload : function(e) {
-						var errorMatch = this.responseText.match(/.+,error: "(4)".+/);
+						var errorMatch = this.responseText.match(/.+,error: "(\d)".+/);
 						if (errorMatch) {
 							errorCB({
 								__summary : {
