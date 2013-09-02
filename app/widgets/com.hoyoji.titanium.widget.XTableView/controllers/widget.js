@@ -331,17 +331,21 @@ function findSortPos(model) {
 }
 
 function addRowToSection(rowModel, collection, index) {
-	var row = createRowView(rowModel, collection);
 
 	if (index === undefined) {
 		if (sortByField) {
 			var pos = findSortPos(rowModel);
+			
 			if (pos === null) {
-				$.table.appendRow(row);
+				if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+					return;
+				}
+				$.table.appendRow(createRowView(rowModel, collection));
 			} else if (pos.insertBefore === -1) {
 				// need to create new section for this row
 				var section = createSection(pos.sectionTitle, pos.index);
-				section.add(row);
+				
+				section.add(createRowView(rowModel, collection));
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
 				$.table.setData(data);
@@ -349,21 +353,38 @@ function addRowToSection(rowModel, collection, index) {
 				// $.table.insertRowBefore(pos.index, row);
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
-					$.table.appendRow(row);
+					if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+						return;
+					}
+					$.table.appendRow(createRowView(rowModel, collection));
 				} else {
-					$.table.insertRowBefore(pos.index, row);
+					$.table.insertRowBefore(pos.index, createRowView(rowModel, collection));
 				}
 			} else {
-				$.table.insertRowAfter(pos.index, row);
+				var rowsCount = $.getRowsCount();
+				if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
+					return;
+				}
+				$.table.insertRowAfter(pos.index, createRowView(rowModel, collection));
 			}
 		} else {
-			$.table.appendRow(row);
+			if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+					return;
+			}
+			$.table.appendRow(createRowView(rowModel, collection));
 		}
 	} else {
 		try{
-			$.table.insertRowAfter(index, row);
+			var rowsCount = $.getRowsCount();
+			if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
+				return;
+			}
+			$.table.insertRowAfter(index, createRowView(rowModel, collection));
 		} catch(e){
-			$.table.appendRow(row);
+			if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+					return;
+			}
+			$.table.appendRow(createRowView(rowModel, collection));
 		}
 	}
 }
@@ -376,6 +397,7 @@ function addRow(rowModel, collection) {
 			return;
 		} else {
 			addRowToSection(rowModel, collection);
+			
 			showNoDataIndicator($.table.data.length);
 		}
 	}
