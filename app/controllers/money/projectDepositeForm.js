@@ -289,6 +289,7 @@ if ($.saveableMode === "read") {
 			$.depositeAccount.$view.setHeight(42);
 		} else {
 			$.depositeAccount.$view.setHeight(0);
+			$.depositeAccountExchangeRate.$view.setHeight(0);
 		}
 	});
 
@@ -486,6 +487,7 @@ $.picture.UIInit($, $.getCurrentWindow());
 $.friendUser0.UIInit($, $.getCurrentWindow());
 $.friendUser.UIInit($, $.getCurrentWindow());
 $.depositeAccount.UIInit($, $.getCurrentWindow());
+$.depositeAccountExchangeRate.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
