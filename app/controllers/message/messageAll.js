@@ -104,6 +104,7 @@ function onFooterbarTap(e) {
 			});
 			successCB();
 		};		
+		$.receivedMessagesTable.fetchFirstPage();
 	} else if (e.source.id === "newMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model) {
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && (model.xGet("messageState") === "new" || model.xGet("messageState") === "unread") && model.xGet("toUserId") === Alloy.Models.User.id);
@@ -117,6 +118,7 @@ function onFooterbarTap(e) {
 			});
 			successCB();
 		};	
+		$.receivedMessagesTable.fetchFirstPage();
 	} else if (e.source.id === "oldMessagesTable") {
 		receivedMessagesCollection.xSetFilter(function(model) {
 			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && (model.xGet("messageState") === "read" || model.xGet("messageState") === "closed") && model.xGet("toUserId") === Alloy.Models.User.id);
@@ -130,6 +132,7 @@ function onFooterbarTap(e) {
 			});
 			successCB();
 		};
+		$.receivedMessagesTable.fetchFirstPage();
 	}
 }
 

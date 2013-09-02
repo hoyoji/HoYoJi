@@ -372,7 +372,7 @@ function addRow(rowModel, collection) {
 	function doAddRow() {
 		$.off("endchangingrow", doAddRow);
 		if ($.__changingRow) {
-			$.on("endchanggingrow", doAddRow);
+			$.on("endchangingrow", doAddRow);
 			return;
 		} else {
 			addRowToSection(rowModel, collection);
@@ -502,6 +502,11 @@ var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField, 
 exports.refreshTable = function(){
 	
 		
+};
+
+exports.fetchFirstPage = function(){
+	$.table.setData([]);
+	exports.fetchNextPage(0);
 };
 
 exports.fetchNextPage = function(tableRowsCount) {
