@@ -45,7 +45,8 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+var loading;
+//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
 	if (moneyAccount.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(moneyAccount.xGet("currency")).length === 0 && !loading) {
@@ -95,7 +96,7 @@ if ($.saveableMode === "read") {
 } else {
 	$.project.label.setColor("#6e6d6d");
 	$.project.field.setColor("#6e6d6d");
-	
+
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
@@ -135,8 +136,8 @@ if ($.saveableMode === "read") {
 
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
-	
-	$.exchangeRate.field.addEventListener("change", function(){
+
+	$.exchangeRate.field.addEventListener("change", function() {
 		$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
 		$.amount.refresh();
 	});
@@ -222,7 +223,7 @@ if ($.saveableMode === "read") {
 				editData.push(newMoneyAccount.toJSON());
 				editData.push(oldMoneyAccount.toJSON());
 			}
-			
+
 			if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
 				if ($.$model.xGet("exchangeRate")) {
 					var exchange = Alloy.createModel("Exchange").xFindInDb({
@@ -242,14 +243,14 @@ if ($.saveableMode === "read") {
 					}
 				}
 			}
-			if(Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")){
+			if (Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")) {
 				var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
 					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
 					foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 				});
 				if (!activeToProjectExchange.id) {
-					Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId") , $.$model.xGet("project").xGet("currencyId"), function(rate) {
-	
+					Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+
 						activeToProjectExchange = Alloy.createModel("Exchange", {
 							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
 							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
@@ -262,10 +263,9 @@ if ($.saveableMode === "read") {
 					}, function(e) {
 						errorCB(e.__summary.msg);
 					});
-	
+
 				}
 			}
-			
 
 			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 				var date = (new Date()).toISOString();
@@ -326,7 +326,7 @@ if ($.saveableMode === "read") {
 					alert(e.__summary.msg);
 				});
 			}
-		}else{
+		} else {
 			alert("不能保存，汇率不能为空");
 		}
 	};

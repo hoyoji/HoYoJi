@@ -10,10 +10,10 @@ $.makeContextMenu = function() {
 	// },$.$model.xGet("incomeType") === "Deposite"));
 
 	// menuSection.add($.createContextMenuItem("发送给好友", function() {
-		// Alloy.Globals.openWindow("message/accountShare", {
-			// $model : "Message",
-			// selectedAccount : $.$model
-		// });
+	// Alloy.Globals.openWindow("message/accountShare", {
+	// $model : "Message",
+	// selectedAccount : $.$model
+	// });
 	// }, $.$model.xGet("incomeType") === "Deposite"));
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if ($.$model.xGet("incomeType") === "Deposite") {
@@ -152,13 +152,13 @@ $.onRowTap = function(e) {
 };
 
 $.onWindowOpenDo(function() {
-	$.$model.xGet("project").on("sync",projectRefresh);
-	$.$model.xGet("moneyIncomeCategory").on("sync",categoryRefresh);
+	$.$model.xGet("project").on("sync", projectRefresh);
+	$.$model.xGet("moneyIncomeCategory").on("sync", categoryRefresh);
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.xGet("project").off("sync",projectRefresh);
-	$.$model.xGet("moneyIncomeCategory").off("sync",categoryRefresh);
+	$.$model.xGet("project").off("sync", projectRefresh);
+	$.$model.xGet("moneyIncomeCategory").off("sync", categoryRefresh);
 });
 
 function projectRefresh() {
