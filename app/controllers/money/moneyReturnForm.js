@@ -49,7 +49,6 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 
 var oldAmount;
 var oldMoneyAccount;
-var isRateExist;
 
 if (!$.$model) {
 	if ($.$attrs.selectedBorrow) {
@@ -142,16 +141,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
 		if (moneyAccount.xGet("currency") === project.xGet("currency")) {
-			isRateExist = true;
 			exchangeRateValue = 1;
 			$.exchangeRate.$view.setHeight(0);
 		} else {
 			var exchanges = moneyAccount.xGet("currency").getExchanges(project.xGet("currency"));
 			if (exchanges.length) {
-				isRateExist = true;
 				exchangeRateValue = exchanges.at(0).xGet("rate");
 			} else {
-				isRateExist = false;
 				exchangeRateValue = null;
 			}
 			$.exchangeRate.$view.setHeight(42);
@@ -197,22 +193,21 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 		if (moneyBorrow) {//更新已还款
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
-			var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
+			// var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
-			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate));
+			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate));
 			// moneyBorrow.xAddToSave($);
 		}
 
-		if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
-			if ($.$model.xGet("exchangeRate")) {
-				var exchange = Alloy.createModel("Exchange", {
-					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-					foreignCurrency : $.$model.xGet("project").xGet("currency"),
-					rate : $.$model.xGet("exchangeRate"),
-					ownerUser : Alloy.Models.User
-				});
-				exchange.xAddToSave($);
-			}
+		var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
+		if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
+			var exchange = Alloy.createModel("Exchange", {
+				localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+				foreignCurrency : $.$model.xGet("project").xGet("currency"),
+				rate : $.$model.xGet("exchangeRate"),
+				ownerUser : Alloy.Models.User
+			});
+			exchange.xAddToSave($);
 		}
 
 		var modelIsNew = $.$model.isNew();
@@ -226,7 +221,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.saveModel(function(e) {
 			if (moneyBorrow) {
 				moneyBorrow.save({
-					returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate / borrowRate
+					returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate
 				}, {
 					patch : true,
 					wait : true
