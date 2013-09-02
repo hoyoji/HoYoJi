@@ -371,7 +371,17 @@ exports.definition = {
 			},
 			canDelete : function() {
 				return this.xGet("ownerUser") === Alloy.Models.User;
-			},
+			},			
+			// _syncUpdate : function(record, dbTrans) {
+				// //delete record.id;
+				// this.save(record, {
+					// dbTrans : dbTrans,
+					// // syncFromServer : true,
+					// patch : true
+					// // ,
+					// // wait : true
+				// });
+			// },
 			syncUpdate : function(record, dbTrans) {
 				var self = this;
 				if (record.friendUserId === Alloy.Models.User.id) {
@@ -380,14 +390,14 @@ exports.definition = {
 
 					record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
 					delete this.__syncActualTotalExpense;
-
-					record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
-					delete this.__syncApportionedTotalIncome;
-
-					record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
-					delete this.__syncApportionedTotalExpense;
 				}
 
+				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
+				delete this.__syncApportionedTotalIncome;
+
+				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
+				delete this.__syncApportionedTotalExpense;
+				
 				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
 					function refreshProject() {
 						dbTrans.off("rollback", rollback);
@@ -503,10 +513,7 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				if (record.friendUserId === Alloy.Models.User.id) {
-					localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
-				}
-
+				localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
 				if (localUpdated) {
 					this.syncUpdate(record, dbTrans);
 				}
