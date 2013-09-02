@@ -319,7 +319,11 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					saveOptions.wait = true;
+					if (options.syncFromServer !== true){
+						saveOptions.wait = true;
+					} else {
+						delete saveOptions.wait;
+					}
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
