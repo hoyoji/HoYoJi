@@ -504,6 +504,11 @@ exports.refreshTable = function(){
 		
 };
 
+exports.fetchFirstPage = function(){
+	$.table.setData([]);
+	exports.fetchNextPage(0);
+};
+
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
