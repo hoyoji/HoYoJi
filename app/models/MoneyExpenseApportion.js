@@ -182,29 +182,21 @@ exports.definition = {
 			// }
 			// // 让本地修改覆盖服务器上的记录
 			// },
-			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-			// var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-			// id : this.xGet("moneyExpenseId")
-			// });
-			// if (moneyExpense.id) {
-			// // 支出已在本地存在
-			// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-			// projectId : moneyExpense.xGet("projectId"),
-			// friendUserId : moneyExpense.xGet("friendUserId")
-			// });
-			// if (projectShareAuthorization.id) {
-			// projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ?
-			// projectShareAuthorization.__syncApportionedTotalExpense - this.xGet("amount") * moneyExpense.xGet("exchangeRate") :
-			// - this.xGet("amount") * moneyExpense.xGet("exchangeRate");
-			// }
-			// }
-			// },
-			// _syncDelete : function(record, dbTrans, xFinishedCallback) {
-			// this._xDelete(xFinishedCallback, {
-			// dbTrans : dbTrans,
-			// syncFromServer : true
-			// });
-			// }
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				var self = this;
+				var projectShareAuthorizations = self.xGet("moneyExpense").xGet("project").xGet("projectShareAuthorizations");
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
+						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
+						// projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
+						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate"));
+						projectShareAuthorization.save({
+							apportionedTotalExpense : apportionedTotalExpense - Number((self.xGet("amount") * self.xGet("moneyExpense").xGet("exchangeRate")).toFixed(2))
+						}, saveOptions);
+					}
+				});
+			},
 		});
 
 		return Model;

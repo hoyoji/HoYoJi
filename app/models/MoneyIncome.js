@@ -306,7 +306,7 @@ exports.definition = {
 				return remark;
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (options.syncFromServer !== true && this.xGet("moneyIncomeDetails").length > 0) {
+				if (this.xGet("moneyIncomeDetails").length > 0) {
 					xFinishCallback({
 						msg : "当前收入的明细不为空，不能删除"
 					});
@@ -319,11 +319,7 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-					if (options.syncFromServer !== true){
-						saveOptions.wait = true;
-					} else {
-						delete saveOptions.wait;
-					}
+					saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
@@ -460,6 +456,25 @@ exports.definition = {
 				}
 				// 让本地修改覆盖服务器上的记录
 
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var self = this;
+				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				var moneyAccount = this.xGet("moneyAccount");
+				var amount = this.xGet("amount");
+				moneyAccount.save({
+					currentBalance : moneyAccount.xGet("currentBalance") - amount
+				}, saveOptions);
+
+				var myProjectShareAuthorization;
+				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+						var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
+						item.save({
+							actualTotalIncome : actualTotalIncome
+						}, saveOptions);
+					}
+				});
 			}
 		});
 		return Model;

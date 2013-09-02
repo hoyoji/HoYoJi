@@ -268,14 +268,7 @@ exports.definition = {
 					}
 				}
 				return this.xGet("ownerUser") === Alloy.Models.User;
-			},
-			_syncDelete : function(record, dbTrans, xFinishedCallback) {
-				this._xDelete(xFinishedCallback, {
-					dbTrans : dbTrans,
-					syncFromServer : true,
-					wait : true
-				});
-			}			
+			}		
 		});
 		return Model;
 	},

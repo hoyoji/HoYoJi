@@ -189,28 +189,20 @@ exports.definition = {
 			// }
 			// // 让本地修改覆盖服务器上的记录
 			// },
-			// syncDelete : function(record, dbTrans, xFinishedCallback) {
-				// var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-					// id : this.xGet("moneyIncomeId")
-				// });
-				// if (moneyIncome.id) {
-					// var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						// projectId : moneyIncome.xGet("projectId"),
-						// friendUserId : moneyIncome.xGet("friendUserId")
-					// });
-					// if (projectShareAuthorization.id) {
-						// projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? 
-							// projectShareAuthorization.__syncApportionedTotalIncome - this.xGet("amount")  * moneyIncome.xGet("exchangeRate") : 
-							// - this.xGet("amount") * moneyIncome.xGet("exchangeRate");
-					// }
-				// }
-			// },
-			// _syncDelete : function(record, dbTrans, xFinishedCallback) {
-			// this._xDelete(xFinishedCallback, {
-			// dbTrans : dbTrans,
-			// syncFromServer : true
-			// });
-			// }
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				var self = this;
+				var projectShareAuthorizations = self.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
+						var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
+						// projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
+						projectShareAuthorization.save({
+							apportionedTotalIncome : apportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2))
+						}, saveOptions);
+					}
+				});
+			}
 		});
 		return Model;
 	},

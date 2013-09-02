@@ -261,7 +261,21 @@ exports.definition = {
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				}
 				// 让本地修改覆盖服务器上的记录
-			}
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var transferOut = this.xGet("transferOut");
+				var transferIn = this.xGet("transferIn");
+				var transferOutAmount = this.xGet("transferOutAmount");
+				var transferInAmount = this.xGet("transferInAmount");
+				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				
+				transferOut.save({
+					currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+				}, saveOptions);
+				transferIn.save({
+					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+				}, saveOptions);
+			},			
 		});
 		return Model;
 	},

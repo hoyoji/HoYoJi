@@ -140,12 +140,6 @@ exports.definition = {
 					// }
 					moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount - this.xGet("amount") : - this.xGet("amount");
 				}
-			},	
-			_syncDelete : function(record, dbTrans, xFinishedCallback) {
-				this._xDelete(xFinishedCallback, {
-					dbTrans : dbTrans,
-					syncFromServer : true
-				});
 			}
 		});
 

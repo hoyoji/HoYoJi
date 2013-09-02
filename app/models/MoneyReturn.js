@@ -359,7 +359,27 @@ exports.definition = {
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				}
 				// 让本地修改覆盖服务器上的记录
-			}
+			},
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var self = this;
+				var amount = this.xGet("amount");
+				var returnRate = this.xGet("exchangeRate");
+				var interest = this.xGet("interest");
+				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+ 
+				var moneyAccount = this.xGet("moneyAccount");
+				moneyAccount.save({
+					currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
+				}, saveOptions);
+
+				if (self.xGet("moneyBorrow")) {
+					var moneyBorrow = self.xGet("moneyBorrow");
+					var borrowRate = moneyBorrow.xGet("exchangeRate");
+					moneyBorrow.save({
+						returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate
+					}, saveOptions);
+				}
+			},			
 		});
 		return Model;
 	},
