@@ -175,22 +175,25 @@ function backspace() {
 	// }else{
 		// readout = readout + "";
 	// }
-	var len = readout.length;
-	if (len > 1) {
-		if (parseFloat(readout) < 0 && len === 2) {
+	if(readout){
+		var len = readout.length;
+		if (len > 1) {
+			if (parseFloat(readout) < 0 && len === 2) {
+				// activeTextField.setValue("");
+				$.display.setText("");
+			} else {
+				var rout = readout.substr(0, len - 1);
+				// activeTextField.setValue(rout);
+				$.display.setText(rout);
+			}
+		} else {
 			// activeTextField.setValue("");
 			$.display.setText("");
-		} else {
-			var rout = readout.substr(0, len - 1);
-			// activeTextField.setValue(rout);
-			$.display.setText(rout);
 		}
-	} else {
-		// activeTextField.setValue("");
-		$.display.setText("");
+		// activeTextField.field.fireEvent("change");
+		setOPColor();
 	}
-	// activeTextField.field.fireEvent("change");
-	setOPColor();
+	
 }
 
 function doubleClickBackspace(e){
