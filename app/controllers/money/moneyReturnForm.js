@@ -195,7 +195,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var returnedAmount = $.$model.xGet("moneyBorrow").xGet("returnedAmount");
 			// var borrowRate = $.$model.xGet("moneyBorrow").xGet("exchangeRate");
 			var returnRate = $.$model.xGet("exchangeRate");
-			moneyBorrow.xSet("returnedAmount", (returnedAmount + (newAmount - oldAmount) * returnRate));
+			var oldReturnRate = $.$model.xPrevious("exchangeRate");
+			moneyBorrow.xSet("returnedAmount", (returnedAmount + newAmount * returnRate - oldAmount * oldReturnRate));
 			// moneyBorrow.xAddToSave($);
 		}
 
@@ -221,7 +222,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.saveModel(function(e) {
 			if (moneyBorrow) {
 				moneyBorrow.save({
-					returnedAmount : returnedAmount + (newAmount - oldAmount) * returnRate
+					returnedAmount : returnedAmount + newAmount * returnRate - oldAmount * oldReturnRate
 				}, {
 					patch : true,
 					wait : true
