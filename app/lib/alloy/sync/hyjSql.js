@@ -4,22 +4,26 @@ function Migrator(config, transactionDb) {
 	this.table = config.adapter.collection_name;
 	this.idAttribute = config.adapter.idAttribute;
 	this.column = function(name) {
-		var parts = name.split(/\s+/), type = parts[0];
+		var parts = name.split(/\s+/), 
+		type = parts[0];
 		switch (type.toLowerCase()) {
 			case "string":
 			case "varchar":
 			case "date":
 			case "datetime":
 				Ti.API.warn("\"" + type + "\" is not a valid sqlite field, using TEXT instead");
+			
 			case "text":
 				type = "TEXT COLLATE NOCASE";
 				break;
+			
 			case "int":
 			case "tinyint":
 			case "smallint":
 			case "bigint":
 			case "boolean":
 				Ti.API.warn("\"" + type + "\" is not a valid sqlite field, using INTEGER instead");
+			
 			case "integer":
 				type = "INTEGER";
 				break;
@@ -28,15 +32,19 @@ function Migrator(config, transactionDb) {
 			case "decimal":
 			case "number":
 				Ti.API.warn("\"" + name + "\" is not a valid sqlite field, using REAL instead");
+			
 			case "real":
 				type = "REAL";
 				break;
+			
 			case "blob":
 				type = "BLOB";
 				break;
+			
 			case "null":
 				type = "NULL";
 				break;
+			
 			default:
 				type = "TEXT";
 		}
@@ -44,7 +52,8 @@ function Migrator(config, transactionDb) {
 		return parts.join(" ");
 	};
 	this.createTable = function(config) {
-		var columns = [], found = !1;
+		var columns = [], 
+		found = !1;
 		for (var k in config.columns) {
 			k === this.idAttribute && ( found = !0);
 			columns.push(k + " " + this.column(config.columns[k]));
@@ -58,7 +67,10 @@ function Migrator(config, transactionDb) {
 		this.db.execute("DROP TABLE IF EXISTS " + this.table);
 	};
 	this.insertRow = function(columnValues) {
-		var columns = [], values = [], qs = [], found = !1;
+		var columns = [], 
+		values = [], 
+		qs = [], 
+		found = !1;
 		for (var key in columnValues) {
 			key === this.idAttribute && ( found = !0);
 			columns.push(key);
@@ -73,7 +85,11 @@ function Migrator(config, transactionDb) {
 		this.db.execute("INSERT INTO " + this.table + " (" + columns.join(",") + ") VALUES (" + qs.join(",") + ");", values);
 	};
 	this.deleteRow = function(columns) {
-		var sql = "DELETE FROM " + this.table, keys = _.keys(columns), len = keys.length, conditions = [], values = [];
+		var sql = "DELETE FROM " + this.table, 
+		keys = _.keys(columns), 
+		len = keys.length, 
+		conditions = [], 
+		values = [];
 		len && (sql += " WHERE ");
 		for (var i = 0; i < len; i++) {
 			conditions.push(keys[i] + " = ?");
@@ -545,7 +561,8 @@ function Sync(method, model, opts) {
 }
 
 function GetMigrationFor(dbname, table) {
-	var mid = null, db = Ti.Database.open(dbname);
+	var mid = null, 
+	db = Ti.Database.open(dbname);
 	db.execute("CREATE TABLE IF NOT EXISTS migrations (latest TEXT, model TEXT);");
 	var rs = db.execute("SELECT latest FROM migrations where model = ?;", table);
 	if (rs.isValidRow())
@@ -556,11 +573,13 @@ function GetMigrationFor(dbname, table) {
 }
 
 function Migrate(Model) {
-	var migrations = Model.migrations || [], lastMigration = {};
+	var migrations = Model.migrations || [], 
+	lastMigration = {};
 	migrations.length && migrations[migrations.length - 1](lastMigration);
 	var config = Model.prototype.config;
 	config.adapter.db_name || (config.adapter.db_name = ALLOY_DB_DEFAULT);
-	var migrator = new Migrator(config), targetNumber = typeof config.adapter.migration == "undefined" || config.adapter.migration === null ? lastMigration.id : config.adapter.migration;
+	var migrator = new Migrator(config), 
+	targetNumber = typeof config.adapter.migration == "undefined" || config.adapter.migration === null ? lastMigration.id : config.adapter.migration;
 	if ( typeof targetNumber == "undefined" || targetNumber === null) {
 		var tmpDb = Ti.Database.open(config.adapter.db_name);
 		migrator.db = tmpDb;
@@ -569,7 +588,8 @@ function Migrate(Model) {
 		return;
 	}
 	targetNumber += "";
-	var currentNumber = GetMigrationFor(config.adapter.db_name, config.adapter.collection_name), direction;
+	var currentNumber = GetMigrationFor(config.adapter.db_name, config.adapter.collection_name), 
+	direction;
 	if (currentNumber === targetNumber)
 		return;
 	if (currentNumber && currentNumber > targetNumber) {
@@ -582,7 +602,8 @@ function Migrate(Model) {
 	db.execute("BEGIN;");
 	if (migrations.length)
 		for (var i = 0; i < migrations.length; i++) {
-			var migration = migrations[i], context = {};
+			var migration = migrations[i], 
+			context = {};
 			migration(context);
 			if (direction) {
 				if (context.id > targetNumber)
@@ -608,12 +629,22 @@ function Migrate(Model) {
 }
 
 function installDatabase(config) {
-	var dbFile = config.adapter.db_file, table = config.adapter.collection_name, rx = /^([\/]{0,1})([^\/]+)\.[^\/]+$/, match = dbFile.match(rx);
+	var dbFile = config.adapter.db_file, 
+	table = config.adapter.collection_name, 
+	rx = /^([\/]{0,1})([^\/]+)\.[^\/]+$/, 
+	match = dbFile.match(rx);
 	if (match === null)
 		throw "Invalid sql database filename \"" + dbFile + "\"";
 	var dbName = config.adapter.db_name = match[2];
 	Ti.API.debug("Installing sql database \"" + dbFile + "\" with name \"" + dbName + "\"");
-	var db = Ti.Database.install(dbFile, dbName), rs = db.execute("pragma table_info(\"" + table + "\");"), columns = {};
+	var db = Ti.Database.install(dbFile, dbName);
+	    var db = Ti.Database.install(dbFile, dbName);
+    if (false === config.adapter.remoteBackup && false) {
+        Ti.API.debug('iCloud "do not backup" flag set for database "' + dbFile + '"');
+        db.file.setRemoteBackup(false);
+    } 
+	var rs = db.execute("pragma table_info(\"" + table + "\");"), 
+	columns = {};
 	while (rs.isValidRow()) {
 		var cName = rs.fieldByName("name"), cType = rs.fieldByName("type");
 		columns[cName] = cType;
@@ -628,8 +659,17 @@ function installDatabase(config) {
 	} else {
 		Ti.API.info("No config.adapter.idAttribute specified for table \"" + table + "\"");
 		Ti.API.info("Adding \"" + ALLOY_ID_DEFAULT + "\" to uniquely identify rows");
-		db.execute("ALTER TABLE " + table + " ADD " + ALLOY_ID_DEFAULT + " TEXT;");
-		config.columns[ALLOY_ID_DEFAULT] = "TEXT";
+		  var fullStrings = [], colStrings = [];
+        _.each(config.columns, function(type, name) {
+            colStrings.push(name);
+            fullStrings.push(name + " " + type);
+        });
+        var colsString = colStrings.join(",");
+        db.execute("ALTER TABLE " + table + " RENAME TO " + table + "_temp;");
+        db.execute("CREATE TABLE " + table + "(" + fullStrings.join(",") + "," + ALLOY_ID_DEFAULT + " TEXT UNIQUE);");
+        db.execute("INSERT INTO " + table + "(" + colsString + "," + ALLOY_ID_DEFAULT + ") SELECT " + colsString + ",CAST(_ROWID_ AS TEXT) FROM " + table + "_temp;");
+        db.execute("DROP TABLE " + table + "_temp;");
+        config.columns[ALLOY_ID_DEFAULT] = "TEXT UNIQUE";
 		config.adapter.idAttribute = ALLOY_ID_DEFAULT;
 	}
 	db.close();
