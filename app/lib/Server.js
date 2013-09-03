@@ -176,6 +176,8 @@
 					timeout : 60000 /* in milliseconds */
 				});
 				xhr.open("POST", url);
+			    //set enconding
+			    xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 				if (Alloy.Models.User) {
 					var auth = Alloy.Models.User.xGet("userName") + ":" + Alloy.Models.User.xGet("password");
 					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth));
@@ -237,7 +239,9 @@
 							var id = record.recordId;
 							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
-							}, {dbTrans : dbTrans});
+							}
+							//, {dbTrans : dbTrans}
+							);
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 							if (!model.isNew()) {
@@ -251,7 +255,9 @@
 								} else {
 									// 我们要将该记录的所有hasMany一并删除
 									for (var hasMany in model.config.hasMany) {
-										model.xGet(hasMany, {dbTrans : dbTrans}).forEach(function(item) {
+										model.xGet(hasMany
+											//, {dbTrans : dbTrans}
+											).forEach(function(item) {
 											// item.syncDelete(record, dbTrans);
 											// item._syncDelete(record, dbTrans, function(e) {
 											// });
@@ -282,7 +288,9 @@
 									}
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
-									}, {dbTrans : dbTrans});
+									}
+									//, {dbTrans : dbTrans}
+									);
 									model.syncUpdateConflict(record, dbTrans);
 								}
 							} else {
@@ -292,7 +300,9 @@
 								// 2. 如果该记录已经存在本地表里，我们将其合并
 								var model = Alloy.createModel(dataType).xFindInDb({
 									id : record.id
-								}, {dbTrans : dbTrans});
+								}
+								//, {dbTrans : dbTrans}
+								);
 
 								// 检查belongsTo, 如果任何belongsTo已被删除，我们不将该记录同步下来
 								var belongsToDeleted = false;
@@ -418,6 +428,8 @@
 				});
 				// Prepare the connection.
 				client.open("GET", url);
+			    //set enconding
+			    client.setRequestHeader("Content-Type", "application/json; charset=utf-8");				
 				// Send the request.
 				client.send();
 			},
