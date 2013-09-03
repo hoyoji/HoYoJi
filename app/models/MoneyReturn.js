@@ -96,11 +96,11 @@ exports.definition = {
 						var borrowRate = this.xGet("moneyBorrow").xGet("exchangeRate");
 						var returnRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
-							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount");
+							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount")*borrowRate - this.xGet("moneyBorrow").previous("returnedAmount");
 						} else {
-							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") - this.xGet("moneyBorrow").previous("returnedAmount") + this.previous("amount");
+							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount")*borrowRate - this.xGet("moneyBorrow").previous("returnedAmount") + this.xPrevious("amount")*this.xPrevious("exchangeRate");
 						}
-						if (this.xGet("amount") * returnRate / borrowRate > returnRequireAmount) {
+						if (this.xGet("amount") * returnRate > returnRequireAmount) {
 							error = {
 								msg : "还款金额不能大于当前借入的应还款金额（" + returnRequireAmount + "）"
 							};

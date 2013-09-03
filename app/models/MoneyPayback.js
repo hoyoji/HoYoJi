@@ -95,11 +95,11 @@ exports.definition = {
 						var lendRate = this.xGet("moneyLend").xGet("exchangeRate");
 						var paybackRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount")*lendRate - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") - this.xGet("moneyLend").previous("paybackedAmount") + this.previous("amount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount")*lendRate - this.xGet("moneyLend").previous("paybackedAmount") + this.xPrevious("amount")*this.xPrevious("exchangeRate");
 						}
-						if (this.xGet("amount") * paybackRate / lendRate > paybackRequireAmount) {
+						if (this.xGet("amount") * paybackRate > paybackRequireAmount) {
 							error = {
 								msg : "收款金额不能大于当前借出的应收款金额（" + paybackRequireAmount + "）"
 							};
