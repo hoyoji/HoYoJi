@@ -283,9 +283,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if (exchange) {
-				exchange.xAddToDelete($);
-			}
+			// if (exchange) {
+				// exchange.xAddToDelete($);
+			// }
 			if (moneyLend) {
 				moneyLend.xSet("paybackedAmount", moneyLend.previous("paybackedAmount"));
 			}

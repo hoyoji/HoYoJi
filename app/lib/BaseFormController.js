@@ -5,12 +5,12 @@
 				__saveCollection : [],
 				__deleteCollection : [],
 				addToSave : function(model) {
-					if(_.indexOf($.__saveCollection, model) === -1){
+					if (_.indexOf($.__saveCollection, model) === -1) {
 						$.__saveCollection.push(model);
 					}
 				},
 				addToDelete : function(model) {
-					if(_.indexOf($.__deleteCollection, model) === -1){
+					if (_.indexOf($.__deleteCollection, model) === -1) {
 						$.__deleteCollection.push(model);
 					}
 				},
@@ -49,6 +49,8 @@
 								dbTrans : myDbTrans,
 								error : function(model, error) {
 									myDbTrans.rollback();
+									$.__saveCollection = [];
+									$.__deleteCollection = [];
 									hasError = true;
 									var errMsg;
 									if (error.__summary) {
@@ -68,6 +70,8 @@
 						$.__deleteCollection[i]._xDelete(function(e) {
 							if (e) {
 								myDbTrans.rollback();
+								$.__saveCollection = [];
+								$.__deleteCollection = [];
 								hasError = true;
 								var errMsg;
 								if (error.__summary) {
@@ -127,6 +131,8 @@
 									errMsg = error.__summary.msg;
 								}
 								dbTrans.rollback();
+								$.__saveCollection = [];
+								$.__deleteCollection = [];
 								if (saveErrorCB) {
 									saveErrorCB(errMsg);
 								}
@@ -179,22 +185,24 @@
 					saveableModeChangeCB : $.setSaveableMode
 				});
 			});
-			$.onWindowCloseDo(function(){
-				if(!$.getCurrentWindow().$attrs.closeWithoutSave){
-					if($.$model){
+
+			$.onWindowCloseDo(function() {
+				if (!$.getCurrentWindow().$attrs.closeWithoutSave) {
+					if ($.$model) {
 						$.$model.xReset();
 					}
-					if($.__saveCollection.length > 0){
-						$.__saveCollection.forEach(function(model){
-							if(!model.isNew()){
+					if ($.__saveCollection.length > 0) {
+						$.__saveCollection.forEach(function(model) {
+							if (!model.isNew()) {
 								model.xReset();
 							}
 						});
 						$.__saveCollection = [];
 					}
-					if($.__deleteCollection.length > 0){
-						$.__deleteCollection.forEach(function(model){
+					if ($.__deleteCollection.length > 0) {
+						$.__deleteCollection.forEach(function(model) {
 							delete model.__xDeleted;
+							delete model.__xDeletedHidden;
 						});
 						$.__deleteCollection = [];
 					}

@@ -282,9 +282,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if (exchange) {
-				exchange.xAddToDelete($);
-			}
+			// if (exchange) {
+				// exchange.xAddToDelete($);
+			// }
 			if (moneyBorrow) {
 				moneyBorrow.xSet("returnedAmount", moneyBorrow.previous("returnedAmount"));
 			}

@@ -233,9 +233,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if (exchange) {
-				exchange.xAddToDelete($);
-			}
+			// if (exchange) {
+				// exchange.xAddToDelete($);
+			// }
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));

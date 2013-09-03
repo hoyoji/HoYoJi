@@ -262,9 +262,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (oldTransferIn) {
 			oldTransferIn.xSet("currentBalance", oldTransferIn.previous("currentBalance"));
 		}
-		if (exchange) {
-			exchange.xAddToDelete($);
-		}
+		// if (exchange) {
+			// exchange.xAddToDelete($);
+		// }
 		newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
 		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
 		saveErrorCB(e);
