@@ -446,7 +446,7 @@ if ($.saveableMode === "read") {
 					"messageState" : "unread",
 					"messageTitle" : "充值请求",
 					"date" : date,
-					"detail" : $.$model.xGet("remark") || ("充值" + $.$model.xGet("amount")),
+					"detail" : "好友在项目" + $.$model.xGet("project").xGet("name") + "给您账户充值" + $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol") + $.$model.xGet("amount"),
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 						accountType : "MoneyExpense",
@@ -462,7 +462,7 @@ if ($.saveableMode === "read") {
 						messageState : "closed",
 						messageTitle : "充值请求",
 						date : date,
-						detail : $.$model.xGet("remark") || ("充值" + $.$model.xGet("amount")),
+						detail : "好友在项目" + $.$model.xGet("project").xGet("name") + "给您账户充值" + $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol") + $.$model.xGet("amount"),
 						messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 						messageData : JSON.stringify({
 							accountType : "MoneyExpense",

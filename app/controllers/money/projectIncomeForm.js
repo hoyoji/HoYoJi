@@ -85,7 +85,9 @@ if ($.saveableMode === "read") {
 	// $.localAmountContainer.setHeight(42);
 	if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
 		$.moneyAccount.$view.setHeight(42);
-		$.exchangeRate.$view.setHeight(42);
+		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
+			$.exchangeRate.$view.setHeight(42);
+		}
 	} else {
 		$.moneyAccount.$view.setHeight(0);
 		$.localAmountContainer.setHeight(42);
