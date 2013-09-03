@@ -223,7 +223,11 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					ownerUserSymbol = friend.getDisplayName();
+					if (friend && friend.id) {
+						ownerUserSymbol = friend.getDisplayName();
+					} else {
+						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
+					}
 				}
 
 				return ownerUserSymbol;
