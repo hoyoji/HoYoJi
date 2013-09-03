@@ -104,13 +104,13 @@
 					silent : true
 				});
 				
-				if (Alloy.Models.User && !this.xGet("ownerUser") && !this.xGet("ownerUserId")) {
+				if (Alloy.Models.User && !this.xGet("ownerUser", options) && !this.xGet("ownerUserId", options)) {
 					this.xSet("ownerUser", Alloy.Models.User);
 				}
 								
 				// 把所有的 belongsTo 保存会对应的 Id column 中, 以便保存倒数据库
 				for (var belongsTo in this.config.belongsTo) {
-					var belongsToModel = this.xGet(belongsTo);
+					var belongsToModel = this.xGet(belongsTo, options);
 					if ((this.isNew() && belongsToModel !== undefined) || this.hasChanged(belongsTo)) {
 						if (belongsToModel) {
 							this.set(belongsTo + "Id", belongsToModel.xGet("id"), {
@@ -124,7 +124,6 @@
 					}
 				}
 
-				console.info("xValidation done with no errors ");
 				this.save(null, options);
 			},
 			xSave : function(options) {
@@ -162,19 +161,18 @@
 							self.__xValidationErrorCount++;
 							self.__xValidationError[key] = error;
 						}
-						console.info("xValidateAttribute : " + key + " " + self.__xValidateCount);
 						if (self.__xValidateCount === 0) {
 							xCallback();
 						}
 					});
 				}, 1);
 			},
-			xValidate : function(xFinishCallback) {
+			xValidate : function(xFinishCallback, options) {
 				var self = this;
 				this.__xValidationError = {};
 				this.__xValidationErrorCount = 0;
 
-				if (Alloy.Models.User && !this.xGet("ownerUser") && !this.xGet("ownerUserId")) {
+				if (Alloy.Models.User && !this.xGet("ownerUser", options) && !this.xGet("ownerUserId", options)) {
 					this.xSet("ownerUser", Alloy.Models.User);
 				}
 				
@@ -184,7 +182,6 @@
 
 					var field = this.config.columns[column], fieldValue = this.xGet(column);
 
-					console.info("validating column : " + column + "  " + fieldValue);
 					if (typeof fieldValue === "string") {
 						fieldValue = Alloy.Globals.alloyString.trim(fieldValue);
 					}
@@ -192,7 +189,6 @@
 					if (field.contains("NOT NULL")) {
 						if (this.config.belongsTo && this.config.belongsTo[column.slice(0, -2)]) {
 							if (!this.xGet(column.slice(0, -2))) {
-								console.info("validating column  belongTo : " + column + "  " + this.xGet(column.slice(0, -2)));
 								this.__xValidationErrorCount++;
 								this.__xValidationError[column] = {
 									msg : "不能为空"
@@ -235,7 +231,7 @@
 						if (this.isNew() || this.hasChanged(column)) {
 							var filter = {};
 							filter[column] = fieldValue;
-							if (Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter).length > 0) {
+							if (Alloy.createCollection(this.config.adapter.collection_name).xSearchInDb(filter, options).length > 0) {
 								this.__xValidationErrorCount++;
 								this.__xValidationError[column] = {
 									msg : "该名称已存在"
@@ -308,7 +304,8 @@
 				}
 				return this;
 			},
-			xGetHasMany : function(attr) {
+			xGetHasMany : function(attr, options) {
+				options = options || {};
 				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
 				if (this.isNew()) {
 					this.set(attr, collection, {
@@ -330,8 +327,7 @@
 				}
 				collection.xFetch({
 					query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
-				});
-				console.info("xGet hasMany : " + key + collection.length);
+				}, options);
 
 				this.attributes[attr] = collection;
 				// this.set(attr, collection, {
@@ -341,15 +337,15 @@
 				this._previousAttributes[attr] = collection;
 				return collection;
 			},
-			xGet : function(attr) {
+			xGet : function(attr, options) {
+				options = options || {};
 				var value = this.get(attr);
 				if (value !== undefined) {
 					return value;
 				} else if (this.config.hasMany && this.config.hasMany[attr]) {
-					return this.xGetHasMany(attr);
+					return this.xGetHasMany(attr, options);
 				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
 					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
-					console.info("xGet belongsTo " + fKey + " : " + fId);
 					if (!fId){
 						this.attributes[attr] = null;
 						this._previousAttributes[attr] = null;
@@ -359,11 +355,10 @@
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
-						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
 						m = Alloy.createCollection(table);
-						m.fetch({
+						m.fetch(_.extend({
 							query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
-						});
+						}, options));
 						// console.info("xGet fetch belongsTo from DB " + m.length);
 						// if(m.length === 0){
 						// m = null;
@@ -371,7 +366,6 @@
 						// m = m.at(0);
 						// }
 						m = Alloy.Collections[table].get(fId);
-						console.info("--------" + m);
 					}
 					this.attributes[attr] = m;
 					// this.set(attr, m, {
@@ -382,13 +376,13 @@
 				}
 				return value;
 			},
-			xPrevious : function(f){
+			xPrevious : function(f, options){
 				if (this.hasChanged(f)) {
 					return this.previous(f);
 				}
-				return this.xGet(f);
+				return this.xGet(f, options);
 			},
-			xReset : function(){
+			xReset : function(options){
 				if(this.hasChanged){
 					for(var attr in this.attributes){
 						if(this.hasChanged(attr)){
@@ -399,14 +393,14 @@
 				if(this.config.hasMany){
 					for(var hasMany in this.config.hasMany){
 						if(this.attributes[hasMany]){
-							var c = this.xGet(hasMany);
+							var c = this.xGet(hasMany, options);
 							if(c.length > 0){
 								var toBeRemoved = [];
 								c.forEach(function(item){
 									if(item.isNew()){
 										toBeRemoved.push(item);
 									} else if(item.hasChanged()){
-										item.xReset();
+										item.xReset(options);
 									}
 									delete item.__xDeleted;
 									delete item.__xDeletedHidden;
@@ -419,19 +413,19 @@
 					}
 				}
 			},
-			xDeepGet : function(fields) {
+			xDeepGet : function(fields, options) {
 				function xGetRecursive(object, path) {
 					if (path.length > 1) {
 						var p = path.shift();
 						object = object.xGet ? object.xGet(p) : object[p];
 						return xGetRecursive(object, path);
 					}
-					return object.xGet ? object.xGet(path[0]) : object[path[0]];
+					return object.xGet ? object.xGet(path[0], options) : object[path[0]];
 				}
 
 				return xGetRecursive(this, fields.split("."));
 			},
-			xGetDescendents : function(attribute) {
+			xGetDescendents : function(attribute, options) {
 				var descendents = Alloy.createCollection(this.config.adapter.collection_name);
 
 				function getDescendents(parents) {
@@ -439,24 +433,24 @@
 						return;
 					for (var i = 0; i < parents.length; i++) {
 						descendents.push(parents.at(i));
-						getDescendents(parents.at(i).xGet(attribute));
+						getDescendents(parents.at(i).xGet(attribute, options));
 					}
 				}
 
 				getDescendents(this.xGet(attribute));
 				return descendents;
 			},
-			xGetAncestors : function(attribute) {
+			xGetAncestors : function(attribute, options) {
 				var ancestors = Alloy.createCollection(this.config.adapter.collection_name);
 
 				function getAncestors(descendent) {
 					if (!descendent)
 						return;
 					ancestors.push(descendent);
-					getAncestors(descendent.xGet(attribute));
+					getAncestors(descendent.xGet(attribute, options));
 				}
 
-				getAncestors(this.xGet(attribute));
+				getAncestors(this.xGet(attribute, options));
 				return ancestors;
 			},
 			xDelete : function(xFinishCallback, options) {
@@ -467,7 +461,7 @@
 				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
-						if (this.config.hasMany[hasMany]["cascadeDelete"] != true && this.xGet(hasMany).length > 0) {
+						if (this.config.hasMany[hasMany]["cascadeDelete"] != true && this.xGet(hasMany, options).length > 0) {
 							error = {
 								msg : "包含有相关联的子数据，删除失败"
 							};
@@ -535,7 +529,7 @@
 				}
 				return !error;
 			},
-			xFindInDb : function(filter) {
+			xFindInDb : function(filter, options) {
 				var table = this.config.adapter.collection_name, query = "SELECT main.* FROM " + table + " main WHERE ", filterStr = "";
 				if ( typeof filter === "string") {
 					filterStr = filter;
@@ -563,9 +557,9 @@
 						}
 					}
 				}
-				this.fetch({
+				this.fetch(_.extend({
 					query : query + filterStr
-				});
+				}, options));
 
 				var record = Alloy.Collections[table].get(this.xGet("id"));
 				if (record) {
@@ -592,37 +586,37 @@
 				attributes.__dataType = this.config.adapter.collection_name;
 				return attributes;
 			},
-			canEdit : function() {
+			canEdit : function(options) {
 				if (this.isNew()) {
 					return true;
-				} else if (this.xGet("project")) {
-					if (this.xGet("project").xGet("ownerUser") !== Alloy.Models.User) {
+				} else if (this.xGet("project", options)) {
+					if (this.xGet("project", options).xGet("ownerUser", options) !== Alloy.Models.User) {
 						var type = this.config.adapter.collection_name;
-						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
-						if (this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShare" + type + "Edit")) {
+						var projectShareAuthorization = this.xGet("project", options).xGet("projectShareAuthorizations", options).at(0);
+						if (this.xGet("ownerUser", options) === Alloy.Models.User && projectShareAuthorization.xGet("projectShare" + type + "Edit", options)) {
 							return true;
 						} else {
 							return false;
 						}
 					}
 				}
-				return this.xGet("ownerUser") === Alloy.Models.User;
+				return this.xGet("ownerUser", options) === Alloy.Models.User;
 			},
-			canDelete : function() {
-				if (this.xGet("project")) {
-					if (this.xGet("project").xGet("ownerUser") === Alloy.Models.User) {
+			canDelete : function(options) {
+				if (this.xGet("project", options)) {
+					if (this.xGet("project", options).xGet("ownerUser", options) === Alloy.Models.User) {
 						return true;
 					} else {
 						var type = this.config.adapter.collection_name;
-						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
-						if (this.xGet("ownerUser") === Alloy.Models.User && (!projectShareAuthorization || projectShareAuthorization.xGet("projectShare" + type + "Delete"))) {
+						var projectShareAuthorization = this.xGet("project", options).xGet("projectShareAuthorizations", options).at(0);
+						if (this.xGet("ownerUser", options) === Alloy.Models.User && (!projectShareAuthorization || projectShareAuthorization.xGet("projectShare" + type + "Delete", options))) {
 							return true;
 						} else {
 							return false;
 						}
 					}
 				} else {
-					return this.xGet("project").xGet("ownerUser") === Alloy.Models.User;
+					return this.xGet("project", options).xGet("ownerUser", options) === Alloy.Models.User;
 				}
 			},
 			_syncAddNew : function(record, dbTrans) {

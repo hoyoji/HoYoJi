@@ -14,14 +14,14 @@
 				// error : xErrorCallback
 				// });
 			},
-			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+			searchData : function(modelName, filter, xFinishedCallback, xErrorCallback, options) {
 				var collection = Alloy.createCollection(modelName);
 				if (_.isArray(filter)) {
-					collection.fetch({
+					collection.fetch(_.extend({
 						query : "SELECT * FROM " + modelName + " main WHERE main.id IN ('" + filter.join("','") + "')"
-					});
+					}, options));
 				} else {
-					collection.xSearchInDb(filter);
+					collection.xSearchInDb(filter, options);
 				}
 				if (xFinishedCallback) {
 					xFinishedCallback(collection);
@@ -33,7 +33,7 @@
 			findData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData");
 			},
-			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
+			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback, options) {
 				// this.searchData("Project", projectIds, function(collection) {
 
 				// if (collection.length > 0) {
@@ -59,15 +59,15 @@
 							delete modelData.id;
 							var model = Alloy.createModel(modelData.__dataType).xFindInDb({
 								id : id
-							});
+							}, options);
 							if (!model.id) {
 								model.attributes.id = id;
 							}
 							model.xSet(modelData);
-							model.save(null, {
+							model.save(null, _.extend({
 								silent : true,
 								syncFromServer : true
-							});
+							}, options));
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
@@ -79,7 +79,7 @@
 				}, xErrorCallback, "getSharedProjects");
 				// }, xErrorCallback);
 			},
-			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
+			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback, options) {
 				// this.searchData(modelName, filter, function(collection) {
 				// if (collection.length > 0) {
 				// xFinishedCallback(collection);
@@ -102,8 +102,13 @@
 					data = _.flatten(data);
 					var returnCollection = Alloy.createCollection(modelName);
 					if (data.length > 0) {
-						var dbTrans = Alloy.Globals.DataStore.createTransaction();
-						dbTrans.begin();
+						options = options || {};
+						var localDbTrans = false;
+						if(!options.dbTrans){
+							options.dbTrans = Alloy.Globals.DataStore.createTransaction();
+							options.dbTrans.begin();
+							localDbTrans = true;
+						}
 						data.forEach(function(record) {
 							if (record) {
 								var modelData = record;
@@ -111,20 +116,21 @@
 								delete modelData.id;
 								var model = Alloy.createModel(modelData.__dataType).xFindInDb({
 									id : id
-								});
+								}, options);
 								if (!model.id) {
 									model.attributes.id = id;
 								}
 								model.xSet(modelData);
-								model.save(null, {
+								model.save(null, _.extend({
 									silent : true,
-									dbTrans : dbTrans,
 									syncFromServer : true
-								});
+								},options));
 								returnCollection.push(model);
 							}
 						});
-						dbTrans.commit();
+						if(localDbTrans){
+							options.dbTrans.commit();
+						}
 					}
 					if (xFinishedCallback) {
 						xFinishedCallback(returnCollection);
@@ -167,7 +173,7 @@
 						});
 						//}
 					},
-					timeout : 20000 /* in milliseconds */
+					timeout : 60000 /* in milliseconds */
 				});
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
@@ -231,7 +237,7 @@
 							var id = record.recordId;
 							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
-							});
+							}, {dbTrans : dbTrans});
 							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
 							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 							if (!model.isNew()) {
@@ -245,7 +251,7 @@
 								} else {
 									// 我们要将该记录的所有hasMany一并删除
 									for (var hasMany in model.config.hasMany) {
-										model.xGet(hasMany).forEach(function(item) {
+										model.xGet(hasMany, {dbTrans : dbTrans}).forEach(function(item) {
 											// item.syncDelete(record, dbTrans);
 											// item._syncDelete(record, dbTrans, function(e) {
 											// });
@@ -276,7 +282,7 @@
 									}
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
-									});
+									}, {dbTrans : dbTrans});
 									model.syncUpdateConflict(record, dbTrans);
 								}
 							} else {
@@ -286,7 +292,7 @@
 								// 2. 如果该记录已经存在本地表里，我们将其合并
 								var model = Alloy.createModel(dataType).xFindInDb({
 									id : record.id
-								});
+								}, {dbTrans : dbTrans});
 
 								// 检查belongsTo, 如果任何belongsTo已被删除，我们不将该记录同步下来
 								var belongsToDeleted = false;
