@@ -1,5 +1,13 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+var selectedBorrow = $.$attrs.selectedBorrow;
+
+$.onWindowOpenDo(function() {
+	if ($.$model.isNew() && selectedBorrow) {
+		$.getCurrentWindow().openNumericKeyboard($.amount);
+	}
+});
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -51,8 +59,7 @@ var oldAmount;
 var oldMoneyAccount;
 
 if (!$.$model) {
-	if ($.$attrs.selectedBorrow) {
-		var selectedBorrow = $.$attrs.selectedBorrow;
+	if (selectedBorrow) {
 		$.$model = Alloy.createModel("MoneyReturn", {
 			date : (new Date()).toISOString(),
 			exchangeRate : 1,

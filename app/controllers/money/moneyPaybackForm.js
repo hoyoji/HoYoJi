@@ -2,6 +2,12 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var selectedLend = $.$attrs.selectedLend;
 
+$.onWindowOpenDo(function() {
+	if ($.$model.isNew() && selectedLend) {
+		$.getCurrentWindow().openNumericKeyboard($.amount);
+	}
+});
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
