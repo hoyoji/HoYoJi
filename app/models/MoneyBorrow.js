@@ -186,7 +186,7 @@ exports.definition = {
 				return currencySymbol;
 			},
 			getProjectAmount : function() {
-				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("amount") * this.xGet("exchangeRate");
+				return this.xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2);
 			},
 			getProjectCurrencyAmount : function() {
 				return this.xGet("amount") * this.xGet("exchangeRate");
@@ -209,7 +209,11 @@ exports.definition = {
 						this.__friends = friends;
 					}
 					var friend = this.__friends.at(0);
-					ownerUserSymbol = friend.getDisplayName();
+					if (friend && friend.id) {
+						ownerUserSymbol = friend.getDisplayName();
+					} else {
+						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
+					}
 				}
 
 				return ownerUserSymbol;
