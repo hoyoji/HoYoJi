@@ -48,7 +48,7 @@ exports.open = function(textField, saveCB, bottom) {
 			$.widget.setBottom(openBottom);
 			$.widget.setVisible(true);
 			$.keyboard.animate(animation);	
-			$.display.setText(activeTextField.getValue());
+			$.display.setText(activeTextField.getValue()||"");
 	} else {
 		return;
 	}
