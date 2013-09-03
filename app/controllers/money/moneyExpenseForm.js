@@ -438,15 +438,18 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		});
 		//}
 
-		var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
-		if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
-			var exchange = Alloy.createModel("Exchange", {
-				localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-				foreignCurrency : $.$model.xGet("project").xGet("currency"),
-				rate : $.$model.xGet("exchangeRate"),
-				ownerUser : Alloy.Models.User
-			});
-			exchange.xAddToSave($);
+		var exchange;
+		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
+			var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
+			if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
+				exchange = Alloy.createModel("Exchange", {
+					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					foreignCurrency : $.$model.xGet("project").xGet("currency"),
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
+				});
+				exchange.xAddToSave($);
+			}
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
@@ -591,6 +594,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			if (exchange) {
+				exchange.xAddToDelete($);
+			}
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalExpense")) {
 					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("apportionedTotalExpense"));
