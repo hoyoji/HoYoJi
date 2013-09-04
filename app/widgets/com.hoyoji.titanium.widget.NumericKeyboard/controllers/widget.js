@@ -126,7 +126,7 @@ function operation(e) {
 		} else {
 			accum = parseFloat(readout);
 		}
-		// accum = parseFloat(accum).toFixed(2) / 1;
+		accum = parseFloat(accum).toFixed(2) / 1;
 		// activeTextField.setValue(accum + "");
 		$.display.setText(accum + "");
 		
@@ -273,7 +273,7 @@ function equalToValue() {
 			pendingOp = "=";
 		}
 	}
-	activeTextField.setValue($.display.getText());
+	activeTextField.setValue(parseFloat($.display.getText()).toFixed(2) / 1);
 	activeTextField.field.fireEvent("change");
 	exports.close();
 	clear();
