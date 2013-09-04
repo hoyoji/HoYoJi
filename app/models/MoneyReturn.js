@@ -274,7 +274,7 @@ exports.definition = {
 					var moneyBorrow = self.xGet("moneyBorrow");
 					var borrowRate = moneyBorrow.xGet("exchangeRate");
 					moneyBorrow.save({
-						returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate
+						returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate
 					}, saveOptions);
 				}
 
