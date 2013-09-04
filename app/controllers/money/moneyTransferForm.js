@@ -234,8 +234,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	newTransferOut.xAddToSave($);
 	newTransferIn.xAddToSave($);
 
+	var exchange;
 	if (createRate && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
-		var exchange = Alloy.createModel("Exchange", {
+		exchange = Alloy.createModel("Exchange", {
 			localCurrency : $.$model.xGet("transferOut").xGet("currency"),
 			foreignCurrency : $.$model.xGet("transferIn").xGet("currency"),
 			rate : $.$model.xGet("exchangeRate"),
@@ -261,6 +262,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if (oldTransferIn) {
 			oldTransferIn.xSet("currentBalance", oldTransferIn.previous("currentBalance"));
 		}
+		// if (exchange) {
+			// exchange.xAddToDelete($);
+		// }
 		newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
 		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
 		saveErrorCB(e);

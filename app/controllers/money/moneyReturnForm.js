@@ -28,7 +28,8 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-var loading;//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+var loading;
+//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
@@ -168,9 +169,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
+
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
-			$.friendAccount.$view.setHeight(0);//暂时隐藏好友账户
+			$.friendAccount.$view.setHeight(0);
+			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
 			$.friendAccount.field.fireEvent("change");
 		} else {
@@ -207,15 +210,18 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			// moneyBorrow.xAddToSave($);
 		}
 
-		var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
-		if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
-			var exchange = Alloy.createModel("Exchange", {
-				localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-				foreignCurrency : $.$model.xGet("project").xGet("currency"),
-				rate : $.$model.xGet("exchangeRate"),
-				ownerUser : Alloy.Models.User
-			});
-			exchange.xAddToSave($);
+		var exchange;
+		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
+			var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
+			if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
+				exchange = Alloy.createModel("Exchange", {
+					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+					foreignCurrency : $.$model.xGet("project").xGet("currency"),
+					rate : $.$model.xGet("exchangeRate"),
+					ownerUser : Alloy.Models.User
+				});
+				exchange.xAddToSave($);
+			}
 		}
 
 		var modelIsNew = $.$model.isNew();
@@ -276,6 +282,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			// if (exchange) {
+				// exchange.xAddToDelete($);
+			// }
 			if (moneyBorrow) {
 				moneyBorrow.xSet("returnedAmount", moneyBorrow.previous("returnedAmount"));
 			}
