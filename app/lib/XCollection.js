@@ -48,8 +48,8 @@
 					this.__filterCollection.off("xrefresh", this.__changeModel, this);
 				}
 			},			
-			xFetch : function(options, _options) {
-				_options = _options || {};
+			xFetch : function(options) {
+				options = options || {};
 				//options.add = true;
 				//options.update = true;
 				//options.remove = false;
@@ -60,13 +60,18 @@
 				this.isFetching = true;
 				xFetchMatchFilterAdded = [];
 				if (this.__filterCollection) {
-					this.__filterCollection.xFetch(options, _options);
+					this.__filterCollection.xFetch(options);
 				} else {
+					console.info("xFetch " + options.query);
 					var c = Alloy.createCollection(this.config.adapter.collection_name);
+					// self.map(function(m){
+					// console.info("xFetch before merged : " + m.xGet("id"));
+					// });
 
-					c.fetch(_.extend(options, _options));
+					c.fetch(options);
 					if(this !== Alloy.Collections[this.config.adapter.collection_name]){
 						c.map(function(m) {
+							console.info("xFetch " + m.xGet("id"));
 							if(!self.get(model)){
 								var model = Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id"));
 								xFetchMatchFilterAdded.push(model);
@@ -74,6 +79,12 @@
 							}
 						});
 					}
+					//self.add(c);
+					// self.map(function(m){
+					// console.info("xFetch after merged : " + m.xGet("id"));
+					// });
+
+					//this.fetch(options);
 				}
 				this.isFetching = false;
 				this.trigger("xFetchEnd", this, xFetchMatchFilterAdded);
@@ -85,6 +96,7 @@
 			__addModel : function(model, collection, options) {
 				var ret = this.__compareFilter(model, options);
 				if (ret !== null && ret) {
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
 						this.add(model);
@@ -95,14 +107,17 @@
 				var ret = this.__compareFilter(model, options);
 				if (ret === null) return;
 				if (this.__compareFilter(model, options)) {
+					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
 			__removeModel : function(model, collection, options) {
 				var ret = this.__compareFilter(model, options);
 				if (ret !== null && !ret) {
+					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
@@ -114,6 +129,11 @@
 					this.__filterCollection = Alloy.Collections[this.config.adapter.collection_name];
 					this.__xSetFilterOnCollection(winController);
 				}
+				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
+				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);
+				// self.map(function(m) {
+					// console.info(" --------- " + m.xGet("id"));
+				// });
 				var filterAdded = [], filterRemoved = [];
 				this.trigger("xSetFilterStart");
 				this.isFiltering = true;
@@ -125,6 +145,7 @@
 							self.add(model);
 							filterAdded.push(model);
 						}
+						console.info("__filter match, adding model to collection ");
 					} else {
 						if(self.get(model)){
 							filterRemoved.push(model);
@@ -134,7 +155,14 @@
 				});
 				this.isFiltering = false;
 				this.trigger("xSetFilterEnd", this, filterAdded, filterRemoved);
+				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.models.length);
 				
+
+				// this.on("destroy", function(){
+				// self.__filterCollection.off("add", addModel);
+				// self.__filterCollection.off("remove", removeModel);
+				// self.__filterCollection.off("change", changeModel);
+				// });
 				return this;
 			},
 			__compareFilter : function(model, options) {
@@ -142,7 +170,7 @@
 					return this.__filter(model, options);
 				}
 				for (var f in this.__filter) {
-					var modelValue = model.xGet(f, options), filterValue = this.__filter[f];
+					var modelValue = model.xGet(f), filterValue = this.__filter[f];
 
 					if (model.config.belongsTo[f]) {
 						if (modelValue) {
@@ -157,6 +185,10 @@
 						}
 					}
 
+					console.info(model.hasChanged(f) + " __compareFilter " + f + " :: " + modelValue + " " + filterValue);
+					// if (filterValue === "NOT NULL") {
+						// return modelValue !== null;
+					// } else 
 					if (modelValue !== filterValue) {
 						return false;
 					}
@@ -187,6 +219,7 @@
 					}
 				}
 
+				console.info("xSearchInDb " + query + filterStr);
 				var limit = sqlOptions.limit ? " LIMIT " + sqlOptions.limit + " ": "";
 				var offset = sqlOptions.offset ? " OFFSET " + sqlOptions.offset + " " : "";
 				var orderBy = sqlOptions.orderBy ? " ORDER BY main." + sqlOptions.orderBy + " " : "";
@@ -195,7 +228,7 @@
 				} 
 				this.xFetch({
 					query : query + filterStr + "qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + orderBy +  limit + offset
-				}, sqlOptions);
+				});
 				return this;
 			}
 		};
