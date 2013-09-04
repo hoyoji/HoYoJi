@@ -101,6 +101,8 @@
 									msg : "验证错误"
 								};
 								$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+								$.__saveCollection = [];
+								$.__deleteCollection = [];
 								saveErrorCB($.$model.__xValidationError.__summary.msg);
 								return;
 							}
