@@ -397,16 +397,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											saveEndCB("发送成功，请等待回复");
 										}, function(e) {
 											alert(e.__summary.msg);
+											saveErrorCB();
 										});
 									}, function(e) {
 										alert(e.__summary.msg);
+										saveErrorCB();
 									});
 								}, function(e) {
 									alert(e.__summary.msg);
+									saveErrorCB();
 								});
 							}
 						}, function(e) {
 							alert(e.__summary.msg);
+							saveErrorCB();
 						});
 	
 					} else {
@@ -535,12 +539,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 																});
 															}, function(e) {
 																alert(e.__summary.msg);
+																saveErrorCB();
 															});
 														}, function(e) {
 															alert(e.__summary.msg);
+															saveErrorCB();
 														});
 													}, function(e) {
 														alert(e.__summary.msg);
+														saveErrorCB();
 													});
 												} else {
 													$.saveModel(saveEndCB, saveErrorCB);
@@ -599,12 +606,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 																});
 															}, function(e) {
 																alert(e.__summary.msg);
+																saveErrorCB();
 															});
 														}, function(e) {
 															alert(e.__summary.msg);
+															saveErrorCB();
 														});
 													}, function(e) {
 														alert(e.__summary.msg);
+														saveErrorCB();
 													});
 												} else {
 													$.saveModel(saveEndCB, saveErrorCB);
@@ -613,6 +623,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 										}, function(e) {
 											alert(e.__summary.msg);
+											saveErrorCB();
 										});
 									} else {
 										$.saveModel(saveEndCB, saveErrorCB);
@@ -668,9 +679,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												});
 											}, function(e) {
 												alert(e.__summary.msg);
+												saveErrorCB();
 											});
 										}, function(e) {
 											alert(e.__summary.msg);
+											saveErrorCB();
 										});
 									} else {
 										$.saveModel(saveEndCB, saveErrorCB);
@@ -678,6 +691,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								}
 							} else {
 								alert("子项目未同步，清同步再共享");
+								saveErrorCB();
 							}
 
 						} else {
@@ -743,9 +757,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										});
 									}, function(e) {
 										alert(e.__summary.msg);
+										saveErrorCB();
 									});
 								}, function(e) {
 									alert(e.__summary.msg);
+									saveErrorCB();
 								});
 							}
 						}
@@ -763,6 +779,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 					}, function(e) {
 						alert(e.__summary.msg);
+						saveErrorCB();
 					});
 				}
 			}
@@ -790,6 +807,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			});
 		}, function(e) {
 			alert(e.__summary.msg);
+			saveErrorCB();
 		});
 	}
 	
