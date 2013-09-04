@@ -331,17 +331,27 @@ function findSortPos(model) {
 }
 
 function addRowToSection(rowModel, collection, index) {
-
+	var rowsCount = $.getRowsCount();
 	if (index === undefined) {
 		if (sortByField) {
 			var pos = findSortPos(rowModel);
 			
 			if (pos === null) {
-				if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+				if(pageSize > 0 && rowsCount % pageSize === 0){
 					return;
 				}
 				$.table.appendRow(createRowView(rowModel, collection));
 			} else if (pos.insertBefore === -1) {
+				if(pageSize > 0 && rowsCount % pageSize !== 0){
+						return;
+				}
+				if(rowsCount > 0){
+					getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
+						bubbles : false
+					});
+					$.table.deleteRow(rowsCount-1);
+				}
+					
 				// need to create new section for this row
 				var section = createSection(pos.sectionTitle, pos.index);
 				
@@ -351,37 +361,45 @@ function addRowToSection(rowModel, collection, index) {
 				$.table.setData(data);
 				// showNoDataIndicator(data.length);
 				// $.table.insertRowBefore(pos.index, row);
+				
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
-					if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+					if(pageSize > 0 && rowsCount % pageSize === 0){
 						return;
 					}
 					$.table.appendRow(createRowView(rowModel, collection));
 				} else {
+					if(pageSize > 0 && rowsCount % pageSize !== 0){
+						return;
+					}
+					if(rowsCount > 0){
+						getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
+							bubbles : false
+						});
+						$.table.deleteRow(rowsCount-1);
+					}
 					$.table.insertRowBefore(pos.index, createRowView(rowModel, collection));
 				}
 			} else {
-				var rowsCount = $.getRowsCount();
 				if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
 					return;
 				}
 				$.table.insertRowAfter(pos.index, createRowView(rowModel, collection));
 			}
 		} else {
-			if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+			if(pageSize > 0 && rowsCount % pageSize === 0){
 					return;
 			}
 			$.table.appendRow(createRowView(rowModel, collection));
 		}
 	} else {
 		try{
-			var rowsCount = $.getRowsCount();
 			if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
 				return;
 			}
 			$.table.insertRowAfter(index, createRowView(rowModel, collection));
 		} catch(e){
-			if(pageSize > 0 && $.getRowsCount() % pageSize === 0){
+			if(pageSize > 0 && rowsCount % pageSize === 0){
 					return;
 			}
 			$.table.appendRow(createRowView(rowModel, collection));

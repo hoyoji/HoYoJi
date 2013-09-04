@@ -172,7 +172,7 @@
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
 					var auth = Alloy.Models.User.xGet("userName") + ":" + Alloy.Models.User.xGet("password");
-					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth));
+					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(Ti.Network.encodeURIComponent(auth)));
 				}
 				xhr.send(data);
 			},

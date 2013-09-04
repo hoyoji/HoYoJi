@@ -178,29 +178,29 @@ function setFilter(collection) {
 	});
 }
 
-// $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
-	// searchData(moneyIncomes, offset, limit, orderBy);
-	// searchData(moneyExpenses, offset, limit, orderBy);
-	// searchData(moneyTransferOuts, offset, limit, orderBy);
-	// searchData(moneyTransferIns, offset, limit, orderBy);
-	// searchData(moneyBorrows, offset, limit, orderBy);
-	// searchData(moneyLends, offset, limit, orderBy);
-	// searchData(moneyReturns, offset, limit, orderBy);
-	// searchData(moneyPaybacks, offset, limit, orderBy);
-	// searchData(receivedMessages, offset, limit, orderBy);
-	// successCB();
-// };
+$.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
+	searchData(moneyIncomes, offset, limit, orderBy);
+	searchData(moneyExpenses, offset, limit, orderBy);
+	searchData(moneyTransferOuts, offset, limit, orderBy);
+	searchData(moneyTransferIns, offset, limit, orderBy);
+	searchData(moneyBorrows, offset, limit, orderBy);
+	searchData(moneyLends, offset, limit, orderBy);
+	searchData(moneyReturns, offset, limit, orderBy);
+	searchData(moneyPaybacks, offset, limit, orderBy);
+	searchData(receivedMessages, offset, limit, orderBy);
+	successCB();
+};
 
 exports.doFilter = function() {
-	searchData(moneyIncomes, 0, 5, "date");
-	searchData(moneyExpenses, 0, 5, "date");
-	searchData(moneyTransferOuts, 0, 5, "date");
-	searchData(moneyTransferIns, 0, 5, "date");
-	searchData(moneyBorrows, 0, 5, "date");
-	searchData(moneyLends, 0, 5, "date");
-	searchData(moneyReturns, 0, 5, "date");
-	searchData(moneyPaybacks, 0, 5, "date");
-	searchData(receivedMessages, 0, 5, "date");
+	searchData(moneyIncomes, 0, 6, "date DESC");
+	searchData(moneyExpenses, 0, 6, "date DESC");
+	searchData(moneyTransferOuts, 0, 6, "date DESC");
+	searchData(moneyTransferIns, 0, 6, "date DESC");
+	searchData(moneyBorrows, 0, 6, "date DESC");
+	searchData(moneyLends, 0, 6, "date DESC");
+	searchData(moneyReturns, 0, 6, "date DESC");
+	searchData(moneyPaybacks, 0, 6, "date DESC");
+	searchData(receivedMessages, 0, 6, "date DESC");
 
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
