@@ -378,7 +378,7 @@ exports.definition = {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
 					moneyLend.save({
-						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
+						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate
 					}, saveOptions);
 				}
 			},
