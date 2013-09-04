@@ -57,4 +57,4 @@
     <plugins>
         <plugin version="1.1">ti.alloy</plugin>
     </plugins>
-<property name="ti.deploytype">development</property></ti:app>
+<property name="ti.deploytype">test</property></ti:app>
