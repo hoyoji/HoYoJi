@@ -143,6 +143,7 @@ $.$view.addEventListener("click", function(e) {
 			$.trigger("endchangingrow");
 		}
 
+
 		$.table.addEventListener("postlayout", deleteRowPostLayout);
 	} else {
 		$.__changingRow = false;
@@ -335,69 +336,84 @@ function addRowToSection(rowModel, collection, index) {
 	if (index === undefined) {
 		if (sortByField) {
 			var pos = findSortPos(rowModel);
-			
+
 			if (pos === null) {
-				if(pageSize > 0 && rowsCount % pageSize === 0){
+				if (pageSize > 0 && rowsCount % pageSize === 0) {
 					return;
 				}
 				$.table.appendRow(createRowView(rowModel, collection));
 			} else if (pos.insertBefore === -1) {
 				// if(pageSize > 0 && rowsCount % pageSize !== 0){
-						// return;
+				// return;
 				// }
 				// if(rowsCount > 0){
-					// getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
-						// bubbles : false
-					// });
-					// $.table.deleteRow(rowsCount-1);
+				// getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
+				// bubbles : false
+				// });
+				// $.table.deleteRow(rowsCount-1);
 				// }
-					
+				var deleteLastRow = false;
+				if (pageSize > 0 && rowsCount > 0 && rowsCount % pageSize === 0) {
+					if (pos.index >= $.table.data.length) {
+						return;
+					} else {
+						getRowViewByRowIndex(rowsCount - 1).fireEvent("rowremoved", {
+							bubbles : false
+						});
+						$.table.deleteRow(rowsCount - 1);
+					}
+				}
+
 				// need to create new section for this row
 				var section = createSection(pos.sectionTitle, pos.index);
-				
+
 				section.add(createRowView(rowModel, collection));
 				var data = $.table.data.slice(0);
 				data.splice(pos.index, 0, section);
 				$.table.setData(data);
 				// showNoDataIndicator(data.length);
 				// $.table.insertRowBefore(pos.index, row);
-				
 			} else if (pos.insertBefore) {
 				if (pos.index === -1) {
-					if(pageSize > 0 && rowsCount % pageSize === 0){
+					if (pageSize > 0 && rowsCount % pageSize === 0) {
 						return;
 					}
 					$.table.appendRow(createRowView(rowModel, collection));
 				} else {
-					if(pageSize > 0 && rowsCount > 0 && rowsCount % pageSize === 0){
-						getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
+					if (pageSize > 0 && rowsCount > 0 && rowsCount % pageSize === 0) {
+						getRowViewByRowIndex(rowsCount - 1).fireEvent("rowremoved", {
 							bubbles : false
 						});
-						$.table.deleteRow(rowsCount-1);
+						$.table.deleteRow(rowsCount - 1);
+						rowsCount --;
 					}
-					$.table.insertRowBefore(pos.index, createRowView(rowModel, collection));
+					if(pos.index >= rowsCount){
+						$.table.appendRow(createRowView(rowModel, collection));
+					} else {
+						$.table.insertRowBefore(pos.index, createRowView(rowModel, collection));
+					}
 				}
 			} else {
-				if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
+				if (pos.index >= rowsCount - 1 && pageSize > 0 && rowsCount % pageSize === 0) {
 					return;
 				}
 				$.table.insertRowAfter(pos.index, createRowView(rowModel, collection));
 			}
 		} else {
-			if(pageSize > 0 && rowsCount % pageSize === 0){
-					return;
+			if (pageSize > 0 && rowsCount % pageSize === 0) {
+				return;
 			}
 			$.table.appendRow(createRowView(rowModel, collection));
 		}
 	} else {
-		try{
-			if(pos.index >= rowsCount-1 && pageSize > 0 && rowsCount % pageSize === 0){
+		try {
+			if (pos.index >= rowsCount - 1 && pageSize > 0 && rowsCount % pageSize === 0) {
 				return;
 			}
 			$.table.insertRowAfter(index, createRowView(rowModel, collection));
-		} catch(e){
-			if(pageSize > 0 && rowsCount % pageSize === 0){
-					return;
+		} catch(e) {
+			if (pageSize > 0 && rowsCount % pageSize === 0) {
+				return;
 			}
 			$.table.appendRow(createRowView(rowModel, collection));
 		}
@@ -412,7 +428,7 @@ function addRow(rowModel, collection) {
 			return;
 		} else {
 			addRowToSection(rowModel, collection);
-			
+
 			showNoDataIndicator($.table.data.length);
 		}
 	}
@@ -425,7 +441,7 @@ function addRow(rowModel, collection) {
 
 exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 	if (hasDetailSections[sectionRowId].collections.length > 0) {
-		var index = rowIndex + 1, insertPos;	
+		var index = rowIndex + 1, insertPos;
 
 		var collections = hasDetailSections[sectionRowId].collections;
 		for (var i = 0; i < collections.length; i++) {
@@ -437,7 +453,7 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 						model : collections[i].at(j),
 						collection : collections[i]
 					});
-					if(!insertPos){
+					if (!insertPos) {
 						insertPos = index - 1;
 					}
 				} else {
@@ -463,14 +479,14 @@ exports.expandHasDetailSection = function(rowIndex, sectionRowId) {
 				index++;
 			}
 			// collections[i].on("add", function() {
-				// // addRowToSection(rowModel, collection);
-// 
-				// parentController.$view.fireEvent("click", {
-					// bubbles : true,
-					// expandSection : true,
-					// sectionRowId : sectionRowId
-				// });
-// 
+			// // addRowToSection(rowModel, collection);
+			//
+			// parentController.$view.fireEvent("click", {
+			// bubbles : true,
+			// expandSection : true,
+			// sectionRowId : sectionRowId
+			// });
+			//
 			// });
 			hasDetailSections[sectionRowId].collections.push(collections[i]);
 
@@ -536,12 +552,11 @@ function collapseAllHasDetailSections() {
 }
 
 var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField, currentPageNumber = 0;
-exports.refreshTable = function(){
-	
-		
+exports.refreshTable = function() {
+
 };
 
-exports.fetchFirstPage = function(){
+exports.fetchFirstPage = function() {
 	$.table.setData([]);
 	exports.fetchNextPage(0);
 };
@@ -550,7 +565,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
 	$.fetchNextPageButton.setText("加载中...");
-	
+
 	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField)) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
@@ -631,7 +646,7 @@ exports.getRowsCount = function() {
 
 exports.addCollection = function(collection, rowView) {
 	$.showActivityIndicator("加载中...");
-	
+
 	if (rowView) {
 		collection.__rowView = rowView;
 	}
@@ -1124,7 +1139,7 @@ var fetchingNextPage = false;
 if (pageSize > 0) {
 	$.fetchNextPageButton.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
-		if(fetchingNextPage === false){
+		if (fetchingNextPage === false) {
 			fetchingNextPage = true;
 			exports.fetchNextPage();
 		}
