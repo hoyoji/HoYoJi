@@ -91,11 +91,14 @@ exports.definition = {
 						var apportionAmount = 0;
 						this.xGet("moneyExpenseApportions").forEach(function(item) {
 							if (!item.__xDeleted && !item.__xDeletedHidden) {
-								apportionAmount = apportionAmount + Number(item.xGet("amount").toFixed(2));
+								if (item.xGet("amount") < 0) {
+								} else {
+									apportionAmount = apportionAmount + Number(item.xGet("amount").toFixed(2));
+								}
 								console.info("++++++amount++++" + item.xGet("amount"));
 							}
 						});
-						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
+						if (this.xGet("amount") !== apportionAmount) {
 							error = {
 								msg : "分摊总额与支出金额不相等，请修正"
 							};
@@ -319,7 +322,7 @@ exports.definition = {
 					var self = this;
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
-						saveOptions.wait = true;
+					saveOptions.wait = true;
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
@@ -467,25 +470,29 @@ exports.definition = {
 				// 让本地修改覆盖服务器上的记录
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
-					var self = this;
-					var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
-					var moneyAccount = this.xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") + amount
-					}, saveOptions);
+				var self = this;
+				var saveOptions = {
+					dbTrans : dbTrans,
+					patch : true,
+					syncFromServer : true
+				};
+				var moneyAccount = this.xGet("moneyAccount");
+				var amount = this.xGet("amount");
+				moneyAccount.save({
+					currentBalance : moneyAccount.xGet("currentBalance") + amount
+				}, saveOptions);
 
-					var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
-					var myProjectShareAuthorization;
-					projectShareAuthorizations.forEach(function(item) {
-						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
-							var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
-							item.save({
-								actualTotalExpense : actualTotalExpense
-							}, saveOptions);
-						}
-					});
-			}			
+				var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
+				var myProjectShareAuthorization;
+				projectShareAuthorizations.forEach(function(item) {
+					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+						var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
+						item.save({
+							actualTotalExpense : actualTotalExpense
+						}, saveOptions);
+					}
+				});
+			}
 		});
 
 		return Model;

@@ -95,7 +95,7 @@ exports.definition = {
 								apportionAmount = apportionAmount + Number(item.xGet("amount").toFixed(2));
 							}
 						});
-						if (apportionAmount > 0 && this.xGet("amount") !== apportionAmount) {
+						if (this.xGet("amount") !== apportionAmount) {
 							error = {
 								msg : "分摊总额与收入金额不相等，请修正"
 							};
