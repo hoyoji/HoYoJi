@@ -342,15 +342,15 @@ function addRowToSection(rowModel, collection, index) {
 				}
 				$.table.appendRow(createRowView(rowModel, collection));
 			} else if (pos.insertBefore === -1) {
-				if(pageSize > 0 && rowsCount % pageSize !== 0){
-						return;
-				}
-				if(rowsCount > 0){
-					getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
-						bubbles : false
-					});
-					$.table.deleteRow(rowsCount-1);
-				}
+				// if(pageSize > 0 && rowsCount % pageSize !== 0){
+						// return;
+				// }
+				// if(rowsCount > 0){
+					// getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
+						// bubbles : false
+					// });
+					// $.table.deleteRow(rowsCount-1);
+				// }
 					
 				// need to create new section for this row
 				var section = createSection(pos.sectionTitle, pos.index);
@@ -369,10 +369,7 @@ function addRowToSection(rowModel, collection, index) {
 					}
 					$.table.appendRow(createRowView(rowModel, collection));
 				} else {
-					if(pageSize > 0 && rowsCount % pageSize !== 0){
-						return;
-					}
-					if(rowsCount > 0){
+					if(pageSize > 0 && rowsCount > 0 && rowsCount % pageSize === 0){
 						getRowViewByRowIndex(rowsCount-1).fireEvent("rowremoved", {
 							bubbles : false
 						});
