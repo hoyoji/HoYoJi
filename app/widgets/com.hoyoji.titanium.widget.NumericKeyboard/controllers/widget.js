@@ -144,7 +144,7 @@ function operation(e) {
 
 //小数点
 function decimal() {
-	var curReadOut = $.display.getText() || "0";
+	var curReadOut = ($.display.getText() + "") || "0";
 	// if(!curReadOut){
 		// curReadOut = "0";
 	// }else{
@@ -154,11 +154,9 @@ function decimal() {
 		curReadOut = "0.";
 		flagNewNum = false;
 	} else {
-		if (curReadOut.indexOf(".") == -1) {
+		if (curReadOut.indexOf(".") === -1) {
 			curReadOut += ".";
 			// oldValue = ".";
-		}else{
-			// oldValue = "";
 		}
 	}
 	// activeTextField.setValue(curReadOut);
@@ -206,7 +204,7 @@ function clear() {
 	accum = 0;
 	pendingOp = "";
 	// activeTextField.setValue("");
-	$.display.setText(0);
+	$.display.setText("");
 	flagNewNum = true;
 	// activeTextField.field.fireEvent("change");
 	setOPColor();
@@ -273,7 +271,11 @@ function equalToValue() {
 			pendingOp = "=";
 		}
 	}
-	activeTextField.setValue(parseFloat($.display.getText()).toFixed(2) / 1);
+	if($.display.getText() !== ""){
+		activeTextField.setValue(parseFloat($.display.getText()).toFixed(2) / 1);
+	} else {
+		activeTextField.setValue($.display.getText());
+	}
 	activeTextField.field.fireEvent("change");
 	exports.close();
 	clear();
