@@ -217,10 +217,6 @@ exports.doFilter = function() {
 	$.transactionsTable.fetchNextPage();
 };
 
-exports.sort = function(sortField, sortReverse, groupByField) {
-	$.transactionsTable.sort(sortField, sortReverse);
-};
-
 var moneyIncomes = Alloy.createCollection("MoneyIncome");
 var moneyExpenses = Alloy.createCollection("MoneyExpense");
 var moneyTransferOuts = Alloy.createCollection("MoneyTransfer");
