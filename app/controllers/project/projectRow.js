@@ -58,11 +58,11 @@ $.makeContextMenu = function(e, isSelectMode) {
 		$.deleteModel();
 	}, isSelectMode || projectIsSharedToMe));
 	
-	// menuSection.add($.createContextMenuItem("项目成员", function() {
-	// Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
-	// selectedProject : $.$model
-	// });
-	// }));
+	menuSection.add($.createContextMenuItem("项目成员", function() {
+		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
+			selectedProject : $.$model
+		});
+	})); 
 
 	return menuSection;
 };
