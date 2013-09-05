@@ -28,7 +28,7 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 				$.$model.xSet("defaultIncomeCategory", defaultExpenseCategory);
 			}
 		}
-	} else {
+	} else if(parentCategory){
 		var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 			name : parentCategory,
 			project : $.$model,
