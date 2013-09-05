@@ -400,30 +400,29 @@ if ($.saveableMode === "read") {
 							// $.depositeFriendAccount.xAddToSave($);
 							// editData.push($.depositeFriendAccount.toJSON());
 
-							$.saveModel(function(e) {
-								// var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
-								// $model : depositeIncome
-								// });
-								// depositeIncomeController.$view.addEventListener("contentready", function() {
-								// depositeIncome.xAddToSave(depositeIncomeController.content);
-								// depositeIncomeController.content.titleBar.dirtyCB();
-								// });
-
-								Alloy.Globals.Server.postData(addData, function(data) {
-									Alloy.Globals.Server.putData(editData, function(data) {
+							Alloy.Globals.Server.postData(addData, function(data) {
+								Alloy.Globals.Server.putData(editData, function(data) {
+									$.saveModel(function(e) {
+										// var depositeIncomeController = Alloy.Globals.openWindow("money/projectIncomeForm", {
+										// $model : depositeIncome
+										// });
+										// depositeIncomeController.$view.addEventListener("contentready", function() {
+										// depositeIncome.xAddToSave(depositeIncomeController.content);
+										// depositeIncomeController.content.titleBar.dirtyCB();
+										// });
+						
 										saveEndCB(e);
 									}, function(e) {
-										alert(e.__summary.msg);
+										saveErrorCB(e);
+									}, {
+										syncFromServer : true
 									});
 								}, function(e) {
 									alert(e.__summary.msg);
 								});
-
 							}, function(e) {
-								saveErrorCB(e);
-							}, {
-								syncFromServer : true
-							});
+								alert(e.__summary.msg);
+							}); 
 						} else {
 							saveErrorCB("请输入存入账户汇率！");
 						}

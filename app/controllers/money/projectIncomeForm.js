@@ -60,9 +60,9 @@ $.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
 				exchange.xSet("ownerUser", Alloy.Models.User);
 				exchange.xSet("ownerUserId", Alloy.Models.User.id);
 				exchange.save();
-				//改变账户后要更新金额
-				$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / rate);
-				$.amount.refresh();
+				// //改变账户后要更新金额
+				// $.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / rate);
+				// $.amount.refresh();
 				successCallback();
 				loading = false;
 			}, function(e) {
@@ -105,7 +105,7 @@ if ($.saveableMode === "read") {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
-				if ($.$model.xGet("exchangeRate") === null) {
+				if (!$.$model.xGet("exchangeRate")) {
 					alert("请更新汇率查看金额");
 				} else {
 					$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
@@ -165,14 +165,14 @@ if ($.saveableMode === "read") {
 			}
 			$.exchangeRate.$view.setHeight(42);
 		}
-		if (setToModel) {
-			$.$model.xSet("exchangeRate", exchangeRateValue);
-			$.exchangeRate.refresh();
-			//改变汇率更新金额
-		} else {
+		// if (setToModel) {
+			// $.$model.xSet("exchangeRate", exchangeRateValue);
+			// $.exchangeRate.refresh();
+			// //改变汇率更新金额
+		// } else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
-		}
+		// }
 		if(exchangeRateValue){
 			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
 			$.amount.refresh();

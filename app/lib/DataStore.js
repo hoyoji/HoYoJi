@@ -49,7 +49,9 @@
 							this.db = null;
 							this.trigger("commit");
 							Ti.App.fireEvent("updateSyncCount");
+							return true;
 						}
+						return false;
 					},
 					rollback : function() {
 						if (this.db) {

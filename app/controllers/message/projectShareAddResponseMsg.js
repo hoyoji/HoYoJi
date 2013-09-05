@@ -568,6 +568,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									currency.xSet("ownerUser", Alloy.Models.User);
 									currency.xSet("ownerUserId", Alloy.Models.User.id);
 									currency.save();
+									
+									//把币种传入服务器
+									editProjectShareAuthorizationArray.push(currency.toJSON());
+									
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 										successCB();
@@ -615,6 +619,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										exchange.xSet("ownerUser", Alloy.Models.User);
 										exchange.xSet("ownerUserId", Alloy.Models.User.id);
 										exchange.save();
+										
+										//把汇率传入服务器
+										editProjectShareAuthorizationArray.push(exchange.toJSON());
+										
 										projectCurrencyIdsCount++;
 										if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 											successCB();
