@@ -25,7 +25,7 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 				parentExpenseCategory : parentCategory
 			}).xAddToSave($);
 			if (subCategories[i] === "早午晚餐") {
-				$.$model.xSet("defaultIncomeCategory", defaultExpenseCategory);
+				$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 			}
 		}
 	} else if(parentCategory){
@@ -34,7 +34,6 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 			project : $.$model,
 			ownerUser : Alloy.Models.User,
 		}).xAddToSave($);
-
 		return defaultExpenseCategory;
 	}
 }

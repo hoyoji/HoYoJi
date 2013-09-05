@@ -12,7 +12,7 @@ Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 	selectedProject : $.$model
 });
 return false;
-}
+};
 
 $.setSelected = function(selected){
 	if(selected){

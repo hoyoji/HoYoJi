@@ -211,9 +211,13 @@ exports.doFilter = function() {
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
-	setFilter(moneyReturnInterests);
+	moneyReturnInterests.xSetFilter(function(model) {
+	return model.xGet("interest") > 0;
+});
 	setFilter(moneyPaybacks);
-	setFilter(moneyPaybackInterests);
+	moneyPaybackInterests.xSetFilter(function(model) {
+	return model.xGet("interest") > 0;
+});
 	receivedMessages.xSetFilter(function(model) {
 		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id);
 	});
@@ -227,13 +231,9 @@ var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
 var moneyBorrows = Alloy.createCollection("MoneyBorrow");
 var moneyLends = Alloy.createCollection("MoneyLend");
 var moneyReturns = Alloy.createCollection("MoneyReturn");
-var moneyReturnInterests = Alloy.createCollection("MoneyReturn").xCreateFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+var moneyReturnInterests = Alloy.createCollection("MoneyReturn");
 var moneyPaybacks = Alloy.createCollection("MoneyPayback");
-var moneyPaybackInterests = Alloy.createCollection("MoneyPayback").xCreateFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+var moneyPaybackInterests = Alloy.createCollection("MoneyPayback");
 var receivedMessages = Alloy.createCollection("Message");
 
 $.onWindowCloseDo(function() {
