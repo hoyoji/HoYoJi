@@ -105,7 +105,7 @@ if ($.saveableMode === "read") {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
-				if ($.$model.xGet("exchangeRate") === null) {
+				if (!$.$model.xGet("exchangeRate")) {
 					alert("请更新汇率查看金额");
 				} else {
 					$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
