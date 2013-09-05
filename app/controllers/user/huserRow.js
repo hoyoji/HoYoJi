@@ -42,15 +42,23 @@ function sendAddFriendMessage(friendlength) {
 				"messageBoxId" : $.$model.xGet("messageBoxId")
 			}, function() {
 				//本地创建好友
-				var friend = Alloy.createModel("Friend", {
-					ownerUser : Alloy.Models.User,
-					friendUser : $.$model,
-					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
-				});
-				//吧本地创建的好友传上服务器
-				Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
-					//保存之前创建的本地好友
-					friend.xSave();
+				// var friend = Alloy.createModel("Friend", {
+					// ownerUser : Alloy.Models.User,
+					// friendUser : $.$model,
+					// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+				// });
+				// //吧本地创建的好友传上服务器
+				// Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
+					// //保存之前创建的本地好友
+					// friend.xSave();
+					// alert("用户不需要验证,可以直接添加");
+				// }, function(e) {
+					// alert(e.__summary.msg);
+				// });
+				Alloy.Globals.Server.loadData("Friend",[{
+					ownerUserId : Alloy.Models.User.id,
+					friendUserId : $.$model.xGet("id")
+				}], function(collection) {
 					alert("用户不需要验证,可以直接添加");
 				}, function(e) {
 					alert(e.__summary.msg);
