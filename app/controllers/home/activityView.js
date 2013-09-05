@@ -78,7 +78,6 @@ var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
 moneyIncomeTotal.setParent(__alloyId75);
 moneyIncomeTotal.UIInit();
 
-
 var __alloyId77 = Ti.UI.createView({
 	height : "50",
 	width : "50%",
@@ -149,7 +148,6 @@ moneyExpenseTotal.UIInit();
 
 $.transactionsTable.UIInit($, $.__currentWindow);
 
-
 // var d = new Date();
 
 // function doTimeFilter(collection) {
@@ -186,7 +184,9 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 	searchData(moneyBorrows, offset, limit, orderBy);
 	searchData(moneyLends, offset, limit, orderBy);
 	searchData(moneyReturns, offset, limit, orderBy);
+	searchData(moneyReturnInterests, offset, limit, orderBy);
 	searchData(moneyPaybacks, offset, limit, orderBy);
+	searchData(moneyPaybackInterests, offset, limit, orderBy);
 	searchData(receivedMessages, offset, limit, orderBy);
 	successCB();
 };
@@ -199,7 +199,9 @@ exports.doFilter = function() {
 	searchData(moneyBorrows, 0, 6, "date DESC");
 	searchData(moneyLends, 0, 6, "date DESC");
 	searchData(moneyReturns, 0, 6, "date DESC");
+	searchData(moneyReturnInterests, 0, 6, "date DESC");
 	searchData(moneyPaybacks, 0, 6, "date DESC");
+	searchData(moneyPaybackInterests, 0, 6, "date DESC");
 	searchData(receivedMessages, 0, 6, "date DESC");
 
 	setFilter(moneyIncomes);
@@ -209,10 +211,11 @@ exports.doFilter = function() {
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
+	setFilter(moneyReturnInterests);
 	setFilter(moneyPaybacks);
+	setFilter(moneyPaybackInterests);
 	receivedMessages.xSetFilter(function(model) {
-			return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId")
-			&& model.xGet("toUserId") === Alloy.Models.User.id);
+		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id);
 	});
 	$.transactionsTable.fetchNextPage();
 };
@@ -224,7 +227,13 @@ var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
 var moneyBorrows = Alloy.createCollection("MoneyBorrow");
 var moneyLends = Alloy.createCollection("MoneyLend");
 var moneyReturns = Alloy.createCollection("MoneyReturn");
+var moneyReturnInterests = Alloy.createCollection("MoneyReturn").xCreateFilter(function(model) {
+	return model.xGet("interest") > 0;
+});
 var moneyPaybacks = Alloy.createCollection("MoneyPayback");
+var moneyPaybackInterests = Alloy.createCollection("MoneyPayback").xCreateFilter(function(model) {
+	return model.xGet("interest") > 0;
+});
 var receivedMessages = Alloy.createCollection("Message");
 
 $.onWindowCloseDo(function() {
@@ -235,10 +244,11 @@ $.onWindowCloseDo(function() {
 	moneyBorrows.xClearFilter();
 	moneyLends.xClearFilter();
 	moneyReturns.xClearFilter();
+	moneyReturnInterests.xClearFilter();
 	moneyPaybacks.xClearFilter();
+	moneyPaybackInterests.xClearFilter();
 	receivedMessages.xClearFilter();
 });
-
 
 $.transactionsTable.addCollection(moneyIncomes);
 $.transactionsTable.addCollection(moneyExpenses);
@@ -247,7 +257,9 @@ $.transactionsTable.addCollection(moneyTransferIns, "money/moneyTransferInRow");
 $.transactionsTable.addCollection(moneyBorrows);
 $.transactionsTable.addCollection(moneyLends);
 $.transactionsTable.addCollection(moneyReturns, "money/moneyReturnRow");
+$.transactionsTable.addCollection(moneyReturnInterests, "money/moneyReturnInterestRow");
 $.transactionsTable.addCollection(moneyPaybacks, "money/moneyPaybackRow");
+$.transactionsTable.addCollection(moneyPaybackInterests, "money/moneyPaybackInterestRow");
 $.transactionsTable.addCollection(receivedMessages);
 
 exports.doFilter();
