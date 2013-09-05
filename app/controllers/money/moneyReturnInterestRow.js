@@ -22,7 +22,7 @@ function projectRefresh() {
 	$.projectName.refresh();
 }
 
-
+$.picture.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.interest.UIInit($, $.getCurrentWindow());
