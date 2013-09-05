@@ -79,10 +79,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					addFriend(saveEndCB, saveErrorCB);
 				}
 			}, function(e) {
+				saveErrorCB();
 				alert(e.__summary.msg);
 			});
 		}
 	}, function(e) {
+		saveErrorCB();
 		alert(e.__summary.msg);
 	});
 };
@@ -154,9 +156,11 @@ function addFriend(saveEndCB, saveErrorCB) {
 						saveEndCB("添加好友成功");
 					}, saveErrorCB);
 				}, function(e) {
+				    saveErrorCB();
 					alert(e.__summary.msg);
 				});
 			}, function(e) {
+				saveErrorCB();
 				alert(e.__summary.msg);
 			});
 
@@ -192,6 +196,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 		}
 
 	}, function(e) {
+		saveErrorCB();
 		alert(e.__summary.msg);
 	});
 }
