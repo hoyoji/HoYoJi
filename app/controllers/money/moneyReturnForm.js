@@ -4,7 +4,9 @@ var selectedBorrow = $.$attrs.selectedBorrow;
 
 $.onWindowOpenDo(function() {
 	if ($.$model.isNew() && selectedBorrow) {
-		$.getCurrentWindow().openNumericKeyboard($.amount);
+		$.getCurrentWindow().openNumericKeyboard($.amount,function() {
+		$.titleBar.save();
+	});
 	}
 });
 
