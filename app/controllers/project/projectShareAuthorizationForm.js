@@ -426,7 +426,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				saveErrorCB("好友不能修改！");
 			} else {
 				//占股类型有变，或者占股类型是fixed且占股有变，即重新计算占股
-				if ($.$model.hasChanged("sharePercentageType") || ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.hasChanged("sharePercentage"))) {
+				if ($.$model.hasChanged("sharePercentageType") || $.$model.hasChanged("sharePercentage")) {
 					editSharePercentage($.$model, editSharePercentageAuthorization);
 				}
 				//如果是共享给自己分开考虑
@@ -722,7 +722,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												var subProjectSharePercentageTypeOld = subProjectShareAuthorization.xGet("sharePercentageType");
 												var subProjectSharePercentageOld = subProjectShareAuthorization.xGet("sharePercentage");
 												subProjectShareAuthorization.xSet(data);
-												if ($.$model.xGet("sharePercentageType") !== subProjectSharePercentageTypeOld || ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") !== subProjectSharePercentageOld)) {
+												if ($.$model.hasChanged("sharePercentageType") || $.$model.hasChanged("sharePercentage")) {
 													editSharePercentage(subProjectShareAuthorization, editSharePercentageAuthorization);
 												}
 												editSharePercentageAuthorization.push(subProjectShareAuthorization.toJSON());
