@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
-// $.onRowTap = function(e){
+$.onRowTap = function(e){
 // if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 // Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
 // return false;
@@ -8,7 +8,11 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 // Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
 // return false;
 // }
-// }
+Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
+	selectedProject : $.$model
+});
+return false;
+}
 
 $.setSelected = function(selected){
 	if(selected){
