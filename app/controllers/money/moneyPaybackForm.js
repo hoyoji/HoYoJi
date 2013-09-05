@@ -4,7 +4,9 @@ var selectedLend = $.$attrs.selectedLend;
 
 $.onWindowOpenDo(function() {
 	if ($.$model.isNew() && selectedLend) {
-		$.getCurrentWindow().openNumericKeyboard($.amount);
+		$.getCurrentWindow().openNumericKeyboard($.amount, function() {
+			$.titleBar.save();
+		});
 	}
 });
 
@@ -284,7 +286,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			if (moneyLend) {
 				moneyLend.xSet("paybackedAmount", moneyLend.previous("paybackedAmount"));
