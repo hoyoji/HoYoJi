@@ -214,7 +214,13 @@
 
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
 					dbTrans.begin();
-
+					
+					function rollbackSyncPull(){
+						dbTrans.off("rollback", rollbackSyncPull);
+						xErrorCallback({__summary : {msg : "无法获取汇率"}});
+					}
+					dbTrans.on("rollback", rollbackSyncPull);
+					
 					Alloy.Models.User.save({
 						"lastSyncTime" : lastSyncTime
 					}, {
@@ -228,6 +234,8 @@
 						var sql, rs, dataType = record.__dataType, asyncCount = 0;
 						delete record.__dataType;
 						if (dataType === "ServerSyncDeletedRecords") {
+							// 该记录在服务器上已被删除
+							
 							var id = record.recordId;
 							var model = Alloy.createModel(record.tableName).xFindInDb({
 								id : id
@@ -236,6 +244,7 @@
 								// 如果该记录在本地存在，我们要将其删除
 								// 如果该记录不是自己创建的，我们没有直接讲起删除，不需要进行帐户余额等维护
 								if (model.xGet("ownerUserId") !== Alloy.Models.User.id) {
+									// 这里不能直接用sql从数据库删除，因为那样的话如果model就不会从界面上移除
 									// dbTrans.db.execute("DELETE FROM " + record.tableName + " WHERE id = ?", [id]);
 									model.destroy({
 										wait : true,
@@ -257,11 +266,10 @@
 									model.syncDelete(record, dbTrans);
 									model._syncDelete(record, dbTrans, function(e) {});
 								}
-							} else {
-								// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
-								sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-								dbTrans.db.execute(sql, [id]);
-							}
+							} 
+							// 如果该记录同时在本地和服务器上都已被删除， 也没有必要将该删除同步到服务器
+							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+							dbTrans.db.execute(sql, [id]);
 						} else {
 							// 该记录是在服务器上新增的或被修改的。
 							// 1. 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
