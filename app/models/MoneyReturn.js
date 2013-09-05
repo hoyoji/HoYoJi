@@ -274,7 +274,7 @@ exports.definition = {
 					var moneyBorrow = self.xGet("moneyBorrow");
 					var borrowRate = moneyBorrow.xGet("exchangeRate");
 					moneyBorrow.save({
-						returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate
+						returnedAmount : moneyBorrow.xGet("returnedAmount") - Number((amount * returnRate).toFixed(2))
 					}, saveOptions);
 				}
 
@@ -301,7 +301,7 @@ exports.definition = {
 						id : record.moneyBorrowId
 					});
 					if (moneyBorrow.id) {
-						moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") - record.amount, {
+						moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") + record.amount, {
 							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
@@ -345,7 +345,7 @@ exports.definition = {
 						id : record.moneyBorrowId
 					});
 					if (moneyBorrow.id) {
-						moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") + this.xGet("amount") - record.amount, {
+						moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)), {
 							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
@@ -369,7 +369,7 @@ exports.definition = {
 				var amount = this.xGet("amount");
 				var returnRate = this.xGet("exchangeRate");
 				var interest = this.xGet("interest");
-				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				var saveOptions = {dbTrans : dbTrans, patch : true};
  
 				var moneyAccount = this.xGet("moneyAccount");
 				moneyAccount.save({
@@ -380,7 +380,7 @@ exports.definition = {
 					var moneyBorrow = self.xGet("moneyBorrow");
 					var borrowRate = moneyBorrow.xGet("exchangeRate");
 					moneyBorrow.save({
-						returnedAmount : moneyBorrow.xGet("returnedAmount") - amount * returnRate / borrowRate
+						returnedAmount : moneyBorrow.xGet("returnedAmount") - Number((amount * returnRate).toFixed(2))
 					}, saveOptions);
 				}
 			},			

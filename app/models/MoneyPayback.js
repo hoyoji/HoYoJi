@@ -273,7 +273,7 @@ exports.definition = {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
 					moneyLend.save({
-						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
+						paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
 					}, saveOptions);
 				}
 				this._xDelete(xFinishCallback, options);
@@ -299,7 +299,7 @@ exports.definition = {
 						id : record.moneyLendId
 					});
 					if (moneyLend.id) {
-						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") + record.amount, {
+						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") + Number((record.amount * record.exchangeRate).toFixed(2)), {
 							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
@@ -343,7 +343,7 @@ exports.definition = {
 						id : record.moneyLendId
 					});
 					if (moneyLend.id) {
-						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") - this.xGet("amount") + record.amount, {
+						moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)), {
 							//syncFromServer : true,
 							dbTrans : dbTrans,
 							patch : true
@@ -378,7 +378,7 @@ exports.definition = {
 					var moneyLend = self.xGet("moneyLend");
 					var lendRate = moneyLend.xGet("exchangeRate");
 					moneyLend.save({
-						paybackedAmount : moneyLend.xGet("paybackedAmount") - amount * paybackRate / lendRate
+						paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
 					}, saveOptions);
 				}
 			},
