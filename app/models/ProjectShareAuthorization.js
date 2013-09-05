@@ -373,13 +373,11 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},			
 			// _syncUpdate : function(record, dbTrans) {
-				// //delete record.id;
 				// this.save(record, {
 					// dbTrans : dbTrans,
 					// // syncFromServer : true,
-					// patch : true
-					// // ,
-					// // wait : true
+					// patch : true,
+					// wait : true
 				// });
 			// },
 			syncUpdate : function(record, dbTrans) {
@@ -476,33 +474,7 @@ exports.definition = {
 								__NOT_FILTER__ : {
 									ownerUserId : Alloy.Models.User.id
 								}
-							}], function(collection) {
-								console.info("a");
-								console.info("a");
-								
-								// if (collection.length > 0) {
-									// if (table === "MoneyExpense") {
-										// collection.forEach(function(item) {
-											// Alloy.Globals.Server.loadData("MoneyExpenseDetail", [{
-												// moneyExpenseId : item.id
-											// }]);
-											// Alloy.Globals.Server.loadData("MoneyExpenseApportion", [{
-												// moneyExpenseId : item.id
-											// }]);
-										// });
-									// } else if (table === "MoneyIncome") {
-										// collection.forEach(function(item) {
-											// Alloy.Globals.Server.loadData("MoneyIncomeDetail", [{
-												// moneyIncomeId : item.id
-											// }]);
-											// Alloy.Globals.Server.loadData("MoneyIncomeApportion", [{
-												// moneyIncomeId : item.id
-											// }]);
-										// });
-									// }
-								// }
-							});
-
+							}]);
 						});
 					}
 

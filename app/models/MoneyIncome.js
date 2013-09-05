@@ -373,6 +373,7 @@ exports.definition = {
 							dbTrans : dbTrans,
 							patch : true
 						});
+						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
 					}
 				}
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -399,28 +400,31 @@ exports.definition = {
 						id : this.xGet("moneyAccountId")
 					});
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
-						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
+						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount : - this.xGet("amount") + record.amount;
 					} else {
 						if (oldMoneyAccount.id) {
-							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
-							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
+							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
 						}
 
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
-							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount : record.amount;
 						}
 					}
 
@@ -459,20 +463,22 @@ exports.definition = {
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var self = this;
-				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				moneyAccount.save({
-					currentBalance : moneyAccount.xGet("currentBalance") - amount
-				}, saveOptions);
+				// var amount = this.xGet("amount");
+				// moneyAccount.save({
+					// currentBalance : moneyAccount.xGet("currentBalance") - amount
+				// }, saveOptions);
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
 
-				var myProjectShareAuthorization;
 				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
-						var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
-						item.save({
-							actualTotalIncome : actualTotalIncome
-						}, saveOptions);
+						// var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
+						// item.save({
+							// actualTotalIncome : actualTotalIncome
+						// }, saveOptions);
+						item.__syncActualTotalIncome = item.__syncActualTotalIncome ? item.__syncActualTotalIncome - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();;
+				
 					}
 				});
 			}

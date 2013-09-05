@@ -209,16 +209,17 @@ exports.definition = {
 					syncFromServer : true,
 					wait : true
 				});
-			},
-			_syncUpdate : function(record, dbTrans) {
-				//delete record.id;
-				this.save(record, {
-					dbTrans : dbTrans,
-					syncFromServer : true,
-					patch : true,
-					wait : true
-				});
-			}			
+			}
+			// ,
+			// _syncUpdate : function(record, dbTrans) {
+				// //delete record.id;
+				// this.save(record, {
+					// dbTrans : dbTrans,
+					// syncFromServer : true,
+					// patch : true,
+					// wait : true
+				// });
+			// }			
 			// syncAddNew : function(record, dbTrans) {
 				// var self = this;
 				// var friendUser = Alloy.createModel("User").xFindInDb({

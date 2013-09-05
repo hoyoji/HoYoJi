@@ -49,7 +49,7 @@ exports.definition = {
 				// xFinishCallback({ msg :"分类下下级分类不为空，不能删除"});
 				// }else{
 				if (this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")) {
-					var saveOptions = _.extend({}, options);
+					var saveOptions = _.extend({wait : true}, options);
 					saveOptions.patch = true;
 					this.xGet("project").save({
 						defaultExpenseCategoryId : null

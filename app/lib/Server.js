@@ -213,6 +213,9 @@
 					data = _.flatten(data.data);
 
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
+					
+					dbTrans.newExchangesFromServer = {};
+					dbTrans.newCurrenciesFromServer = {};
 					dbTrans.begin();
 					
 					function rollbackSyncPull(){
@@ -340,7 +343,7 @@
 						xFinishedCallback();
 					} else {
 						function postCommit(){
-							dbTans.off("commit", postCommit);
+							dbTrans.off("commit", postCommit);
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
 							xFinishedCallback();
 						}

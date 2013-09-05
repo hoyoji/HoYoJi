@@ -365,73 +365,79 @@ exports.definition = {
 					}
 				}
 				return this.xGet("ownerUser") === Alloy.Models.User;
-			}//,
-			// syncAddNew : function(record, dbTrans) {
-				// if (record.ownerUserId !== Alloy.Models.User.id) {
-					// var currency = Alloy.createModel("Currency").xFindInDb({
-						// id : record.currencyId
-					// });
-					// if (!currency.id) {
-						// dbTrans.xCommitStart();
-						// Alloy.Globals.Server.getData([{
-							// __dataType : "CurrencyAll",
-							// id : record.currencyId
-						// }], function(data) {
-							// var currencyData = data[0][0];
-							// var id = currencyData.id;
-							// delete currencyData.id;
-							// try {
-								// currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
-							// } catch (e) {
-								// currencyData.symbol = currencyData.code;
-							// }
-							// currency = Alloy.createModel("Currency", currencyData);
-							// currency.attributes["id"] = id;
-// 
-							// currency.xSet("ownerUser", Alloy.Models.User);
-							// currency.xSet("ownerUserId", Alloy.Models.User.id);
-							// currency.save(null, {
-								// dbTrans : dbTrans
-							// });
-							// dbTrans.xCommitEnd();
-							// fetchExchange(id);
-// 
-						// }, function(e) {
-							// dbTrans.rollback("无法获取币种");
-						// });
-					// } else {
-						// fetchExchange(currency.id);
-					// }
-// 
-					// function fetchExchange(currencyId) {
-						// var exchange = Alloy.createModel("Exchange").xFindInDb({
-							// localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-							// foreignCurrencyId : currencyId
-						// });
-						// if (!exchange.id) {
-							// dbTrans.xCommitStart();
-							// Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
-								// exchange = Alloy.createModel("Exchange", {
-									// localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-									// foreignCurrencyId : currencyId,
-									// rate : rate
-								// });
-								// exchange.xSet("ownerUser", Alloy.Models.User);
-								// exchange.xSet("ownerUserId", Alloy.Models.User.id);
-								// exchange.save(null, {
-									// dbTrans : dbTrans
-								// });
-								// dbTrans.xCommitEnd();
-							// }, function(e) {
-								// dbTrans.rollback("无法获取汇率");
-							// });
-						// } else {
-							// dbTrans.xCommitEnd();
-						// }
-					// }
-// 
-				// }
-			// }
+			},
+			syncAddNew : function(record, dbTrans) {
+				if (record.ownerUserId !== Alloy.Models.User.id) {
+					dbTrans.xCommitStart();
+					if (!dbTrans.newCurrenciesFromServer[record.currencyId]) {
+						var currency = Alloy.createModel("Currency").xFindInDb({
+							id : record.currencyId
+						});
+						if (!currency.id) {
+							Alloy.Globals.Server.getData([{
+								__dataType : "CurrencyAll",
+								id : record.currencyId
+							}], function(data) {
+								var currencyData = data[0][0];
+								var id = currencyData.id;
+								delete currencyData.id;
+								try {
+									currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+								} catch (e) {
+									currencyData.symbol = currencyData.code;
+								}
+								currency = Alloy.createModel("Currency", currencyData);
+								currency.attributes["id"] = id;
+
+								currency.xSet("ownerUser", Alloy.Models.User);
+								currency.xSet("ownerUserId", Alloy.Models.User.id);
+								currency.save(null, {
+									dbTrans : dbTrans
+								});
+								fetchExchange(id);
+
+							}, function(e) {
+								dbTrans.rollback("无法获取币种");
+							});
+						} else {
+							fetchExchange(currency.id);
+						}
+					} else {
+						fetchExchange(record.currencyId);
+					}
+
+					function fetchExchange(currencyId) {
+						if (dbTrans.newExchangesFromServer[Alloy.Models.User.xGet("activeCurrencyId") + "_" + currencyId]) {
+							dbTrans.xCommitEnd();
+							return;
+						}
+						var exchange = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							foreignCurrencyId : currencyId
+						});
+						if (!exchange.id) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
+								exchange = Alloy.createModel("Exchange", {
+									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									foreignCurrencyId : currencyId,
+									rate : rate
+								});
+								exchange.xSet("ownerUser", Alloy.Models.User);
+								exchange.xSet("ownerUserId", Alloy.Models.User.id);
+								exchange.save(null, {
+									dbTrans : dbTrans
+								});
+								dbTrans.xCommitEnd();
+							}, function(e) {
+								dbTrans.rollback("无法获取汇率");
+							});
+						} else {
+							dbTrans.xCommitEnd();
+						}
+					}
+
+				}
+			}
 		});
 		return Model;
 	},

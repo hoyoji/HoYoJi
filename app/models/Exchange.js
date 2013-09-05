@@ -116,6 +116,8 @@ exports.definition = {
 				}
 			},
 			syncAddNew : function(record, dbTrans) {
+				dbTrans.newExchangesFromServer[record.localCurrencyId + "_" + record.foreignCurrencyId] = true;
+				
 				var exchange = Alloy.createModel("Exchange").xFindInDb({
 					localCurrencyId : record.localCurrencyId,
 					foreignCurrencyId : record.foreignCurrencyId

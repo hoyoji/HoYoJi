@@ -172,20 +172,22 @@ exports.definition = {
 						id : record.transferInId
 					});
 					if (moneyAccountIn.id) {
-						moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// moneyAccountIn.save("currentBalance", moneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						moneyAccountIn.__syncCurrentBalance = moneyAccountIn.__syncCurrentBalance ? moneyAccountIn.__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 					}
 
 					var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : record.transferOutId
 					});
 					if (moneyAccountOut.id) {
-						moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// moneyAccountOut.save("currentBalance", moneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						moneyAccountOut.__syncCurrentBalance = moneyAccountOut.__syncCurrentBalance ? moneyAccountOut.__syncCurrentBalance - record.transferOutAmount : - record.transferOutAmount;
 					}
 				}
 			},
@@ -196,27 +198,30 @@ exports.definition = {
 					});
 					if (this.xGet("transferInId") === record.transferInId) {
 						// if(oldMoneyAccountIn.id){
-						oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount") + record.transferInAmount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount") + record.transferInAmount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						oldMoneyAccountIn.__syncCurrentBalance = oldMoneyAccountIn.__syncCurrentBalance ? oldMoneyAccountIn.__syncCurrentBalance  - this.xGet("transferInAmount") + record.transferInAmount :  - this.xGet("transferInAmount") + record.transferInAmount;
 						// }
 					} else {
 						if (oldMoneyAccountIn.id) {
-							oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount"), {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// oldMoneyAccountIn.save("currentBalance", oldMoneyAccountIn.xGet("currentBalance") - this.xGet("transferInAmount"), {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							oldMoneyAccountIn.__syncCurrentBalance = oldMoneyAccountIn.__syncCurrentBalance ? oldMoneyAccountIn.__syncCurrentBalance - this.xGet("transferInAmount") : - this.xGet("transferInAmount");
 						}
 
 						var newMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.transferInId
 						});
 						if (newMoneyAccountIn.id) {
-							newMoneyAccountIn.save("currentBalance", newMoneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccountIn.save("currentBalance", newMoneyAccountIn.xGet("currentBalance") + record.transferInAmount, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							newMoneyAccountIn.__syncCurrentBalance = newMoneyAccountIn.__syncCurrentBalance ? newMoneyAccountIn.__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 						}
 					}
 
@@ -225,27 +230,30 @@ exports.definition = {
 					});
 					if (this.xGet("transferOutId") === record.transferOutId) {
 						// if(oldMoneyAccountOut.id){
-						oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount") - record.transferOutAmount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount") - record.transferOutAmount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						oldMoneyAccountOut.__syncCurrentBalance = oldMoneyAccountOut.__syncCurrentBalance ? oldMoneyAccountOut.__syncCurrentBalance  + this.xGet("transferOutAmount") - record.transferOutAmount : this.xGet("transferOutAmount") - record.transferOutAmount;
 						// }
 					} else {
 						if (oldMoneyAccountOut.id) {
-							oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount"), {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// oldMoneyAccountOut.save("currentBalance", oldMoneyAccountOut.xGet("currentBalance") + this.xGet("transferOutAmount"), {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							oldMoneyAccountOut.__syncCurrentBalance = oldMoneyAccountOut.__syncCurrentBalance ? oldMoneyAccountOut.__syncCurrentBalance + this.xGet("transferOutAmount") : this.xGet("transferOutAmount");
 						}
 
 						var newMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.transferOutId
 						});
 						if (newMoneyAccountOut.id) {
-							newMoneyAccountOut.save("currentBalance", newMoneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccountOut.save("currentBalance", newMoneyAccountOut.xGet("currentBalance") - record.transferOutAmount, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							newMoneyAccountOut.__syncCurrentBalance = newMoneyAccountOut.__syncCurrentBalance ? newMoneyAccountOut.__syncCurrentBalance  - record.transferOutAmount :  - record.transferOutAmount;
 						}
 					}
 				}
@@ -267,14 +275,18 @@ exports.definition = {
 				var transferIn = this.xGet("transferIn");
 				var transferOutAmount = this.xGet("transferOutAmount");
 				var transferInAmount = this.xGet("transferInAmount");
-				var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 				
-				transferOut.save({
-					currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
-				}, saveOptions);
-				transferIn.save({
-					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
-				}, saveOptions);
+				// transferOut.save({
+					// currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+				// }, saveOptions);
+				transferOut.__syncCurrentBalance = transferOut.__syncCurrentBalance ? transferOut.__syncCurrentBalance + transferOutAmount : transferOutAmount;
+				
+				// transferIn.save({
+					// currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+				// }, saveOptions);
+				transferIn.__syncCurrentBalance = transferIn.__syncCurrentBalance ? transferIn.__syncCurrentBalance  - transferInAmount :  - transferInAmount;
+				
 			},			
 		});
 		return Model;
