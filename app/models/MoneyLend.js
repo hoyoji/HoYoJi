@@ -276,6 +276,7 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 				if (record.ownerUserId === Alloy.Models.User.id) {
+					delete record.paybackedAmount;
 					var oldMoneyAccountBalance;
 					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : this.xGet("moneyAccountId")
