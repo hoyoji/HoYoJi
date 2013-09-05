@@ -72,6 +72,8 @@ $.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
 			successCallback();
 		}
 	} else {
+		$.$model.xSet("amount", depositeAmount * depositeExchangeRate);
+		$.amount.refresh();
 		successCallback();
 	}
 };
@@ -140,8 +142,10 @@ if ($.saveableMode === "read") {
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	$.exchangeRate.field.addEventListener("change", function() {
-		$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
-		$.amount.refresh();
+		if($.$model.xGet("exchangeRate")){
+			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
+			$.amount.refresh();
+		}
 	});
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
@@ -165,11 +169,13 @@ if ($.saveableMode === "read") {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
 			$.exchangeRate.refresh();
 			//改变汇率更新金额
-			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
-			$.amount.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
+		}
+		if(exchangeRateValue){
+			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
+			$.amount.refresh();
 		}
 	}
 
