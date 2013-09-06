@@ -37,7 +37,7 @@
 						hintText="请输入金额"
 						bindModel="$.$model"
 						bindAttribute="getProjectAmount()"/>
-						<Widget id="details" src="com.hoyoji.titanium.widget.XButton" width="42" height="Ti.UI.FILL" borderRadius="0" left="60%" backgroundColor="gray" color="white" title="明细"/>
+						<Widget id="details" src="com.hoyoji.titanium.widget.XButton" width="42" height="Ti.UI.FILL" borderRadius="0" backgroundColor="gray" color="white" title="明细"/>
 					</View>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
