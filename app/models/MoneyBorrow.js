@@ -327,7 +327,10 @@ exports.definition = {
 						// currentBalance : moneyAccount.xGet("currentBalance") - amount
 					// }, saveOptions);
 					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
-			}			
+			}	,
+			syncRollback : function(){
+				delete this.__syncReturnedAmount;
+			}		
 		});
 		return Model;
 	},

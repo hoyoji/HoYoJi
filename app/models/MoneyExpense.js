@@ -496,10 +496,13 @@ exports.definition = {
 						// item.save({
 							// actualTotalExpense : actualTotalExpense
 						// }, saveOptions);
-						item.__syncActualTotalExpense = item.__syncActualTotalExpense ? item.__syncActualTotalExpense - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();;
+						item.__syncActualTotalExpense = item.__syncActualTotalExpense ? item.__syncActualTotalExpense - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();
 					}
 					
 				});
+			},
+			syncRollback : function(){
+				delete this.__syncAmount;
 			}
 		});
 

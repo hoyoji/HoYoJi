@@ -518,6 +518,12 @@ exports.definition = {
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
 				}
+			},
+			syncRollback : function(){
+				delete this.__syncActualTotalIncome;
+				delete this.__syncActualTotalExpense;
+				delete this.__syncApportionedTotalIncome;
+				delete this.__syncApportionedTotalExpense;
 			}
 		});
 		return Model;

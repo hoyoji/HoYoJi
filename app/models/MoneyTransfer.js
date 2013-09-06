@@ -286,7 +286,6 @@ exports.definition = {
 					// currentBalance : transferIn.xGet("currentBalance") - transferInAmount
 				// }, saveOptions);
 				transferIn.__syncCurrentBalance = transferIn.__syncCurrentBalance ? transferIn.__syncCurrentBalance  - transferInAmount :  - transferInAmount;
-				
 			},			
 		});
 		return Model;

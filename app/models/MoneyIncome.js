@@ -481,6 +481,9 @@ exports.definition = {
 				
 					}
 				});
+			},
+			syncRollback : function(){
+				delete this.__syncAmount;
 			}
 		});
 		return Model;
