@@ -34,7 +34,7 @@ function sendAddFriendMessage(friendlength) {
 				id : guid(),
 				"toUserId" : $.$model.xGet("id"),
 				"fromUserId" : Alloy.Models.User.id,
-				"type" : "System.Friend.AutoAdd",
+				"type" : "System.Friend.AddResponse",
 				"messageState" : "new",
 				"messageTitle" : "好友请求",
 				"date" : date,
