@@ -102,6 +102,9 @@ exports.definition = {
 			},
 			canDelete : function() {
 				return false;
+			},
+			syncAddNew : function(record, dbTrans){
+				dbTrans.newCurrenciesFromServer[record.id] = true;
 			}
 		});
 

@@ -265,54 +265,72 @@ exports.definition = {
 						id : record.moneyAccountId
 					});
 					if (moneyAccount.id) {
-						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
 					}
 				}
-			},
+			},			
+			// _syncUpdate : function(record, dbTrans) {
+				// this.save(record, {
+					// dbTrans : dbTrans,
+					// // syncFromServer : true,
+					// patch : true,
+					// wait : true
+				// });
+			// },
 			syncUpdate : function(record, dbTrans) {
 				if (record.ownerUserId === Alloy.Models.User.id) {
-					delete record.returnedAmount;
+					record.returnedAmount = (this.__syncReturnedAmount || 0) + this.xGet("returnedAmount");
+					delete this.__syncReturnedAmount;
+					
 					var oldMoneyAccountBalance;
 					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : this.xGet("moneyAccountId")
 					});
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
-						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
+						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount: - this.xGet("amount") + record.amount;
 					} else {
 						if (oldMoneyAccount.id) {
-							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
-							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
+							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
 						}
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
-							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount : record.amount;
 						}
 					}
 				}
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
-					var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+					// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 					var moneyAccount = this.xGet("moneyAccount");
-					var amount = this.xGet("amount");
-					moneyAccount.save({
-						currentBalance : moneyAccount.xGet("currentBalance") - amount
-					}, saveOptions);
-			}			
+					// var amount = this.xGet("amount");
+					// moneyAccount.save({
+						// currentBalance : moneyAccount.xGet("currentBalance") - amount
+					// }, saveOptions);
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
+			}	,
+			syncRollback : function(){
+				delete this.__syncReturnedAmount;
+			}		
 		});
 		return Model;
 	},

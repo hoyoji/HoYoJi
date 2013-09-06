@@ -36,10 +36,11 @@ exports.definition = {
 				});
 				if (moneyAccount.id) {
 					// 3. 如果账户已经存在本地，我们更新该余额
-					moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-						dbTrans : dbTrans,
-						patch : true
-					});
+					// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
+						// dbTrans : dbTrans,
+						// patch : true
+					// });
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
 				}
 			}			
 		});

@@ -373,11 +373,13 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// 3. 如果账户已经存在本地，我们更新该余额
-						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
-							dbTrans : dbTrans,
-							patch : true
-							// wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
-						});
+						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
+							// dbTrans : dbTrans,
+							// patch : true
+							// // wait : true  // 注意：我们不用wait=true, 这样才能使对currentBalance的更新即时生效并且使该值能用为下一条支出的值。
+						// });
+						
+						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 					}
 				}
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -406,19 +408,22 @@ exports.definition = {
 					});
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// 账户没有改变
-						oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
-						oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
+						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
+						
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") - record.amount : + this.xGet("amount")-record.amount;
 					} else {
 						// 帐户改变了
 						if (oldMoneyAccount.id) {
-							oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
-							oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
+							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
 						}
 
 						// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
@@ -426,10 +431,11 @@ exports.definition = {
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
-							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
+							moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 						}
 					}
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -471,27 +477,32 @@ exports.definition = {
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var self = this;
-				var saveOptions = {
-					dbTrans : dbTrans,
-					patch : true,
-					syncFromServer : true
-				};
+				// var saveOptions = {
+					// dbTrans : dbTrans,
+					// patch : true,
+					// syncFromServer : true
+				// };
 				var moneyAccount = this.xGet("moneyAccount");
-				var amount = this.xGet("amount");
-				moneyAccount.save({
-					currentBalance : moneyAccount.xGet("currentBalance") + amount
-				}, saveOptions);
+				// var amount = this.xGet("amount");
+				// moneyAccount.save({
+					// currentBalance : moneyAccount.xGet("currentBalance") + amount
+				// }, saveOptions);
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
 
 				var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
-				var myProjectShareAuthorization;
 				projectShareAuthorizations.forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
-						var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
-						item.save({
-							actualTotalExpense : actualTotalExpense
-						}, saveOptions);
+						// var actualTotalExpense = item.xGet("actualTotalExpense") - self.getProjectCurrencyAmount();
+						// item.save({
+							// actualTotalExpense : actualTotalExpense
+						// }, saveOptions);
+						item.__syncActualTotalExpense = item.__syncActualTotalExpense ? item.__syncActualTotalExpense - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();
 					}
+					
 				});
+			},
+			syncRollback : function(){
+				delete this.__syncAmount;
 			}
 		});
 

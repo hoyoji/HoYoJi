@@ -116,12 +116,25 @@ exports.definition = {
         			record.currentBalance = 0;
         		}
         	},
+			// _syncUpdate : function(record, dbTrans) {
+				// this.save(record, {
+					// dbTrans : dbTrans,
+					// // syncFromServer : true,
+					// patch : true,
+					// wait : true
+				// });
+			// },        	
 			syncUpdate : function(record, dbTrans) {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
-				delete record.currentBalance;
+				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
+					record.currentBalance = (this.__syncCurrentBalance || 0) + this.xGet("currentBalance");
+					console.info("2 sync update moneyAccount ---------------------------------------------------------------------------- " + record.currentBalance + ":" +  (this.__syncCurrentBalance ? this.__syncCurrentBalance : 0));
+					delete this.__syncCurrentBalance;
+				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
-				delete record.currentBalance;
+				
+				this.syncUpdate(record, dbTrans);
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
 					delete record.id;
@@ -131,6 +144,9 @@ exports.definition = {
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				}
 				// 让本地修改覆盖服务器上的记录
+			},
+			syncRollback : function(){
+				delete this.__syncCurrentBalance;
 			}
 		});
 
