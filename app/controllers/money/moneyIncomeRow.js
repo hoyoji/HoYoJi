@@ -31,74 +31,44 @@ $.makeContextMenu = function() {
 					__dataType : "MoneyIncome",
 					id : $.$model.xGet("id")
 				});
-				Alloy.Globals.Server.getData(accounts, function(data) {
-					if (data[0].length > 0) {
-						Alloy.Globals.Server.deleteData([{
-							__dataType : "MoneyExpense",
-							id : data[0][0].id
-						}], function(data1) {
-							if (moneyExpense && moneyExpense.xGet("id")) {
-								var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-									projectId : $.$model.xGet("projectId"),
-									friendUserId : Alloy.Models.User.id
-								});
-								projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate"));
-								editData.push(projectShareAuthorization.toJSON());
-								projectShareAuthorization.xSave({
-									syncFromServer : true
-								});
+				Alloy.Globals.Server.deleteData(accounts, function(data) {
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : $.$model.xGet("projectId"),
+						friendUserId : Alloy.Models.User.id
+					});
+					if (moneyExpense && moneyExpense.xGet("id")) {
+						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate"));
+						// editData.push(projectShareAuthorization.toJSON());
+						// projectShareAuthorization.xSave({
+							// syncFromServer : true
+						// });
 
-								moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
-								editData.push(moneyExpense.xGet("moneyAccount").toJSON());
-								moneyExpense.xGet("moneyAccount").xSave({
-									syncFromServer : true
-								});
-
-								moneyExpense._xDelete();
-							}
-							if (data[1].length > 0) {
-								Alloy.Globals.Server.deleteData([{
-									__dataType : "MoneyIncome",
-									id : data[1][0].id
-								}], function(data2) {
-									var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-										projectId : $.$model.xGet("projectId"),
-										friendUserId : Alloy.Models.User.id
-									});
-									projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - $.$model.xGet("amount") * $.$model.xGet("exchangeRate"));
-									editData.push(projectShareAuthorization.toJSON());
-									projectShareAuthorization.xSave({
-										syncFromServer : true
-									});
-
-									$.$model.xGet("moneyAccount").xSet("currentBalance", $.$model.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
-									editData.push($.$model.xGet("moneyAccount").toJSON());
-									$.$model.xGet("moneyAccount").xSave({
-										syncFromServer : true
-									});
-
-									Alloy.Globals.Server.putData(editData, function(data) {
-										$.$model._xDelete();
-									}, function(e) {
-										alert(e.__summary.msg);
-									});
-								}, function(e) {
-									alert(e.__summary.msg);
-								});
-							}
-						}, function(e) {
-							alert(e.__summary.msg);
-						});
-					} else {
-						$.$model.save({
-							messageState : "closed"
-						}, {
-							wait : true,
-							patch : true
-						});
-						alert("已经删除成功");
+						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
+						if(moneyExpense.xGet("moneyAccount") !== $.$model.xGet("moneyAccount")){
+							editData.push(moneyExpense.xGet("moneyAccount").toJSON());
+							moneyExpense.xGet("moneyAccount").xSave({
+								syncFromServer : true
+							});
+						}
+						moneyExpense._xDelete();
 					}
+					
+					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - $.$model.xGet("amount") * $.$model.xGet("exchangeRate"));
+					editData.push(projectShareAuthorization.toJSON());
+					projectShareAuthorization.xSave({
+						syncFromServer : true
+					});
 
+					$.$model.xGet("moneyAccount").xSet("currentBalance", $.$model.xGet("moneyAccount").xGet("currentBalance") - $.$model.xGet("amount"));
+					editData.push($.$model.xGet("moneyAccount").toJSON());
+					$.$model.xGet("moneyAccount").xSave({
+						syncFromServer : true
+					});
+					Alloy.Globals.Server.putData(editData, function(data1) {
+						$.$model._xDelete();
+					}, function(e) {
+						alert(e.__summary.msg);
+					});
 				}, function(e) {
 					alert(e.__summary.msg);
 				});

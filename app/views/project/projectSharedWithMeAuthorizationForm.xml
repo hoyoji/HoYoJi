@@ -264,7 +264,7 @@
 						</View>
 						<View height="42" layout="horizontal">
 							<Label left="0" width="25%">支出分类</Label>
-							<Label width="10%"></Label>
+							<!-- <Label width="10%"></Label> -->
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyExpenseCategoryAddNew" autoInit="false"
 							hightLight="false"
@@ -288,8 +288,8 @@
 							bindAttribute="projectShareMoneyExpenseCategoryDelete"/>
 						</View>
 						<View height="42" layout="horizontal">
-							<Label left="0" width="30%">收入分类</Label>
-							<Label width="10%"></Label>
+							<Label left="0" width="25%">收入分类</Label>
+							<!-- <Label width="10%"></Label> -->
 							<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="25%"
 							id="projectShareMoneyIncomeCategoryAddNew" autoInit="false"
 							hightLight="false"
