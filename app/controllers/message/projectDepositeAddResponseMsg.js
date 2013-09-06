@@ -99,6 +99,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyIncome._xDelete();
+									moneyExpense._xDelete({
+										syncFromServer : true
+									});
 									$.saveModel(saveEndCB, saveErrorCB, {
 										syncFromServer : true
 									});
@@ -199,6 +202,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyExpense._xDelete();
+									moneyIncome._xDelete({
+										syncFromServer : true
+									});
 									$.saveModel(saveEndCB, saveErrorCB, {
 										syncFromServer : true
 									});
