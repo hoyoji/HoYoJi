@@ -158,16 +158,16 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 				// if (record.ownerUserId === Alloy.Models.User.id) {
-					var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
-						id : record.moneyIncomeId
-					});
-					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : moneyIncome.xGet("projectId"),
-						friendUserId : record.friendUserId
-					});
-					if (projectShareAuthorization.id) {
-						projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2));
-					}
+				var moneyIncome = Alloy.createModel("MoneyIncome").xFindInDb({
+					id : record.moneyIncomeId
+				});
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : moneyIncome.xGet("projectId"),
+					friendUserId : record.friendUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2));
+				}
 				// }
 				delete record.projectId;
 				delete record.exchangeRate;
@@ -187,27 +187,27 @@ exports.definition = {
 			// },
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				// var saveOptions = {
-					// dbTrans : dbTrans,
-					// patch : true,
-					// syncFromServer : true
+				// dbTrans : dbTrans,
+				// patch : true,
+				// syncFromServer : true
 				// };
 				// var self = this;
 				// var projectShareAuthorizations = self.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
 				// projectShareAuthorizations.forEach(function(projectShareAuthorization) {
-					// if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
-						// var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
-						// projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
-						// projectShareAuthorization.save({
-							// apportionedTotalIncome : apportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2))
-						// }, saveOptions);
-								var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+				// if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
+				// var apportionedTotalIncome = projectShareAuthorization.xGet("apportionedTotalIncome") || 0;
+				// projectShareAuthorization.xSet("apportionedTotalIncome", apportionedTotalIncome - self.xGet("amount")*self.xGet("moneyIncome").xGet("exchangeRate"));
+				// projectShareAuthorization.save({
+				// apportionedTotalIncome : apportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2))
+				// }, saveOptions);
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : record.projectId,
 					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
-						projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2)) : - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2)) : -Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2));
 				}
-					// }
+				// }
 				// });
 			}
 		});
