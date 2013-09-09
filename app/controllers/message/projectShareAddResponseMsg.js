@@ -74,11 +74,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyExpenseOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyExpenseOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyExpenseOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyExpenseAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseAddNew") ? "√" : "",
@@ -120,11 +120,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyIncomeOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyIncomeOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyIncomeOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyIncomeAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeAddNew") ? "√" : "",
@@ -166,11 +166,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyBorrowOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyBorrowOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyBorrowOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyBorrowAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyBorrowAddNew") ? "√" : "",
@@ -213,11 +213,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyLendOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyLendOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyLendOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyLendAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyLendAddNew") ? "√" : "",
@@ -259,11 +259,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyReturnOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyReturnOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyReturnOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyReturnAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyReturnAddNew") ? "√" : "",
@@ -306,11 +306,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyPaybackOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyPaybackOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyPaybackOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyPaybackAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyPaybackAddNew") ? "√" : "",
@@ -353,11 +353,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyExpenseCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyExpenseCategoryAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryAddNew") ? "√" : "",
@@ -399,11 +399,11 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		width : "25%"
 	});
 	// var projectShareMoneyIncomeCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-		// text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryOwnerDataOnly") ? "√" : "",
-		// height : 42,
-		// color : "black",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// width : "20%"
+	// text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryOwnerDataOnly") ? "√" : "",
+	// height : 42,
+	// color : "black",
+	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+	// width : "20%"
 	// });
 	var projectShareMoneyIncomeCategoryAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryAddNew") ? "√" : "",
@@ -523,11 +523,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					fromUser.attributes.id = id;
 					fromUser.save(userData);
 				}
+				var addCurrencyExchangeArray = [];
 				var editProjectShareAuthorizationArray = [];
-				
+
 				var detailArray = $.$model.xGet("detail").split(":");
 				var projectName = detailArray[1];
-				
+
 				if (operation === "agree") {
 
 					var projectCurrencyIds = projectShareData.projectCurrencyIds;
@@ -544,7 +545,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									successCB();
 								}
 								return;
-								
+
 							}
 							var currency = Alloy.createModel("Currency").xFindInDb({
 								id : currencyId
@@ -557,17 +558,21 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									var currencyData = data[0][0];
 									var id = currencyData.id;
 									delete currencyData.id;
-									try{
+									try {
 										currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
-									} catch (e){
+									} catch (e) {
 										currencyData.symbol = currencyData.code;
 									}
 									currency = Alloy.createModel("Currency", currencyData);
 									currency.attributes["id"] = id;
-									
+
 									currency.xSet("ownerUser", Alloy.Models.User);
 									currency.xSet("ownerUserId", Alloy.Models.User.id);
 									currency.save();
+
+									//把币种传入服务器
+									addCurrencyExchangeArray.push(currency.toJSON());
+
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 										successCB();
@@ -586,7 +591,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 
 					function getAllExchanges(successCB, errorCB) {
-						var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length,fetchingExchanges = {};
+						var errorCount = 0, projectCurrencyIdsCount = 0, projectCurrencyIdsTotal = projectCurrencyIds.length, fetchingExchanges = {};
 						projectCurrencyIds.forEach(function(currencyId) {
 							if (errorCount > 0) {
 								return;
@@ -597,7 +602,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									successCB();
 								}
 								return;
-								
+
 							}
 							if (fetchingExchanges[currencyId] !== true) {
 								var exchange = Alloy.createModel("Exchange").xFindInDb({
@@ -615,6 +620,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										exchange.xSet("ownerUser", Alloy.Models.User);
 										exchange.xSet("ownerUserId", Alloy.Models.User.id);
 										exchange.save();
+
+										//把汇率传入服务器
+										addCurrencyExchangeArray.push(exchange.toJSON());
+
 										projectCurrencyIdsCount++;
 										if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 											successCB();
@@ -623,14 +632,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										errorCount++;
 										errorCB(e);
 									});
-	
+
 								} else {
 									projectCurrencyIdsCount++;
 									if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 										successCB();
 									}
 								}
-							}else {
+							} else {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
@@ -684,37 +693,41 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								});
 								$.$model.xSet("messageState", "closed");
 								editProjectShareAuthorizationArray.push($.$model.toJSON());
-								Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
-									
-									Alloy.Globals.Server.sendMsg({
-										id : guid(),
-										"toUserId" : $.$model.xGet("fromUserId"),
-										"fromUserId" : $.$model.xGet("toUserId"),
-										"type" : "Project.Share.Accept",
-										"messageState" : "new",
-										"messageTitle" : "共享回复",
-										"date" : date,
-										"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:" + projectName,
-										"messageBoxId" : fromUser.xGet("messageBoxId"),
-										"messageData" : $.$model.xGet("messageData")
-									}, function() {
-										$.saveModel(function(e) {
-											//把与项目相关的资料全部下载下来
-											Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
-												projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project){
-													project.xRefresh();
-												});
-												saveEndCB("接受成功");
-												return;
-											}, saveErrorCB);
+								Alloy.Globals.Server.postData(addCurrencyExchangeArray, function(data) {
+									Alloy.Globals.Server.putData(editProjectShareAuthorizationArray, function(data) {
+										Alloy.Globals.Server.sendMsg({
+											id : guid(),
+											"toUserId" : $.$model.xGet("fromUserId"),
+											"fromUserId" : $.$model.xGet("toUserId"),
+											"type" : "Project.Share.Accept",
+											"messageState" : "new",
+											"messageTitle" : "共享回复",
+											"date" : date,
+											"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:" + projectName,
+											"messageBoxId" : fromUser.xGet("messageBoxId"),
+											"messageData" : $.$model.xGet("messageData")
+										}, function() {
+											$.saveModel(function(e) {
+												//把与项目相关的资料全部下载下来
+												Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
+													projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project) {
+														project.xRefresh();
+													});
+													saveEndCB("接受成功");
+													return;
+												}, saveErrorCB);
+											}, function(e) {
+												saveErrorCB(e);
+											}, {
+												syncFromServer : true
+											});
 										}, function(e) {
-											saveErrorCB(e);
-										}, {
-											syncFromServer : true
+											saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
+											return;
 										});
 									}, function(e) {
-										saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
-										return;
+										saveErrorCB();
+										alert(e.__summary.msg);
 									});
 
 								}, function(e) {
