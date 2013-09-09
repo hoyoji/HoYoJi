@@ -132,7 +132,6 @@ exports.definition = {
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
-				
 				this.syncUpdate(record, dbTrans);
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
@@ -141,6 +140,8 @@ exports.definition = {
 					
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					this._syncUpdate({currentBalance : record.currentBalance}, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 			},
