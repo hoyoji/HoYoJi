@@ -128,7 +128,6 @@ exports.definition = {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
 					record.currentBalance = (this.__syncCurrentBalance || 0) + this.xGet("currentBalance");
-					console.info("2 sync update moneyAccount ---------------------------------------------------------------------------- " + record.currentBalance + ":" +  (this.__syncCurrentBalance ? this.__syncCurrentBalance : 0));
 					delete this.__syncCurrentBalance;
 				}
 			},

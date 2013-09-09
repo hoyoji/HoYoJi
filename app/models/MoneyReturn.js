@@ -290,10 +290,10 @@ exports.definition = {
 						id : record.moneyAccountId
 					});
 					if (moneyAccount.id) {
-						moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount - record.interest, {
-							dbTrans : dbTrans,
-							patch : true
-						});
+						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount - record.interest, {
+							// dbTrans : dbTrans,
+							// patch : true
+						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount - record.interest : -record.amount - record.interest;
 					}
 				}
@@ -337,10 +337,10 @@ exports.definition = {
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
-							newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount - record.interest, {
-								dbTrans : dbTrans,
-								patch : true
-							});
+							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount - record.interest, {
+								// dbTrans : dbTrans,
+								// patch : true
+							// });
 							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount - record.interest : - record.amount - record.interest;
 						}
 					}

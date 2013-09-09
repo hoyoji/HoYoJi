@@ -1,5 +1,5 @@
 <Alloy>
-	<Window id="window" class="container" width="100%" height="100%" zIndex="101" backgroundColor="#10000000">
+	<Window id="window" class="container" width="100%" height="100%" backgroundColor="#10000000">
 		<ScrollableView id="scrollableView" showPagingControl="false">
 			<View id="backView"></View>
 			<View id="contentView" backgroundColor="#e1e1e1"></View>

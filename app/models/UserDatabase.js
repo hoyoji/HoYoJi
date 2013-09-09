@@ -2,7 +2,7 @@ exports.definition = {
 	config: {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
-		    userName: "TEXT NOT NULL",
+		    userName: "TEXT NOT NULL COLLATE NOCASE",
 		},
 		adapter: {
 			type : "sql",

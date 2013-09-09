@@ -1,4 +1,9 @@
 $.attrs = arguments[0] || {};
+
+if (OS_ANDROID) {
+	$.getView().addEventListener('androidback', function(){});
+}
+
 var activityIndicator;
 $.open = function(msg) {
 	var style;
