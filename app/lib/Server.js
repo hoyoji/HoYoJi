@@ -167,7 +167,7 @@
 						});
 						//}
 					},
-					timeout : 20000 /* in milliseconds */
+					timeout : 60000 /* in milliseconds */
 				});
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
