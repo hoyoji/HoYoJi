@@ -36,13 +36,15 @@
 						if (this.xCommitCount < 0) {
 							alert("xCommitEnd < 0");
 							throw new Error("xCommitEnd < 0");
+						} else {
+							return this._commit();
 						}
-						this.commit();
 					},
 					begin : function() {
+						this.xCommitCount++;
 						this.db.execute("BEGIN;");
 					},
-					commit : function() {
+					_commit : function() {
 						if (this.xCommitCount === 0 && this.db) {
 							this.db.execute("COMMIT;");
 							this.db.close();
@@ -52,6 +54,10 @@
 							return true;
 						}
 						return false;
+					},
+					commit : function() {
+						this.xCommitCount--;
+						return this._commit();
 					},
 					rollback : function() {
 						if (this.db) {

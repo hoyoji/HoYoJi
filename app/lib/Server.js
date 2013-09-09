@@ -302,13 +302,11 @@
 										id : record.id
 									});
 									if (model.syncRollback) {
-										function syncRollback() {
-											dbTrans.off("rollback", syncRollback);
+										function syncRollbackConflict() {
+											dbTrans.off("rollback", syncRollbackConflict);
 											model.syncRollback();
 										}
-
-
-										dbTrans.on("rollback", syncRollback);
+										dbTrans.on("rollback", syncRollbackConflict);
 									}
 									model.syncUpdateConflict(record, dbTrans);
 								}
@@ -347,11 +345,11 @@
 										}
 									} else {
 										if (model.syncRollback) {
-											function syncRollback() {
-												dbTrans.off("rollback", syncRollback);
+											function syncRollbackUpdate() {
+												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
-											dbTrans.on("rollback", syncRollback);
+											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
 										model.syncUpdate(record, dbTrans);
