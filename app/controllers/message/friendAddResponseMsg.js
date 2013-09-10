@@ -146,6 +146,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 					"messageBoxId" : friendUser.xGet("messageBoxId")
 				}, function() {
 					// setOtherRequestMsgToRead();
+					//在服务器上添加好友，再加载到本地
 					Alloy.Globals.Server.loadData("Friend",[{
 						ownerUserId : Alloy.Models.User.id,
 						friendUserId : $.$model.xGet("fromUserId")
