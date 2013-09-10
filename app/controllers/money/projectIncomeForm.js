@@ -89,6 +89,7 @@ if ($.saveableMode === "read") {
 		$.moneyAccount.$view.setHeight(42);
 		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 			$.exchangeRate.$view.setHeight(42);
+			$.exchangeRate.hideRightButton();
 		}
 	} else {
 		$.moneyAccount.$view.setHeight(0);

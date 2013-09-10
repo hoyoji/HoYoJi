@@ -99,9 +99,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyIncome._xDelete();
-									// moneyExpense._xDelete({
-										// syncFromServer : true
-									// });
+									moneyExpense._xDelete(null,{
+										syncFromServer : true
+									});
 									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
 										projectId : accountShareData.account.projectId,
 										friendUserId : $.$model.xGet("fromUserId")
@@ -207,9 +207,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyExpense._xDelete();
-									// moneyIncome._xDelete({
-										// syncFromServer : true
-									// });
+									moneyIncome._xDelete(null,{
+										syncFromServer : true
+									});
 									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
 										projectId : accountShareData.account.projectId,
 										friendUserId : $.$model.xGet("fromUserId")
