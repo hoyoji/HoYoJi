@@ -367,7 +367,7 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			syncAddNew : function(record, dbTrans) {
-				if (record.ownerUserId !== Alloy.Models.User.id) {
+				// if (record.ownerUserId !== Alloy.Models.User.id) {
 					dbTrans.xCommitStart();
 					if (!dbTrans.newCurrenciesFromServer[record.currencyId]) {
 						var currency = Alloy.createModel("Currency").xFindInDb({
@@ -436,7 +436,7 @@ exports.definition = {
 						}
 					}
 
-				}
+				// }
 			}
 		});
 		return Model;
