@@ -319,6 +319,22 @@ exports.definition = {
 					}
 				}
 			},
+			syncUpdateConflict : function(record, dbTrans) {
+				this.syncUpdate(record, dbTrans);
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
+					delete record.id;
+					this._syncUpdate(record, dbTrans);
+
+					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					// dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					this._syncUpdate({
+						returnedAmount : record.returnedAmount
+					}, dbTrans);
+				}
+				// 让本地修改覆盖服务器上的记录
+			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 					// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 					var moneyAccount = this.xGet("moneyAccount");
@@ -327,7 +343,7 @@ exports.definition = {
 						// currentBalance : moneyAccount.xGet("currentBalance") - amount
 					// }, saveOptions);
 					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
-			}	,
+			},
 			syncRollback : function(){
 				delete this.__syncReturnedAmount;
 			}		

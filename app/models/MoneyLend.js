@@ -86,7 +86,7 @@ exports.definition = {
 							error = {
 								msg : "金额不能为负数"
 							};
-						} else if (this.xGet("amount") < (this.xGet("paybackedAmount")/this.xGet("exchangeRate"))) {
+						} else if (this.xGet("amount") < (this.xGet("paybackedAmount") / this.xGet("exchangeRate"))) {
 							error = {
 								msg : "借出金额小于已收款金额 ，请重新输入"
 							};
@@ -223,7 +223,7 @@ exports.definition = {
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
-				if(!remark) {
+				if (!remark) {
 					remark = "无备注";
 				}
 				return remark;
@@ -268,26 +268,26 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 					}
 				}
 			},
 			// _syncUpdate : function(record, dbTrans) {
-				// this.save(record, {
-					// dbTrans : dbTrans,
-					// // syncFromServer : true,
-					// patch : true,
-					// wait : true
-				// });
+			// this.save(record, {
+			// dbTrans : dbTrans,
+			// // syncFromServer : true,
+			// patch : true,
+			// wait : true
+			// });
 			// },
 			syncUpdate : function(record, dbTrans) {
 				if (record.ownerUserId === Alloy.Models.User.id) {
 					record.paybackedAmount = (this.__syncPaybackedAmount || 0) + this.xGet("paybackedAmount");
 					delete this.__syncPaybackedAmount;
-					
+
 					var oldMoneyAccountBalance;
 					var oldMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						id : this.xGet("moneyAccountId")
@@ -295,17 +295,17 @@ exports.definition = {
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") - record.amount;
 						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") - record.amount : this.xGet("amount") -record.amount;
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") - record.amount : this.xGet("amount") - record.amount;
 
 					} else {
 						if (oldMoneyAccount.id) {
 							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount");
 							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
 							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
 						}
@@ -314,25 +314,41 @@ exports.definition = {
 						});
 						if (newMoneyAccount.id) {
 							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
-							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount : - record.amount;
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 						}
 					}
 				}
 			},
-			syncDelete : function(record, dbTrans, xFinishedCallback) {
-					// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+			syncUpdateConflict : function(record, dbTrans) {
+				this.syncUpdate(record, dbTrans);
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
+					delete record.id;
+					this._syncUpdate(record, dbTrans);
 
-					var moneyAccount = this.xGet("moneyAccount");
-					// var amount = this.xGet("amount");
-					// moneyAccount.save({
-						// currentBalance : moneyAccount.xGet("currentBalance") + amount
-					// }, saveOptions);
-					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
+					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					// dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					this._syncUpdate({
+						paybackedAmount : record.paybackedAmount
+					}, dbTrans);
+				}
+				// 让本地修改覆盖服务器上的记录
 			},
-			syncRollback : function(){
+			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+
+				var moneyAccount = this.xGet("moneyAccount");
+				// var amount = this.xGet("amount");
+				// moneyAccount.save({
+				// currentBalance : moneyAccount.xGet("currentBalance") + amount
+				// }, saveOptions);
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
+			},
+			syncRollback : function() {
 				delete this.__syncPaybackedAmount;
 			}
 		});
