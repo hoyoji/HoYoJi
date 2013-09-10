@@ -118,6 +118,7 @@ exports.definition = {
 				// }
 				if (dbTrans.__syncData[record.id] && dbTrans.__syncData[record.id].__syncCurrentBalance) {
 					record.currentBalance = dbTrans.__syncData[record.id].__syncCurrentBalance + this.xGet("currentBalance");
+					delete this.__syncCurrentBalance;
 				}
 				if (serverCurrentBalance !== record.currentBalance) {
 					dbTrans.db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','MoneyAccount','update','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
@@ -155,8 +156,8 @@ exports.definition = {
 					delete record.id;
 					this._syncUpdate(record, dbTrans);
 
-					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					dbTrans.db.execute(sql, [this.xGet("id")]);
+					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					// dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
 					this._syncUpdate({
 						currentBalance : record.currentBalance
