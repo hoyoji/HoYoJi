@@ -201,11 +201,11 @@ exports.definition = {
 				// apportionedTotalIncome : apportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2))
 				// }, saveOptions);
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-					projectId : record.projectId,
-					friendUserId : record.friendUserId
+					projectId : this.xGet("moneyIncome").xGet("projectId"),
+					friendUserId : this.xGet("friendUserId")
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome - Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2)) : -Number((self.xGet("amount") * self.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalIncome = projectShareAuthorization.__syncApportionedTotalIncome ? projectShareAuthorization.__syncApportionedTotalIncome - Number((this.xGet("amount") * this.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2)) : -Number((this.xGet("amount") * this.xGet("moneyIncome").xGet("exchangeRate")).toFixed(2));
 				}
 				// }
 				// });
