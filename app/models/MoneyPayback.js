@@ -95,9 +95,9 @@ exports.definition = {
 						var lendRate = this.xGet("moneyLend").xGet("exchangeRate");
 						var paybackRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount")*lendRate - this.xGet("moneyLend").previous("paybackedAmount");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") * lendRate - this.xGet("moneyLend").previous("paybackedAmount");
 						} else {
-							paybackRequireAmount = this.xGet("moneyLend").xGet("amount")*lendRate - this.xGet("moneyLend").previous("paybackedAmount") + this.xPrevious("amount")*this.xPrevious("exchangeRate");
+							paybackRequireAmount = this.xGet("moneyLend").xGet("amount") * lendRate - this.xGet("moneyLend").previous("paybackedAmount") + this.xPrevious("amount") * this.xPrevious("exchangeRate");
 						}
 						if (this.xGet("amount") * paybackRate > paybackRequireAmount) {
 							error = {
@@ -247,11 +247,11 @@ exports.definition = {
 						}
 					}
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate")/exchange).toUserCurrency();
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
-				if(!remark) {
+				if (!remark) {
 					remark = "无备注";
 				}
 				return remark;
@@ -289,8 +289,8 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount + record.interest, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount + record.interest : record.amount + record.interest;
 					}
@@ -301,9 +301,9 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						// moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") + Number((record.amount * record.exchangeRate).toFixed(2)), {
-							// //syncFromServer : true,
-							// dbTrans : dbTrans,
-							// patch : true
+						// //syncFromServer : true,
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 					}
@@ -318,28 +318,28 @@ exports.definition = {
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest;
 						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest : - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest;
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") - this.xGet("interest") + record.amount + record.interest : -this.xGet("amount") - this.xGet("interest") + record.amount + record.interest;
 					} else {
 						if (oldMoneyAccount.id) {
 							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") - this.xGet("interest");
 							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
-							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") - this.xGet("interest"): - this.xGet("amount") - this.xGet("interest");
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") - this.xGet("interest") : -this.xGet("amount") - this.xGet("interest");
 						}
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
 							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount + record.interest, {
-								// dbTrans : dbTrans,
-								// patch : true
-							// });	
-							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount + record.interest :  + record.amount + record.interest;
+							// dbTrans : dbTrans,
+							// patch : true
+							// });
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount + record.interest : +record.amount + record.interest;
 						}
 					}
 				}
@@ -349,13 +349,11 @@ exports.definition = {
 					});
 					if (moneyLend.id) {
 						// moneyLend.save("paybackedAmount", moneyLend.xGet("paybackedAmount") - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)), {
-							// //syncFromServer : true,
-							// dbTrans : dbTrans,
-							// patch : true
+						// //syncFromServer : true,
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? 
-							moneyLend.__syncPaybackedAmount  - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)) 
-							: - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2));
+						moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)) : -Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2));
 					}
 				}
 			},
@@ -375,21 +373,22 @@ exports.definition = {
 				var amount = this.xGet("amount");
 				var interest = this.xGet("interest");
 				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
-				
-				var moneyAccount = this.xGet("moneyAccount");
-				// moneyAccount.save({
+
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
+					var moneyAccount = this.xGet("moneyAccount");
+					// moneyAccount.save({
 					// currentBalance : moneyAccount.xGet("currentBalance") - amount - interest
-				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - amount - interest : - amount - interest;
-					
+					// }, saveOptions);
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - amount - interest : -amount - interest;
+				}
 				if (self.xGet("moneyLend")) {
 					var paybackRate = self.xGet("exchangeRate");
 					var moneyLend = self.xGet("moneyLend");
 					// var lendRate = moneyLend.xGet("exchangeRate");
 					// moneyLend.save({
-						// paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
+					// paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
 					// }, saveOptions);
-					moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount - Number((amount * paybackRate).toFixed(2)) : - Number((amount * paybackRate).toFixed(2));
+					moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount - Number((amount * paybackRate).toFixed(2)) : -Number((amount * paybackRate).toFixed(2));
 				}
 			},
 		});

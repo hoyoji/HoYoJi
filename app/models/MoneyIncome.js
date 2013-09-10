@@ -475,13 +475,14 @@ exports.definition = {
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var self = this;
 				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
+				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
 				var moneyAccount = this.xGet("moneyAccount");
 				// var amount = this.xGet("amount");
 				// moneyAccount.save({
 				// currentBalance : moneyAccount.xGet("currentBalance") - amount
 				// }, saveOptions);
 				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
-
+				}
 				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 						// var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();

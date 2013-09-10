@@ -96,9 +96,9 @@ exports.definition = {
 						var borrowRate = this.xGet("moneyBorrow").xGet("exchangeRate");
 						var returnRate = this.xGet("exchangeRate");
 						if (this.isNew()) {
-							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount")*borrowRate - this.xGet("moneyBorrow").previous("returnedAmount");
+							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") * borrowRate - this.xGet("moneyBorrow").previous("returnedAmount");
 						} else {
-							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount")*borrowRate - this.xGet("moneyBorrow").previous("returnedAmount") + this.xPrevious("amount")*this.xPrevious("exchangeRate");
+							returnRequireAmount = this.xGet("moneyBorrow").xGet("amount") * borrowRate - this.xGet("moneyBorrow").previous("returnedAmount") + this.xPrevious("amount") * this.xPrevious("exchangeRate");
 						}
 						if (this.xGet("amount") * returnRate > returnRequireAmount) {
 							error = {
@@ -252,7 +252,7 @@ exports.definition = {
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
-				if(!remark) {
+				if (!remark) {
 					remark = "无备注";
 				}
 				return remark;
@@ -291,8 +291,8 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") - record.amount - record.interest, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount - record.interest : -record.amount - record.interest;
 					}
@@ -303,11 +303,11 @@ exports.definition = {
 					});
 					if (moneyBorrow.id) {
 						// moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") + record.amount, {
-							// //syncFromServer : true,
-							// dbTrans : dbTrans,
-							// patch : true
+						// //syncFromServer : true,
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? moneyBorrow.__syncReturnedAmount + record.amount : + record.amount;
+						moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? moneyBorrow.__syncReturnedAmount + record.amount : +record.amount;
 					}
 				}
 			},
@@ -320,16 +320,16 @@ exports.definition = {
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") + this.xGet("interest") - record.amount - record.interest;
 						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") + this.xGet("interest") - record.amount - record.interest : this.xGet("amount") + this.xGet("interest") - record.amount - record.interest;
 					} else {
 						if (oldMoneyAccount.id) {
 							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") + this.xGet("amount") + this.xGet("interest");
 							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
 							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") + this.xGet("interest") : this.xGet("amount") + this.xGet("interest");
 						}
@@ -338,10 +338,10 @@ exports.definition = {
 						});
 						if (newMoneyAccount.id) {
 							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") - record.amount - record.interest, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
-							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount - record.interest : - record.amount - record.interest;
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount - record.interest : -record.amount - record.interest;
 						}
 					}
 				}
@@ -351,13 +351,11 @@ exports.definition = {
 					});
 					if (moneyBorrow.id) {
 						// moneyBorrow.save("returnedAmount", moneyBorrow.xGet("returnedAmount") - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)), {
-							// //syncFromServer : true,
-							// dbTrans : dbTrans,
-							// patch : true
+						// //syncFromServer : true,
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? 
-														moneyBorrow.__syncReturnedAmount - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)) 
-														:  - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2));
+						moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? moneyBorrow.__syncReturnedAmount - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2)) : -Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) + Number((record.amount * record.exchangeRate).toFixed(2));
 					}
 				}
 			},
@@ -377,23 +375,23 @@ exports.definition = {
 				var amount = this.xGet("amount");
 				var interest = this.xGet("interest");
 				// var saveOptions = {dbTrans : dbTrans, patch : true};
- 
-				var moneyAccount = this.xGet("moneyAccount");
-				// moneyAccount.save({
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
+					var moneyAccount = this.xGet("moneyAccount");
+					// moneyAccount.save({
 					// currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
-				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + amount + interest : amount + interest;
-						
+					// }, saveOptions);
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + amount + interest : amount + interest;
+				}
 				if (self.xGet("moneyBorrow")) {
 					var returnRate = this.xGet("exchangeRate");
 					var moneyBorrow = self.xGet("moneyBorrow");
 					// var borrowRate = moneyBorrow.xGet("exchangeRate");
 					// moneyBorrow.save({
-						// returnedAmount : moneyBorrow.xGet("returnedAmount") - Number((amount * returnRate).toFixed(2))
+					// returnedAmount : moneyBorrow.xGet("returnedAmount") - Number((amount * returnRate).toFixed(2))
 					// }, saveOptions);
-					moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? moneyBorrow.__syncReturnedAmount - Number((amount * returnRate).toFixed(2)) : - Number((amount * returnRate).toFixed(2));
+					moneyBorrow.__syncReturnedAmount = moneyBorrow.__syncReturnedAmount ? moneyBorrow.__syncReturnedAmount - Number((amount * returnRate).toFixed(2)) : -Number((amount * returnRate).toFixed(2));
 				}
-			},			
+			},
 		});
 		return Model;
 	},

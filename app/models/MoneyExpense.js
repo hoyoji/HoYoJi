@@ -493,12 +493,14 @@ exports.definition = {
 				// patch : true,
 				// syncFromServer : true
 				// };
-				var moneyAccount = this.xGet("moneyAccount");
-				// var amount = this.xGet("amount");
-				// moneyAccount.save({
-				// currentBalance : moneyAccount.xGet("currentBalance") + amount
-				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
+				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
+					var moneyAccount = this.xGet("moneyAccount");
+					// var amount = this.xGet("amount");
+					// moneyAccount.save({
+					// currentBalance : moneyAccount.xGet("currentBalance") + amount
+					// }, saveOptions);
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
+				}
 
 				var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(item) {
