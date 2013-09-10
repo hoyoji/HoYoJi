@@ -382,7 +382,7 @@ exports.definition = {
 				// moneyAccount.save({
 					// currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
 				// }, saveOptions);
-				newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + amount + interest : amount + interest;
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + amount + interest : amount + interest;
 						
 				if (self.xGet("moneyBorrow")) {
 					var returnRate = this.xGet("exchangeRate");
