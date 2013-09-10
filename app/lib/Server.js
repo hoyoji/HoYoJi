@@ -216,6 +216,7 @@
 
 					dbTrans.newExchangesFromServer = {};
 					dbTrans.newCurrenciesFromServer = {};
+					dbTrans.__syncData = {};
 					dbTrans.begin();
 
 					function rollbackSyncPull() {
@@ -229,7 +230,6 @@
 							}
 						});
 					}
-
 
 					dbTrans.on("rollback", rollbackSyncPull);
 

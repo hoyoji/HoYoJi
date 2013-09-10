@@ -111,14 +111,28 @@ exports.definition = {
 					return this.xGet("currentBalance").toFixed(2);
 				}
 			},
-        	syncAddNew: function(record, dbTrans) {
-        		if(!record.currentBalance){
-        			record.currentBalance = 0;
-        		} 
-        		if(dbTrans.__syncData[record.id] && dbTrans.__syncData[record.id].__syncCurrentBalance) {
+			syncAddNew : function(record, dbTrans) {
+				var serverCurrentBalance = record.currentBalance;
+				// if(!record.currentBalance){
+				record.currentBalance = 0;
+				// }
+				if (dbTrans.__syncData[record.id] && dbTrans.__syncData[record.id].__syncCurrentBalance) {
 					record.currentBalance = dbTrans.__syncData[record.id].__syncCurrentBalance + this.xGet("currentBalance");
-        		}
-        	},
+				}
+				if (serverCurrentBalance !== record.currentBalance) {
+					dbTrans.db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','MoneyAccount','update','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+				}
+			},
+			_syncAddNew : function(record, dbTrans) {
+				this.xSet(record);
+				delete this.id;
+				this.save(null, {
+					dbTrans : dbTrans,
+					syncFromServer : true,
+					patch : true,
+					wait : true
+				});
+			},
 			_syncUpdate : function(record, dbTrans) {
 				this.save(record, {
 					dbTrans : dbTrans,
@@ -126,10 +140,10 @@ exports.definition = {
 					patch : true,
 					wait : true
 				});
-			},        	
+			},
 			syncUpdate : function(record, dbTrans) {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
-				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					record.currentBalance = (this.__syncCurrentBalance || 0) + this.xGet("currentBalance");
 					delete this.__syncCurrentBalance;
 				}
@@ -137,18 +151,20 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				this.syncUpdate(record, dbTrans);
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					delete record.id;
 					this._syncUpdate(record, dbTrans);
-					
+
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
-					this._syncUpdate({currentBalance : record.currentBalance}, dbTrans);
+					this._syncUpdate({
+						currentBalance : record.currentBalance
+					}, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 			},
-			syncRollback : function(){
+			syncRollback : function() {
 				delete this.__syncCurrentBalance;
 			}
 		});

@@ -381,8 +381,8 @@ exports.definition = {
 						
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 					} else {
-							dbTrans.__syncData[moneyAccount.id] = dbTrans.__syncData[moneyAccount.id] || {};
-							dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance - record.amount : -record.amount;
+							dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance - record.amount : -record.amount;
 					}
 				}
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -427,10 +427,11 @@ exports.definition = {
 								// patch : true
 							// });
 							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
-						} else {
-							dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
-							dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance =  dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
 						}
+						 // else {
+							// dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
+							// dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance =  dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance + this.xGet("amount") : this.xGet("amount");
+						// }
 
 						// 如果新老账户不一样（服务器上修改了账户），我们更新新账户的余额
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -443,8 +444,8 @@ exports.definition = {
 							// });
 							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 						} else {
-							dbTrans.__syncData[newMoneyAccount.id] = dbTrans.__syncData[newMoneyAccount.id] || {};
-							dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance - record.amount : -record.amount;
+							dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance - record.amount : -record.amount;
 						}
 					}
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
