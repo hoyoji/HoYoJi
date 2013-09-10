@@ -33,6 +33,7 @@ $.makeContextMenu = function() {
 					__dataType : "MoneyExpense",
 					id : $.$model.xGet("id")
 				});
+				//去服务器上删除充值支出和充值收入
 				Alloy.Globals.Server.deleteData(accounts, function(data) {
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 						projectId : $.$model.xGet("projectId"),
@@ -45,6 +46,7 @@ $.makeContextMenu = function() {
 							// syncFromServer : true
 						// });
 						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
+						//如果充值支出与充值收入的币种不相同，保存账户
 						if(moneyIncome.xGet("moneyAccount") !== $.$model.xGet("moneyAccount")){
 							editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 							moneyIncome.xGet("moneyAccount").xSave({
@@ -66,7 +68,7 @@ $.makeContextMenu = function() {
 					$.$model.xGet("moneyAccount").xSave({
 						syncFromServer : true
 					});
-
+					
 					Alloy.Globals.Server.putData(editData, function(data) {
 						$.$model._xDelete();
 					}, function(e) {
@@ -89,7 +91,7 @@ $.makeContextMenu = function() {
 					"messageState" : "new",
 					"messageTitle" : "删除充值",
 					"date" : date,
-					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "请求删除充值",
+					"detail" : "用户" + Alloy.Models.User.xGet("userName") + "请求删除充值("+"项目:" + $.$model.xGet("project").xGet("name") +",金额:" + $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol") + $.$model.xGet("amount") + ")",
 					"messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
 					messageData : JSON.stringify({
 						accountType : "MoneyExpense",
