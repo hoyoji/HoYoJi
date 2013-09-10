@@ -306,10 +306,14 @@ if ($.saveableMode === "read") {
 					Alloy.Globals.Server.postData(addData, function(data) {
 						Alloy.Globals.Server.putData(editData, function(data) {
 							Alloy.Globals.Server.loadData("MoneyExpense", [$.$model.xGet("depositeId")], function(collection) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-								// saveEndCB(e);
+								Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+									projectId : $.$model.xGet("project").xGet("id"),
+									friendUserId : $.$model.xGet("friendUser").xGet("id")
+								}], function(collection) {
+									$.saveModel(saveEndCB, saveErrorCB, {
+										syncFromServer : true
+									});
+								}, saveErrorCB);
 							}, saveErrorCB);
 						}, function(e) {
 							alert(e.__summary.msg);
