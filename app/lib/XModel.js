@@ -522,7 +522,7 @@
 						}
 					}
 					
-					if(!outerTransaction && options.dbTrans.xCommitCount === 0){
+					if(!outerTransaction && options.dbTrans.xCommitCount === 1){
 						// options.dbTrans.commit();
 						options.commit = true;
 					}	
