@@ -94,18 +94,23 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "new",
 									"messageTitle" : "删除充值",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意删除了充值",
+									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyIncome._xDelete();
-									moneyExpense._xDelete({
+									moneyExpense._xDelete(null,{
 										syncFromServer : true
 									});
-									$.saveModel(saveEndCB, saveErrorCB, {
-										syncFromServer : true
-									});
-									saveEndCB("删除充值成功");
+									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+										projectId : accountShareData.account.projectId,
+										friendUserId : $.$model.xGet("fromUserId")
+									}], function(collection) {
+										$.saveModel(saveEndCB, saveErrorCB, {
+											syncFromServer : true
+										});
+										saveEndCB("删除充值成功");
+									}, saveErrorCB);
 								}, function(e) {
 									alert(e.__summary.msg);
 								});
@@ -202,13 +207,18 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									messageData : $.$model.xGet("messageData")
 								}, function() {
 									moneyExpense._xDelete();
-									moneyIncome._xDelete({
+									moneyIncome._xDelete(null,{
 										syncFromServer : true
 									});
-									$.saveModel(saveEndCB, saveErrorCB, {
-										syncFromServer : true
-									});
-									saveEndCB("删除充值成功");
+									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+										projectId : accountShareData.account.projectId,
+										friendUserId : $.$model.xGet("fromUserId")
+									}], function(collection) {
+										$.saveModel(saveEndCB, saveErrorCB, {
+											syncFromServer : true
+										});
+										saveEndCB("删除充值成功");
+									}, saveErrorCB);
 								}, function(e) {
 									alert(e.__summary.msg);
 								});
