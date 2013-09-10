@@ -220,6 +220,9 @@
 
 					function rollbackSyncPull() {
 						dbTrans.off("rollback", rollbackSyncPull);
+						delete dbTrans.__syncData;
+						delete dbTrans.newExchangesFromServer;
+						delete dbTrans.newCurrenciesFromServer;
 						xErrorCallback({
 							__summary : {
 								msg : "无法获取汇率"
@@ -252,9 +255,7 @@
 							if (!model.isNew()) {
 								// 如果该记录在本地存在，我们要将其删除
 								// 如果该记录不是自己创建的，我们没有直接讲起删除，不需要进行帐户余额等维护
-								if (model.xGet("ownerUserId") !== Alloy.Models.User.id &&
-									(record.tableName === "MoneyExpenseApportion" ||
-									record.tableName === "MoneyIncomeApportion")) {
+								if (model.xGet("ownerUserId") !== Alloy.Models.User.id && (record.tableName === "MoneyExpenseApportion" || record.tableName === "MoneyIncomeApportion")) {
 									// 这里不能直接用sql从数据库删除，因为那样的话如果model就不会从界面上移除
 									// dbTrans.db.execute("DELETE FROM " + record.tableName + " WHERE id = ?", [id]);
 									model.destroy({
@@ -306,6 +307,8 @@
 											dbTrans.off("rollback", syncRollbackConflict);
 											model.syncRollback();
 										}
+
+
 										dbTrans.on("rollback", syncRollbackConflict);
 									}
 									model.syncUpdateConflict(record, dbTrans);
@@ -349,6 +352,8 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
+
+
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
@@ -362,10 +367,16 @@
 					});
 
 					if (dbTrans.commit()) {
+						delete dbTrans.__syncData;
+						delete dbTrans.newExchangesFromServer;
+						delete dbTrans.newCurrenciesFromServer;
 						Alloy.Models.User.xGet("messageBox").processNewMessages();
 						xFinishedCallback();
 					} else {
 						function postCommit() {
+							delete dbTrans.__syncData;
+							delete dbTrans.newExchangesFromServer;
+							delete dbTrans.newCurrenciesFromServer;
 							dbTrans.off("commit", postCommit);
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
 							xFinishedCallback();

@@ -370,10 +370,13 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
+					} else {
+						dbTrans.__syncData[moneyAccount.id] = dbTrans.__syncData[moneyAccount.id] || {};
+						dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[moneyAccount.id].__syncCurrentBalance + record.amount : record.amount;
 					}
 				}
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -402,18 +405,21 @@ exports.definition = {
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
 						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount : - this.xGet("amount") + record.amount;
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount : -this.xGet("amount") + record.amount;
 					} else {
 						if (oldMoneyAccount.id) {
 							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
 							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
-							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
+						} else {
+							dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
+							dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 						}
 
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -421,10 +427,13 @@ exports.definition = {
 						});
 						if (newMoneyAccount.id) {
 							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
 							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount : record.amount;
+						} else {
+							dbTrans.__syncData[newMoneyAccount.id] = dbTrans.__syncData[newMoneyAccount.id] || {};
+							dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[newMoneyAccount.id].__syncCurrentBalance + record.amount : record.amount;
 						}
 					}
 
@@ -468,22 +477,23 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				// var amount = this.xGet("amount");
 				// moneyAccount.save({
-					// currentBalance : moneyAccount.xGet("currentBalance") - amount
+				// currentBalance : moneyAccount.xGet("currentBalance") - amount
 				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 
 				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 						// var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
 						// item.save({
-							// actualTotalIncome : actualTotalIncome
+						// actualTotalIncome : actualTotalIncome
 						// }, saveOptions);
-						item.__syncActualTotalIncome = item.__syncActualTotalIncome ? item.__syncActualTotalIncome - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();;
-				
+						item.__syncActualTotalIncome = item.__syncActualTotalIncome ? item.__syncActualTotalIncome - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
+						;
+
 					}
 				});
 			},
-			syncRollback : function(){
+			syncRollback : function() {
 				delete this.__syncAmount;
 			}
 		});
