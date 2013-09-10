@@ -98,12 +98,18 @@ $.$view.addEventListener("click", function(e) {
 			// remove the section header
 			if ($.table.data[sectionIndex].rows.length === 1) {
 				// setTimeout(function(){
+				$.table.data[sectionIndex].rows[0].fireEvent("rowremoved", {
+					bubbles : false
+				});
 				var data = $.table.data.slice(0);
 				data.splice(sectionIndex, 1);
 				$.table.setData(data);
 				showNoDataIndicator(data.length);
 				// },10000);
 			} else {
+				getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
+					bubbles : false
+				});
 				$.table.deleteRow(e.index);
 			}
 		} else {
@@ -385,9 +391,9 @@ function addRowToSection(rowModel, collection, index) {
 							bubbles : false
 						});
 						$.table.deleteRow(rowsCount - 1);
-						rowsCount --;
+						rowsCount--;
 					}
-					if(pos.index >= rowsCount){
+					if (pos.index >= rowsCount) {
 						$.table.appendRow(createRowView(rowModel, collection));
 					} else {
 						$.table.insertRowBefore(pos.index, createRowView(rowModel, collection));
@@ -556,8 +562,22 @@ exports.refreshTable = function() {
 
 };
 
-exports.fetchFirstPage = function() {
+function clearTable(){
+	var sectionIndex = 0;
+	while (sectionIndex < $.table.data.length) {
+		for(var rowIndex = 0; rowIndex < $.table.data[sectionIndex].rows.length; rowIndex++){
+			$.table.data[sectionIndex].rows[rowIndex].fireEvent("rowremoved", {
+					bubbles : false
+				});
+		}
+		sectionIndex++;
+	}
 	$.table.setData([]);
+}
+
+exports.fetchFirstPage = function() {
+	// $.table.setData([]);
+	clearTable();
 	exports.fetchNextPage(0);
 };
 
@@ -570,7 +590,8 @@ exports.fetchNextPage = function(tableRowsCount) {
 		sortedArray_sortByField = sortByField;
 		sortedArray_sortReverse = sortReverse;
 		sortedArray_groupByField = groupByField;
-		$.table.setData([]);
+		// $.table.setData([]);
+		clearTable();
 		tableRowsCount = 0;
 		currentPageNumber = 0;
 	} else {
@@ -700,7 +721,8 @@ var clearCollections = function() {
 		}
 	}
 	collections = [];
-	$.table.setData([]);
+	// $.table.setData([]);
+	clearTable();
 	showNoDataIndicator(0);
 };
 
@@ -750,7 +772,8 @@ exports.resetTable = function() {
 		collections[i].reset();
 		collections[i].on("reset", resetCollection);
 	}
-	$.table.setData([]);
+	// $.table.setData([]);
+	clearTable();
 	showNoDataIndicator(0);
 };
 
@@ -761,6 +784,9 @@ var resetCollection = function(collection, options) {
 			for (var r = 0; r < data[i].rows.length; r++) {
 				var row = data[i].rows[r];
 				if (row.id === model.xGet("id")) {
+					data[i].rows[r].fireEvent("rowremoved", {
+						bubbles : false
+					});
 					var rows = data[i].rows.slice(0);
 					rows.splice(r, 1);
 					data[i].rows = rows;
@@ -773,7 +799,7 @@ var resetCollection = function(collection, options) {
 			}
 		}
 	});
-	$.table.setData(data);
+	// $.table.setData(data);
 	showNoDataIndicator(data.length);
 };
 
