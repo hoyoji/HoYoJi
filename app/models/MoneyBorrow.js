@@ -336,7 +336,7 @@ exports.definition = {
 				// 让本地修改覆盖服务器上的记录
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
-				
+				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
 					// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 					var moneyAccount = this.xGet("moneyAccount");
 					// var amount = this.xGet("amount");
@@ -344,6 +344,7 @@ exports.definition = {
 						// currentBalance : moneyAccount.xGet("currentBalance") - amount
 					// }, saveOptions);
 					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
+				}
 			},
 			syncRollback : function(){
 				delete this.__syncReturnedAmount;
