@@ -29,12 +29,12 @@ exports.getQueryString = function() {
 		if (_.isNull(value)) {
 			continue;
 		}
-		if (f === "transactionDisplayType"){
-			if(value === "Personal"){
+		if (f === "transactionDisplayType") {
+			if (value === "Personal") {
 				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			} 
+			}
 			continue;
-		} 		
+		}
 		if (filterStr) {
 			filterStr += " AND ";
 		}
@@ -69,11 +69,13 @@ exports.refresh = function() {
 	$.moneyReturnTotal.query(queryStr);
 	$.moneyLendTotal.query(queryStr);
 	$.moneyPaybackTotal.query(queryStr);
+	$.moneyReturnInterestTotal.query(queryStr);
+	$.moneyPaybackInterestTotal.query(queryStr);
 	calculateTotalBalance();
 };
 function calculateTotalBalance() {
 	var totalBalance = 0;
-	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - $.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();
+	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - $.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - $.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
 	$.totalBalance.setText(totalBalance.toUserCurrency());
 }
 
@@ -83,4 +85,6 @@ $.borrowTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
-$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow()); 
+$.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow()); 

@@ -63,11 +63,33 @@
 					<Label left="5" width="30%">总收款</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-						id="paybackTotalCurrencySymbol" autoInit="false"
+						id="paybackInterestTotalCurrencySymbol" autoInit="false"
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+					</View>
+				</View>
+				<View height="42">
+					<Label left="5" width="30%">利息支出</Label>
+					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="returnInterestTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="SUM(main.interest * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+					</View>
+				</View>
+				<View height="42">
+					<Label left="5" width="30%">利息收入</Label>
+					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="paybackTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.interest * main.exchangeRate / IFNULL(ex.rate, 1))"/>
 					</View>
 				</View>
 				<View height="42">
