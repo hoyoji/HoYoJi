@@ -435,7 +435,7 @@ exports.definition = {
 								// dbTrans : dbTrans,
 								// patch : true
 							// });
-							moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - record.amount : -record.amount;
+							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance - record.amount : -record.amount;
 						}
 					}
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -466,12 +466,13 @@ exports.definition = {
 
 				// 服务器上的记录比较新，我们用服务器上的记录更新本地记录
 				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
-					this._syncUpdate(record, dbTrans);
 					if (!localUpdated) {
+						this.syncUpdate(record, dbTrans);
 						// 如果同步时该支出的金额没有被再次改变，我们不需要将本地修改同步上服务器，因为我们已经使用了服务器上的记录。
 						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
+					this._syncUpdate(record, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 			},
