@@ -116,14 +116,14 @@ exports.definition = {
         			record.currentBalance = 0;
         		}
         	},
-			// _syncUpdate : function(record, dbTrans) {
-				// this.save(record, {
-					// dbTrans : dbTrans,
-					// // syncFromServer : true,
-					// patch : true,
-					// wait : true
-				// });
-			// },        	
+			_syncUpdate : function(record, dbTrans) {
+				this.save(record, {
+					dbTrans : dbTrans,
+					// syncFromServer : true,
+					patch : true,
+					wait : true
+				});
+			},        	
 			syncUpdate : function(record, dbTrans) {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
