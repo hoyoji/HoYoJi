@@ -522,7 +522,7 @@
 						}
 					}
 					
-					if(!outerTransaction && options.dbTrans.xCommitCount === 0){
+					if(!outerTransaction && options.dbTrans.xCommitCount === 1){
 						// options.dbTrans.commit();
 						options.commit = true;
 					}	
@@ -629,7 +629,6 @@
 				this.xSet(record);
 				delete this.id;
 				this._syncUpdate(null, dbTrans);
-				console.info("_syncAddNew : " + record.id);
 			},
 			syncAddNew : function(record, dbTrans) {
 			},

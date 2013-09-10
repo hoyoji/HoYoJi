@@ -370,10 +370,13 @@ exports.definition = {
 					});
 					if (moneyAccount.id) {
 						// moneyAccount.save("currentBalance", moneyAccount.xGet("currentBalance") + record.amount, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
+					} else {
+						dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+						dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 					}
 				}
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -402,29 +405,36 @@ exports.definition = {
 					if (this.xGet("moneyAccountId") === record.moneyAccountId) {
 						// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount") + record.amount;
 						// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-							// dbTrans : dbTrans,
-							// patch : true
+						// dbTrans : dbTrans,
+						// patch : true
 						// });
-						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount : - this.xGet("amount") + record.amount;
+						oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") + record.amount : -this.xGet("amount") + record.amount;
 					} else {
 						if (oldMoneyAccount.id) {
 							// oldMoneyAccountBalance = oldMoneyAccount.xGet("currentBalance") - this.xGet("amount");
 							// oldMoneyAccount.save("currentBalance", oldMoneyAccountBalance, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
-							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
-						}
+							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
+						} 
+						// else {
+							// dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
+							// dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
+						// }
 
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.moneyAccountId
 						});
 						if (newMoneyAccount.id) {
 							// newMoneyAccount.save("currentBalance", newMoneyAccount.xGet("currentBalance") + record.amount, {
-								// dbTrans : dbTrans,
-								// patch : true
+							// dbTrans : dbTrans,
+							// patch : true
 							// });
 							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount : record.amount;
+						} else {
+							dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 						}
 					}
 
@@ -452,11 +462,12 @@ exports.definition = {
 
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
-					this._syncUpdate(record, dbTrans);
 					if (!localUpdated) {
+						this.syncUpdate(record, dbTrans);
 						var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
+					this._syncUpdate(record, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 
@@ -467,22 +478,23 @@ exports.definition = {
 				var moneyAccount = this.xGet("moneyAccount");
 				// var amount = this.xGet("amount");
 				// moneyAccount.save({
-					// currentBalance : moneyAccount.xGet("currentBalance") - amount
+				// currentBalance : moneyAccount.xGet("currentBalance") - amount
 				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : - this.xGet("amount");
+				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 
 				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 						// var actualTotalIncome = item.xGet("actualTotalIncome") - self.getProjectCurrencyAmount();
 						// item.save({
-							// actualTotalIncome : actualTotalIncome
+						// actualTotalIncome : actualTotalIncome
 						// }, saveOptions);
-						item.__syncActualTotalIncome = item.__syncActualTotalIncome ? item.__syncActualTotalIncome - self.getProjectCurrencyAmount() : - self.getProjectCurrencyAmount();;
-				
+						item.__syncActualTotalIncome = item.__syncActualTotalIncome ? item.__syncActualTotalIncome - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
+						;
+
 					}
 				});
 			},
-			syncRollback : function(){
+			syncRollback : function() {
 				delete this.__syncAmount;
 			}
 		});
