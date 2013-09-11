@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+$.$attrs.backgroundColor = $.$attrs.backgroundColor || "transparent";
+
 var enabled = true;
 exports.setTitle = function(title) {
 	$.title.setText(title);
@@ -144,14 +146,14 @@ $.$view.addEventListener("touchstart", function(e) {
 		}, 500);
 	}
 });
-// $.$view.addEventListener("touchend", function(e) {
-	// if (!enabled) {
-		// e.cancelBubble = true;
-	// } else {
-		// clearTimeout(hightLightTimeout);
-		// $.$view.setBackgroundColor($.$attrs.backgroundColor);
-	// }
-// });
+$.$view.addEventListener("touchend", function(e) {
+	if (!enabled) {
+		e.cancelBubble = true;
+	} else {
+		clearTimeout(hightLightTimeout);
+		$.$view.setBackgroundColor($.$attrs.backgroundColor);
+	}
+});
 
 function redirectEvent(view) {
 	view.addEventListener("singletap", function(e) {
