@@ -131,20 +131,27 @@ if($.$attrs.visible !== "false"){
 	// backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
 // }
 
+var hightLightTimeout = 0;
+
 $.$view.addEventListener("touchstart", function(e) {
 	if (!enabled) {
 		e.cancelBubble = true;
 	} else {
-		$.$view.setBackgroundColor("green");
+		$.$view.setBackgroundColor("#006633");
+		clearTimeout(hightLightTimeout);
+		hightLightTimeout = setTimeout(function(){
+			$.$view.setBackgroundColor($.$attrs.backgroundColor);
+		}, 500);
 	}
 });
-$.$view.addEventListener("touchend", function(e) {
-	if (!enabled) {
-		e.cancelBubble = true;
-	} else {
-		$.$view.setBackgroundColor($.$attrs.backgroundColor);
-	}
-});
+// $.$view.addEventListener("touchend", function(e) {
+	// if (!enabled) {
+		// e.cancelBubble = true;
+	// } else {
+		// clearTimeout(hightLightTimeout);
+		// $.$view.setBackgroundColor($.$attrs.backgroundColor);
+	// }
+// });
 
 function redirectEvent(view) {
 	view.addEventListener("singletap", function(e) {
