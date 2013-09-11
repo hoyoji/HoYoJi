@@ -25,6 +25,7 @@ $.searchButton.addEventListener("singletap", function(e) {
 	searchCriteria = $.search.getValue();
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
+	
 	loading = true;
 	// $.userCollection.reset();
 	$.usersTable.clearAllCollections();

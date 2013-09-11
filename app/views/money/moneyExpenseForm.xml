@@ -110,9 +110,6 @@
 				id="remark" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="remark"/>
-				<!-- <Widget src="com.hoyoji.titanium.widget.XButton" id="apportion"
-				height="0" width="100%" title="多人分摊" autoInit="false"
-				backgroundColor="green" image="none" /> -->
 			</ScrollView>
 		</View>
 	</View>
