@@ -6,6 +6,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 	});
 	menuSection.add($.createContextMenuItem("设为本币", function() {
 		if ($.$model !== Alloy.Models.User.xGet("activeCurrency")) {
+			var activityWindow = Alloy.createController("activityMask");
+			activityWindow.open("正在切换...");
 			function getAllExchanges(successCB, errorCB) {
 				var errorCount = 0, projectCount = 0, projectTotal = Alloy.Models.User.xGet("projects").length,fetchingExchanges = {};
 				Alloy.Models.User.xGet("projects").forEach(function(project) {
@@ -70,9 +72,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 					wait : true,
 					patch : true
 				});
-				alert("需退出重新登录，显示的金额才会换成本币显示。");
+				activityWindow.showMsg("需退出重新登录，金额才会换成本币显示。");
 			}, function(e) {
-				alert("切换失败,请重试：" + e.__summary.msg);
+				activityWindow.showMsg("切换失败,请重试：" + e.__summary.msg);
 				return;
 			});
 		}

@@ -530,6 +530,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				var projectName = detailArray[1];
 
 				if (operation === "agree") {
+					var activityWindow = Alloy.createController("activityMask");
+					activityWindow.open("正在接受...");
 
 					var projectCurrencyIds = projectShareData.projectCurrencyIds;
 
@@ -650,10 +652,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 					getAllCurrencies(function() {
 						getAllExchanges(acceptSharedProjects, function(e) {
+							activityWindow.close();
 							saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
 							return;
 						});
 					}, function(e) {
+						activityWindow.close();
 						saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
 						return;
 					});
@@ -713,27 +717,33 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project) {
 														project.xRefresh();
 													});
+													activityWindow.close();
 													saveEndCB("接受成功");
 													return;
 												}, saveErrorCB);
 											}, function(e) {
+												activityWindow.close();
 												saveErrorCB(e);
 											}, {
 												syncFromServer : true
 											});
 										}, function(e) {
+											activityWindow.close();
 											saveErrorCB("接受共享项目失败,请重新发送 : " + e.__summary.msg);
 											return;
 										});
 									}, function(e) {
+										activityWindow.close();
 										saveErrorCB();
 										alert(e.__summary.msg);
 									});
 
 								}, function(e) {
+									activityWindow.close();
 									alert(e.__summary.msg);
 								});
 							} else {
+								activityWindow.close();
 								saveErrorCB("接受共享项目失败，用户取消了该项目的分享");
 								return;
 							}

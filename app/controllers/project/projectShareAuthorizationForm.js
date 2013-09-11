@@ -235,38 +235,42 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.xGet("sharePercentageType") === "Fixed" && $.$model.xGet("sharePercentage") > $.sharePercentageTotal) {
 				saveErrorCB("固定股份最多不能超过" + $.sharePercentageTotal);
 			} else {
-					function getExchange(successCB, errorCB) {
-						if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
-							successCB();
-						}else{
-							var exchange = Alloy.createModel("Exchange").xFindInDb({
-								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-								foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
-							});
-							if (!exchange.id) {
-								Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
-									exchange = Alloy.createModel("Exchange", {
-										localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-										foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
-										rate : rate
-									});
-									exchange.xSet("ownerUser", Alloy.Models.User);
-									exchange.xSet("ownerUserId", Alloy.Models.User.id);
-									exchange.save();
-									successCB();
-								}, function(e) {
-									errorCB(e);
+				var activityWindow = Alloy.createController("activityMask");
+					activityWindow.open("正在发送...");
+					
+				function getExchange(successCB, errorCB) {
+					if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
+						successCB();
+					}else{
+						var exchange = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
+						});
+						if (!exchange.id) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+								exchange = Alloy.createModel("Exchange", {
+									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
+									rate : rate
 								});
-							} else {
+								exchange.xSet("ownerUser", Alloy.Models.User);
+								exchange.xSet("ownerUserId", Alloy.Models.User.id);
+								exchange.save();
 								successCB();
-							}
+							}, function(e) {
+								errorCB(e);
+							});
+						} else {
+							successCB();
 						}
 					}
+				}
 
-					getExchange(addProjectShareAuthorization, function(e) {
-						saveErrorCB("共享项目失败,请重新共享 : " + e.__summary.msg);
-						return;
-					});
+				getExchange(addProjectShareAuthorization, function(e) {
+					activityWindow.close();
+					saveErrorCB("共享项目失败,请重新共享 : " + e.__summary.msg);
+					return;
+				});
 				function addProjectShareAuthorization(){
 					var projectIds = [], projectCurrencyIds = [];
 					projectIds.push($.$model.xGet("project").xGet("id"));
@@ -317,6 +321,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						//去服务器上查找是否已经添加过共享给该好友
 						Alloy.Globals.Server.getData(projectShareAuthorizationsSearchArray, function(data) {
 							if (data[0].length > 0 || data[1].length > 0) {
+								activityWindow.close();
 								saveErrorCB("好友已在共享列表,请重新选择好友！");
 							} else {
 								// 有些subProject已被共享过，不能再次共享
@@ -394,26 +399,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											$.saveModel(saveEndCB, saveErrorCB, {
 												syncFromServer : true
 											});
+											activityWindow.close();
 											saveEndCB("发送成功，请等待回复");
 										}, function(e) {
+											activityWindow.close();
 											alert(e.__summary.msg);
 											saveErrorCB();
 										});
 									}, function(e) {
+										activityWindow.close();
 										alert(e.__summary.msg);
 										saveErrorCB();
 									});
 								}, function(e) {
+									activityWindow.close();
 									alert(e.__summary.msg);
 									saveErrorCB();
 								});
 							}
 						}, function(e) {
+							activityWindow.close();
 							alert(e.__summary.msg);
 							saveErrorCB();
 						});
 	
 					} else {
+						activityWindow.close();
 						saveErrorCB("好友不能为空！");
 						//alert("好友不能为空！");
 						return;
@@ -421,8 +432,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}
 			}
 		} else {
+			var activityWindow = Alloy.createController("activityMask");
+				activityWindow.open("正在修改...");
 			//修改共享
 			if ($.$model.hasChanged("friendUser")) {
+				activityWindow.close();
 				saveErrorCB("好友不能修改！");
 			} else {
 				//占股类型有变，或者占股类型是fixed且占股有变，即重新计算占股
@@ -534,22 +548,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 																	subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 																})
 															}, function() {
+																activityWindow.close();
 																$.saveModel(saveEndCB, saveErrorCB, {
 																	syncFromServer : true
 																});
 															}, function(e) {
+																activityWindow.close();
 																alert(e.__summary.msg);
 																saveErrorCB();
 															});
 														}, function(e) {
+															activityWindow.close();
 															alert(e.__summary.msg);
 															saveErrorCB();
 														});
 													}, function(e) {
+														activityWindow.close();
 														alert(e.__summary.msg);
 														saveErrorCB();
 													});
 												} else {
+													activityWindow.close();
 													$.saveModel(saveEndCB, saveErrorCB);
 												}
 											} else if (data[1].length > 0) {
@@ -601,31 +620,38 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 																	subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 																})
 															}, function() {
+																activityWindow.close();
 																$.saveModel(saveEndCB, saveErrorCB, {
 																	syncFromServer : true
 																});
 															}, function(e) {
+																activityWindow.close();
 																alert(e.__summary.msg);
 																saveErrorCB();
 															});
 														}, function(e) {
+															activityWindow.close();
 															alert(e.__summary.msg);
 															saveErrorCB();
 														});
 													}, function(e) {
+														activityWindow.close();
 														alert(e.__summary.msg);
 														saveErrorCB();
 													});
 												} else {
+													activityWindow.close();
 													$.saveModel(saveEndCB, saveErrorCB);
 												}
 											}
 
 										}, function(e) {
+											activityWindow.close();
 											alert(e.__summary.msg);
 											saveErrorCB();
 										});
 									} else {
+										activityWindow.close();
 										$.saveModel(saveEndCB, saveErrorCB);
 									}
 								} else {
@@ -674,23 +700,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													subProjectShareAuthorizationIds : subProjectShareAuthorizationIds
 												})
 											}, function() {
+												activityWindow.close();
 												$.saveModel(saveEndCB, saveErrorCB, {
 													syncFromServer : true
 												});
 											}, function(e) {
+												activityWindow.close();
 												alert(e.__summary.msg);
 												saveErrorCB();
 											});
 										}, function(e) {
+											activityWindow.close();
 											alert(e.__summary.msg);
 											saveErrorCB();
 										});
 									} else {
+										activityWindow.close();
 										$.saveModel(saveEndCB, saveErrorCB);
 									}
 								}
 							} else {
-								alert("子项目未同步，清同步再共享");
+								activityWindow.close();
+								alert("子项目未同步，清同步再修改");
 								saveErrorCB();
 							}
 
@@ -752,20 +783,24 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											projectShareAuthorizationId : $.$model.xGet("id")
 										})
 									}, function() {
+										activityWindow.close();
 										$.saveModel(saveEndCB, saveErrorCB, {
 											syncFromServer : true
 										});
 									}, function(e) {
+										activityWindow.close();
 										alert(e.__summary.msg);
 										saveErrorCB();
 									});
 								}, function(e) {
+									activityWindow.close();
 									alert(e.__summary.msg);
 									saveErrorCB();
 								});
 							}
 						}
 					} else {
+						activityWindow.close();
 						saveErrorCB("修改失败，好友还未接受共享");
 						$.getCurrentWindow().$view.close();
 					}
@@ -774,10 +809,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					//修改共享给自己的占股
 					editSharePercentageAuthorization.push($.$model.toJSON());
 					Alloy.Globals.Server.putData(editSharePercentageAuthorization, function(data) {
+						activityWindow.close();
 						$.saveModel(saveEndCB, saveErrorCB, {
 							syncFromServer : true
 						});
 					}, function(e) {
+						activityWindow.close();
 						alert(e.__summary.msg);
 						saveErrorCB();
 					});
