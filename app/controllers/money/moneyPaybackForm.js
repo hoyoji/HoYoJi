@@ -33,6 +33,8 @@ $.convertUser2FriendModel = function(userModel) {
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
+	var activityWindow = Alloy.createController("activityMask");
+	activityWindow.open("正在获取该项目的汇率...");
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
 			loading = true;
@@ -47,13 +49,17 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 				exchange.save();
 				successCallback();
 				loading = false;
+				activityWindow.close();
 			}, function(e) {
+				activityWindow.close();
 				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
 			});
 		} else {
+			activityWindow.close();
 			successCallback();
 		}
 	} else {
+		activityWindow.close();
 		successCallback();
 	}
 };
