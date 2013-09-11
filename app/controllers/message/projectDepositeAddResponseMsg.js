@@ -40,6 +40,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
 	//删除充值
 	if (operation === "delete") {
+		var activityWindow = Alloy.createController("activityMask");
+			activityWindow.open("正在删除...");
 		//好友先删除充值支出
 		if (accountShareData.accountType === "MoneyExpense") {
 			var accounts = [];
@@ -109,15 +111,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										$.saveModel(saveEndCB, saveErrorCB, {
 											syncFromServer : true
 										});
-										saveEndCB("删除充值成功");
+										activityWindow.showMsg("删除充值成功");
+										saveEndCB();
 									}, saveErrorCB);
 								}, function(e) {
+									activityWindow.close();
 									alert(e.__summary.msg);
 								});
 							}, function(e) {
+								activityWindow.close();
 								alert(e.__summary.msg);
 							});
 						}, function(e) {
+							activityWindow.close();
 							alert(e.__summary.msg);
 						});
 					} else {
@@ -129,11 +135,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								$.saveModel(saveEndCB, saveErrorCB, {
 									syncFromServer : true
 								});
-								saveEndCB("删除充值成功");
+								activityWindow.showMsg("删除充值成功");
+								saveEndCB();
 							}, function(e) {
+								activityWindow.close();
 								alert(e.__summary.msg);
 							});
 						}, function(e) {
+							activityWindow.close();
 							alert(e.__summary.msg);
 						});
 					}
@@ -144,9 +153,10 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						wait : true,
 						patch : true
 					});
-					alert("已经删除充值成功");
+					activityWindow.showMsg("删除充值成功");
 				}
 			}, function(e) {
+				activityWindow.close();
 				alert(e.__summary.msg);
 			});
 		} else if (accountShareData.accountType === "MoneyIncome") {
@@ -217,22 +227,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 										$.saveModel(saveEndCB, saveErrorCB, {
 											syncFromServer : true
 										});
-										saveEndCB("删除充值成功");
+										activityWindow.showMsg("删除充值成功");
+										saveEndCB();
 									}, saveErrorCB);
 								}, function(e) {
+									activityWindow.close();
 									alert(e.__summary.msg);
 								});
 							}, function(e) {
+								activityWindow.close();
 								alert(e.__summary.msg);
 							});
 						}, function(e) {
+							activityWindow.close();
 							alert(e.__summary.msg);
 						});
 					} else {
 						$.saveModel(saveEndCB, saveErrorCB, {
 							syncFromServer : true
 						});
-						saveEndCB("删除充值成功");
+						activityWindow.showMsg("删除充值成功");
+						saveEndCB();
 					}
 				} else {
 					Alloy.Globals.Server.putData(editData, function(data1) {
@@ -246,16 +261,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								wait : true,
 								patch : true
 							});
-							alert("已经删除成功");
+							activityWindow.showMsg("删除充值成功");
 						}, function(e) {
+							activityWindow.close();
 							alert(e.__summary.msg);
 						});
 					}, function(e) {
+						activityWindow.close();
 						alert(e.__summary.msg);
 					});
 				}
 
 			}, function(e) {
+				activityWindow.close();
 				alert(e.__summary.msg);
 			});
 		}
@@ -280,7 +298,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				$.saveModel(saveEndCB, saveErrorCB, {
 					syncFromServer : true
 				});
-				saveEndCB("删除充值成功");
+				saveEndCB("拒绝接受充值成功");
 			}, function(e) {
 				alert(e.__summary.msg);
 			});
@@ -308,7 +326,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				$.saveModel(saveEndCB, saveErrorCB, {
 					syncFromServer : true
 				});
-				saveEndCB("删除充值成功");
+				saveEndCB("拒绝删除充值成功");
 			}, function(e) {
 				alert(e.__summary.msg);
 			});

@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	return menuSection;
 };
 
-$.project.rightButton.addEventListener("singletap", function() {
+$.project.rightButton.addEventListener("singletap", function() {//未输入金额时，不打开分摊
 	if ($.amount.getValue()) {
 		Alloy.Globals.openWindow("money/moneyIncomeApportionAll", {
 			selectedIncome : $.$model,
@@ -33,10 +33,16 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		alert("请选择项目");
 		return;
 	}
+	$.exchangeRate.rightButton.setEnabled(false);
+	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
 		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 		alert(e.__summary.msg);
 	});
 });
@@ -110,6 +116,8 @@ $.convertUser2FriendModel = function(userModel) {
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
+	var activityWindow = Alloy.createController("activityMask");
+	activityWindow.open("正在获取该项目的汇率...");
 	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
 			loading = true;
@@ -124,13 +132,17 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 				exchange.save();
 				successCallback();
 				loading = false;
+				activityWindow.close();
 			}, function(e) {
+				activityWindow.close();
 				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
 			});
 		} else {
+			activityWindow.close();
 			successCallback();
 		}
 	} else {
+		activityWindow.close();
 		successCallback();
 	}
 };
@@ -189,31 +201,25 @@ function deleteApportion(apportionModel) {
 			item.xSet("amount", 0);
 		}
 	});
-	var average = 0;
-	if (apportionModel.xGet("apportionType") === "Average") {
-		if (averageApportions.length > 0) {
-			average = (incomeAmount - fixedTotal) / averageApportions.length;
+	if (averageApportions.length > 0) {
+		var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
+		var averageTotal = 0;
+		for (var i = 0; i < averageApportions.length - 1; i++) {
+			averageApportions[i].xSet("amount", average);
+			averageTotal += average;
 		}
-	} else {
-		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
-	}
-	var averageTotal = 0;
-	averageApportions.forEach(function(item) {
-		item.xSet("amount", average);
-		averageTotal += average;
-	});
-	if ((averageTotal !== $.amount.getValue() - fixedTotal) && averageApportions.length > 3) {
-		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+		averageApportions[averageApportions.length - 1].xSet("amount", incomeAmount - averageTotal - fixedTotal);
 	}
 }
 
-$.onWindowOpenDo(function() {
-	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.project.hideRightButton();
-	} else {
-		$.project.showRightButton();
-	}
-});
+// $.onWindowOpenDo(function() {
+//如果是多人分摊则显示分摊button，反之隐藏
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+	$.project.hideRightButton();
+} else {
+	$.project.showRightButton();
+}
+// });
 
 var detailsDirty = false, apportionsDirty = false;
 function updateDetails() {
@@ -294,11 +300,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	};
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if ($.saveableMode === "add") {
-		oldAmount = 0;
-	} else {
-		oldAmount = $.$model.xGet("amount");
-	}
+	oldAmount = $.$model.xGet("amount") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -345,8 +347,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			} else {
 				$.project.hideRightButton();
 			}
-		} else {
-			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
@@ -596,7 +596,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalIncome")) {
@@ -631,5 +631,4 @@ $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
 $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
-// $.apportion.UIInit($, $.getCurrentWindow());
 

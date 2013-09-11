@@ -77,7 +77,7 @@ exports.definition = {
 				},
 				amount : function(xValidateComplete) {
 					var error;
-					if (isNaN(this.xGet("amount"))) {
+					if (isNaN(this.xGet("amount")) || this.xGet("amount") === null) {
 						error = {
 							msg : "金额只能为数字"
 						};

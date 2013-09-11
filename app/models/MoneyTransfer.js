@@ -56,7 +56,7 @@ exports.definition = {
 			validators : {
 				transferOutAmount : function(xValidateComplete) {
 					var error;
-					if (isNaN(this.xGet("transferOutAmount"))) {
+					if (isNaN(this.xGet("transferOutAmount")) || this.xGet("amount") === null) {
 						error = {
 							msg : "转出金额只能为数字"
 						};
@@ -71,7 +71,7 @@ exports.definition = {
 				},
 				transferInAmount : function(xValidateComplete) {
 					var error;
-					if (isNaN(this.xGet("transferInAmount"))) {
+					if (isNaN(this.xGet("transferInAmount")) || this.xGet("amount") === null) {
 						error = {
 							msg : "转入金额只能为数字"
 						};
