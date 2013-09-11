@@ -3,6 +3,7 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 $.projectShareAuthorization = null;
 $.depositeFriendAccount = null;
 
+// 从服务器上获取账户汇率
 $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if (!$.$model.xGet("moneyAccount")) {
 		alert("请选择账户");
@@ -12,10 +13,16 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		alert("请选择项目");
 		return;
 	}
+	$.exchangeRate.rightButton.setEnabled(false);
+	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.exchangeRate.setValue(rate);
 		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 		alert(e.__summary.msg);
 	});
 });
@@ -24,7 +31,7 @@ if ($.saveableMode === "edit") {
 	$.project.label.setColor("#6e6d6d");
 	$.project.field.setColor("#6e6d6d");
 }
-
+// 从服务器上获取存入账户汇率
 $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if (!$.depositeFriendAccount) {
 		alert("请选择存入账户");
@@ -34,10 +41,16 @@ $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function
 		alert("请选择项目");
 		return;
 	}
+	$.depositeAccountExchangeRate.rightButton.setEnabled(false);
+	$.depositeAccountExchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.depositeFriendAccount.xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.depositeAccountExchangeRate.setValue(rate);
 		$.depositeAccountExchangeRate.field.fireEvent("change");
+		$.depositeAccountExchangeRate.rightButton.setEnabled(true);
+		$.depositeAccountExchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
+		$.depositeAccountExchangeRate.rightButton.setEnabled(true);
+		$.depositeAccountExchangeRate.rightButton.hideActivityIndicator();
 		alert(e.__summary.msg);
 	});
 });
@@ -90,6 +103,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	}
 };
 
+// 从共享成员列表中选取friendUser
 function openFriendSelector() {
 	// $.friendUser.field.blur();
 	var attributes = {
@@ -115,6 +129,7 @@ function openFriendSelector() {
 	Alloy.Globals.openWindow("project/projectShareAuthorizationAll", attributes);
 }
 
+// 选择存入账户
 function openDepositeAccountSelector() {
 	var attributes = {
 		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
@@ -204,13 +219,13 @@ if ($.saveableMode === "read") {
 	} else {
 		oldAmount = $.$model.xGet("amount");
 	}
-
+	
+	//获取账户汇率
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
 			setExchangeRate($.moneyAccount.getValue(), $.project.getValue());
 		}
 	}
-
 
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
@@ -239,13 +254,13 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.field.fireEvent("change");
 		}
 	}
-
+	
+	//获取存入账户汇率
 	function updateDepositeExchangeRate(e) {
 		if ($.depositeAccount.getValue() && $.project.getValue()) {
 			setDepositeExchangeRate($.depositeAccount.getValue(), $.project.getValue());
 		}
 	}
-
 
 	$.moneyAccount.field.addEventListener("change", updateDepositeExchangeRate);
 
@@ -275,9 +290,9 @@ if ($.saveableMode === "read") {
 		$.depositeAccountExchangeRate.field.fireEvent("change");
 		// }
 	}
-
-
-	$.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
+	
+	//项目改变，分类为项目的默认分类
+	$.project.field.addEventListener("change", function() {
 		if ($.project.getValue()) {
 			updateExchangeRate();
 			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
@@ -288,8 +303,9 @@ if ($.saveableMode === "read") {
 			}
 		}
 	});
-
-	$.friendUser.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
+	
+	//改变收款人检查是否是当前用户，如果是，显示存入账户供用户选择，如果不是隐藏存入账户
+	$.friendUser.field.addEventListener("change", function() {
 		if ($.$model.xGet("friendUser").xGet("id") === Alloy.Models.User.id) {
 			$.depositeAccount.$view.setHeight(42);
 		} else {
@@ -349,8 +365,9 @@ if ($.saveableMode === "read") {
 								editData.push(newMoneyAccount.toJSON());
 								editData.push(oldMoneyAccount.toJSON());
 							}
-
-							if (isRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+							
+							//若汇率不存在 ，保存时自动新建一条
+							if (isRateExist === false) {
 								if ($.$model.xGet("exchangeRate")) {
 									var exchange = Alloy.createModel("Exchange", {
 										localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
@@ -362,8 +379,9 @@ if ($.saveableMode === "read") {
 									editData.push(exchange.toJSON());
 								}
 							}
-
-							if (isDepositeRateExist === false) {//若汇率不存在 ，保存时自动新建一条
+							
+							//若汇率不存在 ，保存时自动新建一条
+							if (isDepositeRateExist === false) {
 								if ($.depositeAccountExchangeRate.getValue()) {
 									var depositeExchange = Alloy.createModel("Exchange", {
 										localCurrency : $.depositeFriendAccount.xGet("currency"),
