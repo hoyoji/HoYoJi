@@ -212,13 +212,14 @@ function deleteApportion(apportionModel) {
 	}
 }
 
-$.onWindowOpenDo(function() {
-	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1 && $.$model.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("friendUser") !== $.$model.xGet("ownerUser")) {
-		$.project.hideRightButton();
-	} else {
-		$.project.showRightButton();
-	}
-});
+// $.onWindowOpenDo(function() {
+//如果是多人分摊则显示分摊button，反之隐藏
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+	$.project.hideRightButton();
+} else {
+	$.project.showRightButton();
+}
+// });
 
 var detailsDirty = false, apportionsDirty = false;
 function updateDetails() {
@@ -299,11 +300,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	};
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if ($.saveableMode === "add") {
-		oldAmount = 0;
-	} else {
-		oldAmount = $.$model.xGet("amount");
-	}
+	oldAmount = $.$model.xGet("amount") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -350,8 +347,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			} else {
 				$.project.hideRightButton();
 			}
-		} else {
-			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
