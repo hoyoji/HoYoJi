@@ -201,26 +201,19 @@ function deleteApportion(apportionModel) {
 			item.xSet("amount", 0);
 		}
 	});
-	var average = 0;
-	if (apportionModel.xGet("apportionType") === "Average") {
-		if (averageApportions.length > 0) {
-			average = (incomeAmount - fixedTotal) / averageApportions.length;
+	if (averageApportions.length > 0) {
+		var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
+		var averageTotal = 0;
+		for (var i = 0; i < averageApportions.length - 1; i++) {
+			averageApportions[i].xSet("amount", average);
+			averageTotal += average;
 		}
-	} else {
-		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
-	}
-	var averageTotal = 0;
-	averageApportions.forEach(function(item) {
-		item.xSet("amount", average);
-		averageTotal += average;
-	});
-	if ((averageTotal !== $.amount.getValue() - fixedTotal) && averageApportions.length > 3) {
-		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+		averageApportions[averageApportions.length - 1].xSet("amount", incomeAmount - averageTotal - fixedTotal);
 	}
 }
 
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
+	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1 && $.$model.xGet("project").xGet("projectShareAuthorizations").at(0).xGet("friendUser") !== $.$model.xGet("ownerUser")) {
 		$.project.hideRightButton();
 	} else {
 		$.project.showRightButton();
@@ -608,7 +601,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalIncome")) {
