@@ -84,14 +84,14 @@
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="付款方账户" hintText="无付款方账户"
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="付款方账户" hintText="无付款方账户"
 				id="friendAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendAccount"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				bindModelSelectorParams="selectedFriendUser:friendUser"
-				/>
+				/> -->
 				<!-- <View height="42" backgroundColor="#f5f5f5">
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="incomeTypeLabel">是否预收</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher"  right="0" width="70%"

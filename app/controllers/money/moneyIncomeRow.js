@@ -18,6 +18,9 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if ($.$model.xGet("incomeType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
+				var activityWindow = Alloy.createController("activityMask");
+					activityWindow.open("正在删除...");
+				
 				var editData = [];
 				var accounts = [];
 				var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
@@ -66,11 +69,14 @@ $.makeContextMenu = function() {
 						syncFromServer : true
 					});
 					Alloy.Globals.Server.putData(editData, function(data1) {
+						activityWindow.close();
 						$.$model._xDelete();
 					}, function(e) {
+						activityWindow.close();
 						alert(e.__summary.msg);
 					});
 				}, function(e) {
+					activityWindow.close();
 					alert(e.__summary.msg);
 				});
 			} else {
