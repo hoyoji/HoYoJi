@@ -42,6 +42,7 @@ function onFooterbarTap(e) {
 					id : "sharedWithMeTable",
 					bottom : "0",
 					top : "0",
+					sortByField : "name",
 					hasDetail : "",
 					autoInit : "false",
 					parentController : $,
