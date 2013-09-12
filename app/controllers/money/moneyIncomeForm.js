@@ -201,31 +201,25 @@ function deleteApportion(apportionModel) {
 			item.xSet("amount", 0);
 		}
 	});
-	var average = 0;
-	if (apportionModel.xGet("apportionType") === "Average") {
-		if (averageApportions.length > 0) {
-			average = (incomeAmount - fixedTotal) / averageApportions.length;
+	if (averageApportions.length > 0) {
+		var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
+		var averageTotal = 0;
+		for (var i = 0; i < averageApportions.length - 1; i++) {
+			averageApportions[i].xSet("amount", average);
+			averageTotal += average;
 		}
-	} else {
-		average = (incomeAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
-	}
-	var averageTotal = 0;
-	averageApportions.forEach(function(item) {
-		item.xSet("amount", average);
-		averageTotal += average;
-	});
-	if ((averageTotal !== $.amount.getValue() - fixedTotal) && averageApportions.length > 3) {
-		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+		averageApportions[averageApportions.length - 1].xSet("amount", incomeAmount - averageTotal - fixedTotal);
 	}
 }
 
-$.onWindowOpenDo(function() {
-	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.project.hideRightButton();
-	} else {
-		$.project.showRightButton();
-	}
-});
+// $.onWindowOpenDo(function() {
+//如果是多人分摊则显示分摊button，反之隐藏
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+	$.project.hideRightButton();
+} else {
+	$.project.showRightButton();
+}
+// });
 
 var detailsDirty = false, apportionsDirty = false;
 function updateDetails() {
@@ -306,11 +300,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	};
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	if ($.saveableMode === "add") {
-		oldAmount = 0;
-	} else {
-		oldAmount = $.$model.xGet("amount");
-	}
+	oldAmount = $.$model.xGet("amount") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -357,8 +347,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			} else {
 				$.project.hideRightButton();
 			}
-		} else {
-			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
@@ -608,7 +596,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalIncome")) {

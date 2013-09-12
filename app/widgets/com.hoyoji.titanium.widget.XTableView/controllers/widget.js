@@ -562,13 +562,13 @@ exports.refreshTable = function() {
 
 };
 
-function clearTable(){
+function clearTable() {
 	var sectionIndex = 0;
 	while (sectionIndex < $.table.data.length) {
-		for(var rowIndex = 0; rowIndex < $.table.data[sectionIndex].rows.length; rowIndex++){
+		for (var rowIndex = 0; rowIndex < $.table.data[sectionIndex].rows.length; rowIndex++) {
 			$.table.data[sectionIndex].rows[rowIndex].fireEvent("rowremoved", {
-					bubbles : false
-				});
+				bubbles : false
+			});
 		}
 		sectionIndex++;
 	}
@@ -1003,11 +1003,19 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 			for (var i = 0; i < removedRows.length; i++) {
 				if (row.id === removedRows[i].id) {
 					if (collectionId) {
+						if(row.collectionId === collectionId){
+							row.fireEvent("rowremoved", {
+								bubbles : false
+							});
+						}
 						return row.collectionId !== collectionId;
 					} else {
+						row.fireEvent("rowremoved", {
+							bubbles : false
+						});
 						return false;
 					}
-				}
+				} 
 			}
 			return true;
 		});

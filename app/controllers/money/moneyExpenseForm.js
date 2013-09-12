@@ -47,18 +47,18 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {//汇率�
 	});
 });
 
-$.details.addEventListener("singletap", function(e) {
+$.details.addEventListener("singletap", function(e) {//非自己创建的账务的details入口
 	Alloy.Globals.openWindow("money/moneyExpenseDetailAll", {
 		selectedExpense : $.$model,
 		closeWithoutSave : true
 	});
 });
 
-function updateApportionAmount() {
+function updateApportionAmount() {//amount改变，平均分摊也跟着改变
 	if ($.$model.xGet("moneyExpenseApportions").length > 0) {
 		var fixedTotal = 0;
 		var averageApportionsNotDelete = [];
-		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
+		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {//获取当前固定分摊的总和，平均分摊的每个元素
 			if (item.__xDeletedHidden) {
 				// skip these
 			} else if (item.__xDeleted) {
@@ -66,15 +66,11 @@ function updateApportionAmount() {
 			} else if (item.xGet("apportionType") === "Fixed") {
 				fixedTotal = fixedTotal + item.xGet("amount");
 			} else if (item.xGet("apportionType") === "Average") {
-				// averageApportions.push(item);
-				// if (!item.__xDeleted) {
 				averageApportionsNotDelete.push(item);
-				// }
 			}
 		});
 
-		if (averageApportionsNotDelete.length > 0) {
-			console.info("++++++++++++averageApportionsNotDelete++++++" + averageApportionsNotDelete.length);
+		if (averageApportionsNotDelete.length > 0) {//更新平均分摊的金额
 			var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
 			average = Number(average.toFixed(2));
 			// 分摊取两位小数
@@ -162,16 +158,15 @@ if (!$.$model) {
 		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
 		ownerUser : Alloy.Models.User
 	});
-
 	$.setSaveableMode("add");
 }
 
-if ($.saveableMode === "edit") {
+if ($.saveableMode === "edit") {//修改时项目不可点击，设成灰色
 	$.project.label.setColor("#6e6d6d");
 	$.project.field.setColor("#6e6d6d");
 }
 
-function updateAmount() {
+function updateAmount() {//没输入支出金额时，新增明细金额的同时更新账务金额
 	$.amount.setValue($.$model.xGet("amount"));
 	$.amount.field.fireEvent("change");
 }
@@ -185,7 +180,7 @@ function updateAmount() {
  }
  */
 
-function deleteApportion(apportionModel) {
+function deleteApportion(apportionModel) {//从form打开apportion进行删除，只是把该row设成xDeleted 在form保存时才进行真正的删除，删除后要重新计算平均分摊
 	var expenseAmount = $.$model.xGet("amount");
 	var moneyExpenseApportions = $.$model.xGet("moneyExpenseApportions");
 	var averageApportions = [];
@@ -201,31 +196,25 @@ function deleteApportion(apportionModel) {
 			item.xSet("amount", 0);
 		}
 	});
-	var average = 0;
-	if (apportionModel.xGet("apportionType") === "Average") {
-		if (averageApportions.length > 0) {
-			average = (expenseAmount - fixedTotal) / averageApportions.length;
+	if (averageApportions.length > 0) {
+		var average = Number(((expenseAmount - fixedTotal) / averageApportions.length).toFixed(2));
+		var averageTotal = 0;
+		for (var i = 0; i < averageApportions.length - 1; i++) {
+			averageApportions[i].xSet("amount", average);
+			averageTotal += average;
 		}
-	} else {
-		average = (expenseAmount - fixedTotal + apportionModel.xGet("amount")) / (averageApportions.length);
-	}
-	var averageTotal = 0;
-	averageApportions.forEach(function(item) {
-		item.xSet("amount", average);
-		averageTotal += average;
-	});
-	if ((averageTotal !== $.$model.xGet("amount") - fixedTotal) && averageApportions.length > 3) {
-		averageApportions[averageApportions.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+		averageApportions[averageApportions.length - 1].xSet("amount", expenseAmount - averageTotal - fixedTotal);
 	}
 }
 
-$.onWindowOpenDo(function() {
-	if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length < 2) {
-		$.project.hideRightButton();
-	} else {
-		$.project.showRightButton();
-	}
-});
+// $.onWindowOpenDo(function() {
+//如果是多人分摊则显示分摊button，反之隐藏
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+	$.project.hideRightButton();
+} else {
+	$.project.showRightButton();
+}
+// });
 
 var detailsDirty = false, apportionsDirty = false;
 function updateDetails() {
@@ -243,14 +232,14 @@ function updateApportions() {
 }
 
 $.$model.on("xchange:amount", updateAmount);
-// $.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
+/* $.$model.xGet("moneyExpenseDetails").on("xdelete", deleteDetail);*///隐藏功能,使用明细金额作为收支金额
 $.$model.xGet("moneyExpenseApportions").on("xdelete", deleteApportion);
 $.$model.xGet("moneyExpenseApportions").on("add _xchange xdelete", updateApportions);
 $.$model.xGet("moneyExpenseDetails").on("add _xchange xdelete", updateDetails);
 
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:amount", updateAmount);
-	// $.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);//隐藏功能,使用明细金额作为收支金额
+	/*  $.$model.xGet("moneyExpenseDetails").off("xdelete", deleteDetail);*///隐藏功能,使用明细金额作为收支金额
 	$.$model.xGet("moneyExpenseApportions").off("xdelete", deleteApportion);
 	$.$model.xGet("moneyExpenseApportions").off("add _xchange xdelete", updateApportions);
 	$.$model.xGet("moneyExpenseDetails").off("add _xchange xdelete", updateDetails);
@@ -268,12 +257,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
+			// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 		} else {
 			if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 				$.exchangeRate.$view.setHeight(42);
 			}
 		}
-		// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
 	});
 
 	/* //隐藏功能,使用明细金额作为收支金额
@@ -303,12 +292,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			return "请先选择项目";
 		}
 	};
+
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	if ($.saveableMode === "add") {
-		oldAmount = 0;
-	} else {
-		oldAmount = $.$model.xGet("amount");
-	}
+	oldAmount = $.$model.xGet("amount") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -355,35 +341,21 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			} else {
 				$.project.hideRightButton();
 			}
-		} else {
-			$.project.hideRightButton();
 		}
 
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
-			// collection = $.$model.xGet("moneyExpenseApportions");
-			// $.moneyExpenseApportionsTable.removeCollection(collection);
 			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
 				projectFirstChangeFlag = true;
-				console.info("projectFirstChangeFlag++++++" + projectFirstChangeFlag);
 				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-					// oldApportions.push(item);
 					if (item.isNew()) {
-						console.info("aaaaaaaaaaaaaaa");
 						$.$model.xGet("moneyExpenseApportions").remove(item);
 					} else {
 						item.__xDeletedHidden = true;
-						console.info("bbbbbbbbbbbbb");
 					}
 				});
 			}
-			// $.$model.xGet("moneyExpenseApportions").reset();
-			// console.info("reset++++++");
 		}
 		if ($.project.getValue() === oldProject) {
-			// console.info("oldApportions1++++++"+oldApportions.length);
-			// oldApportions.forEach(function(item) {
-			// $.$model.xGet("moneyExpenseApportions").add(item);
-			// });
 			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
 				if (item.isNew()) {
 					$.$model.xGet("moneyExpenseApportions").remove(item);
@@ -450,11 +422,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		});
 		//}
 
-		var exchange;
 		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 			var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
 			if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
-				exchange = Alloy.createModel("Exchange", {
+				var exchange = Alloy.createModel("Exchange", {
 					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
 					foreignCurrency : $.$model.xGet("project").xGet("currency"),
 					rate : $.$model.xGet("exchangeRate"),
@@ -499,12 +470,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			// 生成分摊
 			$.$model.generateExpenseApportions(true);
 		}
-		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
-		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
-		// projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + $.$model.xGet("amount"));
-		// projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.xGet("apportionedTotalExpense") + $.$model.xGet("amount"));
-		// projectShareAuthorization.xAddToSave($);
-		// }
+
 		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
@@ -606,9 +572,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			// if (exchange) {
-			// exchange.xAddToDelete($);
-			// }
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				if (projectShareAuthorization.hasChanged("apportionedTotalExpense")) {
 					projectShareAuthorization.xSet("apportionedTotalExpense", projectShareAuthorization.previous("apportionedTotalExpense"));
