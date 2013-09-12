@@ -367,5 +367,5 @@ $.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.friend.UIInit($, $.getCurrentWindow());
-$.friendAccount.UIInit($, $.getCurrentWindow());
+// $.friendAccount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());

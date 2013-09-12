@@ -100,10 +100,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									messageData : $.$model.xGet("messageData")
 								}, function() {
+									//删除本地的充值收入和充值支出
 									moneyIncome._xDelete();
 									moneyExpense._xDelete(null,{
 										syncFromServer : true
 									});
+									//服务器上修改的projectshareAuthorization更新到本地
 									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
 										projectId : accountShareData.account.projectId,
 										friendUserId : $.$model.xGet("fromUserId")
@@ -216,10 +218,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 									messageData : $.$model.xGet("messageData")
 								}, function() {
+									//删除本地的充值收入和充值支出
 									moneyExpense._xDelete();
 									moneyIncome._xDelete(null,{
 										syncFromServer : true
 									});
+									//服务器上修改的projectshareAuthorization更新到本地
 									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
 										projectId : accountShareData.account.projectId,
 										friendUserId : $.$model.xGet("fromUserId")
