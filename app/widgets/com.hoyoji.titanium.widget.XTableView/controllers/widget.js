@@ -98,18 +98,18 @@ $.$view.addEventListener("click", function(e) {
 			// remove the section header
 			if ($.table.data[sectionIndex].rows.length === 1) {
 				// setTimeout(function(){
-				$.table.data[sectionIndex].rows[0].fireEvent("rowremoved", {
-					bubbles : false
-				});
+				// $.table.data[sectionIndex].rows[0].fireEvent("rowremoved", {
+					// bubbles : false
+				// });
 				var data = $.table.data.slice(0);
 				data.splice(sectionIndex, 1);
 				$.table.setData(data);
 				showNoDataIndicator(data.length);
 				// },10000);
 			} else {
-				getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
-					bubbles : false
-				});
+				// getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
+					// bubbles : false
+				// });
 				$.table.deleteRow(e.index);
 			}
 		} else {
@@ -148,7 +148,6 @@ $.$view.addEventListener("click", function(e) {
 			$.__changingRow = false;
 			$.trigger("endchangingrow");
 		}
-
 
 		$.table.addEventListener("postlayout", deleteRowPostLayout);
 	} else {
