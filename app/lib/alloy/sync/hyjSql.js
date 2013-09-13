@@ -203,6 +203,8 @@ function Sync(method, model, opts) {
 						}
 						return;
 					}
+					r.close();
+					r = null;
 				}
 
 				db.execute(sqlInsert, values);
@@ -328,6 +330,7 @@ function Sync(method, model, opts) {
 				rs.next();
 			}
 			rs.close();
+			rs = null;
 			if (!opts.dbTrans) {
 				db.close();
 			}
@@ -417,8 +420,12 @@ function Sync(method, model, opts) {
 						db.execute("ROLLBACK;");
 						db.close();
 					}
+				r.close();
+				r = null;
 					break;
 				}
+				r.close();
+				r = null;
 			}
 
 			if (sqlCheckPermission2) {
@@ -435,8 +442,12 @@ function Sync(method, model, opts) {
 						db.execute("ROLLBACK;");
 						db.close();
 					}
+				r.close();
+				r = null;
 					break;
 				}
+				r.close();
+				r = null;
 			}
 
 			db.execute(sql, values);
@@ -453,6 +464,8 @@ function Sync(method, model, opts) {
 					if (r.rowCount === 0) {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','update','" + ownerUserId + "','" + ownerUserId + "')");
 					}
+					r.close();
+					r = null;
 				}
 				resp = model.attributes;
 			}
@@ -514,6 +527,8 @@ function Sync(method, model, opts) {
 							db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
 						}
 					}
+					r.close();
+					r = null;
 				}
 				// backbonejs needs this id to remove the model from collection
 				// model.id = null;
