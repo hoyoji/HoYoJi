@@ -648,7 +648,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								}
 							} else {
 								activityWindow.close();
-								alert("子项目未同步，清同步再修改");
+								alert("子项目未同步，请同步再修改");
 								saveErrorCB();
 							}
 
