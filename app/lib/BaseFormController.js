@@ -89,6 +89,8 @@
 						}
 					}
 					if (!dbTrans) {
+						$.__saveCollection = [];
+						$.__deleteCollection = [];
 						myDbTrans.commit();
 					}
 					xCompleteCallback();
@@ -120,6 +122,8 @@
 							var successCB = function() {
 								$.$model.off("sync", successCB);
 								$.$model.off("error", errorCB);
+								$.__saveCollection = [];
+								$.__deleteCollection = [];
 								if (saveEndCB) {
 									saveEndCB();
 								}

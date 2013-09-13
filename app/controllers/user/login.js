@@ -162,6 +162,7 @@ function doLogin(e) {
 						}						
 						model = Alloy.createModel(modelType, model);
 						model.attributes["id"] = id;
+						model.xSet("ownerUser", Alloy.Models.User);
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {

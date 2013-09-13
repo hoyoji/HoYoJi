@@ -541,7 +541,7 @@
 					filterStr = filter;
 				} else {
 					if (filter.id) {
-						var record = Alloy.Collections[table].get(this.xGet("id"));
+						var record = Alloy.Collections[table].get(filter.id);
 						if (record) {
 							return record;
 						}
