@@ -25,7 +25,10 @@
 			},
 			createTransaction : function() {
 				var db = Ti.Database.open(this.getDbName());
-				var dbTrans = {
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
+					var dbTrans = {
 					db : db,
 					xCommitCount : 0,
 					xCommitStart : function() {

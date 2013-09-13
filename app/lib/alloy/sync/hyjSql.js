@@ -180,6 +180,9 @@ function Sync(method, model, opts) {
 				var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
 				if (!opts.dbTrans) {
 					db = Ti.Database.open(dbName);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
 					db.execute("BEGIN;");
 				}
 
@@ -308,6 +311,9 @@ function Sync(method, model, opts) {
 
 			if (!opts.dbTrans) {
 				db = Ti.Database.open(dbName);
+				if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+					db.execute("pragma journal_mode=WAL;");
+				}
 			}
 			var rs = db.execute(sql), len = 0, values = [];
 			while (rs.isValidRow()) {
@@ -380,7 +386,7 @@ function Sync(method, model, opts) {
 						// } else {
 						// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("projectId") + '" AND (p.ownerUserId = "' + ownerUserId + '" ' + 'OR joinedtable.projectShare' + table + 'AddNew = 1)';
 						// }
-						// }
+						// }x
 					}
 				} else if (table === "User") {
 
@@ -392,7 +398,10 @@ function Sync(method, model, opts) {
 			}
 			if (!opts.dbTrans) {
 				db = Ti.Database.open(dbName);
-				db.execute("BEGIN;");
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
+					db.execute("BEGIN;");
 			}
 			if (sqlCheckPermission) {
 				console.info(sqlCheckPermission);
@@ -481,6 +490,9 @@ function Sync(method, model, opts) {
 			}
 			if (!opts.dbTrans) {
 				db = Ti.Database.open(dbName);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
 			}
 			db.execute(sql, model.id);
 			if (db.rowsAffected === 0) {
@@ -563,6 +575,9 @@ function Sync(method, model, opts) {
 function GetMigrationFor(dbname, table) {
 	var mid = null, 
 	db = Ti.Database.open(dbname);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
 	db.execute("CREATE TABLE IF NOT EXISTS migrations (latest TEXT, model TEXT);");
 	var rs = db.execute("SELECT latest FROM migrations where model = ?;", table);
 	if (rs.isValidRow())
@@ -582,6 +597,9 @@ function Migrate(Model) {
 	targetNumber = typeof config.adapter.migration == "undefined" || config.adapter.migration === null ? lastMigration.id : config.adapter.migration;
 	if ( typeof targetNumber == "undefined" || targetNumber === null) {
 		var tmpDb = Ti.Database.open(config.adapter.db_name);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						tmpDb.execute("pragma journal_mode=WAL;");
+					}
 		migrator.db = tmpDb;
 		migrator.createTable(config);
 		tmpDb.close();
@@ -598,6 +616,9 @@ function Migrate(Model) {
 	} else
 		direction = 1;
 	db = Ti.Database.open(config.adapter.db_name);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						db.execute("pragma journal_mode=WAL;");
+					}
 	migrator.db = db;
 	db.execute("BEGIN;");
 	if (migrations.length)
