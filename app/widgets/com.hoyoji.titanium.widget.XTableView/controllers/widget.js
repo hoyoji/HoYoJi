@@ -840,8 +840,6 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
-
-
 	$.$view.setTop("99%");
 	animate();
 };
