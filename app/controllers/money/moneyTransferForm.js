@@ -276,7 +276,7 @@ $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.transferOut.UIInit($, $.getCurrentWindow());
 $.transferIn.UIInit($, $.getCurrentWindow());
-// $.exchangeRate.UIInit($, $.getCurrentWindow());
+$.exchangeRate.UIInit($, $.getCurrentWindow());
 $.transferInAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
