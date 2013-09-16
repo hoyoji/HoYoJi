@@ -65,6 +65,7 @@ function numPress(e) {
 	if (flagNewNum) {
 		// activeTextField.setValue(e.source.getTitle());
 		$.display.setText(e.source.getTitle());
+		
 		flagNewNum = false;
 	} else {
 		var readout = $.display.getText() || "0";

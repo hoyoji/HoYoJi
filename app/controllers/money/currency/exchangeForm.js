@@ -9,16 +9,16 @@ $.rate.rightButton.addEventListener("singletap", function(e) {
 		alert("请选择外币币种");
 		return;
 	}
-	$.exchangeRate.rightButton.setEnabled(false);
-	$.exchangeRate.rightButton.showActivityIndicator();
+	$.rate.rightButton.setEnabled(false);
+	$.rate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("localCurrency").id, $.$model.xGet("foreignCurrency").id, function(rate) {
 		$.rate.setValue(rate);
 		$.rate.field.fireEvent("change");
-		$.exchangeRate.rightButton.setEnabled(true);
-		$.exchangeRate.rightButton.hideActivityIndicator();
+		$.rate.rightButton.setEnabled(true);
+		$.rate.rightButton.hideActivityIndicator();
 	}, function(e) {
-		$.exchangeRate.rightButton.setEnabled(true);
-		$.exchangeRate.rightButton.hideActivityIndicator();
+		$.rate.rightButton.setEnabled(true);
+		$.rate.rightButton.hideActivityIndicator();
 		alert(e.__summary.msg);
 	});
 });
