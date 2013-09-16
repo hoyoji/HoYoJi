@@ -177,18 +177,9 @@ function Sync(method, model, opts) {
 				values.push(_creatorId);
 				q.push("?");
 
-				var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
-				if (!opts.dbTrans) {
-					db = Ti.Database.open(dbName);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						db.execute("pragma journal_mode=WAL;");
-					}
-					db.execute("BEGIN;");
-				}
-
 				if (sqlCheckPermission) {
 					console.info(sqlCheckPermission);
-					var r = db.execute(sqlCheckPermission);
+					var r = Alloy.Globals.DataStore.getReadDb().execute(sqlCheckPermission);
 					if (r.rowCount === 0) {
 						error = {
 							__summary : {
@@ -197,16 +188,21 @@ function Sync(method, model, opts) {
 						};
 						delete model.id;
 						delete opts.wait;
-						if (!opts.dbTrans) {
-							db.execute("ROLLBACK;");
-							db.close();
-						}
 						return;
 					}
 					r.close();
 					r = null;
 				}
-
+				
+				var sqlInsert = "INSERT INTO " + table + " (" + names.join(",") + ") VALUES (" + q.join(",") + ");", sqlId = "SELECT last_insert_rowid();";
+				if (!opts.dbTrans) {
+					db = Alloy.Globals.DataStore.getWriteDb();
+					// db = Ti.Database.open(dbName);
+					// if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						// db.execute("pragma journal_mode=WAL;");
+					// }
+					db.execute("BEGIN;");
+				}
 				db.execute(sqlInsert, values);
 				if (!model.id) {
 					var rs = db.execute(sqlId);
@@ -229,7 +225,7 @@ function Sync(method, model, opts) {
 
 				if (!opts.dbTrans) {
 					db.execute("COMMIT;");
-					db.close();
+					//db.close();
 				}
 				return model.attributes;
 			}();
@@ -311,13 +307,13 @@ function Sync(method, model, opts) {
 
 			sql = sql + orderBy;
 
-			if (!opts.dbTrans) {
-				db = Ti.Database.open(dbName);
-				if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-					db.execute("pragma journal_mode=WAL;");
-				}
-			}
-			var rs = db.execute(sql), len = 0, values = [];
+			// if (!opts.dbTrans) {
+				// db = Ti.Database.open(dbName);
+				// if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+					// db.execute("pragma journal_mode=WAL;");
+				// }
+			// }
+			var rs = Alloy.Globals.DataStore.getReadDb().execute(sql), len = 0, values = [];
 			while (rs.isValidRow()) {
 				var o = {}, fc = 0;
 				fc = _.isFunction(rs.fieldCount) ? rs.fieldCount() : rs.fieldCount;
@@ -331,9 +327,9 @@ function Sync(method, model, opts) {
 			}
 			rs.close();
 			rs = null;
-			if (!opts.dbTrans) {
-				db.close();
-			}
+			// if (!opts.dbTrans) {
+				// db.close();
+			// }
 			model.length = len;
 			len === 1 ? resp = values[0] : resp = values;
 			break;
@@ -399,16 +395,10 @@ function Sync(method, model, opts) {
 					sql += ' AND ownerUserId = "' + ownerUserId + '"';
 				}
 			}
-			if (!opts.dbTrans) {
-				db = Ti.Database.open(dbName);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						db.execute("pragma journal_mode=WAL;");
-					}
-					db.execute("BEGIN;");
-			}
+			
 			if (sqlCheckPermission) {
 				console.info(sqlCheckPermission);
-				var r = db.execute(sqlCheckPermission);
+				var r = Alloy.Globals.DataStore.getReadDb().execute(sqlCheckPermission);
 				if (r.rowCount === 0) {
 					error = {
 						__summary : {
@@ -416,10 +406,6 @@ function Sync(method, model, opts) {
 						}
 					};
 					delete opts.wait;
-					if (!opts.dbTrans) {
-						db.execute("ROLLBACK;");
-						db.close();
-					}
 				r.close();
 				r = null;
 					break;
@@ -430,7 +416,7 @@ function Sync(method, model, opts) {
 
 			if (sqlCheckPermission2) {
 				console.info(sqlCheckPermission2);
-				var r = db.execute(sqlCheckPermission2);
+				var r = Alloy.Globals.DataStore.getReadDb().execute(sqlCheckPermission2);
 				if (r.rowCount === 0) {
 					error = {
 						__summary : {
@@ -438,18 +424,17 @@ function Sync(method, model, opts) {
 						}
 					};
 					delete opts.wait;
-					if (!opts.dbTrans) {
-						db.execute("ROLLBACK;");
-						db.close();
-					}
-				r.close();
-				r = null;
+					r.close();
+					r = null;
 					break;
 				}
 				r.close();
 				r = null;
 			}
-
+			if (!opts.dbTrans) {
+				db = Alloy.Globals.DataStore.getWriteDb();
+				db.execute("BEGIN;");
+			}
 			db.execute(sql, values);
 			if (db.rowsAffected === 0) {
 				error = {
@@ -471,7 +456,7 @@ function Sync(method, model, opts) {
 			}
 			if (!opts.dbTrans) {
 				db.execute("COMMIT;");
-				db.close();
+				//db.close();
 			}
 			break;
 		case "delete":
@@ -502,13 +487,14 @@ function Sync(method, model, opts) {
 				}
 			}
 			if (!opts.dbTrans) {
-				db = Ti.Database.open(dbName);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						db.execute("pragma journal_mode=WAL;");
-					}
+				db = Alloy.Globals.DataStore.getWriteDb();
+				db.execute("BEGIN;");
 			}
 			db.execute(sql, model.id);
 			if (db.rowsAffected === 0) {
+				if (!opts.dbTrans) {
+					db.execute("ROLLBACK;");
+				}
 				error = {
 					__summary : {
 						msg : "没有删除权限"
@@ -533,10 +519,13 @@ function Sync(method, model, opts) {
 				// backbonejs needs this id to remove the model from collection
 				// model.id = null;
 				resp = model.attributes;
-			}
-			if (!opts.dbTrans) {
-				db.close();
-			}
+				if (!opts.dbTrans) {
+					db.execute("COMMIT;");
+				}
+			 }
+			// if (!opts.dbTrans) {
+				// db.close();
+			// }
 	}
 	if (resp) {
 		if (method !== "read") {
@@ -590,9 +579,6 @@ function Sync(method, model, opts) {
 function GetMigrationFor(dbname, table) {
 	var mid = null, 
 	db = Ti.Database.open(dbname);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						db.execute("pragma journal_mode=WAL;");
-					}
 	db.execute("CREATE TABLE IF NOT EXISTS migrations (latest TEXT, model TEXT);");
 	var rs = db.execute("SELECT latest FROM migrations where model = ?;", table);
 	if (rs.isValidRow())
@@ -612,9 +598,6 @@ function Migrate(Model) {
 	targetNumber = typeof config.adapter.migration == "undefined" || config.adapter.migration === null ? lastMigration.id : config.adapter.migration;
 	if ( typeof targetNumber == "undefined" || targetNumber === null) {
 		var tmpDb = Ti.Database.open(config.adapter.db_name);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						tmpDb.execute("pragma journal_mode=WAL;");
-					}
 		migrator.db = tmpDb;
 		migrator.createTable(config);
 		tmpDb.close();
@@ -631,9 +614,6 @@ function Migrate(Model) {
 	} else
 		direction = 1;
 	db = Ti.Database.open(config.adapter.db_name);
-					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
-						db.execute("pragma journal_mode=WAL;");
-					}
 	migrator.db = db;
 	db.execute("BEGIN;");
 	if (migrations.length)

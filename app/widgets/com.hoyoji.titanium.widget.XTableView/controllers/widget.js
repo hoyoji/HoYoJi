@@ -638,12 +638,12 @@ exports.fetchNextPage = function(tableRowsCount) {
 			$.sort(null, null, null, true, newRows);
 		}
 
-		showNoDataIndicator();
+		_showNoDataIndicator();
 	}
 
 	if ($.beforeFetchNextPage) {
 		$.beforeFetchNextPage(tableRowsCount, pageSize + 1, $.getOrderBy() + " " + $.getSortOrder(), doFetchNextPage, function(err) {
-			showNoDataIndicator();
+			_showNoDataIndicator();
 			alert(err.msg);
 		});
 	} else {
@@ -671,7 +671,6 @@ exports.getRowsCount = function() {
 };
 
 exports.addCollection = function(collection, rowView) {
-	$.showActivityIndicator("加载中...");
 
 	if (rowView) {
 		collection.__rowView = rowView;
@@ -691,6 +690,7 @@ exports.addCollection = function(collection, rowView) {
 			// sortedArray.push({record : item, collection : collection});
 			// });
 		} else {
+			//$.showActivityIndicator("加载中...");
 			var newRows = [];
 			collection.forEach(function(item) {
 				newRows.push(createRowView(item, collection));
@@ -1216,28 +1216,36 @@ $.onWindowOpenDo(function() {
 });
 
 if (OS_ANDROID) {
-	$.table.addEventListener("postlayout", showNoDataIndicator);
+	//$.table.addEventListener("postlayout", showNoDataIndicator);
 }
 
 var __noDataIndicator;
 function _showNoDataIndicator() {
 	var dataCount = $.getDataCount();
 	if (dataCount > 0) {
+		if(OS_ANDROID){
+			$.fetchNextPageFooter.setTop(null);
+			$.fetchNextPageFooter.setBottom(0);
+		}
 		if (dataCount > $.getRowsCount()) {
 			$.fetchNextPageButton.setText("更多...");
 		} else {
 			$.fetchNextPageButton.setText("无更多内容");
 		}
 	} else {
+		if(OS_ANDROID){
+			$.fetchNextPageFooter.setBottom(null);
+			$.fetchNextPageFooter.setTop(60);
+		}
 		$.fetchNextPageButton.setText("无内容");
 	}
 	fetchingNextPage = false;
 }
 
 function showNoDataIndicator() {
-	if (OS_IOS) {
+	//if (OS_IOS) {
 		_showNoDataIndicator();
-	}
+	//}
 }
 
 exports.getPageSize = function() {
