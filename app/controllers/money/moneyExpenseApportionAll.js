@@ -4,7 +4,7 @@ $.moneyExpenseApportionsTable.UIInit($, $.getCurrentWindow());
 
 var selectedExpense = $.$attrs.selectedExpense;
 
-$.onWindowOpenDo(function() {
+$.onWindowOpenDo(function() {//不是自己的账务，分摊不可增删改
 	if (selectedExpense.xGet("ownerUser") !== Alloy.Models.User) {
 		$.footerBar.addExpenseApportionMember.setEnabled(false);
 		$.footerBar.addAllExpenseApportionMember.setEnabled(false);
