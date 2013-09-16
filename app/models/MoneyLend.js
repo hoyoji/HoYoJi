@@ -86,6 +86,10 @@ exports.definition = {
 							error = {
 								msg : "金额不能为负数"
 							};
+						} else if (this.xGet("amount") > 999999999) {
+							error = {
+								msg : "金额超出范围，请重新输入"
+							};
 						} else if (this.xGet("amount") < (this.xGet("paybackedAmount") / this.xGet("exchangeRate"))) {
 							error = {
 								msg : "借出金额小于已收款金额 ，请重新输入"

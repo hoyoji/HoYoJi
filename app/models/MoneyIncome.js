@@ -88,6 +88,10 @@ exports.definition = {
 						error = {
 							msg : "金额不能为负数"
 						};
+					} else if (this.xGet("amount") > 999999999) {
+						error = {
+							msg : "金额超出范围，请重新输入"
+						};
 					} else if (this.xGet("incomeType") !== "Deposite") {
 						var apportionAmount = 0;
 						this.xGet("moneyIncomeApportions").forEach(function(item) {
@@ -417,10 +421,10 @@ exports.definition = {
 							// patch : true
 							// });
 							oldMoneyAccount.__syncCurrentBalance = oldMoneyAccount.__syncCurrentBalance ? oldMoneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
-						} 
+						}
 						// else {
-							// dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
-							// dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
+						// dbTrans.__syncData[oldMoneyAccount.id] = dbTrans.__syncData[oldMoneyAccount.id] || {};
+						// dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance = dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance ? dbTrans.__syncData[oldMoneyAccount.id].__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 						// }
 
 						var newMoneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -475,13 +479,13 @@ exports.definition = {
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var self = this;
 				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
-				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
-				var moneyAccount = this.xGet("moneyAccount");
-				// var amount = this.xGet("amount");
-				// moneyAccount.save({
-				// currentBalance : moneyAccount.xGet("currentBalance") - amount
-				// }, saveOptions);
-				moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
+					var moneyAccount = this.xGet("moneyAccount");
+					// var amount = this.xGet("amount");
+					// moneyAccount.save({
+					// currentBalance : moneyAccount.xGet("currentBalance") - amount
+					// }, saveOptions);
+					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 				}
 				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {

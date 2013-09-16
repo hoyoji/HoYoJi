@@ -41,6 +41,10 @@ exports.definition = {
 							error = {
 								msg : "金额不能为负数"
 							};
+						} else if (this.xGet("amount") > 999999999) {
+							error = {
+								msg : "金额超出范围，请重新输入"
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -60,22 +64,22 @@ exports.definition = {
 					this.xGet("moneyExpense").trigger("xchange:amount", this.xGet("moneyExpense"));
 					this.xGet("moneyExpense").xGet("moneyExpenseDetails").remove(this);
 					xFinishCallback();
-				} else if(this.xGet("moneyExpense").xGet("useDetailsTotal")){
+				} else if (this.xGet("moneyExpense").xGet("useDetailsTotal")) {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 
-						var amount = self.xGet("amount");
-						var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
-						moneyAccount.save({
-							currentBalance : moneyAccount.xGet("currentBalance") + amount
-						}, saveOptions);
-	
-						var expenseAmount = self.xGet("moneyExpense").xGet("amount");
-						self.xGet("moneyExpense").save({
-							amount : expenseAmount - amount,
-							moneyAccount : moneyAccount
-						}, saveOptions);
-					
+					var amount = self.xGet("amount");
+					var moneyAccount = self.xGet("moneyExpense").xGet("moneyAccount");
+					moneyAccount.save({
+						currentBalance : moneyAccount.xGet("currentBalance") + amount
+					}, saveOptions);
+
+					var expenseAmount = self.xGet("moneyExpense").xGet("amount");
+					self.xGet("moneyExpense").save({
+						amount : expenseAmount - amount,
+						moneyAccount : moneyAccount
+					}, saveOptions);
+
 					this._xDelete(xFinishCallback, options);
 				} else {
 					this._xDelete(xFinishCallback, options);
@@ -98,12 +102,12 @@ exports.definition = {
 				if (moneyExpense.id) {
 					// 支出已在本地存在, 我们要更新本地支出的余额
 					// if (moneyExpense.xGet("useDetailsTotal")) {
-						moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount + record.amount : record.amount;
-						// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-						// moneyExpense.__syncAmount = oldExpenseAmount + record.amount;
+					moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount + record.amount : record.amount;
+					// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+					// moneyExpense.__syncAmount = oldExpenseAmount + record.amount;
 					// }
-					 // else {
-						// moneyExpense.__syncAmount = moneyExpense.__syncAmount !== undefined ? moneyExpense.__syncAmount + record.amount : record.amount;
+					// else {
+					// moneyExpense.__syncAmount = moneyExpense.__syncAmount !== undefined ? moneyExpense.__syncAmount + record.amount : record.amount;
 					// }
 				}
 			},
@@ -118,9 +122,9 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
-				
+
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
-				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
 					this.syncUpdate(record, dbTrans);
 					this._syncUpdate(record, dbTrans);
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
@@ -135,10 +139,10 @@ exports.definition = {
 				if (moneyExpense.id) {
 					// 支出已在本地存在
 					// if (moneyExpense.xGet("moneyExpenseDetails").length > 0) {
-						// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
-						// moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount");
+					// var oldExpenseAmount = moneyExpense.__syncAmount || moneyExpense.xGet("amount");
+					// moneyExpense.__syncAmount = oldExpenseAmount - this.xGet("amount");
 					// }
-					moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount - this.xGet("amount") : - this.xGet("amount");
+					moneyExpense.__syncAmount = moneyExpense.__syncAmount ? moneyExpense.__syncAmount - this.xGet("amount") : -this.xGet("amount");
 				}
 			}
 		});
