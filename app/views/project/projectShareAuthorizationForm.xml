@@ -41,6 +41,7 @@
 					<View right="0" width="60%" layout="horizontal" horizontalWrap="false">
 						<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" width="20%"
 						id="shareAllSubProjects" autoInit="false"
+						editModeEditability="noneditable"
 						hightLight="false"
 						items=" 否,是"
 						values="0,1"
