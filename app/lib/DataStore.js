@@ -1,7 +1,26 @@
 ( function() {
 		exports.DataStore = {
+			_writeDbs : {},
+			_readDbs : {},
 			getDbName : function(){
 				return Alloy.Globals.currentUserDatabaseName || "hoyoji";
+			},
+			getWriteDb : function(dbName){
+				dbName = dbName || this.getDbName();
+				if(!this._writeDbs[dbName]){
+					this._writeDbs[dbName] =  Ti.Database.open(dbName);
+					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
+						this._writeDbs[dbName].execute("pragma journal_mode=WAL;");
+					}
+				}
+				return this._writeDbs[dbName];
+			},
+			getReadDb : function(dbName){
+				dbName = dbName || this.getDbName();
+				if(!this._readDbs[dbName]){
+					this._readDbs[dbName] =  Ti.Database.open(dbName);
+				}
+				return this._readDbs[dbName];
 			},
 			initStore : function() {
 				var collections = ["Login","User","Picture","Project","ProjectShareAuthorization","MoneyExpenseCategory","MoneyIncomeCategory","FriendCategory","Currency","Exchange","MoneyAccount","MoneyAccountBalanceAdjustment","Friend","Message","MessageBox","MoneyExpense","MoneyIncome","MoneyExpenseDetail","MoneyIncomeDetail","MoneyExpenseApportion","MoneyIncomeApportion","MoneyTransfer","MoneyBorrow","MoneyReturn","MoneyLend","MoneyPayback","ClientSyncTable"];
@@ -24,7 +43,7 @@
 				}
 			},
 			createTransaction : function() {
-				var db = Ti.Database.open(this.getDbName());
+					var db = Ti.Database.open(this.getDbName());
 					if (OS_ANDROID && Ti.Platform.Android.API_LEVEL >= 16){
 						db.execute("pragma journal_mode=WAL;");
 					}

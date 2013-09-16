@@ -288,7 +288,7 @@
 							// 1. 我们先检查看该记录是否有被本地修改过，如果有修改过，我们处理冲突。
 							// 2. 否则，检查看该记录在不在本地表里面, 如果不再我们将其添加进来
 							sql = "SELECT * FROM ClientSyncTable WHERE recordId = ?";
-							rs = dbTrans.db.execute(sql, [record.id]);
+							rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [record.id]);
 							if (rs.rowCount > 0) {
 								var operation = rs.fieldByName("operation");
 								rs.close();

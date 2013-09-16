@@ -301,19 +301,9 @@ if ($.saveableMode === "read") {
 					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
 					messageData : selectedDepositeMsg.xGet("messageData")
 				}, function() {
-					// var db = Ti.Database.open("hoyoji");
-					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					// db.execute(sql, [selectedDepositeMsg.xGet("id")]);
-					// db.close();
 					selectedDepositeMsg.xSet("messageState", "closed");
 					selectedDepositeMsg.xAddToSave($);
 					editData.push(selectedDepositeMsg.toJSON());
-					// selectedDepositeMsg.save({
-					// messageState : "closed"
-					// }, {
-					// wait : true,
-					// patch : true
-					// });
 					addData.push($.$model.toJSON());
 					Alloy.Globals.Server.postData(addData, function(data) {
 						Alloy.Globals.Server.putData(editData, function(data) {
