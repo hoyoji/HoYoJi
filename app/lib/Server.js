@@ -327,7 +327,7 @@
 								sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'delete'";
 								for (var belongsTo in model.config.belongsTo) {
 									if (model.config.belongsTo[belongsTo].attribute) {
-										rs = dbTrans.db.execute(sql, [record.id]);
+										rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [record.id]);
 										if (rs.rowCount > 0) {
 											belongsToDeleted = true;
 											break;

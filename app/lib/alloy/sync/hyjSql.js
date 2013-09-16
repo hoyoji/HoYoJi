@@ -492,7 +492,9 @@ function Sync(method, model, opts) {
 			}
 			db.execute(sql, model.id);
 			if (db.rowsAffected === 0) {
-				db.execute("ROLLBACK;");
+				if (!opts.dbTrans) {
+					db.execute("ROLLBACK;");
+				}
 				error = {
 					__summary : {
 						msg : "没有删除权限"
@@ -517,7 +519,9 @@ function Sync(method, model, opts) {
 				// backbonejs needs this id to remove the model from collection
 				// model.id = null;
 				resp = model.attributes;
-				db.execute("COMMIT;");
+				if (!opts.dbTrans) {
+					db.execute("COMMIT;");
+				}
 			 }
 			// if (!opts.dbTrans) {
 				// db.close();
