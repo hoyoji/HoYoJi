@@ -88,7 +88,11 @@ exports.definition = {
 							error = {
 								msg : "金额不能小于0"
 							};
-						}
+						}else if (this.xGet("amount") > 999999999) {
+							error = {
+								msg : "金额超出范围，请重新输入"
+							};
+						} 
 					}
 
 					if (this.xGet("moneyBorrow")) {

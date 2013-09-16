@@ -65,6 +65,10 @@ exports.definition = {
 							error = {
 								msg : "转出金额不能为负数"
 							};
+						} else if (this.xGet("transferOutAmount") > 999999999) {
+							error = {
+								msg : "金额超出范围，请重新输入"
+							};
 						}
 					}
 					xValidateComplete(error);
@@ -79,6 +83,10 @@ exports.definition = {
 						if (this.xGet("transferInAmount") < 0) {
 							error = {
 								msg : "转入金额不能为负数"
+							};
+						} else if (this.xGet("transferInAmount") > 999999999) {
+							error = {
+								msg : "金额超出范围，请重新输入"
 							};
 						}
 					}
