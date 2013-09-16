@@ -502,11 +502,11 @@ function Sync(method, model, opts) {
 				};
 			} else {
 				if (!opts.syncFromServer) {
-					var r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'");
+					var r = Alloy.Globals.DataStore.getReadDb().execute("SELECT * FROM ClientSyncTable WHERE operation = 'create' AND recordId = '" + model.id + "'");
 					if (r.rowCount > 0) {
 						db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
 					} else {
-						r = db.execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
+						r = Alloy.Globals.DataStore.getReadDb().execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
 						if (r.rowCount > 0) {
 							db.execute("Update ClientSyncTable SET operation = 'delete' WHERE recordId = '" + model.id + "'");
 						} else {

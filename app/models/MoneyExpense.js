@@ -493,7 +493,7 @@ exports.definition = {
 				// patch : true,
 				// syncFromServer : true
 				// };
-				if(this.xGet("ownerUserId") === Alloy.Models.User.id){
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					var moneyAccount = this.xGet("moneyAccount");
 					// var amount = this.xGet("amount");
 					// moneyAccount.save({
@@ -511,11 +511,28 @@ exports.definition = {
 						// }, saveOptions);
 						item.__syncActualTotalExpense = item.__syncActualTotalExpense ? item.__syncActualTotalExpense - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
 					}
-
 				});
 			},
 			syncRollback : function() {
 				delete this.__syncAmount;
+			},
+			syncDeleteHasMany : function(record, dbTrans) {
+				for (var hasMany in this.config.hasMany) {
+					this.xGet(hasMany).forEach(function(item) {
+						var sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'create'";
+						rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [item.id]);
+						if (rs.rowCount > 0) {
+							dbTrans.__syncUpdateData = dbTrans.__syncUpdateData || [];
+							dbTrans.__syncUpdateData[item.config.adapter.collection_name].push(item.id);
+							item.syncDelete(record, dbTrans);
+							item._syncDelete(record, dbTrans, function(e) {
+							});
+							sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+							dbTrans.db.execute(sql, [item.id]);
+						}
+						rs.close();
+					});
+				}
 			}
 		});
 

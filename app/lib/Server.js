@@ -217,6 +217,7 @@
 					dbTrans.newExchangesFromServer = {};
 					dbTrans.newCurrenciesFromServer = {};
 					dbTrans.__syncData = {};
+					dbTrans.__syncUpdateData = {};
 					dbTrans.begin();
 
 					function rollbackSyncPull() {
@@ -224,6 +225,7 @@
 						delete dbTrans.__syncData;
 						delete dbTrans.newExchangesFromServer;
 						delete dbTrans.newCurrenciesFromServer;
+						delete dbTrans.__syncUpdateData;
 						xErrorCallback({
 							__summary : {
 								msg : "无法获取汇率"
@@ -275,6 +277,9 @@
 									// dbTrans.db.execute(sql, [item.xGet("id")]);
 									// });
 									// }
+									if(model.syncDeleteHasMany) {
+										model.syncDeleteHasMany(record, dbTrans);
+									}
 									model.syncDelete(record, dbTrans);
 									model._syncDelete(record, dbTrans, function(e) {
 									});
@@ -307,8 +312,6 @@
 											dbTrans.off("rollback", syncRollbackConflict);
 											model.syncRollback();
 										}
-
-
 										dbTrans.on("rollback", syncRollbackConflict);
 									}
 									model.syncUpdateConflict(record, dbTrans);
@@ -352,8 +355,6 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
-
-
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
@@ -365,11 +366,17 @@
 							rs = null;
 						}
 					});
-
+					for(var models in dbTrans.__syncUpdateData){
+						models.forEach(function(model){
+							model.syncUpdate(record, dbTrans);
+							model._syncUpdate(record, dbTrans);
+						});
+					}
 					if (dbTrans.commit()) {
 						delete dbTrans.__syncData;
 						delete dbTrans.newExchangesFromServer;
 						delete dbTrans.newCurrenciesFromServer;
+						delete dbTrans.__syncUpdateData;
 						Alloy.Models.User.xGet("messageBox").processNewMessages();
 						xFinishedCallback();
 					} else {
@@ -377,12 +384,11 @@
 							delete dbTrans.__syncData;
 							delete dbTrans.newExchangesFromServer;
 							delete dbTrans.newCurrenciesFromServer;
+							delete dbTrans.__syncUpdateData;
 							dbTrans.off("commit", postCommit);
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
 							xFinishedCallback();
 						}
-
-
 						dbTrans.on("commit", postCommit);
 					}
 				}, function(e) {
