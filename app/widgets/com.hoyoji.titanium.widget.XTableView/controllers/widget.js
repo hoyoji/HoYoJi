@@ -97,7 +97,7 @@ $.$view.addEventListener("click", function(e) {
 			$.trigger("endchangingrow");
 		}
 		$.table.addEventListener("postlayout", deleteRowPostLayout);
-	} 	
+	}
 	if (e.deleteRow === true) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 
@@ -107,7 +107,7 @@ $.$view.addEventListener("click", function(e) {
 			if ($.table.data[sectionIndex].rows.length === 1) {
 				// setTimeout(function(){
 				// $.table.data[sectionIndex].rows[0].fireEvent("rowremoved", {
-					// bubbles : false
+				// bubbles : false
 				// });
 				var data = $.table.data.slice(0);
 				data.splice(sectionIndex, 1);
@@ -116,7 +116,7 @@ $.$view.addEventListener("click", function(e) {
 				// },10000);
 			} else {
 				// getRowViewByRowIndex(e.index).fireEvent("rowremoved", {
-					// bubbles : false
+				// bubbles : false
 				// });
 				$.table.deleteRow(e.index);
 			}
@@ -133,6 +133,7 @@ $.$view.addEventListener("click", function(e) {
 			$.table.setData(data);
 			showNoDataIndicator(data.length);
 		}
+		$.fetchNextPage();
 	} else if (e.expandSection === true) {
 		exports.expandHasDetailSection(e.index, e.sectionRowId);
 	} else if (e.collapseSection === true) {
@@ -150,7 +151,7 @@ $.$view.addEventListener("click", function(e) {
 		var len = collection.length ? collection.length - 1 : 0;
 		addRowToSection(rowModel, collection, e.index + len);
 	}
-	if(OS_IOS){
+	if (OS_IOS) {
 		$.__changingRow = false;
 		$.trigger("endchangingrow");
 	}
@@ -623,8 +624,13 @@ exports.fetchNextPage = function(tableRowsCount) {
 			});
 		}
 
-		var newRows = [];
-		sortedArray.slice(tableRowsCount, tableRowsCount + pageSize).forEach(function(item) {
+		var newRows = [], moreRowsLength = 0 ;
+		if(tableRowsCount < pageSize){
+			moreRowsLength = pageSize - tableRowsCount;
+		} else {
+			moreRowsLength = tableRowsCount % pageSize || pageSize;
+		}
+		sortedArray.slice(tableRowsCount, tableRowsCount + moreRowsLength).forEach(function(item) {
 			newRows.push(createRowView(item.record, item.collection));
 		});
 
@@ -632,12 +638,12 @@ exports.fetchNextPage = function(tableRowsCount) {
 			$.sort(null, null, null, true, newRows);
 		}
 
-		showNoDataIndicator();
+		_showNoDataIndicator();
 	}
 
 	if ($.beforeFetchNextPage) {
 		$.beforeFetchNextPage(tableRowsCount, pageSize + 1, $.getOrderBy() + " " + $.getSortOrder(), doFetchNextPage, function(err) {
-			showNoDataIndicator();
+			_showNoDataIndicator();
 			alert(err.msg);
 		});
 	} else {
@@ -665,7 +671,6 @@ exports.getRowsCount = function() {
 };
 
 exports.addCollection = function(collection, rowView) {
-	$.showActivityIndicator("加载中...");
 
 	if (rowView) {
 		collection.__rowView = rowView;
@@ -685,6 +690,7 @@ exports.addCollection = function(collection, rowView) {
 			// sortedArray.push({record : item, collection : collection});
 			// });
 		} else {
+			//$.showActivityIndicator("加载中...");
 			var newRows = [];
 			collection.forEach(function(item) {
 				newRows.push(createRowView(item, collection));
@@ -763,6 +769,9 @@ function refreshCollection(collection, appendRows, removedRows) {
 
 $.onWindowCloseDo(function() {
 	clearCollections();
+	if (OS_ANDROID) {
+		$.table.removeEventListener("postlayout", _showNoDataIndicator);
+	}
 });
 
 exports.resetTable = function() {
@@ -840,6 +849,8 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
+
+
 	$.$view.setTop("99%");
 	animate();
 };
@@ -1000,7 +1011,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 			for (var i = 0; i < removedRows.length; i++) {
 				if (row.id === removedRows[i].id) {
 					if (collectionId) {
-						if(row.collectionId === collectionId){
+						if (row.collectionId === collectionId) {
 							row.fireEvent("rowremoved", {
 								bubbles : false
 							});
@@ -1012,7 +1023,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 						});
 						return false;
 					}
-				} 
+				}
 			}
 			return true;
 		});
@@ -1204,39 +1215,37 @@ $.onWindowOpenDo(function() {
 	}
 });
 
+if (OS_ANDROID) {
+	//$.table.addEventListener("postlayout", showNoDataIndicator);
+}
+
 var __noDataIndicator;
-function showNoDataIndicator(hasData) {
+function _showNoDataIndicator() {
 	var dataCount = $.getDataCount();
 	if (dataCount > 0) {
-		// if (__noDataIndicator) {
-		// __noDataIndicator.hide();
-		// __noDataIndicator.setTop(-100);
-		// }
+		if(OS_ANDROID){
+			$.fetchNextPageFooter.setTop(null);
+			$.fetchNextPageFooter.setBottom(0);
+		}
 		if (dataCount > $.getRowsCount()) {
 			$.fetchNextPageButton.setText("更多...");
 		} else {
 			$.fetchNextPageButton.setText("无更多内容");
 		}
 	} else {
+		if(OS_ANDROID){
+			$.fetchNextPageFooter.setBottom(null);
+			$.fetchNextPageFooter.setTop(60);
+		}
 		$.fetchNextPageButton.setText("无内容");
-		// if (!__noDataIndicator) {
-		// __noDataIndicator = Ti.UI.createLabel({
-		// text : "没有内容",
-		// color : "blue",
-		// backgroundColor : "transparent",
-		// width : Ti.UI.SIZE,
-		// height : Ti.UI.SIZE,
-		// top : "25%",
-		// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		// zIndex : 200
-		// });
-		// $.$view.add(__noDataIndicator);
-		// } else {
-		// __noDataIndicator.setTop("25%");
-		// __noDataIndicator.show();
-		// }
 	}
 	fetchingNextPage = false;
+}
+
+function showNoDataIndicator() {
+	//if (OS_IOS) {
+		_showNoDataIndicator();
+	//}
 }
 
 exports.getPageSize = function() {
