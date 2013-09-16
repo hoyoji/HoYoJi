@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
+provisioning_profiles/development/088B02C6-3EBF-4C5D-9DA6-347B056CA3AC/appid=com.hoyoji.money
+provisioning_profiles/development/088B02C6-3EBF-4C5D-9DA6-347B056CA3AC/name=iOS Team Provisioning Profile\: com.hoyoji.money
+provisioning_profiles/development/088B02C6-3EBF-4C5D-9DA6-347B056CA3AC/uuid=088B02C6-3EBF-4C5D-9DA6-347B056CA3AC
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/appid=*
-provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/filepath=/Users/hoyoji/Downloads/iOS_Team_Provisioning_Profile_.mobileprovision
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/name=iOS Team Provisioning Profile\: *
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/uuid=EC99D4F0-4208-45AA-98C9-385FC6D5D50B

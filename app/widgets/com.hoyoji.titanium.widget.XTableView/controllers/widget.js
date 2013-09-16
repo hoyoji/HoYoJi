@@ -90,6 +90,14 @@ if (OS_ANDROID) {
 $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
+	if (OS_ANDROID) {
+		function deleteRowPostLayout() {
+			$.table.removeEventListener("postlayout", deleteRowPostLayout);
+			$.__changingRow = false;
+			$.trigger("endchangingrow");
+		}
+		$.table.addEventListener("postlayout", deleteRowPostLayout);
+	} 	
 	if (e.deleteRow === true) {
 		exports.collapseHasDetailSection(e.index, e.sectionRowId);
 
@@ -142,15 +150,7 @@ $.$view.addEventListener("click", function(e) {
 		var len = collection.length ? collection.length - 1 : 0;
 		addRowToSection(rowModel, collection, e.index + len);
 	}
-	if (OS_ANDROID) {
-		function deleteRowPostLayout() {
-			$.table.removeEventListener("postlayout", deleteRowPostLayout);
-			$.__changingRow = false;
-			$.trigger("endchangingrow");
-		}
-
-		$.table.addEventListener("postlayout", deleteRowPostLayout);
-	} else {
+	if(OS_IOS){
 		$.__changingRow = false;
 		$.trigger("endchangingrow");
 	}
@@ -840,8 +840,6 @@ exports.open = function(top) {
 
 		$.$view.animate(animation);
 	}
-
-
 	$.$view.setTop("99%");
 	animate();
 };
