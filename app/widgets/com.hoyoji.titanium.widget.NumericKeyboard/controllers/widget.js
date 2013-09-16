@@ -77,7 +77,14 @@ function numPress(e) {
 			// activeTextField.setValue(e.source.getTitle());
 			$.display.setText(e.source.getTitle());
 		} else {
-			var thisNum = readout + e.source.getTitle();
+			var thisNum;
+			console.info("+++++++++++readout++++"+readout + "++readoutlength++"+ readout.length);
+			if (!readout.length || readout.length < 9) {
+				
+				thisNum = readout + e.source.getTitle();
+			} else {
+				thisNum = readout;
+			}
 			// activeTextField.setValue(thisNum);
 			$.display.setText(thisNum);
 		}
