@@ -62,101 +62,65 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				id : accountShareData.account.id
 			});
 			//去服务器上查找对应的充值支出和充值收入
-			Alloy.Globals.Server.getData(accounts, function(data) {
-				if (data[0].length > 0) {
-					if (moneyIncome && moneyIncome.xGet("id")) {
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							projectId : accountShareData.account.projectId,
-							friendUserId : Alloy.Models.User.id
-						});
-						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
-						editData.push(projectShareAuthorization.toJSON());
-						projectShareAuthorization.xAddToSave($);
-
-						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
-						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
-						moneyIncome.xGet("moneyAccount").xAddToSave($);
-
-					}
-					if (data[1].length > 0) {
-						$.$model.xSet("messageState", "closed");
-						editData.push($.$model.toJSON());
-						var date = (new Date()).toISOString();
-						Alloy.Globals.Server.putData(editData, function(data1) {
-							Alloy.Globals.Server.deleteData([{
-								__dataType : "MoneyIncome",
-								id : data[0][0].id
-							}], function(data1) {
-								//充值支出不是自己创建的，发送一条消息到服务器上去删除
-								Alloy.Globals.Server.sendMsg({
-									id : guid(),
-									"toUserId" : $.$model.xGet("fromUserId"),
-									"fromUserId" : Alloy.Models.User.id,
-									"type" : "Project.Deposite.DeleteResponse",
-									"messageState" : "new",
-									"messageTitle" : "删除充值",
-									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
-									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
-									messageData : $.$model.xGet("messageData")
-								}, function() {
-									//删除本地的充值收入和充值支出
-									moneyIncome._xDelete();
-									moneyExpense._xDelete(null,{
-										syncFromServer : true
-									});
-									//服务器上修改的projectshareAuthorization更新到本地
-									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
-										projectId : accountShareData.account.projectId,
-										friendUserId : $.$model.xGet("fromUserId")
-									}], function(collection) {
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
-										});
-										activityWindow.showMsg("删除充值成功");
-										saveEndCB();
-									}, saveErrorCB);
-								}, function(e) {
-									activityWindow.close();
-									alert(e.__summary.msg);
-								});
-							}, function(e) {
-								activityWindow.close();
-								alert(e.__summary.msg);
-							});
-						}, function(e) {
-							activityWindow.close();
-							alert(e.__summary.msg);
-						});
-					} else {
-						Alloy.Globals.Server.putData(editData, function(data1) {
-							Alloy.Globals.Server.deleteData([{
-								__dataType : "MoneyIncome",
-								id : data[0][0].id
-							}], function(data1) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-								activityWindow.showMsg("删除充值成功");
-								saveEndCB();
-							}, function(e) {
-								activityWindow.close();
-								alert(e.__summary.msg);
-							});
-						}, function(e) {
-							activityWindow.close();
-							alert(e.__summary.msg);
-						});
-					}
-				} else {
-					$.$model.save({
-						messageState : "closed"
-					}, {
-						wait : true,
-						patch : true
+			Alloy.Globals.Server.deleteData([{
+				__dataType : "MoneyIncome",
+				id : moneyIncome.xGet("id")
+			}], function(data) {
+				if (moneyIncome && moneyIncome.xGet("id")) {
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : accountShareData.account.projectId,
+						friendUserId : Alloy.Models.User.id
 					});
-					activityWindow.showMsg("删除充值成功");
+					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
+					editData.push(projectShareAuthorization.toJSON());
+					projectShareAuthorization.xAddToSave($);
+
+					moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
+					editData.push(moneyIncome.xGet("moneyAccount").toJSON());
+					moneyIncome.xGet("moneyAccount").xAddToSave($);
+
 				}
+				$.$model.xSet("messageState", "closed");
+				editData.push($.$model.toJSON());
+				var date = (new Date()).toISOString();
+				Alloy.Globals.Server.putData(editData, function(data1) {
+						//充值支出不是自己创建的，发送一条消息到服务器上去删除
+					Alloy.Globals.Server.sendMsg({
+						id : guid(),
+						"toUserId" : $.$model.xGet("fromUserId"),
+						"fromUserId" : Alloy.Models.User.id,
+						"type" : "Project.Deposite.DeleteResponse",
+						"messageState" : "new",
+						"messageTitle" : "删除充值",
+						"date" : date,
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
+						"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+						messageData : $.$model.xGet("messageData")
+					}, function() {
+						//删除本地的充值收入和充值支出
+						moneyIncome._xDelete();
+						moneyExpense._xDelete(null,{
+							syncFromServer : true
+						});
+						//服务器上修改的projectshareAuthorization更新到本地
+						Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+							projectId : accountShareData.account.projectId,
+							friendUserId : $.$model.xGet("fromUserId")
+						}], function(collection) {
+							$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+							activityWindow.showMsg("删除充值成功");
+							saveEndCB();
+						}, saveErrorCB);
+					}, function(e) {
+						activityWindow.close();
+						alert(e.__summary.msg);
+					});
+				}, function(e) {
+					activityWindow.close();
+					alert(e.__summary.msg);
+				});
 			}, function(e) {
 				activityWindow.close();
 				alert(e.__summary.msg);
@@ -180,101 +144,65 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				id : accountShareData.account.id
 			});
 			//在服务器上查找相应的充值支出和充值收入
-			Alloy.Globals.Server.getData(accounts, function(data) {
-				if (data[0].length > 0) {
-					if (moneyExpense && moneyExpense.xGet("id")) {
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							projectId : accountShareData.account.projectId,
-							friendUserId : Alloy.Models.User.id
-						});
-						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
-						editData.push(projectShareAuthorization.toJSON());
-						projectShareAuthorization.xAddToSave($);
+			Alloy.Globals.Server.deleteData([{
+				__dataType : "MoneyExpense",
+				id : moneyExpense.xGet("id")
+			}], function(data) {
+				if (moneyExpense && moneyExpense.xGet("id")) {
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : accountShareData.account.projectId,
+						friendUserId : Alloy.Models.User.id
+					});
+					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
+					editData.push(projectShareAuthorization.toJSON());
+					projectShareAuthorization.xAddToSave($);
 
-						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
-						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
-						moneyExpense.xGet("moneyAccount").xAddToSave($);
+					moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
+					editData.push(moneyExpense.xGet("moneyAccount").toJSON());
+					moneyExpense.xGet("moneyAccount").xAddToSave($);
 
-					}
-					if (data[1].length > 0) {
-						$.$model.xSet("messageState", "closed");
-						editData.push($.$model.toJSON());
-						var date = (new Date()).toISOString();
-						Alloy.Globals.Server.putData(editData, function(data1) {
-							Alloy.Globals.Server.deleteData([{
-								__dataType : "MoneyExpense",
-								id : data[0][0].id
-							}], function(data1) {
-								//充值收入不是自己创建的，发送一条消息到服务器上去删除
-								Alloy.Globals.Server.sendMsg({
-									id : guid(),
-									"toUserId" : $.$model.xGet("fromUserId"),
-									"fromUserId" : Alloy.Models.User.id,
-									"type" : "Project.Deposite.DeleteResponse",
-									"messageState" : "new",
-									"messageTitle" : "删除充值",
-									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意删除充值",
-									"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
-									messageData : $.$model.xGet("messageData")
-								}, function() {
-									//删除本地的充值收入和充值支出
-									moneyExpense._xDelete();
-									moneyIncome._xDelete(null,{
-										syncFromServer : true
-									});
-									//服务器上修改的projectshareAuthorization更新到本地
-									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
-										projectId : accountShareData.account.projectId,
-										friendUserId : $.$model.xGet("fromUserId")
-									}], function(collection) {
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
-										});
-										activityWindow.showMsg("删除充值成功");
-										saveEndCB();
-									}, saveErrorCB);
-								}, function(e) {
-									activityWindow.close();
-									alert(e.__summary.msg);
-								});
-							}, function(e) {
-								activityWindow.close();
-								alert(e.__summary.msg);
-							});
-						}, function(e) {
-							activityWindow.close();
-							alert(e.__summary.msg);
-						});
-					} else {
-						$.saveModel(saveEndCB, saveErrorCB, {
+				}
+				$.$model.xSet("messageState", "closed");
+				editData.push($.$model.toJSON());
+				var date = (new Date()).toISOString();
+				Alloy.Globals.Server.putData(editData, function(data1) {
+					//充值收入不是自己创建的，发送一条消息到服务器上去删除
+					Alloy.Globals.Server.sendMsg({
+						id : guid(),
+						"toUserId" : $.$model.xGet("fromUserId"),
+						"fromUserId" : Alloy.Models.User.id,
+						"type" : "Project.Deposite.DeleteResponse",
+						"messageState" : "new",
+						"messageTitle" : "删除充值",
+						"date" : date,
+						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
+						"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
+						messageData : $.$model.xGet("messageData")
+					}, function() {
+						//删除本地的充值收入和充值支出
+						moneyExpense._xDelete();
+						moneyIncome._xDelete(null,{
 							syncFromServer : true
 						});
-						activityWindow.showMsg("删除充值成功");
-						saveEndCB();
-					}
-				} else {
-					Alloy.Globals.Server.putData(editData, function(data1) {
-						Alloy.Globals.Server.deleteData([{
-							__dataType : "MoneyExpense",
-							id : data[0][0].id
-						}], function(data1) {
-							$.$model.save({
-								messageState : "closed"
-							}, {
-								wait : true,
-								patch : true
+						//服务器上修改的projectshareAuthorization更新到本地
+						Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+							projectId : accountShareData.account.projectId,
+							friendUserId : $.$model.xGet("fromUserId")
+						}], function(collection) {
+							$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
 							});
 							activityWindow.showMsg("删除充值成功");
-						}, function(e) {
-							activityWindow.close();
-							alert(e.__summary.msg);
-						});
+							saveEndCB();
+						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
 						alert(e.__summary.msg);
 					});
-				}
+				}, function(e) {
+					activityWindow.close();
+					alert(e.__summary.msg);
+				});
 
 			}, function(e) {
 				activityWindow.close();
