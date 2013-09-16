@@ -22,7 +22,6 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 var collection;
 if ($.$attrs.selectedFriendUser) {
 	var selectedFriendUser = $.$attrs.selectedFriendUser;
-	console.info("++++++++++hello" + $.$attrs.selectedFriendUser.xGet("id"));
 	var friend = Alloy.createModel("Friend").xFindInDb({
 		friendUserId : selectedFriendUser.id
 	});
