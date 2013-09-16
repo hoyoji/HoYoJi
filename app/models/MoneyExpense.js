@@ -522,8 +522,16 @@ exports.definition = {
 						var sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'create'";
 						rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [item.id]);
 						if (rs.rowCount > 0) {
-							dbTrans.__syncUpdateData = dbTrans.__syncUpdateData || [];
-							dbTrans.__syncUpdateData[item.config.adapter.collection_name].push(item.id);
+							if(hasMany === "moneyExpenseApportions"){
+								var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+									projectId : item.xGet("moneyExpense").xGet("projectId"),
+									friendUserId : item.xGet("friendUserId")
+								});
+								// if(projectShareAuthorization.id){
+									dbTrans.__syncUpdateData["ProjectShareAuthorization"] = dbTrans.__syncUpdateData["ProjectShareAuthorization"] || {};
+									dbTrans.__syncUpdateData["ProjectShareAuthorization"][projectShareAuthorization.id] = projectShareAuthorization;
+								// }
+							}
 							item.syncDelete(record, dbTrans);
 							item._syncDelete(record, dbTrans, function(e) {
 							});

@@ -315,6 +315,9 @@
 										dbTrans.on("rollback", syncRollbackConflict);
 									}
 									model.syncUpdateConflict(record, dbTrans);
+                            		if(dbTrans.__syncUpdateData[model.config.adapter.collection_name]){
+                            			delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+                            		}
 								}
 							} else {
 								rs.close();
@@ -360,6 +363,9 @@
 										// 该记录已存在本地，我们更新
 										model.syncUpdate(record, dbTrans);
 										model._syncUpdate(record, dbTrans);
+                                		if(dbTrans.__syncUpdateData[model.config.adapter.collection_name]){
+                                			delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+                                		}
 									}
 								}
 							}
@@ -367,10 +373,11 @@
 						}
 					});
 					for(var models in dbTrans.__syncUpdateData){
-						models.forEach(function(model){
-							model.syncUpdate(record, dbTrans);
-							model._syncUpdate(record, dbTrans);
-						});
+						for(var model in dbTrans.__syncUpdateData[models]){
+							var record = {};
+							dbTrans.__syncUpdateData[models][model].syncUpdate(record, dbTrans);
+							dbTrans.__syncUpdateData[models][model]._syncUpdate(record, dbTrans);
+						}
 					}
 					if (dbTrans.commit()) {
 						delete dbTrans.__syncData;
