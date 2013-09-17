@@ -25,7 +25,6 @@
 			/>
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField"  hideFormRowBottom="true" leftSize="3"
 				id="amount" autoInit="false"
-			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"
 			bindAttribute = "amount"
 			/>

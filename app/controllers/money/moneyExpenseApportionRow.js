@@ -14,9 +14,13 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("移除成员", function() {
 		deleteApportion();
 	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User));
-
+	menuSection.add($.createContextMenuItem("设为均摊", function() {
+		setToAverage();
+	}, $.$model.xGet("moneyExpense").xGet("ownerUser") !== Alloy.Models.User || $.$model.xGet("apportionType") === "Average"));
+	
 	return menuSection;
 };
+
 function refreshAmount() {
 	$.amount.refresh();
 }
@@ -46,61 +50,71 @@ function deleteApportion() {
 	}
 }
 
-$.amount.$view.addEventListener("singletap", function(e) {
-	e.cancelBubble = true;
-});
+function setToAverage() {
+	$.$model.xSet("apportionType", "Average");
+	updateAmount();
+}
 
-$.apportionType.label.addEventListener("singletap", function(e) {
-	e.cancelBubble = true;
-});
+// $.amount.$view.addEventListener("singletap", function(e) {
+// e.cancelBubble = true;
+// });
+//
+// $.apportionType.label.addEventListener("singletap", function(e) {
+// e.cancelBubble = true;
+// });
 
 $.$view.addEventListener("singletap", function(e) {
 	if ($.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
-		if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
-			if ($.$model.xGet("apportionType") === "Fixed") {
-				$.$model.xSet("apportionType", "Average");
-			} else if ($.$model.xGet("apportionType") === "Average") {
-				$.$model.xSet("apportionType", "Fixed");
-			}
-			// $.apportionType.label.fireEvent("change");
-		}
+		// if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
+		// if ($.$model.xGet("apportionType") === "Fixed") {
+		// $.$model.xSet("apportionType", "Average");
+		// } else if ($.$model.xGet("apportionType") === "Average") {
+		// $.$model.xSet("apportionType", "Fixed");
+		// }
+		// }
+		$.$model.apportionFocus = true;
+		$.getCurrentWindow().openNumericKeyboard($.amount);
+
 	} else {
 		alert("没有权限");
 	}
 });
 
-function editApportionType() {
-	if ($.$model.xGet("apportionType") === "Fixed") {
-		$.amount.$attrs.editModeEditability = "editable";
-		$.amount.$attrs.addModeEditability = "editable";
-	} else {
-		$.amount.$attrs.editModeEditability = "noneditable";
-		$.amount.$attrs.addModeEditability = "noneditable";
-		updateAmount();
-	}
-}
+// function editApportionType() {
+// if ($.$model.xGet("apportionType") === "Fixed") {
+// $.amount.$attrs.editModeEditability = "editable";
+// $.amount.$attrs.addModeEditability = "editable";
+// } else {
+// $.amount.$attrs.editModeEditability = "noneditable";
+// $.amount.$attrs.addModeEditability = "noneditable";
+// updateAmount();
+// }
+// }
+//
+// $.$model.on("_xchange:apportionType", editApportionType);
+// $.onWindowCloseDo(function() {
+// $.$model.off("_xchange:apportionType", editApportionType);
+// });
 
-$.$model.on("_xchange:apportionType", editApportionType);
-$.onWindowCloseDo(function() {
-	$.$model.off("_xchange:apportionType", editApportionType);
-});
-
-$.amount.field.addEventListener("singletap", function() {
-	if ($.$model.xGet("apportionType") === "Fixed") {
-		$.$model.apportionFocus = true;
-	}
-});
+// $.amount.field.addEventListener("singletap", function() {
+// // if ($.$model.xGet("apportionType") === "Fixed") {
+// $.$model.apportionFocus = true;
+// // }
+// });
 
 var oldAmount;
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
-		$.amount.$attrs.editModeEditability = "editable";
-		$.amount.$attrs.addModeEditability = "editable";
-	}
+	// if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyExpense").xGet("ownerUser") === Alloy.Models.User) {
+	// $.amount.$attrs.editModeEditability = "editable";
+	// $.amount.$attrs.addModeEditability = "editable";
+	// }
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.xGet("apportionType") === "Fixed" && $.$model.apportionFocus) {
+		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.apportionFocus) {
 			$.$model.apportionFocus = false;
+			if ($.$model.xGet("apportionType") === "Average") {
+				$.$model.xSet("apportionType", "Fixed");
+			}
 			var fixedTotal = 0;
 			$.$model.xGet("moneyExpense").xGet("moneyExpenseApportions").forEach(function(item) {
 				if (!item.__xDeletedHidden && !item.__xDeleted && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
