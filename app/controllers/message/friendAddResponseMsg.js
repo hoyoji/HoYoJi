@@ -74,7 +74,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				ownerUserId : Alloy.Models.User.id
 			}], function(data) {
 				if (data[0].length > 0) {
-					saveErrorCB($.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
+					Alloy.Globals.Server.loadData("Friend",[{
+						ownerUserId : Alloy.Models.User.id,
+						friendUserId : $.$model.xGet("fromUserId")
+					}], function(collection) {
+						saveErrorCB($.$model.xGet("fromUser").xGet("userName") + "已经是您的好友");
+					}, saveErrorCB);
 				} else {
 					addFriend(saveEndCB, saveErrorCB);
 				}
