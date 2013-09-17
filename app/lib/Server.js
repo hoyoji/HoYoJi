@@ -172,8 +172,8 @@
 				});
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
-					var auth = Alloy.Models.User.xGet("userName") + ":" + Alloy.Models.User.xGet("password");
-					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(Ti.Network.encodeURIComponent(auth)));
+					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
+					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth).toString().replace("\r\n",""));
 				}
 				xhr.send(data);
 			},

@@ -25,7 +25,7 @@ function doLogin(e) {
 		$.userName.showErrorMsg("请输入用户名");
 		return;
 	}
-	if(userName.startsWith("hyjtest")){
+	if(userName.startsWith("hyj")){
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
 		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";

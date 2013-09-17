@@ -59,7 +59,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// for (var i = 0; i < $.__saveCollection.length; i++) {
 	// data.push($.__saveCollection[i].toJSON());
 	// }
-	if($.$model.xGet("userName").startsWith("hyjtest")){
+	if($.$model.xGet("userName").startsWith("hyj")){
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
 		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
