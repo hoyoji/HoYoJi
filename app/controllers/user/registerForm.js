@@ -74,6 +74,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if (!$.$model.xGet("password2")) {
 				return;
 			}
+			if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
+				return;
+			}
 			return;
 		} else {
 			if ($.$model.xGet("userName").startsWith("hyj")) {
@@ -82,10 +85,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
 			}
 
-			if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
-				saveErrorCB("验证错误");
-				return;
-			}
 			var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
 			var data = {
 				userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
