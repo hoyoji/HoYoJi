@@ -63,7 +63,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -156,7 +156,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -250,7 +250,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -345,7 +345,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -440,7 +440,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
@@ -511,7 +511,7 @@ $.onWindowOpenDo(function() {
 			width : "30%"
 		});
 		var accountAmountContentLabel = Ti.UI.createLabel({
-			text : accountShareData.account.amount,
+			text : (accountShareData.account.amount).toFixed(2),
 			height : 42,
 			color : "gray",
 			textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
