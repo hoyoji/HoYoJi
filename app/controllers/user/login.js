@@ -25,6 +25,11 @@ function doLogin(e) {
 		$.userName.showErrorMsg("请输入用户名");
 		return;
 	}
+	if(userName.startsWith("hyjtest")){
+		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+	} else {
+		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+	}
 	var password = $.password.field.getValue() || "";
 	if (password.length === 0) {
 		$.password.showErrorMsg("请输入密码");

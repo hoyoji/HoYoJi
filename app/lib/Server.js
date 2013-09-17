@@ -1,7 +1,8 @@
 ( function() {
-		var dataUrl = "http://2.money.app100697798.twsapp.com/";
+		
 		Ti.include('suds.js');
 		exports.Server = {
+			dataUrl : "http://2.money.app100697798.twsapp.com/",
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				//var msg = Alloy.createModel("Message");
 				msgJSON.ownerUserId = msgJSON.toUserId;
@@ -142,7 +143,7 @@
 			postData : function(data, xFinishedCallback, xErrorCallback, target) {
 				data = JSON.stringify(data);
 				console.info(data);
-				var url = dataUrl + (target || "postData") + ".php";
+				var url = this.dataUrl + (target || "postData") + ".php";
 				var xhr = Ti.Network.createHTTPClient({
 					onload : function(e) {
 						console.info("Server.postData response : " + this.responseText);
@@ -429,15 +430,15 @@
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
 					dbTrans.begin();
 
-					var lastSyncTime = data.lastSyncTime;
-					Alloy.Models.User.save({
-						"lastSyncTime" : lastSyncTime
-					}, {
-						wait : true,
-						syncFromServer : true,
-						patch : true,
-						dbTrans : dbTrans
-					});
+					// var lastSyncTime = data.lastSyncTime;
+					// Alloy.Models.User.save({
+						// "lastSyncTime" : lastSyncTime
+					// }, {
+						// wait : true,
+						// syncFromServer : true,
+						// patch : true,
+						// dbTrans : dbTrans
+					// });
 
 					dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
 					dbTrans.commit();

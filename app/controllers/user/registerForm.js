@@ -59,6 +59,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// for (var i = 0; i < $.__saveCollection.length; i++) {
 	// data.push($.__saveCollection[i].toJSON());
 	// }
+	if($.$model.xGet("userName").startsWith("hyjtest")){
+		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+	} else {
+		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+	}	
 	$.$model.xValidate(function() {
 		// 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
 		if ($.$model.__xValidationErrorCount > 0) {
