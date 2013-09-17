@@ -1,5 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.onWindowOpenDo(function() {
+	$.name.field.focus();
+});
+
 var selectedExpense = $.$attrs.selectedExpense;
 if (!$.$model) {
 	$.$model = Alloy.createModel("MoneyExpenseDetail", {
