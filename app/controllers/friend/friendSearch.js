@@ -72,6 +72,10 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 		// orderBy : orderBy
 	// });
 
+	if(!searchCriteria){
+		errorCB();
+		return;
+	}
 	Alloy.Globals.Server.findData([{
 		userName : searchCriteria,
 		__dataType : "User",
@@ -98,5 +102,6 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
+		errorCB();
 	});
 };
