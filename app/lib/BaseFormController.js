@@ -191,8 +191,8 @@
 					saveableModeChangeCB : $.setSaveableMode
 				});
 			});
-
-			$.onWindowCloseDo(function() {
+			
+			$._resetForm = function() {
 				if (!$.getCurrentWindow().$attrs.closeWithoutSave) {
 					if ($.$model) {
 						$.$model.xReset();
@@ -213,7 +213,8 @@
 						$.__deleteCollection = [];
 					}
 				}
-			});
+			},
+			$.onWindowCloseDo($._resetForm);
 			$.$view.addEventListener("resolvesaveablemodel", function(e) {
 				e.cancelBubble = true;
 				e.callback($);
