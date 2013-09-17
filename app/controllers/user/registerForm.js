@@ -59,67 +59,65 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// for (var i = 0; i < $.__saveCollection.length; i++) {
 	// data.push($.__saveCollection[i].toJSON());
 	// }
-
+	
 	$.$model.xValidate(function() {
 		// 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
 		if ($.$model.__xValidationErrorCount > 0) {
 			$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-				saveErrorCB("验证错误");
-			if (Alloy.Globals.alloyString.trim($.$model.xGet("userName")).length === 0) {
-				return;
-			}
-			if (!$.$model.xGet("password")) {
-				return;
-			}
-			if (!$.$model.xGet("password2")) {
-				return;
-			}
-			if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
-				return;
-			}
-			return;
-		} else {
-			if ($.$model.xGet("userName").startsWith("hyj")) {
-				Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
-			} else {
-				Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
-			}
-
-			var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
-			var data = {
-				userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
-				password : Ti.Utils.sha1($.$model.xGet("password")),
-				currencyId : currencyId,
-				currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
-			};
-			Alloy.Globals.Server.postData(data, function(returnedData) {
-				// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
-				// $.saveModel(function(msg){
-				// Alloy.Models.User = $.$model;
-				saveEndCB("注册成功");
-				$.getCurrentWindow().__dirtyCount = 0;
-				$.getCurrentWindow().close();
-				// }, saveErrorCB);
-			}, function(e) {
-				// 连接服务器出错或用户名已经存在，注册不成功
-				$.$model.__xValidationErrorCount = 1;
-				$.$model.__xValidationError = e;
-				$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-				//
-				// $.password.field.setValue("");
-				// $.password2.field.setValue("");
-				// $.$model.xSet("password", null);
-				// $.$model.xSet("password2", null);
-				saveErrorCB(e.__summary.msg);
-			}, "registerUser");
 		}
 	});
+	if (Alloy.Globals.alloyString.trim($.$model.xGet("userName")).length === 0) {
+		saveErrorCB("验证错误");
+		return;
+	}
+	if (!$.$model.xGet("password")) {
+		saveErrorCB("验证错误");
+		return;
+	}
+	if (!$.$model.xGet("password2")) {
+		saveErrorCB("验证错误");
+		return;
+	}
+	if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
+		saveErrorCB("验证错误");
+		return;
+	}
+	if(userName.startsWith("hyjtest")){
+		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+	} else {
+		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+	}
+	var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
+	var data = {
+		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
+		password : Ti.Utils.sha1($.$model.xGet("password")),
+		currencyId : currencyId,
+		currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
+	};
+	Alloy.Globals.Server.postData(data, function(returnedData) {
+		// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
+		// $.saveModel(function(msg){
+		// Alloy.Models.User = $.$model;
+		saveEndCB("注册成功");
+		$.getCurrentWindow().__dirtyCount = 0;
+		$.getCurrentWindow().close();
+		// }, saveErrorCB);
+	}, function(e) {
+		// 连接服务器出错或用户名已经存在，注册不成功
+		$.$model.__xValidationErrorCount = 1;
+		$.$model.__xValidationError = e;
+		$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+		//
+		// $.password.field.setValue("");
+		// $.password2.field.setValue("");
+		// $.$model.xSet("password", null);
+		// $.$model.xSet("password2", null);
+		saveErrorCB(e.__summary.msg);
+	}, "registerUser");
 	// }
 	// });
 };
 
-$._resetForm = function() {
-};
 $.onWindowCloseDo(function() {
 	$.$model = null;
 	// Alloy.Globals.DataStore.initStore();
