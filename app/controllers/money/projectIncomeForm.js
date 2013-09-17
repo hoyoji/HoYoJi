@@ -184,33 +184,7 @@ if ($.saveableMode === "read") {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
 			$.exchangeRate.field.fireEvent("change");
 		}
-		// if(exchangeRateValue){
-			// $.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
-			// $.amount.refresh();
-		// }
 	}
-
-	// $.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
-	// if ($.project.getValue()) {
-	// var defaultIncomeCategory = $.project.getValue().xGet("defaultIncomeCategory");
-	// $.moneyIncomeCategory.setValue(defaultIncomeCategory);
-	// $.moneyIncomeCategory.field.fireEvent("change");
-	// }
-	// });
-
-	// $.friend.field.addEventListener("change", function() {
-		// if ($.friend.getValue()) {
-			// $.friendAccount.$view.setHeight(42);
-			// $.friendAccount.setValue("");
-			// $.friendAccount.field.fireEvent("change");
-		// } else {
-			// $.friendAccount.$view.setHeight(0);
-			// $.friendAccount.setValue("");
-		// }
-	// });
-	// if (!$.friend.getValue()) {
-		// $.friendAccount.$view.setHeight(0);
-	// }
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		var editData = [];
