@@ -644,7 +644,6 @@ exports.fetchNextPage = function(tableRowsCount) {
 	if ($.beforeFetchNextPage) {
 		$.beforeFetchNextPage(tableRowsCount, pageSize + 1, $.getOrderBy() + " " + $.getSortOrder(), doFetchNextPage, function(err) {
 			_showNoDataIndicator();
-			alert(err.msg);
 		});
 	} else {
 		doFetchNextPage();
