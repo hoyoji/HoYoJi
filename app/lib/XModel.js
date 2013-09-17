@@ -660,6 +660,7 @@
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
 					delete record.id;
+					this.syncUpdate(record, dbTrans);
 					this._syncUpdate(record, dbTrans);
 					
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
