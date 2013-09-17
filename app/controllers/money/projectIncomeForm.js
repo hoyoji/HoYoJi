@@ -176,12 +176,12 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.$view.setHeight(42);
 		}
 		// if (setToModel) {
-			// $.$model.xSet("exchangeRate", exchangeRateValue);
-			// $.exchangeRate.refresh();
+			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.refresh();
 			// //改变汇率更新金额
 		// } else {
-			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change");
+			// $.exchangeRate.setValue(exchangeRateValue);
+			// $.exchangeRate.field.fireEvent("change");
 		// }
 		if(exchangeRateValue){
 			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
