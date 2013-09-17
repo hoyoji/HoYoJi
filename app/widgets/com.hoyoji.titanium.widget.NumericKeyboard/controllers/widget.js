@@ -49,6 +49,7 @@ exports.open = function(textField, saveCB, bottom) {
 			$.widget.setVisible(true);
 			$.keyboard.animate(animation);	
 			$.display.setText(activeTextField.getValue()||"");
+			flagNewNum = true;
 	} else {
 		return;
 	}

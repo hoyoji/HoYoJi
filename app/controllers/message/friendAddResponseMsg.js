@@ -65,7 +65,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		messageState : "closed"
 	}], function(data) {
 		if (data[0].length > 0) {
-			saveErrorCB("操作失败，消息已过期");
+			Alloy.Globals.Server.loadData("Friend",[{
+				ownerUserId : Alloy.Models.User.id,
+				friendUserId : $.$model.xGet("fromUserId")
+			}], function(collection) {
+				saveErrorCB("操作失败，消息已过期");
+			}, saveErrorCB);
 		} else {
 			//去服务器上查找好友，如果能找到的话就不需要再添加
 			Alloy.Globals.Server.getData([{
