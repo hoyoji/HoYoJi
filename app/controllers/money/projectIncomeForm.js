@@ -175,18 +175,19 @@ if ($.saveableMode === "read") {
 			}
 			$.exchangeRate.$view.setHeight(42);
 		}
-		// if (setToModel) {
+		if (setToModel) {
 			$.$model.xSet("exchangeRate", exchangeRateValue);
 			$.exchangeRate.refresh();
 			// //改变汇率更新金额
-		// } else {
-			// $.exchangeRate.setValue(exchangeRateValue);
-			// $.exchangeRate.field.fireEvent("change");
-		// }
-		if(exchangeRateValue){
-			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
-			$.amount.refresh();
+		} else {
+			$.exchangeRate.setValue(exchangeRateValue);
+			$.$model.xSet("exchangeRate", exchangeRateValue);
+			$.exchangeRate.field.fireEvent("change");
 		}
+		// if(exchangeRateValue){
+			// $.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / exchangeRateValue);
+			// $.amount.refresh();
+		// }
 	}
 
 	// $.project.field.addEventListener("change", function() {//项目改变，分类为项目的默认分类
