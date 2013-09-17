@@ -219,8 +219,6 @@ function openRegister(e) {
 	});
 }
 
-$._resetForm = function(){},
-
 $.loginButton.addEventListener("singletap", doLogin);
 
 $.userName.UIInit($, $.getCurrentWindow());
