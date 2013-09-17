@@ -64,24 +64,24 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		// 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
 		if ($.$model.__xValidationErrorCount > 0) {
 			$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-		} else {
-			if (Alloy.Globals.alloyString.trim($.$model.xGet("userName")).length === 0) {
 				saveErrorCB("验证错误");
+			if (Alloy.Globals.alloyString.trim($.$model.xGet("userName")).length === 0) {
 				return;
 			}
+			if (!$.$model.xGet("password")) {
+				return;
+			}
+			if (!$.$model.xGet("password2")) {
+				return;
+			}
+			return;
+		} else {
 			if ($.$model.xGet("userName").startsWith("hyj")) {
 				Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 			} else {
 				Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
 			}
-			if (!$.$model.xGet("password")) {
-				saveErrorCB("验证错误");
-				return;
-			}
-			if (!$.$model.xGet("password2")) {
-				saveErrorCB("验证错误");
-				return;
-			}
+
 			if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
 				saveErrorCB("验证错误");
 				return;
@@ -119,7 +119,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// });
 };
 
-$._resetForm = function(){};
+$._resetForm = function() {
+};
 $.onWindowCloseDo(function() {
 	$.$model = null;
 	// Alloy.Globals.DataStore.initStore();
