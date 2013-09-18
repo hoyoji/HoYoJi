@@ -88,7 +88,7 @@
 				// }
 
 				var requestData = [];
-				if(filter && filter.forEach){
+				if(filter.forEach){
 					filter.forEach(function(filter) {
 						if (_.isObject(filter)) {
 							filter.__dataType = modelName;
