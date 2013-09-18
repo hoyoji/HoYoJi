@@ -66,7 +66,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyIncome",
 				id : moneyIncome.xGet("id")
 			}], function(data) {
-				if(data.deleteCount === 1){
+				if(data.deleteCount){
 					if (moneyIncome && moneyIncome.xGet("id")) {
 						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							projectId : accountShareData.account.projectId,
@@ -155,7 +155,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyExpense",
 				id : moneyExpense.xGet("id")
 			}], function(data) {
-				if(data.deleteCount === 1){
+				if(data.deleteCount){
 					if (moneyExpense && moneyExpense.xGet("id")) {
 						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 							projectId : accountShareData.account.projectId,
