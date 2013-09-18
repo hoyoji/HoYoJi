@@ -118,11 +118,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
-							$.saveModel(saveEndCB, saveErrorCB, {
-								syncFromServer : true
-							});
-							activityWindow.showMsg("删除充值成功");
-							saveEndCB();
+							Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+								$.saveModel(saveEndCB, saveErrorCB, {
+									syncFromServer : true
+								});
+								activityWindow.showMsg("删除充值成功");
+								saveEndCB();
+							}, saveErrorCB);
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
@@ -213,11 +215,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
-							$.saveModel(saveEndCB, saveErrorCB, {
-								syncFromServer : true
-							});
-							activityWindow.showMsg("删除充值成功");
-							saveEndCB();
+							Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+								$.saveModel(saveEndCB, saveErrorCB, {
+									syncFromServer : true
+								});
+								activityWindow.showMsg("删除充值成功");
+								saveEndCB();
+							}, saveErrorCB);
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
