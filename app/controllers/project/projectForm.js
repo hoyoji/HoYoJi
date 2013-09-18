@@ -39,7 +39,7 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 }
 
 if ($.$model.isNew()) {
-	$.$model.xSet("currencyId", "CNY");
+	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
 
 	var incomeCategoryNameCollection = ["工资", "加班费", "补贴", "奖金", "报销", "租金", "兼职", "礼金", "投资收入", "利息收入"];

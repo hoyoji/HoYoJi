@@ -408,13 +408,12 @@ exports.definition = {
 						self.off("sync", refreshProject);
 					}
 
-
 					this.on("sync", refreshProject);
 					dbTrans.on("rollback", rollback);
 				}
 
 				// delete all none-self data
-				var dataToBeDeleted = ["MoneyIncome"], dataToBeLoaded = [];
+				var dataToBeDeleted = ["MoneyIncome", "MoneyExpense", "MoneyLend", "MoneyBorrow", "MoneyReturn", "MoneyPayback"], dataToBeLoaded = [];
 				dataToBeDeleted.forEach(function(table) {
 					if ((record.state === "Delete" && self.xGet("state") !== "Delete") || (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0)) {
 						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
@@ -503,7 +502,7 @@ exports.definition = {
 						};
 					}
 					if (record.sharePercentage !== this.xGet("sharePercentage")) {
-						updates = updates || {};
+						updates = updates || {lastServerUpdateTime : record.lastServerUpdateTime};
 						updates.sharePercentage = record.sharePercentage;
 					}
 					if (updates) {

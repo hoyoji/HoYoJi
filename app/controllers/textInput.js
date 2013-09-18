@@ -23,5 +23,5 @@ $.close.addEventListener("singletap", close);
 $.getCurrentWindow().$view.addEventListener("open", function(){
 	setTimeout(function(){
 		$.textField.focus();
-	},100);
+	},500);
 });
