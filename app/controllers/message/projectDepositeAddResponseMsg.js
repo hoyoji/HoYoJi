@@ -66,12 +66,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyIncome",
 				id : moneyIncome.xGet("id")
 			}], function(data) {
+				var loadProjectAuthorizationIds = [];
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : accountShareData.account.projectId,
+					friendUserId : Alloy.Models.User.id
+				});
+				var projectShareAuthorizationFromUser = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : accountShareData.account.projectId,
+					friendUserId : $.$model.xGet("fromUserId")
+				});
+				loadProjectAuthorizationIds.push(projectShareAuthorization.xGet("id"));
+				loadProjectAuthorizationIds.push(projectShareAuthorizationFromUser.xGet("id"));
 				if(data.deleteCount){
 					if (moneyIncome && moneyIncome.xGet("id")) {
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							projectId : accountShareData.account.projectId,
-							friendUserId : Alloy.Models.User.id
-						});
 						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
@@ -110,15 +117,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							syncFromServer : true
 						});
 						//服务器上修改的projectshareAuthorization更新到本地
-						Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
-							projectId : accountShareData.account.projectId,
-							friendUserId : $.$model.xGet("fromUserId")
-						}], function(collection) {
-							$.saveModel(saveEndCB, saveErrorCB, {
-								syncFromServer : true
-							});
-							activityWindow.showMsg("删除充值成功");
-							saveEndCB();
+						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
+							Alloy.Globals.Server.loadData("MoneyAccount",moneyIncome.xGet("moneyAccount").xGet("id"), function(collection) {
+								$.saveModel(saveEndCB, saveErrorCB, {
+									syncFromServer : true
+								});
+								activityWindow.showMsg("删除充值成功");
+								saveEndCB();
+							}, saveErrorCB);
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
@@ -155,12 +161,19 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyExpense",
 				id : moneyExpense.xGet("id")
 			}], function(data) {
+				var loadProjectAuthorizationIds = [];
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : accountShareData.account.projectId,
+					friendUserId : Alloy.Models.User.id
+				});
+				var projectShareAuthorizationFromUser = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : accountShareData.account.projectId,
+					friendUserId : $.$model.xGet("fromUserId")
+				});
+				loadProjectAuthorizationIds.push(projectShareAuthorization.xGet("id"));
+				loadProjectAuthorizationIds.push(projectShareAuthorizationFromUser.xGet("id"));
 				if(data.deleteCount){
 					if (moneyExpense && moneyExpense.xGet("id")) {
-						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-							projectId : accountShareData.account.projectId,
-							friendUserId : Alloy.Models.User.id
-						});
 						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
@@ -199,16 +212,16 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						moneyIncome._xDelete(null,{
 							syncFromServer : true
 						});
+						
 						//服务器上修改的projectshareAuthorization更新到本地
-						Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
-							projectId : accountShareData.account.projectId,
-							friendUserId : $.$model.xGet("fromUserId")
-						}], function(collection) {
-							$.saveModel(saveEndCB, saveErrorCB, {
-								syncFromServer : true
-							});
-							activityWindow.showMsg("删除充值成功");
-							saveEndCB();
+						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
+							Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+								$.saveModel(saveEndCB, saveErrorCB, {
+									syncFromServer : true
+								});
+								activityWindow.showMsg("删除充值成功");
+								saveEndCB();
+							}, saveErrorCB);
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
