@@ -151,7 +151,19 @@ exports.definition = {
 			},
 			syncUpdateConflict : function(record, dbTrans){
 				// last sync time 在每台手机上都不一样，所以我们不将其同步下来
-				delete record.lastSyncTime;
+				delete record.lastSyncTime;	
+				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
+				if(this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime){
+					delete record.id;
+					this.syncUpdate(record, dbTrans);
+					this._syncUpdate(record, dbTrans);
+					
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					// 让本地修改覆盖服务器上的记录
+					this._syncUpdate({lastServerUpdateTime : record.lastServerUpdateTime}, dbTrans);
+				}
 			},
 			getLocalCurrencySymbol : function() {
 				return this.xGet("activeCurrency").xGet("symbol");

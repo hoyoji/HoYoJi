@@ -160,6 +160,7 @@ exports.definition = {
 					// dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
 					this._syncUpdate({
+						lastServerUpdateTime : record.lastServerUpdateTime,
 						currentBalance : record.currentBalance
 					}, dbTrans);
 				}

@@ -495,6 +495,7 @@ exports.definition = {
 					var updates;
 					if (localUpdated) {
 						updates = {
+							lastServerUpdateTime : record.lastServerUpdateTime,
 							actualTotalIncome : record.actualTotalIncome,
 							actualTotalExpense : record.actualTotalExpense,
 							apportionedTotalIncome : record.apportionedTotalIncome,

@@ -275,6 +275,9 @@ exports.definition = {
 
 					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
 					dbTrans.db.execute(sql, [this.xGet("id")]);
+				} else {
+					// 让本地修改覆盖服务器上的记录
+					this._syncUpdate({lastServerUpdateTime : record.lastServerUpdateTime}, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 			},

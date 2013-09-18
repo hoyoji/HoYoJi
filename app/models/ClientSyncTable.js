@@ -5,6 +5,7 @@ exports.definition = {
 		    recordId: "TEXT UNIQUE NOT NULL",
 		    tableName: "TEXT NOT NULL",
 		    operation : "TEXT",
+		    transactionId : "TEXT",
 		    ownerUserId : "TEXT NOT NULL"
 		},
 		adapter: {
