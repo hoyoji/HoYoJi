@@ -88,17 +88,19 @@
 				// }
 
 				var requestData = [];
-				filter.forEach(function(filter) {
-					if (_.isObject(filter)) {
-						filter.__dataType = modelName;
-					} else {
-						filter = {
-							__dataType : modelName,
-							id : filter
-						};
-					}
-					requestData.push(filter);
-				});
+				if(filter && filter.forEach){
+					filter.forEach(function(filter) {
+						if (_.isObject(filter)) {
+							filter.__dataType = modelName;
+						} else {
+							filter = {
+								__dataType : modelName,
+								id : filter
+							};
+						}
+						requestData.push(filter);
+					});
+				}
 				Alloy.Globals.Server.getData(requestData, function(data) {
 					data = _.flatten(data);
 					var returnCollection = Alloy.createCollection(modelName);
