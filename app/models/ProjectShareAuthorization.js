@@ -371,14 +371,14 @@ exports.definition = {
 			},
 			canDelete : function() {
 				return this.xGet("ownerUser") === Alloy.Models.User;
-			},			
+			},
 			// _syncUpdate : function(record, dbTrans) {
-				// this.save(record, {
-					// dbTrans : dbTrans,
-					// // syncFromServer : true,
-					// patch : true,
-					// wait : true
-				// });
+			// this.save(record, {
+			// dbTrans : dbTrans,
+			// // syncFromServer : true,
+			// patch : true,
+			// wait : true
+			// });
 			// },
 			syncUpdate : function(record, dbTrans) {
 				var self = this;
@@ -395,7 +395,7 @@ exports.definition = {
 
 				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
 				delete this.__syncApportionedTotalExpense;
-				
+
 				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
 					function refreshProject() {
 						dbTrans.off("rollback", rollback);
@@ -407,6 +407,7 @@ exports.definition = {
 						dbTrans.off("rollback", rollback);
 						self.off("sync", refreshProject);
 					}
+
 
 					this.on("sync", refreshProject);
 					dbTrans.on("rollback", rollback);
@@ -477,6 +478,7 @@ exports.definition = {
 						});
 					}
 
+
 					this.on("sync", commitLoadData);
 					dbTrans.on("rollback", rollbackLoadData);
 				}
@@ -491,23 +493,19 @@ exports.definition = {
 				if (this.xGet("lastClientUpdateTime") >= record.lastClientUpdateTime) {
 					// 让本地修改覆盖服务器上的记录
 					// 但是取服务器上的占股比例
-					var updates;
+					var updates = {
+						lastServerUpdateTime : record.lastServerUpdateTime
+					};
 					if (localUpdated) {
-						updates = {
-							lastServerUpdateTime : record.lastServerUpdateTime,
-							actualTotalIncome : record.actualTotalIncome,
-							actualTotalExpense : record.actualTotalExpense,
-							apportionedTotalIncome : record.apportionedTotalIncome,
-							apportionedTotalExpense : record.apportionedTotalExpense
-						};
+						updates.actualTotalIncome = record.actualTotalIncome;
+						updates.actualTotalExpense = record.actualTotalExpense;
+						updates.apportionedTotalIncome = record.apportionedTotalIncome;
+						updates.apportionedTotalExpense = record.apportionedTotalExpense;
 					}
 					if (record.sharePercentage !== this.xGet("sharePercentage")) {
-						updates = updates || {lastServerUpdateTime : record.lastServerUpdateTime};
 						updates.sharePercentage = record.sharePercentage;
 					}
-					if (updates) {
-						this._syncUpdate(updates, dbTrans);
-					}
+					this._syncUpdate(updates, dbTrans);
 				}
 
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
@@ -519,7 +517,7 @@ exports.definition = {
 					}
 				}
 			},
-			syncRollback : function(){
+			syncRollback : function() {
 				delete this.__syncActualTotalIncome;
 				delete this.__syncActualTotalExpense;
 				delete this.__syncApportionedTotalIncome;

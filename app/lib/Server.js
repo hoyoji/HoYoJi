@@ -172,6 +172,7 @@
 					},
 					timeout : 120000 /* in milliseconds */
 				});
+				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
