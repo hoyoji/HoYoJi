@@ -10,9 +10,9 @@
 		<Widget id="loginButton" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="black" 
 			backgroundColor="#e9f3f0"
 			autoInit="false"
-			title="登入"/>
+			title="登录"/>
 		<View width="80%" height="60">	
-			<Button width="45%" left="0" height="42" onClick="openRegister">注册</Button> 
+			<Button width="80%"  height="42" onClick="openRegister">注册</Button> 
 			<!-- <Button width="45%" right="0" height="42">找回密码</Button> -->
 		</View>
 	</View>
