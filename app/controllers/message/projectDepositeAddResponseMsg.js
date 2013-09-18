@@ -124,7 +124,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 								syncFromServer : true
 							});
 							activityWindow.showMsg("删除充值成功");
-							saveEndCB();s
+							saveEndCB();
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
