@@ -66,19 +66,27 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyIncome",
 				id : moneyIncome.xGet("id")
 			}], function(data) {
-				if (moneyIncome && moneyIncome.xGet("id")) {
-					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : accountShareData.account.projectId,
-						friendUserId : Alloy.Models.User.id
-					});
-					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
-					editData.push(projectShareAuthorization.toJSON());
-					projectShareAuthorization.xAddToSave($);
-
-					moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
-					editData.push(moneyIncome.xGet("moneyAccount").toJSON());
-					moneyIncome.xGet("moneyAccount").xAddToSave($);
-
+				if(data.deleteCount){
+					if (moneyIncome && moneyIncome.xGet("id")) {
+						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : accountShareData.account.projectId,
+							friendUserId : Alloy.Models.User.id
+						});
+						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
+						editData.push(projectShareAuthorization.toJSON());
+						projectShareAuthorization.xAddToSave($);
+	
+						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
+						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
+						moneyIncome.xGet("moneyAccount").xAddToSave($);
+						moneyIncome._xDelete();
+					}
+				} else {
+					if (moneyIncome && moneyIncome.xGet("id")) {
+						moneyIncome._xDelete(null,{
+							syncFromServer : true
+						});
+					}
 				}
 				$.$model.xSet("messageState", "closed");
 				editData.push($.$model.toJSON());
@@ -98,7 +106,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						messageData : $.$model.xGet("messageData")
 					}, function() {
 						//删除本地的充值收入和充值支出
-						moneyIncome._xDelete();
 						moneyExpense._xDelete(null,{
 							syncFromServer : true
 						});
@@ -148,20 +155,29 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				__dataType : "MoneyExpense",
 				id : moneyExpense.xGet("id")
 			}], function(data) {
-				if (moneyExpense && moneyExpense.xGet("id")) {
-					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
-						projectId : accountShareData.account.projectId,
-						friendUserId : Alloy.Models.User.id
-					});
-					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
-					editData.push(projectShareAuthorization.toJSON());
-					projectShareAuthorization.xAddToSave($);
-
-					moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
-					editData.push(moneyExpense.xGet("moneyAccount").toJSON());
-					moneyExpense.xGet("moneyAccount").xAddToSave($);
-
+				if(data.deleteCount){
+					if (moneyExpense && moneyExpense.xGet("id")) {
+						var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+							projectId : accountShareData.account.projectId,
+							friendUserId : Alloy.Models.User.id
+						});
+						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
+						editData.push(projectShareAuthorization.toJSON());
+						projectShareAuthorization.xAddToSave($);
+	
+						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
+						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
+						moneyExpense.xGet("moneyAccount").xAddToSave($);
+						moneyExpense._xDelete();
+					}
+				}else{
+					if (moneyExpense && moneyExpense.xGet("id")) {
+						moneyExpense._xDelete(null,{
+							syncFromServer : true
+						});
+					}
 				}
+				
 				$.$model.xSet("messageState", "closed");
 				editData.push($.$model.toJSON());
 				var date = (new Date()).toISOString();
@@ -180,7 +196,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						messageData : $.$model.xGet("messageData")
 					}, function() {
 						//删除本地的充值收入和充值支出
-						moneyExpense._xDelete();
 						moneyIncome._xDelete(null,{
 							syncFromServer : true
 						});
@@ -348,7 +363,7 @@ $.onWindowOpenDo(function() {
 		width : "30%"
 	});
 	var accountAmountContentLabel = Ti.UI.createLabel({
-		text : accountShareData.account.amount,
+		text : (accountShareData.account.amount).toFixed(2),
 		height : 42,
 		color : "gray",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
