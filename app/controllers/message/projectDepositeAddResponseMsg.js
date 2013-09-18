@@ -118,7 +118,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
-							Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+							Alloy.Globals.Server.loadData("MoneyAccount",moneyIncome.xGet("moneyAccount").xGet("id"), function(collection) {
 								$.saveModel(saveEndCB, saveErrorCB, {
 									syncFromServer : true
 								});
