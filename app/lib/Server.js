@@ -101,7 +101,6 @@
 						requestData.push(filter);
 					});
 				}
-				
 				Alloy.Globals.Server.getData(requestData, function(data) {
 					data = _.flatten(data);
 					var returnCollection = Alloy.createCollection(modelName);
