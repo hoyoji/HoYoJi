@@ -90,9 +90,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 				} else {
 					if (moneyIncome && moneyIncome.xGet("id")) {
-						moneyIncome._xDelete(null,{
-							syncFromServer : true
-						});
+						Alloy.Globals.Server.loadData("MoneyAccount",moneyIncome.xGet("moneyAccount").xGet("id"), function(collection) {
+							moneyIncome._xDelete(null,{
+								syncFromServer : true
+							});
+						}, saveErrorCB);
 					}
 				}
 				$.$model.xSet("messageState", "closed");
@@ -118,13 +120,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						});
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
-							Alloy.Globals.Server.loadData("MoneyAccount",moneyIncome.xGet("moneyAccount").xGet("id"), function(collection) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-								activityWindow.showMsg("删除充值成功");
-								saveEndCB();
-							}, saveErrorCB);
+							$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+							activityWindow.showMsg("删除充值成功");
+							saveEndCB();s
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
@@ -185,9 +185,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 				}else{
 					if (moneyExpense && moneyExpense.xGet("id")) {
-						moneyExpense._xDelete(null,{
-							syncFromServer : true
-						});
+						Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+							moneyExpense._xDelete(null,{
+								syncFromServer : true
+							});
+						}, saveErrorCB);
 					}
 				}
 				
@@ -215,13 +217,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
-							Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
-								$.saveModel(saveEndCB, saveErrorCB, {
-									syncFromServer : true
-								});
-								activityWindow.showMsg("删除充值成功");
-								saveEndCB();
-							}, saveErrorCB);
+							$.saveModel(saveEndCB, saveErrorCB, {
+								syncFromServer : true
+							});
+							activityWindow.showMsg("删除充值成功");
+							saveEndCB();
 						}, saveErrorCB);
 					}, function(e) {
 						activityWindow.close();
