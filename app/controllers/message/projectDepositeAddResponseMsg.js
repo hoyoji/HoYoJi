@@ -90,7 +90,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 				} else {
 					if (moneyIncome && moneyIncome.xGet("id")) {
-						Alloy.Globals.Server.loadData("MoneyAccount",moneyIncome.xGet("moneyAccount").xGet("id"), function(collection) {
+						Alloy.Globals.Server.loadData("MoneyAccount",[moneyIncome.xGet("moneyAccount").xGet("id")], function(collection) {
 							moneyIncome._xDelete(null,{
 								syncFromServer : true
 							});
@@ -185,7 +185,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					}
 				}else{
 					if (moneyExpense && moneyExpense.xGet("id")) {
-						Alloy.Globals.Server.loadData("MoneyAccount",moneyExpense.xGet("moneyAccount").xGet("id"), function(collection) {
+						Alloy.Globals.Server.loadData("MoneyAccount",[moneyExpense.xGet("moneyAccount").xGet("id")], function(collection) {
 							moneyExpense._xDelete(null,{
 								syncFromServer : true
 							});
