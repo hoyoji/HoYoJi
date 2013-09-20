@@ -176,7 +176,11 @@
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
-					xhr.setRequestHeader("Authorization", "Basic " + Ti.Utils.base64encode(auth).toString().replace("\r\n",""));
+					if(OS_IOS){
+						xhr.setRequestHeader("Cookie", "authentication=" + Ti.Utils.base64encode(auth).toString().replace("\r\n","").replace(/=/g, "%$09"));
+					} else {
+						xhr.setRequestHeader("Authorization", "BASIC " + Ti.Utils.base64encode(auth));
+					}
 				}
 				xhr.send(data);
 			},
