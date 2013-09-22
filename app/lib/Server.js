@@ -1,5 +1,5 @@
 ( function() {
-		
+
 		Ti.include('suds.js');
 		exports.Server = {
 			dataUrl : "http://2.money.app100697798.twsapp.com/",
@@ -88,7 +88,7 @@
 				// }
 
 				var requestData = [];
-				if(filter.forEach){
+				if (filter.forEach) {
 					filter.forEach(function(filter) {
 						if (_.isObject(filter)) {
 							filter.__dataType = modelName;
@@ -176,8 +176,8 @@
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
-					if(OS_IOS){
-						xhr.setRequestHeader("Cookie", "authentication=" + Ti.Utils.base64encode(auth).toString().replace("\r\n","").replace(/=/g, "%$09"));
+					if (OS_IOS) {
+						xhr.setRequestHeader("Cookie", "authentication=" + Ti.Utils.base64encode(auth).toString().replace("\r\n", "").replace(/=/g, "%$09"));
 					} else {
 						xhr.setRequestHeader("Authorization", "BASIC " + Ti.Utils.base64encode(auth));
 					}
@@ -190,22 +190,22 @@
 				activityWindow.open("正在同步...");
 
 				this.syncPull(function() {
-					// alert("start push data");
-					self.syncPush(function(data) {
-						if (xFinishedCallback) {
-							xFinishedCallback();
-						}
-						// activityWindow.close();
-						activityWindow.showMsg("同步完成");
-						//alert("sync finished");
-					}, function(e) {
-						if (xErrorCallback) {
-							xErrorCallback(e);
-						}
-						// activityWindow.close();
-						activityWindow.showMsg("同步错误：" + e.__summary.msg);
-						//alert("sync error : " + e.__summary.msg);
-					});
+					setTimeout(function() {
+						self.syncPush(function(data) {
+							if (xFinishedCallback) {
+								xFinishedCallback();
+							}
+							// activityWindow.close();
+							activityWindow.showMsg("同步完成");
+						}, function(e) {
+							if (xErrorCallback) {
+								xErrorCallback(e);
+							}
+							// activityWindow.close();
+							activityWindow.showMsg("同步错误：" + e.__summary.msg);
+							//alert("sync error : " + e.__summary.msg);
+						});
+					}, 10000);
 				}, function(e) {
 					if (xErrorCallback) {
 						xErrorCallback(e);
@@ -240,6 +240,7 @@
 							}
 						});
 					}
+
 
 					dbTrans.on("rollback", rollbackSyncPull);
 
@@ -285,7 +286,7 @@
 									// dbTrans.db.execute(sql, [item.xGet("id")]);
 									// });
 									// }
-									if(model.syncDeleteHasMany) {
+									if (model.syncDeleteHasMany) {
 										model.syncDeleteHasMany(record, dbTrans);
 									}
 									model.syncDelete(record, dbTrans);
@@ -320,12 +321,14 @@
 											dbTrans.off("rollback", syncRollbackConflict);
 											model.syncRollback();
 										}
+
+
 										dbTrans.on("rollback", syncRollbackConflict);
 									}
 									model.syncUpdateConflict(record, dbTrans);
-                            		if(dbTrans.__syncUpdateData[model.config.adapter.collection_name]){
-                            			delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
-                            		}
+									if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
+										delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+									}
 								}
 							} else {
 								rs.close();
@@ -366,22 +369,24 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
+
+
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
 										model.syncUpdate(record, dbTrans);
 										model._syncUpdate(record, dbTrans);
-                                		if(dbTrans.__syncUpdateData[model.config.adapter.collection_name]){
-                                			delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
-                                		}
+										if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
+											delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+										}
 									}
 								}
 							}
 							rs = null;
 						}
 					});
-					for(var models in dbTrans.__syncUpdateData){
-						for(var model in dbTrans.__syncUpdateData[models]){
+					for (var models in dbTrans.__syncUpdateData) {
+						for (var model in dbTrans.__syncUpdateData[models]) {
 							var record = {};
 							dbTrans.__syncUpdateData[models][model].syncUpdate(record, dbTrans);
 							dbTrans.__syncUpdateData[models][model]._syncUpdate(record, dbTrans);
@@ -404,6 +409,8 @@
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
 							xFinishedCallback();
 						}
+
+
 						dbTrans.on("commit", postCommit);
 					}
 				}, function(e) {
@@ -439,12 +446,12 @@
 
 					// var lastSyncTime = data.lastSyncTime;
 					// Alloy.Models.User.save({
-						// "lastSyncTime" : lastSyncTime
+					// "lastSyncTime" : lastSyncTime
 					// }, {
-						// wait : true,
-						// syncFromServer : true,
-						// patch : true,
-						// dbTrans : dbTrans
+					// wait : true,
+					// syncFromServer : true,
+					// patch : true,
+					// dbTrans : dbTrans
 					// });
 
 					dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
