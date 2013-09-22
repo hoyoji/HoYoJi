@@ -24,7 +24,7 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 				ownerUser : Alloy.Models.User,
 				parentExpenseCategory : parentCategory
 			}).xAddToSave($);
-			if (subCategories[i] === "早午晚餐") {
+			if (subCategories[i] === "早餐") {
 				$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 			}
 		}
