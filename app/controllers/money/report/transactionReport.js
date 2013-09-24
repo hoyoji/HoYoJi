@@ -22,6 +22,30 @@ function onFooterbarTap(e) {
 	}
 }
 
+function dayTransactions() {
+	queryOptions = {
+		dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+		dateTo : d.getUTCTimeOfDateEnd().toISOString()
+	};
+	exports.refresh();
+}
+
+function weekTransactions() {
+	queryOptions = {
+		dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
+		dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+	};
+	exports.refresh();
+}
+
+function monthTransactions() {
+	queryOptions = {
+		dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
+		dateTo : d.getUTCTimeOfMonthEnd().toISOString()
+	};
+	exports.refresh();
+}
+
 exports.getQueryString = function() {
 	var filterStr = "";
 	for (var f in queryOptions) {
@@ -85,6 +109,6 @@ $.borrowTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
-$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow()); 
+$.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
-$.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow()); 
+$.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
