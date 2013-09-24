@@ -170,7 +170,7 @@
 						});
 						//}
 					},
-					timeout : 120000 /* in milliseconds */
+					timeout : 300000 /* in milliseconds */
 				});
 				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 				xhr.open("POST", url);

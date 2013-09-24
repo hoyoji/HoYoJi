@@ -84,6 +84,7 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 		__orderBy : orderBy
 	}], function(data) {
 		if(data[0].length > 0){			
+			$.userCollection.isFetching = true;
 			data[0].forEach(function(userData) {
 				var id = userData.id; // prevent it to be added to dataStore during object initialization
 				delete userData.id;
@@ -92,6 +93,7 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 				user.id = id;
 				$.userCollection.add(user);
 			});			
+			$.userCollection.isFetching = false;
 		}
 		successCB();
 		$.searchButton.setEnabled(true);
