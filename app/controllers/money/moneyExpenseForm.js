@@ -261,7 +261,7 @@ function setDefaultCategory(project,setToModel) {//新增时根据时间设置�
 			ownerUserId : Alloy.Models.User.xGet("id")
 		});
 	}
-	if (!defaultCategory) {
+	if (!defaultCategory.xGet("project")) {
 		defaultCategory = project.xGet("defaultExpenseCategory");
 
 	}
