@@ -2,7 +2,7 @@ exports.definition = {
 	config : {
 		columns : {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
-			userName : "TEXT UNIQUE NOT NULL",
+			userName : "TEXT NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
 			activeProjectId : "TEXT",
