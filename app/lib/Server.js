@@ -205,7 +205,7 @@
 							activityWindow.showMsg("同步错误：" + e.__summary.msg);
 							//alert("sync error : " + e.__summary.msg);
 						});
-					}, 10000);
+					}, 0);
 				}, function(e) {
 					if (xErrorCallback) {
 						xErrorCallback(e);
