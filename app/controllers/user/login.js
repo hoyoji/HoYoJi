@@ -250,7 +250,7 @@ function openRegister(e) {
 
 $.loginButton.addEventListener("singletap", doLogin);
 
-$.onWindowOpenDo(function() {
+$.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
