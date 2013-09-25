@@ -413,7 +413,7 @@ function addRowToSection(rowModel, collection, index) {
 		}
 	} else {
 		try {
-			if (pos.index >= rowsCount - 1 && pageSize > 0 && rowsCount % pageSize === 0) {
+			if (index >= rowsCount - 1 && pageSize > 0 && rowsCount % pageSize === 0) {
 				return;
 			}
 			$.table.insertRowAfter(index, createRowView(rowModel, collection));
@@ -557,7 +557,7 @@ function collapseAllHasDetailSections() {
 	}
 }
 
-var sortedArray_sortByField, sortedArray_sortReverse, sortedArray_groupByField, currentPageNumber = 0;
+var sortedArray_sortByField = sortByField, sortedArray_sortReverse = sortReverse, sortedArray_groupByField = groupByField, currentPageNumber = 0;
 exports.refreshTable = function() {
 
 };
