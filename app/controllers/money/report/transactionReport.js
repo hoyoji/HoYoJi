@@ -9,7 +9,6 @@ $.onWindowOpenDo(function() {
 	if ($.getCurrentWindow().$attrs.queryOptions) {
 		_.extend(queryOptions, $.getCurrentWindow().$attrs.queryOptions);
 	}
-
 	exports.refresh();
 });
 
@@ -22,10 +21,11 @@ function onFooterbarTap(e) {
 	}
 }
 
-function dayTransactions() {
+function dateTransactions() {
+	var dat = new Date();
 	queryOptions = {
-		dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-		dateTo : d.getUTCTimeOfDateEnd().toISOString()
+		dateFrom : dat.getUTCTimeOfDateStart().toISOString(),
+		dateTo : dat.getUTCTimeOfDateEnd().toISOString()
 	};
 	exports.refresh();
 }
