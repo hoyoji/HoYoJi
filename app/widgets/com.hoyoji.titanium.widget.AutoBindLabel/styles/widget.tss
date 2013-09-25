@@ -1,5 +1,6 @@
 "Label": {
 	color: 'black',
 	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+	width: Ti.UI.SIZE,
+	wordWrap : false
 }
