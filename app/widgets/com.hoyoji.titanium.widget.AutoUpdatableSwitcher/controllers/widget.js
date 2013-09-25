@@ -4,9 +4,9 @@ if($.$attrs.color){
 	$.field.setColor($.$attrs.color);
 }
 
-if ($.$attrs.font) {
-	$.field.setFont($.$attrs.font);
-}
+// if ($.$attrs.font) {
+	// $.field.setFont($.$attrs.font);
+// }
 
 if($.$attrs.textAlign){
 	if($.$attrs.textAlign === "Ti.UI.TEXT_ALIGNMENT_LEFT"){
