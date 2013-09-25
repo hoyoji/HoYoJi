@@ -87,7 +87,7 @@ $.onWindowOpenDo(function() {
 		datetime.setMonth(date.getMonth());
 		datetime.setDate(date.getDate());
 
-		$.dateTimeField.setText(String.formatDate(datetime, "long") + " "+ getDaysOfWeek(datetime) + " " + String.formatTime(datetime, "long"));
+		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " "+ getDaysOfWeek(datetime) + " " + String.formatTime(datetime, "medium"));
 	}
 
 	function updateTimeValue() {
@@ -96,7 +96,7 @@ $.onWindowOpenDo(function() {
 		datetime.setMinutes(time.getMinutes());
 		datetime.setSeconds(time.getSeconds());
 
-		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
+		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + getDaysOfWeek(datetime) + " " + String.formatTime(datetime, "medium"));
 	}
 
 
