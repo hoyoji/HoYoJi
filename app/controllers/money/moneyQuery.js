@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-if ($.getCurrentWindow().$attrs.queryOptions) {
+if ($.getCurrentWindow().$attrs.fromReport) {
 	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
 } else {
 	var date = new Date();
