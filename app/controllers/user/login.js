@@ -1,11 +1,8 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.autoLogin.setValue("0");
 $.setSaveableMode("add");
 
 function doLogin(e) {
-	delete Alloy.Models.User;
-	delete Alloy.Globals.currentUserDatabaseName;
 
 	// make new login ID every time user tries to login
 	// delete $.$model.id;
@@ -26,11 +23,7 @@ function doLogin(e) {
 		$.userName.showErrorMsg("请输入用户名");
 		return;
 	}
-	if (userName.startsWith("hyj")) {
-		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
-	} else {
-		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
-	}
+
 	var password = $.password.field.getValue() || "";
 	if (password.length === 0) {
 		$.password.showErrorMsg("请输入密码");
@@ -46,6 +39,14 @@ function doLogin(e) {
 }
 
 function login(userName, password) {
+	delete Alloy.Models.User;
+	delete Alloy.Globals.currentUserDatabaseName;
+	if (userName.startsWith("hyj")) {
+		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+	} else {
+		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+	}
+		
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
 		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName + "'"
@@ -252,9 +253,12 @@ $.loginButton.addEventListener("singletap", doLogin);
 
 $.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
+		$.autoLogin.setValue(1);
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
 		login(userData.userName, userData.password);
+	} else {
+		$.autoLogin.setValue(0);
 	}
 });
 
