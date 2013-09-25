@@ -104,12 +104,12 @@
 					</View>
 				</View>
 			</ScrollView>
-			<Button id="dayTransactions" width="33%" left="0.5%" bottom="0" onClick="dayTransactions">当日汇总</Button>
+			<!-- <Button id="dateTransactions" width="33%" left="0.5%" bottom="0" onClick="dateTransactions">当日汇总</Button>
 			<Button id="weekTransactions" width="33%" left="33%" bottom="0" onClick="weekTransactions">当周汇总</Button>
-			<Button id="monthTransactions" width="33%" right="0.5%" bottom="0" onClick="monthTransactions">当月汇总</Button>
+			<Button id="monthTransactions" width="33%" right="0.5%" bottom="0" onClick="monthTransactions">当月汇总</Button> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="查询" imagesFolder="/images/money/report"
-		ids="transactionsSummuryQuery"/>
+		buttons="当日汇总,当周汇总,当月汇总,查询" imagesFolder="/images/money/report"
+		ids="dateTransactions,weekTransactions,monthTransactions,transactionsSummuryQuery"/>
 	</View>
 </Alloy>
