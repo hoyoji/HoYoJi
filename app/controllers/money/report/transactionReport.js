@@ -22,8 +22,7 @@ function onFooterbarTap(e) {
 	} else if (e.source.id === "transactionsSummuryQuery") {
 		Alloy.Globals.openWindow("money/moneyQuery", {
 			selectorCallback : doQuery,
-			queryOptions : queryOptions,
-			fromReport : true
+			queryOptions : queryOptions
 		});
 	}
 }

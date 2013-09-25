@@ -1,14 +1,14 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-if ($.getCurrentWindow().$attrs.fromReport) {
-	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
-} else {
+if ($.getCurrentWindow().$attrs.fromTransactionsSearch) {
 	var date = new Date();
 	$.queryOptions = {
 		dateFrom : date.getUTCTimeOfDateStart().toISOString(),
 		dateTo : date.getUTCTimeOfDateEnd().toISOString(),
 		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 	};
+} else {
+	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
 }
 
 $.onWindowOpenDo(function() {
