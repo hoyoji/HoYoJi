@@ -13,7 +13,13 @@ $.onWindowOpenDo(function() {
 });
 
 function onFooterbarTap(e) {
-	if (e.source.id === "transactionsSummuryQuery") {
+	if (e.source.id === "dateTransactions") {
+		dateTransactions();
+	} else if (e.source.id === "weekTransactions") {
+		weekTransactions();
+	} else if (e.source.id === "monthTransactions") {
+		monthTransactions();
+	} else if (e.source.id === "transactionsSummuryQuery") {
 		Alloy.Globals.openWindow("money/moneyQuery", {
 			selectorCallback : doQuery,
 			queryOptions : queryOptions
