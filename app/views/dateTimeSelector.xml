@@ -1,9 +1,9 @@
 <Alloy>
 	<View class="container">
-		<View height="42" top="0" left="0" right="0" backgroundImage="/images/headerTitle_green.png">
+		<View height="42" top="0" left="0" right="0" backgroundColor="#2E8B57">
 			<Widget src="com.hoyoji.titanium.widget.XButton" left="5" width="60" id="close" image="/images/backButton"/>
 			<Label id="title" color="white">请选择时间</Label>
-			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" id="selectDate" image="/images/saveButton"/>
+			<!-- <Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" id="selectDate" image="/images/saveButton"/> -->
 		</View>
 		
 		<Label id="dateTimeField" top="42" platform="ios" bottom="257" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
@@ -19,7 +19,7 @@
 		</View>
 		
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-		buttons="日期,时间" imagesFolder="/images/dateTimeSelector"
-		ids="date,time"/>
+		buttons="日期,时间,今天,确定" imagesFolder="/images/dateTimeSelector"
+		ids="date,time,today,submit"/>
 	</View>
 </Alloy>
