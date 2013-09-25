@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.autoLogin.setValue(0);
+$.autoLogin.setValue("0");
 $.setSaveableMode("add");
 
 function doLogin(e) {
@@ -89,7 +89,7 @@ function login(userName, password) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
 			if (Alloy.Models.User.xGet("password") === password) {
-				if($.autoLogin.getValue()){
+				if($.autoLogin.getValue() === "1"){
 					setValueToProperties(userName, password);
 				}
 				openMainWindow();
@@ -107,7 +107,7 @@ function login(userName, password) {
 						patch : true,
 						wait : true
 					});
-					if($.autoLogin.getValue()){
+					if($.autoLogin.getValue() === "1"){
 						setValueToProperties(userName, password);
 					}
 					openMainWindow();
@@ -189,7 +189,7 @@ function login(userName, password) {
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {
-						if($.autoLogin.getValue()){
+						if($.autoLogin.getValue() === "1"){
 							setValueToProperties(userName, password);
 						}
 						openMainWindow();
@@ -209,12 +209,11 @@ function login(userName, password) {
 }
 
 function setValueToProperties(userName, password) {
-	if($.autoLogin.getValue()){
-		var userData = {};
-		userData["userName"] = userName;
-		userData["password"] = password;
-		Ti.App.Properties.setObject("userData", userData);
-	}
+	var userData = {};
+	userData["autoLogin"] = $.autoLogin.getValue();
+	userData["userName"] = userName;
+	userData["password"] = password;
+	Ti.App.Properties.setObject("userData", userData);
 }
 
 function openMainWindow() {
