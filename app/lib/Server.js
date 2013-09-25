@@ -190,7 +190,7 @@
 				activityWindow.open("正在同步...");
 
 				this.syncPull(function() {
-					setTimeout(function() {
+					// setTimeout(function() {
 						self.syncPush(function(data) {
 							if (xFinishedCallback) {
 								xFinishedCallback();
@@ -205,7 +205,7 @@
 							activityWindow.showMsg("同步错误：" + e.__summary.msg);
 							//alert("sync error : " + e.__summary.msg);
 						});
-					}, 0);
+					// }, 0);
 				}, function(e) {
 					if (xErrorCallback) {
 						xErrorCallback(e);
@@ -265,7 +265,7 @@
 							});
 							if (!model.isNew()) {
 								// 如果该记录在本地存在，我们要将其删除
-								// 如果该记录不是自己创建的，我们没有直接讲起删除，不需要进行帐户余额等维护
+								// 如果该记录不是自己创建的，我们直接将其删除，不需要进行帐户余额等维护
 								if (model.xGet("ownerUserId") !== Alloy.Models.User.id && (record.tableName !== "MoneyExpenseApportion" && record.tableName !== "MoneyIncomeApportion")) {
 									// 这里不能直接用sql从数据库删除，因为那样的话如果model就不会从界面上移除
 									// dbTrans.db.execute("DELETE FROM " + record.tableName + " WHERE id = ?", [id]);
