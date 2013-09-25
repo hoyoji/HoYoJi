@@ -6,7 +6,14 @@
 		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true" noBottomImage="true"
 			id="password"  autoInit="false"
 		/>
-
+		<View height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
+			<Label left="10" width="60%"></Label>
+			<Label width="30%" font="{fontSize : 12}">下次自动登录</Label>
+			<Widget id="autoLogin" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoInit="false" font="{fontSize : 12}"
+			right="10" width="20%"
+			values="1,0"
+			items="是,否"/>
+		</View>
 		<Widget id="loginButton" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="black" 
 			backgroundColor="#e9f3f0"
 			autoInit="false"

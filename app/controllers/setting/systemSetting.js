@@ -3,6 +3,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 function logout(){
 	$.getCurrentWindow().close();
 	Alloy.Globals.mainWindow.$view.close();
+	Ti.App.Properties.setObject("userData", null);
 }
 
 $.userPicture.UIInit($, $.getCurrentWindow());
