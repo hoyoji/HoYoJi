@@ -1,11 +1,15 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var date = new Date();
-$.queryOptions = {
-	dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-	dateTo : date.getUTCTimeOfDateEnd().toISOString(),
-	transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
-};
+if ($.getCurrentWindow().$attrs.queryOptions) {
+	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
+} else {
+	var date = new Date();
+	$.queryOptions = {
+		dateFrom : date.getUTCTimeOfDateStart().toISOString(),
+		dateTo : date.getUTCTimeOfDateEnd().toISOString(),
+		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
+	};
+}
 
 $.onWindowOpenDo(function() {
 	if ($.getCurrentWindow().$attrs.queryOptions) {
@@ -19,13 +23,13 @@ exports.getQueryString = function() {
 		var value = $.queryOptions[f];
 		if (_.isNull(value)) {
 			continue;
-		} 
-		if (f === "transactionDisplayType"){
-			if(value === "Personal"){
+		}
+		if (f === "transactionDisplayType") {
+			if (value === "Personal") {
 				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			} 
+			}
 			continue;
-		} 
+		}
 		if (filterStr) {
 			filterStr += " AND ";
 		}
