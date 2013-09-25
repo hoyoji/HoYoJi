@@ -1,5 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.autoLogin.setValue("0");
 $.setSaveableMode("add");
 
 function doLogin(e) {
@@ -25,7 +26,7 @@ function doLogin(e) {
 		$.userName.showErrorMsg("请输入用户名");
 		return;
 	}
-	if(userName.startsWith("hyj")){
+	if (userName.startsWith("hyj")) {
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
 		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
@@ -35,38 +36,50 @@ function doLogin(e) {
 		$.password.showErrorMsg("请输入密码");
 		return;
 	}
-	
+
 	$.loginButton.showActivityIndicator();
 	$.loginButton.setEnabled(false);
-	
+
 	password = Ti.Utils.sha1(password);
+	login(userName, password);
+
+}
+
+function login(userName, password) {
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
-		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName +"'"
+		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName + "'"
 	});
 	if (!userDatabase.id) {
 		// 本地没有该用户的数据库，我们到服务器上验证该用户
 		//用户不存在，到服务器上下载用户资料
-			Alloy.Globals.Server.postData({
-				userName : userName,
-				password : password
-			}, function(data) {
-				userDatabase.set({id : data.id, "userName" : userName}, {patch : true});
-				userDatabase.save();
-				Alloy.Globals.currentUserDatabaseName = data.id;
-				loginUser(data);
-			}, function(e) {
-				// 用户验证错误或无法连接服务器，登录失败
-				loginFail(e.__summary.msg);
-			}, "login");	
+		Alloy.Globals.Server.postData({
+			userName : userName,
+			password : password
+		}, function(data) {
+			userDatabase.set({
+				id : data.id,
+				"userName" : userName
+			}, {
+				patch : true
+			});
+			userDatabase.save();
+			Alloy.Globals.currentUserDatabaseName = data.id;
+
+			loginUser(data);
+
+		}, function(e) {
+			// 用户验证错误或无法连接服务器，登录失败
+			loginFail(e.__summary.msg);
+		}, "login");
 	} else {
 		Alloy.Globals.currentUserDatabaseName = userDatabase.id;
 		loginUser();
 	}
-	
+
 	function loginUser(userData) {
 		Alloy.Globals.DataStore.initStore();
-		
+
 		Alloy.Models.User = Alloy.createModel("User").xFindInDb({
 			userName : userName
 		});
@@ -76,6 +89,9 @@ function doLogin(e) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
 			if (Alloy.Models.User.xGet("password") === password) {
+				if($.autoLogin.getValue() === "1"){
+					setValueToProperties(userName, password);
+				}
 				openMainWindow();
 			} else {
 				// 密码不对，到服务器上验证密码
@@ -91,6 +107,9 @@ function doLogin(e) {
 						patch : true,
 						wait : true
 					});
+					if($.autoLogin.getValue() === "1"){
+						setValueToProperties(userName, password);
+					}
 					openMainWindow();
 				}, function(e) {
 					// 服务器无法连接，或验证该密码错误，用户登录失败
@@ -98,8 +117,8 @@ function doLogin(e) {
 				}, "login");
 			}
 		} else {
-			if(userData){
-				createUser(userData);	
+			if (userData) {
+				createUser(userData);
 			} else {
 				//用户不存在，到服务器上下载用户资料
 				Alloy.Globals.Server.postData({
@@ -110,12 +129,11 @@ function doLogin(e) {
 					loginFail(e.__summary.msg);
 				}, "login");
 			}
-			
-			function createUser(data){
+
+			function createUser(data) {
 				// 密码验证通过，将该用户的资料保存到本地数据库
 				// 由于服务器不会反回密码，我们将用户输入的正确密码保存
 				data.password = password;
-				
 				delete data.lastSyncTime;
 				Alloy.Models.User.set(data);
 				delete Alloy.Models.User.id;
@@ -145,7 +163,7 @@ function doLogin(e) {
 								// parentIncomeCategoryId : null,
 								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
 								__dataType : "MoneyIncomeCategory"
-							});							
+							});
 						}
 					}
 				}
@@ -164,13 +182,16 @@ function doLogin(e) {
 							model.actualTotalExpense = 0;
 							model.apportionedTotalIncome = 0;
 							model.apportionedTotalExpense = 0;
-						}						
+						}
 						model = Alloy.createModel(modelType, model);
 						model.attributes["id"] = id;
 						model.xSet("ownerUser", Alloy.Models.User);
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {
+						if($.autoLogin.getValue() === "1"){
+							setValueToProperties(userName, password);
+						}
 						openMainWindow();
 					}, function(e) {
 						// 保存倒数据库时出错，登录失败
@@ -181,10 +202,18 @@ function doLogin(e) {
 					loginFail(e.__summary.msg);
 				});
 			}
-			
+
 		}
 	}
 
+}
+
+function setValueToProperties(userName, password) {
+	var userData = {};
+	userData["autoLogin"] = $.autoLogin.getValue();
+	userData["userName"] = userName;
+	userData["password"] = password;
+	Ti.App.Properties.setObject("userData", userData);
 }
 
 function openMainWindow() {
@@ -221,7 +250,16 @@ function openRegister(e) {
 
 $.loginButton.addEventListener("singletap", doLogin);
 
+$.onWindowOpenDo(function() {
+	if (Ti.App.Properties.getObject("userData")) {
+		var userData = Ti.App.Properties.getObject("userData");
+		$.userName.field.setValue(userData["userName"]);
+		login(userData.userName, userData.password);
+	}
+});
+
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
+$.autoLogin.UIInit($, $.getCurrentWindow());
 $.loginButton.UIInit($, $.getCurrentWindow());
 

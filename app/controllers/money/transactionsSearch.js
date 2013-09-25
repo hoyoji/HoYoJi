@@ -7,7 +7,8 @@ var queryOptions = {}, queryController = null;
 exports.doSearch = function() {
 	Alloy.Globals.openWindow("money/moneyQuery", {
 		selectorCallback : doQuery,
-		queryOptions : queryOptions
+		queryOptions : queryOptions,
+		fromTransactionsSearch : true
 	});
 };
 
@@ -57,7 +58,10 @@ function doQuery(_queryController) {
 
 function onFooterbarTap(e) {
 	if (e.source.id === "searchTransactions") {
-		exports.doSearch();
+		Alloy.Globals.openWindow("money/moneyQuery", {
+		selectorCallback : doQuery,
+		queryOptions : queryOptions
+	});
 	}
 }
 
