@@ -63,6 +63,7 @@ $.onWindowOpenDo(function() {
 		datetime = new Date(datetime);
 	}
 	$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
+	$.daysOfWeek.setText(getDaysOfWeek(datetime));
 	$.datePicker.setValue(datetime);
 	$.timePicker.setValue(datetime);
 	// if(OS_ANDROID){
@@ -87,7 +88,8 @@ $.onWindowOpenDo(function() {
 		datetime.setMonth(date.getMonth());
 		datetime.setDate(date.getDate());
 
-		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " "+ getDaysOfWeek(datetime) + " " + String.formatTime(datetime, "medium"));
+		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
+		$.daysOfWeek.setText(getDaysOfWeek(datetime));
 	}
 
 	function updateTimeValue() {
@@ -96,7 +98,8 @@ $.onWindowOpenDo(function() {
 		datetime.setMinutes(time.getMinutes());
 		datetime.setSeconds(time.getSeconds());
 
-		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + getDaysOfWeek(datetime) + " " + String.formatTime(datetime, "medium"));
+		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
+		$.daysOfWeek.setText(getDaysOfWeek(datetime));
 	}
 
 

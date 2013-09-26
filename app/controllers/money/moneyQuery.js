@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-if ($.getCurrentWindow().$attrs.fromTransactionsSearch) {
+if (!$.getCurrentWindow().$attrs.queryOptions["dateFrom"]) {
 	var date = new Date();
 	$.queryOptions = {
 		dateFrom : date.getUTCTimeOfDateStart().toISOString(),

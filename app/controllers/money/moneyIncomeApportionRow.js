@@ -3,7 +3,8 @@ Alloy.Globals.extendsBaseRowController($, arguments[0]);
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User) {
 		$.amountView.setHeight(0);
-		$.localAmount.$view.setHeight(28);
+	}else {
+		$.localAmount.hide();
 	}
 });
 

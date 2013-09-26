@@ -8,6 +8,7 @@
 		
 		<Label id="dateTimeField" top="42" platform="ios" bottom="257" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 		<Label id="dateTimeField" top="42" platform="android" bottom="197" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
+		<Label id="daysOfWeek" top="84"  bottom="197" width="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 		
 		<Picker bottom="42" id="datePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_DATE" zIndex="1"/>
 		<Picker bottom="42" id="timePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_TIME" zIndex="0"/>

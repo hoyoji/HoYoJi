@@ -7,8 +7,7 @@ var queryOptions = {}, queryController = null;
 exports.doSearch = function() {
 	Alloy.Globals.openWindow("money/moneyQuery", {
 		selectorCallback : doQuery,
-		queryOptions : queryOptions,
-		fromTransactionsSearch : true
+		queryOptions : queryOptions
 	});
 };
 
