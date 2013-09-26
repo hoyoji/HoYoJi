@@ -11,7 +11,7 @@
 			<!-- </View>
 			<View layout="horizontal" horizontalWrap="false" right="20"  width="Ti.UI.SIZE">
 			-->
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"   width="Ti.UI.SIZE" height="21" right="20"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  top="0"  width="Ti.UI.SIZE" height="21" right="20"
 			id="code" autoInit="false"
 			bindModel = "$.$model"
 			bindAttribute = "code"

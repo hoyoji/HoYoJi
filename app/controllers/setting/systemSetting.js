@@ -1,25 +1,36 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-function logout(){
+function logout() {
 	$.getCurrentWindow().close();
 	Alloy.Globals.mainWindow.$view.close();
 }
+
+function openAbout() {
+	Alloy.Globals.openWindow("setting/about");
+}
+
+$.onWindowOpenDo(function(){
+	$.currentVersion.addEventListener("click",openAbout);
+});
+$.onWindowCloseDo(function(){
+	$.currentVersion.removeEventListener("click",openAbout);
+});
 
 $.userPicture.UIInit($, $.getCurrentWindow());
 $.userName.UIInit($, $.getCurrentWindow());
 $.friendAuthentication.UIInit($, $.getCurrentWindow());
 
 // function click () {
-  // Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
+// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 // }
 
 // function openCurrency(){
-	// Alloy.Globals.openWindow("money/currency/currencyAll");
+// Alloy.Globals.openWindow("money/currency/currencyAll");
 // }
 // function openExchange(){
-	// Alloy.Globals.openWindow("money/currency/exchangeAll");
+// Alloy.Globals.openWindow("money/currency/exchangeAll");
 // }
 // function openMoneyAccount(){
-	// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
+// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 // }
 
