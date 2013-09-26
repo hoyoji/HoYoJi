@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.autoLogin.setValue("0");
+$.autoLogin.setValue("no");
 $.setSaveableMode("add");
 
 function doLogin(e) {
@@ -89,7 +89,7 @@ function login(userName, password) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
 			if (Alloy.Models.User.xGet("password") === password) {
-				if($.autoLogin.getValue() === "1"){
+				if($.autoLogin.getValue() === "yes"){
 					setValueToProperties(userName, password);
 				}
 				openMainWindow();
@@ -107,7 +107,7 @@ function login(userName, password) {
 						patch : true,
 						wait : true
 					});
-					if($.autoLogin.getValue() === "1"){
+					if($.autoLogin.getValue() === "yes"){
 						setValueToProperties(userName, password);
 					}
 					openMainWindow();
@@ -189,7 +189,7 @@ function login(userName, password) {
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {
-						if($.autoLogin.getValue() === "1"){
+						if($.autoLogin.getValue() === "yes"){
 							setValueToProperties(userName, password);
 						}
 						openMainWindow();
@@ -250,7 +250,7 @@ function openRegister(e) {
 
 $.loginButton.addEventListener("singletap", doLogin);
 
-$.onWindowOpenDo(function() {
+$.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
