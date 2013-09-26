@@ -301,6 +301,8 @@ if ($.saveableMode === "read") {
 			if ($.depositeFriendAccount && $.depositeFriendAccount.xGet("id")) {
 
 			}
+			$.$model.xSet("friendUser", null);
+			$.friendUser.setValue(null);
 		}
 	});
 	

@@ -1,6 +1,5 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.autoLogin.setValue("no");
 $.setSaveableMode("add");
 
 function doLogin(e) {

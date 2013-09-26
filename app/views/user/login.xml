@@ -8,9 +8,9 @@
 		/>
 		<View height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5">
 			<View left="10" width="90%">
-				<Label right="15%" font="{fontSize : 12}">自动登录</Label>
+				<Label right="15%">自动登录</Label>
 			</View>
-			<Widget id="autoLogin" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoInit="false" font="{fontSize : 12}"
+			<Widget id="autoLogin" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoInit="false"
 			right="10" width="10%"
 			values="yes,no"
 			items="是,否"/>
