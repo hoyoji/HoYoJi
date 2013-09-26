@@ -77,6 +77,12 @@ exports.setBubbleCount = function(count) {
 };
 
 exports.setImage = function(imagePath) {
+	if(!imagePath){
+		$.imageView.setVisible(false);
+		$.title.setBottom("auto");
+		$.title.setFont({fontSize : 16});
+		return;
+	}
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
 	// imgPath = imagePath + ".png";
@@ -115,9 +121,9 @@ if ($.$attrs.color) {
 if ($.$attrs.backgroundImage) {
 	$.$view.setBackgroundImage($.$attrs.backgroundImage);
 }
-if ($.$attrs.image) {
+// if ($.$attrs.image) {
 	exports.setImage($.$attrs.image);
-}
+// }
 
 if($.$attrs.visible !== "false"){
 	exports.setVisible(true);

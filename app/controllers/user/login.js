@@ -249,8 +249,6 @@ function openRegister(e) {
 	});
 }
 
-$.loginButton.addEventListener("singletap", doLogin);
-
 $.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
 		$.autoLogin.setValue("yes");
@@ -262,8 +260,13 @@ $.getCurrentWindow().onWindowOpenDo(function() {
 	}
 });
 
+
+$.loginButton.addEventListener("singletap", doLogin);
+$.registerButton.addEventListener("singletap", openRegister);
+
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.autoLogin.UIInit($, $.getCurrentWindow());
 $.loginButton.UIInit($, $.getCurrentWindow());
+$.registerButton.UIInit($, $.getCurrentWindow());
 
