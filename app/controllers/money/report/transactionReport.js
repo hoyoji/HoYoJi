@@ -2,7 +2,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 var d = new Date(), queryOptions = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-	dateTo : d.getUTCTimeOfDateEnd().toISOString()
+	dateTo : d.getUTCTimeOfDateEnd().toISOString(),
+	transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 };
 
 $.onWindowOpenDo(function() {
@@ -31,7 +32,8 @@ function dateTransactions() {
 	var dat = new Date();
 	queryOptions = {
 		dateFrom : dat.getUTCTimeOfDateStart().toISOString(),
-		dateTo : dat.getUTCTimeOfDateEnd().toISOString()
+		dateTo : dat.getUTCTimeOfDateEnd().toISOString(),
+		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 	};
 	exports.refresh();
 }
@@ -39,7 +41,8 @@ function dateTransactions() {
 function weekTransactions() {
 	queryOptions = {
 		dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
-		dateTo : d.getUTCTimeOfWeekEnd().toISOString()
+		dateTo : d.getUTCTimeOfWeekEnd().toISOString(),
+		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 	};
 	exports.refresh();
 }
@@ -47,7 +50,8 @@ function weekTransactions() {
 function monthTransactions() {
 	queryOptions = {
 		dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
-		dateTo : d.getUTCTimeOfMonthEnd().toISOString()
+		dateTo : d.getUTCTimeOfMonthEnd().toISOString(),
+		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 	};
 	exports.refresh();
 }
