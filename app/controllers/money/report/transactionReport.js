@@ -12,7 +12,7 @@ $.onWindowOpenDo(function() {
 	}
 	exports.refresh();
 });
-
+ 
 function onFooterbarTap(e) {
 	if (e.source.id === "dateTransactions") {
 		dateTransactions();
