@@ -29,7 +29,7 @@
 			bindAttribute = "amount"
 			/>
 			</View>
-			<Widget id="localAmount" src="com.hoyoji.titanium.widget.AutoBindLabel" right="15"  width="Ti.UI.SIZE" height="0"
+			<Widget id="localAmount" src="com.hoyoji.titanium.widget.AutoBindLabel" right="15"  width="Ti.UI.SIZE"
 				autoInit="false"
 			editModeEditability="noneditable" addModeEditability="noneditable"
 			bindModel = "$.$model"
