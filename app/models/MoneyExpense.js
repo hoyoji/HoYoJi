@@ -488,10 +488,15 @@ exports.definition = {
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
 					this._syncUpdate(record, dbTrans);
-				}  else if(!localUpdated){
-					// 让本地修改覆盖服务器上的记录
-					this._syncUpdate({lastServerUpdateTime : record.lastServerUpdateTime}, dbTrans);
 				}
+				else
+				if (!localUpdated) {
+					// 让本地修改覆盖服务器上的记录
+					this._syncUpdate({
+						lastServerUpdateTime : record.lastServerUpdateTime
+					}, dbTrans);
+				}
+
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
 				var self = this;

@@ -5,7 +5,8 @@
 		fontWeight: 'bold'
 	},
 	height: Ti.UI.SIZE,
-	width: Ti.UI.SIZE
+	width: Ti.UI.SIZE,
+	wordWrap : false
 }
 
 "#title": {
@@ -16,7 +17,8 @@
 	},
 	height: Ti.UI.SIZE,
 	width: Ti.UI.SIZE,
-	bottom: 2
+	bottom: 2,
+	wordWrap : false
 }
 
 "#bubbleCount" : {
@@ -34,6 +36,7 @@
 	 font: {
 		fontSize: 9,
 		fontWeight: 'normal'
-	 }
+	 },
+	 wordWrap : false
 	 // backgroundImage : WPATH("images/bubbleCount@2x.png")
 }

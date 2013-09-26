@@ -36,5 +36,5 @@ $.login = Alloy.createController("user/login", {
 $.login.setParent($.body);
 $.login.UIInit();
 
-$.UIInit($, $);
 $.index.open();
+$.UIInit($, $);
