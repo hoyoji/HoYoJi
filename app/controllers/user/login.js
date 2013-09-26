@@ -254,12 +254,12 @@ $.loginButton.addEventListener("singletap", doLogin);
 
 $.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
-		$.autoLogin.setValue(1);
+		$.autoLogin.setValue("yes");
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
 		login(userData.userName, userData.password);
 	} else {
-		$.autoLogin.setValue(0);
+		$.autoLogin.setValue("no");
 	}
 });
 
