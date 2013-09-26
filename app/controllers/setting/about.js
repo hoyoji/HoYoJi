@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.currentVersionNumber.setText(Ti.App.version);
+
 function checkUpdate() {
 
 }
@@ -11,7 +13,7 @@ function openWebAddress() {
 function sendEmail() {
 	var emailDialog = Ti.UI.createEmailDialog();
 	// emailDialog.subject = "";
-	emailDialog.toRecipients = ['b.yiu@hoyoji.com'];
+	emailDialog.toRecipients = ['support@hoyoji.com'];
 	// emailDialog.messageBody = '';
 	// var f = Ti.Filesystem.getFile('cricket.wav');
 	// emailDialog.addAttachment(f);
