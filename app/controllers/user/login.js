@@ -1,11 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.autoLogin.setValue("0");
+$.autoLogin.setValue("no");
 $.setSaveableMode("add");
 
 function doLogin(e) {
-	delete Alloy.Models.User;
-	delete Alloy.Globals.currentUserDatabaseName;
 
 	// make new login ID every time user tries to login
 	// delete $.$model.id;
@@ -26,11 +24,7 @@ function doLogin(e) {
 		$.userName.showErrorMsg("请输入用户名");
 		return;
 	}
-	if (userName.startsWith("hyj")) {
-		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
-	} else {
-		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
-	}
+
 	var password = $.password.field.getValue() || "";
 	if (password.length === 0) {
 		$.password.showErrorMsg("请输入密码");
@@ -46,6 +40,14 @@ function doLogin(e) {
 }
 
 function login(userName, password) {
+	delete Alloy.Models.User;
+	delete Alloy.Globals.currentUserDatabaseName;
+	if (userName.startsWith("hyj")) {
+		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+	} else {
+		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+	}
+		
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
 		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName + "'"
@@ -89,7 +91,7 @@ function login(userName, password) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
 			if (Alloy.Models.User.xGet("password") === password) {
-				if($.autoLogin.getValue() === "1"){
+				if($.autoLogin.getValue() === "yes"){
 					setValueToProperties(userName, password);
 				}
 				openMainWindow();
@@ -107,7 +109,7 @@ function login(userName, password) {
 						patch : true,
 						wait : true
 					});
-					if($.autoLogin.getValue() === "1"){
+					if($.autoLogin.getValue() === "yes"){
 						setValueToProperties(userName, password);
 					}
 					openMainWindow();
@@ -189,7 +191,7 @@ function login(userName, password) {
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {
-						if($.autoLogin.getValue() === "1"){
+						if($.autoLogin.getValue() === "yes"){
 							setValueToProperties(userName, password);
 						}
 						openMainWindow();
@@ -250,11 +252,14 @@ function openRegister(e) {
 
 $.loginButton.addEventListener("singletap", doLogin);
 
-$.onWindowOpenDo(function() {
+$.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
+		$.autoLogin.setValue("yes");
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
 		login(userData.userName, userData.password);
+	} else {
+		$.autoLogin.setValue("no");
 	}
 });
 
