@@ -37,7 +37,7 @@
 				$.$view.setRight($.$attrs.right);
 			}
 			// if ($.$attrs.font) {
-				// $.$view.setFont($.$attrs.font);
+			// $.$view.setFont($.$attrs.font);
 			// }
 			if ($.$attrs.id) {
 				$.$view.id = $.$attrs.id;
@@ -135,6 +135,8 @@
 									});
 								}
 							}
+
+
 							$.$view.addEventListener("postlayout", postlayoutCB);
 						} else {
 							$.$view.addEventListener("winopen", function(e) {
@@ -148,7 +150,7 @@
 				onWindowCloseDo : function(callback) {
 					$.on("winclose", function(e) {
 						e.cancelBubble = true;
-						setTimeout(function(){
+						setTimeout(function() {
 							callback();
 						}, 1);
 					});
@@ -230,8 +232,8 @@
 					}
 				}
 			}
-			
-			if($.$attrs.autoInit !== "false"){
+
+			if ($.$attrs.autoInit !== "false") {
 				$.showActivityIndicator();
 			}
 
@@ -259,7 +261,7 @@
 							$.$view.fireEvent("winopen", {
 								bubbles : false
 							});
-							if($.$attrs.autoInit !== "false"){
+							if ($.$attrs.autoInit !== "false") {
 								$.hideActivityIndicator();
 							}
 							// }
@@ -281,7 +283,7 @@
 				$.__currentWindow = $.$attrs.currentWindow;
 			}
 			if ($.$attrs.autoInit !== "false") {
-							
+
 				if ($.__parentController && $.__currentWindow) {
 					$.$view.fireEvent("winopen", {
 						bubbles : false
@@ -312,6 +314,23 @@
 
 			$.onWindowCloseDo(function() {
 				$.destroy();
+			});
+
+			$.$view.addEventListener("touchstart", function(e) {
+				if(e.softKeyboardClosed){
+					return;
+				}
+				
+				e.softKeyboardClosed = true;
+				if (OS_IOS) {
+					if (!Ti.App.getKeyboardVisible()) {
+						return;
+					}
+				}
+				if (!e.source.focusable && e.source.toString().toLowerCase() !== "[object field]" && e.source.toString().toLowerCase() !== "[object textfield]") {
+					console.info("closing softkeyboard");
+					$.getCurrentWindow().closeSoftKeyboard();
+				}
 			});
 		};
 	}());

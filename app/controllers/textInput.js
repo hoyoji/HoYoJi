@@ -25,3 +25,8 @@ $.getCurrentWindow().$view.addEventListener("open", function(){
 		$.textField.focus();
 	},500);
 });
+
+$.textField.addEventListener("longpress", function(e){
+	e.cancelBubble = true;
+	return false;
+});

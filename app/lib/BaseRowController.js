@@ -63,8 +63,10 @@
 			function enableOpenDetailButton() {
 				if (getDetailCount() === 0) {
 					openDetailButton.setEnabled(false);
+					openDetailButton.setImage(detailEmptyButtonImage);
 				} else {
 					openDetailButton.setEnabled(true);
+					openDetailButton.setImage(detailExpandButtonImage);
 				}
 			}
 
@@ -121,7 +123,6 @@
 				return count;
 			};
 			if (hasChild) {
-
 				if (OS_IOS) {
 					var childButtonImage = "/images/childButton@2x.png";
 					var openChildButton = Ti.UI.createButton({
@@ -171,10 +172,11 @@
 			if (hasDetail) {
 				if (OS_IOS) {
 					var detailExpandButtonImage = "/images/detailExpandButton@2x.png";
+					var detailEmptyButtonImage = "/images/detailEmptyButton@2x.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton@2x.png";
 					var openDetailButton = Ti.UI.createButton({
 						// title : "+",
-						image : detailExpandButtonImage,
+						//image : getDetailCount() ? detailExpandButtonImage : detailEmptyButtonImage,
 						height : Ti.UI.FILL,
 						width : 42,
 						backgroundColor : "transparent",
@@ -186,10 +188,11 @@
 					});
 				} else {
 					var detailExpandButtonImage = "/images/detailExpandButton.png";
+					var detailEmptyButtonImage = "/images/detailEmptyButton.png";
 					var detailCollapseButtonImage = "/images/detailCollapseButton.png";
 					var openDetailButton = Ti.UI.createButton({
 						// title : "+",
-						image : detailExpandButtonImage,
+						//image : getDetailCount() ? detailExpandButtonImage : detailEmptyButtonImage,
 						height : Ti.UI.FILL,
 						width : 42,
 						backgroundColor : "transparent",

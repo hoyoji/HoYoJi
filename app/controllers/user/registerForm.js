@@ -124,6 +124,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		// $.saveModel(function(msg){
 		// Alloy.Models.User = $.$model;
 		saveEndCB("注册成功");
+		alert("注册成功, 请登录");
 		$.getCurrentWindow().__dirtyCount = 0;
 		$.getCurrentWindow().close();
 		// }, saveErrorCB);

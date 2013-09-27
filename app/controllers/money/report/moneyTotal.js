@@ -1,7 +1,12 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
 var totalField = $.$attrs.totalField || "SUM(main.amount / IFNULL(ex.rate, 1))", value = 0, query,
-querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' ";
+querySelect;
+if($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion"){
+ querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' ";
+} else {
+ querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' ";
+}
 
 exports.query = function(queryStr){
 	var	queryStr = queryStr || $.$attrs.queryStr;
@@ -19,6 +24,9 @@ exports.query = function(queryStr){
 				dEnd =  d.getUTCTimeOfMonthEnd().toISOString();
 			}
 			queryStr = " date >= '" + dStart + "' AND date <= '" + dEnd + "'";
+			if($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion"){
+				queryStr += " AND main.friendUserId = '" + Alloy.Models.User.id + "'"; 
+			}
 		}
 		query = querySelect + " WHERE " + queryStr;
 	} else {
