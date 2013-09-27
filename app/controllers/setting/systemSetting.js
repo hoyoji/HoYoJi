@@ -17,6 +17,8 @@ $.onWindowCloseDo(function(){
 	$.currentVersion.removeEventListener("click",openAbout);
 });
 
+$.currentVersionNumber.setText(Ti.App.version);
+
 $.userPicture.UIInit($, $.getCurrentWindow());
 $.userName.UIInit($, $.getCurrentWindow());
 $.friendAuthentication.UIInit($, $.getCurrentWindow());

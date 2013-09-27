@@ -9,7 +9,7 @@
 				</View>
 				<View id="currentVersion" height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">当前版本</Label>
-					<Label id="currentVersionNumber" left="30%" width="Ti.UI.SIZE">1.0.0</Label>
+					<Label id="currentVersionNumber" left="30%" width="Ti.UI.SIZE"></Label>
 					<Button id="checkUpdate" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" onClick="checkUpdate">检查更新</Button>
 				</View>
 				<View id="webAddressView" height="43" left="2" top="5"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
@@ -18,14 +18,15 @@
 				</View>
 				<View id="emailView" height="43" left="2" top="5"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">邮箱</Label>
-					<Label id="email" left="30%" width="Ti.UI.SIZE" onClick="sendEmail">b.yiu@hoyoji.com</Label>
+					<Label id="email" left="30%" width="Ti.UI.SIZE" onClick="sendEmail">support@hoyoji.com</Label>
 				</View>
 				<View id="weiboView" height="43" left="2" top="5"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label id="sinaBlog" left="30" width="Ti.UI.SIZE" onClick="openSinaBlog">新浪微博</Label>
 					<Label id="qqBlog" right="30" width="Ti.UI.SIZE" onClick="openQqBlog">腾讯微博</Label>
 				</View>
+				<View height="10"/>
+				<Label bottom="0">好友记@科技版权所有</Label>
 			</ScrollView>
-			<Label bottom="0">好友记科技@版权所有</Label>
 		</View>
 	</View>
 </Alloy>

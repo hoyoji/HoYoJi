@@ -35,7 +35,7 @@
 				<!-- <View height="45" top="10" backgroundColor="#d1d1d1" borderRadius="7"> -->
 				<View id="currentVersion" height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">版本</Label>
-					<Label id="currentVersionNumber" right="10" width="50">1.0.0</Label>
+					<Label id="currentVersionNumber" right="10" width="Ti.UI.SIZE"></Label>
 					<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
 					values="required,none"
 					items="是,否"
