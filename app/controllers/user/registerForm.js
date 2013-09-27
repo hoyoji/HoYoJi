@@ -59,30 +59,55 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// for (var i = 0; i < $.__saveCollection.length; i++) {
 	// data.push($.__saveCollection[i].toJSON());
 	// }
-	
+
 	$.$model.xValidate(function() {
 		// 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
 		if ($.$model.__xValidationErrorCount > 0) {
 			$.$model.trigger("error", $.$model, $.$model.__xValidationError);
 		}
 	});
-	if (Alloy.Globals.alloyString.trim($.$model.xGet("userName")).length === 0) {
-		saveErrorCB("验证错误");
+
+	var userName = Alloy.Globals.alloyString.trim($.$model.xGet("userName"));
+	var illegalChars = /^(?=.*[a-zA-Z])([a-zA-Z0-9.-]+)$/;
+	if (userName.length < 4 || userName.length > 16) {
+		saveErrorCB("用户名长度不符，请重新输入（3~15字符）");
+		return;
+	} else if (!illegalChars.test(userName)) {
+		saveErrorCB("用户名包含非法字符或没有字母");
 		return;
 	}
-	if (!$.$model.xGet("password")) {
-		saveErrorCB("验证错误");
+
+	var psw = $.$model.xGet("password");
+	var passwordValidation = /^.{6,18}$/;
+	if (!psw) {
+		saveErrorCB("请输入密码");
 		return;
+	} else if (!passwordValidation.test(psw)) {
+		saveErrorCB("密码长度不对（6~18字符）");
+		return;
+	} else {
+		var repeat = true;
+		var series = true;
+		var first = psw.charAt(0);
+		for (var i = 1; i < psw.length; i++) {
+           repeat = repeat && psw.charAt(i) === first;
+           series = series && psw.charCodeAt(i) === psw.charCodeAt(i-1) + 1;
+		}
+		if (repeat || series) {
+			saveErrorCB("密码太简单");
+			return;
+		} 
 	}
+
 	if (!$.$model.xGet("password2")) {
-		saveErrorCB("验证错误");
+		saveErrorCB("请输入确认密码");
 		return;
 	}
 	if ($.$model.xGet("password") !== $.$model.xGet("password2")) {
-		saveErrorCB("验证错误");
+		saveErrorCB("两次密码不相同");
 		return;
 	}
-	if($.$model.xGet("userName").startsWith("hyj")){
+	if ($.$model.xGet("userName").startsWith("hyj")) {
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
 		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
