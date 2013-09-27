@@ -25,8 +25,8 @@
 					<Label id="qqBlog" right="30" width="Ti.UI.SIZE" onClick="openQqBlog">腾讯微博</Label>
 				</View>
 				<View height="10"/>
-				<Label bottom="0">好友记@科技版权所有</Label>
 			</ScrollView>
+			<Label bottom="0">好友记@科技版权所有</Label>
 		</View>
 	</View>
 </Alloy>
