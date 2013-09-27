@@ -31,6 +31,7 @@ var __alloyId74 = Ti.UI.createLabel({
 	text : "当月个人收入",
 	top : "5",
 	height : Ti.UI.SIZE,
+	wordWrap : false,
 	id : "__alloyId74"
 });
 __alloyId73.add(__alloyId74);
@@ -98,6 +99,7 @@ var __alloyId78 = Ti.UI.createLabel({
 	text : "当月个人支出",
 	top : "5",
 	height : Ti.UI.SIZE,
+	wordWrap : false,
 	id : "__alloyId78"
 });
 __alloyId77.add(__alloyId78);
