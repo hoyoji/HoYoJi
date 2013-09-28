@@ -4,6 +4,7 @@ if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
+
 // $.hintText.setText($.$attrs.hintText || "");
 
 $.$view.addEventListener("singletap", function(e) {

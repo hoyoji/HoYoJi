@@ -28,9 +28,10 @@ var __alloyId74 = Ti.UI.createLabel({
 		fontSize : 12,
 		fontWeight : "normal"
 	},
-	text : "当日收入",
+	text : "当月个人收入",
 	top : "5",
 	height : Ti.UI.SIZE,
+	wordWrap : false,
 	id : "__alloyId74"
 });
 __alloyId73.add(__alloyId74);
@@ -65,10 +66,10 @@ var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
 		fontWeight : "normal"
 	},
 	id : "moneyIncomeTotal",
-	modelType : "MoneyIncome",
+	modelType : "MoneyIncomeApportion",
 	autoSync : "true",
-	totalField : "SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))",
-	queryStr : "dateRange:date",
+	totalField : "SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))",
+	queryStr : "dateRange:month",
 	color : "#329600",
 	__parentSymbol : __alloyId75,
 	autoInit : "false",
@@ -95,9 +96,10 @@ var __alloyId78 = Ti.UI.createLabel({
 		fontSize : 12,
 		fontWeight : "normal"
 	},
-	text : "当日支出",
+	text : "当月个人支出",
 	top : "5",
 	height : Ti.UI.SIZE,
+	wordWrap : false,
 	id : "__alloyId78"
 });
 __alloyId77.add(__alloyId78);
@@ -133,10 +135,10 @@ var moneyExpenseTotal = Alloy.createController("money/report/moneyTotal", {
 		fontWeight : "normal"
 	},
 	id : "moneyExpenseTotal",
-	modelType : "MoneyExpense",
+	modelType : "MoneyExpenseApportion",
 	autoSync : "true",
-	totalField : "SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))",
-	queryStr : "dateRange:date",
+	totalField : "SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))",
+	queryStr : "dateRange:month",
 	color : "#c80032",
 	__parentSymbol : __alloyId79,
 	autoInit : "false",

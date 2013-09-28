@@ -12,6 +12,11 @@ if ($.$attrs.hideKeyboard) {
 	}
 }
 
+$.field.addEventListener("longpress", function(e){
+	e.cancelBubble = true;
+	return false;
+});
+
 if ($.$attrs.passwordMask === "true") {
 	$.field.setPasswordMask(true);
 }

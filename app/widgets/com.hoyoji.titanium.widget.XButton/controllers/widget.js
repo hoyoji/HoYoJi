@@ -79,10 +79,10 @@ exports.setBubbleCount = function(count) {
 exports.setImage = function(imagePath) {
 	if(!imagePath){
 		$.imageView.setVisible(false);
-		$.title.setBottom("auto");
 		$.title.setFont({fontSize : 16});
 		return;
 	}
+	$.title.setBottom(2);
 	var imgPath;
 	//if(Ti.Platform.displayCaps.density === "high"){
 	// imgPath = imagePath + ".png";

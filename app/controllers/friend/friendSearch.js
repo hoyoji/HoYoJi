@@ -13,7 +13,7 @@ $.usersTable.UIInit($, $.getCurrentWindow());
 // return menuSection;
 // }
 var loading, searchCriteria;
-$.searchButton.addEventListener("singletap", function(e) {
+function doSearch(e) {
 	if (loading) {
 		return;
 	}
@@ -63,7 +63,10 @@ $.searchButton.addEventListener("singletap", function(e) {
 	});
 	// }
 	$.search.blur();
-});
+}
+
+$.searchButton.addEventListener("singletap", doSearch);
+$.search.addEventListener("return", doSearch);
 
 $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
 	// collection.xSearchInDb({}, {
