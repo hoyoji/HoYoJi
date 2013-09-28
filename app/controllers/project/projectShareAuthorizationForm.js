@@ -69,6 +69,7 @@ function addSharePercentage(projectShareAuthorization) {
 	var averagePercentage = averageTotalPercentage / averageLength;
 	projectShareAuthorization.xSet("sharePercentage", Number(averagePercentage).toFixed(4));
 	$.sharePercentageTotal = averageTotalPercentage;
+	$.averagePercentage = averagePercentage;
 }
 
 $.averageTotalPercentage = 0;
@@ -76,6 +77,7 @@ $.averageTotalPercentage = 0;
 //打开修改共享的时候，计算出去固定占股的股份，当前修改后最多不能超过这个股份
 function editTotalSharePercentage(projectShareAuthorization) {
 	var fixedSharePercentage = 0;
+	var averageLength = 0;
 	//从本地数据库查找出当前传入的projectShareAuthorization的项目中的state是Accept的全部ProjectShareAuthorization
 	var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
@@ -89,11 +91,16 @@ function editTotalSharePercentage(projectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("id") !== projectShareAuthorization.xGet("id")) {
 			if (acceptProjectShareAuthorization.xGet("sharePercentageType") === "Fixed") {
 				fixedSharePercentage = fixedSharePercentage + acceptProjectShareAuthorization.xGet("sharePercentage");
+			} else {
+				averageLength++;
 			}
+		} else{
+			averageLength++;
 		}
 	});
-	//计算出去固定占股的股份
+	//计算出最多平均占股的股份
 	$.averageTotalPercentage = 100 - fixedSharePercentage;
+	$.averagePercentage = $.averageTotalPercentage / averageLength;
 }
 
 //修改共享的时候如果股份有修改，也要同时改变其他成员的占股
@@ -808,6 +815,12 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
+$.sharePercentage.field.addEventListener("singletap", function(e) {
+	if ($.$model.xGet("sharePercentageType") === "Average") {
+		$.sharePercentageFocus = true;
+	}
+});
+
 $.onWindowOpenDo(function() {
 	if ($.$model.xGet("friendUserId") !== Alloy.Models.User.id) {
 		$.explainAuthorizationLabel.setVisible(true);
@@ -815,21 +828,49 @@ $.onWindowOpenDo(function() {
 	if ($.$model.isNew()) {
 		addSharePercentage($.$model);
 	}
+	
+	$.$model.on("_xchange:sharePercentage", function() {
+		if ($.$model.xGet("sharePercentageType") === "Average" && $.sharePercentageFocus) {
+			$.sharePercentageFocus = false;
+			$.$model.xSet("sharePercentageType", "Fixed");
+		}
+	});
+	$.$model.on("_xchange:sharePercentageType", function() {
+		if ($.$model.xGet("sharePercentageType") === "Average") {
+			$.$model.xSet("sharePercentage", $.averagePercentage);
+		}
+	});
+	
 });
 
-changeSharePercentageType();
-
-function changeSharePercentageType() {
-	if ($.$model.xGet("sharePercentageType") === "Fixed") {
-		$.sharePercentage.field.setEnabled(true);
-	} else {
-		$.sharePercentage.field.setEnabled(false);
-	}
+function refreshSharePercentage() {
+	$.sharePercentage.refresh();
 }
 
-$.sharePercentageType.field.addEventListener("singletap", function(e) {
-	changeSharePercentageType();
+function updateSharePercentageType() {
+	$.sharePercentageType.refresh();
+}
+
+$.$model.on("_xchange:sharePercentage", refreshSharePercentage);
+$.$model.on("_xchange:sharePercentageType", updateSharePercentageType);
+$.onWindowCloseDo(function() {
+	$.$model.off("_xchange:sharePercentage", refreshSharePercentage);
+	$.$model.off("_xchange:sharePercentageType", updateSharePercentageType);
 });
+
+// changeSharePercentageType();
+// 
+// function changeSharePercentageType() {
+	// if ($.$model.xGet("sharePercentageType") === "Fixed") {
+		// $.sharePercentage.field.setEnabled(true);
+	// } else {
+		// $.sharePercentage.field.setEnabled(false);
+	// }
+// }
+
+// $.sharePercentageType.field.addEventListener("singletap", function(e) {
+	// changeSharePercentageType();
+// });
 
 if ($.$model.xGet("friendUserId") === Alloy.Models.User.id) {
 	$.project.UIInit($, $.getCurrentWindow());
