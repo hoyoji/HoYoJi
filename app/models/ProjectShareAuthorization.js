@@ -214,9 +214,9 @@ exports.definition = {
 			getActualTotalText : function() {
 				var getActualTotal = 0;
 				if (this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") <= 0) {
-					return "实际支出";
+					return "已经支出";
 				} else {
-					return "实际收入";
+					return "已经收入";
 				}
 
 			},
