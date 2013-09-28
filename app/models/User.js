@@ -5,6 +5,10 @@ exports.definition = {
 			userName : "TEXT NOT NULL",
 			nickName : "TEXT",
 			password : "TEXT NOT NULL",
+			email : "TEXT",
+			emailVerified : "INTEGER NOT NULL",
+			phone : "TEXT",
+			phoneVerified : "INTEGER NOT NULL",
 			activeProjectId : "TEXT",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
@@ -24,7 +28,9 @@ exports.definition = {
 		defaults : {
 			newFriendAuthentication : "required",
 			defaultTransactionDisplayType : "Project",
-			isMerchant : 0
+			isMerchant : 0,
+			emailVerified : 0,
+			phoneVerified : 0
 		},
 		hasMany : {
 			pictures : {
