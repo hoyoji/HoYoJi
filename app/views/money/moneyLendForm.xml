@@ -84,7 +84,7 @@
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				bindModelSelectorParams="selectedFriendUser:friendUser"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="收款时间" hintText="请选择时间"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="还款时间" hintText="请选择时间"
 				id="paybackDate" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="paybackDate"/>
