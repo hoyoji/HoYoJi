@@ -239,26 +239,22 @@ function setDefaultCategory(project,setToModel) {//新增时根据时间设置�
 	if (hours > 5 && hours < 11) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "早餐",
-			projectId : project.xGet("id"),
-			ownerUserId : Alloy.Models.User.xGet("id")
+			projectId : project.xGet("id")
 		});
 	} else if (hours > 10 && hours < 17) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "午餐",
-			projectId : project.xGet("id"),
-			ownerUserId : Alloy.Models.User.xGet("id")
+			projectId : project.xGet("id")
 		});
 	} else if (hours > 16 && hours < 21) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "晚餐",
-			projectId : project.xGet("id"),
-			ownerUserId : Alloy.Models.User.xGet("id")
+			projectId : project.xGet("id")
 		});
 	} else {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "宵夜",
-			projectId : project.xGet("id"),
-			ownerUserId : Alloy.Models.User.xGet("id")
+			projectId : project.xGet("id")
 		});
 	}
 	if (!defaultCategory.xGet("project")) {
