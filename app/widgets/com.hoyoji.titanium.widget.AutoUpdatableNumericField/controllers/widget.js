@@ -79,9 +79,11 @@ $.setValue = function(value) {
 	}
 	value = this.convertModelValue(value);
 	if (value) {
-		$.hintText.setHeight(0);
+		// $.hintText.setHeight(0);
+		$.hintText.setVisible(false);
 	} else {
-		$.hintText.setHeight(42);
+		// $.hintText.setHeight(42);
+		$.hintText.setVisible(true);
 	}
 	$.field.setText(value || "");
 };
