@@ -3,7 +3,8 @@
 },
 
 "Label" : {
-	color : "black"
+	color : "black",
+	wordWrap : false
 },
 
 "TextField" : {
