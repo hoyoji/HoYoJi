@@ -66,7 +66,7 @@ var moneyIncomeTotal = Alloy.createController("money/report/moneyTotal", {
 		fontWeight : "normal"
 	},
 	id : "moneyIncomeTotal",
-	modelType : "MoneyIncomeApportion",
+	modelType : "PersonalIncome",
 	autoSync : "true",
 	totalField : "SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))",
 	queryStr : "dateRange:month",
@@ -135,7 +135,7 @@ var moneyExpenseTotal = Alloy.createController("money/report/moneyTotal", {
 		fontWeight : "normal"
 	},
 	id : "moneyExpenseTotal",
-	modelType : "MoneyExpenseApportion",
+	modelType : "PersonalExpense",
 	autoSync : "true",
 	totalField : "SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))",
 	queryStr : "dateRange:month",
