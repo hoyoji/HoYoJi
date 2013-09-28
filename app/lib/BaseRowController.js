@@ -64,6 +64,11 @@
 				if (getDetailCount() === 0) {
 					openDetailButton.setEnabled(false);
 					openDetailButton.setImage(detailEmptyButtonImage);
+					$.$view.fireEvent("click", {
+							bubbles : true,
+							collapseSection : true,
+							sectionRowId : $.$model.xGet("id")
+					});
 				} else {
 					openDetailButton.setEnabled(true);
 					openDetailButton.setImage(detailExpandButtonImage);
