@@ -107,6 +107,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("两次密码不相同");
 		return;
 	}
+	
 	if ($.$model.xGet("userName").startsWith("hyj")) {
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
