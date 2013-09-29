@@ -200,122 +200,126 @@ if ($.saveableMode === "read") {
 				projectId : $.$model.xGet("project").xGet("id"),
 				friendUserId : Alloy.Models.User.id
 			});
-			projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xGet("exchangeRate"));
-			projectShareAuthorization.xAddToSave($);
-			editData.push(projectShareAuthorization.toJSON());
 			
-			//账户相同时，即新增和账户不改变的修改
-			if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
-				newMoneyAccount.xAddToSave($);
-				editData.push(newMoneyAccount.toJSON());
-			} else {//账户改变时
-				oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
-				newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
-				oldMoneyAccount.xAddToSave($);
-				newMoneyAccount.xAddToSave($);
-				editData.push(newMoneyAccount.toJSON());
-				editData.push(oldMoneyAccount.toJSON());
-			}
-			//若汇率不存在 ，保存时自动新建一条
-			if (isRateExist === false) {
-				if ($.$model.xGet("exchangeRate")) {
-					var exchange = Alloy.createModel("Exchange").xFindInDb({
-						localCurrencyId : $.$model.xGet("moneyAccount").xGet("currency"),
-						foreignCurrencyId : $.$model.xGet("project").xGet("currency")
-					});
-
-					if (!exchange.id) {
-						var exchange = Alloy.createModel("Exchange", {
-							localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
-							foreignCurrency : $.$model.xGet("project").xGet("currency"),
-							rate : $.$model.xGet("exchangeRate"),
-							ownerUser : Alloy.Models.User
+			Alloy.Globals.Server.loadData("ProjectShareAuthorization",[projectShareAuthorization.xGet("id")], function(collection) {
+			
+				projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xGet("exchangeRate"));
+				projectShareAuthorization.xAddToSave($);
+				editData.push(projectShareAuthorization.toJSON());
+				
+				//账户相同时，即新增和账户不改变的修改
+				if (oldMoneyAccount.xGet("id") === newMoneyAccount.xGet("id")) {
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance - oldAmount + newAmount);
+					newMoneyAccount.xAddToSave($);
+					editData.push(newMoneyAccount.toJSON());
+				} else {//账户改变时
+					oldMoneyAccount.xSet("currentBalance", oldCurrentBalance - oldAmount);
+					newMoneyAccount.xSet("currentBalance", newCurrentBalance + newAmount);
+					oldMoneyAccount.xAddToSave($);
+					newMoneyAccount.xAddToSave($);
+					editData.push(newMoneyAccount.toJSON());
+					editData.push(oldMoneyAccount.toJSON());
+				}
+				//若汇率不存在 ，保存时自动新建一条
+				if (isRateExist === false) {
+					if ($.$model.xGet("exchangeRate")) {
+						var exchange = Alloy.createModel("Exchange").xFindInDb({
+							localCurrencyId : $.$model.xGet("moneyAccount").xGet("currency"),
+							foreignCurrencyId : $.$model.xGet("project").xGet("currency")
 						});
-						exchange.xSave();
-						addData.push(exchange.toJSON());
+	
+						if (!exchange.id) {
+							var exchange = Alloy.createModel("Exchange", {
+								localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
+								foreignCurrency : $.$model.xGet("project").xGet("currency"),
+								rate : $.$model.xGet("exchangeRate"),
+								ownerUser : Alloy.Models.User
+							});
+							exchange.xSave();
+							addData.push(exchange.toJSON());
+						}
 					}
 				}
-			}
-			//新增项目于本币的汇率，以免添加成功之后主页金额显示错误
-			if (Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")) {
-				var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
-				});
-				if (!activeToProjectExchange.id) {
-					Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
-
-						activeToProjectExchange = Alloy.createModel("Exchange", {
-							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
-							rate : rate
-						});
-						activeToProjectExchange.xSet("ownerUser", Alloy.Models.User);
-						activeToProjectExchange.xSet("ownerUserId", Alloy.Models.User.id);
-						activeToProjectExchange.save();
-						addData.push(activeToProjectExchange.toJSON());
-					}, function(e) {
-						errorCB(e.__summary.msg);
+				//新增项目于本币的汇率，以免添加成功之后主页金额显示错误
+				if (Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")) {
+					var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
+						localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+						foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 					});
-
+					if (!activeToProjectExchange.id) {
+						Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+	
+							activeToProjectExchange = Alloy.createModel("Exchange", {
+								localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+								foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
+								rate : rate
+							});
+							activeToProjectExchange.xSet("ownerUser", Alloy.Models.User);
+							activeToProjectExchange.xSet("ownerUserId", Alloy.Models.User.id);
+							activeToProjectExchange.save();
+							addData.push(activeToProjectExchange.toJSON());
+						}, function(e) {
+							errorCB(e.__summary.msg);
+						});
+	
+					}
 				}
-			}
-
-			if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
-				var date = (new Date()).toISOString();
-				Alloy.Globals.Server.sendMsg({
-					id : guid(),
-					"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
-					"fromUserId" : Alloy.Models.User.id,
-					"type" : "Project.Deposite.Response",
-					"messageState" : "new",
-					"messageTitle" : "充值回复",
-					"date" : date,
-					"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
-					"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
-					messageData : selectedDepositeMsg.xGet("messageData")
-				}, function() {
-					selectedDepositeMsg.xSet("messageState", "closed");
-					selectedDepositeMsg.xAddToSave($);
-					editData.push(selectedDepositeMsg.toJSON());
-					addData.push($.$model.toJSON());
-					Alloy.Globals.Server.postData(addData, function(data) {
-						Alloy.Globals.Server.putData(editData, function(data) {
-							//把服务器上创建的充值支出和充值发起者的ProjectShareAuthorization更新到本地
-							Alloy.Globals.Server.loadData("MoneyExpense", [$.$model.xGet("depositeId")], function(collection) {
-								Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
-									projectId : $.$model.xGet("project").xGet("id"),
-									friendUserId : $.$model.xGet("friendUser").xGet("id")
-								}], function(collection) {
-									$.saveModel(saveEndCB, saveErrorCB, {
-										syncFromServer : true
-									});
+	
+				// if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
+					var date = (new Date()).toISOString();
+					Alloy.Globals.Server.sendMsg({
+						id : guid(),
+						"toUserId" : selectedDepositeMsg.xGet("fromUser").xGet("id"),
+						"fromUserId" : Alloy.Models.User.id,
+						"type" : "Project.Deposite.Response",
+						"messageState" : "new",
+						"messageTitle" : "充值回复",
+						"date" : date,
+						"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
+						"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
+						messageData : selectedDepositeMsg.xGet("messageData")
+					}, function() {
+						selectedDepositeMsg.xSet("messageState", "closed");
+						selectedDepositeMsg.xAddToSave($);
+						editData.push(selectedDepositeMsg.toJSON());
+						addData.push($.$model.toJSON());
+						Alloy.Globals.Server.postData(addData, function(data) {
+							Alloy.Globals.Server.putData(editData, function(data) {
+								//把服务器上创建的充值支出和充值发起者的ProjectShareAuthorization更新到本地
+								Alloy.Globals.Server.loadData("MoneyExpense", [$.$model.xGet("depositeId")], function(collection) {
+									Alloy.Globals.Server.loadData("ProjectShareAuthorization",[{
+										projectId : $.$model.xGet("project").xGet("id"),
+										friendUserId : $.$model.xGet("friendUser").xGet("id")
+									}], function(collection) {
+										$.saveModel(saveEndCB, saveErrorCB, {
+											syncFromServer : true
+										});
+									}, saveErrorCB);
 								}, saveErrorCB);
-							}, saveErrorCB);
+							}, function(e) {
+								alert(e.__summary.msg);
+							});
 						}, function(e) {
 							alert(e.__summary.msg);
 						});
 					}, function(e) {
 						alert(e.__summary.msg);
 					});
-				}, function(e) {
-					alert(e.__summary.msg);
-				});
-			} else {
-				addData.push($.$model.toJSON());
-				Alloy.Globals.Server.postData(addData, function(data) {
-					Alloy.Globals.Server.putData(editData, function(data) {
-						$.saveModel(saveEndCB, saveErrorCB, {
-							syncFromServer : true
-						});
-					}, function(e) {
-						alert(e.__summary.msg);
-					});
-				}, function(e) {
-					alert(e.__summary.msg);
-				});
-			}
+			// } else {
+				// addData.push($.$model.toJSON());
+				// Alloy.Globals.Server.postData(addData, function(data) {
+					// Alloy.Globals.Server.putData(editData, function(data) {
+						// $.saveModel(saveEndCB, saveErrorCB, {
+							// syncFromServer : true
+						// });
+					// }, function(e) {
+						// alert(e.__summary.msg);
+					// });
+				// }, function(e) {
+					// alert(e.__summary.msg);
+				// });
+			// }
+			}, saveErrorCB);
 		} else {
 			alert("保存失败，汇率不能为空");
 		}
