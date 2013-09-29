@@ -19,7 +19,7 @@ $.onWindowCloseDo(function() {
 });
 
 function projectRefresh() {
-	$.project.refresh();
+	$.projectName.refresh();
 }
 
 $.picture.UIInit($, $.getCurrentWindow());
