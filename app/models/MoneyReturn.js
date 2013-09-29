@@ -168,11 +168,20 @@ exports.definition = {
 			},
 			getLocalAmount : function() {
 				var exchange = null;
-				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
-					exchange = this.xGet("exchangeRate");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				if (this.xGet("ownerUser") === Alloy.Models.User) {
+					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
+					if (accountCurrency === userCurrency) {
+						exchange = 1;
+					}else{
+						var exchanges = userCurrency.getExchanges(accountCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 					if (projectCurrency === userCurrency) {
 						exchange = 1;
 					} else {
@@ -181,8 +190,8 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");

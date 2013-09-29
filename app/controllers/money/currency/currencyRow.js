@@ -9,37 +9,37 @@ $.makeContextMenu = function(e, isSelectMode) {
 			var activityWindow = Alloy.createController("activityMask");
 			activityWindow.open("正在切换...");
 			function getAllExchanges(successCB, errorCB) {
-				var errorCount = 0, projectCount = 0, projectTotal = Alloy.Models.User.xGet("projects").length,fetchingExchanges = {};
-				Alloy.Models.User.xGet("projects").forEach(function(project) {
+				var errorCount = 0, currencyCount = 0, currencyTotal = Alloy.Models.User.xGet("currencies").length,fetchingExchanges = {};
+				Alloy.Models.User.xGet("currencies").forEach(function(currency) {
 					if (errorCount > 0) {
 						return;
 					}
-					if (project.xGet("currencyId") === $.$model.xGet("id")) {
-						projectCount++;
-						if (projectCount === projectTotal) {
+					if (currency.xGet("id") === $.$model.xGet("id")) {
+						currencyCount++;
+						if (currencyCount === currencyTotal) {
 							successCB();
 						}
 						return;
 					}
-					if (fetchingExchanges[project.xGet("currencyId")] !== true) {
+					if (fetchingExchanges[currency.xGet("id")] !== true) {
 						var exchange = Alloy.createModel("Exchange").xFindInDb({
 							localCurrencyId : $.$model.xGet("id"),
-							foreignCurrencyId : project.xGet("currencyId")
+							foreignCurrencyId : currency.xGet("id")
 						});
 						if (!exchange.id) {
-							fetchingExchanges[project.xGet("currencyId")] = true;
-							Alloy.Globals.Server.getExchangeRate($.$model.xGet("id"), project.xGet("currencyId"), function(rate) {
+							fetchingExchanges[currency.xGet("id")] = true;
+							Alloy.Globals.Server.getExchangeRate($.$model.xGet("id"), currency.xGet("id"), function(rate) {
 								exchange = Alloy.createModel("Exchange", {
 									localCurrencyId : $.$model.xGet("id"),
-									foreignCurrencyId : project.xGet("currencyId"),
+									foreignCurrencyId : currency.xGet("id"),
 									rate : rate
 								});
 								exchange.xSet("ownerUser", Alloy.Models.User);
 								exchange.xSet("ownerUserId", Alloy.Models.User.id);
 								exchange.save();
 
-								projectCount++;
-								if (projectCount === projectTotal) {
+								currencyCount++;
+								if (currencyCount === currencyTotal) {
 									successCB();
 								}
 							}, function(e) {
@@ -49,15 +49,15 @@ $.makeContextMenu = function(e, isSelectMode) {
 								errorCount++;
 							});
 						} else {
-							projectCount++;
-							if (projectCount === projectTotal) {
+							currencyCount++;
+							if (currencyCount === currencyTotal) {
 								successCB();
 							}
 						}
 
 					} else {
-						projectCount++;
-						if (projectCount === projectTotal) {
+						currencyCount++;
+						if (currencyCount === currencyTotal) {
 							successCB();
 						}
 					}
