@@ -221,7 +221,7 @@ exports.doFilter = function() {
 	return model.xGet("interest") > 0;
 });
 	receivedMessages.xSetFilter(function(model) {
-		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id);
+		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id && model.xGet("messageState") !== "closed");
 	});
 	$.transactionsTable.fetchNextPage();
 };
