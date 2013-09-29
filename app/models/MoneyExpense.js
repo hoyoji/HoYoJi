@@ -179,11 +179,20 @@ exports.definition = {
 				// }
 				// }
 				var exchange = null;
-				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("moneyAccount").xGet("currency") === Alloy.Models.User.xGet("activeCurrency")) {
-					exchange = this.xGet("exchangeRate");
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				if (this.xGet("ownerUser") === Alloy.Models.User) {
+					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
+					if (accountCurrency === userCurrency) {
+						exchange = 1;
+					}else{
+						var exchanges = userCurrency.getExchanges(accountCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
 					if (projectCurrency === userCurrency) {
 						exchange = 1;
 					} else {
@@ -192,8 +201,8 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 			},
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
@@ -488,9 +497,7 @@ exports.definition = {
 						dbTrans.db.execute(sql, [this.xGet("id")]);
 					}
 					this._syncUpdate(record, dbTrans);
-				}
-				else
-				if (!localUpdated) {
+				} else if (!localUpdated) {
 					// 让本地修改覆盖服务器上的记录
 					this._syncUpdate({
 						lastServerUpdateTime : record.lastServerUpdateTime
@@ -534,14 +541,14 @@ exports.definition = {
 						var sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'create'";
 						rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [item.id]);
 						if (rs.rowCount > 0) {
-							if(hasMany === "moneyExpenseApportions"){
+							if (hasMany === "moneyExpenseApportions") {
 								var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 									projectId : item.xGet("moneyExpense").xGet("projectId"),
 									friendUserId : item.xGet("friendUserId")
 								});
 								// if(projectShareAuthorization.id){
-									dbTrans.__syncUpdateData["ProjectShareAuthorization"] = dbTrans.__syncUpdateData["ProjectShareAuthorization"] || {};
-									dbTrans.__syncUpdateData["ProjectShareAuthorization"][projectShareAuthorization.id] = projectShareAuthorization;
+								dbTrans.__syncUpdateData["ProjectShareAuthorization"] = dbTrans.__syncUpdateData["ProjectShareAuthorization"] || {};
+								dbTrans.__syncUpdateData["ProjectShareAuthorization"][projectShareAuthorization.id] = projectShareAuthorization;
 								// }
 							}
 							item.syncDelete(record, dbTrans);

@@ -5,7 +5,7 @@
 		addModeTitle="新增借出" readModeTitle="借出详细" editModeTitle="修改借出"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
 				id="picture" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="picture"
@@ -64,8 +64,8 @@
 				bindAttribute="project"
 				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
-				bindModelBeforeSelectorCallback="beforeProjectSelectorCallback"
 				/>
+				<!-- bindModelBeforeSelectorCallback="beforeProjectSelectorCallback" -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="债务人" hintText="无债务人"
 				id="friend" autoInit="false"
 				bindModel="$.$model"
@@ -97,7 +97,7 @@
 					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="paybackedAmountLabel">已收金额</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="无已收金额" right="0" width="70%"
-					id="paybackedAmount" autoInit="false" 
+					id="paybackedAmount" autoInit="false"
 					bindModel="$.$model"
 					bindAttribute="getPaybackedAmount()"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>

@@ -30,6 +30,7 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
+/*
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
@@ -62,7 +63,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		activityWindow.close();
 		successCallback();
 	}
-};
+};*/
 
 var oldAmount;
 var oldMoneyAccount;
