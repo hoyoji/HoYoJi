@@ -19,6 +19,7 @@
     <property name="ti.ui.defaultunit" type="string">system</property>
     <property name="ti.android.threadstacksize" type="int">32768</property>
     <iphone>
+
         <orientations device="iphone">
             <orientation>Ti.UI.PORTRAIT</orientation>
         </orientations>

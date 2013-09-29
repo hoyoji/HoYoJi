@@ -6,9 +6,12 @@
 			attrs.parentController = $;
 			attrs.currentWindow = $;
 			Alloy.Globals.extendsBaseViewController($, attrs);
-			
+
 			if(OS_ANDROID){
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+			} else {
+				$.$view.setTop(Alloy.Globals.iOS7 ? 20 : 0);
+				$.$view.setStatusBarStyle(Ti.UI.iPhone.StatusBar.LIGHT_CONTENT);
 			}
 
 			_.extend($, {
