@@ -56,8 +56,9 @@ function monthTransactions() {
 	exports.refresh();
 }
 
-exports.getQueryString = function() {
+exports.getQueryString = function(prefix) {
 	var filterStr = "";
+	prefix = prefix || "main";
 	for (var f in queryOptions) {
 		var value = queryOptions[f];
 		if (_.isNull(value)) {
@@ -72,16 +73,16 @@ exports.getQueryString = function() {
 		if (filterStr) {
 			filterStr += " AND ";
 		}
-		f = "main." + f;
+		f = prefix + "." + f;
 		if (_.isNumber(value)) {
 			filterStr += f + " = " + value + " ";
 		} else if (value !== undefined) {
-			if (f === "main.dateFrom") {
-				filterStr += "main.date >= '" + value + "' ";
-			} else if (f === "main.dateTo") {
-				filterStr += "main.date <= '" + value + "' ";
-			} else if (f === "main.project") {
-				filterStr += "main.projectId = '" + value.id + "' ";
+			if (f === prefix + ".dateFrom") {
+				filterStr += prefix + ".date >= '" + value + "' ";
+			} else if (f === prefix + ".dateTo") {
+				filterStr += prefix + ".date <= '" + value + "' ";
+			} else if (f === prefix + ".project") {
+				filterStr += prefix + ".projectId = '" + value.id + "' ";
 			} else {
 				filterStr += f + " = '" + value + "' ";
 			}
@@ -105,6 +106,10 @@ exports.refresh = function() {
 	$.moneyPaybackTotal.query(queryStr);
 	$.moneyReturnInterestTotal.query(queryStr);
 	$.moneyPaybackInterestTotal.query(queryStr);
+	
+	queryStr = exports.getQueryString("mi");
+	$.moneyExpenseApportionTotal.query(queryStr);
+	$.moneyIncomeApportionTotal.query(queryStr);
 	calculateTotalBalance();
 };
 function calculateTotalBalance() {
@@ -122,3 +127,5 @@ $.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.moneyExpenseApportionCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.moneyIncomeApportionCurrencySymbol.UIInit($, $.getCurrentWindow());

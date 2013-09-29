@@ -103,6 +103,28 @@
 						<Label id="totalBalance">0.00</Label>
 					</View>
 				</View>
+				<View height="42">
+					<Label left="5" width="30%">分摊收入总额</Label>
+					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="moneyIncomeApportionCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyIncomeApportionTotal" src="money/report/moneyTotal" modelType="MoneyIncomeApportion"/>
+					</View>
+				</View>
+				<View height="42">
+					<Label left="5" width="30%">分摊支出总额</Label>
+					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="moneyExpenseApportionCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyExpenseApportionTotal" src="money/report/moneyTotal" modelType="MoneyExpenseApportion"/>
+					</View>
+				</View>
 			</ScrollView>
 			<!-- <Button id="dateTransactions" width="33%" left="0.5%" bottom="0" onClick="dateTransactions">当日汇总</Button>
 			<Button id="weekTransactions" width="33%" left="33%" bottom="0" onClick="weekTransactions">当周汇总</Button>
