@@ -198,7 +198,7 @@ function deleteSharePercentage(projectShareAuthorization,editSharePercentageAuth
 // });
 setActualTotalMoneyColor();
 function setActualTotalMoneyColor(){
-	if($.$model.getActualTotalText() === "实际支出"){
+	if($.$model.getActualTotalText() === "已经支出"){
 		$.actualTotalMoney.label.setColor("#c80032");
 	}else{
 		$.actualTotalMoney.label.setColor("#329600");

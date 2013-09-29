@@ -7,10 +7,10 @@ if ($.$attrs.color) {
 if ($.$attrs.fieldColor) {
 	$.field.setColor($.$attrs.fieldColor);
 }
-if($.$attrs.hideFormRowBottom){
+if ($.$attrs.hideFormRowBottom) {
 	$.formRowBottom.setHeight(0);
 }
-if($.$attrs.leftSize){
+if ($.$attrs.leftSize) {
 	$.field.setLeft($.$attrs.leftSize);
 }
 function openKeyboard() {
@@ -46,7 +46,7 @@ $.onWindowOpenDo(function() {
 			$.beforeOpenKeyboard(openKeyboard);
 			return;
 		}
-		
+
 		openKeyboard();
 	});
 	$.hintText.addEventListener("singletap", function(e) {
@@ -95,7 +95,11 @@ $.getValue = function() {
 	if ($.field.getText() === "") {
 		return null;
 	}
-	return Number($.field.getText());
+	if (!$.$attrs.fourDecimal) {
+		return Number(Number($.field.getText()).toFixed(2));
+	} else {
+		return Number($.field.getText());
+	}
 };
 
 $.setEditable = function(editable) {

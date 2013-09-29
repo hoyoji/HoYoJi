@@ -23,7 +23,7 @@
 				bindModelSelector="money/currency/currencyAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="汇率" hintText="请输入汇率"  rightButtonText="更新"
-				id="rate" autoInit="false" toFixed="4"
+				id="rate" autoInit="false" toFixed="4" fourDecimal="true"
 				bindModel="$.$model"
 				bindAttribute="rate"/>
 				<View height="42" backgroundColor="#f5f5f5">

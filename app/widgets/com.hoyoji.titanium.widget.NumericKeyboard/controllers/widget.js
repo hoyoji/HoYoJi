@@ -134,7 +134,7 @@ function operation(e) {
 		} else {
 			accum = parseFloat(readout);
 		}
-		accum = parseFloat(accum).toFixed(2) / 1;
+		accum = parseFloat(accum).toFixed(4) / 1;
 		// activeTextField.setValue(accum + "");
 		$.display.setText(accum + "");
 		
@@ -272,7 +272,7 @@ function equalToValue() {
 			} else {
 				accum = parseFloat(readout);
 			}
-			accum = parseFloat(accum).toFixed(2) / 1;
+			accum = parseFloat(accum).toFixed(4) / 1;
 			$.display.setText(accum + "");
 			// activeTextField.setValue($.display.getText());
 			// activeTextField.field.fireEvent("change");
@@ -280,7 +280,7 @@ function equalToValue() {
 		}
 	}
 	if($.display.getText() !== ""){
-		activeTextField.setValue(parseFloat($.display.getText()).toFixed(2) / 1);
+		activeTextField.setValue(parseFloat($.display.getText()).toFixed(4) / 1);
 	} else {
 		activeTextField.setValue($.display.getText());
 	}

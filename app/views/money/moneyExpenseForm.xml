@@ -58,7 +58,7 @@
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
-				id="exchangeRate" autoInit="false" toFixed="4"
+				id="exchangeRate" autoInit="false" toFixed="4" fourDecimal="true"
 				bindModel="$.$model"
 				bindAttribute="exchangeRate"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目" rightButtonText="分摊"
