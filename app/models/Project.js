@@ -165,7 +165,7 @@ exports.definition = {
 				}
 			},
 			getProjectNameCurrency : function() {
-				return this.xGet("name") + "(" + this.xGet("currency").xGet("code") + ")";
+				return this.xGet("name") + "(" + this.getActualTotalMoney() + ")";
 			},
 			xDelete : function(xFinishCallback, options) {
 				if (Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")) {
