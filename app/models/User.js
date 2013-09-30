@@ -135,7 +135,7 @@ exports.definition = {
 					if (this.isNew()) {
 						var userName = this.xGet("userName");
 						var illegalChars = /^(?=.*[a-zA-Z])([a-zA-Z0-9.-]+)$/;
-						if (userName.length < 3 || userName.length > 15) {
+						if (!userName || userName.length < 3 || userName.length > 15) {
 							error = {
 								msg : "用户名长度不符（3~15字符）"
 							};

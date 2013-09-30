@@ -1,9 +1,9 @@
 <Alloy>
      <View class="container" height="42" backgroundColor="#f5f5f5">
-	 <Label id="hintText" left="30%" height="Ti.UI.FILL" zIndex="10" visible="false"></Label>
-	 <Label id="error" left="30%" top="42" height="26" zIndex="11"/>
+	 <Label id="error"/>
      <Label id="label" left="8" width="30%" height="Ti.UI.FILL"/>
      <Label id="field" left="30%" right="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5"></Label>
-     <View id="rowBottomImage" width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+     <Label id="hintText" />
+	 <View id="rowBottomImage" width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 	</View>
 </Alloy>

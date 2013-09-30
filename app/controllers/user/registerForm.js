@@ -69,7 +69,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 	var userName = Alloy.Globals.alloyString.trim($.$model.xGet("userName"));
 	var illegalChars = /^(?=.*[a-zA-Z])([a-zA-Z0-9.-]+)$/;
-	if (userName.length < 3 || userName.length > 15) {
+	if (!userName || userName.length < 3 || userName.length > 15) {
 		saveErrorCB("用户名长度不符，请重新输入（3~15字符）");
 		return;
 	} else if (!illegalChars.test(userName)) {

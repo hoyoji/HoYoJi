@@ -130,27 +130,53 @@
 			$.showErrorMsg = function(msg) {
 				$.error.setText(msg);
 				$.__errorShowing = true;
-
+				$.error.setVisible(true);
+				
 				var animation = Titanium.UI.createAnimation();
-				animation.top = "26";
+				animation.top = "0";
 				animation.duration = 300;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.error.animate(animation);
+				
+				if(_.isFunction($.field.setHintText)){
+					$.field.setHintText("");
+				} 
+				if($.hintText){
+					$.hintText.setOpacity(0);
+				}
+				$.field.setOpacity(0.3);
 			};
 			$.hideErrorMsg = function() {
 				if ($.__errorShowing) {
 					$.__errorShowing = false;
 					var animation = Titanium.UI.createAnimation();
-					animation.top = "42";
+					animation.top = "100%";
 					animation.duration = 300;
 					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+					animation.addEventListener("complete", function(){
+						$.error.setVisible(false);
+					});
 					$.error.animate(animation);
+					
+					if(_.isFunction($.field.setHintText)){
+						$.field.setHintText($.$attrs.hintText);
+					} 
+					if($.hintText){
+						$.hintText.setOpacity(1);
+					}
+					$.field.setOpacity(1);
 				}
 			};
-			// $.error.addEventListener("singletap", function(){
-			// $.hideErrorMsg();
-			// $.field.fireEvent("singletap");
-			// });
+			if($.error){
+				$.error.addEventListener("singletap", function(){
+					$.hideErrorMsg();
+					if($.field.focus){
+						$.field.focus();
+					} else {
+						$.field.fireEvent("singletap");
+					}
+				});
+			}
 			$.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
