@@ -254,7 +254,7 @@ function setDefaultCategory(project,setToModel) {//新增时根据时间设置�
 		});
 	} else {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
-			name : "宵夜",
+			name : "夜宵",
 			projectId : project.xGet("id")
 		});
 	}
