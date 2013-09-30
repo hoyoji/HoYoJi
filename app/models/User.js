@@ -19,7 +19,7 @@ exports.definition = {
 			// age : "INTEGER NOT NULL",
 			// birthday : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
 			defaultTransactionDisplayType : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",

@@ -7,7 +7,7 @@ exports.definition = {
 			recordId : "TEXT NOT NULL",
 			recordType : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",
 			toBeUploaded : "INTEGER",

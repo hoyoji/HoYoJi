@@ -5,7 +5,7 @@ exports.definition = {
 		    date : "TEXT NOT NULL",
 		    userName: "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			ownerUserId : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},

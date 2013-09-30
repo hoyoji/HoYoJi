@@ -8,7 +8,7 @@ exports.definition = {
 			autoUpdate : "INTEGER",
 			ownerUserId : "TEXT NOT NULL",
 		    serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		defaults : {

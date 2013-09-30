@@ -12,7 +12,7 @@ exports.definition = {
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		defaults : {

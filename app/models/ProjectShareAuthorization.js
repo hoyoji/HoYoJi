@@ -10,7 +10,7 @@ exports.definition = {
 			state : "TEXT NOT NULL", // Accept, Reject, Wait, Delete
 			projectId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
 			actualTotalIncome : "REAL NOT NULL",
 			actualTotalExpense : "REAL NOT NULL",
