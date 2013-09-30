@@ -159,3 +159,4 @@ function onFooterbarTap(e) {
 
 var transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 $.titleBar.setTitle(transactionDisplayType + "日流水");
+$.titleBar.UIInit($, $.getCurrentWindow());

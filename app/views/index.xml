@@ -1,5 +1,5 @@
 <Alloy>
-	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false">
+	<Window class="container" navBarHidden="true" exitOnClose="true" contextMenu="false" bottom="0">
 		<TextField id="__hiddenTextField" platform="android" softKeyboardOnFocus="Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS" top="-100"/>
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false" hasHeader="false"/> -->
     	<Label id="headerTitle" text="好友记" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER" width="Ti.UI.FILL" left="0" right="0" top="0" height="42" color="white" backgroundColor="#2E8B57"/>

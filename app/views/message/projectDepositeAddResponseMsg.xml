@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" saveableMode="read"
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false" saveableMode="read"
 		addModeTitle="充值" readModeTitle="充值" editModeTitle="充值" editModeMenuButtonTitle="同意"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">

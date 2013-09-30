@@ -129,3 +129,4 @@ $.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.moneyExpenseApportionCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.moneyIncomeApportionCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

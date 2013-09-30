@@ -10,6 +10,18 @@ $.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm", {
 $.moneyExpenseForm.setParent($.$view);
 $.moneyExpenseForm.UIInit();
 
+$.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", "widget", {
+	autoInit : "false",
+	currentWindow : $.getCurrentWindow(),
+	parentController : $.getParentController(),
+	buttons : "支出,收入,转账,借贷;借入;借出;还款;收款,项目充值" ,
+	imagesFolder : "/images/money/moneyAddNew",
+	ids : ids="moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"
+});
+$.footerBar.setParent($.$view);
+$.footerBar.UIInit($,$.getCurrentWindow());
+$.footerBar.on("singletap", onFooterbarTap);
+
 var currentForm = $.moneyExpenseForm;
 
 function onFooterbarTap(e) {

@@ -22,6 +22,7 @@ $.currentVersionNumber.setText(Ti.App.version);
 $.userPicture.UIInit($, $.getCurrentWindow());
 $.userName.UIInit($, $.getCurrentWindow());
 $.friendAuthentication.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 
 // function click () {
 // Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");

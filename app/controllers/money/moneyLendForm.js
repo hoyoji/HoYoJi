@@ -278,3 +278,4 @@ $.friendAccount.UIInit($, $.getCurrentWindow());
 $.paybackDate.UIInit($, $.getCurrentWindow());
 $.paybackedAmount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

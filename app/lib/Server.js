@@ -187,16 +187,18 @@
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
 				var activityWindow = Alloy.createController("activityMask");
-				activityWindow.open("正在同步...");
+				activityWindow.open("正在同步...", ["下载数据","合并数据","上传数据"]);
 
+				activityWindow.progressStep(1);
 				this.syncPull(function() {
 					// setTimeout(function() {
+						activityWindow.progressStep(3);
 						self.syncPush(function(data) {
 							if (xFinishedCallback) {
 								xFinishedCallback();
 							}
 							// activityWindow.close();
-							activityWindow.showMsg("同步完成");
+							activityWindow.progressFinish("同步完成");
 						}, function(e) {
 							if (xErrorCallback) {
 								xErrorCallback(e);
@@ -213,10 +215,11 @@
 					// activityWindow.close();
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
 					//alert("sync error " + e.__summary.msg);
-				});
+				}, activityWindow);
 			},
-			syncPull : function(xFinishedCallback, xErrorCallback) {
-				this.getData(Alloy.Models.User.xGet("lastSyncTime"), function(data) {
+			syncPull : function(xFinishedCallback, xErrorCallback, activityWindow) {
+				this.getData(Number(Alloy.Models.User.xGet("lastSyncTime")), function(data) {
+					activityWindow.progressStep(2, "合并数据");
 					var lastSyncTime = data.lastSyncTime;
 					data = _.flatten(data.data);
 
@@ -252,8 +255,10 @@
 						patch : true,
 						dbTrans : dbTrans
 					});
-
+					
+					var mergeIndex = 0;
 					data.forEach(function(record) {
+						activityWindow.progressStep(2, "合并数据(" + ++mergeIndex + "/" + data.length + ")");
 						var sql, rs, dataType = record.__dataType, asyncCount = 0;
 						delete record.__dataType;
 						if (dataType === "ServerSyncDeletedRecords") {

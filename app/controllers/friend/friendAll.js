@@ -26,3 +26,5 @@ function onFooterbarTap(e){
 }
 
 $.friendCategoriesTable.autoHideFooter($.footerBar);
+
+$.titleBar.UIInit($, $.getCurrentWindow());

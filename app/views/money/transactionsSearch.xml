@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" title="查找" >
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="查找流水"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="查找流水" autoInit="false"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsSearchTable" 
 			autoInit="false"

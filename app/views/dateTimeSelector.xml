@@ -14,7 +14,7 @@
 		<Picker bottom="42" id="timePicker" platform="ios" selectionIndicator="true" type="Ti.UI.PICKER_TYPE_TIME" zIndex="0"/>
 
 		<View id="datePickerContainer" bottom="42" width="Ti.UI.FILL" height="Ti.UI.SIZE" platform="android" backgroundColor="black" zIndex="1">
-			<Picker id="datePicker" platform="android" selectionIndicator="true" useSpinner="true" type="Ti.UI.PICKER_TYPE_DATE" />
+			<Picker id="datePicker" platform="android" selectionIndicator="true" useSpinner="true" type="Ti.UI.PICKER_TYPE_DATE" width="Ti.UI.FILL"/>
 		</View>
 		<View id="timePickerContainer" bottom="42" width="Ti.UI.FILL" height="Ti.UI.SIZE" platform="android" backgroundColor="black" zIndex="0">
 		</View>

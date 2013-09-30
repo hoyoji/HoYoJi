@@ -53,3 +53,4 @@ $.projectShareMoneyIncomeCategoryAddNew.UIInit($, $.getCurrentWindow());
 $.projectShareMoneyIncomeCategoryEdit.UIInit($, $.getCurrentWindow());
 
 $.projectShareMoneyIncomeCategoryDelete.UIInit($, $.getCurrentWindow()); 
+$.titleBar.UIInit($, $.getCurrentWindow());

@@ -119,3 +119,4 @@ var collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(fu
 $.moneyExpenseApportionsTable.addCollection(collection);
 
 $.moneyExpenseApportionsTable.autoHideFooter($.footerBar);
+$.titleBar.UIInit($, $.getCurrentWindow());

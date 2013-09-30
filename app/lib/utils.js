@@ -499,81 +499,81 @@
 			// }
 			// this.trigger.apply(this, arguments);
 			// }
-			remove : function(models, options) {
-				var i, l, index, model;
-				options || ( options = {});
-				models = _.isArray(models) ? models.slice() : [models];
-				for ( i = 0, l = models.length; i < l; i++) {
-					model = this.getByCid(models[i]) || this.get(models[i]);
-					if (!model)
-						continue;
-					delete this._byId[model.id];
-					delete this._byCid[model.cid];
-					index = this.indexOf(model);
-					this.models.splice(index, 1);
-					this.length--;
-					if (!options.silent) {
-						options.index = index;
-						model.trigger('remove', model, this, options);
-					}
-					this._removeReference(model);
-				}
-				return this;
-			},
-			add : function(models, options) {
-				var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
-				options || ( options = {});
-				models = _.isArray(models) ? models.slice() : [models];
-				for ( i = 0, length = models.length; i < length; i++) {
-
-					if (!( model = models[i] = this._prepareModel(models[i], options))) {
-						throw new Error("Can't add an invalid model to a collection");
-					}
-
-					cid = model.cid;
-					id = model.id;
-
-					console.log("adding models check dups " + id);
-
-					if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
-						dups.push(i);
-						continue;
-					}
-					cids[cid] = ids[id] = model;
-				}
-
-				console.log("adding models dups " + dups.length);
-
-				i = dups.length;
-				while (i--) {
-					models.splice(dups[i], 1);
-				}
-
-				console.log("adding models " + models.length);
-
-				for ( i = 0, length = models.length; i < length; i++) {
-					( model = models[i]).on('all', this._onModelEvent, this);
-					this._byCid[model.cid] = model;
-					if (model.id != null)
-						this._byId[model.id] = model;
-				}
-				this.length += length;
-				index = options.at != null ? options.at : this.models.length;
-				splice.apply(this.models, [index, 0].concat(models));
-				if (this.comparator)
-					this.sort({
-						silent : true
-					});
-				if (options.silent)
-					return this;
-				for ( i = 0, length = this.models.length; i < length; i++) {
-					if (!cids[( model = this.models[i]).cid])
-						continue;
-					options.index = i;
-					model.trigger('add', model, this, options);
-				}
-				return this;
-			}
+			// remove : function(models, options) {
+				// var i, l, index, model;
+				// options || ( options = {});
+				// models = _.isArray(models) ? models.slice() : [models];
+				// for ( i = 0, l = models.length; i < l; i++) {
+					// model = this.getByCid(models[i]) || this.get(models[i]);
+					// if (!model)
+						// continue;
+					// delete this._byId[model.id];
+					// delete this._byCid[model.cid];
+					// index = this.indexOf(model);
+					// this.models.splice(index, 1);
+					// this.length--;
+					// if (!options.silent) {
+						// options.index = index;
+						// model.trigger('remove', model, this, options);
+					// }
+					// this._removeReference(model);
+				// }
+				// return this;
+			// },
+			// add : function(models, options) {
+				// var i, index, length, model, cid, id, cids = {}, ids = {}, dups = [];
+				// options || ( options = {});
+				// models = _.isArray(models) ? models.slice() : [models];
+				// for ( i = 0, length = models.length; i < length; i++) {
+// 
+					// if (!( model = models[i] = this._prepareModel(models[i], options))) {
+						// throw new Error("Can't add an invalid model to a collection");
+					// }
+// 
+					// cid = model.cid;
+					// id = model.id;
+// 
+					// console.log("adding models check dups " + id);
+// 
+					// if (cids[cid] || this._byCid[cid] || ((id != null) && (ids[id] || this._byId[id]))) {
+						// dups.push(i);
+						// continue;
+					// }
+					// cids[cid] = ids[id] = model;
+				// }
+// 
+				// console.log("adding models dups " + dups.length);
+// 
+				// i = dups.length;
+				// while (i--) {
+					// models.splice(dups[i], 1);
+				// }
+// 
+				// console.log("adding models " + models.length);
+// 
+				// for ( i = 0, length = models.length; i < length; i++) {
+					// ( model = models[i]).on('all', this._onModelEvent, this);
+					// this._byCid[model.cid] = model;
+					// if (model.id != null)
+						// this._byId[model.id] = model;
+				// }
+				// this.length += length;
+				// index = options.at != null ? options.at : this.models.length;
+				// splice.apply(this.models, [index, 0].concat(models));
+				// if (this.comparator)
+					// this.sort({
+						// silent : true
+					// });
+				// if (options.silent)
+					// return this;
+				// for ( i = 0, length = this.models.length; i < length; i++) {
+					// if (!cids[( model = this.models[i]).cid])
+						// continue;
+					// options.index = i;
+					// model.trigger('add', model, this, options);
+				// }
+				// return this;
+			// }
 		});
 
 	}());

@@ -32,7 +32,8 @@ if (OS_ANDROID) {
 		type : Ti.UI.PICKER_TYPE_TIME,
 		useSpinner : true,
 		selectionIndicator : true,
-		format24 : Ti.Platform.is24HourTimeFormat()
+		format24 : Ti.Platform.is24HourTimeFormat(),
+		width : Ti.UI.FILL
 	});
 
 	$.timePickerContainer.add($.timePicker);

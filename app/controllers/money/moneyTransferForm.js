@@ -280,4 +280,5 @@ $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.transferInAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 

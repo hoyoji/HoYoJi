@@ -5,6 +5,7 @@ var datetime = new Date(accountShareData.account.date);
 
 $.toUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 //动态生成账务的一些信息
 $.onWindowOpenDo(function() {
 	if(accountShareData.accountType === "MoneyExpense"){

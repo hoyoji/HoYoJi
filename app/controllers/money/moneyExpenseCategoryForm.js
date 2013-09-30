@@ -8,3 +8,4 @@ $.onWindowOpenDo(function() {
 
 $.parentExpenseCategory.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

@@ -645,3 +645,4 @@ $.convertUser2FriendModel = function(userModel){
 
 $.friend.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

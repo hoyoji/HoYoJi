@@ -147,6 +147,7 @@ $.activityTable = Alloy.createController("home/activityView", {
 });
 $.activityTable.setParent($.body);
 $.activityTable.UIInit();
+$.titleBar.UIInit($, $.getCurrentWindow());
 
 $.activityTable.transactionsTable.autoHideFooter($.footerBar);
 

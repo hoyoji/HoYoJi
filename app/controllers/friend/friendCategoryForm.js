@@ -9,3 +9,4 @@ $.onWindowOpenDo(function() {
 $.parentFriendCategory.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
 
+$.titleBar.UIInit($, $.getCurrentWindow());

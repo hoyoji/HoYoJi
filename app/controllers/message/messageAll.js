@@ -162,3 +162,5 @@ function onFooterbarTap(e) {
 $.receivedMessagesTable.addCollection(receivedMessagesCollection);
 $.receivedMessagesTable.autoHideFooter($.footerBar);
 $.receivedMessagesTable.fetchNextPage();
+
+$.titleBar.UIInit($, $.getCurrentWindow());

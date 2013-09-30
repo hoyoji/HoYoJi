@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="好友分类" >
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友分类"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友分类" autoInit="false"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundImage="/images/bodyImage.png">
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
 			autoInit="false"

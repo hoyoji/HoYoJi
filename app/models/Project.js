@@ -11,7 +11,7 @@ exports.definition = {
 			depositeIncomeCategoryId : "TEXT",
 			depositeExpenseCategoryId : "TEXT",
 			serverRecordHash : "TEXT",
-			lastServerUpdateTime : "INTEGER",
+			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		// defaults : {

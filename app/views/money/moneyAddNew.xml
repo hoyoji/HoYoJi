@@ -2,8 +2,8 @@
 	<View class="container" width="100%" height="100%" zIndex="101">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<!-- <Require id="moneyExpenseForm" src="money/moneyExpenseForm" top="0" bottom="42"/> -->
-		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
+		<!-- <Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" autoInit="false"
 		buttons="支出,收入,转账,借贷;借入;借出;还款;收款,项目充值" imagesFolder="/images/money/moneyAddNew"
-		ids="moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"/>
+		ids="moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"/> -->
 	</View>
 </Alloy>

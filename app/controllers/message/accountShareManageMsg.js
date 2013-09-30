@@ -23,6 +23,7 @@ var onFooterbarTap = function(e) {
 
 $.fromUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 
 $.onWindowOpenDo(function() {
 	//动态创建账务的信息到页面上

@@ -158,4 +158,5 @@ if ($.$model.isNew()) {
 $.parentProject.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 

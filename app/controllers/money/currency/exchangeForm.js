@@ -27,3 +27,4 @@ $.localCurrency.UIInit($, $.getCurrentWindow());
 $.foreignCurrency.UIInit($, $.getCurrentWindow());
 $.rate.UIInit($, $.getCurrentWindow());
 $.autoUpdate.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

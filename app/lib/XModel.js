@@ -589,6 +589,9 @@
 						delete attributes[obj];
 					}
 				}
+				if(attributes.lastServerUpdateTime){
+					attributes.lastServerUpdateTime = Number(attributes.lastServerUpdateTime);
+				}
 				attributes.__dataType = this.config.adapter.collection_name;
 				return attributes;
 			},

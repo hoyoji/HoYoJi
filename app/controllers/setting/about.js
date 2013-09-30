@@ -27,3 +27,4 @@ function openSinaBlog() {
 function openQqBlog() {
 	Titanium.Platform.openURL("http://weibo.com/hoyoji");
 }
+$.titleBar.UIInit($, $.getCurrentWindow());

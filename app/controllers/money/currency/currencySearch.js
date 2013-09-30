@@ -94,3 +94,4 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		alert(e.__summary.msg);
 	});
 };
+$.titleBar.UIInit($, $.getCurrentWindow());
