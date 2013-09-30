@@ -130,4 +130,5 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 $.name.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 

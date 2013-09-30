@@ -43,3 +43,5 @@ function onFooterbarTap(e) {
 		});
 	}
 }
+
+$.titleBar.UIInit($, $.getCurrentWindow());

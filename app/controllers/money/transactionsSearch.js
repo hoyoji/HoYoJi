@@ -128,3 +128,5 @@ $.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy,
 };
 
 exports.doSearch(); 
+
+$.titleBar.UIInit($, $.getCurrentWindow());

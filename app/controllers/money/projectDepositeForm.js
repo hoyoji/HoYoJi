@@ -524,4 +524,5 @@ $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 

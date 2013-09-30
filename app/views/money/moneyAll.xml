@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="账务">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水"
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="日流水" autoInit="false"
 		image="/images/mainWindow/moneyAll"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 			<!-- <Require id="transactionsSearchTable" src="money/transactionsSearch" autoInit="false"/>

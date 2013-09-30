@@ -267,4 +267,5 @@ $.friendAccount.UIInit($, $.getCurrentWindow());
 $.returnDate.UIInit($, $.getCurrentWindow());
 $.returnedAmount.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 

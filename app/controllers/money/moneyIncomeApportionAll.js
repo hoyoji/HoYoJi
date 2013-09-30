@@ -119,3 +119,5 @@ var collection = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(func
 $.moneyIncomeApportionsTable.addCollection(collection);
 
 $.moneyIncomeApportionsTable.autoHideFooter($.footerBar);
+
+$.titleBar.UIInit($, $.getCurrentWindow());
