@@ -1,5 +1,27 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
+// $.backButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", "widget", {
+	// autoInit : "false",
+	// left : 5,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// visible : false,
+	// image : "/images/com.hoyoji.titanium.widget.TitleBar/backButton"
+// });
+// $.backButton.setParent($.$view),
+// $.backButton.UIInit($, $.getCurrentWindow());
+// 
+// $.menuButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", "widget", {
+	// autoInit : "false",
+	// right : 15,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// visible : false,
+	// image : "/images/com.hoyoji.titanium.widget.TitleBar/menuButton"
+// });
+// $.menuButton.setParent($.$view),
+// $.menuButton.UIInit($, $.getCurrentWindow());
+		
 exports.setImage = function(image){
 	var imgPath = image + ".png";
 	if(OS_IOS){

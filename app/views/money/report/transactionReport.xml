@@ -104,7 +104,7 @@
 					</View>
 				</View>
 				<View height="42">
-					<Label left="5" width="30%">分摊收入总额</Label>
+					<Label left="5" width="30%">分摊收入</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="moneyIncomeApportionCurrencySymbol" autoInit="false"
@@ -115,7 +115,7 @@
 					</View>
 				</View>
 				<View height="42">
-					<Label left="5" width="30%">分摊支出总额</Label>
+					<Label left="5" width="30%">分摊支出</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="moneyExpenseApportionCurrencySymbol" autoInit="false"
