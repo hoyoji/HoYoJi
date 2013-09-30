@@ -110,3 +110,5 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 		errorCB();
 	});
 };
+
+$.titleBar.UIInit($, $.getCurrentWindow());

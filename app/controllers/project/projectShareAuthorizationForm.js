@@ -916,3 +916,4 @@ if ($.$model.xGet("friendUserId") === Alloy.Models.User.id) {
 	$.projectShareMoneyIncomeCategoryEdit.UIInit($, $.getCurrentWindow());
 	$.projectShareMoneyIncomeCategoryDelete.UIInit($, $.getCurrentWindow());
 }
+$.titleBar.UIInit($, $.getCurrentWindow());

@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="消息">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收件箱"
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收件箱" autoInit="false"
 			 image="/images/mainWindow/messageAll"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 			<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" 

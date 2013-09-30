@@ -84,3 +84,4 @@ var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter
 $.myProjectsTable.addCollection(myProjectsTableCollection);
 // $.sharedWithHerTable.addCollection(sharedWithHerTableCollection, "project/projectSharedWithHerRow");
 $.myProjectsTable.autoHideFooter($.footerBar);
+$.titleBar.UIInit($, $.getCurrentWindow());

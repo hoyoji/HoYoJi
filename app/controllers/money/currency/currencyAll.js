@@ -36,3 +36,4 @@ function onFooterbarTap(e){
 }
 
 $.currenciesTable.autoHideFooter($.footerBar);
+$.titleBar.UIInit($, $.getCurrentWindow());

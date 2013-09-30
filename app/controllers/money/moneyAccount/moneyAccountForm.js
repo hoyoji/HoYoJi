@@ -26,4 +26,5 @@ $.accountType.UIInit($, $.getCurrentWindow());
 $.accountNumber.UIInit($, $.getCurrentWindow());
 $.bankAddress.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 // $.sharingType.UIInit($, $.getCurrentWindow());

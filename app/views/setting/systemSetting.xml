@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="设置">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="设置"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="设置" autoInit="false"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" backgroundColor="#e1e1e1" class="table-edit" bottom="0" top="0">
 

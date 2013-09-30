@@ -12,3 +12,4 @@ $.onSave = function(saveEndCB, saveErrorCB){
 $.name.UIInit($, $.getCurrentWindow());
 $.symbol.UIInit($, $.getCurrentWindow());
 $.code.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

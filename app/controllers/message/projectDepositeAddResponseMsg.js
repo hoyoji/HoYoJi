@@ -477,4 +477,5 @@ $.onWindowOpenDo(function() {
 
 $.fromUser.UIInit($, $.getCurrentWindow());
 $.requestContent.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
 
