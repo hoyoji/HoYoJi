@@ -20,7 +20,7 @@ exports.definition = {
 			// birthday : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "INTEGER",
-			lastSyncTime : "INTEGER",
+			lastSyncTime : "TEXT",
 			defaultTransactionDisplayType : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",
 			pictureId : "TEXT"

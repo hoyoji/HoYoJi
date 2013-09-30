@@ -144,7 +144,7 @@
 				if($.hintText){
 					$.hintText.setOpacity(0);
 				}
-				$.field.setOpacity(0.3);
+				$.field.setOpacity(0.1);
 			};
 			$.hideErrorMsg = function() {
 				if ($.__errorShowing) {
