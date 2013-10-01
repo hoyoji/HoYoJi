@@ -186,6 +186,10 @@
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
+				if(self.__isSyncing){
+					return;
+				}
+				self.__isSyncing = true;
 				var activityWindow = Alloy.createController("activityMask");
 				activityWindow.open("正在同步...", ["下载数据","合并数据","上传数据"]);
 
@@ -199,12 +203,14 @@
 							}
 							// activityWindow.close();
 							activityWindow.progressFinish("同步完成");
+							self.__isSyncing = false;
 						}, function(e) {
 							if (xErrorCallback) {
 								xErrorCallback(e);
 							}
 							// activityWindow.close();
 							activityWindow.showMsg("同步错误：" + e.__summary.msg);
+							self.__isSyncing = false;
 							//alert("sync error : " + e.__summary.msg);
 						});
 					// }, 0);
@@ -214,6 +220,7 @@
 					}
 					// activityWindow.close();
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
+					self.__isSyncing = true;
 					//alert("sync error " + e.__summary.msg);
 				}, activityWindow);
 			},
