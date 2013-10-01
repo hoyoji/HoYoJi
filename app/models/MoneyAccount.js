@@ -113,8 +113,8 @@ exports.definition = {
 			},
 			syncAddNew : function(record, dbTrans) {
 				var serverCurrentBalance = record.currentBalance;
-				if(!record.currentBalance){
-				record.currentBalance = 0;
+				if (!record.currentBalance) {
+					record.currentBalance = 0;
 				}
 				if (dbTrans.__syncData[record.id] && dbTrans.__syncData[record.id].__syncCurrentBalance) {
 					record.currentBalance = dbTrans.__syncData[record.id].__syncCurrentBalance + this.xGet("currentBalance");

@@ -96,7 +96,9 @@
 					xCompleteCallback();
 				},
 				saveModel : function(saveEndCB, saveErrorCB, options) {
-					if ($.$model) {
+					var self = this;
+					if (!this.__isSubmitting && $.$model) {
+						this.__isSubmitting = true;
 						$.$model.xValidate(function() {
 							if ($.$model.__xValidationErrorCount > 0) {
 								$.$model.__xValidationError.__summary = {
@@ -106,6 +108,7 @@
 								$.__saveCollection = [];
 								$.__deleteCollection = [];
 								saveErrorCB($.$model.__xValidationError.__summary.msg);
+								self.__isSubmitting = false;
 								return;
 							}
 
@@ -127,6 +130,7 @@
 								if (saveEndCB) {
 									saveEndCB();
 								}
+								self.__isSubmitting = false;
 							};
 							var errorCB = function(model, error) {
 								hasError = true;
@@ -142,6 +146,7 @@
 								if (saveErrorCB) {
 									saveErrorCB(errMsg);
 								}
+								self.__isSubmitting = false;
 							};
 
 							$.$model.on("sync", successCB);

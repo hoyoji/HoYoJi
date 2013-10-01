@@ -186,9 +186,13 @@
 				}
 				$.$view.addEventListener("registersaveablecallback", function(e) {
 					e.cancelBubble = true;
-					var saveCB = e.onSaveCB || e.saveModelCB;
+					var saveCB = e.onSaveCB || e.saveModelCB, self = this;
 					$.$view.addEventListener("save", function(e) {
 						e.cancelBubble = true;
+						if(self.__isSaving){
+							return;
+						}
+						self.__isSaving = true;
 						$.closeSoftKeyboard();
 
 						$.saveStart(e);
@@ -196,8 +200,10 @@
 							// try{
 							saveCB(function(msg) {
 								$.saveEnd(e, msg);
+								self.__isSaving = false;
 							}, function(msg) {
 								$.saveError(e, msg);
+								self.__isSaving = false;
 							});
 							// } catch(err) {
 							// console.error(err.toString());
