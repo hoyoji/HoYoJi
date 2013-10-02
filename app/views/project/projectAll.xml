@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="项目">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的项目" autoInit="false"
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="全部项目" autoInit="false"
 			 image="/images/mainWindow/projectAll"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
 			<!-- <Widget id="sharedWithMeTable" src="com.hoyoji.titanium.widget.XTableView" bottom="0" top="0" hasDetail=""/>
