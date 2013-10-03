@@ -63,7 +63,7 @@ exports.getQueryString = function(prefix, notPersonalData) {
 		}
 		if (f === "transactionDisplayType") {
 			if (value === "Personal" && !notPersonalData) {
-				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
+				filterStr += " AND " + prefix + ".ownerUserId = '" + Alloy.Models.User.id + "'";
 			}
 			continue;
 		}

@@ -12,7 +12,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))" />
+						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)" />
 					</View>
 				</View>
 				<View height="42">
@@ -23,7 +23,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="SUM(main.amount * main.exchangeRate/ IFNULL(ex.rate, 1))"/>
+						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="main.amount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -34,7 +34,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -45,7 +45,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -56,7 +56,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -67,7 +67,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -78,7 +78,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="SUM(main.interest * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="main.interest * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -89,7 +89,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="SUM(main.interest * main.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.interest * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42" id="moneyExpenseApportionTotalContainer">
@@ -100,7 +100,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyExpenseApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedPayment" totalField="SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyExpenseApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedPayment" totalField="main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42" id="moneyIncomeApportionTotalContainer">
@@ -111,7 +111,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyIncomeApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedIncome" totalField="SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1))"/>
+						<Require id="moneyIncomeApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedIncome" totalField="main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
