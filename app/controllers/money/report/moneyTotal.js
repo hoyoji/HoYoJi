@@ -11,6 +11,12 @@ if ($.$attrs.modelType === "PersonalIncome") {
 	//querySelectApportion = "SELECT SUM(main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)) END AS TOTAL FROM MoneyExpenseApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 	querySelectLend = "SELECT CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN SUM(main.amount / IFNULL(exma.rate, 1)) ELSE SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1)) END AS TOTAL FROM MoneyLend main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId  LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 	querySelectReturnInterest = "SELECT CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN SUM(main.amount / IFNULL(exma.rate, 1)) ELSE SUM(main.interest * main.exchangeRate / IFNULL(ex.rate, 1)) END AS TOTAL, SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1)) AS TOTAL2 FROM MoneyReturn main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+} else if ($.$attrs.modelType === "PersonalApportionedPayment") {
+	querySelect = "SELECT " + totalField + " AS TOTAL FROM MoneyIncomeApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+	querySelectApportion = "SELECT " + totalField + " AS TOTAL FROM MoneyExpenseApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+} else if ($.$attrs.modelType === "PersonalApportionedIncome") {
+	querySelect = "SELECT " + totalField + " AS TOTAL FROM MoneyIncomeApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+	querySelectApportion = "SELECT " + totalField + " AS TOTAL FROM MoneyExpenseApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else if ($.$attrs.modelType === "MoneyExpenseApportion" || $.$attrs.modelType === "MoneyIncomeApportion") {
 	querySelect = "SELECT " + totalField + " AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else {
@@ -33,47 +39,41 @@ exports.query = function(queryStr) {
 				dEnd = d.getUTCTimeOfMonthEnd().toISOString();
 			}
 			queryStr = " date >= '" + dStart + "' AND date <= '" + dEnd + "'";
-			if ($.$attrs.modelType === "PersonalIncome" || $.$attrs.modelType === "PersonalExpense") {
-				//	queryStrApportion = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
-				queryStr = queryStr + " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			} else if ($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion") {
-				queryStr = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
-			} else {
-				queryStr = queryStr + " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			}
-		} else {
-			if ($.$attrs.modelType === "PersonalIncome" || $.$attrs.modelType === "PersonalExpense") {
-				queryStr = queryStr + " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			} else if ($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion") {
-				queryStr = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
-			} else {
-				queryStr = queryStr + " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
-			}
+			//	queryStrApportion = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
+		}
+		if ($.$attrs.modelType === "PersonalIncome" || $.$attrs.modelType === "PersonalExpense") {
+			queryStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
+		} else if ($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion") {
+			queryStr += " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
+		} else if ($.$attrs.modelType === "PersonalApportionedPayment") {
+			queryStrApportion = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
+			queryApportion = querySelectApportion + " WHERE " + queryStrApportion;
+			queryStr += " AND main.friendUserId <> '" + Alloy.Models.User.id + "' AND mi.ownerUserId = '" + Alloy.Models.User.id + "'";
+		} else if ($.$attrs.modelType === "PersonalApportionedIncome") {
+			queryStrApportion = queryStr + " AND main.friendUserId <> '" + Alloy.Models.User.id + "' AND mi.ownerUserId = '" + Alloy.Models.User.id + "'";
+			queryApportion = querySelectApportion + " WHERE " + queryStrApportion;
+			queryStr += " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
 		}
 		query = querySelect + " WHERE " + queryStr;
 		if ($.$attrs.modelType === "PersonalIncome") {
-			//queryApportion = querySelectApportion + " WHERE " + queryStrApportion;
 			queryBorrow = querySelectBorrow + " WHERE " + queryStr;
 			queryPaybackInterest = querySelectPaybackInterest + " WHERE " + queryStr;
 		} else if ($.$attrs.modelType === "PersonalExpense") {
-			//queryApportion = querySelectApportion + " WHERE " + queryStrApportion;
 			queryLend = querySelectLend + " WHERE " + queryStr;
 			queryReturnInterest = querySelectReturnInterest + " WHERE " + queryStr;
 		}
 	} else {
 		query = querySelect + " WHERE " + queryStr;
 		if ($.$attrs.modelType === "PersonalIncome") {
-			//queryApportion = querySelectApportion;
 			queryBorrow = querySelectBorrow;
 			queryPaybackInterest = querySelectPaybackInterest;
 		} else if ($.$attrs.modelType === "PersonalExpense") {
-			//queryApportion = querySelectApportion;
 			queryLend = querySelectLend;
 			queryReturnInterest = querySelectReturnInterest;
 		} else if ($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion") {
-			queryStr = queryStr + " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
-		} else {
-			queryStr = queryStr + " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
+			queryStr += " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
+		}else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
+			queryApportion = querySelectApportion + " WHERE " + queryStr;
 		}
 	}
 	exports.refresh();
@@ -90,6 +90,11 @@ exports.refresh = function() {
 	} else if ($.$attrs.modelType === "PersonalExpense") {
 		config = Alloy.createModel("MoneyExpense").config;
 		Model = Alloy.M("MoneyExpense", {
+			config : config
+		});
+	} else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
+		config = Alloy.createModel("MoneyIncomeApportion").config;
+		Model = Alloy.M("MoneyIncomeApportion", {
 			config : config
 		});
 	} else {
@@ -183,6 +188,19 @@ exports.refresh = function() {
 			query : queryReturnInterest
 		});
 		value += model.get("TOTAL") || 0 + model.get("TOTAL2") || 0;
+	} else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
+		config = Alloy.createModel("MoneyExpenseApportion").config;
+		Model = Alloy.M("MoneyExpenseApportion", {
+			config : config
+		});
+		model = new Model({
+			TOTAL : 0
+		});
+		model.fetch({
+			query : queryApportion
+		});
+		value += model.get("TOTAL") || 0;
+
 	}
 
 	$.moneyTotal.setText(value.toUserCurrency());
