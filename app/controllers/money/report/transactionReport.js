@@ -14,7 +14,13 @@ $.onWindowOpenDo(function() {
 });
  
 function onFooterbarTap(e) {
-	if (e.source.id === "dateTransactions") {
+	if (e.source.id === "personalStat") {
+		queryOptions.transactionDisplayType = "Personal";
+		exports.refresh();
+	} else if (e.source.id === "projectStat") {
+		queryOptions.transactionDisplayType = "Project";
+		exports.refresh();
+	} else if (e.source.id === "dateTransactions") {
 		dateTransactions();
 	} else if (e.source.id === "weekTransactions") {
 		weekTransactions();
@@ -30,33 +36,24 @@ function onFooterbarTap(e) {
 
 function dateTransactions() {
 	var dat = new Date();
-	queryOptions = {
-		dateFrom : dat.getUTCTimeOfDateStart().toISOString(),
-		dateTo : dat.getUTCTimeOfDateEnd().toISOString(),
-		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
-	};
+	queryOptions.dateFrom = dat.getUTCTimeOfDateStart().toISOString();
+	queryOptions.dateTo = dat.getUTCTimeOfDateEnd().toISOString();
 	exports.refresh();
 }
 
 function weekTransactions() {
-	queryOptions = {
-		dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
-		dateTo : d.getUTCTimeOfWeekEnd().toISOString(),
-		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
-	};
+	queryOptions.dateFrom = d.getUTCTimeOfWeekStart().toISOString();
+	queryOptions.dateTo = d.getUTCTimeOfWeekEnd().toISOString();
 	exports.refresh();
 }
 
 function monthTransactions() {
-	queryOptions = {
-		dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
-		dateTo : d.getUTCTimeOfMonthEnd().toISOString(),
-		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
-	};
+	queryOptions.dateFrom = d.getUTCTimeOfMonthStart().toISOString();
+	queryOptions.dateTo = d.getUTCTimeOfMonthEnd().toISOString();
 	exports.refresh();
 }
 
-exports.getQueryString = function(prefix) {
+exports.getQueryString = function(prefix, notPersonalData) {
 	var filterStr = "";
 	prefix = prefix || "main";
 	for (var f in queryOptions) {
@@ -65,7 +62,7 @@ exports.getQueryString = function(prefix) {
 			continue;
 		}
 		if (f === "transactionDisplayType") {
-			if (value === "Personal") {
+			if (value === "Personal" && !notPersonalData) {
 				filterStr += " AND main.ownerUserId = '" + Alloy.Models.User.id + "'";
 			}
 			continue;
@@ -97,7 +94,6 @@ function doQuery(queryController) {
 
 exports.refresh = function() {
 	var queryStr = exports.getQueryString();
-	console.info(queryStr);
 	$.moneyIncomeTotal.query(queryStr);
 	$.moneyExpenseTotal.query(queryStr);
 	$.moneyBorrowTotal.query(queryStr);
@@ -107,14 +103,30 @@ exports.refresh = function() {
 	$.moneyReturnInterestTotal.query(queryStr);
 	$.moneyPaybackInterestTotal.query(queryStr);
 	
-	queryStr = exports.getQueryString("mi");
-	$.moneyExpenseApportionTotal.query(queryStr);
-	$.moneyIncomeApportionTotal.query(queryStr);
+	if(queryOptions.transactionDisplayType === "Personal"){
+		$.moneyExpenseApportionTotalContainer.setHeight(42);
+		$.moneyIncomeApportionTotalContainer.setHeight(42);
+		queryStr = exports.getQueryString("mi", true);
+		$.moneyExpenseApportionTotal.query(queryStr);
+		$.moneyIncomeApportionTotal.query(queryStr);
+	} else {
+		$.moneyExpenseApportionTotalContainer.setHeight(0);
+		$.moneyIncomeApportionTotalContainer.setHeight(0);
+	}
 	calculateTotalBalance();
 };
+
 function calculateTotalBalance() {
 	var totalBalance = 0;
-	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - $.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - $.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
+	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + 
+					$.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
+					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - 
+					$.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
+	
+	if(queryOptions.transactionDisplayType === "Personal"){ 
+			totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
+	}
+					$.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
 	$.totalBalance.setText(totalBalance.toUserCurrency());
 }
 
