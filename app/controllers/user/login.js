@@ -34,11 +34,11 @@ function doLogin(e) {
 	$.loginButton.setEnabled(false);
 
 	password = Ti.Utils.sha1(password);
-	login(userName, password);
+	$.login(userName, password);
 
 }
 
-function login(userName, password) {
+$.login = function(userName, password) {
 	delete Alloy.Models.User;
 	delete Alloy.Globals.currentUserDatabaseName;
 	if (userName.startsWith("hyj")) {
@@ -206,8 +206,7 @@ function login(userName, password) {
 
 		}
 	}
-
-}
+}; 
 
 function setValueToProperties(userName, password) {
 	var userData = {};

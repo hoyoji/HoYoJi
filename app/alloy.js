@@ -97,3 +97,7 @@ Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").exte
 		// Ti.Android.currentActivity.setRequestedOrientation(Ti.Android.SCREEN_ORIENTATION_PORTRAIT);
 	// });
 // }
+
+Alloy.Globals.relogin = function(){
+	Ti.App.fireEvent("relogin");
+};

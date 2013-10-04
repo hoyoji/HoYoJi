@@ -135,8 +135,6 @@
 									});
 								}
 							}
-
-
 							$.$view.addEventListener("postlayout", postlayoutCB);
 						} else {
 							$.$view.addEventListener("winopen", function(e) {
@@ -150,9 +148,9 @@
 				onWindowCloseDo : function(callback) {
 					$.on("winclose", function(e) {
 						e.cancelBubble = true;
-						setTimeout(function() {
+						//setTimeout(function() {
 							callback();
-						}, 1);
+						// }, 1);
 					});
 				},
 				getCurrentWindow : function() {

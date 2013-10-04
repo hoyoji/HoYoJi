@@ -72,7 +72,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 					wait : true,
 					patch : true
 				});
-				activityWindow.showMsg("需退出重新登录，金额才会换成本币显示。");
+				activityWindow.showMsg("币种切换成功，系统将自动重新登录以使外币金额换成新本币显示", Alloy.Globals.relogin);
 			}, function(e) {
 				activityWindow.showMsg("切换失败,请重试：" + e.__summary.msg);
 				return;

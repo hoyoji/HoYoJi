@@ -7,7 +7,7 @@
 			attrs.currentWindow = $;
 			Alloy.Globals.extendsBaseViewController($, attrs);
 
-			if(OS_ANDROID){
+			if (OS_ANDROID) {
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			} else {
 				$.$view.setTop(Alloy.Globals.iOS7 ? 20 : 0);
@@ -15,16 +15,20 @@
 			}
 
 			_.extend($, {
-				close : function(){
+				close : function() {
 					//$.closeSoftKeyboard();
-					$.$view.close({animated : false});
-				},				
-				open : function(){
-					$.$view.open({animated : false});
+					$.$view.close({
+						animated : false
+					});
+				},
+				open : function() {
+					$.$view.open({
+						animated : false
+					});
 					//$.closeSoftKeyboard();
 				},
-				openNumericKeyboard : function(textField, callback, bottom){
-					if(!$.numericKeyboard){
+				openNumericKeyboard : function(textField, callback, bottom) {
+					if (!$.numericKeyboard) {
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
 							id : "numericKeyboard",
 							currentWindow : $,
@@ -36,10 +40,10 @@
 					}
 					$.numericKeyboard.open(textField, callback, bottom);
 				},
-				closeNumericKeyboard : function(){
-					if($.numericKeyboard){
+				closeNumericKeyboard : function() {
+					if ($.numericKeyboard) {
 						$.numericKeyboard.close();
-					}				
+					}
 				},
 				openContextMenu : function(e) {
 					if ($.contextMenu) {
@@ -49,12 +53,12 @@
 						if ($.mainWindow) {
 							title = "记一笔";
 							// menuHeader = [$.createContextMenuItem("设置", function() {
-								// Alloy.Globals.openWindow("setting/systemSetting");
+							// Alloy.Globals.openWindow("setting/systemSetting");
 							// })];
-							menuFooter = [$.createContextMenuItem(title, function(){	
+							menuFooter = [$.createContextMenuItem(title, function() {
 								Alloy.Globals.openWindow("money/moneyAddNew");
 							})];
-						}else{
+						} else {
 							menuFooter = [$.createContextMenuItem(title, $.close)];
 						}
 
@@ -86,7 +90,7 @@
 			$.$view.addEventListener("opencontextmenu", function(e) {
 				$.openContextMenu(e);
 			});
-			if(OS_ANDROID){		
+			if (OS_ANDROID) {
 				$.__androidBackFunction = function(e) {
 					if ($.contextMenu && $.contextMenu.widget.getVisible().toString() === "true") {
 						$.closeContextMenu();
@@ -96,13 +100,10 @@
 				};
 			}
 			$.$view.addEventListener("registerwindowevent", function(e) {
-				console.info("window ======== receive registerwindowevent " + e.windowEvent + " from " + e.source.id);
 				if (e.parentWindowCallback) {
-					console.info("window ======== receive registerwindowevent calling back ParentCallback " + e.windowEvent + " from " + e.source.id);
 					e.parentWindowCallback($);
 				}
 				if (e.windowPreListenCallback) {
-					console.info("window ======== receive registerwindowevent calling back PreListenCallback " + e.windowEvent + " from " + e.source.id);
 					e.windowPreListenCallback(e, $);
 				}
 				if (e.windowCallback) {
@@ -112,20 +113,37 @@
 				}
 			});
 			// $.$view.addEventListener("textfieldfocused", function(e){
-				// if(e.inputType === "NumericKeyboard"){
-					// if($.dateTimePicker) $.dateTimePicker.close();
-				// } else if(e.inputType === "DateTimePicker"){
-					// if($.numericKeyboard)	$.numericKeyboard.close();
-				// } else {
-					// if($.numericKeyboard)	$.numericKeyboard.close();
-					// if($.dateTimePicker) $.dateTimePicker.close();
-				// }
+			// if(e.inputType === "NumericKeyboard"){
+			// if($.dateTimePicker) $.dateTimePicker.close();
+			// } else if(e.inputType === "DateTimePicker"){
+			// if($.numericKeyboard)	$.numericKeyboard.close();
+			// } else {
+			// if($.numericKeyboard)	$.numericKeyboard.close();
+			// if($.dateTimePicker) $.dateTimePicker.close();
+			// }
 			// });
 			$.$view.addEventListener("closewin", function(e) {
 				$.close();
 			});
 			$.$view.addEventListener("open", function(e) {
 				Ti.App.fireEvent("winopen");
+			});
+			Ti.App.addEventListener("relogin", function() {
+				if ($.index) {
+					var currentUserName = Alloy.Models.User.xGet("userName"),
+						currentUserPassword = Alloy.Models.User.xGet("password");
+					Alloy.Globals.mainWindow.on("winclose", function() {
+						$.login.login(currentUserName, currentUserPassword);
+					});
+				} else {
+					if ($ === Alloy.Globals.mainWindow) {
+						setTimeout(function() {
+							$.$view.close();
+						}, 100);
+					} else {
+						$.$view.close();
+					}
+				}
 			});
 		};
 	}());

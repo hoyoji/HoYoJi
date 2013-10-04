@@ -77,13 +77,13 @@ $.close = function() {
 	$.activityView.close();
 };
 
-$.showMsg = function(msg) {
+$.showMsg = function(msg, closeCallback) {
 	activityIndicator.hide();
 	$.centerView.hide();
-	_addMsgView($.activityView, msg);
+	_addMsgView($.activityView, msg, closeCallback);
 };
 
-function _addMsgView(container, msg){
+function _addMsgView(container, msg, closeCallback){
 	if (!$.msgView) {
 		$.msgView = Ti.UI.createView({
 			width : Ti.UI.SIZE,
@@ -115,8 +115,11 @@ function _addMsgView(container, msg){
 			title : "确定"
 		});
 		$.confirmButton.addEventListener("singletap", function() {
+			if(closeCallback){
+				closeCallback();
+			}
 			$.close();
 		});
 	}
-	container.add($.confirmButton);
+	$.msgView.add($.confirmButton);
 }
