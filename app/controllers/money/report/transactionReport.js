@@ -1,15 +1,27 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var d = new Date(), queryOptions = {
+var title="收支汇总",interval="日",intervalQuery, d = new Date(), queryOptions = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 	dateTo : d.getUTCTimeOfDateEnd().toISOString(),
 	transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
 };
 
+function setTitle(){
+	if(!intervalQuery){
+		intervalQuery = interval === "查询" ? "(查询)" : "";
+	}
+	if(queryOptions.transactionDisplayType === "Personal"){
+		$.titleBar.setTitle("个人" + (interval !== "查询" ? interval : "") + title + intervalQuery);
+	} else {
+		$.titleBar.setTitle("项目" + (interval !== "查询" ? interval : "") + title + intervalQuery);
+	}
+}
+
 $.onWindowOpenDo(function() {
 	if ($.getCurrentWindow().$attrs.queryOptions) {
 		_.extend(queryOptions, $.getCurrentWindow().$attrs.queryOptions);
 	}
+	interval = "日";
 	exports.refresh();
 });
  
@@ -38,18 +50,21 @@ function dateTransactions() {
 	var dat = new Date();
 	queryOptions.dateFrom = dat.getUTCTimeOfDateStart().toISOString();
 	queryOptions.dateTo = dat.getUTCTimeOfDateEnd().toISOString();
+	interval = "日";
 	exports.refresh();
 }
 
 function weekTransactions() {
 	queryOptions.dateFrom = d.getUTCTimeOfWeekStart().toISOString();
 	queryOptions.dateTo = d.getUTCTimeOfWeekEnd().toISOString();
+	interval = "周";
 	exports.refresh();
 }
 
 function monthTransactions() {
 	queryOptions.dateFrom = d.getUTCTimeOfMonthStart().toISOString();
 	queryOptions.dateTo = d.getUTCTimeOfMonthEnd().toISOString();
+	interval = "月";
 	exports.refresh();
 }
 
@@ -89,10 +104,12 @@ exports.getQueryString = function(prefix, notPersonalData) {
 };
 function doQuery(queryController) {
 	queryOptions = queryController.queryOptions;
+	interval = "查询";
 	exports.refresh();
 }
 
 exports.refresh = function() {
+	setTitle();
 	var queryStr = exports.getQueryString();
 	$.moneyIncomeTotal.query(queryStr);
 	$.moneyExpenseTotal.query(queryStr);
