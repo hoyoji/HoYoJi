@@ -31,7 +31,15 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 // $.widget.add($.table);
 
 var collections = [], hasDetailSections = {};
-var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize = $.$attrs.pageSize ? Number($.$attrs.pageSize) : 0;
+var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize;
+
+if($.$attrs.pageSize && $.$attrs.pageSize.startsWith("rowHeight:")) {
+	pageSize = Math.floor((Ti.Platform.displayCaps.platformHeight - 45) / Number($.$attrs.pageSize.slice(10)));
+} else if($.$attrs.pageSize){
+	pageSize = Number($.$attrs.pageSize);
+} else {
+	pageSize = 0;
+}
 
 if (OS_ANDROID) {
 	// if(Ti.Platform.Android.API_LEVEL > 10){
