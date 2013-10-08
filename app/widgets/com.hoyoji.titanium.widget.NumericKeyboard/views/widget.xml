@@ -8,31 +8,31 @@
 			</View>
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View height="42" layout="horizontal" horizontalWrap="false">
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="7" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="8" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="9" />
-					<Button onSingletap="operation" onDoubletap="operation" title="÷" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="7" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="8" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="9" />
+					<Button onTouchstart="operation" onDoubletap="operation" title="÷" />
 				</View>
 				<View height="42" layout="horizontal" horizontalWrap="false">
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="4" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="5" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="6" />
-					<Button onSingletap="operation" onDoubletap="operation" title="×" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="4" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="5" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="6" />
+					<Button onTouchstart="operation" onDoubletap="operation" title="×" />
 				</View>
 				<!-- </View>
 				<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View width="80%" layout="vertical" height="Ti.UI.SIZE"> -->
 				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="1" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="2" />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="3" />
-					<Button onSingletap="operation" onDoubletap="operation" title="-" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="1" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="2" />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="3" />
+					<Button onTouchstart="operation" onDoubletap="operation" title="-" />
 				</View>
 				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
-					<Button onSingletap="decimal" onDoubletap="decimal" title="." />
-					<Button class="num" onSingletap="numPress" onDoubletap="doubleClickNumPress" title="0" />
-					<Button onSingletap="operation" onDoubletap="operation" title="=" />
-					<Button onSingletap="operation" onDoubletap="operation" title="+" />
+					<Button onTouchstart="decimal" onDoubletap="decimal" title="." />
+					<Button class="num" onTouchstart="numPress" onDoubletap="doubleClickNumPress" title="0" />
+					<Button onTouchstart="operation" onDoubletap="operation" title="=" />
+					<Button onTouchstart="operation" onDoubletap="operation" title="+" />
 				</View>
 				<!-- </View>
 				<View width="20%" height="Ti.UI.FILL" layout="vertical">
@@ -43,10 +43,10 @@
 				<View layout="horizontal" horizontalWrap="false" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View width="80%" layout="vertical" height="Ti.UI.SIZE"> -->
 				<View width="Ti.UI.FILL" height="42" layout="horizontal" horizontalWrap="false">
-					<Button id="submit" onSingletap="equalToValue" onDoubletap="equalToValue" title="确定" />
-					<Button id="submitButton" onSingletap="submitValue" onDoubletap="submitValue" title="保存" />
-					<Button id="cancel" title="取消" onSingletap="cancel" onDoubletap="cancel" borderRadius="0" />
-					<Button onSingletap="clear" onDoubletap="clear" title="C" right="0" />
+					<Button id="submit" onTouchstart="equalToValue" onDoubletap="equalToValue" title="确定" />
+					<Button id="submitButton" onTouchstart="submitValue" onDoubletap="submitValue" title="保存" />
+					<Button id="cancel" title="取消" onTouchstart="cancel" onDoubletap="cancel" borderRadius="0" />
+					<Button onTouchstart="clear" onDoubletap="clear" title="C" right="0" />
 				</View>
 			</View>
 		</View>

@@ -253,7 +253,7 @@ $.getCurrentWindow().onWindowOpenDo(function() {
 		$.autoLogin.setValue("yes");
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
-		login(userData.userName, userData.password);
+		$.login(userData.userName, userData.password);
 	} else {
 		$.autoLogin.setValue("no");
 	}
