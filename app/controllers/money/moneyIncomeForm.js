@@ -641,6 +641,7 @@ $.amount.UIInit($, $.getCurrentWindow());
 $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
+$.autoApportion.UIInit($, $.getCurrentWindow());
 $.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());
