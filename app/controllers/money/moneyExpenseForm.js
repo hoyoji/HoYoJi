@@ -110,39 +110,39 @@ $.convertUser2FriendModel = function(userModel) {
 };
 
 /*
-var loading;
-//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
-$.beforeProjectSelectorCallback = function(project, successCallback) {
-	var activityWindow = Alloy.createController("activityMask");
-	activityWindow.open("正在获取该项目的汇率...");
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
-			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
-				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					foreignCurrencyId : project.xGet("currencyId"),
-					rate : rate
-				});
-				exchange.xSet("ownerUser", Alloy.Models.User);
-				exchange.xSet("ownerUserId", Alloy.Models.User.id);
-				exchange.save();
-				successCallback();
-				loading = false;
-				activityWindow.close();
-			}, function(e) {
-				activityWindow.close();
-				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
-			});
-		} else {
-			activityWindow.close();
-			successCallback();
-		}
-	} else {
-		activityWindow.close();
-		successCallback();
-	}
-};*/
+ var loading;
+ //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+ $.beforeProjectSelectorCallback = function(project, successCallback) {
+ var activityWindow = Alloy.createController("activityMask");
+ activityWindow.open("正在获取该项目的汇率...");
+ if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+ if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+ loading = true;
+ Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+ var exchange = Alloy.createModel("Exchange", {
+ localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+ foreignCurrencyId : project.xGet("currencyId"),
+ rate : rate
+ });
+ exchange.xSet("ownerUser", Alloy.Models.User);
+ exchange.xSet("ownerUserId", Alloy.Models.User.id);
+ exchange.save();
+ successCallback();
+ loading = false;
+ activityWindow.close();
+ }, function(e) {
+ activityWindow.close();
+ alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+ });
+ } else {
+ activityWindow.close();
+ successCallback();
+ }
+ } else {
+ activityWindow.close();
+ successCallback();
+ }
+ };*/
 
 var oldAmount;
 var oldMoneyAccount;
@@ -232,31 +232,33 @@ function updateApportions() {
 	}
 }
 
-function setDefaultCategory(project,setToModel) {//新增时根据时间设置早午晚餐
+function setDefaultCategory(project, setToModel) {//新增时根据时间设置早午晚餐
 	var date = new Date($.$model.xGet("date"));
 	var hours = date.getHours();
 	var defaultCategory;
 	console.info("++++++hours+++++" + hours);
-	if (hours > 5 && hours < 11) {
+	if (hours > 7 && hours < 9) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "早餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 10 && hours < 17) {
+	} else if (hours > 12 && hours < 14) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "午餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 16 && hours < 21) {
+	} else if (hours > 18 && hours < 20) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "晚餐",
 			projectId : project.xGet("id")
 		});
-	} else {
+	} else if (hours > 22 || hours < 2) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "夜宵",
 			projectId : project.xGet("id")
 		});
+	} else {
+		defaultCategory = project.xGet("defaultExpenseCategory");
 	}
 	if (!defaultCategory.xGet("project")) {
 		defaultCategory = project.xGet("defaultExpenseCategory");
@@ -583,7 +585,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.saveModel(function(e) {
 			if (modelIsNew) {
 				//记住当前分类为下次打开时的默认分类
-				$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
+				if ($.$model.xGet("moneyExpenseCategory").xGet("name") !== "早餐" || 
+				$.$model.xGet("moneyExpenseCategory").xGet("name") !== "午餐" || 
+				$.$model.xGet("moneyExpenseCategory").xGet("name") !== "晚餐" || 
+				$.$model.xGet("moneyExpenseCategory").xGet("name") !== "夜宵") {
+					$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
+				}
 
 				//记住当前账户为下次打开时的默认账户
 				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
