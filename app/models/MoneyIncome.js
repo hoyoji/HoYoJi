@@ -266,7 +266,7 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			generateIncomeApportions : function(saveMode) {
+			generateIncomeApportions : function(saveMode,autoApportion) {
 				var self = this;
 				var moneyIncomeApportionsArray = [];
 				this.xGet("moneyIncomeApportions").forEach(function(item) {
@@ -282,7 +282,7 @@ exports.definition = {
 				});
 				if (moneyIncomeApportionsArray.length === 0) {// 生成分摊
 					var amountTotal = 0, moneyIncomeApportion, amount;
-					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || autoApportion === "No") {
 						moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 							moneyIncome : self,
 							friendUser : self.xGet("ownerUser"),

@@ -93,6 +93,12 @@ function updateApportionAmount() {
 
 $.amount.field.addEventListener("change", updateApportionAmount);
 
+function resetApportions() {
+	$.$model.xGet("moneyIncomeApportions").reset();
+}
+
+$.autoApportion.field.addEventListener("change", resetApportions);
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -262,6 +268,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
+			if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+				$.autoApportionView.setHeight(42);
+				$.autoApportion.setValue("No");
+			}
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 
 		} else {
@@ -345,8 +355,16 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyIncomeCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(42);
+					$.autoApportion.setValue("No");
+				}
 			} else {
 				$.project.hideRightButton();
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(0);
+					$.autoApportion.setValue("No");
+				}
 			}
 		}
 
@@ -355,15 +373,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			// $.moneyIncomeApportionsTable.removeCollection(collection);
 			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
 				projectFirstChangeFlag = true;
-				console.info("projectFirstChangeFlag++++++" + projectFirstChangeFlag);
 				$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
 					// oldApportions.push(item);
 					if (item.isNew()) {
-						console.info("aaaaaaaaaaaaaaa");
 						$.$model.xGet("moneyIncomeApportions").remove(item);
 					} else {
 						item.__xDeletedHidden = true;
-						console.info("bbbbbbbbbbbbb");
 					}
 				});
 			}
@@ -488,7 +503,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 
 			// 生成分摊
-			$.$model.generateIncomeApportions(true);
+			$.$model.generateIncomeApportions(true, $.autoApportion.getValue());
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
@@ -626,6 +641,7 @@ $.amount.UIInit($, $.getCurrentWindow());
 $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
+$.autoApportion.UIInit($, $.getCurrentWindow());
 $.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());

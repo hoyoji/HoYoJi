@@ -118,7 +118,7 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getActualTotalMoney : function(noChangeToLocalCurrency) {
+			getActualTotalMoney : function() {
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
 				this.xGet("projectShareAuthorizations").forEach(function(item) {
@@ -140,11 +140,7 @@ exports.definition = {
 				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				if (noChangeToLocalCurrency) {
-					return this.xGet("currency").xGet("symbol") + actualTotalMoney.toFixed(2);
-				} else {
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
-				}
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
 			},
 			getActualTotalMoneyType : function(cached) {
 				var actualTotalMoney;
@@ -169,7 +165,7 @@ exports.definition = {
 				}
 			},
 			getProjectNameCurrency : function() {
-				return this.xGet("name") + "(" + this.getActualTotalMoney(true) + ")";
+				return this.xGet("name") + "(" + this.xGet("currency").xGet("code") + ")";
 			},
 			getProjectName : function() {
 				var projectRemarkLen = Alloy.createCollection("ProjectRemark").xSearchInDb({

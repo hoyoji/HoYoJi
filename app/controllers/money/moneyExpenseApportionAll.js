@@ -112,7 +112,7 @@ function onFooterbarTap(e) {
 	}
 }
 
-selectedExpense.generateExpenseApportions();
+selectedExpense.generateExpenseApportions(false,$.$attrs.autoApportion);
 var collection = selectedExpense.xGet("moneyExpenseApportions").xCreateFilter(function(model) {
 	return model.__xDeletedHidden !== true;
 });

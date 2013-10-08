@@ -28,7 +28,7 @@ function createExpenseCategoryModel(parentCategory, subCategories) {
 				$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 			}
 		}
-	} else if(parentCategory){
+	} else if (parentCategory) {
 		var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
 			name : parentCategory,
 			project : $.$model,
@@ -42,30 +42,36 @@ if ($.$model.isNew()) {
 	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
 
-	var incomeCategoryNameCollection = ["工资", "加班费", "补贴", "奖金", "报销", "租金", "兼职", "礼金", "投资收入", "利息收入"];
-	for (var i = 0; i < incomeCategoryNameCollection.length; i++) {
-		createIncomeCategoryModel(incomeCategoryNameCollection[i]);
-	}
-	
-	var parentCategory = [];
-	var expenseParentCategoryNameCollection = ["餐饮", "行车交通", "购物", "休闲娱乐", "医教服务", "生活居家", "金融投资", "人情往来"];
-	for (var i = 0; i < expenseParentCategoryNameCollection.length; i++) {
-		parentCategory.push(createExpenseCategoryModel(expenseParentCategoryNameCollection[i]));
-	}
-	var expenseSubCategoryNameCollection = [
-	["早餐","午餐","晚餐", "夜宵", "饮料", "水果零食", "自煮买菜", "油盐酱醋", "餐饮其他"], 
-	["打的", "公交地铁", "大巴", "航空", "火车","船舶","自行车","加油","停车费","过路过桥","维修保养","车贷车险","罚款赔偿","行车交通其他"], 
-	["日用百货","衣服鞋帽","首饰","化妆品","保健品","婴幼用品","数码产品","茶烟酒","家电家具","玩具","报刊书籍","摄影文印","购物其他"], 
-	["卡拉OK", "腐败聚会", "电影电视", "网游电玩", "运动健身","美容美发","洗浴足浴","旅游度假","休闲娱乐其他"],
-	["医药费", "学杂费", "教材费", "家教补习", "培训考试","家政服务","快递服务","医教服务其他"], 
-	["水电燃气", "住宿房租", "手机电话", "宽带", "放宽房贷","物业","维修保养","材料建材","生活居家其他"], 
-	["证券期货", "保险", "外汇", "黄金实物", "书画艺术","投资贷款","利息支出","金融投资其他"], 
-	["孝敬长辈", "礼金实物", "请客吃饭", "慈善捐款", "代付款","人情往来其他"]
-	];
-	for (var i = 0; i < parentCategory.length; i++) {
-		createExpenseCategoryModel(parentCategory[i], expenseSubCategoryNameCollection[i]);
-	}
+	if ($.autoAddCategory.getValue() === "Yes") {
+		var incomeCategoryNameCollection = ["工资", "加班费", "补贴", "奖金", "报销", "租金", "兼职", "礼金", "投资收入", "利息收入"];
+		for (var i = 0; i < incomeCategoryNameCollection.length; i++) {
+			createIncomeCategoryModel(incomeCategoryNameCollection[i]);
+		}
 
+		var parentCategory = [];
+		var expenseParentCategoryNameCollection = ["餐饮", "行车交通", "购物", "休闲娱乐", "医教服务", "生活居家", "金融投资", "人情往来"];
+		for (var i = 0; i < expenseParentCategoryNameCollection.length; i++) {
+			parentCategory.push(createExpenseCategoryModel(expenseParentCategoryNameCollection[i]));
+		}
+		var expenseSubCategoryNameCollection = [["早餐", "午餐", "晚餐", "夜宵", "饮料", "水果零食", "自煮买菜", "油盐酱醋", "餐饮其他"], ["打的", "公交地铁", "大巴", "航空", "火车", "船舶", "自行车", "加油", "停车费", "过路过桥", "维修保养", "车贷车险", "罚款赔偿", "行车交通其他"], ["日用百货", "衣服鞋帽", "首饰", "化妆品", "保健品", "婴幼用品", "数码产品", "茶烟酒", "家电家具", "玩具", "报刊书籍", "摄影文印", "购物其他"], ["卡拉OK", "腐败聚会", "电影电视", "网游电玩", "运动健身", "美容美发", "洗浴足浴", "旅游度假", "休闲娱乐其他"], ["医药费", "学杂费", "教材费", "家教补习", "培训考试", "家政服务", "快递服务", "医教服务其他"], ["水电燃气", "住宿房租", "手机电话", "宽带", "放宽房贷", "物业", "维修保养", "材料建材", "生活居家其他"], ["证券期货", "保险", "外汇", "黄金实物", "书画艺术", "投资贷款", "利息支出", "金融投资其他"], ["孝敬长辈", "礼金实物", "请客吃饭", "慈善捐款", "代付款", "人情往来其他"]];
+		for (var i = 0; i < parentCategory.length; i++) {
+			createExpenseCategoryModel(parentCategory[i], expenseSubCategoryNameCollection[i]);
+		}
+	} else {
+		var defaultIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
+			name : "日常收入",
+			project : $.$model,
+			ownerUser : Alloy.Models.User
+		}).xAddToSave($);
+		$.$model.xSet("defaultIncomeCategory", defaultIncomeCategory);
+
+		var defaultExpenseCategory = Alloy.createModel("MoneyExpenseCategory", {
+			name : "日常支出",
+			project : $.$model,
+			ownerUser : Alloy.Models.User
+		}).xAddToSave($);
+		$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
+	}
 	//创建项目时默认创建充值收入分类
 	var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory", {
 		name : "充值收入",
@@ -155,8 +161,17 @@ if ($.$model.isNew()) {
 	}).xAddToSave($);
 }
 
+$.onWindowOpenDo(function() {
+	if ($.$model.isNew()) {
+		$.autoAddCategory.setValue("No");
+	} else {
+		$.autoAddCategoryView.setHeight(0);
+	}
+});
+
 $.parentProject.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
+$.autoAddCategory.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
 
