@@ -4,6 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			title : "TEXT",
 			path : "TEXT",
+			pictureType : "TEXT",
 			recordId : "TEXT NOT NULL",
 			recordType : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
