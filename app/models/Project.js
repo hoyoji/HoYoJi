@@ -171,6 +171,19 @@ exports.definition = {
 			getProjectNameCurrency : function() {
 				return this.xGet("name") + "(" + this.getActualTotalMoney(true) + ")";
 			},
+			getProjectName : function() {
+				var projectRemarkLen = Alloy.createCollection("ProjectRemark").xSearchInDb({
+					projectId : this.xGet("id")
+				});
+				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+					projectId : this.xGet("id")
+				});
+				if (projectRemarkLen.length > 0){
+					return this.xGet("name") + "(" + projectRemark.xGet("remark") + ")";
+				} else {
+					return this.xGet("name");
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")) {
 					xFinishCallback({

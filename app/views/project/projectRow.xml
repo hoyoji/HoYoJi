@@ -6,7 +6,7 @@
 			id="projectName" autoInit="false"
 			left="38" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 			bindModel = "$.$model"
-			bindAttribute = "name" />
+			bindAttribute = "getProjectName()" />
 			
 			<Label class="firstRow" top="15" right="0">结余</Label>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="30" class="secondRow" right="1" width="Ti.UI.SIZE" height="Ti.UI.SIZE"

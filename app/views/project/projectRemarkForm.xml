@@ -1,0 +1,20 @@
+<Alloy>
+	<View class="container" saveableContainer="true"  width="100%" height="100%">
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
+		addModeTitle="修改好友备注" readModeTitle="修改好友备注" editModeTitle="修改好友备注"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" editModeEditability="noneditable"
+				id="project" autoInit="false"
+				bindModel="$.$model"
+				bindAttribute="project"
+				bindAttributeIsModel="name"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="备注名称" hintText="请输入备注名称"
+				id="remark" autoInit="false" 	
+				bindModel="$.$model"
+				bindAttribute="remark"/>
+			</ScrollView>
+		</View>
+	</View>
+</Alloy>
