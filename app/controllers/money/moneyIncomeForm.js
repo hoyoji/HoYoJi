@@ -93,6 +93,12 @@ function updateApportionAmount() {
 
 $.amount.field.addEventListener("change", updateApportionAmount);
 
+function resetApportions() {
+	$.$model.xGet("moneyExpenseApportions").reset();
+}
+
+$.autoApportion.field.addEventListener("change", resetApportions);
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -262,6 +268,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
+			if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
+				$.autoApportionView.setHeight(42);
+				$.autoApportion.setValue("No");
+			}
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 
 		} else {
@@ -488,7 +498,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 
 			// 生成分摊
-			$.$model.generateIncomeApportions(true);
+			$.$model.generateIncomeApportions(true, $.autoApportion.getValue());
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];

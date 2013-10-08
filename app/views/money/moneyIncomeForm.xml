@@ -67,6 +67,15 @@
 				bindAttributeIsModel="getProjectNameCurrency()"
 				bindModelSelector="project/projectAll"
 				/>
+				<View id="autoApportionView" height="0" backgroundColor="#f5f5f5">
+					<Label left="8" width="30%" height="Ti.UI.FILL" >多人分摊</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="70%" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"
+					id="autoApportion" autoInit="false"
+					hightLight="false"
+					items="是,否"
+					values="Yes,No"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+				</View>
 				<!-- bindModelBeforeSelectorCallback="beforeProjectSelectorCallback" -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="分类" hintText="请选择分类"
 				id="moneyIncomeCategory" autoInit="false"
