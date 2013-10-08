@@ -396,11 +396,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					$.autoApportion.setValue("No");
 				}
 			} else {
+				$.project.hideRightButton();
 				if ($.$model.isNew()) {
 					$.autoApportionView.setHeight(0);
 					$.autoApportion.setValue("No");
 				}
-				$.project.hideRightButton();
 			}
 		}
 
