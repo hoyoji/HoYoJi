@@ -46,14 +46,14 @@ $.onWindowOpenDo(function() {
 	
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);
-		if(value){
+		if(value && model.xGet("picture")){
 			// value = value.replace(/-/g, "_");
 			var f;
 			if(OS_IOS){
-				f = Ti.Filesystem.applicationDataDirectory + value + "_icon.png";
+				f = Ti.Filesystem.applicationDataDirectory + value + "_icon." + model.xGet("picture").xGet("pictureType");
 			}
 			if(OS_ANDROID){
-		    	f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon.png";
+		    	f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + model.xGet("picture").xGet("pictureType");
            	}
             // var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
 			// $.picture.setImage(f);
@@ -77,5 +77,28 @@ $.onWindowOpenDo(function() {
 	model.on("sync", updatePicture);
 
 	updatePicture(model);
+	
+	$.$view.addEventListener("singletap", function(e) {
+					var picture = model.xGet("picture");
+					if(!picture) return;
+					var filePath;
+					if (OS_IOS) {
+						filePath = Ti.Filesystem.applicationDataDirectory;
+					}
+					if (OS_ANDROID) {
+						filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+					}
+					var imgFile = Ti.Filesystem.getFile(filePath, picture.xGet("id") + "." + picture.xGet("pictureType"));
+					if (imgFile) {
+						if (OS_ANDROID) {
+							Ti.Media.previewImage({
+								image : imgFile.read(),
+								error : function() {
+									alert("无法打开图像");
+								}
+							});
+						}
+					}
+				});
 });
 
