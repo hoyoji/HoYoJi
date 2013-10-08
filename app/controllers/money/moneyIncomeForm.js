@@ -355,8 +355,16 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyIncomeCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(42);
+					$.autoApportion.setValue("No");
+				}
 			} else {
 				$.project.hideRightButton();
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(0);
+					$.autoApportion.setValue("No");
+				}
 			}
 		}
 
@@ -365,15 +373,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			// $.moneyIncomeApportionsTable.removeCollection(collection);
 			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
 				projectFirstChangeFlag = true;
-				console.info("projectFirstChangeFlag++++++" + projectFirstChangeFlag);
 				$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
 					// oldApportions.push(item);
 					if (item.isNew()) {
-						console.info("aaaaaaaaaaaaaaa");
 						$.$model.xGet("moneyIncomeApportions").remove(item);
 					} else {
 						item.__xDeletedHidden = true;
-						console.info("bbbbbbbbbbbbb");
 					}
 				});
 			}

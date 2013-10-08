@@ -391,7 +391,15 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			setDefaultCategory(project);
 			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(42);
+					$.autoApportion.setValue("No");
+				}
 			} else {
+				if ($.$model.isNew()) {
+					$.autoApportionView.setHeight(0);
+					$.autoApportion.setValue("No");
+				}
 				$.project.hideRightButton();
 			}
 		}
