@@ -94,7 +94,7 @@ function updateApportionAmount() {
 $.amount.field.addEventListener("change", updateApportionAmount);
 
 function resetApportions() {
-	$.$model.xGet("moneyExpenseApportions").reset();
+	$.$model.xGet("moneyIncomeApportions").reset();
 }
 
 $.autoApportion.field.addEventListener("change", resetApportions);
