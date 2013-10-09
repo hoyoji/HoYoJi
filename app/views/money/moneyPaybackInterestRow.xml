@@ -30,6 +30,11 @@
 				bindModel = "$.$model"
 				bindAttribute = "getInterest()"
 				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" top="59" right="25" width="Ti.UI.SIZE" height="Ti.UI.SIZE" class="firstRow"
+				id="friendUser" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "getFriendUser()"
+				/>
 			<!-- </View> -->
 		</View>
 	</View>

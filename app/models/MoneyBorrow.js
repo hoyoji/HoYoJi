@@ -160,12 +160,12 @@ exports.definition = {
 					if (accountCurrency === userCurrency) {
 						exchange = 1;
 					}else{
-						var exchanges = userCurrency.getExchanges(accountCurrency);
+						var exchanges = accountCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {

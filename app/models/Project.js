@@ -118,7 +118,7 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getActualTotalMoney : function(noChangeToLocalCurrency) {
+			getActualTotalMoney : function() {
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
 				this.xGet("projectShareAuthorizations").forEach(function(item) {
@@ -127,11 +127,17 @@ exports.definition = {
 						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
 					}
 				});
+				this.xGetDescendents("subProjects").forEach(function(subProject) {
+					subProject.xGet("projectShareAuthorizations").forEach(function(subProjectItem) {
+						if (subProjectItem.xGet("state") === "Accept") {
+							actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense");
+							actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome");
+						}
+					});
+				});
+				
 				this._actualTotalMoney = actualTotalExpense - actualTotalIncome;
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
-				// if (actualTotalMoney < 0) {
-				// actualTotalMoney = -actualTotalMoney;
-				// }
 
 				var projectCurrency = this.xGet("currency");
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
@@ -140,11 +146,7 @@ exports.definition = {
 				if (exchanges.length) {
 					exchange = exchanges.at(0).xGet("rate");
 				}
-				if (noChangeToLocalCurrency) {
-					return this.xGet("currency").xGet("symbol") + actualTotalMoney.toFixed(2);
-				} else {
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
-				}
+				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
 			},
 			getActualTotalMoneyType : function(cached) {
 				var actualTotalMoney;
@@ -169,7 +171,17 @@ exports.definition = {
 				}
 			},
 			getProjectNameCurrency : function() {
-				return this.xGet("name") + "(" + this.getActualTotalMoney(true) + ")";
+				return this.xGet("name") + "(" + this.xGet("currency").xGet("code") + ")";
+			},
+			getProjectName : function() {
+				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+					projectId : this.xGet("id")
+				});
+				if (projectRemark && projectRemark.id > 0 && projectRemark.xGet("remark")){
+					return this.xGet("name") + "(" + projectRemark.xGet("remark") + ")";
+				} else {
+					return this.xGet("name");
+				}
 			},
 			xDelete : function(xFinishCallback, options) {
 				if (Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")) {

@@ -182,12 +182,12 @@ exports.definition = {
 					if (accountCurrency === userCurrency) {
 						exchange = 1;
 					}else{
-						var exchanges = userCurrency.getExchanges(accountCurrency);
+						var exchanges = accountCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {
@@ -266,7 +266,7 @@ exports.definition = {
 			// }
 			// this.xSet("amount", amount);
 			// },
-			generateIncomeApportions : function(saveMode) {
+			generateIncomeApportions : function(saveMode,autoApportion) {
 				var self = this;
 				var moneyIncomeApportionsArray = [];
 				this.xGet("moneyIncomeApportions").forEach(function(item) {
@@ -282,7 +282,7 @@ exports.definition = {
 				});
 				if (moneyIncomeApportionsArray.length === 0) {// 生成分摊
 					var amountTotal = 0, moneyIncomeApportion, amount;
-					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || autoApportion === "No") {
 						moneyIncomeApportion = Alloy.createModel("MoneyIncomeApportion", {
 							moneyIncome : self,
 							friendUser : self.xGet("ownerUser"),

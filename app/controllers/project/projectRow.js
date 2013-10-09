@@ -58,6 +58,25 @@ $.makeContextMenu = function(e, isSelectMode) {
 		$.deleteModel();
 	}, isSelectMode || projectIsSharedToMe));
 	
+	menuSection.add($.createContextMenuItem("备注名称", function() {
+		var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+			projectId : $.$model.xGet("id")
+		});
+		if (projectRemark && projectRemark.id){
+			Alloy.Globals.openWindow("project/projectRemarkForm", {
+				$model : projectRemark
+			});
+		} else {
+			Alloy.Globals.openWindow("project/projectRemarkForm", {
+				$model : "ProjectRemark",
+				data : {
+					project : $.$model,
+					ownerUserId : Alloy.Models.User.id
+				}
+			});
+		}
+	})); 
+	
 	menuSection.add($.createContextMenuItem("项目成员", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 			selectedProject : $.$model
@@ -76,10 +95,18 @@ if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 $.onWindowOpenDo(function() {
 	setActualTotalMoneyColor();
 	$.$model.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
+		subProject.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
+	});
+	$.$model.on("xrefresh", setProjectRemark);
 });
 
 $.onWindowCloseDo(function() {
 	$.$model.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
+		subProject.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
+	});
+	$.$model.off("xrefresh",setProjectRemark);
 });
 
 function setActualTotalMoneyColor(){
@@ -89,6 +116,10 @@ function setActualTotalMoneyColor(){
 	}else{
 		$.actualTotalMoney.label.setColor("#c80032");
 	}
+}
+
+function setProjectRemark(){
+	$.projectName.refresh();
 }
 
 $.projectName.UIInit($, $.getCurrentWindow());
