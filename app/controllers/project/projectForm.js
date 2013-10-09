@@ -7,6 +7,8 @@ $.onWindowOpenDo(function() {
 if ($.$model.isNew()) {
 	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
+	$.$model.xSet("autoApportion", 0);
+	$.$model.xGet("autoApportion");
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
@@ -180,4 +182,4 @@ $.name.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
 $.autoAddCategory.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
-
+$.autoApportion.UIInit($, $.getCurrentWindow());

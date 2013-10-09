@@ -112,7 +112,7 @@ function onFooterbarTap(e) {
 	}
 }
 
-selectedIncome.generateIncomeApportions(false,$.$attrs.autoApportion);
+selectedIncome.generateIncomeApportions();
 var collection = selectedIncome.xGet("moneyIncomeApportions").xCreateFilter(function(model) {
 	return model.__xDeletedHidden !== true;
 });

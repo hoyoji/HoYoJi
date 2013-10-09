@@ -93,12 +93,6 @@ function updateApportionAmount() {
 
 $.amount.field.addEventListener("change", updateApportionAmount);
 
-function resetApportions() {
-	$.$model.xGet("moneyIncomeApportions").reset();
-}
-
-$.autoApportion.field.addEventListener("change", resetApportions);
-
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -268,10 +262,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
-			if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
-				$.autoApportionView.setHeight(42);
-				$.autoApportion.setValue("No");
-			}
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 
 		} else {
@@ -355,16 +345,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.moneyIncomeCategory.field.fireEvent("change");
 			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
-				if ($.$model.isNew()) {
-					$.autoApportionView.setHeight(42);
-					$.autoApportion.setValue("No");
-				}
 			} else {
 				$.project.hideRightButton();
-				if ($.$model.isNew()) {
-					$.autoApportionView.setHeight(0);
-					$.autoApportion.setValue("No");
-				}
 			}
 		}
 
@@ -503,7 +485,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 
 			// 生成分摊
-			$.$model.generateIncomeApportions(true, $.autoApportion.getValue());
+			$.$model.generateIncomeApportions(true);
 		}
 		// else if ($.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
 		// var projectShareAuthorization = $.$model.xGet("project").xGet("projectShareAuthorizations").at[0];
@@ -622,6 +604,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.previous("actualTotalIncome"));
 				}
 			});
+			if($.$model.isNew()) {
+				$.$model.xGet("moneyIncomeApportions").reset();
+			}
 			saveErrorCB(e);
 		});
 	};
@@ -641,7 +626,6 @@ $.amount.UIInit($, $.getCurrentWindow());
 $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
-$.autoApportion.UIInit($, $.getCurrentWindow());
 $.moneyIncomeCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());

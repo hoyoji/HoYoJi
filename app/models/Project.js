@@ -6,6 +6,7 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			parentProjectId : "TEXT",
 			currencyId : "TEXT NOT NULL",
+			autoApportion : "INTEGER",
 			defaultIncomeCategoryId : "TEXT",
 			defaultExpenseCategoryId : "TEXT",
 			depositeIncomeCategoryId : "TEXT",
