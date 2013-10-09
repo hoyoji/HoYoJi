@@ -604,7 +604,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.saveModel(function(e) {
 			if (modelIsNew) {
 				//记住当前分类为下次打开时的默认分类
-				if ($.$model.xGet("moneyExpenseCategory").xGet("name") !== "早餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "午餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "晚餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "夜宵") {
+				if ($.$model.xGet("moneyExpenseCategory").xGet("name") !== "早餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "午餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "晚餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "夜宵") {
 					$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
 				}
 
