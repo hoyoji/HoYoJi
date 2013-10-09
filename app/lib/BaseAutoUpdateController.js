@@ -177,7 +177,7 @@
 					}
 				});
 			}
-			$.field.addEventListener("singletap", function(e) {
+			$.field && $.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
 				if ($.saveableMode === "read") {
