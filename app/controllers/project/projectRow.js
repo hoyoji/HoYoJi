@@ -58,6 +58,28 @@ $.makeContextMenu = function(e, isSelectMode) {
 		$.deleteModel();
 	}, isSelectMode || projectIsSharedToMe));
 	
+	menuSection.add($.createContextMenuItem("备注名称", function() {
+		var projectRemarkLen = Alloy.createCollection("ProjectRemark").xSearchInDb({
+			projectId : $.$model.xGet("id")
+		});
+		var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+			projectId : $.$model.xGet("id")
+		});
+		if (projectRemarkLen.length > 0){
+			Alloy.Globals.openWindow("project/projectRemarkForm", {
+				$model : projectRemark
+			});
+		} else {
+			Alloy.Globals.openWindow("project/projectRemarkForm", {
+				$model : "ProjectRemark",
+				data : {
+					project : $.$model,
+					ownerUserId : Alloy.Models.User.id
+				}
+			});
+		}
+	})); 
+	
 	menuSection.add($.createContextMenuItem("项目成员", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 			selectedProject : $.$model
