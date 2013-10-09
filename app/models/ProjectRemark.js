@@ -5,6 +5,9 @@ exports.definition = {
 		    remark : "TEXT",
 		    projectId : "TEXT",
 			ownerUserId : "TEXT"
+			serverRecordHash : "TEXT",
+			lastServerUpdateTime : "TEXT",
+			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
 			project : {type : "Project", attribute : null},
