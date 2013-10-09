@@ -64,7 +64,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//去服务器上查找对应的充值支出和充值收入
 			Alloy.Globals.Server.deleteData([{
 				__dataType : "MoneyIncome",
-				id : moneyIncome.xGet("id")
+				id : moneyIncome.id
 			}], function(data) {
 				var loadProjectAuthorizationIds = [];
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -78,7 +78,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				loadProjectAuthorizationIds.push(projectShareAuthorization.xGet("id"));
 				loadProjectAuthorizationIds.push(projectShareAuthorizationFromUser.xGet("id"));
 				if(data.deleteCount){
-					if (moneyIncome && moneyIncome.xGet("id")) {
+					if (moneyIncome && moneyIncome.id) {
 						projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") - Number((moneyIncome.xGet("amount") * moneyIncome.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
@@ -89,7 +89,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						moneyIncome._xDelete();
 					}
 				} else {
-					if (moneyIncome && moneyIncome.xGet("id")) {
+					if (moneyIncome && moneyIncome.id) {
 						Alloy.Globals.Server.loadData("MoneyAccount",[moneyIncome.xGet("moneyAccount").xGet("id")], function(collection) {
 							moneyIncome._xDelete(null,{
 								syncFromServer : true
@@ -159,7 +159,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			//在服务器上查找相应的充值支出和充值收入
 			Alloy.Globals.Server.deleteData([{
 				__dataType : "MoneyExpense",
-				id : moneyExpense.xGet("id")
+				id : moneyExpense.id
 			}], function(data) {
 				var loadProjectAuthorizationIds = [];
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
@@ -173,7 +173,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				loadProjectAuthorizationIds.push(projectShareAuthorization.xGet("id"));
 				loadProjectAuthorizationIds.push(projectShareAuthorizationFromUser.xGet("id"));
 				if(data.deleteCount){
-					if (moneyExpense && moneyExpense.xGet("id")) {
+					if (moneyExpense && moneyExpense.id) {
 						projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") - Number((moneyExpense.xGet("amount") * moneyExpense.xGet("exchangeRate")).toFixed(2)));
 						editData.push(projectShareAuthorization.toJSON());
 						projectShareAuthorization.xAddToSave($);
@@ -184,7 +184,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						moneyExpense._xDelete();
 					}
 				}else{
-					if (moneyExpense && moneyExpense.xGet("id")) {
+					if (moneyExpense && moneyExpense.id) {
 						Alloy.Globals.Server.loadData("MoneyAccount",[moneyExpense.xGet("moneyAccount").xGet("id")], function(collection) {
 							moneyExpense._xDelete(null,{
 								syncFromServer : true
