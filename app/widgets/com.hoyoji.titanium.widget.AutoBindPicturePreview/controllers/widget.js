@@ -19,51 +19,52 @@ $.onWindowOpenDo(function() {
 			}
 		}
 	}
-	
-	function getAttributeValue(model, attributes){
+
+	function getAttributeValue(model, attributes) {
 		var path = attributes.split(".");
 		var value = model;
-		for (var i = 0; i < path.length-1; i++) {
+		for (var i = 0; i < path.length - 1; i++) {
 			value = value.xGet ? value.xGet(path[i]) : value[path[i]];
-			if(!value){
+			if (!value) {
 				return null;
 			}
 		}
-		if(!value){
+		if (!value) {
 			return null;
 		}
-		var lastAttr = path[path.length-1];
-		if(lastAttr.endsWith("()")){
-			return value[lastAttr.slice(0,-2)]();		
+		var lastAttr = path[path.length - 1];
+		if (lastAttr.endsWith("()")) {
+			return value[lastAttr.slice(0,-2)]();
 		} else {
 			return value.xGet ? value.xGet(lastAttr) : value[lastAttr];
 		}
 	}
 
-	$.refresh = function(){
+
+	$.refresh = function() {
 		updatePicture(model);
 	};
-	
+
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);
-		if(value && model.xGet("picture")){
+		if (value && model.xGet("picture")) {
 			// value = value.replace(/-/g, "_");
 			var f;
-			if(OS_IOS){
+			if (OS_IOS) {
 				f = Ti.Filesystem.applicationDataDirectory + value + "_icon." + model.xGet("picture").xGet("pictureType");
 			}
-			if(OS_ANDROID){
-		    	f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + model.xGet("picture").xGet("pictureType");
-           	}
-            // var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
-			// $.picture.setImage(f);
-			$.$view.setBackgroundImage(f);
-		} else if($.$attrs.defaultImage) {
-			// $.picture.setImage($.$attrs.defaultImage+".png");
-			$.$view.setBackgroundImage($.$attrs.defaultImage+".png");
+			if (OS_ANDROID) {
+				f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + model.xGet("picture").xGet("pictureType");
+			}
+			// var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
+			$.picture.setImage(f);
+			// $.$view.setBackgroundImage(f);
+		} else if ($.$attrs.defaultImage) {
+			$.picture.setImage($.$attrs.defaultImage + ".png");
+			// $.$view.setBackgroundImage($.$attrs.defaultImage+".png");
 		} else {
-			// $.picture.setImage(WPATH("/images/noPicture.png"));
-			$.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
+			$.picture.setImage(WPATH("/images/noPicture.png"));
+			// $.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
 		}
 	}
 
@@ -77,28 +78,26 @@ $.onWindowOpenDo(function() {
 	model.on("sync", updatePicture);
 
 	updatePicture(model);
-	
+
 	$.$view.addEventListener("singletap", function(e) {
-					var picture = model.xGet("picture");
-					if(!picture) return;
-					var filePath;
-					if (OS_IOS) {
-						filePath = Ti.Filesystem.applicationDataDirectory;
-					}
-					if (OS_ANDROID) {
-						filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
-					}
-					var imgFile = Ti.Filesystem.getFile(filePath, picture.xGet("id") + "." + picture.xGet("pictureType"));
-					if (imgFile) {
-						if (OS_ANDROID) {
-							Ti.Media.previewImage({
-								image : imgFile.read(),
-								error : function() {
-									alert("无法打开图像");
-								}
-							});
-						}
-					}
-				});
+		e.cancelBubble = true;
+		var picture = model.xGet("picture");
+		if (!picture)
+			return;
+		var filePath;
+		if (OS_IOS) {
+			filePath = Ti.Filesystem.applicationDataDirectory + picture.xGet("id") + "." + picture.xGet("pictureType");
+		}
+		if (OS_ANDROID) {
+			filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + picture.xGet("id") + "." + picture.xGet("pictureType");
+		}
+		// var imgFile = Ti.Filesystem.getFile(filePath, picture.xGet("id") + "." + picture.xGet("pictureType"));
+		// if (imgFile) {
+		Alloy.Globals.openWindow("ImagePreview", {
+			title : "图片预览",
+			image : filePath
+		});
+		// }
+	});
 });
 
