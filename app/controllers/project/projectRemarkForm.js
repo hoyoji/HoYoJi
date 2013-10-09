@@ -9,3 +9,4 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 $.project.UIInit($, $.getCurrentWindow());
 $.remark.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());

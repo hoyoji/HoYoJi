@@ -59,13 +59,10 @@ $.makeContextMenu = function(e, isSelectMode) {
 	}, isSelectMode || projectIsSharedToMe));
 	
 	menuSection.add($.createContextMenuItem("备注名称", function() {
-		var projectRemarkLen = Alloy.createCollection("ProjectRemark").xSearchInDb({
-			projectId : $.$model.xGet("id")
-		});
 		var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
 			projectId : $.$model.xGet("id")
 		});
-		if (projectRemarkLen.length > 0){
+		if (projectRemark && projectRemark.id){
 			Alloy.Globals.openWindow("project/projectRemarkForm", {
 				$model : projectRemark
 			});

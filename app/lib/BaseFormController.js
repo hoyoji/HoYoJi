@@ -49,6 +49,7 @@
 								dbTrans : myDbTrans,
 								error : function(model, error) {
 									myDbTrans.rollback();
+								$.__discardSaveCollection();
 									$.__saveCollection = [];
 									$.__deleteCollection = [];
 									hasError = true;
@@ -70,6 +71,7 @@
 						$.__deleteCollection[i]._xDelete(function(e) {
 							if (e) {
 								myDbTrans.rollback();
+								$.__discardSaveCollection();
 								$.__saveCollection = [];
 								$.__deleteCollection = [];
 								hasError = true;
@@ -89,11 +91,19 @@
 						}
 					}
 					if (!dbTrans) {
+								$.__discardSaveCollection();
 						$.__saveCollection = [];
 						$.__deleteCollection = [];
 						myDbTrans.commit();
 					}
 					xCompleteCallback();
+				},
+				__discardSaveCollection : function(){
+					for (var i = 0; i < $.__saveCollection.length; i++) {
+						if($.__saveCollection[i].isNew()){
+							$.__saveCollection[i].trigger("xdiscard");
+						}
+					}	
 				},
 				saveModel : function(saveEndCB, saveErrorCB, options) {
 					var self = this;
@@ -105,6 +115,7 @@
 									msg : "验证错误"
 								};
 								$.$model.trigger("error", $.$model, $.$model.__xValidationError);
+								$.__discardSaveCollection();
 								$.__saveCollection = [];
 								$.__deleteCollection = [];
 								saveErrorCB($.$model.__xValidationError.__summary.msg);
@@ -125,6 +136,7 @@
 							var successCB = function() {
 								$.$model.off("sync", successCB);
 								$.$model.off("error", errorCB);
+								$.__discardSaveCollection();
 								$.__saveCollection = [];
 								$.__deleteCollection = [];
 								if (saveEndCB) {
@@ -141,6 +153,7 @@
 									errMsg = error.__summary.msg;
 								}
 								dbTrans.rollback();
+								$.__discardSaveCollection();
 								$.__saveCollection = [];
 								$.__deleteCollection = [];
 								if (saveErrorCB) {
@@ -206,6 +219,8 @@
 						$.__saveCollection.forEach(function(model) {
 							if (!model.isNew()) {
 								model.xReset();
+							} else {
+								model.trigger("xdiscard");
 							}
 						});
 						$.__saveCollection = [];
