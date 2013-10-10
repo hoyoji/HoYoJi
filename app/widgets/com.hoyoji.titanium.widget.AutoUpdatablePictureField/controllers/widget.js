@@ -51,7 +51,7 @@ $.takePicture.addEventListener("singletap", function() {
 					pictureType : imageType,
 					ownerUser : Alloy.Models.User
 				});
-				$.__newPictures.push(newPictures);
+				$.__newPictures.push(newPicture);
 				// newPicture.xSet("path", Ti.Filesystem.applicationDataDirectory + newPicture.xGet("id") + "." + imageType);
 
 				//save to picture to temp directory
