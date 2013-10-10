@@ -160,6 +160,8 @@ $.transferIn.$view.addEventListener("singletap", function() {
 // }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
+		$.picture.xAddToSave($);
+		
 	var newTransferOutAmount = $.$model.xGet("transferOutAmount");
 	var newTransferInAmount = $.$model.xGet("transferInAmount");
 	var newTransferOut = $.$model.xGet("transferOut");

@@ -444,6 +444,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		$.picture.xAddToSave($);
+		
 		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
 			$.$model.xSet("useDetailsTotal", false);
 		}

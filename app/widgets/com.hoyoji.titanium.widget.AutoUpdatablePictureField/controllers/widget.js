@@ -17,10 +17,16 @@ Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
 var mainPicture = null, firstTimeSetValue = true;
 
-// $.pictures = [];
+$.__newPictures = [];
 $.$view.addEventListener("longpress", function(e) {
 	e.cancelBubble = true;
 });
+
+$.xAddToSave = function(controller) {
+	$.__newPictures.forEach(function(pictures){
+		picture.xAddToSave();
+	});
+};
 
 $.takePicture.addEventListener("singletap", function() {
 	Ti.Media.showCamera({
@@ -44,7 +50,8 @@ $.takePicture.addEventListener("singletap", function() {
 					recordType : $.$attrs.bindModel.config.adapter.collection_name,
 					pictureType : imageType,
 					ownerUser : Alloy.Models.User
-				}).xAddToSave($.getParentController());
+				});
+				$.__newPictures.push(newPictures);
 				// newPicture.xSet("path", Ti.Filesystem.applicationDataDirectory + newPicture.xGet("id") + "." + imageType);
 
 				//save to picture to temp directory

@@ -196,6 +196,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		$.picture.xAddToSave($);
+		
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");

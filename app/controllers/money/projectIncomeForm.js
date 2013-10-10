@@ -187,6 +187,8 @@ if ($.saveableMode === "read") {
 	}
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
+		$.picture.xAddToSave($);
+		
 		var editData = [];
 		var addData = [];
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
