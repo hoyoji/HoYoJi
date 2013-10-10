@@ -24,7 +24,7 @@ $.$view.addEventListener("longpress", function(e) {
 
 $.xAddToSave = function(controller) {
 	$.__newPictures.forEach(function(picture){
-		picture.xAddToSave();
+		picture.xAddToSave(controller);
 	});
 };
 
