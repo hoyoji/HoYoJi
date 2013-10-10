@@ -242,17 +242,17 @@ function setDefaultCategory(project, setToModel) {//新增时根据时间设置�
 			name : "早餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 12 && hours < 14) {
+	} else if (hours > 11 && hours < 15) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "午餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 18 && hours < 20) {
+	} else if (hours > 17 && hours < 21) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "晚餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 22 || hours < 2) {
+	} else if (hours > 21 || hours < 3) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "夜宵",
 			projectId : project.xGet("id")
