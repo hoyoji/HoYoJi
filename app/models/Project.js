@@ -178,7 +178,7 @@ exports.definition = {
 				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
 					projectId : this.xGet("id")
 				});
-				if (projectRemark && projectRemark.id > 0 && projectRemark.xGet("remark")){
+				if (projectRemark && projectRemark.id && projectRemark.xGet("remark")){
 					return this.xGet("name") + "(" + projectRemark.xGet("remark") + ")";
 				} else {
 					return this.xGet("name");
