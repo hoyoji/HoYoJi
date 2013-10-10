@@ -71,7 +71,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 				$model : "ProjectRemark",
 				data : {
 					project : $.$model,
-					ownerUserId : Alloy.Models.User.id
+					ownerUser : Alloy.Models.User
 				}
 			});
 		}

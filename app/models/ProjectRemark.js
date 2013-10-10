@@ -21,7 +21,7 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
 			syncAddNew : function(record, dbTrans) {
-				// dbTrans.newExchangesFromServer[record.localCurrencyId + "_" + record.foreignCurrencyId] = true;
+				dbTrans.newExchangesFromServer[record.projectId] = true;
 				
 				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
 					projectId : record.projectId
