@@ -55,8 +55,21 @@ $.takePicture.addEventListener("singletap", function() {
 				// newPicture.xSet("path", Ti.Filesystem.applicationDataDirectory + newPicture.xGet("id") + "." + imageType);
 
 				//save to picture to temp directory
-				var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType);
-				f.write(event.media);
+				var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType), scaledPicture, scaledFactor;
+				if(event.media.width > 600 || event.media.height > 800){
+					if(event.media.width / 600 > event.media.height / 800){
+						scaledFactor = event.media.width / 600;
+					} else {
+						scaledFactor = event.media.height / 800;
+					}
+					scaledPicture = ImageFactory.imageAsResized(event.media, {
+						width : event.media.width / scaledFactor,
+						height : event.media.height / scaledFactor
+					});
+				} else {
+					scaledPicture = event.media;
+				}
+				f.write(scaledPicture);
 				f = null;
 
 				if (!mainPicture) {
