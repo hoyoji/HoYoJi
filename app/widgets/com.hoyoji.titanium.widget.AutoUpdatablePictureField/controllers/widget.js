@@ -78,16 +78,16 @@ $.takePicture.addEventListener("singletap", function() {
 					// $.fieldContainer.removeEventListener("singletap");
 					$.fieldContainer.addEventListener("singletap", function(e) {
 						// var imgFile = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType);
-						var filePath;
-						if (OS_IOS) {
-							filePath = Ti.Filesystem.tempDirectory + newPicture.xGet("id") + "." + imageType;
-						}
-						if (OS_ANDROID) {
-							filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + newPicture.xGet("id") + "." + imageType;
-						}
+						// var filePath;
+						// if (OS_IOS) {
+							// filePath = Ti.Filesystem.tempDirectory + newPicture.xGet("id") + "." + imageType;
+						// }
+						// if (OS_ANDROID) {
+							// filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + newPicture.xGet("id") + "." + imageType;
+						// }
 						Alloy.Globals.openWindow("ImagePreview", {
 							title : "图片预览",
-							image : filePath
+							image : newPicture
 						});
 					});
 				} else {
@@ -99,16 +99,16 @@ $.takePicture.addEventListener("singletap", function() {
 					imageView.addEventListener("singletap", function(e) {
 						// var imgFile = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType);
 						// if (imgFile) {
-						var filePath;
-						if (OS_IOS) {
-							filePath = Ti.Filesystem.tempDirectory + newPicture.xGet("id") + "." + imageType;
-						}
-						if (OS_ANDROID) {
-							filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + newPicture.xGet("id") + "." + imageType;
-						}
+						// var filePath;
+						// if (OS_IOS) {
+							// filePath = Ti.Filesystem.tempDirectory + newPicture.xGet("id") + "." + imageType;
+						// }
+						// if (OS_ANDROID) {
+							// filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + newPicture.xGet("id") + "." + imageType;
+						// }
 						Alloy.Globals.openWindow("ImagePreview", {
 							title : "图片预览",
-							image : filePath
+							image : newPicture
 						});
 						// }
 					});
@@ -214,16 +214,16 @@ $.setValue = function(value, image) {
 				value = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + $.__bindAttributeIsModel.xGet("pictureType");
 			}
 			$.fieldContainer.addEventListener("singletap", function(e) {
-				var filePath;
-				if (OS_IOS) {
-					filePath = Ti.Filesystem.applicationDataDirectory + mainPicture + "." + $.__bindAttributeIsModel.xGet("pictureType");
-				}
-				if (OS_ANDROID) {
-					filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + mainPicture + "." + $.__bindAttributeIsModel.xGet("pictureType");
-				}
+				// var filePath;
+				// if (OS_IOS) {
+					// filePath = Ti.Filesystem.applicationDataDirectory + mainPicture + "." + $.__bindAttributeIsModel.xGet("pictureType");
+				// }
+				// if (OS_ANDROID) {
+					// filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + mainPicture + "." + $.__bindAttributeIsModel.xGet("pictureType");
+				// }
 				Alloy.Globals.openWindow("ImagePreview", {
 					title : "图片预览",
-					image : filePath
+					image : mainPicture
 				});
 				// var imgFile = Ti.Filesystem.getFile(value);
 				// if (imgFile) {
@@ -282,20 +282,17 @@ function displayPictures() {
 				// setAsMainIcon(imageView, picture);
 				// });
 				imageView.addEventListener("singletap", function(e) {
-					var filePath;
-					if (OS_IOS) {
-						filePath = Ti.Filesystem.applicationDataDirectory + picture.xGet("id") + "." + picture.xGet("pictureType");
-					}
-					if (OS_ANDROID) {
-						filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + picture.xGet("id") + "." + picture.xGet("pictureType");
-					}
-					// var imgFile = Ti.Filesystem.getFile(filePath, picture.xGet("id") + "." + picture.xGet("pictureType"));
-					// if (imgFile) {
+					// var filePath;
+					// if (OS_IOS) {
+						// filePath = Ti.Filesystem.applicationDataDirectory + picture.xGet("id") + "." + picture.xGet("pictureType");
+					// }
+					// if (OS_ANDROID) {
+						// filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + picture.xGet("id") + "." + picture.xGet("pictureType");
+					// }
 					Alloy.Globals.openWindow("ImagePreview", {
 						title : "图片预览",
-						image : filePath
+						image : picture
 					});
-					// }
 				});
 			}
 		});
