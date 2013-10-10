@@ -259,7 +259,8 @@ function createImageView(imageData, type, addToContainer) {
 		width : 56,
 		height : 56,
 		left : 2,
-		right : 2
+		right : 2,
+		backgroundColor : "#e9f3f0"
 	});
 	view.add(imageView);
 	if (addToContainer) {
