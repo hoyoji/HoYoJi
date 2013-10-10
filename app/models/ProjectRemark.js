@@ -55,6 +55,11 @@ exports.definition = {
 						wait : true
 					});
 				}
+				if(projectRemark.xGet("remark") !== record.remark){
+					projectRemark.once("sync", function(){
+						projectRemark.xGet("project").xRefresh();
+					});
+				}
 			}
 		});
 
