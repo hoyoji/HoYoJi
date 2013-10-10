@@ -17,8 +17,7 @@ $.project.rightButton.addEventListener("singletap", function() {//未输入金�
 	if ($.amount.getValue()) {
 		Alloy.Globals.openWindow("money/moneyExpenseApportionAll", {
 			selectedExpense : $.$model,
-			closeWithoutSave : true,
-			autoApportion : $.autoApportion.getValue()
+			closeWithoutSave : true
 		});
 	} else {
 		alert("请先输入金额,再调整分摊");
@@ -89,12 +88,6 @@ function updateApportionAmount() {//amount改变，平均分摊也跟着改变
 }
 
 $.amount.field.addEventListener("change", updateApportionAmount);
-
-function resetApportions() {
-	$.$model.xGet("moneyExpenseApportions").reset();
-}
-
-$.autoApportion.field.addEventListener("change", resetApportions);
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
@@ -244,22 +237,22 @@ function setDefaultCategory(project, setToModel) {//新增时根据时间设置�
 	var hours = date.getHours();
 	var defaultCategory;
 	console.info("++++++hours+++++" + hours);
-	if (hours > 7 && hours < 9) {
+	if (hours > 6 && hours < 9) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "早餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 12 && hours < 14) {
+	} else if (hours > 11 && hours < 14) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "午餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 18 && hours < 20) {
+	} else if (hours > 17 && hours < 20) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "晚餐",
 			projectId : project.xGet("id")
 		});
-	} else if (hours > 22 || hours < 2) {
+	} else if (hours > 21 || hours < 3) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "夜宵",
 			projectId : project.xGet("id")
@@ -305,10 +298,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
-			if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 1) {
-				$.autoApportionView.setHeight(42);
-				$.autoApportion.setValue("No");
-			}
 			setExchangeRate($.$model.xGet("moneyAccount"), $.$model.xGet("project"), true);
 			setDefaultCategory($.$model.xGet("project"), true);
 			// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里
@@ -391,16 +380,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			setDefaultCategory(project);
 			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
 				$.project.showRightButton();
-				if ($.$model.isNew()) {
-					$.autoApportionView.setHeight(42);
-					$.autoApportion.setValue("No");
-				}
 			} else {
 				$.project.hideRightButton();
-				if ($.$model.isNew()) {
-					$.autoApportionView.setHeight(0);
-					$.autoApportion.setValue("No");
-				}
 			}
 		}
 
@@ -531,7 +512,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 
 			// 生成分摊
-			$.$model.generateExpenseApportions(true, $.autoApportion.getValue());
+			$.$model.generateExpenseApportions(true);
 		}
 
 		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
@@ -606,7 +587,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		$.saveModel(function(e) {
 			if (modelIsNew) {
 				//记住当前分类为下次打开时的默认分类
-				if ($.$model.xGet("moneyExpenseCategory").xGet("name") !== "早餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "午餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "晚餐" || $.$model.xGet("moneyExpenseCategory").xGet("name") !== "夜宵") {
+				if ($.$model.xGet("moneyExpenseCategory").xGet("name") !== "早餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "午餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "晚餐" && $.$model.xGet("moneyExpenseCategory").xGet("name") !== "夜宵") {
 					$.$model.xGet("project").setDefaultExpenseCategory($.$model.xGet("moneyExpenseCategory"));
 				}
 
@@ -645,6 +626,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.previous("actualTotalExpense"));
 				}
 			});
+			if($.$model.isNew()) {
+				$.$model.xGet("moneyExpenseApportions").reset();
+			}
 			saveErrorCB(e);
 		});
 	};
@@ -664,7 +648,6 @@ $.amount.UIInit($, $.getCurrentWindow());
 $.projectAmount.UIInit($, $.getCurrentWindow());
 $.localAmount.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
-$.autoApportion.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
 $.moneyAccount.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());
