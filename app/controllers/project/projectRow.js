@@ -95,6 +95,7 @@ if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
 $.onWindowOpenDo(function() {
 	setActualTotalMoneyColor();
 	$.$model.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").on("sync",setActualTotalMoneyColor);
 	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
 		subProject.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
 	});
@@ -103,6 +104,7 @@ $.onWindowOpenDo(function() {
 
 $.onWindowCloseDo(function() {
 	$.$model.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").off("sync",setActualTotalMoneyColor);
 	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
 		subProject.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
 	});
