@@ -33,7 +33,7 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize;
 
-if($.$attrs.pageSize && $.$attrs.pageSize.startsWith("rowHeight:")) {
+if($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
 	pageSize = Math.floor((Ti.Platform.displayCaps.platformHeight - 45) / Number($.$attrs.pageSize.slice(10)));
 } else if($.$attrs.pageSize){
 	pageSize = Number($.$attrs.pageSize);
