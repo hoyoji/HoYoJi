@@ -99,11 +99,11 @@
 					xCompleteCallback();
 				},
 				__discardSaveCollection : function(){
-					for (var i = 0; i < $.__saveCollection.length; i++) {
-						if($.__saveCollection[i].isNew()){
-							$.__saveCollection[i].trigger("xdiscard");
-						}
-					}	
+					// for (var i = 0; i < $.__saveCollection.length; i++) {
+						// if($.__saveCollection[i].isNew()){
+							// $.__saveCollection[i].trigger("xdiscard");
+						// }
+					// }	
 				},
 				saveModel : function(saveEndCB, saveErrorCB, options) {
 					var self = this;

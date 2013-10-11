@@ -84,18 +84,16 @@ $.onWindowOpenDo(function() {
 		var picture = model.xGet("picture");
 		if (!picture)
 			return;
-		var filePath;
-		if (OS_IOS) {
-			filePath = Ti.Filesystem.applicationDataDirectory + picture.xGet("id") + "." + picture.xGet("pictureType");
-		}
-		if (OS_ANDROID) {
-			filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + picture.xGet("id") + "." + picture.xGet("pictureType");
-		}
-		// var imgFile = Ti.Filesystem.getFile(filePath, picture.xGet("id") + "." + picture.xGet("pictureType"));
-		// if (imgFile) {
+		// var filePath;
+		// if (OS_IOS) {
+			// filePath = Ti.Filesystem.applicationDataDirectory + picture.xGet("id") + "." + picture.xGet("pictureType");
+		// }
+		// if (OS_ANDROID) {
+			// filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + picture.xGet("id") + "." + picture.xGet("pictureType");
+		// }
 		Alloy.Globals.openWindow("ImagePreview", {
 			title : "图片预览",
-			image : filePath
+			image : picture
 		});
 		// }
 	});
