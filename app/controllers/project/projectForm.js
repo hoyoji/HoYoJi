@@ -32,7 +32,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					ownerUser : Alloy.Models.User,
 					parentExpenseCategory : parentCategory
 				}).xAddToSave($);
-				if (subCategories[i] === "早餐") {
+				if (subCategories[i] === "餐饮其他") {
 					$.$model.xSet("defaultExpenseCategory", defaultExpenseCategory);
 				}
 			}
