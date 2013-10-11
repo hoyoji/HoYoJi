@@ -14,7 +14,21 @@ var onFooterbarTap = function(e) {
 			if (data[0].length > 0) {
 				saveErrorCB("操作失败，消息已过期");
 			} else {
-				importToLocalOperate();
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : accountShareData.account.projectId,
+					friendUserId : $.$model.xGet("fromUser").xGet("id")
+				});
+				Alloy.Globals.Server.getData([{__dataType : "ProjectShareAuthorization",id : projectShareAuthorization.id}], function(data1) {
+					if(data1[0][0].actualTotalIncome === projectShareAuthorization.xGet("actualTotalIncome")){
+						importToLocalOperate();
+					} else {
+						Alloy.Globals.confirm("同步", "与服务器数据有冲突，请同步后重试", function(){
+							Alloy.Globals.Server.sync();
+						});
+					}
+				}, function(e) {
+					alert(e.__summary.msg);
+				});
 			}
 		}, function(e) {
 			alert(e.__summary.msg);
