@@ -48,10 +48,18 @@ $.onWindowOpenDo(function() {
 		currentImage = $.getCurrentWindow().$attrs.image;
 		var filePath;
 		if (OS_IOS) {
-			filePath = Ti.Filesystem.applicationDataDirectory + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			if(currentImage.isNew()){
+				filePath = Ti.Filesystem.tempDirectory + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			} else {
+				filePath = Ti.Filesystem.applicationDataDirectory + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			}
 		}
 		if (OS_ANDROID) {
-			filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			if(currentImage.isNew()){
+				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			} else {
+				filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
+			}
 		}
 		$.image.setImage(filePath);
 	}

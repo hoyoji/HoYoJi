@@ -223,7 +223,7 @@ $.setValue = function(value, image) {
 				// }
 				Alloy.Globals.openWindow("ImagePreview", {
 					title : "图片预览",
-					image : mainPicture
+					image : $.__bindAttributeIsModel
 				});
 				// var imgFile = Ti.Filesystem.getFile(value);
 				// if (imgFile) {
