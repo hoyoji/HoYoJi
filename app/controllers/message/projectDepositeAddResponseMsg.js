@@ -42,8 +42,22 @@ var onFooterbarTap = function(e) {
 		operation = "rejectAccept";
 		$.titleBar.save();
 	} else if (e.source.id === "delete") {
-		operation = "delete";
-		$.titleBar.save();
+		var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+			projectId : accountShareData.account.projectId,
+			friendUserId : $.$model.xGet("fromUser").xGet("id")
+		});
+		Alloy.Globals.Server.getData([{__dataType : "ProjectShareAuthorization",id : projectShareAuthorization.id}], function(data1) {
+			if(data1[0][0].actualTotalIncome === projectShareAuthorization.xGet("actualTotalIncome") && data1[0][0].actualTotalExpense === projectShareAuthorization.xGet("actualTotalExpense")){
+				operation = "delete";
+				$.titleBar.save();
+			} else {
+				Alloy.Globals.confirm("同步", "与服务器数据有冲突，请同步后重试", function(){
+					Alloy.Globals.Server.sync();
+				});
+			}
+		}, function(e) {
+			alert(e.__summary.msg);
+		});
 	} else if (e.source.id === "rejectDelete") {
 		operation = "rejectDelete";
 		$.titleBar.save();
