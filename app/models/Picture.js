@@ -93,6 +93,52 @@ exports.definition = {
 			syncAddNew : function(record, dbTrans) {
 				record.toBeDownloaded = 1;
 				record.toBeUploaded = 0;
+				if(record.base64PictureIcon){
+					var f0 = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, record.id + "_icon." + record.pictureType);
+					f0.write(Ti.Utils.base64decode(record.base64PictureIcon));
+					f0 = null;
+				}
+				delete record.base64PictureIcon;
+				if(record.base64Picture){
+					var f1 = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, record.id + "." + record.pictureType);
+					f1.write(Ti.Utils.base64decode(record.base64Picture));
+					f1 = null;
+				}
+				delete record.base64Picture;
+			},
+			toJSON : function(options) {
+				var attributes = _.clone(this.attributes);
+				for (var obj in attributes) {
+					if (this.config.belongsTo && this.config.belongsTo[obj]) {
+						if (attributes[obj]) {
+							attributes[obj + "Id"] = attributes[obj].xGet("id");
+						} else if (attributes[obj] === null) {
+							attributes[obj + "Id"] = null;
+						}
+						delete attributes[obj];
+					} else if (this.config.hasMany && this.config.hasMany[obj]) {
+						delete attributes[obj];
+					} else if (!this.config.columns[obj]) {
+						delete attributes[obj];
+					}
+				}
+				if(attributes.lastServerUpdateTime){
+					attributes.lastServerUpdateTime = Number(attributes.lastServerUpdateTime);
+				}
+				attributes.__dataType = this.config.adapter.collection_name;
+				
+				var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, attributes.id + "_icon." + attributes.pictureType);
+				if(f.exists()){
+					var blob0 = f.read();
+					attributes.base64PictureIcon = Ti.Utils.base64encode(blob0).toString();
+				}
+				f = null;
+				f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, attributes.id + "." + attributes.pictureType);
+				if(f.exists()){
+					var blob1 = f.read();
+					attributes.base64Picture = Ti.Utils.base64encode(blob1).toString();
+				}
+				return attributes;
 			}
 		});
 
