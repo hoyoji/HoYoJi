@@ -116,6 +116,9 @@ function setActualTotalMoneyColor(){
 	}else{
 		$.actualTotalMoney.label.setColor("#c80032");
 	}
+	if($.$model.xGet("parentProject")){
+		$.$model.xGet("parentProject").xRefresh();
+	}
 }
 
 function setProjectRemark(){
