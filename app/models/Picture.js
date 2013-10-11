@@ -77,17 +77,15 @@ exports.definition = {
 				this._xDelete(function(error) {
 					if (!error) {
 						// delete picture and its icon from file system
-						var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, self.xGet("id") + ".png");
-						if (file.exists()) {
-							file.deleteFile();
-						}
-						file = null;
-						file = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, self.xGet("id") + "_icon.png");
-						if (file.exists()) {
-							file.deleteFile();
-						}
+						var fName = self.xGet("id"), f, imageType = self.xGet("pictureType");
+						f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "." + imageType);
+						f.deleteFile();
+						f = null;
+						f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon." + imageType);
+						f.deleteFile();
+						f = null;
 					}
-					if(xFinishCallback){
+					if (xFinishCallback) {
 						xFinishCallback(error);
 					}
 				}, options);
