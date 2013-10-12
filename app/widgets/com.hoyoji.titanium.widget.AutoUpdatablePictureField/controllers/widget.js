@@ -78,17 +78,7 @@ $.takePicture.addEventListener("singletap", function() {
 		success : function(event) {
 			if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
 				var imageType = event.media.mimeType.slice(6);
-
-				var ImageFactory = require('ti.imagefactory'), width = 56, height = 56;
-				if (event.media.height > event.media.width) {
-					width = event.media.width / (event.media.height / 56);
-				} else if (event.media.height < event.media.width) {
-					height = event.media.height / (event.media.width / 56);
-				}
-				var pictureIcon = ImageFactory.imageAsResized(event.media, {
-					width : width,
-					height : height
-				});
+				var pictureIcon = Alloy.Globals.resizeImage(event.media, 56, 56);
 
 				var newPicture = Alloy.createModel("Picture", {
 					recordId : $.$attrs.bindModel.xGet("id"),
@@ -99,20 +89,8 @@ $.takePicture.addEventListener("singletap", function() {
 				$.__newPictures.push(newPicture);
 
 				//save to picture to temp directory
-				var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType), scaledPicture, scaledFactor;
-				if (event.media.width > 600 || event.media.height > 800) {
-					if (event.media.width / 600 > event.media.height / 800) {
-						scaledFactor = event.media.width / 600;
-					} else {
-						scaledFactor = event.media.height / 800;
-					}
-					scaledPicture = ImageFactory.imageAsResized(event.media, {
-						width : event.media.width / scaledFactor,
-						height : event.media.height / scaledFactor
-					});
-				} else {
-					scaledPicture = event.media;
-				}
+				var f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType), scaledPicture;
+				scaledPicture = Alloy.Globals.resizeImage(event.media, 600, 800);	
 				f.write(scaledPicture);
 				f = null;
 
@@ -356,16 +334,7 @@ function generateIconImage(newPicture){
 	var imageType = newPicture.xGet("pictureType"), media, f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType);
 	media = f.read();
 	f = null;
-	var ImageFactory = require('ti.imagefactory'), width = 56, height = 56;
-	if (media.height > media.width) {
-		width = media.width / (media.height / 56);
-	} else if (media.height < media.width) {
-		height = media.height / (media.width / 56);
-	}
-	return ImageFactory.imageAsResized(media, {
-		width : width,
-		height : height
-	});
+	return Alloy.Globals.resizeImage(media, 56, 56);
 }
 
 function appendTempImageToEnd(newPicture) {
