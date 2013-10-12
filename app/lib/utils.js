@@ -33,18 +33,46 @@
 
 		exports.Utils.resizeImage = function(media, width, height) {
 			var scaleFactor;
-			if(media.width > width || media.height > height){
+			if (media.width > width || media.height > height) {
 				scaledFactor = Math.max(media.width / width, media.height / height);
 				// if(OS_ANDROID) {
-					var ImageFactory = require('ti.imagefactory');
-					return ImageFactory.imageAsResized(media, {
-						width : media.width / scaledFactor,
-						height : media.height / scaledFactor
-					});
+				var ImageFactory = require('ti.imagefactory');
+				return ImageFactory.imageAsResized(media, {
+					width : media.width / scaledFactor,
+					height : media.height / scaledFactor
+				});
 				// }
 				// if(OS_IOS) {
-					// media.imageAsResized(media.width / scaledFactor, media.height / scaledFactor);
+				// media.imageAsResized(media.width / scaledFactor, media.height / scaledFactor);
 				// }
+			} else {
+				return media;
+			}
+		};
+
+		exports.Utils.cropImage = function(media, width, height) {
+			var scaleFactor, x = 0, y = 0, w, h;
+			if (media.width > width || media.height > height) {
+				scaledFactor = Math.min(media.width / width, media.height / height);
+				w = media.width / scaledFactor;
+				h = media.height / scaledFactor;
+				var ImageFactory = require('ti.imagefactory');
+				var resizedImage = ImageFactory.imageAsResized(media, {
+					width : w,
+					height : h
+				});
+				if(h > height){
+					y = (h - height) / 2;
+				} else if(w > width){
+					x = (w - width) / 2;
+				}
+				return ImageFactory.imageAsCropped(resizedImage, {
+					width : width,
+					height : height,
+					x : x,
+					y : y
+				});
+				
 			} else {
 				return media;
 			}

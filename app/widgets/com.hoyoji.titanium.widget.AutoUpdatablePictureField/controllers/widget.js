@@ -78,7 +78,7 @@ $.takePicture.addEventListener("singletap", function() {
 		success : function(event) {
 			if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
 				var imageType = event.media.mimeType.slice(6);
-				var pictureIcon = Alloy.Globals.resizeImage(event.media, 56, 56);
+				var pictureIcon = Alloy.Globals.cropImage(event.media, 56, 56);
 
 				var newPicture = Alloy.createModel("Picture", {
 					recordId : $.$attrs.bindModel.xGet("id"),
@@ -334,7 +334,7 @@ function generateIconImage(newPicture){
 	var imageType = newPicture.xGet("pictureType"), media, f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, newPicture.xGet("id") + "." + imageType);
 	media = f.read();
 	f = null;
-	return Alloy.Globals.resizeImage(media, 56, 56);
+	return Alloy.Globals.cropImage(media, 56, 56);
 }
 
 function appendTempImageToEnd(newPicture) {

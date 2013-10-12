@@ -57,14 +57,14 @@ $.onWindowOpenDo(function() {
 				f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + model.xGet("picture").xGet("pictureType");
 			}
 			// var f = Ti.Filesystem.applicationDataDirectory + "/" + value + ".png";
-			$.picture.setImage(f);
-			// $.$view.setBackgroundImage(f);
+			// $.picture.setImage(f);
+			$.$view.setBackgroundImage(f);
 		} else if ($.$attrs.defaultImage) {
-			$.picture.setImage($.$attrs.defaultImage + ".png");
-			// $.$view.setBackgroundImage($.$attrs.defaultImage+".png");
+			// $.picture.setImage($.$attrs.defaultImage + ".png");
+			$.$view.setBackgroundImage($.$attrs.defaultImage+".png");
 		} else {
-			$.picture.setImage(WPATH("/images/noPicture.png"));
-			// $.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
+			// $.picture.setImage(WPATH("/images/noPicture.png"));
+			$.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
 		}
 	}
 
