@@ -20,6 +20,9 @@ exports.definition = {
 	extendModel: function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
+			canEdit : function(){
+				return true;
+			},
 			syncAddNew : function(record, dbTrans) {
 				dbTrans.newExchangesFromServer[record.projectId] = true;
 				
