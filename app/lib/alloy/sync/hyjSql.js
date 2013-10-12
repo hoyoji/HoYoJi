@@ -268,6 +268,8 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "Currency") {
+				
+			} else if (table === "Picture") {
 
 			} else if (table === "User") {
 
