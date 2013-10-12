@@ -10,6 +10,9 @@ $.makeContextMenu = function() {
 			closeWithoutSave : true
 		});
 	}));
+	menuSection.add($.createContextMenuItem("导入图片", function() {
+		$.picture.importPictureFromGallery();
+	}));
 	return menuSection;
 };
 
