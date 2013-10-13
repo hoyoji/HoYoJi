@@ -28,11 +28,11 @@
 					xFinishedCallback(collection);
 				}
 			},
-			getData : function(data, xFinishedCallback, xErrorCallback, target) {
-				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData");
+			getData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "getData", progressCallback);
 			},
-			findData : function(data, xFinishedCallback, xErrorCallback, target) {
-				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData");
+			findData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData", progressCallback);
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
 				// this.searchData("Project", projectIds, function(collection) {
@@ -136,13 +136,14 @@
 
 				// }, xErrorCallback);
 			},
-			putData : function(data, xFinishedCallback, xErrorCallback, target) {
-				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData");
+			putData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
+				this.postData(data, xFinishedCallback, xErrorCallback, target || "putData", progressCallback);
 			},
 			deleteData : function(data, xFinishedCallback, xErrorCallback, target) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "deleteData");
 			},
-			postData : function(data, xFinishedCallback, xErrorCallback, target) {
+			postData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
+				var dataLength, dataSendLength;
 				data = JSON.stringify(data);
 				console.info(data);
 				var url = this.dataUrl + (target || "postData") + ".php";
@@ -159,6 +160,48 @@
 						} else {
 							xFinishedCallback();
 						}
+					},
+					ondatastream : function(e){
+						if(progressCallback){
+							if(OS_ANDROID){
+								//if(dataLength === undefined || dataLength === null){
+								dataLength = this.getResponseHeader("Content-Length") || (this.responseText && this.responseText.length) || -e.progress;
+								//}	
+								if(dataLength){
+									progressCallback(Number(-e.progress/dataLength.toFixed(2)), dataLength);
+								}
+							} else {
+								if(dataLength === undefined){
+									dataLength = this.getResponseHeader("Content-Length") || (this.responseText && this.responseText.length);
+								}	
+								progressCallback(Number(e.progress.toFixed(2)), dataLength);
+							}
+						}
+					},
+					onsendstream : function(e){
+						if(progressCallback){
+							if(dataSendLength === undefined){
+								// dataLength = this.getRequestHeader("Content-Length") || (this.requestText && this.requestText.length);
+								dataSendLength = data.length;
+							}	
+							if(OS_ANDROID){
+								progressCallback(Number(-e.progress/dataSendLength.toFixed(2)), dataSendLength, true);
+							} else {
+								progressCallback(Number(e.progress.toFixed(2)), dataSendLength, true);
+							}
+						}
+					},
+					onreadystatechange : function(){
+						// if(progressCallback){
+							// if(this.readyState === this.HEADERS_RECEIVED){
+								// if(dataLength === undefined){
+									// dataLength = this.getResponseHeader("Content-Length");
+								// }
+								// progressCallback(0, dataLength);
+							// } else if(this.readyState === this.LOADING){
+								// progressCallback(0.01, dataLength);
+							// }
+						// }
 					},
 					onerror : function(e) {
 						console.info("Server.postData error : " + JSON.stringify(e));
@@ -212,7 +255,7 @@
 							activityWindow.showMsg("同步错误：" + e.__summary.msg);
 							self.__isSyncing = false;
 							//alert("sync error : " + e.__summary.msg);
-						});
+						}, activityWindow);
 					// }, 0);
 				}, function(e) {
 					if (xErrorCallback) {
@@ -250,7 +293,6 @@
 							}
 						});
 					}
-
 
 					dbTrans.on("rollback", rollbackSyncPull);
 
@@ -426,10 +468,25 @@
 						dbTrans.on("commit", postCommit);
 					}
 				}, function(e) {
+					activityWindow.showMsg("同步错误：" + e.__summary.msg);
 					xErrorCallback(e);
-				}, "syncPull");
+				}, "syncPull", function(progress, totalLen, sendProgress){
+					if(!sendProgress){
+						var totalLenStr = "";
+						if(totalLen !== undefined){
+							if(totalLen < 1024){
+								totalLen += " Bytes";
+							} else {
+								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
+							}	
+							totalLenStr = "共"+totalLen;
+						}
+						var completed = progress > 0 && progress < 1 ? (progress*100) + "%, " : "";
+						activityWindow.progressStep(1, "下载数据(" + completed + totalLenStr + ")");
+					}
+				});
 			},
-			syncPush : function(xFinishedCallback, xErrorCallback) {
+			syncPush : function(xFinishedCallback, xErrorCallback, activityWindow) {
 				var clientSyncRecords = Alloy.createCollection("ClientSyncTable"), data = [];
 				clientSyncRecords.fetch({
 					query : "SELECT * FROM ClientSyncTable main"
@@ -469,7 +526,25 @@
 					dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
 					dbTrans.commit();
 					xFinishedCallback();
-				}, xErrorCallback, "syncPush");
+				}, function(e){
+					activityWindow.showMsg("同步错误：" + e.__summary.msg);
+					xErrorCallback(e);
+				}, "syncPush", function(progress, totalLen, sendProgress){
+					if(sendProgress){
+						var totalLenStr = "";
+						if(totalLen !== undefined){
+							if(totalLen < 1024){
+								totalLen += " Bytes";
+							} else {
+								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
+							}	
+							totalLenStr = "共"+totalLen;
+						}
+						
+						var completed = progress > 0 && progress < 1 ? (progress*100) + "%, " : "";
+						activityWindow.progressStep(3, "上传数据(" + completed + totalLenStr + ")");
+					}
+				});
 			},
 			getExchangeRateFromGoogle : function(fromCurrency, toCurrency, successCB, errorCB) {
 				var url = "http://www.google.com/ig/calculator?hl=en&q=1" + fromCurrency + "=?" + toCurrency;
