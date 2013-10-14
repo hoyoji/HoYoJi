@@ -6,7 +6,7 @@ $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "图片操作"
 	});
-	if(currentImage){
+	if (currentImage) {
 		menuSection.add($.createContextMenuItem("保存到手机", saveToGallery));
 	}
 	return menuSection;
@@ -48,36 +48,38 @@ $.onWindowOpenDo(function() {
 		currentImage = $.getCurrentWindow().$attrs.image;
 		var filePath, fileName = currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
 		if (OS_IOS) {
-			if(currentImage.isNew()){
-				filePath = Ti.Filesystem.tempDirectory ;
+			if (currentImage.isNew()) {
+				filePath = Ti.Filesystem.tempDirectory;
 			} else {
-				filePath = Ti.Filesystem.applicationDataDirectory ;
+				filePath = Ti.Filesystem.applicationDataDirectory;
 			}
 		}
 		if (OS_ANDROID) {
-			if(currentImage.isNew()){
-				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" ;
+			if (currentImage.isNew()) {
+				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
 			} else {
-				filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" ;
+				filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
 			}
 		}
 		var f = Ti.Filesystem.getFile(filePath, fileName);
-		if(f.exists()){
+		if (f.exists()) {
 			f = null;
 			$.image.setImage(filePath + fileName);
-		} else if(!currentImage.isNew()) {
+		} else if (!currentImage.isNew()) {
 			f = null;
-			$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
-			$.titleBar.showActivityIndicator("下载图片...", {
-				color : "white",
-				style : Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
-			});
-			$.titleBar.setTitle("");
-			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function(){
+			setTimeout(function() {
+				$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
+				$.titleBar.showActivityIndicator("下载图片...", {
+					color : "white",
+					style : Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+				});
+				$.titleBar.setTitle("");
+			}, 1000);
+			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function() {
 				$.image.setImage(filePath + fileName);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
-			}, function(e){
+			}, function(e) {
 				alert("下载图片错误" + e.__summary.msg);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
