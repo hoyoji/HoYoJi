@@ -106,7 +106,8 @@ function getImage(event) {
 
 		if (!mainPicture) {
 			$.__bindAttributeIsModel = newPicture;
-			$.field.setImage(pictureIcon);
+			//$.field.setImage(pictureIcon);
+			$.fieldContainer.setImage(pictureIcon);
 			// if (firstTimeSetValue) {
 			// firstTimeSetValue = false;
 			mainPicture = newPicture;
@@ -130,7 +131,8 @@ function getImage(event) {
 			newPicture.off("xdestroy", xDestroyPictureView);
 			if (mainPicture === newPicture) {
 				mainPicture = null;
-				$.field.setImage(WPATH("/images/noPicture.png"));
+				//$.field.setImage(WPATH("/images/noPicture.png"));
+			$.fieldContainer.setImage(WPATH("/images/noPicture.png"));
 				$.__bindAttributeIsModel = null;
 				$.fieldContainer.removeEventListener("longpress", showOptionsDialog);
 				$.fieldContainer.removeEventListener("singletap", previewImage);
@@ -256,7 +258,8 @@ $.setValue = function(value) {
 			$.fieldContainer.removeEventListener("longpress", showMainPictureOptionsDialog);
 			$.fieldContainer.removeEventListener("singletap", previewMainPicture);
 			mainPicture = null;
-			$.field.setImage(WPATH("/images/noPicture.png"));
+			//$.field.setImage(WPATH("/images/noPicture.png"));
+			$.fieldContainer.setImage(WPATH("/images/noPicture.png"));
 			$.__bindAttributeIsModel = null;
 			$.field.fireEvent("change");
 		}
@@ -284,7 +287,8 @@ $.setValue = function(value) {
 			}
 		}
 	}
-	$.field.setImage(value);
+	//$.field.setImage(value);
+	$.fieldContainer.setImage(value);
 	if (firstTimeSetValue) {
 		firstTimeSetValue = false;
 		displayPictures();
@@ -300,25 +304,25 @@ function createImageView(imageData, type, addToContainer) {
 			imageData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + imageData + "_icon." + type;
 		}
 	}
-	var imageView = Ti.UI.createImageView({
-		width : Ti.UI.SIZE,
-		height : Ti.UI.SIZE
-	});
-	var view = Ti.UI.createView({
+	// var imageView = Ti.UI.createImageView({
+		// width : Ti.UI.SIZE,
+		// height : Ti.UI.SIZE
+	// });
+	var imageView = Ti.UI.createView({
 		width : 56,
 		height : 56,
 		left : 2,
 		right : 2,
 		backgroundColor : "#e9f3f0"
 	});
-	view.add(imageView);
+	// view.add(imageView);
 	if (addToContainer) {
-		$.picturesContainer.add(view);
+		$.picturesContainer.add(imageView);
 	}
 	if (imageData) {
 		imageView.setImage(imageData);
 	}
-	return view;
+	return imageView;
 }
 
 function createImage(picture) {

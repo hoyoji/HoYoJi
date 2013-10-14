@@ -181,7 +181,6 @@
 					onsendstream : function(e){
 						if(progressCallback){
 							if(dataSendLength === undefined){
-								// dataLength = this.getRequestHeader("Content-Length") || (this.requestText && this.requestText.length);
 								dataSendLength = data.length;
 							}	
 							if(OS_ANDROID){
@@ -203,6 +202,9 @@
 							// } else 
 							if(this.readyState === this.DONE){
 								progressCallback(1, dataLength);
+								if(dataSendLength === undefined){
+									dataSendLength = data.length;
+								}
 								progressCallback(1, dataSendLength, true);
 							}
 						}
