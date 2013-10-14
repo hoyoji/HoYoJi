@@ -17,7 +17,7 @@
 					id="friendUser" autoInit="false"
 					bindModel="$.$model"
 					bindAttribute="getFriendUser()"/>
-					<View width="Ti.UI.FILL" height="1" buttom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableDateTimeField" labelText="时间" hintText="请选择时间"
 				id="date" autoInit="false"
