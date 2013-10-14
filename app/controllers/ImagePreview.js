@@ -67,16 +67,20 @@ $.onWindowOpenDo(function() {
 			$.image.setImage(filePath + fileName);
 		} else if(!currentImage.isNew()) {
 			f = null;
-			$.showActivityIndicator("下载图片...", {
+			$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
+			$.titleBar.showActivityIndicator("下载图片...", {
 				color : "white",
 				style : Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
 			});
+			$.titleBar.setTitle("");
 			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function(){
 				$.image.setImage(filePath + fileName);
-				$.hideActivityIndicator();
+				$.titleBar.hideActivityIndicator();
+				$.titleBar.setTitle("图片预览");
 			}, function(e){
 				alert("下载图片错误" + e.__summary.msg);
-				$.hideActivityIndicator();
+				$.titleBar.hideActivityIndicator();
+				$.titleBar.setTitle("图片预览");
 			});
 		}
 	}
