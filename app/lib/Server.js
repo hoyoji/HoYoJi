@@ -203,6 +203,7 @@
 							// } else 
 							if(this.readyState === this.DONE){
 								progressCallback(1, dataLength);
+								progressCallback(1, dataLength, true);
 							}
 						}
 					},
