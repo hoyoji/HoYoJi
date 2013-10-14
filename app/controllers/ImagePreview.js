@@ -67,7 +67,7 @@ $.onWindowOpenDo(function() {
 			$.image.setImage(filePath + fileName);
 		} else if (!currentImage.isNew()) {
 			f = null;
-			setTimeout(function() {
+			var timeoutId = setTimeout(function() {
 				$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
 				$.titleBar.showActivityIndicator("下载图片...", {
 					color : "white",
@@ -76,6 +76,7 @@ $.onWindowOpenDo(function() {
 				$.titleBar.setTitle("");
 			}, 1000);
 			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function() {
+				clearTimeout(timeoutId);
 				$.image.setImage(filePath + fileName);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
