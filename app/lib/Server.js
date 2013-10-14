@@ -144,7 +144,9 @@
 			},
 			postData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
 				var dataLength, dataSendLength;
-				data = JSON.stringify(data);
+				if(_.isObject(data)){
+					data = JSON.stringify(data);
+				}
 				console.info(data);
 				var url = this.dataUrl + (target || "postData") + ".php";
 				var xhr = Ti.Network.createHTTPClient({
@@ -161,48 +163,50 @@
 							xFinishedCallback();
 						}
 					},
-					ondatastream : function(e){
-						if(progressCallback){
-							if(OS_ANDROID){
+					ondatastream : function(e) {
+						if (progressCallback) {
+							if (OS_ANDROID) {
 								//if(dataLength === undefined || dataLength === null){
 								dataLength = this.getResponseHeader("Content-Length") || (this.responseText && this.responseText.length) || -e.progress;
-								//}	
-								if(dataLength){
-									progressCallback(Number((-e.progress/dataLength).toFixed(2)), dataLength);
+								//}
+								if (dataLength) {
+									progressCallback(Number((-e.progress / dataLength).toFixed(2)), dataLength);
 								}
 							} else {
-								if(dataLength === undefined){
+								if (dataLength === undefined) {
 									dataLength = this.getResponseHeader("Content-Length") || (this.responseText && this.responseText.length);
-								}	
+								}
 								progressCallback(Number(e.progress.toFixed(2)), dataLength);
 							}
 						}
 					},
-					onsendstream : function(e){
-						if(progressCallback){
-							if(dataSendLength === undefined){
-								// dataLength = this.getRequestHeader("Content-Length") || (this.requestText && this.requestText.length);
+					onsendstream : function(e) {
+						if (progressCallback) {
+							if (dataSendLength === undefined) {
 								dataSendLength = data.length;
-							}	
-							if(OS_ANDROID){
-								progressCallback(Number((-e.progress/dataSendLength).toFixed(2)), dataSendLength, true);
+							}
+							if (OS_ANDROID) {
+								progressCallback(Number((-e.progress / dataSendLength).toFixed(2)), dataSendLength, true);
 							} else {
 								progressCallback(Number(e.progress.toFixed(2)), dataSendLength, true);
 							}
 						}
 					},
-					onreadystatechange : function(){
-						if(progressCallback){
+					onreadystatechange : function() {
+						if (progressCallback) {
 							// if(this.readyState === this.HEADERS_RECEIVED){
-								// if(dataLength === undefined){
-									// dataLength = this.getResponseHeader("Content-Length");
-								// }
-								// progressCallback(0, dataLength);
+							// if(dataLength === undefined){
+							// dataLength = this.getResponseHeader("Content-Length");
+							// }
+							// progressCallback(0, dataLength);
 							// } else if(this.readyState === this.LOADING){
-								// progressCallback(0.01, dataLength);
-							// } else 
-							if(this.readyState === this.DONE){
+							// progressCallback(0.01, dataLength);
+							// } else
+							if (this.readyState === this.DONE) {
 								progressCallback(1, dataLength);
+								if (dataSendLength === undefined) {
+									dataSendLength = data.length;
+								}
 								progressCallback(1, dataSendLength, true);
 							}
 						}
@@ -234,33 +238,33 @@
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
-				if(self.__isSyncing){
+				if (self.__isSyncing) {
 					return;
 				}
 				self.__isSyncing = true;
 				var activityWindow = Alloy.createController("activityMask");
-				activityWindow.open("正在同步...", ["下载数据","合并数据","上传数据"]);
+				activityWindow.open("正在同步...", ["下载数据", "合并数据", "上传数据"]);
 
 				activityWindow.progressStep(1);
 				this.syncPull(function() {
 					// setTimeout(function() {
-						activityWindow.progressStep(3);
-						self.syncPush(function(data) {
-							if (xFinishedCallback) {
-								xFinishedCallback();
-							}
-							// activityWindow.close();
-							activityWindow.progressFinish("同步完成");
-							self.__isSyncing = false;
-						}, function(e) {
-							if (xErrorCallback) {
-								xErrorCallback(e);
-							}
-							// activityWindow.close();
-							activityWindow.showMsg("同步错误：" + e.__summary.msg);
-							self.__isSyncing = false;
-							//alert("sync error : " + e.__summary.msg);
-						}, activityWindow);
+					activityWindow.progressStep(3);
+					self.syncPush(function(data) {
+						if (xFinishedCallback) {
+							xFinishedCallback();
+						}
+						// activityWindow.close();
+						activityWindow.progressFinish("同步完成");
+						self.__isSyncing = false;
+					}, function(e) {
+						if (xErrorCallback) {
+							xErrorCallback(e);
+						}
+						// activityWindow.close();
+						activityWindow.showMsg("同步错误：" + e.__summary.msg);
+						self.__isSyncing = false;
+						//alert("sync error : " + e.__summary.msg);
+					}, activityWindow);
 					// }, 0);
 				}, function(e) {
 					if (xErrorCallback) {
@@ -299,6 +303,7 @@
 						});
 					}
 
+
 					dbTrans.on("rollback", rollbackSyncPull);
 
 					Alloy.Models.User.save({
@@ -309,7 +314,7 @@
 						patch : true,
 						dbTrans : dbTrans
 					});
-					
+
 					var mergeIndex = 0;
 					data.forEach(function(record) {
 						activityWindow.progressStep(2, "合并数据(" + ++mergeIndex + "/" + data.length + ")");
@@ -475,18 +480,19 @@
 				}, function(e) {
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
 					xErrorCallback(e);
-				}, "syncPull", function(progress, totalLen, sendProgress){
-					if(!sendProgress){
+				}, "syncPull", function(progress, totalLen, sendProgress) {
+					if (!sendProgress) {
 						var totalLenStr = "";
-						if(totalLen !== undefined){
-							if(totalLen < 10240){
+						if (totalLen !== undefined) {
+							if (totalLen < 10240) {
 								totalLen += " Bytes";
 							} else {
-								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
-							}	
-							totalLenStr = "共"+totalLen;
+								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";
+								;
+							}
+							totalLenStr = "共" + totalLen;
 						}
-						var completed = progress > 0 && progress < 1 ? (progress*100) + "%, " : "";
+						var completed = progress > 0 && progress < 1 ? (progress * 100) + "%, " : "";
 						activityWindow.progressStep(1, "下载数据(" + completed + totalLenStr + ")");
 					}
 				});
@@ -531,22 +537,23 @@
 					dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE ownerUserId = '" + Alloy.Models.User.id + "'");
 					dbTrans.commit();
 					xFinishedCallback();
-				}, function(e){
+				}, function(e) {
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
 					xErrorCallback(e);
-				}, "syncPush", function(progress, totalLen, sendProgress){
-					if(sendProgress){
+				}, "syncPush", function(progress, totalLen, sendProgress) {
+					if (sendProgress) {
 						var totalLenStr = "";
-						if(totalLen !== undefined){
-							if(totalLen < 10240){
+						if (totalLen !== undefined) {
+							if (totalLen < 10240) {
 								totalLen += " Bytes";
 							} else {
-								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
-							}	
-							totalLenStr = "共"+totalLen;
+								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";
+								;
+							}
+							totalLenStr = "共" + totalLen;
 						}
-						
-						var completed = progress > 0 && progress < 1 ? (progress*100) + "%, " : "";
+
+						var completed = progress > 0 && progress < 1 ? (progress * 100) + "%, " : "";
 						activityWindow.progressStep(3, "上传数据(" + completed + totalLenStr + ")");
 					}
 				});
@@ -758,6 +765,25 @@
 						}
 					}
 				});
+			},
+			fetchImage : function(id, successCB, errorCB) {
+				this.postData(id, function(data) {
+					if(data.length > 0){
+						var filePath;
+						data = data[0];
+						if (OS_ANDROID) {
+							filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+						} else {
+							filePath = Ti.Filesystem.applicationDataDirectory;
+						}
+						var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
+						f1.write(Ti.Utils.base64decode(data.base64Picture));
+						f1 = null;
+						successCB();
+					} else {
+						errorCB({__summary : {msg : "获取图片失败：图片不存在"}});
+					}
+				}, errorCB, "fetchImage");
 			}
 		};
 	}());
