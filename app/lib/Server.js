@@ -203,7 +203,7 @@
 							// } else 
 							if(this.readyState === this.DONE){
 								progressCallback(1, dataLength);
-								progressCallback(1, dataLength, true);
+								progressCallback(1, dataSendLength, true);
 							}
 						}
 					},
@@ -220,6 +220,7 @@
 					timeout : 300000 /* in milliseconds */
 				});
 				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+				xhr.setRequestHeader('Accept-Encoding', 'gzip');
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
@@ -478,7 +479,7 @@
 					if(!sendProgress){
 						var totalLenStr = "";
 						if(totalLen !== undefined){
-							if(totalLen < 1024){
+							if(totalLen < 10240){
 								totalLen += " Bytes";
 							} else {
 								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
@@ -537,7 +538,7 @@
 					if(sendProgress){
 						var totalLenStr = "";
 						if(totalLen !== undefined){
-							if(totalLen < 1024){
+							if(totalLen < 10240){
 								totalLen += " Bytes";
 							} else {
 								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";;
