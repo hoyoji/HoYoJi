@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" backgroundColor="black">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="图片预览"
-		image="/images/mainWindow/home"/>
+		image="/images/mainWindow/home" autoInit="false"/>
 		<View id="body" top="50" bottom="0" left="0" right="0" >
 			<ImageView id="image" width="Ti.UI.SIZE" height="Ti.UI.SIZE"/>
 		</View>

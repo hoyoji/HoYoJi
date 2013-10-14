@@ -90,7 +90,7 @@
 						}, options);
 						$.__activityIndicator = Ti.UI.createActivityIndicator(options);
 						$.$view.add($.__activityIndicator);
-					}
+					} 
 					$.__activityIndicator.setMessage(msg || null);
 					$.__activityIndicator.show();
 				},

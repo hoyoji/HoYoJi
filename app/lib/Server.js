@@ -144,7 +144,7 @@
 			},
 			postData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
 				var dataLength, dataSendLength;
-				if(_.isObject(data)){
+				if(!_.isString(data)){
 					data = JSON.stringify(data);
 				}
 				console.info(data);
@@ -766,7 +766,7 @@
 					}
 				});
 			},
-			fetchImage : function(id, successCB, errorCB) {
+			fetchImage : function(id, successCB, errorCB, progressCB) {
 				this.postData(id, function(data) {
 					if(data.length > 0){
 						var filePath;
@@ -783,7 +783,7 @@
 					} else {
 						errorCB({__summary : {msg : "获取图片失败：图片不存在"}});
 					}
-				}, errorCB, "fetchImage");
+				}, errorCB, "fetchImage", progressCB);
 			}
 		};
 	}());

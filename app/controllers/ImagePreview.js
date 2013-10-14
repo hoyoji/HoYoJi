@@ -67,16 +67,8 @@ $.onWindowOpenDo(function() {
 			$.image.setImage(filePath + fileName);
 		} else if (!currentImage.isNew()) {
 			f = null;
-			var timeoutId = setTimeout(function() {
-				$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
-				$.titleBar.showActivityIndicator("下载图片...", {
-					color : "white",
-					style : Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
-				});
-				$.titleBar.setTitle("");
-			}, 1000);
+			$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
 			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function() {
-				clearTimeout(timeoutId);
 				$.image.setImage(filePath + fileName);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
@@ -84,7 +76,17 @@ $.onWindowOpenDo(function() {
 				alert("下载图片错误" + e.__summary.msg);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
+			}, function(progress, totalData){
+				if(progress < 1){
+					$.titleBar.showActivityIndicator("下载图片...", {
+						color : "white",
+						style : Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN
+					});
+					$.titleBar.setTitle("");
+				}
 			});
 		}
 	}
 });
+
+$.titleBar.UIInit($, $.getCurrentWindow());
