@@ -192,7 +192,7 @@
 						}
 					},
 					onreadystatechange : function(){
-						// if(progressCallback){
+						if(progressCallback){
 							// if(this.readyState === this.HEADERS_RECEIVED){
 								// if(dataLength === undefined){
 									// dataLength = this.getResponseHeader("Content-Length");
@@ -200,8 +200,11 @@
 								// progressCallback(0, dataLength);
 							// } else if(this.readyState === this.LOADING){
 								// progressCallback(0.01, dataLength);
-							// }
-						// }
+							// } else 
+							if(this.readyState === this.DONE){
+								progressCallback(1, dataLength);
+							}
+						}
 					},
 					onerror : function(e) {
 						console.info("Server.postData error : " + JSON.stringify(e));
