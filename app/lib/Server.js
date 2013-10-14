@@ -168,7 +168,7 @@
 								dataLength = this.getResponseHeader("Content-Length") || (this.responseText && this.responseText.length) || -e.progress;
 								//}	
 								if(dataLength){
-									progressCallback(Number(-e.progress/dataLength.toFixed(2)), dataLength);
+									progressCallback(Number((-e.progress/dataLength).toFixed(2)), dataLength);
 								}
 							} else {
 								if(dataLength === undefined){
@@ -185,7 +185,7 @@
 								dataSendLength = data.length;
 							}	
 							if(OS_ANDROID){
-								progressCallback(Number(-e.progress/dataSendLength.toFixed(2)), dataSendLength, true);
+								progressCallback(Number((-e.progress/dataSendLength).toFixed(2)), dataSendLength, true);
 							} else {
 								progressCallback(Number(e.progress.toFixed(2)), dataSendLength, true);
 							}
