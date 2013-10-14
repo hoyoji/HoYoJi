@@ -93,14 +93,20 @@ exports.definition = {
 			syncAddNew : function(record, dbTrans) {
 				record.toBeDownloaded = 1;
 				record.toBeUploaded = 0;
+				var filePath;
+				if (OS_ANDROID) {
+					filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" ;
+				} else {
+					filePath = Ti.Filesystem.applicationDataDirectory;
+				}
 				if(record.base64PictureIcon){
-					var f0 = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, record.id + "_icon." + record.pictureType);
+					var f0 = Ti.Filesystem.getFile(filePath, record.id + "_icon." + record.pictureType);
 					f0.write(Ti.Utils.base64decode(record.base64PictureIcon));
 					f0 = null;
 				}
 				delete record.base64PictureIcon;
 				if(record.base64Picture){
-					var f1 = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, record.id + "." + record.pictureType);
+					var f1 = Ti.Filesystem.getFile(filePath, record.id + "." + record.pictureType);
 					f1.write(Ti.Utils.base64decode(record.base64Picture));
 					f1 = null;
 				}
