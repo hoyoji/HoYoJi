@@ -35,7 +35,7 @@
 			var scaleFactor, ImageFactory = require('ti.imagefactory');
 			if (media.width > width || media.height > height) {
 				scaledFactor = Math.max(media.width / width, media.height / height);
-				if(OS_ANDROID){
+				if (OS_ANDROID) {
 					var newMedia = ImageFactory.imageAsResized(media, {
 						width : media.width / scaledFactor,
 						height : media.height / scaledFactor
@@ -47,32 +47,37 @@
 						quality : 2
 					});
 				}
-				if(newMedia.length > 100000){
+				if (newMedia.length > 100000) {
 					return ImageFactory.compress(newMedia, 0.4);
 				} else {
 					return newMedia;
 				}
 			} else {
-				if(media.length > 100000){
+				if (media.length > 100000) {
 					return ImageFactory.compress(media, 0.4);
 				} else {
 					return media;
 				}
 			}
 		};
-		exports.Utils.creatImageThumbnail = function(media, size){
-			var ImageFactory = require('ti.imagefactory');
-			if(OS_ANDROID){
-				return ImageFactory.imageAsThumbnail(media, {
+		exports.Utils.creatImageThumbnail = function(media, size) {
+			var ImageFactory = require('ti.imagefactory'), newMedia;
+			if (OS_ANDROID) {
+				newMedia = ImageFactory.imageAsThumbnail(media, {
 					size : 56,
 					borderSize : 0
 				});
 			} else {
-				return ImageFactory.imageAsThumbnail(media, {
+				newMedia = ImageFactory.imageAsThumbnail(media, {
 					size : 56,
 					borderSize : 0,
 					quality : 2
 				});
+			}
+			if (newMedia.length > 5000) {
+				return ImageFactory.compress(newMedia, 0.6);
+			} else {
+				return newMedia;
 			}
 		};
 		exports.Utils.cropImage = function(media, width, height) {
@@ -82,7 +87,7 @@
 				scaledFactor = Math.min(media.width / width, media.height / height);
 				w = media.width / scaledFactor;
 				h = media.height / scaledFactor;
-				if(OS_ANDROID){
+				if (OS_ANDROID) {
 					var resizedImage = ImageFactory.imageAsResized(media, {
 						width : w,
 						height : h
@@ -94,9 +99,9 @@
 						quality : 2
 					});
 				}
-				if(h > height){
+				if (h > height) {
 					y = (h - height) / 2;
-				} else if(w > width){
+				} else if (w > width) {
 					x = (w - width) / 2;
 				}
 				var newMedia = ImageFactory.imageAsCropped(resizedImage, {
@@ -105,13 +110,13 @@
 					x : x,
 					y : y
 				});
-				if(newMedia.length > 100000){
+				if (newMedia.length > 100000) {
 					return ImageFactory.compress(newMedia, 0.4);
 				} else {
 					return newMedia;
 				}
 			} else {
-				if(media.length > 100000){
+				if (media.length > 100000) {
 					return ImageFactory.compress(media, 0.4);
 				} else {
 					return media;
@@ -159,6 +164,8 @@
 						exports.Utils.cacheWindow(baseWindow, windowName);
 					}
 				}
+
+
 				Alloy.Globals.openedWindow[windowName].$view.addEventListener("close", reCacheWindow);
 			}
 		};
