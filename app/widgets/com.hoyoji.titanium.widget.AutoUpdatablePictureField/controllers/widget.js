@@ -1,21 +1,5 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-// $.fieldContainer = Ti.UI.createView({
-// width : "56",
-// height : "56",
-// left : "2",
-// right : "2"
-// });
-//
-// $.field = Ti.UI.createImageView({
-// width : Ti.UI.SIZE,
-// height : Ti.UI.SIZE
-// });
-// $.fieldContainer.add($.field);
-// $.picturesContainer.add($.fieldContainer);
-// $.field.setImage("/images/com.hoyoji.titanium.widget.AutoUpdatablePictureField/noPicture.png");
-// Alloy.Globals.patchScrollableViewOnAndroid($.picturesContainer);
-
 var mainPicture, firstTimeSetValue = true, selectedPicture = null;
 $.__newPictures = [];
 
@@ -271,12 +255,6 @@ $.setValue = function(value) {
 		mainPicture.on("xdestroy", removeMainPictureFromView);
 
 		if (mainPicture.isNew()) {
-			// if (OS_IOS) {
-			// value = Ti.Filesystem.tempDirectory + value + "_icon." + mainPicture.xGet("pictureType");
-			// }
-			// if (OS_ANDROID) {
-			// value = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + value + "_icon." + mainPicture.xGet("pictureType");
-			// }
 			value = generateIconImage(mainPicture);
 		} else {
 			if (OS_IOS) {
@@ -304,17 +282,19 @@ function createImageView(imageData, type, addToContainer) {
 			imageData = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + imageData + "_icon." + type;
 		}
 	}
-	// var imageView = Ti.UI.createImageView({
-		// width : Ti.UI.SIZE,
-		// height : Ti.UI.SIZE
-	// });
-	var imageView = Ti.UI.createView({
-		width : 56,
-		height : 56,
+	var imageView = Ti.UI.createImageView({
+		width : Ti.UI.SIZE,
+		height : Ti.UI.SIZE,
 		left : 2,
-		right : 2,
-		backgroundColor : "#e9f3f0"
+		right : 2
 	});
+	// var imageView = Ti.UI.createView({
+		// width : 56,
+		// height : 56,
+		// left : 2,
+		// right : 2,
+		// backgroundColor : "#e9f3f0"
+	// });
 	// view.add(imageView);
 	if (addToContainer) {
 		$.picturesContainer.add(imageView);
@@ -365,14 +345,6 @@ function appendTempImageToEnd(newPicture) {
 	var imageType = newPicture.xGet("pictureType");
 	var pictureIcon = generateIconImage(newPicture);
 
-	// var newPicture = Alloy.createModel("Picture", {
-	// recordId : $.$attrs.bindModel.xGet("id"),
-	// recordType : $.$attrs.bindModel.config.adapter.collection_name,
-	// pictureType : imageType,
-	// ownerUser : Alloy.Models.User
-	// });
-	// $.__newPictures.push(newPicture);
-
 	function showOptionsDialog(e) {
 		e.cancelBubble = true;
 		selectedPicture = newPicture;
@@ -390,50 +362,13 @@ function appendTempImageToEnd(newPicture) {
 	imageView.addEventListener("singletap", previewImage);
 
 	function xDestroyPictureView() {
-		//newPicture.off("sync", savePicture);
-		//newPicture.off("xdiscard", discardPicture);
 		newPicture.off("xdestroy", xDestroyPictureView);
-		// if (mainPicture === newPicture) {
-		// mainPicture = null;
-		// $.field.setImage(WPATH("/images/noPicture.png"));
-		// $.__bindAttributeIsModel = null;
-		// $.fieldContainer.removeEventListener("longpress", showOptionsDialog);
-		// $.fieldContainer.removeEventListener("singletap", previewImage);
-		// $.field.fireEvent("change");
-		// } else {
 		imageView.removeEventListener("longpress", showOptionsDialog);
 		imageView.removeEventListener("singletap", previewImage);
 		$.picturesContainer.remove(imageView);
-		// }
 	}
 
-	// function discardPicture() {
-	// var fName = newPicture.xGet("id");
-	// var tmpf = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fName + "." + imageType);
-	// tmpf.deleteFile();
-	// tmpf = null;
-	// xDestroyPictureView();
-	// }
-	//
-	// function savePicture() {
-	// newPicture.off("sync", savePicture);
-	// newPicture.off("xdiscard", discardPicture);
-	// newPicture.off("xdestroy", xDestroyPictureView);
-	// var fName = newPicture.xGet("id"), f;
-	// f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon." + imageType);
-	// f.write(pictureIcon);
-	// f = null;
-	// var tmpf = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory, fName + "." + imageType);
-	// var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "." + imageType);
-	// f.write(tmpf.read());
-	// f = null;
-	// tmpf.deleteFile();
-	// tmpf = null;
-	// }
-
 	newPicture.on("xdestroy", xDestroyPictureView);
-	//newPicture.on("xdiscard", discardPicture);
-	//newPicture.on("sync", savePicture);
 
 }
 
