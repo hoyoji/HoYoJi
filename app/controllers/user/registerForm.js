@@ -108,6 +108,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		return;
 	}
 	
+	if ($.$model.xGet("email")) {
+		var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
+		if (!emailValidation.test($.$model.xGet("email"))) {
+			saveErrorCB("email不合法");
+			return;
+		}
+	}
+	
 	if ($.$model.xGet("userName").startsWith("hyj")) {
 		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
 	} else {
@@ -154,3 +162,4 @@ $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.password2.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
+$.email.UIInit($, $.getCurrentWindow());

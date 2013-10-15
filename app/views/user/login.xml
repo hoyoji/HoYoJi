@@ -20,14 +20,14 @@
 		backgroundColor="#e9f3f0"
 		autoInit="false"
 		title="登录"/>
-		<Widget id="registerButton" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="#2E8B57"
+		<!-- <Widget id="registerButton" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="#2E8B57"
 		backgroundColor="#e9f3f0"
 		autoInit="false"
-		title="注册"/>
-		<!-- <View width="80%" height="60">
-		<Button width="80%"  height="42" onClick="openRegister">注册</Button>
-		<Button width="45%" right="0" height="42">找回密码</Button>
-		</View> -->
+		title="注册"/> -->
+		<View width="80%" height="60">
+		<Button width="50%" left ="0" height="42" onClick="openRegister">注册</Button>
+		<Button width="50%" right="0" height="42" onClick="findPassword">找回密码</Button>
+		</View>
 		<View height="20"/>
 	</View>
 </Alloy>

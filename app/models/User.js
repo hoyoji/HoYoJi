@@ -187,6 +187,19 @@ exports.definition = {
 						};
 					}
 					xValidateComplete(error);
+				},
+				email : function(xValidateComplete){
+					var error;
+					var email = this.xGet("email");
+					if (email) {
+						var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
+						if (!emailValidation.test(email)) {
+							error = {
+								msg : "email不合法"
+							};
+						}
+					}
+					xValidateComplete(error);
 				}
 			},
 			getDisplayName : function() {
