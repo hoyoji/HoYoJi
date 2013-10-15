@@ -2,7 +2,7 @@
 
 		Ti.include('suds.js');
 		exports.Server = {
-			dataUrl : "http://2.money.app100697798.twsapp.com/",
+			dataUrl : Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/",
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				//var msg = Alloy.createModel("Message");
 				msgJSON.ownerUserId = msgJSON.toUserId;
