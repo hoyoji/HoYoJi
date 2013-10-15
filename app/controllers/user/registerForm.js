@@ -108,11 +108,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		return;
 	}
 	
-	if ($.$model.xGet("userName").startsWith("hyj")) {
-		Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
-	} else {
-		Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
-	}
 	var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
 	var data = {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),

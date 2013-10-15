@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" saveableContainer="true" layout="vertical" height="Ti.UI.SIZE" backgroundColor="#f5f5f5">
-		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" noBottomImage="true"
+		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名" hintText="请输入用户名" noBottomImage="true" keyboardType="Titanium.UI.KEYBOARD_ASCII"
 		id="userName" autoInit="false"
 		/>
 		<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="密码" hintText="请输入密码" passwordMask="true" noBottomImage="true"
@@ -20,6 +20,7 @@
 		backgroundColor="#e9f3f0"
 		autoInit="false"
 		title="登录"/>
+		<View height="10"/>
 		<Widget id="registerButton" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="#2E8B57"
 		backgroundColor="#e9f3f0"
 		autoInit="false"
