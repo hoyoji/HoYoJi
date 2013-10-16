@@ -10,6 +10,7 @@ if(OS_ANDROID){
 exports.close = function(e) {
 	$.closeSoftKeyboard();
 	Alloy.Globals.confirm("退出", "您确定要退出吗？", function() {
+		Alloy.Globals.indexWindow.close();
 		$.$view.close({
 			animated : false
 		});

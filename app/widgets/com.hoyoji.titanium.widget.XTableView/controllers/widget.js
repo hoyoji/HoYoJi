@@ -1,35 +1,5 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-// $.__alloyId10 = Ti.UI.createView({
-// height: Ti.UI.SIZE,
-// width: Ti.UI.FILL,
-// id: "__alloyId10"
-// });
-// $.fetchNextPageButton = Ti.UI.createLabel({
-// color: "gray",
-// font: {
-// fontSize: 14,
-// fontWeight: "normal"
-// },
-// height: 60,
-// width: Ti.UI.SIZE,
-// textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-// borderColor: "transparent",
-// id: "fetchNextPageButton",
-// text: "无内容"
-// });
-// $.__alloyId10.add($.fetchNextPageButton);
-//
-// $.table = Ti.UI.createTableView({
-// id: "table",
-// top: "0",
-// left: "0",
-// allowSelection: "false",
-// backgroundColor: "#f5f5f5"
-// });
-// $.table.setFooterView($.__alloyId10);
-// $.widget.add($.table);
-
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize;
 
@@ -40,60 +10,6 @@ if($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
 } else {
 	pageSize = 0;
 }
-
-if (OS_ANDROID) {
-	// if(Ti.Platform.Android.API_LEVEL > 10){
-	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
-	// }
-	// $.table.addEventListener('scroll',function(e){
-	// console.info("------ footer View y --------- " + $.table.footerView.getRect().y + " " + $.table.footerView.getRect().y);
-	// console.info("------ table View  y --------- " + $.table.getRect().y + " " + $.table.getRect().height);
-	// var offset = e.contentOffset.y;
-	// var height = e.size.height;
-	// var total = offset + height;
-	// var theEnd = e.contentSize.height;
-	// var distance = theEnd - total;
-	//
-	// if(distance === 0){
-	// $.table.setOverScrollMode(Ti.UI.Android.OVER_SCROLL_NEVER);
-	// }
-	// });
-}
-
-// if(OS_ANDROID){
-// if($.$attrs.groupByField){
-// // <View height="45" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-// // <View width="5" height="25" left="1" bottom="0" backgroundImage="/images/rowTopLeftShadow.png" zIndex="0" />
-// // <View width="Ti.UI.FILL" height="25" left="3" bottom="0" zIndex="1">
-// // 		<Label id="headerTitle" textAlign="Ti.UI.TEXTALIGNMENT_LEFT" width="Ti.UI.FILL" left="0" height="30" bottom="-5" borderRadius="5" backgroundColor="#d8fafa"/>
-// // </View>
-// // </View>
-// var sectionHeader = Ti.UI.createView({height : 25, width : Ti.UI.FILL, backgroundColor : "#e7f5f5"});
-// view1 = Ti.UI.createView({width : 5, height : 25, left:1, bottom : 0, backgroundImage : "/images/rowTopLeftShadow.png", zIndex : 0});
-// sectionHeader.add(view1);
-// view2 = Ti.UI.createView({width:Ti.UI.FILL, height:25, left:3, bottom:0, zIndex:1});
-// view2.add(Ti.UI.createLabel({ textAlign:Ti.UI.TEXTALIGNMENT_LEFT, width:Ti.UI.FILL, left:0, height:30, bottom:-5, borderRadius:5, backgroundColor:"#d8fafa"}));
-// sectionHeader.add(view2);
-//
-// // <View height="10" width="Ti.UI.FILL" backgroundColor="#e7f5f5">
-// // <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="0">
-// // <View width="Ti.UI.FILL" left="0" height="10" top="0" borderRadius="5" backgroundColor="#f1fbfb" backgroundImage="/images/sectionBottomShadow.png"/>
-// // <View width="Ti.UI.FILL" height="14" left="0" top="-7" borderRadius="5" backgroundColor="#f1fbfb" zIndex="0"/>
-// // <View width="10" height="10" left="0" top="1" backgroundImage="/images/rowBottomLeftShadow.png" zIndex="1"/>
-// // </View>
-// // </View>
-// var sectionFooter = Ti.UI.createView({height:10,width:Ti.UI.FILL,backgroundColor:"#e7f5f5"});
-// var fView1 = Ti.UI.createView({width:Ti.UI.FILL,height:10,left:0,top:0});
-// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:10,top:0,borderRadius:5,backgroundColor:"#f1fbfb",backgroundImage:"/images/sectionBottomShadow.png"}));
-// fView1.add(Ti.UI.createView({width:Ti.UI.FILL,left:0,height:14,top:-7,borderRadius:5,backgroundColor:"#f1fbfb",zIndex:0}));
-// fView1.add(Ti.UI.createView({width:10,left:0,height:10,top:1,backgroundImage:"/images/rowBottomLeftShadow.png",zIndex:1}));
-// sectionFooter.add(fView1);
-//
-//
-// $.table.setHeaderView(sectionHeader);
-// $.table.setFooterView(sectionFooter);
-// }
-// }
 
 $.$view.addEventListener("click", function(e) {
 	$.__changingRow = true;
@@ -592,6 +508,11 @@ exports.fetchFirstPage = function() {
 exports.fetchNextPage = function(tableRowsCount) {
 	var sortedArray = [];
 
+	if (fetchingNextPage === false) {
+		fetchingNextPage = true;
+	} else {
+		return;
+	}
 	$.fetchNextPageButton.setText("加载中...");
 
 	if (sortByField && (sortByField !== sortedArray_sortByField || sortReverse !== sortedArray_sortReverse || groupByField !== sortedArray_groupByField)) {
@@ -643,10 +564,13 @@ exports.fetchNextPage = function(tableRowsCount) {
 		});
 
 		if (newRows.length > 0) {
-			$.sort(null, null, null, true, newRows);
+			$.sort(null, null, null, true, newRows, null, null, function(){
+				//$.table.scrollToIndex(tableRowsCount-1);
+				_showNoDataIndicator();
+			});
+		} else {
+			_showNoDataIndicator();
 		}
-
-		_showNoDataIndicator();
 	}
 
 	if ($.beforeFetchNextPage) {
@@ -744,8 +668,8 @@ exports.clearAllCollections = function() {
 
 function refreshCollectionOnChange(model) {
 	if (this.__compareFilter(model)) {
-		$.sort(null, null, null, true);
-		showNoDataIndicator();
+		$.sort(null, null, null, true, null, null, showNoDataIndicator);
+		// showNoDataIndicator();
 	}
 }
 
@@ -768,10 +692,10 @@ function refreshCollection(collection, appendRows, removedRows) {
 			});
 		}
 		if ((appendRows && appendRows.length > 0) || (removedRows && removedRows.length > 0)) {
-			$.sort(null, null, null, true, newRows, removedRows, collection.id);
+			$.sort(null, null, null, true, newRows, removedRows, collection.id, showNoDataIndicator);
 		}
 	}
-	showNoDataIndicator();
+	// showNoDataIndicator();
 }
 
 $.onWindowCloseDo(function() {
@@ -981,8 +905,7 @@ exports.setHeaderView = function(headerView) {
 	}
 };
 
-exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId) {
-
+exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, removedRows, collectionId, finishCB) {
 	if (!refresh) {
 		if (groupField === groupByField && sortByField === fieldName && sortReverse === reverse) {
 			return;
@@ -1073,7 +996,9 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	$.table.setData(data);
 	// showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
-
+	if(finishCB){
+		finishCB();
+	}
 };
 
 function createSection(sectionTitle, sectionIndex) {
@@ -1188,10 +1113,7 @@ var fetchingNextPage = false;
 if (pageSize > 0) {
 	$.fetchNextPageButton.addEventListener("singletap", function(e) {
 		e.cancelBubble = true;
-		if (fetchingNextPage === false) {
-			fetchingNextPage = true;
-			exports.fetchNextPage();
-		}
+		exports.fetchNextPage();
 	});
 }
 
@@ -1278,7 +1200,7 @@ function cancelBubble(e) {
 	e.cancelBubble = true;
 }
 
-$.table.addEventListener("scroll", cancelBubble);
+// $.table.addEventListener("scroll", cancelBubble);
 
 // var lastTotalItemCount = -1;
 // $.table.addEventListener("scroll", function(e){
@@ -1297,6 +1219,16 @@ exports.autoHideFooter = function(footer) {
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
 		var lastY, lastTop;
+		var lastFirstVisibleItem = 0;
+		$.table.addEventListener("scroll", function(e) {
+			e.cancelBubble = true;
+			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+				if(e.firstVisibleItem > lastFirstVisibleItem){
+					$.fetchNextPage();
+				}
+			}
+			lastFirstVisibleItem = e.firstVisibleItem; 
+		});
 		$.table.addEventListener("touchend", function(e) {
 			lastY = undefined;
 		});
@@ -1322,7 +1254,7 @@ exports.autoHideFooter = function(footer) {
 							// }
 							// autoHideAnimationId = setTimeout(function() {
 							footer.slideDown();
-
+							
 							// }, 1);
 							lastY = e.y + 5;
 						} else if (delta > 0) {
@@ -1331,7 +1263,6 @@ exports.autoHideFooter = function(footer) {
 							// }
 							// autoHideAnimationId = setTimeout(function() {
 							footer.slideUp();
-
 							// if($.headerView && $.headerView.getRect().top <= $.headerView.getRect().height){
 							// $.headerView.setTop($.headerView.getRect().top - delta);
 							// }
@@ -1348,7 +1279,7 @@ exports.autoHideFooter = function(footer) {
 
 	if (OS_IOS) {
 		var lastDistance, direction, lastDirection = false;
-		$.table.removeEventListener("scroll", cancelBubble);
+		// $.table.removeEventListener("scroll", cancelBubble);
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			// if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
@@ -1388,6 +1319,8 @@ exports.autoHideFooter = function(footer) {
 					footer.slideUp();
 				}, 50);
 				lastDirection = false;
+			} else if(distance < 0 && direction < 0){
+				$.fetchNextPage();
 			}
 			direction = distance - lastDistance;
 			lastDistance = distance;

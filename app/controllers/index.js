@@ -5,6 +5,7 @@ if(OS_ANDROID){
 	$.$view.addEventListener('androidback', $.__androidBackFunction);
 }
 
+Alloy.Globals.indexWindow = $;
 
 // if(OS_IOS){
 	// var ptrCtrl = Alloy.createWidget('nl.fokkezb.pullToRefresh', null, {
