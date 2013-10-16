@@ -160,8 +160,14 @@ $.transferIn.$view.addEventListener("singletap", function() {
 // }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-		$.picture.xAddToSave($);
-		
+	if($.$model.xGet("project").xGet("ownerUserId") !== Alloy.Models.User.xGet("id")){
+		saveErrorCB("无法在共享来的项目新增转账，请切换项目");
+		return;
+	}
+	
+	
+	$.picture.xAddToSave($);
+
 	var newTransferOutAmount = $.$model.xGet("transferOutAmount");
 	var newTransferInAmount = $.$model.xGet("transferInAmount");
 	var newTransferOut = $.$model.xGet("transferOut");
@@ -265,7 +271,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			oldTransferIn.xSet("currentBalance", oldTransferIn.previous("currentBalance"));
 		}
 		// if (exchange) {
-			// exchange.xAddToDelete($);
+		// exchange.xAddToDelete($);
 		// }
 		newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
 		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
