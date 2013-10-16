@@ -1319,7 +1319,7 @@ exports.autoHideFooter = function(footer) {
 					footer.slideUp();
 				}, 50);
 				lastDirection = false;
-			} else if(distance < 0 && direction < 0 && lastDirection === false){
+			} else if(distance < 0 && direction < 0 && lastDirection === true){
 				$.fetchNextPage();
 			}
 			direction = distance - lastDistance;
