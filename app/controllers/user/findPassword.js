@@ -9,3 +9,5 @@ var onFooterbarTap = function(e) {
 function sendEmail(){
 	
 }
+
+$.titleBar.UIInit($, $.getCurrentWindow());
