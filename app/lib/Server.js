@@ -272,7 +272,7 @@
 					}
 					// activityWindow.close();
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
-					self.__isSyncing = true;
+					self.__isSyncing = false;
 					//alert("sync error " + e.__summary.msg);
 				}, activityWindow);
 			},
