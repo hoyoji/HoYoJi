@@ -1219,12 +1219,15 @@ exports.autoHideFooter = function(footer) {
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
 		var lastY, lastTop;
-		var lastFirstVisibleItem = 0;
+		var lastFirstVisibleItem = 0, fetching = false;
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-				if(e.firstVisibleItem > lastFirstVisibleItem){
+				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
+					fetching = true;
 					$.fetchNextPage();
+				} else {
+					fetching = false;
 				}
 			}
 			lastFirstVisibleItem = e.firstVisibleItem; 
@@ -1278,7 +1281,7 @@ exports.autoHideFooter = function(footer) {
 	}
 
 	if (OS_IOS) {
-		var lastDistance, direction, lastDirection = false;
+		var lastDistance, direction, lastDirection = false, fetching = false;
 		// $.table.removeEventListener("scroll", cancelBubble);
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
@@ -1299,7 +1302,6 @@ exports.autoHideFooter = function(footer) {
 			var total = offset + height;
 			var theEnd = e.contentSize.height;
 			var distance = theEnd - total;
-
 			// going down is the only time we dynamically load,
 			// going up we can safely ignore -- note here that
 			// the values will be negative so we do the opposite
@@ -1319,8 +1321,15 @@ exports.autoHideFooter = function(footer) {
 					footer.slideUp();
 				}, 50);
 				lastDirection = false;
-			} else if(distance < 0 && direction < 0 && lastDirection === true){
-				$.fetchNextPage();
+			} else if(distance < 0 && direction > 0 && lastDirection === true){
+				if(!fetching){
+					$.fetchNextPage();
+					fetching = true;				
+				}
+			}
+			if(fetching && distance >= 0){
+				fetching = false;
+				fetching = false;
 			}
 			direction = distance - lastDistance;
 			lastDistance = distance;
