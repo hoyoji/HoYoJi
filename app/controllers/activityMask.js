@@ -82,7 +82,7 @@ $.showMsg = function(msg, closeCallback) {
 	$.centerView.hide();
 	_addMsgView($.activityView, msg, closeCallback);
 };
-
+var closeCB;
 function _addMsgView(container, msg, closeCallback){
 	if (!$.msgView) {
 		$.msgView = Ti.UI.createView({
@@ -96,7 +96,7 @@ function _addMsgView(container, msg, closeCallback){
 		$.msgLabel = Ti.UI.createLabel({
 			width : Ti.UI.SIZE,
 			height : Ti.UI.SIZE,
-			text : msg,
+			//text : msg,
 			color : 'white',
 			font : {
 				fontSize : 16,
@@ -110,16 +110,18 @@ function _addMsgView(container, msg, closeCallback){
 		});
 		$.msgView.add($.saperatorView);
 	}	
+	$.msgLabel.setText(msg);
 	if (!$.confirmButton) {
 		$.confirmButton = Ti.UI.createButton({
 			title : "确定"
 		});
 		$.confirmButton.addEventListener("singletap", function() {
-			if(closeCallback){
-				closeCallback();
+			if(closeCB){
+				closeCB();
 			}
 			$.close();
 		});
+		$.msgView.add($.confirmButton);
 	}
-	$.msgView.add($.confirmButton);
+	closeCB = closeCallback;
 }

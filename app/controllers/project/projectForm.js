@@ -7,7 +7,7 @@ $.onWindowOpenDo(function() {
 if ($.$model.isNew()) {
 	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
-	$.$model.xSet("autoApportion", 0);
+	$.$model.xSet("autoApportion", 1);
 	$.$model.xGet("autoApportion");
 }
 
