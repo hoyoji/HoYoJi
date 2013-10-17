@@ -1,16 +1,19 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "借入操作"
+	});
 	if (!$.$model.isNew()) {
-		var menuSection = Ti.UI.createTableViewSection({
-			headerTitle : "借入操作"
-		});
 		menuSection.add($.createContextMenuItem("还款明细", function() {
 			Alloy.Globals.openWindow("money/moneyReturnAll", {
 				selectedBorrow : $.$model
 			});
 		}));
 	}
+	menuSection.add($.createContextMenuItem("导入图片", function() {
+		$.picture.importPictureFromGallery();
+	}));
 	return menuSection;
 };
 
