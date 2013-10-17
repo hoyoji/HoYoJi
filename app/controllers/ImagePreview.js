@@ -85,7 +85,7 @@ $.onWindowOpenDo(function() {
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
 			}, function(e) {
-				alert("下载图片错误" + e.__summary.msg);
+				alert("下载图片错误：" + e.__summary.msg);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
 			});
