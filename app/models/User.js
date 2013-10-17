@@ -230,8 +230,6 @@ exports.definition = {
 				}
 
 				var filter = {};
-				//filter[key] = this;
-				collection.xSetFilter(filter);
 
 				var idString;
 				if (this.get('id')) {
@@ -240,10 +238,13 @@ exports.definition = {
 					idString = " IS NULL ";
 				}
 				if (key === "ownerUser") {
+					collection.xSetFilter(filter);
 					collection.xFetch({
 						query : "SELECT main.* FROM " + type + " main "
 					});
 				} else {
+					filter[key] = this;
+					collection.xSetFilter(filter);
 					collection.xFetch({
 						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 					});
