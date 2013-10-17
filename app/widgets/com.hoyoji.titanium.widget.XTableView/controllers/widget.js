@@ -1218,16 +1218,16 @@ exports.autoHideFooter = function(footer) {
 
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
-		var lastY, lastTop;
-		var lastFirstVisibleItem = 0, fetching = false;
+		var lastY, lastTop, lastFirstVisibleItem = 0, fetching = false;
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
 				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
 					fetching = true;
 					$.fetchNextPage();
-				} else {
+				} else if(fetching === true){
 					fetching = false;
+					
 				}
 			}
 			lastFirstVisibleItem = e.firstVisibleItem; 
