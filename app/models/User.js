@@ -23,7 +23,9 @@ exports.definition = {
 			lastSyncTime : "TEXT",
 			defaultTransactionDisplayType : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",
-			pictureId : "TEXT"
+			pictureId : "TEXT",
+			location : "TEXT",
+			address : "TEXT"
 		},
 		defaults : {
 			newFriendAuthentication : "required",

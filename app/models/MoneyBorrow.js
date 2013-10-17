@@ -16,7 +16,9 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
-			lastClientUpdateTime : "INTEGER"
+			lastClientUpdateTime : "INTEGER",
+			location : "TEXT",
+			address : "TEXT"
 		},
 		hasMany : {
 			pictures : {

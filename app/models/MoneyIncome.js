@@ -18,7 +18,9 @@ exports.definition = {
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
 			useDetailsTotal : "INTEGER NOT NULL",
-			depositeId : "TEXT"
+			depositeId : "TEXT",
+			location : "TEXT",
+			address : "TEXT"
 		},
 		defaults : {
 			useDetailsTotal : 0

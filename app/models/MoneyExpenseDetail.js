@@ -3,6 +3,8 @@ exports.definition = {
 		columns : {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
+			price : "REAL",
+			quantity : "REAL",
 			amount : "REAL NOT NULL",
 			moneyExpenseId : "TEXT NOT NULL",
 			remark : "TEXT",
