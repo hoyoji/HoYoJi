@@ -788,6 +788,22 @@
 						errorCB({__summary : {msg : "图片不存在"}});
 					}
 				}, errorCB, "fetchImage", progressCB);
+			},
+			fetchUserImage : function(id, successCB, errorCB, progressCB) {
+				this.postData(id, function(data) {
+					if(data.length > 0){
+						data = data[0];
+						successCB(Ti.Utils.base64decode(data.base64Picture));
+					}
+				}, errorCB, "fetchUserImage", progressCB);
+			},
+			fetchUserImageIcon : function(id, successCB, errorCB, progressCB) {
+				this.postData(id, function(data) {
+					if(data.length > 0){
+						data = data[0];
+						successCB(Ti.Utils.base64decode(data.base64Picture));
+					}
+				}, errorCB, "fetchUserImageIcon", progressCB);
 			}
 		};
 	}());
