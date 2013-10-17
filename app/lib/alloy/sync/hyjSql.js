@@ -246,26 +246,31 @@ function Sync(method, model, opts) {
 					qs[0] += " LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND main.projectId = joinedtable.projectId ";
 					//q = 'prj.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR joinedtable.projectId IS NOT NULL';
 				} else if (table === "MoneyIncomeDetail") {
-					qs[0] += ' JOIN MoneyIncome mi ON main.moneyIncomeId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.id = joinedtable.projectId ';
+					qs[0] += ' JOIN MoneyIncome mi ON main.moneyIncomeId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.projectId = joinedtable.projectId ';
 					q = 'joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else if (table === "MoneyExpenseDetail") {
-					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.id = joinedtable.projectId ';
+					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.projectId = joinedtable.projectId ';
 					q = 'joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else if (table === "MoneyIncomeApportion") {
-					qs[0] += ' JOIN MoneyIncome mi ON main.moneyIncomeId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.id = joinedtable.projectId ';
+					qs[0] += ' JOIN MoneyIncome mi ON main.moneyIncomeId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.projectId = joinedtable.projectId ';
 					q = 'joinedtable.projectShareMoneyIncomeDetailOwnerDataOnly = 0 OR (joinedtable.projectShareMoneyIncomeDetailOwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else if (table === "MoneyExpenseApportion") {
-					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.id = joinedtable.projectId ';
+					qs[0] += ' JOIN MoneyExpense mi ON main.moneyExpenseId = mi.id JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + Alloy.Models.User.xGet("id") + '" AND mi.projectId = joinedtable.projectId ';
 					q = 'joinedtable.projectShareMoneyExpenseDetailOwnerDataOnly = 0 OR (joinedtable.projectShareMoneyExpenseDetailOwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else {
-					qs[0] += " JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND mi.id = joinedtable.projectId ";
+					qs[0] += " JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND main.projectId = joinedtable.projectId ";
 					q = 'joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				}
 
+				sql = qs[0];
 				if (qs.length > 1) {
-					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
-				} else {
-					sql = qs[0] + " WHERE " + q;
+					if(q){
+						sql += " WHERE (" + qs[1] + ") AND (" + q + ")";
+					} else {
+						sql += " WHERE (" + qs[1] + ")";
+					}
+				} else if(q){
+					sql += " WHERE " + q;
 				}
 			} else if (table === "Currency") {
 				
