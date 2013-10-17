@@ -771,17 +771,21 @@
 					if(data.length > 0){
 						var filePath;
 						data = data[0];
-						if (OS_ANDROID) {
-							filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+						if(data.base64Picture){
+							if (OS_ANDROID) {
+								filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+							} else {
+								filePath = Ti.Filesystem.applicationDataDirectory;
+							}
+							var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
+							f1.write(Ti.Utils.base64decode(data.base64Picture));
+							f1 = null;
+							successCB();
 						} else {
-							filePath = Ti.Filesystem.applicationDataDirectory;
+							errorCB({__summary : {msg : "图片无内容"}});
 						}
-						var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
-						f1.write(Ti.Utils.base64decode(data.base64Picture));
-						f1 = null;
-						successCB();
 					} else {
-						errorCB({__summary : {msg : "获取图片失败：图片不存在"}});
+						errorCB({__summary : {msg : "图片不存在"}});
 					}
 				}, errorCB, "fetchImage", progressCB);
 			}
