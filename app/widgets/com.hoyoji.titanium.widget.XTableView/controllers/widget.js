@@ -92,7 +92,7 @@ function createRowView(rowModel, collection) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
-			className : collection.__rowView || rowModel.config.rowView,
+			//className : collection.__rowView || rowModel.config.rowView,
 			collectionId : collection.id
 		});
 		// } else {
@@ -1218,16 +1218,16 @@ exports.autoHideFooter = function(footer) {
 
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
-		var lastY, lastTop;
-		var lastFirstVisibleItem = 0, fetching = false;
+		var lastY, lastTop, lastFirstVisibleItem = 0, fetching = false;
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
 				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
 					fetching = true;
 					$.fetchNextPage();
-				} else {
+				} else if(fetching === true){
 					fetching = false;
+					
 				}
 			}
 			lastFirstVisibleItem = e.firstVisibleItem; 

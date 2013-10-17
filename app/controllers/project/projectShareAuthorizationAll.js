@@ -6,7 +6,8 @@ $.myProjectShareAuthorizationsTable = Alloy.createWidget("com.hoyoji.titanium.wi
     top: "0",
     autoInit : "false",
     parentController : $,
-	currentWindow : $.__currentWindow
+	currentWindow : $.__currentWindow,
+	sortByField : "getFriendDisplayName()"
 });
 $.myProjectShareAuthorizationsTable.setParent($.body);
 $.myProjectShareAuthorizationsTable.UIInit();

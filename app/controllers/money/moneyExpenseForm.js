@@ -23,7 +23,7 @@ $.project.rightButton.addEventListener("singletap", function() {//未输入金�
 			closeWithoutSave : true
 		});
 	} else {
-		alert("请先输入金额,再调整分摊");
+		alert("请先输入金额，再调整分摊");
 	}
 });
 

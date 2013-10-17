@@ -17,7 +17,9 @@ exports.definition = {
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
-			useDetailsTotal : "INTEGER NOT NULL"
+			useDetailsTotal : "INTEGER NOT NULL",
+			location : "TEXT",
+			address : "TEXT"
 		},
 		defaults : {
 			useDetailsTotal : 0

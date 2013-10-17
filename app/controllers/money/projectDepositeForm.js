@@ -1,5 +1,15 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.makeContextMenu = function() {
+		var menuSection = Ti.UI.createTableViewSection({
+			headerTitle : "充值操作"
+		});
+	menuSection.add($.createContextMenuItem("导入图片", function() {
+		$.picture.importPictureFromGallery();
+	}));
+	return menuSection;
+};
+
 $.projectShareAuthorization = null;
 $.depositeFriendAccount = null;
 

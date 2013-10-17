@@ -23,7 +23,9 @@ exports.definition = {
 			lastSyncTime : "TEXT",
 			defaultTransactionDisplayType : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",
-			pictureId : "TEXT"
+			pictureId : "TEXT",
+			location : "TEXT",
+			address : "TEXT"
 		},
 		defaults : {
 			newFriendAuthentication : "required",
@@ -185,6 +187,19 @@ exports.definition = {
 						error = {
 							msg : "两次输入的密码不一样"
 						};
+					}
+					xValidateComplete(error);
+				},
+				email : function(xValidateComplete){
+					var error;
+					var email = this.xGet("email");
+					if (email) {
+						var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
+						if (!emailValidation.test(email)) {
+							error = {
+								msg : "email不合法"
+							};
+						}
 					}
 					xValidateComplete(error);
 				}

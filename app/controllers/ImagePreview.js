@@ -80,7 +80,7 @@ $.onWindowOpenDo(function() {
 			});
 			$.titleBar.setTitle("");
 
-			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function() {
+			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function(imageData) {
 				$.image.setImage(filePath + fileName);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
