@@ -18,6 +18,10 @@
 				id="password2" autoInit="false"
 			bindModel="$.$model"
 			bindAttribute="password2"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="邮箱" hintText="请输入邮箱"
+				id="email" autoInit="false"
+			bindModel="$.$model"
+			bindAttribute="email"/>
 			<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
 			items="18,30,40,50,60"
 			bindModel="$.$model"

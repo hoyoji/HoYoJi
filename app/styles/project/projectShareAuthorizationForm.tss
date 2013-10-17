@@ -5,6 +5,7 @@
 	backgroundColor: "#f5f5f5",
 	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
 	color : "black",
+	wordWrap :true,
 	fontSize : 12
 }
 "View" : {
