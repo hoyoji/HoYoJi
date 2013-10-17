@@ -125,6 +125,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var data = {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
 		password : Ti.Utils.sha1($.$model.xGet("password")),
+		email : Alloy.Globals.alloyString.trim($.$model.xGet("email")),
 		currencyId : currencyId,
 		currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
 	};
@@ -161,5 +162,5 @@ $.onWindowCloseDo(function() {
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.password2.UIInit($, $.getCurrentWindow());
-$.titleBar.UIInit($, $.getCurrentWindow());
 $.email.UIInit($, $.getCurrentWindow());
+$.titleBar.UIInit($, $.getCurrentWindow());
