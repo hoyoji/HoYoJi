@@ -35,8 +35,8 @@ exports.definition = {
 		hasMany : {
 			pictures : {
 				type : "Picture",
-				attribute : "ownerUser",
-				cascadeDelete : true
+				attribute : "record",
+				cascadeDelete : 1
 			},
 			projects : {
 				type : "Project",
