@@ -10,11 +10,30 @@ function openAbout() {
 	Alloy.Globals.openWindow("setting/about");
 }
 
-$.onWindowOpenDo(function(){
-	$.currentVersion.addEventListener("click",openAbout);
+function openUserForm() {
+	Alloy.Globals.openWindow("user/huserForm", {
+		$model : Alloy.Models.User
+	});
+}
+
+$.logout.addEventListener("singletap", function(e) {
+	e.cancelBubble = true;
 });
-$.onWindowCloseDo(function(){
-	$.currentVersion.removeEventListener("click",openAbout);
+
+$.userView.addEventListener("singletap", function(e) {
+	if (e.source !== $.logout) {
+		Alloy.Globals.openWindow("user/huserForm", {
+			$model : Alloy.Models.User
+		});
+	}
+});
+
+$.onWindowOpenDo(function() {
+	$.currentVersion.addEventListener("click", openAbout);
+});
+$.onWindowCloseDo(function() {
+	$.currentVersion.removeEventListener("click", openAbout);
+	// $.userView.removeEventListener("click", openUserForm);
 });
 
 $.currentVersionNumber.setText(Ti.App.version);

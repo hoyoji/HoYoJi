@@ -1,0 +1,29 @@
+<Alloy>
+	<View class="container" title="用户资料" saveableContainer="true"  top="0" bottom="0">
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
+		addModeTitle="新增用户资料" readModeTitle="用户资料" editModeTitle="修改用户资料"/>
+		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#ebeeee">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
+				id="picture" autoInit="false"
+				bindModel="$.$model"
+				bindAttribute="picture"
+				bindAttributeIsModel="id"/>
+				<View id="ownerUser" height="42" backgroundColor="#f5f5f5">
+					<!-- <View width="3" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"/> -->
+					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">用户名</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己" right="0" width="70%"
+					id="userName" autoInit="false"
+					bindModel="$.$model"
+					bindAttribute="userName"/>
+					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+				</View>
+				<Widget id="changePassword" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" color="#2E8B57"
+				backgroundColor="#e9f3f0"
+				autoInit="false"
+				title="修改密码"/>
+			</ScrollView>
+		</View>
+	</View>
+</Alloy>
