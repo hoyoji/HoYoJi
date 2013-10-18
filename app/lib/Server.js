@@ -766,16 +766,18 @@
 					}
 				});
 			},
-			fetchImage : function(id, successCB, errorCB, progressCB) {
+			fetchImage : function(id, successCB, errorCB, fetchImageTarget, filePath, progressCB) {
+				fetchImageTarget = fetchImageTarget || "fetchImage";
 				this.postData(id, function(data) {
 					if(data.length > 0){
-						var filePath;
 						data = data[0];
 						if(data.base64Picture){
-							if (OS_ANDROID) {
-								filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
-							} else {
-								filePath = Ti.Filesystem.applicationDataDirectory;
+							if(!filePath){
+								if (OS_ANDROID) {
+									filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+								} else {
+									filePath = Ti.Filesystem.applicationDataDirectory;
+								}
 							}
 							var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64Picture));
@@ -787,21 +789,44 @@
 					} else {
 						errorCB({__summary : {msg : "图片不存在"}});
 					}
-				}, errorCB, "fetchImage", progressCB);
+				}, errorCB, fetchImageTarget, progressCB);
 			},
-			fetchUserImage : function(id, successCB, errorCB, progressCB) {
-				this.postData(id, function(data) {
-					if(data.length > 0){
-						data = data[0];
-						successCB(Ti.Utils.base64decode(data.base64Picture));
-					}
-				}, errorCB, "fetchUserImage", progressCB);
-			},
+			// fetchUserImage : function(id, successCB, errorCB, progressCB) {
+				// this.postData(id, function(data) {
+					// if(data.length > 0){
+						// data = data[0];
+						// successCB(Ti.Utils.base64decode(data.base64Picture));
+					// }
+				// }, errorCB, "fetchUserImage", progressCB);
+			// },
 			fetchUserImageIcon : function(id, successCB, errorCB, progressCB) {
+				if(!id){
+					errorCB();
+					return;
+				}
 				this.postData(id, function(data) {
 					if(data.length > 0){
 						data = data[0];
-						successCB(Ti.Utils.base64decode(data.base64Picture));
+						if(data.base64PictureIcon){
+							if(!filePath){
+								if (OS_ANDROID) {
+									filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDataDirectory).nativePath + "/";
+								} else {
+									filePath = Ti.Filesystem.tempDataDirectory;
+								}
+							}
+							var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
+							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
+							f1 = null;
+							delete data.base64PictureIcon;
+							var id = data.id; // prevent it to be added to dataStore during object initialization
+							delete data.id;
+							var picture = Alloy.createModel("Picture", data);
+							picture.attributes["id"] = id;
+							successCB(picture);
+						}
+					} else {
+						errorCB();
 					}
 				}, errorCB, "fetchUserImageIcon", progressCB);
 			}

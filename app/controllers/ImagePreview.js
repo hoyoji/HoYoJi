@@ -65,7 +65,7 @@ $.onWindowOpenDo(function() {
 		if (f.exists()) {
 			f = null;
 			$.image.setImage(filePath + fileName);
-		} else if (!currentImage.isNew()) {
+		} else {
 			f = null;
 			$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
 			var style;
@@ -88,7 +88,7 @@ $.onWindowOpenDo(function() {
 				alert("下载图片错误：" + e.__summary.msg);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
-			});
+			}, $.$attrs.fetchImageTarget, filePath);
 		}
 	}
 });
