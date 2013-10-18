@@ -11,9 +11,7 @@ function openAbout() {
 }
 
 function openUserForm() {
-	Alloy.Globals.openWindow("user/huserForm", {
-		$model : Alloy.Models.User
-	});
+	Alloy.Globals.openWindow("user/huserForm");
 }
 
 $.logout.addEventListener("singletap", function(e) {
