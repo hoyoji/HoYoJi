@@ -1,5 +1,7 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
+$.setSaveableMode("read");
+
 function onFooterbarTap(e) {
 	if(e.source.id === "commit"){
 		updateUser();
@@ -8,6 +10,7 @@ function onFooterbarTap(e) {
 
 function updateUser() {
 	$.picture.autoSave();
+	$.$model._xSave();
 }
 
 function changePassword() {

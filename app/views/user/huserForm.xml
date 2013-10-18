@@ -1,8 +1,7 @@
 <Alloy>
 	<View class="container" title="用户资料" saveableContainer="true"  top="0" bottom="0">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
-		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
-		addModeTitle="新增用户资料" readModeTitle="用户资料" editModeTitle="修改用户资料"/>
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false" title="用户资料"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#ebeeee">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="42" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
