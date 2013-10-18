@@ -1,6 +1,14 @@
-Alloy.Globals.extendsBaseFormController($, arguments[0]);
+Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.setSaveableMode("read");
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "用户操作"
+	});
+	menuSection.add($.createContextMenuItem("导入图片", function() {
+		$.picture.importPictureFromGallery();
+	}));
+	return menuSection;
+};
 
 function onFooterbarTap(e) {
 	if(e.source.id === "commit"){
@@ -9,8 +17,7 @@ function onFooterbarTap(e) {
 }
 
 function updateUser() {
-	$.picture.autoSave();
-	$.$model._xSave();
+	Alloy.Models.User._xSave();
 }
 
 function changePassword() {

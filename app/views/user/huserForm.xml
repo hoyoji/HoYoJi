@@ -3,10 +3,10 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false" title="用户资料"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#ebeeee">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="42" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" autoSave="true"
 				id="picture" autoInit="false"
-				bindModel="$.$model"
+				bindModel="User"
 				bindAttribute="picture"
 				bindAttributeIsModel="id"/>
 				<View id="ownerUser" height="42" backgroundColor="#f5f5f5">
@@ -14,7 +14,7 @@
 					<Label left="8" width="30%" height="Ti.UI.FILL" id="friendUserLabel">用户名</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  hintText="自己" right="0" width="70%"
 					id="userName" autoInit="false"
-					bindModel="$.$model"
+					bindModel="User"
 					bindAttribute="userName"/>
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>

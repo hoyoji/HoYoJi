@@ -800,10 +800,6 @@
 				// }, errorCB, "fetchUserImage", progressCB);
 			// },
 			fetchUserImageIcon : function(id, successCB, errorCB, progressCB) {
-				if(!id){
-					errorCB();
-					return;
-				}
 				this.postData(id, function(data) {
 					if(data.length > 0){
 						data = data[0];

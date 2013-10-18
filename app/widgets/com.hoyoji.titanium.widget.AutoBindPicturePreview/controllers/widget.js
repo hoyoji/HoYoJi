@@ -48,7 +48,8 @@ $.onWindowOpenDo(function() {
 
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);
-		if($.$attrs.fetchRemoteImage){
+		if($.$attrs.fetchRemoteImage && value){
+			$.showActivityIndicator();
 			Alloy.Globals.Server[$.$attrs.fetchRemoteImage](value, function(remotePicture){
 				picture = remotePicture;
 				var f;
@@ -59,12 +60,14 @@ $.onWindowOpenDo(function() {
 					f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + picture.xGet("id") + "_icon." + picture.xGet("pictureType");
 				}
 				$.$view.setBackgroundImage(f);
+				$.hideActivityIndicator();
 			}, function(){
 				if ($.$attrs.defaultImage) {
 					$.$view.setBackgroundImage($.$attrs.defaultImage+".png");
 				} else {
 					$.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
 				}
+				$.hideActivityIndicator();
 			});
 			return;
 		}
