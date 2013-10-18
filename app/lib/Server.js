@@ -799,8 +799,8 @@
 					// }
 				// }, errorCB, "fetchUserImage", progressCB);
 			// },
-			fetchUserImageIcon : function(id, successCB, errorCB, progressCB) {
-				this.postData(id, function(data) {
+			fetchUserImageIcon : function(pid, successCB, errorCB, progressCB) {
+				this.postData(pid, function(data) {
 					if(data.length > 0){
 						data = data[0];
 						if(data.base64PictureIcon){
