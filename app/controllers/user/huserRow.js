@@ -78,5 +78,6 @@ function sendAddFriendMessage(friendlength) {
 }
 
 $.userName.UIInit($, $.getCurrentWindow());
+//$.picture.UIInit($, $.getCurrentWindow());
 
 
