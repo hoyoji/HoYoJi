@@ -17,12 +17,13 @@ function onFooterbarTap(e) {
 }
 
 function updateUser() {
+	$.picture.autoSave();
 	Alloy.Models.User._xSave();
 }
 
 function changePassword() {
 	Alloy.Globals.openWindow("user/changePassword", {
-		currentUser : $.$model
+		currentUser : Alloy.Models.User
 	});
 }
 
