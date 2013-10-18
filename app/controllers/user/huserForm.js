@@ -1,17 +1,22 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
-$.setSaveableMode("edit");
+function onFooterbarTap(e) {
+	if(e.source.id === "commit"){
+		updateUser();
+	}
+}
+
+function updateUser() {
+	$.picture.autoSave();
+}
 
 function changePassword() {
-
+	Alloy.Globals.openWindow("user/changePassword", {
+		currentUser : $.$model
+	});
 }
 
 $.changePassword.addEventListener("singletap", changePassword);
-
-$.onSave = function(saveEndCB, saveErrorCB) {
-	$.picture.xAddToSave($);
-	$.saveModel(saveEndCB, saveErrorCB);
-};
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.userName.UIInit($, $.getCurrentWindow());

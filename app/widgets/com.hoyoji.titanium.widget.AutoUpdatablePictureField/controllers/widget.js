@@ -57,6 +57,12 @@ $.xAddToSave = function(controller) {
 	});
 };
 
+$.autoSave = function (){
+	$.__newPictures.forEach(function(picture) {
+		picture.xSave();
+	});
+};
+
 function getImage(event) {
 	if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
 		var imageType = event.media.mimeType.slice(6);

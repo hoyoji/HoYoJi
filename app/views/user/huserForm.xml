@@ -4,7 +4,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
 		addModeTitle="新增用户资料" readModeTitle="用户资料" editModeTitle="修改用户资料"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#ebeeee">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="42" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
 				id="picture" autoInit="false"
 				bindModel="$.$model"
@@ -24,6 +24,9 @@
 				autoInit="false"
 				title="修改密码"/>
 			</ScrollView>
+			<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" bottom="0" onSingletap="onFooterbarTap"
+			buttons="提交" imagesFolder=""
+			ids="commit"/>
 		</View>
 	</View>
 </Alloy>
