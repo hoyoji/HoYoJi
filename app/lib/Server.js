@@ -804,14 +804,13 @@
 					if(data.length > 0){
 						data = data[0];
 						if(data.base64PictureIcon){
-							if(!filePath){
-								if (OS_ANDROID) {
-									filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDataDirectory).nativePath + "/";
-								} else {
-									filePath = Ti.Filesystem.tempDataDirectory;
-								}
+							var filePath;
+							if (OS_ANDROID) {
+								filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
+							} else {
+								filePath = Ti.Filesystem.tempDirectory;
 							}
-							var f1 = Ti.Filesystem.getFile(filePath, data.id + "." + data.pictureType);
+							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
 							f1 = null;
 							delete data.base64PictureIcon;
@@ -820,6 +819,8 @@
 							var picture = Alloy.createModel("Picture", data);
 							picture.attributes["id"] = id;
 							successCB(picture);
+						} else {
+							errorCB();
 						}
 					} else {
 						errorCB();
