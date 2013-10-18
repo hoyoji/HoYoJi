@@ -88,7 +88,7 @@ $.onWindowOpenDo(function() {
 				alert("下载图片错误：" + e.__summary.msg);
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
-			}, $.$attrs.fetchImageUrl, filePath);
+			}, $.$attrs.fetchImageTarget, filePath);
 		}
 	}
 });
