@@ -10,26 +10,14 @@ $.makeContextMenu = function() {
 	return menuSection;
 };
 
-function onFooterbarTap(e) {
-	if(e.source.id === "commit"){
-		updateUser();
-	}
-}
-
-function updateUser() {
-	$.picture.autoSave();
-	Alloy.Models.User._xSave();
-}
-
 function changePassword() {
-	Alloy.Globals.openWindow("user/changePassword", {
-		currentUser : Alloy.Models.User
+	Alloy.Globals.openWindow("user/changePasswordForm", {
+		$model : Alloy.Models.User
 	});
 }
 
 $.changePassword.addEventListener("singletap", changePassword);
 
 $.picture.UIInit($, $.getCurrentWindow());
-$.userName.UIInit($, $.getCurrentWindow());
 $.changePassword.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());

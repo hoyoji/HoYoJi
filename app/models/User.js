@@ -286,6 +286,9 @@ exports.definition = {
 			},
 			getLocalCurrencySymbol : function() {
 				return this.xGet("activeCurrency").xGet("symbol");
+			}, 
+			canEdit : function(){
+				return this === Alloy.Models.User;
 			}
 		});
 		return Model;

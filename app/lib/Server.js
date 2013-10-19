@@ -492,7 +492,7 @@
 							}
 							totalLenStr = "共" + totalLen;
 						}
-						var completed = progress > 0 && progress < 1 ? (progress * 100) + "%, " : "";
+						var completed = progress > 0 && progress < 1 ? (progress * 100).toFixed(2) + "%, " : "";
 						activityWindow.progressStep(1, "下载数据(" + completed + totalLenStr + ")");
 					}
 				});
@@ -548,12 +548,11 @@
 								totalLen += " Bytes";
 							} else {
 								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";
-								;
 							}
 							totalLenStr = "共" + totalLen;
 						}
 
-						var completed = progress > 0 && progress < 1 ? (progress * 100) + "%, " : "";
+						var completed = progress > 0 && progress < 1 ? (progress * 100).toFixed(2) + "%, " : "";
 						activityWindow.progressStep(3, "上传数据(" + completed + totalLenStr + ")");
 					}
 				});
