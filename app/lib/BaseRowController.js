@@ -260,7 +260,9 @@
 
 					doExpandSection();
 				});
-				enableOpenDetailButton();
+				setTimeout(function(){
+					enableOpenDetailButton();
+				}, 1);
 			}
 
 			function showErrorMsg(msg) {
