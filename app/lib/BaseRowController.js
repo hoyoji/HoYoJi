@@ -18,7 +18,7 @@
 					if(OS_IOS){
 						openChildButton.setImage("/images/childButtonDisabled@2x.png");
 					} else {
-						openChildButton.setImage("/images/childButtonDisabled@2x.png");
+						openChildButton.setImage("/images/childButtonDisabled.png");
 					}
 				} else {
 					openChildButton.setEnabled(true);
@@ -139,7 +139,7 @@
 			};
 			if (hasChild) {
 				if (OS_IOS) {
-					var childButtonImage = "/images/childButton@2x.png";
+					var childButtonImage = "/images/childButtonDisabled@2x.png";
 					var openChildButton = Ti.UI.createButton({
 						// title : ">",
 						image : childButtonImage,
@@ -154,7 +154,7 @@
 						style : 0
 					});
 				} else {
-					var childButtonImage = "/images/childButton.png";
+					var childButtonImage = "/images/childButtonDisabled.png";
 					var openChildButton = Ti.UI.createButton({
 						// title : ">",
 						image : childButtonImage,
@@ -181,7 +181,9 @@
 
 					$.getParentController().createChildTable($.getChildTitle(), $.getChildCollections());
 				});
-				enableOpenChildButton();
+				setTimeout(function(){
+					enableOpenChildButton();
+				},1);
 			}
 
 			if (hasDetail) {
