@@ -15,8 +15,18 @@
 			function enableOpenChildButton() {
 				if (getChildCount() === 0) {
 					openChildButton.setEnabled(false);
+					if(OS_IOS){
+						openChildButton.setImage("/images/childButtonDisabled@2x.png");
+					} else {
+						openChildButton.setImage("/images/childButtonDisabled@2x.png");
+					}
 				} else {
 					openChildButton.setEnabled(true);
+					if(OS_IOS){
+						openChildButton.setImage("/images/childButton.png");
+					} else {
+						openChildButton.setImage("/images/childButton.png");
+					}
 				}
 			}
 
