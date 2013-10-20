@@ -140,35 +140,22 @@
 			if (hasChild) {
 				if (OS_IOS) {
 					var childButtonImage = "/images/childButtonDisabled@2x.png";
-					var openChildButton = Ti.UI.createButton({
-						// title : ">",
-						image : childButtonImage,
-						height : Ti.UI.FILL,
-						width : 42,
-						backgroundColor : "transparent",
-						color : "transparent",
-						right : 0,
-						borderWidth : 0,
-						borderColor : null,
-						// borderRadius : 0,
-						style : 0
-					});
 				} else {
 					var childButtonImage = "/images/childButtonDisabled.png";
-					var openChildButton = Ti.UI.createButton({
-						// title : ">",
-						image : childButtonImage,
-						height : Ti.UI.FILL,
-						width : 42,
-						backgroundColor : "transparent",
-						color : "transparent",
-						right : 0,
-						// borderWidth : 0,
-						borderColor : null,
-						// borderRadius : 0,
-						style : 0
-					});
 				}
+				var openChildButton = Ti.UI.createButton({
+					// title : ">",
+					image : childButtonImage,
+					height : Ti.UI.FILL,
+					width : 42,
+					backgroundColor : "transparent",
+					color : "transparent",
+					right : 0,
+					borderWidth : 0,
+					borderColor : null,
+					style : 0,
+					disabled : true
+				});
 				$.$view.add(openChildButton);
 				$.content.setRight(42);
 				openChildButton.addEventListener("singletap", function(e) {
