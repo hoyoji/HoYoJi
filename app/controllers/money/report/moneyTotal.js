@@ -4,11 +4,11 @@ var totalField = $.$attrs.totalField, value = 0, query, queryApportion, queryLen
 if ($.$attrs.modelType === "PersonalIncome") {
 	querySelect = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.amount * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyIncome main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 	querySelectBorrow = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.amount * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyBorrow main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
-	querySelectPaybackInterest = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.interest * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL, SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1)) AS TOTAL2 FROM MoneyPayback main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+	querySelectPaybackInterest = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN (main.amount + main.interest) / IFNULL(exma.rate, 1) ELSE (main.amount + main.interest) * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyPayback main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else if ($.$attrs.modelType === "PersonalExpense") {
 	querySelect = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.amount * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyExpense main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 	querySelectLend = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.amount * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyLend main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId  LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
-	querySelectReturnInterest = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount / IFNULL(exma.rate, 1) ELSE main.interest * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL, SUM(main.amount * main.exchangeRate / IFNULL(ex.rate, 1)) AS TOTAL2 FROM MoneyReturn main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+	querySelectReturnInterest = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN (main.amount + main.interest) / IFNULL(exma.rate, 1) ELSE (main.amount + main.interest) * main.exchangeRate / IFNULL(ex.rate, 1) END) AS TOTAL FROM MoneyReturn main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.foreignCurrencyId = ma.currencyId AND exma.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else if ($.$attrs.modelType === "PersonalApportionedPayment") {
 	querySelect = "SELECT SUM(" + totalField + ") AS TOTAL FROM MoneyIncomeApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 	querySelectApportion = "SELECT SUM(" + totalField + ") AS TOTAL FROM MoneyExpenseApportion main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
@@ -128,8 +128,7 @@ exports.refresh = function() {
 			config : config
 		});
 		model = new Model({
-			TOTAL : 0,
-			TOTAL2 : 0
+			TOTAL : 0
 		});
 		model.fetch({
 			query : queryBorrow
@@ -141,13 +140,12 @@ exports.refresh = function() {
 			config : config
 		});
 		model = new Model({
-			TOTAL : 0,
-			TOTAL2 : 0
+			TOTAL : 0
 		});
 		model.fetch({
 			query : queryPaybackInterest
 		});
-		value += model.get("TOTAL") || 0 + model.get("TOTAL2") || 0;
+		value += model.get("TOTAL") || 0;
 	} else if ($.$attrs.modelType === "PersonalExpense") {
 		// config = Alloy.createModel("MoneyExpenseApportion").config;
 		// Model = Alloy.M("MoneyExpenseApportion", {
@@ -166,8 +164,7 @@ exports.refresh = function() {
 			config : config
 		});
 		model = new Model({
-			TOTAL : 0,
-			TOTAL2 : 0
+			TOTAL : 0
 		});
 		model.fetch({
 			query : queryLend
@@ -179,13 +176,12 @@ exports.refresh = function() {
 			config : config
 		});
 		model = new Model({
-			TOTAL : 0,
-			TOTAL2 : 0
+			TOTAL : 0
 		});
 		model.fetch({
 			query : queryReturnInterest
 		});
-		value += model.get("TOTAL") || 0 + model.get("TOTAL2") || 0;
+		value += model.get("TOTAL") || 0;
 	} else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
 		config = Alloy.createModel("MoneyExpenseApportion").config;
 		Model = Alloy.M("MoneyExpenseApportion", {
