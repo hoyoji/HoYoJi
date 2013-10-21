@@ -288,7 +288,7 @@ exports.definition = {
 				return this.xGet("activeCurrency").xGet("symbol");
 			}, 
 			canEdit : function(){
-				return this === Alloy.Models.User;
+				return this === Alloy.Models.User || !Alloy.Models.User;
 			}
 		});
 		return Model;

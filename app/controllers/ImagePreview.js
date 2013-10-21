@@ -43,11 +43,26 @@ function saveToGallery() {
 	}
 }
 
-$.onWindowOpenDo(function() {
-	if ($.getCurrentWindow().$attrs.image) {
-		currentImage = $.getCurrentWindow().$attrs.image;
+// <View>
+// <ScrollView platform="ios" id="scrollView" minZoomScale="0.1" maxZoomScale="10" >
+// <ImageView id="image" width="Ti.UI.SIZE" height="Ti.UI.SIZE"/>
+// </ScrollView>
+// <ImageView id="image" platform="android" width="Ti.UI.SIZE" height="Ti.UI.SIZE" canScale="true" enableZoomControls="true"/>
+// </View>
+function createPage(currentImage){
 		var filePath, fileName = currentImage.xGet("id") + "." + currentImage.xGet("pictureType");
 		if (OS_IOS) {
+			var scrollView = Ti.UI.createScrollView({
+				id : "scrollView",
+				minZoomScale : 0.1,
+				maxZoomScale : 10
+			});
+			var image = Ti.UI.createImageView({
+				width : Ti.UI.SIZE,
+				height : Ti.UI.SIZE
+			});
+			scrollView.add(image);
+			$.body.addView(scrollView);
 			if (currentImage.isNew()) {
 				filePath = Ti.Filesystem.tempDirectory;
 			} else {
@@ -55,6 +70,18 @@ $.onWindowOpenDo(function() {
 			}
 		}
 		if (OS_ANDROID) {
+			var view = Ti.UI.createView({
+				width : Ti.UI.FILL,
+				height : Ti.UI.FILL
+			});
+			var image = Ti.UI.createImageView({
+				width : Ti.UI.SIZE,
+				height : Ti.UI.SIZE,
+				canScale : true,
+				enableZoomControls : true
+			});
+			view.add(image);
+			$.body.addView(view);
 			if (currentImage.isNew()) {
 				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
 			} else {
@@ -65,14 +92,14 @@ $.onWindowOpenDo(function() {
 		if (f.exists()) {
 			if(OS_IOS){
 				var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
-				$.scrollView.setZoomScale(zoomScale);
+				scrollView.setZoomScale(zoomScale);
 			}
 			
 			f = null;
-			$.image.setImage(filePath + fileName);
+			image.setImage(filePath + fileName);
 		} else {
 			f = null;
-			$.image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
+			image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
 			var style;
 			if (OS_IOS) {
 				style = Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN;
@@ -90,10 +117,10 @@ $.onWindowOpenDo(function() {
 				if (f.exists()) {
 					if(OS_IOS){
 						var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
-						$.scrollView.setZoomScale(zoomScale);
+						scrollView.setZoomScale(zoomScale);
 					}
 					f = null;
-					$.image.setImage(filePath + fileName);
+					image.setImage(filePath + fileName);
 				}
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
@@ -103,6 +130,19 @@ $.onWindowOpenDo(function() {
 				$.titleBar.setTitle("图片预览");
 			}, $.$attrs.fetchImageTarget, filePath);
 		}
+}
+
+$.onWindowOpenDo(function() {
+	if($.getCurrentWindow().$attrs.images){
+		for(var i = 0; i < $.getCurrentWindow().$attrs.images.length; i++){
+			var image = $.getCurrentWindow().$attrs.images.at ? $.getCurrentWindow().$attrs.images.at(i) : $.getCurrentWindow().$attrs.images[i];
+			createPage(image);
+			if(image === $.getCurrentWindow().$attrs.image){
+				$.body.setCurrentPage(i);
+			}
+		}
+	} else if ($.getCurrentWindow().$attrs.image) {
+		createPage($.getCurrentWindow().$attrs.image);
 	}
 });
 

@@ -95,8 +95,6 @@ $.onWindowOpenDo(function() {
 		model.off("sync", updatePicture);
 	});
 
-	console.info(model + " AutoBind Label get model : " + $.$attrs.bindModel + " from " + $.getParentController().$view.id);
-
 	model.on("sync", updatePicture);
 
 	updatePicture(model);
@@ -107,7 +105,9 @@ $.onWindowOpenDo(function() {
 			return;
 		Alloy.Globals.openWindow("ImagePreview", {
 			title : "图片预览",
-			image : picture
+			image : picture,
+			images : model.xGet("pictures"),
+			scrollingEnabled : false
 		});
 	});
 });
