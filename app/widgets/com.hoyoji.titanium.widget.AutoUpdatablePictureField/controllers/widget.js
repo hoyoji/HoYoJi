@@ -85,7 +85,8 @@ function getImage(event) {
 
 		function previewImage(e) {
 			Alloy.Globals.openWindow("ImagePreview", {
-				image : newPicture
+				image : newPicture,
+				images : $.__newPictures
 			});
 		}
 
@@ -238,7 +239,8 @@ $.setValue = function(value) {
 
 		function previewMainPicture(e) {
 			Alloy.Globals.openWindow("ImagePreview", {
-				image : $.__bindAttributeIsModel
+				image : $.__bindAttributeIsModel,
+				images : $.__newPictures
 			});
 		}
 
@@ -321,7 +323,8 @@ function createImage(picture) {
 
 	function previewImage(e) {
 		Alloy.Globals.openWindow("ImagePreview", {
-			image : picture
+			image : picture,
+			images : $.__newPictures
 		});
 	}
 
@@ -359,7 +362,8 @@ function appendTempImageToEnd(newPicture) {
 
 	function previewImage(e) {
 		Alloy.Globals.openWindow("ImagePreview", {
-			image : newPicture
+			image : newPicture,
+			images : $.__newPictures
 		});
 	}
 
