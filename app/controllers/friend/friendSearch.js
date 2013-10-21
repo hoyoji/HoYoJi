@@ -17,12 +17,12 @@ function doSearch(e) {
 	if (loading) {
 		return;
 	}
-	if(!$.search.getValue()){
+	if(!Alloy.Globals.alloyString.trim($.search.getValue())){
 		alert("请输入好友查询条件");
 		$.search.focus();
 		return;
 	}
-	searchCriteria = $.search.getValue();
+	searchCriteria = Alloy.Globals.alloyString.trim($.search.getValue());
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	

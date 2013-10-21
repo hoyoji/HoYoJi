@@ -57,14 +57,9 @@ $.xAddToSave = function(controller) {
 	});
 };
 
-$.autoSave = function (){
-	$.__newPictures.forEach(function(picture) {
-		picture.xSave();
-	});
-};
-
 function getImage(event) {
 	if (event.mediaType === Ti.Media.MEDIA_TYPE_PHOTO) {
+		var imageView;
 		var imageType = event.media.mimeType.slice(6);
 		var pictureIcon = Alloy.Globals.creatImageThumbnail(event.media, 56);
 
@@ -90,32 +85,10 @@ function getImage(event) {
 
 		function previewImage(e) {
 			Alloy.Globals.openWindow("ImagePreview", {
-				image : newPicture
+				image : newPicture,
+				images : $.__newPictures
 			});
 		}
-
-		if (!mainPicture) {
-			$.__bindAttributeIsModel = newPicture;
-			//$.field.setImage(pictureIcon);
-			$.fieldContainer.setImage(pictureIcon);
-			// if (firstTimeSetValue) {
-			// firstTimeSetValue = false;
-			mainPicture = newPicture;
-			// }
-			$.field.fireEvent("change");
-			$.fieldContainer.addEventListener("longpress", showOptionsDialog);
-			$.fieldContainer.addEventListener("singletap", previewImage);
-		} else {
-			var imageView = createImageView(pictureIcon, newPicture.pictureType, true);
-			imageView.addEventListener("longpress", showOptionsDialog);
-			imageView.addEventListener("singletap", previewImage);
-
-			if ($.__dirtyCount === 0) {
-				$.becameDirty();
-			}
-		}
-
-		// var pictureIcon = imageView.toImage();
 
 		function xDestroyPictureView() {
 			newPicture.off("xdestroy", xDestroyPictureView);
@@ -148,7 +121,6 @@ function getImage(event) {
 		function savePicture() {
 			newPicture.off("sync", savePicture);
 			newPicture.off("xdiscard", discardPicture);
-			newPicture.off("xdestroy", xDestroyPictureView);
 			var fName = newPicture.xGet("id"), f;
 			f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, fName + "_icon." + imageType);
 			f.write(pictureIcon);
@@ -164,6 +136,32 @@ function getImage(event) {
 		newPicture.on("xdestroy", xDestroyPictureView);
 		newPicture.on("xdiscard", discardPicture);
 		newPicture.on("sync", savePicture);
+		
+		$.onWindowCloseDo(function(){
+			newPicture.off("xdestroy", xDestroyPictureView);
+		});
+		
+		if($.$attrs.autoSave === "true") {
+			newPicture._xSave();	
+		}		
+		
+		if (!mainPicture) {
+			$.__bindAttributeIsModel = newPicture;
+			$.fieldContainer.setImage(pictureIcon);
+			mainPicture = newPicture;
+			$.field.fireEvent("change");
+			$.fieldContainer.addEventListener("longpress", showOptionsDialog);
+			$.fieldContainer.addEventListener("singletap", previewImage);
+		} else {
+			imageView = createImageView(pictureIcon, newPicture.pictureType, true);
+			imageView.addEventListener("longpress", showOptionsDialog);
+			imageView.addEventListener("singletap", previewImage);
+
+			if ($.__dirtyCount === 0 && $.$attrs.autoSave !== "true") {
+				$.becameDirty();
+			}
+		}
+		
 	} else {
 		alert("此设备不支持视频");
 	}
@@ -220,6 +218,9 @@ $.takePicture.addEventListener("singletap", function() {
 // }
 
 $.setValue = function(value) {
+	if(value === $.__bindAttributeIsModel){
+		return;
+	}
 	var previousModel = $.__bindAttributeIsModel = value;
 	$.$attrs.bindAttributeIsModel && value && ($.$attrs.bindAttributeIsModel.endsWith("()") ? value = $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel.slice(0, -2)]() : value = $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel));
 
@@ -238,7 +239,8 @@ $.setValue = function(value) {
 
 		function previewMainPicture(e) {
 			Alloy.Globals.openWindow("ImagePreview", {
-				image : $.__bindAttributeIsModel
+				image : $.__bindAttributeIsModel,
+				images : $.__newPictures
 			});
 		}
 
@@ -321,7 +323,8 @@ function createImage(picture) {
 
 	function previewImage(e) {
 		Alloy.Globals.openWindow("ImagePreview", {
-			image : picture
+			image : picture,
+			images : $.__newPictures
 		});
 	}
 
@@ -359,7 +362,8 @@ function appendTempImageToEnd(newPicture) {
 
 	function previewImage(e) {
 		Alloy.Globals.openWindow("ImagePreview", {
-			image : newPicture
+			image : newPicture,
+			images : $.__newPictures
 		});
 	}
 
