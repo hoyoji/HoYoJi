@@ -294,6 +294,9 @@ if ($.saveableMode === "read") {
 						selectedDepositeMsg.xAddToSave($);
 						editData.push(selectedDepositeMsg.toJSON());
 						addData.push($.$model.toJSON());
+						if($.$model.xGet("picture")){
+							addData.push($.$model.xGet("picture").toJSON());
+						}
 						Alloy.Globals.Server.postData(addData, function(data) {
 							Alloy.Globals.Server.putData(editData, function(data) {
 								//把服务器上创建的充值支出和充值发起者的ProjectShareAuthorization更新到本地

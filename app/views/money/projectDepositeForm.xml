@@ -5,7 +5,7 @@
 		addModeTitle="新增充值支出" readModeTitle="充值支出详细" editModeTitle="修改充值支出"/>
 		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" defaultImage="/images/camera.png"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField"
 					id="picture" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="picture"
