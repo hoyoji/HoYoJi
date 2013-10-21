@@ -63,6 +63,11 @@ $.onWindowOpenDo(function() {
 		}
 		var f = Ti.Filesystem.getFile(filePath, fileName);
 		if (f.exists()) {
+			if(OS_IOS){
+				var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
+				$.scrollView.setZoomScale(zoomScale);
+			}
+			
 			f = null;
 			$.image.setImage(filePath + fileName);
 		} else {
@@ -80,8 +85,16 @@ $.onWindowOpenDo(function() {
 			});
 			$.titleBar.setTitle("");
 
-			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function(imageData) {
-				$.image.setImage(filePath + fileName);
+			Alloy.Globals.Server.fetchImage(currentImage.xGet("id"), function() {
+				var f = Ti.Filesystem.getFile(filePath, fileName);
+				if (f.exists()) {
+					if(OS_IOS){
+						var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
+						$.scrollView.setZoomScale(zoomScale);
+					}
+					f = null;
+					$.image.setImage(filePath + fileName);
+				}
 				$.titleBar.hideActivityIndicator();
 				$.titleBar.setTitle("图片预览");
 			}, function(e) {

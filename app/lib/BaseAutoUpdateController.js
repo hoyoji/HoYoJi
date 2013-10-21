@@ -63,6 +63,9 @@
 
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
+				if(value === $.__bindAttributeIsModel){
+					return;
+				}
 				$.__bindAttributeIsModel = value;
 				if ($.$attrs.bindAttributeIsModel && value) {
 					if ($.$attrs.bindAttributeIsModel.endsWith("()")) {
@@ -290,11 +293,11 @@
 						} else {
 							model[attribute] = val;
 						}
+					}
+					if (model.xGet) {
 						if ($.$attrs.autoSave === "true") {
 							model._xSave();
 						}
-					}
-					if (model.xGet) {
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
 						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {

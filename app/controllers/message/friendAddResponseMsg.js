@@ -114,22 +114,22 @@ function addFriend(saveEndCB, saveErrorCB) {
 	// }
 	var date = (new Date()).toISOString();
 
-	Alloy.Globals.Server.getData([{
-		__dataType : "User",
-		id : $.$model.xGet("fromUserId")
-	}], function(data) {
-
-		var userData = data[0][0];
-		var id = userData.id;
+	// Alloy.Globals.Server.getData([{
+		// __dataType : "User",
+		// id : $.$model.xGet("fromUserId")
+	// }], function(data) {
+// 
+		// var userData = data[0][0];
+		// var id = userData.id;
 		var friendUser = Alloy.createModel("User").xFindInDb({
-			id : id
+			id : $.$model.xGet("fromUserId")
 		});
-		if (!friendUser.id) {
-			delete userData.id;
-			friendUser = Alloy.createModel("User", userData);
-			friendUser.attributes.id = id;
-			friendUser.save(userData);
-		}
+		// if (!friendUser.id) {
+			// delete userData.id;
+			// friendUser = Alloy.createModel("User", userData);
+			// friendUser.attributes.id = id;
+			// friendUser.save(userData);
+		// }
 
 		if (operation === "addFriend") {
 			//创建好友
@@ -206,10 +206,10 @@ function addFriend(saveEndCB, saveErrorCB) {
 			});
 		}
 
-	}, function(e) {
-		saveErrorCB();
-		alert(e.__summary.msg);
-	});
+	// }, function(e) {
+		// saveErrorCB();
+		// alert(e.__summary.msg);
+	// });
 }
 
 $.date.UIInit($, $.getCurrentWindow());

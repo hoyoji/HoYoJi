@@ -231,10 +231,6 @@
 				}
 			}
 
-			if ($.$attrs.autoInit !== "false") {
-				$.showActivityIndicator();
-			}
-
 			$.$view.addEventListener("registerwindowevent", registerWindowEvent);
 
 			function detectWindow(e) {
@@ -281,7 +277,8 @@
 				$.__currentWindow = $.$attrs.currentWindow;
 			}
 			if ($.$attrs.autoInit !== "false") {
-
+//				$.showActivityIndicator();
+				
 				if ($.__parentController && $.__currentWindow) {
 					$.$view.fireEvent("winopen", {
 						bubbles : false

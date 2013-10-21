@@ -3,7 +3,12 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="图片预览"
 		image="/images/mainWindow/home" autoInit="false"/>
 		<View id="body" top="50" bottom="0" left="0" right="0" >
+			<ScrollView platform="ios" id="scrollView" minZoomScale="0.1" maxZoomScale="10" >
 			<ImageView id="image" width="Ti.UI.SIZE" height="Ti.UI.SIZE"/>
+			</ScrollView>
+			<!-- <ScrollView platform="android" id="scrollView" width="Ti.UI.FILL" height="Ti.UI.FILL" > -->
+			<ImageView id="image" platform="android" width="Ti.UI.SIZE" height="Ti.UI.SIZE" canScale="true" enableZoomControls="true"/>
+			<!-- </ScrollView> -->
 		</View>
 	</View>
 </Alloy>
