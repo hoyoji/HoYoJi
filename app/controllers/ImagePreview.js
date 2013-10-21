@@ -70,13 +70,18 @@ function createPage(currentImage){
 			}
 		}
 		if (OS_ANDROID) {
+			var view = Ti.UI.createView({
+				width : Ti.UI.FILL,
+				height : Ti.UI.FILL
+			});
 			var image = Ti.UI.createImageView({
 				width : Ti.UI.SIZE,
 				height : Ti.UI.SIZE,
 				canScale : true,
 				enableZoomControls : true
 			});
-			$.body.addView(image);
+			view.add(image);
+			$.body.addView(view);
 			if (currentImage.isNew()) {
 				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
 			} else {
