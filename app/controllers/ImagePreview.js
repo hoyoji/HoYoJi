@@ -133,7 +133,7 @@ function createPage(currentImage){
 }
 
 $.onWindowOpenDo(function() {
-	if($.getCurrentWindow().$attrs.images){
+	if($.getCurrentWindow().$attrs.images && $.getCurrentWindow().$attrs.images.length > 0){
 		for(var i = 0; i < $.getCurrentWindow().$attrs.images.length; i++){
 			var image = $.getCurrentWindow().$attrs.images.at ? $.getCurrentWindow().$attrs.images.at(i) : $.getCurrentWindow().$attrs.images[i];
 			createPage(image);
