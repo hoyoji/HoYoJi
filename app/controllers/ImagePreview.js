@@ -166,7 +166,9 @@ $.onWindowOpenDo(function() {
 				$.body.setCurrentPage(i);
 			}
 		}
-		showHideNavButtons($.body.currentPage);
+		if(OS_ANDROID){
+			showHideNavButtons($.body.currentPage);
+		}
 	} else if ($.getCurrentWindow().$attrs.image) {
 		createPage($.getCurrentWindow().$attrs.image);
 	}

@@ -91,7 +91,17 @@ function onFooterbarTap(e) {
 	if (previousForm.amount.getValue() !== null && !isNaN(previousForm.amount.getValue())) {
 		lastAmountValue = previousForm.amount.getValue();
 	}
-	currentForm.amount.setValue(lastAmountValue);
+	setTimeout(function(){
+		currentForm.amount.setValue(lastAmountValue);
+		if(!lastAmountValue){
+			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
+				currentForm.titleBar.save();
+			}, function() {
+		
+			}, 42);
+		}
+	}, 1);
+	
 	$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
 	currentForm.$view.show();
 	previousForm.$view.hide();

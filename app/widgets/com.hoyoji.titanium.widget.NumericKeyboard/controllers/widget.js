@@ -49,7 +49,9 @@ exports.open = function(textField, _saveCB, _confirmCB, bottom) {
 			$.widget.setBottom(openBottom);
 			$.widget.setVisible(true);
 			$.keyboard.animate(animation);	
-			$.display.setText(activeTextField.getValue()||"");
+			if(activeTextField.getValue() || activeTextField.getValue() === 0){
+				$.display.setText(activeTextField.getValue());
+			}
 			flagNewNum = true;
 	} else {
 		return;
