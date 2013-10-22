@@ -12,7 +12,7 @@ $.makeContextMenu = function() {
 
 function changePassword() {
 	Alloy.Globals.openWindow("user/changePasswordForm", {
-		$model : Alloy.Models.User
+		currentUser : Alloy.Models.User
 	});
 }
 
