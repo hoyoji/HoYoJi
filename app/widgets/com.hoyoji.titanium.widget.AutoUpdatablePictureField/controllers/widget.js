@@ -422,7 +422,7 @@ function setAsMainIcon(picture) {
 $.setEditable = function(editable) {
 	if (editable === false) {
 		$.takePicture.hide();
-		$.picturesContainer.setLeft(0);
+		$.picturesContainer.setLeft(5);
 	} else {
 		$.takePicture.show();
 		$.picturesContainer.setLeft(76);
