@@ -43,6 +43,15 @@ function saveToGallery() {
 	}
 }
 
+if(OS_ANDROID){
+	$.navLeft.addEventListener("singletap", function(e){
+		$.body.movePrevious();
+	});
+	$.navRight.addEventListener("singletap", function(e){
+		$.body.moveNext();
+	});
+}
+
 // <View>
 // <ScrollView platform="ios" id="scrollView" minZoomScale="0.1" maxZoomScale="10" >
 // <ImageView id="image" width="Ti.UI.SIZE" height="Ti.UI.SIZE"/>
