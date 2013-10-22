@@ -14,15 +14,15 @@ $.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", "widget
 	autoInit : "false",
 	currentWindow : $.getCurrentWindow(),
 	parentController : $.getParentController(),
-	buttons : "支出,收入,转账,借贷;借入;借出;还款;收款,项目充值" ,
+	buttons : "支出,收入,转账,借贷;借入;借出;还款;收款,项目充值",
 	imagesFolder : "/images/money/moneyAddNew",
-	ids : ids="moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"
+	ids : ids = "moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"
 });
 $.footerBar.setParent($.$view);
-$.footerBar.UIInit($,$.getCurrentWindow());
+$.footerBar.UIInit($, $.getCurrentWindow());
 $.footerBar.on("singletap", onFooterbarTap);
 
-var currentForm = $.moneyExpenseForm, lastNumericKeyboardValue;
+var currentForm = $.moneyExpenseForm, lastAmountValue;
 
 function onFooterbarTap(e) {
 	if (!$[e.source.id]) {
@@ -68,19 +68,18 @@ function onFooterbarTap(e) {
 			top : 0,
 			bottom : 50
 		});
-		// $[e.source.id].$view.setTop(0);
-		// $[e.source.id].$view.setBottom(84);
 		$[e.source.id].setParent($.$view);
+		// $[e.source.id].onWindowOpenDo(function(){
+		// setTimeout(function(){
+		// currentForm.date.setValue((new Date()).toISOString());
+		// currentForm.amount.setValue(lastNumericKeyboardValue);
+		// }, 1);
+		// });
 		$[e.source.id].UIInit();
-		$[e.source.id].onWindowOpenDo(function(){
-			currentForm.date.setValue((new Date()).toISOString());
-			currentForm.amount.setValue(lastNumericKeyboardValue);
-		});
 	} else {
-		currentForm.date.setValue((new Date()).toISOString());
-		if(currentForm.amount.getValue() === NaN){
-			currentForm.amount.setValue(lastNumericKeyboardValue);
-		}
+		// if(currentForm.amount.getValue() === null || isNaN(currentForm.amount.getValue())){
+		// currentForm.amount.setValue(lastNumericKeyboardValue);
+		// }
 	}
 	if (currentForm === $[e.source.id]) {
 		return;
@@ -88,7 +87,11 @@ function onFooterbarTap(e) {
 	var previousForm = currentForm;
 	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
-	
+	currentForm.date.setValue((new Date()).toISOString());
+	if (previousForm.amount.getValue() !== null && !isNaN(previousForm.amount.getValue())) {
+		lastAmountValue = previousForm.amount.getValue();
+	}
+	currentForm.amount.setValue(lastAmountValue);
 	$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
 	currentForm.$view.show();
 	previousForm.$view.hide();
@@ -98,8 +101,8 @@ $.getCurrentWindow().$view.addEventListener("contentready", function() {
 	currentForm.date.setValue((new Date()).toISOString());
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
-	}, function(value){
-		lastNumericKeyboardValue = value;
+	}, function() {
+
 	}, 42);
 });
 

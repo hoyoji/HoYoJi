@@ -3,7 +3,7 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
 		addModeTitle="新增转账" readModeTitle="转账详细" editModeTitle="修改转账"/>
-		<View id="body" top="40" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
+		<View id="body" top="42" bottom="0" left="0" right="0" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatablePictureField" 
 					id="picture" autoInit="false"
