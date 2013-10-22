@@ -35,7 +35,6 @@ function updatePassword() {
 		$.getCurrentWindow().__dirtyCount = 0;
 		$.getCurrentWindow().close();
 	}, function(e) {
-		// 连接服务器出错或用户名已经存在，注册不成功
 		$.$model.__xValidationErrorCount = 1;
 		$.$model.__xValidationError = e;
 		saveErrorCB(e.__summary.msg);
