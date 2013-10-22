@@ -7,8 +7,8 @@
 			</ScrollableView>
 			<ScrollableView platform="android" id="body" top="50" bottom="0" left="0" right="0" showPagingControl="false" >
 			</ScrollableView>
-			<Button platform="android" id="navLeft" title="上一张" height="100" left="10" opacity="0.5"></Button>
-			<Button platform="android" id="navRight" title="下一张" height="100" right="10" opacity="0.5"></Button>
+			<Button platform="android" id="navLeft" title="上一张" height="100" left="10" opacity="0.5" visible="false"></Button>
+			<Button platform="android" id="navRight" title="下一张" height="100" right="10" opacity="0.5" visible="false"></Button>
 		<!-- </View> -->
 	</View>
 </Alloy>
