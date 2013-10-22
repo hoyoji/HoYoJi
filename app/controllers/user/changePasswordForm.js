@@ -23,6 +23,10 @@ function updatePassword() {
 		$.newPassword2.showErrorMsg("两次密码不相同");
 		return;
 	}
+	if(newPassword === oldPassword){
+		$.newPassword.showErrorMsg("新密码和当前密码相同");
+		return;
+	}
 
 	var data = {
 		userId : $.$attrs.currentUser.xGet("id"),
