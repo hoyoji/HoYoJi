@@ -14,6 +14,15 @@ $.$view.addEventListener("focus", function(){
 		Alloy.Globals.relogin();
 	}
 });
+if(OS_IOS){
+	Ti.App.addEventListener("resume", function(){
+		if(lastLoginDate === null){
+			lastLoginDate = new Date();	
+		} else if(lastLoginDate.getDate() !== (new Date()).getDate()){
+			Alloy.Globals.relogin();
+		}
+	});
+}
 
 exports.close = function(e) {
 	$.closeSoftKeyboard();
