@@ -117,7 +117,11 @@ exports.openWin = function(contentController, options, loadOnly) {
 	$.open(contentController, loadOnly);
 
 	_.extend($.$attrs, options);
-
+	if(OS_ANDROID){
+		if(options.scrollingEnabled === false){
+			$.scrollableView.setScrollingEnabled(false);
+		}
+	}
 	function loadContent() {
 		$.content = Alloy.createController(contentController, options);
 		$.content.setParent($.contentView);

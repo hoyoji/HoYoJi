@@ -106,7 +106,8 @@ $.onWindowOpenDo(function() {
 		Alloy.Globals.openWindow("ImagePreview", {
 			title : "图片预览",
 			image : picture,
-			images : model.xGet("pictures")
+			images : model.xGet("pictures"),
+			scrollingEnabled : false
 		});
 	});
 });

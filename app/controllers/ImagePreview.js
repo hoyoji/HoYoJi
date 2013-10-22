@@ -70,13 +70,18 @@ function createPage(currentImage){
 			}
 		}
 		if (OS_ANDROID) {
+			var view = Ti.UI.createView({
+				width : Ti.UI.FILL,
+				height : Ti.UI.FILL
+			});
 			var image = Ti.UI.createImageView({
 				width : Ti.UI.SIZE,
 				height : Ti.UI.SIZE,
 				canScale : true,
 				enableZoomControls : true
 			});
-			$.body.addView(image);
+			view.add(image);
+			$.body.addView(view);
 			if (currentImage.isNew()) {
 				filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
 			} else {
@@ -86,7 +91,7 @@ function createPage(currentImage){
 		var f = Ti.Filesystem.getFile(filePath, fileName);
 		if (f.exists()) {
 			if(OS_IOS){
-				var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
+				var zoomScale = Math.min($.body.getSize().width/f.getBlob().width, ($.body.getSize().height-20)/f.getBlob().height);
 				scrollView.setZoomScale(zoomScale);
 			}
 			
@@ -111,7 +116,7 @@ function createPage(currentImage){
 				var f = Ti.Filesystem.getFile(filePath, fileName);
 				if (f.exists()) {
 					if(OS_IOS){
-						var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
+						var zoomScale = Math.min($.body.getSize().width/f.getBlob().width, ($.body.getSize().height-20)/f.getBlob().height);
 						scrollView.setZoomScale(zoomScale);
 					}
 					f = null;
@@ -128,7 +133,7 @@ function createPage(currentImage){
 }
 
 $.onWindowOpenDo(function() {
-	if($.getCurrentWindow().$attrs.images){
+	if($.getCurrentWindow().$attrs.images && $.getCurrentWindow().$attrs.images.length > 0){
 		for(var i = 0; i < $.getCurrentWindow().$attrs.images.length; i++){
 			var image = $.getCurrentWindow().$attrs.images.at ? $.getCurrentWindow().$attrs.images.at(i) : $.getCurrentWindow().$attrs.images[i];
 			createPage(image);
