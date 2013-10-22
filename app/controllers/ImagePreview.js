@@ -116,7 +116,7 @@ function createPage(currentImage){
 				var f = Ti.Filesystem.getFile(filePath, fileName);
 				if (f.exists()) {
 					if(OS_IOS){
-						var zoomScale = Math.min($.$view.getSize().width/f.getBlob().width, $.$view.getSize().height/f.getBlob().height);
+						var zoomScale = Math.min($.body.getSize().width/f.getBlob().width, ($.body.getSize().height-20)/f.getBlob().height);
 						scrollView.setZoomScale(zoomScale);
 					}
 					f = null;
