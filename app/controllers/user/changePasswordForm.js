@@ -35,9 +35,7 @@ function updatePassword() {
 		$.getCurrentWindow().__dirtyCount = 0;
 		$.getCurrentWindow().close();
 	}, function(e) {
-		$.$model.__xValidationErrorCount = 1;
-		$.$model.__xValidationError = e;
-		saveErrorCB(e.__summary.msg);
+		alert(e.__summary.msg);
 	}, "changePassword");
 }
 

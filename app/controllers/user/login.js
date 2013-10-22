@@ -202,7 +202,7 @@ $.login = function(userName, password) {
 							} else {
 								filePath = Ti.Filesystem.applicationDataDirectory;
 							}
-							var f1 = Ti.Filesystem.getFile(filePath, model.id + "_icon." + model.pictureType);
+							var f1 = Ti.Filesystem.getFile(filePath, id + "_icon." + model.pictureType);
 							f1.write(Ti.Utils.base64decode(model.base64PictureIcon));
 							f1 = null;
 							delete model.base64PictureIcon;
