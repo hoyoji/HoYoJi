@@ -25,7 +25,7 @@ function updatePassword() {
 	}
 
 	var data = {
-		userName : $.$attrs.currentUser.xGet("userName"),
+		userId : $.$attrs.currentUser.xGet("id"),
 		oldPassword : Ti.Utils.sha1(oldPassword),
 		newPassword : Ti.Utils.sha1(newPassword),
 		newPassword2 : Ti.Utils.sha1(newPassword2)
