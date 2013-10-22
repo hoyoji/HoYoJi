@@ -1,6 +1,6 @@
 Alloy.Globals.extendsBaseUIController($, arguments[0]);
 
-var activeTextField, confirmCB = null, openBottom = 0;
+var activeTextField, saveCB = null, confirmCB = null, openBottom = 0;
 
 exports.close = function() {
 	console.info("close NumericKeyboard");
@@ -29,8 +29,9 @@ $.$view.addEventListener("touchstart", exports.close);
 $.keyboard.addEventListener("touchstart", cancelBubbleTouchStart);
 
 
-exports.open = function(textField, saveCB, bottom) {
-	confirmCB = saveCB;
+exports.open = function(textField, _saveCB, _confirmCB, bottom) {
+	confirmCB = _confirmCB;
+	saveCB = _saveCB;
 	// if(confirmCB){
 		// $.submitButton.setTitle("保存");
 	// } else {
@@ -228,8 +229,8 @@ function setOPColor(){
 function submitValue() {
 	equalToValue();
 	// exports.close();
-	if(confirmCB){
-		confirmCB();
+	if(saveCB){
+		saveCB();
 	}
 }
 
@@ -285,6 +286,9 @@ function equalToValue() {
 		activeTextField.setValue($.display.getText());
 	}
 	activeTextField.field.fireEvent("change");
+	if(confirmCB){
+		confirmCB(activeTextField.getValue());
+	}
 	exports.close();
 	clear();
 }

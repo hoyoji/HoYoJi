@@ -22,7 +22,7 @@ $.footerBar.setParent($.$view);
 $.footerBar.UIInit($,$.getCurrentWindow());
 $.footerBar.on("singletap", onFooterbarTap);
 
-var currentForm = $.moneyExpenseForm;
+var currentForm = $.moneyExpenseForm, lastNumericKeyboardValue;
 
 function onFooterbarTap(e) {
 	if (!$[e.source.id]) {
@@ -72,6 +72,15 @@ function onFooterbarTap(e) {
 		// $[e.source.id].$view.setBottom(84);
 		$[e.source.id].setParent($.$view);
 		$[e.source.id].UIInit();
+		$[e.source.id].onWindowOpenDo(function(){
+			currentForm.date.setValue((new Date()).toISOString());
+			currentForm.amount.setValue(lastNumericKeyboardValue);
+		});
+	} else {
+		currentForm.date.setValue((new Date()).toISOString());
+		if(currentForm.amount.getValue() === NaN){
+			currentForm.amount.setValue(lastNumericKeyboardValue);
+		}
 	}
 	if (currentForm === $[e.source.id]) {
 		return;
@@ -79,11 +88,7 @@ function onFooterbarTap(e) {
 	var previousForm = currentForm;
 	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
-	currentForm.date.setValue((new Date()).toISOString());
-
-	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
-		currentForm.titleBar.save();
-	}, 42);
+	
 	$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
 	currentForm.$view.show();
 	previousForm.$view.hide();
@@ -93,6 +98,8 @@ $.getCurrentWindow().$view.addEventListener("contentready", function() {
 	currentForm.date.setValue((new Date()).toISOString());
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
+	}, function(value){
+		lastNumericKeyboardValue = value;
 	}, 42);
 });
 

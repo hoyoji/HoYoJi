@@ -27,7 +27,7 @@
 					});
 					//$.closeSoftKeyboard();
 				},
-				openNumericKeyboard : function(textField, callback, bottom) {
+				openNumericKeyboard : function(textField, saveCallback, confirmCallback, bottom) {
 					if (!$.numericKeyboard) {
 						$.numericKeyboard = Alloy.createWidget("com.hoyoji.titanium.widget.NumericKeyboard", null, {
 							id : "numericKeyboard",
@@ -38,7 +38,7 @@
 						$.numericKeyboard.setParent($.$view);
 						$.numericKeyboard.UIInit();
 					}
-					$.numericKeyboard.open(textField, callback, bottom);
+					$.numericKeyboard.open(textField, saveCallback, confirmCallback, bottom);
 				},
 				closeNumericKeyboard : function() {
 					if ($.numericKeyboard) {
