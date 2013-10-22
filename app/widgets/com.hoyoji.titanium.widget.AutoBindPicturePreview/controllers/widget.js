@@ -107,6 +107,7 @@ $.onWindowOpenDo(function() {
 			title : "图片预览",
 			image : picture,
 			images : model.xGet("pictures"),
+			fetchImageTarget : model.config.adapter.collection_name === "User" ? "fetchUserImage" : null,
 			scrollingEnabled : false
 		});
 	});
