@@ -87,9 +87,9 @@ $.makeContextMenu = function(e, isSelectMode) {
 };
 
 if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
-	$.projectImage.setImage("/images/project/projectAll/myProjectsTable@2x.png");
+	$.projectImage.setImage("/images/project/projectAll/myProjectsTableGreen@2x.png");
 }else{
-	$.projectImage.setImage("/images/project/projectAll/sharedWithMeTable@2x.png");
+	$.projectImage.setImage("/images/project/projectAll/sharedWithMeTableGreen@2x.png");
 }
 
 $.onWindowOpenDo(function() {
