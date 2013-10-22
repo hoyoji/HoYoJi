@@ -195,6 +195,18 @@ $.login = function(userName, password) {
 							model.apportionedTotalIncome = 0;
 							model.apportionedTotalExpense = 0;
 						}
+						if(modelType === "Picture" && model.base64PictureIcon){
+							var filePath;
+							if (OS_ANDROID) {
+								filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+							} else {
+								filePath = Ti.Filesystem.applicationDataDirectory;
+							}
+							var f1 = Ti.Filesystem.getFile(filePath, id + "_icon." + model.pictureType);
+							f1.write(Ti.Utils.base64decode(model.base64PictureIcon));
+							f1 = null;
+							delete model.base64PictureIcon;
+						}
 						model = Alloy.createModel(modelType, model);
 						model.attributes["id"] = id;
 						model.xSet("ownerUser", Alloy.Models.User);
