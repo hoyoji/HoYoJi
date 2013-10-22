@@ -31,7 +31,7 @@ function updatePassword() {
 		newPassword2 : Ti.Utils.sha1(newPassword2)
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
-		saveEndCB("修改成功");
+		alert("修改成功");
 		$.getCurrentWindow().__dirtyCount = 0;
 		$.getCurrentWindow().close();
 	}, function(e) {
