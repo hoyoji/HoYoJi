@@ -8,6 +8,9 @@ $.__newPictures = [];
 // });
 
 function openOptionsDialog() {
+	if($.saveableMode === "read"){
+		return;
+	}
 	var optArray;
 	if (mainPicture === selectedPicture) {
 		optArray = ['删除图片', '取消'];
@@ -169,6 +172,9 @@ function getImage(event) {
 }
 
 $.importPictureFromGallery = function() {
+	if($.saveableMode === "read"){
+		return;
+	}
 	Ti.Media.openPhotoGallery({
 		success : getImage,
 		error : function(error) {
@@ -411,5 +417,14 @@ function setAsMainIcon(picture) {
 			createImage(mainImage);
 		}
 	}
-
 }
+
+$.setEditable = function(editable) {
+	if (editable === false) {
+		$.takePicture.hide();
+		$.picturesContainer.setLeft(0);
+	} else {
+		$.takePicture.show();
+		$.picturesContainer.setLeft(76);
+	}
+};

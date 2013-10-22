@@ -13,7 +13,7 @@ $.makeContextMenu = function() {
 	}
 	menuSection.add($.createContextMenuItem("导入图片", function() {
 		$.picture.importPictureFromGallery();
-	}));
+	}, !$.$model.canEdit()));
 	return menuSection;
 };
 
