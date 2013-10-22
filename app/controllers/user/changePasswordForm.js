@@ -38,11 +38,6 @@ function updatePassword() {
 		// 连接服务器出错或用户名已经存在，注册不成功
 		$.$model.__xValidationErrorCount = 1;
 		$.$model.__xValidationError = e;
-		$.$model.trigger("error", $.$model, $.$model.__xValidationError);
-		// $.password.field.setValue("");
-		// $.password2.field.setValue("");
-		// $.$model.xSet("password", null);
-		// $.$model.xSet("password2", null);
 		saveErrorCB(e.__summary.msg);
 	}, "changePassword");
 }
