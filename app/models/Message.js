@@ -37,17 +37,17 @@ exports.definition = {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			validators : {
 			},
-			syncAddNew : function(record, dbTrans) {
-				var self = this;
-				var fromUser = Alloy.createModel("User").xFindInDb({id : record.fromUserId});
-				if(!fromUser.id){
-					Alloy.Globals.Server.loadData("User", [record.fromUserId], function(collection) {
-						if (collection.length > 0) {
-							
-						}
-					});
-				}
-			},
+			// syncAddNew : function(record, dbTrans) {
+				// var self = this;
+				// var fromUser = Alloy.createModel("User").xFindInDb({id : record.fromUserId});
+				// if(!fromUser.id){
+					// Alloy.Globals.Server.loadData("User", [record.fromUserId], function(collection) {
+						// if (collection.length > 0) {
+// 							
+						// }
+					// });
+				// }
+			// },
 			getFriendUserName : function(){
 				if (this.xGet("toUserId") === Alloy.Models.User.id) {
 					return this.xGet("fromUser").getFriendDisplayName();

@@ -139,11 +139,9 @@ function calculateTotalBalance() {
 					$.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
 					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - 
 					$.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
-	
-	if(queryOptions.transactionDisplayType === "Personal"){ 
-			totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
-	}
-					$.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
+	// if(queryOptions.transactionDisplayType === "Personal"){ 
+			// totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
+	// }
 	$.totalBalance.setText(totalBalance.toUserCurrency());
 }
 
