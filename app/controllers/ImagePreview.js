@@ -43,12 +43,28 @@ function saveToGallery() {
 	}
 }
 
+function showHideNavButtons(index){
+		if(index < $.body.views.length - 1){
+			$.navRight.show();
+		} else {
+			$.navRight.hide();
+		}
+		if(index > 0){
+			$.navLeft.show();
+		} else {
+			$.navLeft.hide();
+		}
+}
+
 if(OS_ANDROID){
 	$.navLeft.addEventListener("singletap", function(e){
 		$.body.movePrevious();
 	});
 	$.navRight.addEventListener("singletap", function(e){
 		$.body.moveNext();
+	});
+	$.body.addEventListener("scrollend", function(e){
+		showHideNavButtons(e.currentPage);
 	});
 }
 
@@ -150,6 +166,7 @@ $.onWindowOpenDo(function() {
 				$.body.setCurrentPage(i);
 			}
 		}
+		showHideNavButtons($.body.currentPage);
 	} else if ($.getCurrentWindow().$attrs.image) {
 		createPage($.getCurrentWindow().$attrs.image);
 	}
