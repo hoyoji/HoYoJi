@@ -93,6 +93,7 @@ function onFooterbarTap(e) {
 	}
 	setTimeout(function(){
 		currentForm.amount.setValue(lastAmountValue);
+		currentForm.amount.fireEvent("change");
 		if(!lastAmountValue){
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 				currentForm.titleBar.save();
