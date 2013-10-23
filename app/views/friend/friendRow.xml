@@ -5,7 +5,12 @@
 					id="picture" autoInit="false"
 					bindModel = "$.$model.friendUser"
 					bindAttribute = "pictureId"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="30" width="Ti.UI.SIZE"
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="28" width="Ti.UI.SIZE"
+				id="userName" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "getUserName()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="45" width="Ti.UI.SIZE"
 				id="nickName" autoInit="false"
 				bindModel = "$.$model"
 				bindAttribute = "getDisplayName()"

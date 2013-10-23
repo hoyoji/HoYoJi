@@ -19,5 +19,6 @@ function changePassword() {
 $.changePassword.addEventListener("singletap", changePassword);
 
 $.picture.UIInit($, $.getCurrentWindow());
+$.nickName.UIInit($, $.getCurrentWindow());
 $.changePassword.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());

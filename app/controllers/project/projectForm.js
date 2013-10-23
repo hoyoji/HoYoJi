@@ -92,6 +92,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			ownerUser : Alloy.Models.User
 		}).xAddToSave($);
 		$.$model.xSet("depositeExpenseCategory", depositeExpenseCategory);
+		
+		//创建项目时创建parentProject
+		var parentProject = Alloy.createModel("ParentProject", {
+			project : $.$model,
+			parentProject : $.$model.xGet("parentProject"),
+			ownerUser : Alloy.Models.User
+		}).xAddToSave($);
 
 		//创建项目的时候同时创建共享给自己的ProjectShareAuthorization
 		Alloy.createModel("ProjectShareAuthorization", {
@@ -164,8 +171,26 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			projectShareMoneyReturnEdit : 1,
 			projectShareMoneyReturnDelete : 1
 		}).xAddToSave($);
+	} else {
+		if($.$model.hasChanged("parentProject")) {
+			var parentProject = Alloy.createModel("ParentProject").xFindInDb({
+				projectId : $.$model.xGet("id"),
+				parentProjectId : $.$model.xPrevious("parentProject").xGet("id")
+			});
+			if (parentProject.id) {
+				parentProject.xSet("parentProject" , $.$model.xGet("parentProject"));
+				parentProject.xAddToSave($);
+			} else {
+				parentProject = Alloy.createModel("ParentProject", {
+					project : $.$model,
+					parentProject : $.$model.xGet("parentProject"),
+					ownerUser : Alloy.Models.User
+				}).xAddToSave($);
+			}
+		}
 	}
-
+	
+	
 	$.saveModel(saveEndCB, saveErrorCB);
 };
 

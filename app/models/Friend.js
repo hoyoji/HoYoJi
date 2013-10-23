@@ -101,11 +101,15 @@ exports.definition = {
 				}
 				return this.__getSharedWithHerProjectsFilter;
 			},
+			getUserName : function() {
+				return this.xGet("friendUser").xGet("userName");
+			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {
 					return this.xGet("friendUser").xGet("userName");
 				} else {
-					return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
+					return this.xGet("nickName");
+					//return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
 				}
 			},
 			getSharedAccounts : function() {
