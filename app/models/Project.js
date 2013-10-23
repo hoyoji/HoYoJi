@@ -140,14 +140,15 @@ exports.definition = {
 				this._actualTotalMoney = actualTotalExpense - actualTotalIncome;
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
 
-				var projectCurrency = this.xGet("currency");
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				var exchanges = userCurrency.getExchanges(projectCurrency);
-				var exchange = 1;
-				if (exchanges.length) {
-					exchange = exchanges.at(0).xGet("rate");
-				}
-				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
+				// var projectCurrency = this.xGet("currency");
+				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				// var exchanges = userCurrency.getExchanges(projectCurrency);
+				// var exchange = 1;
+				// if (exchanges.length) {
+					// exchange = exchanges.at(0).xGet("rate");
+				// }
+				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
+				return this.xGet("currency").xGet("symbol") + actualTotalMoney.toFixed(2);
 			},
 			getActualTotalMoneyType : function(cached) {
 				var actualTotalMoney;
