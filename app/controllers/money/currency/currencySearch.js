@@ -48,7 +48,7 @@ $.searchButton.addEventListener("singletap", function(e) {
 		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
-	});
+	}, "findCurrency");
 	// }
 	$.search.blur();
 });
@@ -92,6 +92,6 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
-	});
+	},"findCurrency");
 };
 $.titleBar.UIInit($, $.getCurrentWindow());

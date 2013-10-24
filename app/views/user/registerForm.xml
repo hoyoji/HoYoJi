@@ -22,6 +22,9 @@
 				id="email" autoInit="false"
 			bindModel="$.$model"
 			bindAttribute="email"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="默认币种" hintText="请选择默认币种" 
+			id="activeCurrency"  autoInit="false"
+			/>
 			<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableRadioField" labelText="年龄" hintText="请输入年龄"
 			items="18,30,40,50,60"
 			bindModel="$.$model"
