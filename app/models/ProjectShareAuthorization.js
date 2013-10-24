@@ -249,7 +249,7 @@ exports.definition = {
 			},
 			getCurrencyActualTotalMoney : function() {
 				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
-				return this.xGet("project").xGet("project").xGet("symbol") + this.getActualTotalMoney();
+				return this.xGet("project").xGet("symbol") + this.getActualTotalMoney();
 			},
 			getSettlementText : function() {
 				// var getApportionedTotal = 0;
@@ -319,7 +319,7 @@ exports.definition = {
 			},
 			getCurrencySettlementMoney : function() {
 				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();
-				return this.xGet("projcet").xGet("currency").xGet("symbol") + this.getSettlementMoney();
+				return this.xGet("project").xGet("currency").xGet("symbol") + this.getSettlementMoney();
 			},
 			getSharePercentage : function() {
 				if (this.xGet("state") === "Wait") {
