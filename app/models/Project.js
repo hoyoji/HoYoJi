@@ -180,9 +180,16 @@ exports.definition = {
 					projectId : this.xGet("id")
 				});
 				if (projectRemark && projectRemark.id && projectRemark.xGet("remark")){
-					return this.xGet("name") + "(" + projectRemark.xGet("remark") + ")";
+					return projectRemark.xGet("remark");
 				} else {
 					return this.xGet("name");
+				}
+			},
+			getOwnerUserName : function() {
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id){
+					return null;
+				} else {
+					return this.xGet("ownerUser").getFriendDisplayName();
 				}
 			},
 			xDelete : function(xFinishCallback, options) {

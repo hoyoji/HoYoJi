@@ -9,6 +9,10 @@
 				bindModel="User"
 				bindAttribute="picture"
 				bindAttributeIsModel="id"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="昵称" hintText="请输入昵称"
+				id="nickName" autoInit="false" autoSave="true"
+				bindModel="User"
+				bindAttribute="nickName"/>
 				<Widget id="changePassword" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" top="10" color="#2E8B57"
 				backgroundColor="#e9f3f0"
 				autoInit="false"

@@ -127,5 +127,6 @@ function setProjectRemark(){
 	$.projectName.refresh();
 }
 
+$.ownerUserName.UIInit($, $.getCurrentWindow());
 $.projectName.UIInit($, $.getCurrentWindow());
 $.actualTotalMoney.UIInit($, $.getCurrentWindow());

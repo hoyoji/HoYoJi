@@ -93,7 +93,7 @@ function onFooterbarTap(e) {
 	}
 	setTimeout(function(){
 		currentForm.amount.setValue(lastAmountValue);
-		currentForm.amount.fireEvent("change");
+		currentForm.amount.field.fireEvent("change");
 		if(!lastAmountValue){
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 				currentForm.titleBar.save();
@@ -101,9 +101,9 @@ function onFooterbarTap(e) {
 		
 			}, 42);
 		}
+		$.getCurrentWindow().__dirtyCount = $.__dirtyCount = currentForm.__dirtyCount;
 	}, 1);
 	
-	$.getCurrentWindow().__dirtyCount = currentForm.__dirtyCount;
 	currentForm.$view.show();
 	previousForm.$view.hide();
 }

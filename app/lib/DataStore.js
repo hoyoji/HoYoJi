@@ -23,7 +23,7 @@
 				return this._readDbs[dbName];
 			},
 			initStore : function() {
-				var collections = ["Login","User","Picture","Project","ProjectShareAuthorization","MoneyExpenseCategory","MoneyIncomeCategory","FriendCategory","Currency","Exchange","MoneyAccount","MoneyAccountBalanceAdjustment","Friend","Message","MessageBox","MoneyExpense","MoneyIncome","MoneyExpenseDetail","MoneyIncomeDetail","MoneyExpenseApportion","MoneyIncomeApportion","MoneyTransfer","MoneyBorrow","MoneyReturn","MoneyLend","MoneyPayback","ClientSyncTable", "ProjectRemark"];
+				var collections = ["Login","User","Picture","Project","ParentProject","ProjectShareAuthorization","MoneyExpenseCategory","MoneyIncomeCategory","FriendCategory","Currency","Exchange","MoneyAccount","MoneyAccountBalanceAdjustment","Friend","Message","MessageBox","MoneyExpense","MoneyIncome","MoneyExpenseDetail","MoneyIncomeDetail","MoneyExpenseApportion","MoneyIncomeApportion","MoneyTransfer","MoneyBorrow","MoneyReturn","MoneyLend","MoneyPayback","ClientSyncTable", "ProjectRemark"];
 				collections.forEach(function(c){
 					Alloy.Collections[c] = null;
 					delete Alloy.Collections[c];

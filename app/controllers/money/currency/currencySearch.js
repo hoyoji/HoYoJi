@@ -92,6 +92,6 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
-	},"findCurrency");
+	}, "findCurrency");
 };
 $.titleBar.UIInit($, $.getCurrentWindow());
