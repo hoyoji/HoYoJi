@@ -175,7 +175,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if($.$model.hasChanged("parentProject")) {
 			var parentProject = Alloy.createModel("ParentProject").xFindInDb({
 				projectId : $.$model.xGet("id"),
-				parentProjectId : $.$model.xPrevious("parentProject").xGet("id")
+				parentProjectId : $.$model.xPrevious("parentProjectId")
 			});
 			if (parentProject.id) {
 				parentProject.xSet("parentProject" , $.$model.xGet("parentProject"));
