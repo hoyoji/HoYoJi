@@ -39,6 +39,23 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 // var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory",{name : "充值支出", project:$.$model.xGet("activeProject"), ownerUser : $.$model}).xAddToSave($);
 // $.$model.xGet("activeProject").xSet("depositeExpenseCategory",depositeExpenseCategory);
 
+var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
+$.activeCurrency.setValue(currencyId);
+
+$.activeCurrency.field.addEventListener("singletap",function(){
+	var attributes = {
+	selectorCallback : function(model) {
+		$.currency = model;
+		$.activeCurrency.setValue(model.xGet("code"));
+	}
+	};
+	attributes.title = "币种";
+	attributes.selectModelType = "Currency";
+	attributes.selectModelCanBeNull = false;
+	attributes.selectedModel = $.currency;
+	Alloy.Globals.openWindow("money/currency/currencySearch",attributes);
+});
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	// $.$model.xValidate(function() {
 	// // 先在本对用户资料进行验证, 如果验证通过，则到服务器上注册
@@ -90,13 +107,13 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		var series = true;
 		var first = psw.charAt(0);
 		for (var i = 1; i < psw.length; i++) {
-           repeat = repeat && psw.charAt(i) === first;
-           series = series && psw.charCodeAt(i) === psw.charCodeAt(i-1) + 1;
+			repeat = repeat && psw.charAt(i) === first;
+			series = series && psw.charCodeAt(i) === psw.charCodeAt(i - 1) + 1;
 		}
 		if (repeat || series) {
 			saveErrorCB("密码太简单");
 			return;
-		} 
+		}
 	}
 
 	if (!$.$model.xGet("password2")) {
@@ -107,7 +124,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("两次密码不相同");
 		return;
 	}
-	
+
 	if ($.$model.xGet("email")) {
 		var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
 		if (!emailValidation.test($.$model.xGet("email"))) {
@@ -115,13 +132,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			return;
 		}
 	}
-	
-	var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
+
 	var data = {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
 		password : Ti.Utils.sha1($.$model.xGet("password")),
 		email : Alloy.Globals.alloyString.trim($.$model.xGet("email") || ""),
-		currencyId : currencyId,
+		currencyId : $.activeCurrency.getValue(),
 		currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
@@ -158,4 +174,5 @@ $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.password2.UIInit($, $.getCurrentWindow());
 $.email.UIInit($, $.getCurrentWindow());
+$.activeCurrency.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
