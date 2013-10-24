@@ -249,11 +249,7 @@ exports.definition = {
 			},
 			getCurrencyActualTotalMoney : function() {
 				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
-<<<<<<< HEAD
 				return this.xGet("project").xGet("currency").xGet("symbol") + this.getActualTotalMoney().toFixed(2);
-=======
-				return this.xGet("project").xGet("symbol") + this.getActualTotalMoney();
->>>>>>> e6f11a99225cf70a1ee302de2914b5dd2c7a5961
 			},
 			getSettlementText : function() {
 				// var getApportionedTotal = 0;
