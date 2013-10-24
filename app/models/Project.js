@@ -189,7 +189,7 @@ exports.definition = {
 				if (this.xGet("ownerUserId") === Alloy.Models.User.id){
 					return null;
 				} else {
-					return this.xGet("ownerUser").xGet("userName");
+					return this.xGet("ownerUser").getFriendDisplayName();
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
