@@ -8,7 +8,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "getProjectName()" />
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="firstRow"
-			id="ownerUserName" autoInit="false" top="35"
+			id="ownerUserName" autoInit="false" top="38"
 			left="38" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 			bindModel = "$.$model"
 			bindAttribute = "getOwnerUserName()" />
