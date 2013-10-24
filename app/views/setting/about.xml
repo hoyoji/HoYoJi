@@ -9,7 +9,7 @@
 				<View id="currentVersion" height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">当前版本</Label>
 					<Label id="currentVersionNumber" left="30%" width="Ti.UI.SIZE"></Label>
-					<Button id="checkUpdate" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" onClick="checkUpdate">检查更新</Button>
+					<Button id="checkUpdate" right="10" width="Ti.UI.SIZE" height="Ti.UI.SIZE" onClick="checkUpdate" backgroundColor="f5f5f5" color="blue">检查更新</Button>
 				</View>
 				<View id="webAddressView" height="43" left="2" top="5"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<Label left="10">网址</Label>
