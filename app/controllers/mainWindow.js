@@ -6,22 +6,22 @@ if(OS_ANDROID){
 	$.$view.addEventListener('androidback', $.__androidBackFunction);
 }
 
-var lastLoginDate = null;
-$.$view.addEventListener("focus", function(){
+function relogin(){
 	if(lastLoginDate === null){
 		lastLoginDate = new Date();	
 	} else if(lastLoginDate.getDate() !== (new Date()).getDate()){
+		$.$view.removeEventListener("focus", relogin);
+		if(OS_IOS){
+			Ti.App.removeEventListener("resume", relogin);
+		}
 		Alloy.Globals.relogin();
 	}
-});
+}
+
+var lastLoginDate = null;
+$.$view.addEventListener("focus", relogin);
 if(OS_IOS){
-	Ti.App.addEventListener("resume", function(){
-		if(lastLoginDate === null){
-			lastLoginDate = new Date();	
-		} else if(lastLoginDate.getDate() !== (new Date()).getDate()){
-			Alloy.Globals.relogin();
-		}
-	});
+	Ti.App.addEventListener("resume", relogin);
 }
 
 exports.close = function(e) {
