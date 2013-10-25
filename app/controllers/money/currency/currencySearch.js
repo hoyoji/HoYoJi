@@ -10,11 +10,11 @@ function doSearch() {
 		return;
 	}
 	searchCriteria =  Alloy.Globals.alloyString.trim($.search.getValue() || "");
-	if (!searchCriteria) {
-		alert("请输入货币查询条件");
-		$.search.focus();
-		return;
-	}
+	// if (!searchCriteria) {
+		// alert("请输入货币查询条件");
+		// $.search.focus();
+		// return;
+	// }
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	loading = true;
