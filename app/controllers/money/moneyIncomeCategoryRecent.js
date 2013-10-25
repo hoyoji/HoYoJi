@@ -18,18 +18,8 @@ if (incomes.length < 5) {
 	recentIncomesLength = incomes.length;
 }
 
-for (var i = 0; i < recentIncomesLength; i++) {
-	// var recentIncomecategory = incomes.at(i).xGet("moneyIncomeCategory");
-	// var isExist;
-	// for (var i = 0; i < recentIncomeCategories.length; i++) {
-		// if (recentIncomecategory === recentIncomeCategories.at(i)) {
-			// isExist = true;
-			// break;
-		// }
-	// }
-	// if (!isExist) {
+for (var i = 0; i < recentIncomesLength; i++) {	
 		recentIncomeCategories.add(incomes.at(i).xGet("moneyIncomeCategory"));
-	// }
 }
 
 $.moneyIncomeCategoriesRecentTable.addCollection(recentIncomeCategories);

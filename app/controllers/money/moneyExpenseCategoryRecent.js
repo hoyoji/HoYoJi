@@ -5,7 +5,7 @@ var selectedProject = $.$attrs.selectedProject;
 $.titleBar.UIInit($, $.getCurrentWindow());
 $.moneyExpenseCategoriesRecentTable.UIInit($, $.getCurrentWindow());
 
-var expenses = Alloy.createCollection("MoneyExpense").xSearchInDb({
+var expenses = Alloy.createCollection("MoneyExpense").xSearchInDb({//找出该项目下的所有支出  排列方式以"最近"为先
 	projectId : selectedProject.xGet("id"),
 	ownerUserId : Alloy.Models.User.xGet("id")
 }, {
@@ -14,23 +14,15 @@ var expenses = Alloy.createCollection("MoneyExpense").xSearchInDb({
 
 var recentExpenseCategories = Alloy.createCollection("MoneyExpenseCategory");
 var recentExpensesLength = 5;
-if (expenses.length < 5) {
+if (expenses.length < 5) {//选择最近五条支出,所有支出不足5条就用总条数
 	recentExpensesLength = expenses.length;
 }
 
-for (var i = 0; i < recentExpensesLength; i++) {
-	// var recentExpensecategory = expenses.at(i).xGet("moneyExpenseCategory");
-	// var isExist;
-	// for (var i = 0; i < recentExpenseCategories.length; i++) {
-		// if (recentExpensecategory === recentExpenseCategories.at(i)) {
-			// isExist = true;
-			// break;
-		// }
-	// }
-	// if (!isExist) {
-		recentExpenseCategories.add(expenses.at(i).xGet("moneyExpenseCategory"));
-	// }
+for (var i = 0; i < recentExpensesLength; i++) {	
+	recentExpenseCategories.add(expenses.at(i).xGet("moneyExpenseCategory"));
 }
+
+if(recentExpenseCategories.length < 5)
 
 $.moneyExpenseCategoriesRecentTable.addCollection(recentExpenseCategories);
 
