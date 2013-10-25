@@ -1,6 +1,7 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.usersTable.UIInit($, $.getCurrentWindow());
+$.usersTable.autoFetchNextPage();
 
 // $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 // var menuSection = Ti.UI.createTableViewSection();
@@ -17,64 +18,62 @@ function doSearch(e) {
 	if (loading) {
 		return;
 	}
-	if(!Alloy.Globals.alloyString.trim($.search.getValue())){
+	searchCriteria = Alloy.Globals.alloyString.trim($.search.getValue() || "");
+	if(!searchCriteria){
 		alert("请输入好友查询条件");
 		$.search.focus();
 		return;
 	}
-	searchCriteria = Alloy.Globals.alloyString.trim($.search.getValue());
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	
 	loading = true;
-	// $.userCollection.reset();
 	$.usersTable.clearAllCollections();
-
-	Alloy.Globals.Server.findData([{
-		userName : searchCriteria,
-		__dataType : "User",
-		__offset : 0,
-		__limit : Number($.usersTable.$attrs.pageSize),
-		__orderBy : $.usersTable.$attrs.sortByField
-	}], function(data) {
-		if(data[0].length > 0){
-			$.userCollection = Alloy.createCollection("User");
-			
-			data[0].forEach(function(userData) {
-				var id = userData.id; // prevent it to be added to dataStore during object initialization
-				delete userData.id;
-				var user = Alloy.createModel("User", userData);
-				user.attributes["id"] = id;
-				user.id = id;
-				$.userCollection.add(user);
-			});
-			
-			$.usersTable.addCollection($.userCollection);
-			$.usersTable.fetchNextPage();
-		}
-		$.searchButton.setEnabled(true);
-		$.searchButton.hideActivityIndicator();
-		loading = false;
-	}, function(e) {
-		$.searchButton.setEnabled(true);
-		$.searchButton.hideActivityIndicator();
-		loading = false;
-		alert(e.__summary.msg);
-	});
-	// }
+	$.userCollection = Alloy.createCollection("User");
+	$.usersTable.addCollection($.userCollection);
 	$.search.blur();
+	$.usersTable.fetchNextPage();
+	return;
+	
+	// Alloy.Globals.Server.findData([{
+		// userName : searchCriteria,
+		// __dataType : "User",
+		// __offset : 0,
+		// __limit : Number($.usersTable.$attrs.pageSize),
+		// __orderBy : $.usersTable.$attrs.sortByField
+	// }], function(data) {
+		// if(data[0].length > 0){
+			// $.userCollection = Alloy.createCollection("User");
+// 			
+			// data[0].forEach(function(userData) {
+				// var id = userData.id; // prevent it to be added to dataStore during object initialization
+				// delete userData.id;
+				// var user = Alloy.createModel("User", userData);
+				// user.attributes["id"] = id;
+				// user.id = id;
+				// $.userCollection.add(user);
+			// });
+// 			
+			// $.usersTable.addCollection($.userCollection);
+			// $.usersTable.fetchNextPage();
+		// }
+		// $.searchButton.setEnabled(true);
+		// $.searchButton.hideActivityIndicator();
+		// loading = false;
+	// }, function(e) {
+		// $.searchButton.setEnabled(true);
+		// $.searchButton.hideActivityIndicator();
+		// loading = false;
+		// alert(e.__summary.msg);
+	// });
+	// // }
+	// $.search.blur();
 }
 
 $.searchButton.addEventListener("singletap", doSearch);
 $.search.addEventListener("return", doSearch);
 
 $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
-	// collection.xSearchInDb({}, {
-		// offset : offset,
-		// limit : limit,
-		// orderBy : orderBy
-	// });
-
 	if(!searchCriteria){
 		errorCB();
 		return;

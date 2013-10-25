@@ -1210,6 +1210,51 @@ function cancelBubble(e) {
 // }
 // });
 // }
+exports.autoFetchNextPage = function(){
+	var autoHideAnimationId = 0;
+	if (OS_ANDROID) {
+		var lastFirstVisibleItem = 0, fetching = false;
+		$.table.addEventListener("scroll", function(e) {
+			e.cancelBubble = true;
+			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
+				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
+					fetching = true;
+					$.fetchNextPage();
+				} else if(fetching === true){
+					fetching = false;
+				}
+			}
+			lastFirstVisibleItem = e.firstVisibleItem; 
+		});
+	}
+
+	if (OS_IOS) {
+		var lastDistance, direction, lastDirection = false, fetching = false;
+		$.table.addEventListener("scroll", function(e) {
+			e.cancelBubble = true;
+			var offset = e.contentOffset.y;
+			var height = e.size.height;
+			var total = offset + height;
+			var theEnd = e.contentSize.height;
+			var distance = theEnd - total;
+			if (direction < 0 && lastDirection === false && offset > 0 && distance > 0) {
+				lastDirection = true;
+			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
+				lastDirection = false;
+			} else if(distance < 0 && direction > 0 && lastDirection === true){
+				if(!fetching){
+					$.fetchNextPage();
+					fetching = true;				
+				}
+			}
+			if(fetching && distance >= 0){
+				fetching = false;
+			}
+			direction = distance - lastDistance;
+			lastDistance = distance;
+		});
+	}
+};
 exports.autoHideFooter = function(footer) {
 	// if(OS_IOS){
 	// $.table.setBottom(50);
@@ -1328,7 +1373,6 @@ exports.autoHideFooter = function(footer) {
 				}
 			}
 			if(fetching && distance >= 0){
-				fetching = false;
 				fetching = false;
 			}
 			direction = distance - lastDistance;

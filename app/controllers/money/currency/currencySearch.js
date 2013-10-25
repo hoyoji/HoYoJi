@@ -1,65 +1,44 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.currenciesTable.UIInit($, $.getCurrentWindow());
+$.currenciesTable.autoFetchNextPage();
 
 var loading, searchCriteria;
-$.searchButton.addEventListener("singletap", function(e) {
+
+function doSearch() {
 	if (loading) {
 		return;
 	}
-	if (!$.search.getValue()) {
+	searchCriteria =  Alloy.Globals.alloyString.trim($.search.getValue() || "");
+	if (!searchCriteria) {
 		alert("请输入货币查询条件");
 		$.search.focus();
 		return;
 	}
-	searchCriteria = $.search.getValue();
 	$.searchButton.setEnabled(false);
 	$.searchButton.showActivityIndicator();
 	loading = true;
 	$.currenciesTable.clearAllCollections();
-	Alloy.Globals.Server.findData([{
-		__dataType : "CurrencyAll",
-		code : searchCriteria,
-		name : searchCriteria
-	}], function(data) {
-		if (data[0].length > 0) {
-			$.currenciesCollection = Alloy.createCollection("Currency");
-			data[0].forEach(function(currencyData) {
-				var id = currencyData.id;
-				delete currencyData.id;
-				try{
-					currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
-				} catch(e){
-					currencyData.symbol = currencyData.code;
-				}
-				var currency = Alloy.createModel("Currency", currencyData);
-				currency.attributes["id"] = id;
-				currency.id = id;
-				$.currenciesCollection.add(currency);
-			});
-			$.currenciesTable.addCollection($.currenciesCollection, "money/currency/currencyAllRow");
-			$.currenciesTable.fetchNextPage();
-		}
-		$.searchButton.setEnabled(true);
-		$.searchButton.hideActivityIndicator();
-		loading = false;
-	}, function(e) {
-		$.searchButton.setEnabled(true);
-		$.searchButton.hideActivityIndicator();
-		loading = false;
-		alert(e.__summary.msg);
-	}, "findCurrency");
-	// }
+	$.currenciesCollection = Alloy.createCollection("Currency");
+	$.currenciesTable.addCollection($.currenciesCollection, "money/currency/currencyAllRow");
 	$.search.blur();
-});
+	$.currenciesTable.fetchNextPage();
+}
+
+$.searchButton.addEventListener("singletap", doSearch);
 
 $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
-	// collection.xSearchInDb({}, {
-		// offset : offset,
-		// limit : limit,
-		// orderBy : orderBy
-	// });
-
+	var query = {	
+		__dataType : "CurrencyAll",
+		__offset : offset,
+		__limit : limit,
+		__orderBy : orderBy
+	};
+		
+	if(searchCriteria){
+		query.code = searchCriteria;
+		query.name = searchCriteria;
+	}
 	Alloy.Globals.Server.findData([{
 		__dataType : "CurrencyAll",
 		code : searchCriteria,
@@ -92,6 +71,11 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 		$.searchButton.hideActivityIndicator();
 		loading = false;
 		alert(e.__summary.msg);
+		errorCB();
 	}, "findCurrency");
 };
+
 $.titleBar.UIInit($, $.getCurrentWindow());
+
+doSearch();
+
