@@ -1,0 +1,11 @@
+<Alloy>
+	<View class="container" title="常用支出分类" >
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="常用支出分类" autoInit="false"/>
+		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
+			<Widget src="com.hoyoji.titanium.widget.XTableView" 
+				id="moneyExpenseCategoriesRecentTable" autoInit="false"
+				sortByField="name" bottom="0" top="0"/>
+		</View>
+	</View>
+</Alloy>
