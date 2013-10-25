@@ -75,7 +75,6 @@ $.activeCurrency.field.addEventListener("singletap", function() {
 	attributes.title = "币种";
 	attributes.selectModelType = "Currency";
 	attributes.selectModelCanBeNull = false;
-	attributes.selectedModel = $.currency;
 	Alloy.Globals.openWindow("money/currency/currencySearch", attributes);
 });
 
