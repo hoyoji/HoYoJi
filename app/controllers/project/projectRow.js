@@ -39,6 +39,16 @@ $.makeContextMenu = function(e, isSelectMode) {
 			selectedProject : $.$model
 		});
 	}));
+	menuSection.add($.createContextMenuItem("常用支出分类", function() {
+		Alloy.Globals.openWindow("money/moneyExpenseCategoryRecent", {
+			selectedProject : $.$model
+		});
+	}));
+	menuSection.add($.createContextMenuItem("常用收入分类", function() {
+		Alloy.Globals.openWindow("money/moneyIncomeCategoryRecent", {
+			selectedProject : $.$model
+		});
+	}));
 	// if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
 		menuSection.add($.createContextMenuItem("修改项目", function() {
 			Alloy.Globals.openWindow("project/projectForm", {
