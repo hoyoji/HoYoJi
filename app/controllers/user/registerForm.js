@@ -41,19 +41,42 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 var currencyId = Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale());
 $.activeCurrency.setValue(currencyId);
-
-$.activeCurrency.field.addEventListener("singletap",function(){
-	var attributes = {
-	selectorCallback : function(model) {
-		$.currency = model;
-		$.activeCurrency.setValue(model.xGet("code"));
+// 尝试获取当前的币种名称
+Alloy.Globals.Server.findData([{
+	__dataType : "CurrencyAll",
+	code : currencyId,
+}], function(data) {
+	if (data[0].length > 0) {
+		data[0].forEach(function(currencyData) {
+			var id = currencyData.id;
+			delete currencyData.id;
+			try {
+				currencyData.symbol = Ti.Locale.getCurrencySymbol(currencyData.code);
+			} catch(e) {
+				currencyData.symbol = currencyData.code;
+			}
+			var currency = Alloy.createModel("Currency", currencyData);
+			currency.attributes["id"] = id;
+			currency.id = id;
+			$.currency = currency;
+			$.activeCurrency.setValue(currencyData.name + "(" + currencyData.code + ")");
+		});
 	}
+}, function(e) {
+}, "findCurrency");
+
+$.activeCurrency.field.addEventListener("singletap", function() {
+	var attributes = {
+		selectorCallback : function(model) {
+			$.currency = model;
+			$.activeCurrency.setValue(model.xGet("name") + "(" + model.xGet("code") + ")");
+		}
 	};
 	attributes.title = "币种";
 	attributes.selectModelType = "Currency";
 	attributes.selectModelCanBeNull = false;
 	attributes.selectedModel = $.currency;
-	Alloy.Globals.openWindow("money/currency/currencySearch",attributes);
+	Alloy.Globals.openWindow("money/currency/currencySearch", attributes);
 });
 
 $.onSave = function(saveEndCB, saveErrorCB) {
@@ -137,7 +160,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
 		password : Ti.Utils.sha1($.$model.xGet("password")),
 		email : Alloy.Globals.alloyString.trim($.$model.xGet("email") || ""),
-		currencyId : $.activeCurrency.getValue(),
+		currencyId : $.currency ? $.currency.xGet("id") : Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale()),
 		currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
