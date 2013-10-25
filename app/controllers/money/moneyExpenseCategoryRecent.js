@@ -22,8 +22,6 @@ for (var i = 0; i < recentExpensesLength; i++) {
 	recentExpenseCategories.add(expenses.at(i).xGet("moneyExpenseCategory"));
 }
 
-if(recentExpenseCategories.length < 5)
-
 $.moneyExpenseCategoriesRecentTable.addCollection(recentExpenseCategories);
 
 $.titleBar.bindXTable($.moneyExpenseCategoriesRecentTable); 
