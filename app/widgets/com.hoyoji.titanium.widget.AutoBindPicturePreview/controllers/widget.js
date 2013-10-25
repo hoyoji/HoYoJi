@@ -48,6 +48,10 @@ $.onWindowOpenDo(function() {
 
 	function updatePicture(model) {
 		var value = getAttributeValue(model, $.$attrs.bindAttribute);
+		if($.$attrs.bindAttributeIsModel){
+			model = value;
+			value = value.xGet($.$attrs.bindAttributeIsModel);
+		}
 		if($.$attrs.fetchRemoteImage && value){
 			$.showActivityIndicator();
 			Alloy.Globals.Server[$.$attrs.fetchRemoteImage](value, function(remotePicture){

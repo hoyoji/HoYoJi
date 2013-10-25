@@ -4,7 +4,8 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
 				id="picture" autoInit="false"
 				bindModel = "$.$model"
-				bindAttribute = "pictureId"/>
+				bindAttribute = "friendUser"
+				bindAttributeIsModel = "pictureId"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" id="sharePercentage" top="57" left="66" width="100" height="Ti.UI.SIZE" class="firstRow"
 				dataType="Number" toFixed="4"
 				bindModel = "$.$model" autoInit="false"
