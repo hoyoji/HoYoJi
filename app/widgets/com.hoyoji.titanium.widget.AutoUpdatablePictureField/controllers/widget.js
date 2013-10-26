@@ -8,7 +8,7 @@ $.__newPictures = [];
 // });
 
 function openOptionsDialog() {
-	if($.saveableMode === "read"){
+	if ($.saveableMode === "read") {
 		return;
 	}
 	var optArray;
@@ -48,7 +48,7 @@ function deleteSelectedPicture() {
 			if (!e) {
 				alert("图片已被删除");
 			} else {
-				alert("图片删除失败：" + e.summary.msg);
+				alert("图片删除失败：" + e.msg);
 			}
 		});
 	}
@@ -99,7 +99,7 @@ function getImage(event) {
 			if (mainPicture === newPicture) {
 				mainPicture = null;
 				//$.field.setImage(WPATH("/images/noPicture.png"));
-			$.fieldContainer.setImage(WPATH("/images/noPicture.png"));
+				$.fieldContainer.setImage(WPATH("/images/noPicture.png"));
 				$.__bindAttributeIsModel = null;
 				$.fieldContainer.removeEventListener("longpress", showOptionsDialog);
 				$.fieldContainer.removeEventListener("singletap", previewImage);
@@ -137,18 +137,21 @@ function getImage(event) {
 			tmpf = null;
 		}
 
+
 		newPicture.on("xdestroy", xDestroyPictureView);
+		newPicture.on("destroy", xDestroyPictureView);
 		newPicture.on("xdiscard", discardPicture);
 		newPicture.on("sync", savePicture);
-		
-		$.onWindowCloseDo(function(){
+
+		$.onWindowCloseDo(function() {
 			newPicture.off("xdestroy", xDestroyPictureView);
+			newPicture.off("destroy", xDestroyPictureView);
 		});
-		
-		if($.$attrs.autoSave === "true") {
-			newPicture._xSave();	
-		}		
-		
+
+		if ($.$attrs.autoSave === "true") {
+			newPicture._xSave();
+		}
+
 		if (!mainPicture) {
 			$.__bindAttributeIsModel = newPicture;
 			$.fieldContainer.setImage(pictureIcon);
@@ -165,14 +168,14 @@ function getImage(event) {
 				$.becameDirty();
 			}
 		}
-		
+
 	} else {
 		alert("此设备不支持视频");
 	}
 }
 
 $.importPictureFromGallery = function() {
-	if($.saveableMode === "read"){
+	if ($.saveableMode === "read") {
 		return;
 	}
 	Ti.Media.openPhotoGallery({
@@ -225,7 +228,7 @@ $.takePicture.addEventListener("singletap", function() {
 // }
 
 $.setValue = function(value) {
-	if(value === $.__bindAttributeIsModel){
+	if (value === $.__bindAttributeIsModel) {
 		return;
 	}
 	var previousModel = $.__bindAttributeIsModel = value;
@@ -305,11 +308,11 @@ function createImageView(imageData, type, addToContainer) {
 		right : 2
 	});
 	// var imageView = Ti.UI.createView({
-		// width : 56,
-		// height : 56,
-		// left : 2,
-		// right : 2,
-		// backgroundColor : "#e9f3f0"
+	// width : 56,
+	// height : 56,
+	// left : 2,
+	// right : 2,
+	// backgroundColor : "#e9f3f0"
 	// });
 	// view.add(imageView);
 	if (addToContainer) {
@@ -333,7 +336,7 @@ function createImage(picture) {
 		Alloy.Globals.openWindow("ImagePreview", {
 			image : picture,
 			images : $.__newPictures.concat($.$attrs.bindModel ? $.$attrs.bindModel.xGet("pictures").toArray() : []),
-				scrollingEnabled : false
+			scrollingEnabled : false
 		});
 	}
 
@@ -373,7 +376,7 @@ function appendTempImageToEnd(newPicture) {
 		Alloy.Globals.openWindow("ImagePreview", {
 			image : newPicture,
 			images : $.__newPictures.concat($.$attrs.bindModel ? $.$attrs.bindModel.xGet("pictures").toArray() : []),
-				scrollingEnabled : false
+			scrollingEnabled : false
 		});
 	}
 
@@ -387,6 +390,7 @@ function appendTempImageToEnd(newPicture) {
 		imageView.removeEventListener("singletap", previewImage);
 		$.picturesContainer.remove(imageView);
 	}
+
 
 	newPicture.on("xdestroy", xDestroyPictureView);
 
