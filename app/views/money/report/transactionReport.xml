@@ -78,7 +78,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" modelType="MoneyReturnInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
+						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" modelSubType="MoneyReturnInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
@@ -89,7 +89,7 @@
 						bindModel = "User"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
-						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" modelType="MoneyPaybackInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
+						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" modelSubType="MoneyPaybackInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
 				<View height="42">
