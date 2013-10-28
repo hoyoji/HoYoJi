@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyAddNew", {
 			selectedModel : $.$model
 		});
-	}, !$.$model.canEdit()));
+	}, !$.$model.canAddNew()));
 	menuSection.add($.createContextMenuItem("还款明细", function() {
 		Alloy.Globals.openWindow("money/moneyReturnAll", {
 			selectedBorrow : $.$model
