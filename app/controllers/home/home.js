@@ -80,7 +80,7 @@ function onFooterbarTap(e) {
 		// Alloy.Globals.openWindow("setting/systemSetting");
 	} else if (e.source.id === "transactions") {
 		Alloy.Globals.openWindow("money/moneyAll");
-	} else if (e.source.id === "searchTransactions") {
+	} else if (e.source.id === "transactionsSearchTable") {
 		Alloy.Globals.openWindow("money/transactionsSearch");
 	} else if (e.source.id === "messageAll") {
 		Alloy.Globals.openWindow("message/messageAll");
