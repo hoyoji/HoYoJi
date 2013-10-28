@@ -54,9 +54,9 @@ $.home.setParent($.page2);
 $.home.UIInit();
 
 
-$.onWindowOpenDo(function() {
+//$.onWindowOpenDo(function() {
 	// Alloy.Globals.cacheWindow($, "money/moneyAddNew");
-});
+//});
 
 // if (Alloy.Models.User.xGet("messageBox")) {
 	// Alloy.Models.User.xGet("messageBox").processNewMessages();

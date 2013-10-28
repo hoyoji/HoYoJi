@@ -103,8 +103,15 @@ exports.definition = {
 			canDelete : function() {
 				return false;
 			},
-			syncAddNew : function(record, dbTrans){
+			syncAddNew : function(record, dbTrans) {
 				dbTrans.newCurrenciesFromServer[record.id] = true;
+				if (!record.symbol) {
+					try {
+						record.symbol = Ti.Locale.getCurrencySymbol(record.code);
+					} catch (e) {
+						record.symbol = record.code;
+					}
+				}
 			}
 		});
 

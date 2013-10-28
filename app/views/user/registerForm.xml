@@ -18,10 +18,10 @@
 				id="password2" autoInit="false"
 			bindModel="$.$model"
 			bindAttribute="password2"/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="邮箱" hintText="请输入邮箱"
+			<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="邮箱" hintText="请输入邮箱"
 				id="email" autoInit="false"
 			bindModel="$.$model"
-			bindAttribute="email"/>
+			bindAttribute="email"/> -->
 			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="默认币种" hintText="请选择默认币种" hideKeyboard="true"
 			id="activeCurrency"  autoInit="false"
 			/>

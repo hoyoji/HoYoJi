@@ -135,9 +135,11 @@ exports.refresh = function() {
 
 function calculateTotalBalance() {
 	var totalBalance = 0;
+//	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + 
+//					$.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
+//					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - 
+//					$.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
 	totalBalance = $.moneyIncomeTotal.getValue() - $.moneyExpenseTotal.getValue() + 
-					$.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
-					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue() - 
 					$.moneyReturnInterestTotal.getValue() + $.moneyPaybackInterestTotal.getValue();
 	// if(queryOptions.transactionDisplayType === "Personal"){ 
 			// totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();

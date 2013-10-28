@@ -4,6 +4,7 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="收支汇总" autoInit="false"/>
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
+				<Label width="100%" backgroundColor="#e9f3f0">收支汇总</Label>
 				<View height="42">
 					<Label left="5" width="30%">总收入</Label>
 					<View id="incomeTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
@@ -26,6 +27,40 @@
 						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="main.amount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
+				<View height="42">
+					<Label left="5" width="30%">利息支出</Label>
+					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="returnInterestTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" modelSubType="MoneyReturnInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
+					</View>
+				</View>
+				<View height="42">
+					<Label left="5" width="30%">利息收入</Label>
+					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="paybackTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" modelSubType="MoneyPaybackInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
+					</View>
+				</View>
+				<View height="42">
+					<Label left="5" width="30%">结余</Label>
+					<View id="balanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="balanceTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Label id="totalBalance">0.00</Label>
+					</View>
+				</View>		
+				<Label width="100%" backgroundColor="#e9f3f0">负债汇总</Label>
 				<View height="42">
 					<Label left="5" width="30%">总借入</Label>
 					<View id="borrowTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
@@ -70,39 +105,6 @@
 						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
-					<Label left="5" width="30%">利息支出</Label>
-					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-						id="returnInterestTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
-						bindAttribute = "getLocalCurrencySymbol()"
-						/>
-						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="main.interest * main.exchangeRate / IFNULL(ex.rate, 1)"/>
-					</View>
-				</View>
-				<View height="42">
-					<Label left="5" width="30%">利息收入</Label>
-					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-						id="paybackTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
-						bindAttribute = "getLocalCurrencySymbol()"
-						/>
-						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.interest * main.exchangeRate / IFNULL(ex.rate, 1)"/>
-					</View>
-				</View>
-				<View height="42">
-					<Label left="5" width="30%">结余</Label>
-					<View id="balanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
-						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
-						id="balanceTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
-						bindAttribute = "getLocalCurrencySymbol()"
-						/>
-						<Label id="totalBalance">0.00</Label>
-					</View>
-				</View>				
 				<View height="42" id="moneyExpenseApportionTotalContainer">
 					<Label left="5" width="30%">分摊应支</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
