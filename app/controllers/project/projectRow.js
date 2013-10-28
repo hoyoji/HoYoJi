@@ -14,7 +14,7 @@ $.onRowTap = function(e){
 // });
 
 
-		Alloy.Globals.openWindow("money/moneyAll", {queryFilter : {projectId : $.$model.xGet("id")}});
+		Alloy.Globals.openWindow("money/moneyAll", {queryFilter : {project : $.$model}});
 return false;
 };
 

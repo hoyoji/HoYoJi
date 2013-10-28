@@ -2,13 +2,15 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 if (!$.getCurrentWindow().$attrs.queryOptions["dateFrom"]) {
 	var date = new Date();
-	$.queryOptions = {
+	$.queryOptions = _.extend({
 		dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-		dateTo : date.getUTCTimeOfDateEnd().toISOString(),
-		transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
-	};
+		dateTo : date.getUTCTimeOfDateEnd().toISOString()},$.getCurrentWindow().$attrs.queryOptions);
 } else {
 	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
+}
+
+if(!$.queryOptions.transactionDisplayType){
+	$.queryOptions.transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType");
 }
 
 $.onWindowOpenDo(function() {

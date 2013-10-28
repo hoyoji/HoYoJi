@@ -9,7 +9,7 @@ exports.setHeaderView = function(headerView) {
 };
 
 function searchData(collection, offset, limit, orderBy) {
-	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+	if (currentFilter.transactionDisplayType === "Personal") {
 		if (currentFilter.projectId) {
 			searchString = sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "main.ownerUserId".sqlEQ(Alloy.Models.User.id));
 		} else {
@@ -31,7 +31,7 @@ function searchData(collection, offset, limit, orderBy) {
 
 function setFilter(collection) {
 	collection.xSetFilter(function(model) {
-		if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+		if (currentFilter.transactionDisplayType === "Personal") {
 			if (currentFilter.projectId) {
 				return model.xGet("projectId") === currentFilter.projectId && model.xGet("ownerUser") === Alloy.Models.User;
 			} else {
@@ -68,6 +68,9 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 exports.doFilter = function(filter) {
 	if (filter) {
 		currentFilter = filter;
+		if(currentFilter.project){
+			currentFilter.projectId = currentFilter.project.xGet("id");
+		}
 	}
 	$.transactionsTable.resetTable();
 	setFilter(moneyIncomes);
