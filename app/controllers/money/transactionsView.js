@@ -11,50 +11,37 @@ exports.setHeaderView = function(headerView) {
 function searchData(collection, offset, limit, orderBy) {
 	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
 		if (currentFilter.projectId) {
-			collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom), "main.ownerUserId".sqlEQ(Alloy.Models.User.id)), {
-				offset : offset,
-				limit : limit,
-				orderBy : orderBy
-			});
+			searchString = sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "main.ownerUserId".sqlEQ(Alloy.Models.User.id));
 		} else {
-			collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom), "main.ownerUserId".sqlEQ(Alloy.Models.User.id)), {
-				offset : offset,
-				limit : limit,
-				orderBy : orderBy
-			});
-
+			searchString = sqlAND("main.ownerUserId".sqlEQ(Alloy.Models.User.id));
 		}
 	} else {
 		if (currentFilter.projectId) {
-			collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)), {
-				offset : offset,
-				limit : limit,
-				orderBy : orderBy
-			});
+			searchString = sqlAND("main.projectId".sqlEQ(currentFilter.projectId));
 		} else {
-			collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)), {
-				offset : offset,
-				limit : limit,
-				orderBy : orderBy
-			});
-
+			searchString = "";
 		}
 	}
+	collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId)), {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
 }
 
 function setFilter(collection) {
 	collection.xSetFilter(function(model) {
 		if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
 			if (currentFilter.projectId) {
-				return (model.xGet("projectId") === currentFilter.projectId && model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+				return model.xGet("projectId") === currentFilter.projectId && model.xGet("ownerUser") === Alloy.Models.User;
 			} else {
-				return (model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+				return model.xGet("ownerUser") === Alloy.Models.User;
 			}
 		}
 		if (currentFilter.projectId) {
-			return (model.xGet("projectId") === currentFilter.projectId && model.xGet("date") >= currentFilter.dateFrom);
+			return model.xGet("projectId") === currentFilter.projectId;
 		} else {
-			return (model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+			return true;
 		}
 	});
 }

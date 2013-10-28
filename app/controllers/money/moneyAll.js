@@ -95,23 +95,23 @@ function onFooterbarTap(e) {
 		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Personal"
-		}, {
-			wait : true,
-			patch : true
-		});
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Personal"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
 		$.titleBar.setTitle(transactionDisplayType + title.substr(2));
 		$.transactionsTable.doFilter();
 	} else if (e.source.id === "projectTransactions") {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Project"
-		}, {
-			wait : true,
-			patch : true
-		});
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Project"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
 		$.titleBar.setTitle(transactionDisplayType + title.substr(2));
@@ -170,6 +170,6 @@ function onFooterbarTap(e) {
 // Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 // });
 
-var transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+var transactionDisplayType = "项目";
 $.titleBar.setTitle(transactionDisplayType + "日流水");
 $.titleBar.UIInit($, $.getCurrentWindow());
