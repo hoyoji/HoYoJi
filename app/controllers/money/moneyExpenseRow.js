@@ -17,6 +17,12 @@ $.makeContextMenu = function() {
 	// selectedAccount : $.$model
 	// });
 	// },$.$model.xGet("expenseType") === "Deposite"));
+	menuSection.add($.createContextMenuItem("再记一笔", function() {
+		Alloy.Globals.openWindow("money/moneyAddNew", {
+			selectedModel : $.$model
+		});
+	}, !$.$model.canEdit() || $.$model.xGet("expenseType") === "Deposite"));
+	
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		if ($.$model.xGet("expenseType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {

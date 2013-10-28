@@ -153,15 +153,29 @@ var fistChangeFlag;
 var oldApportions = [];
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyExpense", {
-		date : (new Date()).toISOString(),
-		exchangeRate : 1,
-		expenseType : "Ordinary",
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
-		ownerUser : Alloy.Models.User
-	});
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
+		$.$model = Alloy.createModel("MoneyExpense", {
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			expenseType : templateModel.xGet("expenseType"),
+			moneyAccount : templateModel.xGet("moneyAccount"),
+			project : templateModel.xGet("project"),
+			moneyExpenseCategory : templateModel.xGet("moneyExpenseCategory"),
+			friendUser : templateModel.xGet("friendUser") ? templateModel.xGet("friendUser") : null,
+			ownerUser : Alloy.Models.User
+		});
+	} else {
+		$.$model = Alloy.createModel("MoneyExpense", {
+			date : (new Date()).toISOString(),
+			exchangeRate : 1,
+			expenseType : "Ordinary",
+			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+			project : Alloy.Models.User.xGet("activeProject"),
+			moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
+			ownerUser : Alloy.Models.User
+		});
+	}
 	$.setSaveableMode("add");
 }
 
@@ -429,7 +443,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
-		
+
 		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
 			$.$model.xSet("useDetailsTotal", false);
 		}
@@ -629,7 +643,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.previous("actualTotalExpense"));
 				}
 			});
-			if($.$model.isNew()) {
+			if ($.$model.isNew()) {
 				$.$model.xGet("moneyExpenseApportions").reset();
 			}
 			saveErrorCB(e);

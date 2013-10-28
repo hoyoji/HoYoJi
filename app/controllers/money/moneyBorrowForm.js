@@ -38,54 +38,67 @@ $.convertUser2FriendModel = function(userModel) {
 };
 
 /*
-var loading;
-//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
-$.beforeProjectSelectorCallback = function(project, successCallback) {
-	var activityWindow = Alloy.createController("activityMask");
-	activityWindow.open("正在获取该项目的汇率...");
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
-			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
-				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					foreignCurrencyId : project.xGet("currencyId"),
-					rate : rate
-				});
-				exchange.xSet("ownerUser", Alloy.Models.User);
-				exchange.xSet("ownerUserId", Alloy.Models.User.id);
-				exchange.save();
-				successCallback();
-				loading = false;
-				activityWindow.close();
-			}, function(e) {
-				activityWindow.close();
-				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
-			});
-		} else {
-			activityWindow.close();
-			successCallback();
-		}
-	} else {
-		activityWindow.close();
-		successCallback();
-	}
-};
-*/
+ var loading;
+ //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+ $.beforeProjectSelectorCallback = function(project, successCallback) {
+ var activityWindow = Alloy.createController("activityMask");
+ activityWindow.open("正在获取该项目的汇率...");
+ if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+ if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+ loading = true;
+ Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+ var exchange = Alloy.createModel("Exchange", {
+ localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+ foreignCurrencyId : project.xGet("currencyId"),
+ rate : rate
+ });
+ exchange.xSet("ownerUser", Alloy.Models.User);
+ exchange.xSet("ownerUserId", Alloy.Models.User.id);
+ exchange.save();
+ successCallback();
+ loading = false;
+ activityWindow.close();
+ }, function(e) {
+ activityWindow.close();
+ alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+ });
+ } else {
+ activityWindow.close();
+ successCallback();
+ }
+ } else {
+ activityWindow.close();
+ successCallback();
+ }
+ };
+ */
 
 var oldAmount;
 var oldMoneyAccount;
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyBorrow", {
-		date : (new Date()).toISOString(),
-		exchangeRate : 1,
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		returnedAmount : 0,
-		ownerUser : Alloy.Models.User
-	});
-
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
+		$.$model = Alloy.createModel("MoneyBorrow", {
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			moneyAccount : templateModel.xGet("moneyAccount"),
+			project : templateModel.xGet("project"),
+			friendUser : templateModel.xGet("friendUser") ? templateModel.xGet("friendUser") : null,
+			returnDate : templateModel.xGet("returnDate"),
+			returnedAmount : 0,
+			ownerUser : Alloy.Models.User
+		});
+	} else {
+		$.$model = Alloy.createModel("MoneyBorrow", {
+			date : (new Date()).toISOString(),
+			exchangeRate : 1,
+			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+			project : Alloy.Models.User.xGet("activeProject"),
+			returnedAmount : 0,
+			ownerUser : Alloy.Models.User
+		});
+	}
 	$.setSaveableMode("add");
 } else {
 	$.returnedAmountView.setHeight(42);
@@ -200,7 +213,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
-		
+
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
@@ -247,7 +260,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));

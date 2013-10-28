@@ -4,6 +4,11 @@ $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
 		headerTitle : "转账操作"
 	});
+	menuSection.add($.createContextMenuItem("再记一笔", function() {
+		Alloy.Globals.openWindow("money/moneyAddNew", {
+			selectedModel : $.$model
+		});
+	}));
 	menuSection.add($.createContextMenuItem("删除转账", function() {
 		$.deleteModel();
 	}));

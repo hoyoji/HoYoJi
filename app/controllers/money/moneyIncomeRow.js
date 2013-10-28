@@ -15,6 +15,12 @@ $.makeContextMenu = function() {
 	// selectedAccount : $.$model
 	// });
 	// }, $.$model.xGet("incomeType") === "Deposite"));
+	menuSection.add($.createContextMenuItem("再记一笔", function() {
+		Alloy.Globals.openWindow("money/moneyAddNew", {
+			selectedModel : $.$model
+		}, !$.$model.canEdit() || $.$model.xGet("incomeType") === "Deposite");
+	}));
+	
 	menuSection.add($.createContextMenuItem("删除收入", function() {
 		if ($.$model.xGet("incomeType") === "Deposite") {
 			if ($.$model.xGet("ownerUserId") === $.$model.xGet("friendUserId")) {
@@ -110,6 +116,7 @@ $.makeContextMenu = function() {
 			$.deleteModel();
 		}
 	}, !$.$model.canDelete() || $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
+	
 	return menuSection;
 };
 
