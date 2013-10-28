@@ -341,7 +341,7 @@ if ($.saveableMode === "read") {
 	// }
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
-		$.$model.xGet("picture").xAddToSave($);
+		$.picture.xAddToSave($);
 		
 		//先查找有没有选择收款人，否则提示收款人不能为空
 		if ($.$model.xGet("amount")) {
