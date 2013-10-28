@@ -10,26 +10,52 @@ exports.setHeaderView = function(headerView) {
 
 function searchData(collection, offset, limit, orderBy) {
 	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
-		collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom), "main.ownerUserId".sqlEQ(Alloy.Models.User.id)), {
-			offset : offset,
-			limit : limit,
-			orderBy : orderBy
-		});
+		if (currentFilter.projectId) {
+			collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom), "main.ownerUserId".sqlEQ(Alloy.Models.User.id)), {
+				offset : offset,
+				limit : limit,
+				orderBy : orderBy
+			});
+		} else {
+			collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom), "main.ownerUserId".sqlEQ(Alloy.Models.User.id)), {
+				offset : offset,
+				limit : limit,
+				orderBy : orderBy
+			});
+
+		}
 	} else {
-		collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)), {
-			offset : offset,
-			limit : limit,
-			orderBy : orderBy
-		});
+		if (currentFilter.projectId) {
+			collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)), {
+				offset : offset,
+				limit : limit,
+				orderBy : orderBy
+			});
+		} else {
+			collection.xSearchInDb(sqlAND("date".sqlLE(currentFilter.dateTo), "date".sqlGE(currentFilter.dateFrom)), {
+				offset : offset,
+				limit : limit,
+				orderBy : orderBy
+			});
+
+		}
 	}
 }
 
 function setFilter(collection) {
 	collection.xSetFilter(function(model) {
 		if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
-			return (model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+			if (currentFilter.projectId) {
+				return (model.xGet("projectId") === currentFilter.projectId && model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+			} else {
+				return (model.xGet("ownerUser") === Alloy.Models.User && model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+			}
 		}
-		return (model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+		if (currentFilter.projectId) {
+			return (model.xGet("projectId") === currentFilter.projectId && model.xGet("date") >= currentFilter.dateFrom);
+		} else {
+			return (model.xGet("date") <= currentFilter.dateTo && model.xGet("date") >= currentFilter.dateFrom);
+		}
 	});
 }
 

@@ -31,6 +31,10 @@ var d = new Date(), sortReverse = true, timeFilter = {
 	dateTo : d.getUTCTimeOfDateEnd().toISOString()
 };
 
+if($.$attrs.queryFilter){
+	timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+}
+
 $.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback) {
 	if ($.footerBar.currentSlide && $.footerBar.currentSlide.$view.id !== buttonWidget.id) {
 		return;
@@ -56,6 +60,9 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 			dateTo : d.getUTCTimeOfDateEnd().toISOString()
 		};
+		if($.$attrs.queryFilter){
+			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "weekTransactions") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
@@ -68,6 +75,9 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfWeekStart().toISOString(),
 			dateTo : d.getUTCTimeOfWeekEnd().toISOString()
 		};
+		if($.$attrs.queryFilter){
+			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "monthTransactions") {
 		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
@@ -80,6 +90,9 @@ function onFooterbarTap(e) {
 			dateFrom : d.getUTCTimeOfMonthStart().toISOString(),
 			dateTo : d.getUTCTimeOfMonthEnd().toISOString()
 		};
+		if($.$attrs.queryFilter){
+			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
 		Alloy.Models.User.save({
