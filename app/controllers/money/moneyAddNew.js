@@ -1,11 +1,11 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var  currentForm;
+var currentForm;
 var model = $.$attrs.selectedModel;
 
 if (model) {
 	var formName;
-	var modelType = model.config.adapter.collection_name ;
+	var modelType = model.config.adapter.collection_name;
 	switch(modelType) {
 		case "MoneyExpense" :
 			formName = "money/moneyExpenseForm";
@@ -156,7 +156,9 @@ function onFooterbarTap(e) {
 }
 
 $.getCurrentWindow().$view.addEventListener("contentready", function() {
-	currentForm.date.setValue((new Date()).toISOString());
+	if (!model) {
+		currentForm.date.setValue((new Date()).toISOString());
+	}
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
 	}, function() {
