@@ -37,7 +37,6 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-/*
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
@@ -71,21 +70,33 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 };
-*/
 
 var oldAmount;
 var oldMoneyAccount;
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyBorrow", {
-		date : (new Date()).toISOString(),
-		exchangeRate : 1,
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		returnedAmount : 0,
-		ownerUser : Alloy.Models.User
-	});
-
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
+		$.$model = Alloy.createModel("MoneyBorrow", {
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			moneyAccount : templateModel.xGet("moneyAccount"),
+			project : templateModel.xGet("project"),
+			friendUser : templateModel.xGet("friendUser") ? templateModel.xGet("friendUser") : null,
+			returnDate : templateModel.xGet("returnDate"),
+			returnedAmount : 0,
+			ownerUser : Alloy.Models.User
+		});
+	} else {
+		$.$model = Alloy.createModel("MoneyBorrow", {
+			date : (new Date()).toISOString(),
+			exchangeRate : 1,
+			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+			project : Alloy.Models.User.xGet("activeProject"),
+			returnedAmount : 0,
+			ownerUser : Alloy.Models.User
+		});
+	}
 	$.setSaveableMode("add");
 } else {
 	$.returnedAmountView.setHeight(42);
@@ -200,7 +211,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
-		
+
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
@@ -247,7 +258,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
 			// if (exchange) {
-				// exchange.xAddToDelete($);
+			// exchange.xAddToDelete($);
 			// }
 			if ($.$model.isNew()) {
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));

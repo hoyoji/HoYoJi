@@ -1,9 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.makeContextMenu = function() {
-		var menuSection = Ti.UI.createTableViewSection({
-			headerTitle : "转账操作"
-		});
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "转账操作"
+	});
 	menuSection.add($.createContextMenuItem("导入图片", function() {
 		$.picture.importPictureFromGallery();
 	}, !$.$model.canEdit()));
@@ -11,15 +11,28 @@ $.makeContextMenu = function() {
 };
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyTransfer", {
-		date : (new Date()).toISOString(),
-		transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
-		transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
-		exchangeRate : 1,
-		transferInAmount : 0,
-		project : Alloy.Models.User.xGet("activeProject"),
-		ownerUser : Alloy.Models.User
-	});
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
+		$.$model = Alloy.createModel("MoneyTransfer", {
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			transferOut : templateModel.xGet("transferOut"),
+			transferIn : templateModel.xGet("transferIn"),
+			project : templateModel.xGet("project"),
+			transferInAmount : 0,
+			ownerUser : Alloy.Models.User
+		});
+	} else {
+		$.$model = Alloy.createModel("MoneyTransfer", {
+			date : (new Date()).toISOString(),
+			transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
+			transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
+			exchangeRate : 1,
+			transferInAmount : 0,
+			project : Alloy.Models.User.xGet("activeProject"),
+			ownerUser : Alloy.Models.User
+		});
+	}
 	$.setSaveableMode("add");
 }
 
@@ -170,12 +183,11 @@ $.transferIn.$view.addEventListener("singletap", function() {
 // }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
-	if($.$model.xGet("project").xGet("ownerUserId") !== Alloy.Models.User.xGet("id")){
+	if ($.$model.xGet("project").xGet("ownerUserId") !== Alloy.Models.User.xGet("id")) {
 		saveErrorCB("无法在共享来的项目新增转账，请切换项目");
 		return;
 	}
-	
-	
+
 	$.picture.xAddToSave($);
 
 	var newTransferOutAmount = $.$model.xGet("transferOutAmount");

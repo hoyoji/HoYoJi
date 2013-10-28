@@ -116,7 +116,6 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-/*
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
@@ -149,7 +148,7 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		activityWindow.close();
 		successCallback();
 	}
-};*/
+};
 
 var oldAmount;
 var oldMoneyAccount;
@@ -157,16 +156,29 @@ var fistChangeFlag;
 var oldApportions = [];
 
 if (!$.$model) {
-	$.$model = Alloy.createModel("MoneyIncome", {
-		date : (new Date()).toISOString(),
-		exchangeRate : 1,
-		incomeType : "Ordinary",
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
-		ownerUser : Alloy.Models.User
-	});
-
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
+		$.$model = Alloy.createModel("MoneyIncome", {
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			incomeType : templateModel.xGet("incomeType"),
+			moneyAccount : templateModel.xGet("moneyAccount"),
+			project : templateModel.xGet("project"),
+			moneyIncomeCategory : templateModel.xGet("moneyIncomeCategory"),
+			friendUser : templateModel.xGet("friendUser") ? templateModel.xGet("friendUser") : null,
+			ownerUser : Alloy.Models.User
+		});
+	} else {
+		$.$model = Alloy.createModel("MoneyIncome", {
+			date : (new Date()).toISOString(),
+			exchangeRate : 1,
+			incomeType : "Ordinary",
+			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+			project : Alloy.Models.User.xGet("activeProject"),
+			moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+			ownerUser : Alloy.Models.User
+		});
+	}
 	$.setSaveableMode("add");
 }
 
@@ -403,7 +415,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
-		
+
 		if ($.$model.xGet("useDetailsTotal")) {//在收支金额为空的情况新增明细 把useDetailsTotal设成true 使用明细金额为收支金额  后把useDetailsTotal设成false
 			$.$model.xSet("useDetailsTotal", false);
 		}
@@ -609,7 +621,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.previous("actualTotalIncome"));
 				}
 			});
-			if($.$model.isNew()) {
+			if ($.$model.isNew()) {
 				$.$model.xGet("moneyIncomeApportions").reset();
 			}
 			saveErrorCB(e);

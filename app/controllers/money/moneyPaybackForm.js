@@ -1,9 +1,9 @@
 Alloy.Globals.extendsBaseFormController($, arguments[0]);
 
 $.makeContextMenu = function() {
-		var menuSection = Ti.UI.createTableViewSection({
-			headerTitle : "收款操作"
-		});
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "收款操作"
+	});
 	menuSection.add($.createContextMenuItem("导入图片", function() {
 		$.picture.importPictureFromGallery();
 	}, !$.$model.canEdit()));
@@ -40,7 +40,6 @@ $.convertUser2FriendModel = function(userModel) {
 	return userModel;
 };
 
-/*
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
@@ -74,33 +73,46 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 		successCallback();
 	}
 };
-*/
 
 var oldAmount;
 var oldMoneyAccount;
 
 if (!$.$model) {
-	if (selectedLend) {
+	if ($.$attrs.addNewAgant) {
+		var templateModel = $.$attrs.addNewAgant;
 		$.$model = Alloy.createModel("MoneyPayback", {
-			date : (new Date()).toISOString(),
-			exchangeRate : 1,
-			moneyAccount : selectedLend.xGet("moneyAccount"),
-			moneyLend : selectedLend,
-			project : selectedLend.xGet("project"),
-			friendUser : selectedLend.xGet("friendUser"),
+			date : templateModel.xGet("date"),
+			exchangeRate : templateModel.xGet("exchangeRate"),
+			moneyAccount : templateModel.xGet("moneyAccount"),
+			moneyLend : templateModel.xGet("moneyLend") ? templateModel.xGet("moneyLend") : null,
+			project : templateModel.xGet("project"),
+			friendUser : templateModel.xGet("friendUser") ? templateModel.xGet("friendUser") : null,
 			interest : 0,
 			ownerUser : Alloy.Models.User
 		});
 	} else {
-		$.$model = Alloy.createModel("MoneyPayback", {
-			date : (new Date()).toISOString(),
-			exchangeRate : 1,
-			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-			moneyLend : null,
-			project : Alloy.Models.User.xGet("activeProject"),
-			interest : 0,
-			ownerUser : Alloy.Models.User
-		});
+		if (selectedLend) {
+			$.$model = Alloy.createModel("MoneyPayback", {
+				date : (new Date()).toISOString(),
+				exchangeRate : 1,
+				moneyAccount : selectedLend.xGet("moneyAccount"),
+				moneyLend : selectedLend,
+				project : selectedLend.xGet("project"),
+				friendUser : selectedLend.xGet("friendUser"),
+				interest : 0,
+				ownerUser : Alloy.Models.User
+			});
+		} else {
+			$.$model = Alloy.createModel("MoneyPayback", {
+				date : (new Date()).toISOString(),
+				exchangeRate : 1,
+				moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+				moneyLend : null,
+				project : Alloy.Models.User.xGet("activeProject"),
+				interest : 0,
+				ownerUser : Alloy.Models.User
+			});
+		}
 	}
 	$.setSaveableMode("add");
 
@@ -208,7 +220,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
-		
+
 		var newMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
 		var newCurrentBalance = newMoneyAccount.xGet("currentBalance");
 		var newAmount = $.$model.xGet("amount");
