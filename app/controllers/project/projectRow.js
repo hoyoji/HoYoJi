@@ -8,9 +8,13 @@ $.onRowTap = function(e){
 // Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
 // return false;
 // }
-Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
-	selectedProject : $.$model
-});
+
+// Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
+	// selectedProject : $.$model
+// });
+
+
+		Alloy.Globals.openWindow("money/moneyAll", {queryFilter : {projectId : $.$model.xGet("id")}});
 return false;
 };
 
