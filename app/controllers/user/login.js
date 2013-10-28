@@ -300,11 +300,11 @@ function findPassword(e) {
 }
 
 $.loginButton.addEventListener("singletap", doLogin);
-// $.registerButton.addEventListener("singletap", openRegister);
+$.registerButton.addEventListener("singletap", openRegister);
 
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.autoLogin.UIInit($, $.getCurrentWindow());
 $.loginButton.UIInit($, $.getCurrentWindow());
-// $.registerButton.UIInit($, $.getCurrentWindow());
+$.registerButton.UIInit($, $.getCurrentWindow());
 
