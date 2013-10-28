@@ -3,8 +3,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 if (!$.getCurrentWindow().$attrs.queryOptions["dateFrom"]) {
 	var date = new Date();
 	$.queryOptions = _.extend({
-		dateFrom : date.getUTCTimeOfDateStart().toISOString(),
-		dateTo : date.getUTCTimeOfDateEnd().toISOString()},$.getCurrentWindow().$attrs.queryOptions);
+		dateFrom : date.getUTCTimeOfMonthStart().toISOString(),
+		dateTo : date.getUTCTimeOfMonthEnd().toISOString()},$.getCurrentWindow().$attrs.queryOptions);
 } else {
 	$.queryOptions = $.getCurrentWindow().$attrs.queryOptions;
 }
