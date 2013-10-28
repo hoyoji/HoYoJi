@@ -2,10 +2,10 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 var  currentForm;
 var model = $.$attrs.selectedModel;
-var modelType = model.config.adapter.collection_name ;
 
-if (model && modelType) {
+if (model) {
 	var formName;
+	var modelType = model.config.adapter.collection_name ;
 	switch(modelType) {
 		case "MoneyExpense" :
 			formName = "money/moneyExpenseForm";
