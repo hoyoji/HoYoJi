@@ -24,17 +24,17 @@ $.onWindowCloseDo(function() {
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
 
-var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	id : "settingButton",
-	right : 15,
-	height : Ti.UI.FILL,
-	width : 45,
-	image : "/images/home/setting"
-});
-settingButton.addEventListener("singletap", function() {
-	Alloy.Globals.openWindow("setting/systemSetting");
-});
-$.titleBar.setMenuButton(settingButton);
+// var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
+	// id : "settingButton",
+	// right : 15,
+	// height : Ti.UI.FILL,
+	// width : 45,
+	// image : "/images/home/setting"
+// });
+// settingButton.addEventListener("singletap", function() {
+	// Alloy.Globals.openWindow("setting/systemSetting");
+// });
+// $.titleBar.setMenuButton(settingButton);
 
 // var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 // id : "projectButton",
@@ -118,21 +118,26 @@ function onFooterbarTap(e) {
 // }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection();
+	var menuSection = Ti.UI.createTableViewSection({headerTitle : "账务操作"});
 
-	// menuSection.add($.createContextMenuItem("新增支出", function() {
-	// Alloy.Globals.openWindow("money/moneyExpenseForm");
-	// }));
-	//
-	// menuSection.add($.createContextMenuItem("新增收入", function() {
-	// Alloy.Globals.openWindow("money/moneyIncomeForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增转账", function() {
-	// Alloy.Globals.openWindow("money/moneyTransferForm");
-	// }));
-	// menuSection.add($.createContextMenuItem("新增借入", function() {
-	// Alloy.Globals.openWindow("money/moneyBorrowForm");
-	// }));
+	menuSection.add($.createContextMenuItem("查找", function() {
+		Alloy.Globals.openWindow("money/transactionsSearch");
+	}));
+	menuSection.add($.createContextMenuItem("账务", function() {
+		var d = new Date();
+		Alloy.Globals.openWindow("money/report/transactionReport", {
+			queryOptions : {
+				dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+				dateTo : d.getUTCTimeOfDateEnd().toISOString()
+			}
+		});
+	}));
+	menuSection.add($.createContextMenuItem("货币", function() {
+		Alloy.Globals.openWindow("money/currency/currencyAll");
+	}));
+	menuSection.add($.createContextMenuItem("汇率", function() {
+		Alloy.Globals.openWindow("money/currency/exchangeAll");
+	}));
 	// menuSection.add($.createContextMenuItem("新增借出", function() {
 	// Alloy.Globals.openWindow("money/moneyLendForm");
 	// }));

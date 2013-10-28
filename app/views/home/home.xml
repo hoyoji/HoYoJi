@@ -44,8 +44,8 @@
 			<!-- <Require id="activityTable" src="home/activityView" top="0" bottom="0" autoInit="false"/> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
-		buttons="账务;查找;报表;账户;货币;汇率,记一笔,消息" imagesFolder="/images/home"
-		ids="moneyAll;transactionsSearchTable;report;moneyAccounts;currencies;exchanges,moneyAddNew,messageAll"/>
+		buttons="账户,记一笔,消息" imagesFolder="/images/home"
+		ids="moneyAccounts,moneyAddNew,messageAll"/>
 
 <!-- buttons="查找,排序,日流水;个人流水;项目流水;日流水;周流水;月流水,报表,账户" imagesFolder="/images/money/moneyAll"
 		ids="transactionsSearchTable,sort,transactionsTable;personalTransactions;projectTransactions;dateTransactions;weekTransactions;monthTransactions,report,moneyAccount"/>
