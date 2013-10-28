@@ -18,7 +18,7 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("再记一笔", function() {
 		Alloy.Globals.openWindow("money/moneyAddNew", {
 			selectedModel : $.$model
-		}, !$.$model.canEdit() || $.$model.xGet("incomeType") === "Deposite");
+		}, !$.$model.canAddNew() || $.$model.xGet("incomeType") === "Deposite");
 	}));
 	
 	menuSection.add($.createContextMenuItem("删除收入", function() {

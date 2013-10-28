@@ -261,6 +261,19 @@ exports.definition = {
 					this._xDelete(xFinishCallback, options);
 				}
 			},
+			canAddNew : function() {
+				if (this.xGet("project")) {
+					if (this.xGet("project").xGet("ownerUser") !== Alloy.Models.User) {
+						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
+						if (this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyExpenseDetailAddNew")) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+				return this.xGet("ownerUser") === Alloy.Models.User;
+			},
 			// canMoneyPaybackAddNew : function(){
 			// if(this.xGet("ownerUser") !== Alloy.Models.User){
 			// var projectShareAuthorization = this.xGet("projectShareAuthorizations").at(0);

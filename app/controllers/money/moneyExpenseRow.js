@@ -21,7 +21,7 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyAddNew", {
 			selectedModel : $.$model
 		});
-	}, !$.$model.canEdit() || $.$model.xGet("expenseType") === "Deposite"));
+	}, !$.$model.canAddNew() || $.$model.xGet("expenseType") === "Deposite"));
 	
 	menuSection.add($.createContextMenuItem("删除支出", function() {
 		if ($.$model.xGet("expenseType") === "Deposite") {
