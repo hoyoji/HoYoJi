@@ -6,7 +6,7 @@
 				left="5" height="Ti.UI.FILL" width="45" visible="false"
 				image="/images/com.hoyoji.titanium.widget.TitleBar/backButton" />
 	
-			<Widget src="com.hoyoji.titanium.widget.XButton" id="tableNavButton" 
+			<Widget src="com.hoyoji.titanium.widget.XButton" id="tableNavButton" title="上一级"
 				left="5" height="Ti.UI.FILL" width="45" visible="false"	
 				image="/images/com.hoyoji.titanium.widget.TitleBar/backButton" />
 				
