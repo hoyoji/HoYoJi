@@ -1,14 +1,61 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm", {
-	currentWindow : $.getCurrentWindow(),
-	parentController : $.getParentController(),
-	autoInit : "false",
-	top : 0,
-	bottom : 50
-});
-$.moneyExpenseForm.setParent($.$view);
-$.moneyExpenseForm.UIInit();
+var currentForm;
+var model = $.$attrs.selectedModel;
+
+if (model) {
+	var formName;
+	var modelType = model.config.adapter.collection_name;
+	switch(modelType) {
+		case "MoneyExpense" :
+			formName = "money/moneyExpenseForm";
+			break;
+		case "MoneyIncome" :
+			formName = "money/moneyIncomeForm";
+			break;
+		case "MoneyTransfer" :
+			formName = "money/moneyTransferForm";
+			break;
+		case "MoneyBorrow" :
+			formName = "money/moneyBorrowForm";
+			break;
+		case "MoneyLend" :
+			formName = "money/moneyLendForm";
+			break;
+		case "MoneyReturn" :
+			formName = "money/moneyReturnForm";
+			break;
+		case "MoneyPayback" :
+			formName = "money/moneyPaybackForm";
+			break;
+		default :
+			break;
+	}
+	if (formName) {
+		$.moneyForm = Alloy.createController(formName, {
+			addNewAgant : model,
+			currentWindow : $.getCurrentWindow(),
+			parentController : $.getParentController(),
+			autoInit : "false",
+			top : 0,
+			bottom : 50
+		});
+		$.moneyForm.setParent($.$view);
+		$.moneyForm.UIInit();
+		currentForm = $.moneyForm;
+	}
+} else {
+	$.moneyExpenseForm = Alloy.createController("money/moneyExpenseForm", {
+		currentWindow : $.getCurrentWindow(),
+		parentController : $.getParentController(),
+		autoInit : "false",
+		top : 0,
+		bottom : 50
+	});
+	$.moneyExpenseForm.setParent($.$view);
+	$.moneyExpenseForm.UIInit();
+	currentForm = $.moneyExpenseForm;
+}
 
 $.footerBar = Alloy.createWidget("com.hoyoji.titanium.widget.FooterBar", "widget", {
 	autoInit : "false",
@@ -22,7 +69,7 @@ $.footerBar.setParent($.$view);
 $.footerBar.UIInit($, $.getCurrentWindow());
 $.footerBar.on("singletap", onFooterbarTap);
 
-var currentForm = $.moneyExpenseForm, lastAmountValue;
+var lastAmountValue;
 
 function onFooterbarTap(e) {
 	if (!$[e.source.id]) {
@@ -91,25 +138,27 @@ function onFooterbarTap(e) {
 	if (previousForm.amount.getValue() !== null && !isNaN(previousForm.amount.getValue())) {
 		lastAmountValue = previousForm.amount.getValue();
 	}
-	setTimeout(function(){
+	setTimeout(function() {
 		currentForm.amount.setValue(lastAmountValue);
 		currentForm.amount.field.fireEvent("change");
-		if(!lastAmountValue){
+		if (!lastAmountValue) {
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 				currentForm.titleBar.save();
 			}, function() {
-		
+
 			}, 42);
 		}
 		$.getCurrentWindow().__dirtyCount = $.__dirtyCount = currentForm.__dirtyCount;
 	}, 1);
-	
+
 	currentForm.$view.show();
 	previousForm.$view.hide();
 }
 
 $.getCurrentWindow().$view.addEventListener("contentready", function() {
-	currentForm.date.setValue((new Date()).toISOString());
+	if (!model) {
+		currentForm.date.setValue((new Date()).toISOString());
+	}
 	$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 		currentForm.titleBar.save();
 	}, function() {
