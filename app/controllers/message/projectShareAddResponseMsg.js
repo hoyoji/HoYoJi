@@ -707,7 +707,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											"messageState" : "new",
 											"messageTitle" : "共享回复",
 											"date" : date,
-											"detail" : "用户" + $.$model.xGet("toUser").xGet("userName") + "接受了您共享的项目:" + projectName,
+											"detail" : "用户" + $.$model.xGet("toUser").getUserDisplayName() + "接受了您共享的项目:" + projectName,
 											"messageBoxId" : fromUser.xGet("messageBoxId"),
 											"messageData" : $.$model.xGet("messageData")
 										}, function() {
@@ -798,11 +798,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageState" : "unread",
 									"messageTitle" : "共享回复",
 									"date" : date,
-									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝了您共享的项目:" + projectName,
+									"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "拒绝了您共享的项目:" + projectName,
 									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
-									saveEndCB("您拒绝了" + fromUser.xGet("userName") + "共享的项目");
+									saveEndCB("您拒绝了" + fromUser.getUserDisplayName() + "共享的项目");
 									return;
 								}, function(e) {
 									saveErrorCB("拒绝共享项目失败,请重新发送 : " + e.__summary.msg);

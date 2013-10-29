@@ -208,8 +208,12 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getDisplayName : function() {
-				return this.xGet("userName");
+			getUserDisplayName : function() {
+				if (!this.xGet("nickName")) {
+					return this.xGet("userName");
+				} else {
+					return this.xGet("nickName");
+				}
 			},
 			getFriendDisplayName : function() {
 				var friend = Alloy.createModel("Friend").xFindInDb({

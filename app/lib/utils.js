@@ -547,6 +547,21 @@
 					this.trigger('reset', this, options);
 				return this;
 			},
+			where : function(attrs, first) {
+				if (_.isEmpty(attrs))
+					return first ?
+					void 0 : [];
+				return this[first ? 'find' : 'filter'](function(model) {
+					for (var key in attrs) {
+						if (attrs[key] !== model.get(key))
+							return false;
+					}
+					return true;
+				});
+			},
+			findWhere : function(attrs) {
+				return this.where(attrs, true);
+			}
 			// reset: function(models, options) {
 			// models  || (models = []);
 			// options || (options = {});

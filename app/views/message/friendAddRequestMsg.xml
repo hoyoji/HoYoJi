@@ -9,7 +9,7 @@
 						id="toUser" autoInit="false"
                 		bindModel="$.$model"
                 		bindAttribute="toUser"
-                		bindAttributeIsModel="userName"
+                		bindAttributeIsModel="getUserDisplayName()"
                 		/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="请求消息" height="84" hintText="请输入请求消息"
 					id="requestContent" autoInit="false"

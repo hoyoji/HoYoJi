@@ -9,7 +9,7 @@
 				id="friendUser" autoInit="false" 	
 				bindModel="$.$model"
 				bindAttribute="friendUser"
-				bindAttributeIsModel="userName"
+				bindAttributeIsModel="getUserDisplayName()"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="好友分类"
 				id="friendCategory" autoInit="false" 	
