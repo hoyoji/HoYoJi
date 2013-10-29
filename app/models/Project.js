@@ -4,7 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-			// parentProjectId : "TEXT",
+			parentProjectId : "TEXT",
 			currencyId : "TEXT NOT NULL",
 			autoApportion : "INTEGER",
 			defaultIncomeCategoryId : "TEXT",
@@ -22,6 +22,10 @@ exports.definition = {
 			ownerUser : {
 				type : "User",
 				attribute : "projects"
+			},
+			parentProject : {
+				type : "Project",
+				attribute : "subProjects"
 			},
 			currency : {
 				type : "Currency",
@@ -57,17 +61,13 @@ exports.definition = {
 				type : "Project",
 				attribute : "parentProject"
 			},
-			parentProjects : {
-				type : "Project",
-				attribute : "subProject"
-			},
 			parentProjectParentProjects : {
 				type : "ParentProject",
-				attribute : "subProject"
+				attribute : "parentProject"
 			},
 			parentProjectSubProjects : {
 				type : "ParentProject",
-				attribute : "parentProject"
+				attribute : "subProject"
 			},
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
@@ -127,59 +127,51 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			xGetHasMany : function(attr) {
-				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type), self = this;
-				if (this.isNew()) {
-					this.set(attr, collection, {
-						silent : true
-					});
-					return collection;
-				}
-
-				if(attr === "subProjects"){
-					collection.xSetFilter(function(item){
-						return self.xGet("parentProjectSubProjects").findWhere({subProjectId : item.xGet("id")}) !== undefined;
-					});
-				} else if(attr === "parentProjects"){
-					collection.xSetFilter(function(item){
-						return self.xGet("parentProjectParentProjects").findWhere({parentProjectId : item.xGet("id")}) !== undefined;
-					});
-				} else {
-					var filter = {};
-					filter[key] = this;
-					collection.xSetFilter(filter);
-				}
-
-				console.info("xGet hasMany : " + type + collection.length);
-				var idString;
-				if (this.get('id')) {
-					idString = " = '" + this.get('id') + "' ";
-				} else {
-					idString = " IS NULL ";
-				}
-				if(attr === "subProjects"){
-			        collection.xFetch({
-						query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.subProjectId WHERE pp.parentProjectId " + idString
-					});
-				} else if(attr === "parentProjects"){
-			        collection.xFetch({
-						query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.parentProjectId WHERE pp.subProjectId " + idString
-					});
-				} else {
-				    collection.xFetch({
-						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
-					});
-				}
-				console.info("xGet hasMany : " + key + collection.length);
-
-				this.attributes[attr] = collection;
-				// this.set(attr, collection, {
-					// silent : true
-				// });
-
-				this._previousAttributes[attr] = collection;
-				return collection;
-			},
+			// xGetHasMany : function(attr) {
+				// var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
+				// if (this.isNew()) {
+					// this.set(attr, collection, {
+						// silent : true
+					// });
+					// return collection;
+				// }
+// 
+				// if(attr === "subProjects"){
+					// collection.xSetFilter(function(item){
+						// item.xGet("parentProject");
+					// });
+				// } else {
+					// var filter = {};
+					// filter[key] = this;
+					// collection.xSetFilter(filter);
+				// }
+// 
+				// console.info("xGet hasMany : " + type + collection.length);
+				// var idString;
+				// if (this.get('id')) {
+					// idString = " = '" + this.get('id') + "' ";
+				// } else {
+					// idString = " IS NULL ";
+				// }
+				// if(attr === "subProjects"){
+			        // collection.xFetch({
+						// query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.subProjectId WHERE pp.parentProjectId " + idString
+					// });
+				// } else {
+				    // collection.xFetch({
+						// query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+					// });
+				// }
+				// console.info("xGet hasMany : " + key + collection.length);
+// 
+				// this.attributes[attr] = collection;
+				// // this.set(attr, collection, {
+					// // silent : true
+				// // });
+// 
+				// this._previousAttributes[attr] = collection;
+				// return collection;
+			// },
 			getActualTotalMoney : function() {
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
