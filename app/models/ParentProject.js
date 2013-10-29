@@ -10,8 +10,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
-			parentProject : {type : "Project", attribute : "parentProjectParentProjects"},
-			subProject : {type : "Project", attribute : "parentProjectSubProjects"},
+			parentProject : {type : "Project", attribute : "parentProject"},
+			subProject : {type : "Project", attribute : "subProject"},
 			ownerUser : {type : "User", attribute : "parentProjects"}
 		},
 		adapter: {
