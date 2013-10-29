@@ -59,7 +59,15 @@ exports.definition = {
 			},
 			subProjects : {
 				type : "Project",
+				attribute : null
+			},
+			parentProjectParentProjects : {
+				type : "ParentProject",
 				attribute : "parentProject"
+			},
+			parentProjectSubProjects : {
+				type : "ParentProject",
+				attribute : "subProject"
 			},
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
@@ -118,6 +126,51 @@ exports.definition = {
 					}
 					xValidateComplete(error);
 				}
+			},
+			xGetHasMany : function(attr) {
+				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
+				if (this.isNew()) {
+					this.set(attr, collection, {
+						silent : true
+					});
+					return collection;
+				}
+
+				if(attr === "subProjects"){
+					collection.xSetFilter(function(item){
+						item.xGet("parentProject");
+					});
+				} else {
+					var filter = {};
+					filter[key] = this;
+					collection.xSetFilter(filter);
+				}
+
+				console.info("xGet hasMany : " + type + collection.length);
+				var idString;
+				if (this.get('id')) {
+					idString = " = '" + this.get('id') + "' ";
+				} else {
+					idString = " IS NULL ";
+				}
+				if(attr === "subProjects"){
+			        collection.xFetch({
+						query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.subProjectId WHERE pp.parentProjectId " + idString
+					});
+				} else {
+				    collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+					});
+				}
+				console.info("xGet hasMany : " + key + collection.length);
+
+				this.attributes[attr] = collection;
+				// this.set(attr, collection, {
+					// silent : true
+				// });
+
+				this._previousAttributes[attr] = collection;
+				return collection;
 			},
 			getActualTotalMoney : function() {
 				var actualTotalExpense = 0;
