@@ -118,20 +118,23 @@ function onFooterbarTap(e) {
 // }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({headerTitle : "账务操作"});
+	var menuSection = Ti.UI.createTableViewSection();
 
+	menuSection.add($.createContextMenuItem("消息", function() {
+		Alloy.Globals.openWindow("message/messageAll");
+	}));
 	menuSection.add($.createContextMenuItem("查找", function() {
 		Alloy.Globals.openWindow("money/transactionsSearch");
 	}));
-	menuSection.add($.createContextMenuItem("报表", function() {
-		var d = new Date();
-		Alloy.Globals.openWindow("money/report/transactionReport", {
-			queryOptions : {
-				dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-				dateTo : d.getUTCTimeOfDateEnd().toISOString()
-			}
-		});
-	}));
+	// menuSection.add($.createContextMenuItem("报表", function() {
+		// var d = new Date();
+		// Alloy.Globals.openWindow("money/report/transactionReport", {
+			// queryOptions : {
+				// dateFrom : d.getUTCTimeOfDateStart().toISOString(),
+				// dateTo : d.getUTCTimeOfDateEnd().toISOString()
+			// }
+		// });
+	// }));
 	menuSection.add($.createContextMenuItem("货币", function() {
 		Alloy.Globals.openWindow("money/currency/currencyAll");
 	}));
