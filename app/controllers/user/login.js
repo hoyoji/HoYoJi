@@ -285,10 +285,13 @@ function showTestLabel(){
 
 $.getCurrentWindow().onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
+		var activityWindow = Alloy.createController("activityMask");
+		activityWindow.open("正在登录...");
 		$.autoLogin.setValue("yes");
 		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
 		$.login(userData.userName, userData.password);
+		activityWindow.close();
 	} else {
 		$.autoLogin.setValue("no");
 		showTestLabel();		

@@ -3,16 +3,16 @@ exports.definition = {
 		columns: {
 		    id: "TEXT UNIQUE NOT NULL PRIMARY KEY",
 		    parentProjectId : "TEXT",
-		    projectId : "TEXT",
+		    subProjectId : "TEXT",
 			ownerUserId : "TEXT",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
-			project : {type : "Project", attribute : null},
-			parentProject : {type : "Project", attribute : null},
-			ownerUser : {type : "User", attribute : null}
+			parentProject : {type : "Project", attribute : "parentProjectParentProjects"},
+			subProject : {type : "Project", attribute : "parentProjectSubProjects"},
+			ownerUser : {type : "User", attribute : "parentProjects"}
 		},
 		adapter: {
 			type: "hyjSql"
@@ -23,7 +23,7 @@ exports.definition = {
 			// extended functions and properties go here
 			syncAddNew : function(record, dbTrans) {
 				var parentProject = Alloy.createModel("ParentProject").xFindInDb({
-					projectId : record.projectId,
+					subProjectId : record.subProjectId,
 					parentProjectId : record.parentprojectId
 				});
 				if (parentProject.id) {
@@ -46,7 +46,7 @@ exports.definition = {
 			},
 			syncUpdate : function(record, dbTrans) {
 				var parentProject = Alloy.createModel("ParentProject").xFindInDb({
-					projectId : record.projectId,
+					subProjectId : record.subProjectId,
 					parentProjectId : record.parentprojectId
 				});
 				if (parentProject.id && parentProject.id !== record.id) {
