@@ -10,7 +10,7 @@
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" width="Ti.UI.SIZE" 
 				id="userName" autoInit="false"
 				bindModel = "$.$model"
-				bindAttribute = "userName" 
+				bindAttribute = "getUserDisplayName()" 
 			/>
 		</View>
 	</View>

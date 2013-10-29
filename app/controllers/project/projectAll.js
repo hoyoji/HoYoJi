@@ -73,20 +73,20 @@ function onFooterbarTap(e) {
 
 $.titleBar.bindXTable($.myProjectsTable);
 
-// var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
-	// return (model.xGet("parentProjectSubProjects").findWhere({parentProjectId : null}) !== undefined && model.xGet("ownerUserId") === Alloy.Models.User.id);
-// }, $);
-
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
-	return (model.xPrevious("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id)
-	|| (model.xGet("ownerUserId") !== Alloy.Models.User.id 
-							&& !model.xGet("parentProject") 
-							&& model.xGet("projectShareAuthorizations").where({
-								projectId : model.id,
-								friendUserId : Alloy.Models.User.id,
-								state : "Accept"
-							}).length > 0);
+	return (model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined && model.xGet("ownerUserId") === Alloy.Models.User.id);
 }, $);
+
+// var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
+	// return (model.xPrevious("parentProject") === null && model.xGet("ownerUserId") === Alloy.Models.User.id)
+	// || (model.xGet("ownerUserId") !== Alloy.Models.User.id 
+							// && !model.xGet("parentProject") 
+							// && model.xGet("projectShareAuthorizations").where({
+								// projectId : model.id,
+								// friendUserId : Alloy.Models.User.id,
+								// state : "Accept"
+							// }).length > 0);
+// }, $);
 
 // var sharedWithHerTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model){
 // return model.xGet("projectShareAuthorizations").length > 0

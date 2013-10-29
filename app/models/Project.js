@@ -61,13 +61,17 @@ exports.definition = {
 				type : "Project",
 				attribute : "parentProject"
 			},
+			parentProjects : {
+				type : "Project",
+				attribute : "subProject"
+			},
 			parentProjectParentProjects : {
 				type : "ParentProject",
-				attribute : "parentProject"
+				attribute : "subProject"
 			},
 			parentProjectSubProjects : {
 				type : "ParentProject",
-				attribute : "subProject"
+				attribute : "parentProject"
 			},
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
@@ -127,51 +131,103 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			// xGetHasMany : function(attr) {
-				// var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type);
-				// if (this.isNew()) {
-					// this.set(attr, collection, {
-						// silent : true
-					// });
-					// return collection;
-				// }
-// 
-				// if(attr === "subProjects"){
-					// collection.xSetFilter(function(item){
-						// item.xGet("parentProject");
-					// });
-				// } else {
-					// var filter = {};
-					// filter[key] = this;
-					// collection.xSetFilter(filter);
-				// }
-// 
-				// console.info("xGet hasMany : " + type + collection.length);
-				// var idString;
-				// if (this.get('id')) {
-					// idString = " = '" + this.get('id') + "' ";
-				// } else {
-					// idString = " IS NULL ";
-				// }
-				// if(attr === "subProjects"){
-			        // collection.xFetch({
-						// query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.subProjectId WHERE pp.parentProjectId " + idString
-					// });
-				// } else {
-				    // collection.xFetch({
-						// query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
-					// });
-				// }
-				// console.info("xGet hasMany : " + key + collection.length);
-// 
-				// this.attributes[attr] = collection;
-				// // this.set(attr, collection, {
-					// // silent : true
-				// // });
-// 
-				// this._previousAttributes[attr] = collection;
-				// return collection;
-			// },
+			xGetHasMany : function(attr) {
+				var type = this.config.hasMany[attr].type, key = this.config.hasMany[attr].attribute, collection = Alloy.createCollection(type), self = this;
+				if (this.isNew()) {
+					this.set(attr, collection, {
+						silent : true
+					});
+					return collection;
+				}
+
+				if (attr === "subProjects") {
+					collection.xSetFilter(function(item) {
+						return self.xGet("parentProjectSubProjects").findWhere({
+							subProjectId : item.xGet("id")
+						}) !== undefined;
+					});
+				} else if (attr === "parentProjects") {
+					collection.xSetFilter(function(item) {
+						return self.xGet("parentProjectParentProjects").findWhere({
+							parentProjectId : item.xGet("id")
+						}) !== undefined;
+					});
+				} else {
+					var filter = {};
+					filter[key] = this;
+					collection.xSetFilter(filter);
+				}
+
+				console.info("xGet hasMany : " + type + collection.length);
+				var idString;
+				if (this.get('id')) {
+					idString = " = '" + this.get('id') + "' ";
+				} else {
+					idString = " IS NULL ";
+				}
+				if (attr === "subProjects") {
+					collection.xFetch({
+						query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.subProjectId WHERE pp.parentProjectId " + idString
+					});
+				} else if (attr === "parentProjects") {
+					collection.xFetch({
+						query : "SELECT main.* FROM Project main JOIN ParentProject pp ON main.id = pp.parentProjectId WHERE pp.subProjectId " + idString
+					});
+				} else {
+					collection.xFetch({
+						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
+					});
+				}
+				console.info("xGet hasMany : " + key + collection.length);
+
+				this.attributes[attr] = collection;
+				// this.set(attr, collection, {
+				// silent : true
+				// });
+
+				this._previousAttributes[attr] = collection;
+				return collection;
+			},
+			xGetBelongsTo : function(attr) {
+				if(attr === "parentProject"){
+					var p = this.xGet("parentProjects").at(0);
+					this.attributes[attr] = p;
+					this._previousAttributes[attr] = p;
+					return p;
+				}
+				
+				var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
+				console.info("xGet belongsTo " + fKey + " : " + fId);
+				if (!fId) {
+					this.attributes[attr] = null;
+					this._previousAttributes[attr] = null;
+					return null;
+				}
+
+				var m = Alloy.Collections[table].get(fId);
+				if (!m) {
+					var idString = " = '" + fId + "' ";
+					console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+					m = Alloy.createCollection(table);
+					m.fetch({
+						query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
+					});
+					// console.info("xGet fetch belongsTo from DB " + m.length);
+					// if(m.length === 0){
+					// m = null;
+					// } else {
+					// m = m.at(0);
+					// }
+					m = Alloy.Collections[table].get(fId);
+					console.info("--------" + m);
+				}
+				this.attributes[attr] = m;
+				// this.set(attr, m, {
+				// silent : true
+				// });
+				this._previousAttributes[attr] = m;
+				return m;
+			},
 			getActualTotalMoney : function() {
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
@@ -189,7 +245,7 @@ exports.definition = {
 						}
 					});
 				});
-				
+
 				this._actualTotalMoney = actualTotalExpense - actualTotalIncome;
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
 
@@ -198,7 +254,7 @@ exports.definition = {
 				// var exchanges = userCurrency.getExchanges(projectCurrency);
 				// var exchange = 1;
 				// if (exchanges.length) {
-					// exchange = exchanges.at(0).xGet("rate");
+				// exchange = exchanges.at(0).xGet("rate");
 				// }
 				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
 				return this.xGet("currency").xGet("symbol") + actualTotalMoney.toFixed(2);
@@ -232,14 +288,14 @@ exports.definition = {
 				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
 					projectId : this.xGet("id")
 				});
-				if (projectRemark && projectRemark.id && projectRemark.xGet("remark")){
+				if (projectRemark && projectRemark.id && projectRemark.xGet("remark")) {
 					return projectRemark.xGet("remark");
 				} else {
 					return this.xGet("name");
 				}
 			},
 			getOwnerUserName : function() {
-				if (this.xGet("ownerUserId") === Alloy.Models.User.id){
+				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					return null;
 				} else {
 					return this.xGet("ownerUser").getFriendDisplayName();
