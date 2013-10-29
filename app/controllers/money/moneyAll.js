@@ -23,7 +23,7 @@ $.getCurrentWindow().$view.addEventListener("contentready", function() {
 	$.transactionsTable.setParent($.__views.body);
 	$.transactionsTable.UIInit();
 	$.transactionsTable.transactionsTable.autoHideFooter($.footerBar);
-	$.transactionsTable.doFilter(timeFilter, sortReverse, "date");
+	$.transactionsTable.doFilter(timeFilter);
 });
 
 var d = new Date(), sortReverse = true, timeFilter = {
@@ -80,7 +80,7 @@ function onFooterbarTap(e) {
 		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "monthTransactions") {
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		//transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		$.titleBar.setTitle(transactionDisplayType + "月流水");
 		$.footerBar.transactionsTable.setTitle("月流水");
 		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/monthTransactions");
@@ -93,34 +93,45 @@ function onFooterbarTap(e) {
 		if($.$attrs.queryFilter){
 			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
 		}
+		timeFilter.transactionDisplayType = "Personal";
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Personal"
-		}, {
-			wait : true,
-			patch : true
-		});
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Personal"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
+		transactionDisplayType = "Personal";
+		if($.$attrs.queryFilter){
+			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+		}
 		var title = $.titleBar.getTitle();
-		$.titleBar.setTitle(transactionDisplayType + title.substr(2));
-		$.transactionsTable.doFilter();
+		$.titleBar.setTitle("个人流水");
+		timeFilter.transactionDisplayType = "Personal";
+		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "projectTransactions") {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Project"
-		}, {
-			wait : true,
-			patch : true
-		});
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Project"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
+		transactionDisplayType = "Project";
+		if($.$attrs.queryFilter){
+			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
+		}
 		var title = $.titleBar.getTitle();
-		$.titleBar.setTitle(transactionDisplayType + title.substr(2));
-		$.transactionsTable.doFilter();
+		$.titleBar.setTitle("项目流水");
+		timeFilter.transactionDisplayType = "Project";
+		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "sort") {
 		sortReverse = !sortReverse;
 		$.transactionsTable.sort("date", sortReverse);
 	} else if (e.source.id === "transactionsSearchTable") {
-		Alloy.Globals.openWindow("money/transactionsSearch");
+		Alloy.Globals.openWindow("money/transactionsSearch", {
+			queryOptions : _.extend($.$attrs.queryFilter, {transactionDisplayType : transactionDisplayType})
+		});
 		// $.titleBar.setTitle("查找流水");
 		// if(!$.transactionsSearchTable){
 		// $.transactionsSearchTable = Alloy.createController("money/transactionsSearch", {
@@ -135,7 +146,7 @@ function onFooterbarTap(e) {
 		// }
 		// $.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		//transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
 		$.titleBar.setTitle(transactionDisplayType + e.source.getTitle());
 	}
@@ -170,6 +181,6 @@ function onFooterbarTap(e) {
 // Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 // });
 
-var transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
-$.titleBar.setTitle(transactionDisplayType + "日流水");
+var transactionDisplayType = "Project";
+$.titleBar.setTitle("项目流水");
 $.titleBar.UIInit($, $.getCurrentWindow());

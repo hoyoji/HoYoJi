@@ -1,5 +1,31 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "流水类型"
+	});
+
+	menuSection.add($.createContextMenuItem("个人流水", function() {
+		Alloy.Models.User.save({
+			defaultTransactionDisplayType : "Personal"
+		}, {
+			wait : true,
+			patch : true
+		});
+		exports.doFilter();
+	}));
+	menuSection.add($.createContextMenuItem("项目流水", function() {
+		Alloy.Models.User.save({
+			defaultTransactionDisplayType : "Project"
+		}, {
+			wait : true,
+			patch : true
+		});
+		exports.doFilter();
+	}));
+	return menuSection;
+};
+
 // ========================================== summary view =========================
 var summaryView = Ti.UI.createView({
 	id : "summaryView",
@@ -165,7 +191,11 @@ $.transactionsTable.UIInit($, $.__currentWindow);
 // }
 
 function searchData(collection, offset, limit, orderBy) {
-	collection.xSearchInDb({}, {
+	var searchCriteria = {};
+	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+		searchCriteria.ownerUserId = Alloy.Models.User.id;
+	}
+	collection.xSearchInDb(searchCriteria, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
@@ -173,9 +203,15 @@ function searchData(collection, offset, limit, orderBy) {
 }
 
 function setFilter(collection) {
-	collection.xSetFilter(function(model) {
-		return true;
-	});
+	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+		collection.xSetFilter(function(model) {
+			return model.xGet("ownerUserId") === Alloy.Models.User.id;
+		});
+	} else {
+		collection.xSetFilter(function(model) {
+			return true;
+		});
+	}
 }
 
 $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB) {
@@ -194,6 +230,8 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 };
 
 exports.doFilter = function() {
+	$.transactionsTable.resetTable();
+
 	searchData(moneyIncomes, 0, 6, "date DESC");
 	searchData(moneyExpenses, 0, 6, "date DESC");
 	searchData(moneyTransferOuts, 0, 6, "date DESC");
@@ -214,12 +252,12 @@ exports.doFilter = function() {
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
 	moneyReturnInterests.xSetFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+		return model.xGet("interest") > 0;
+	});
 	setFilter(moneyPaybacks);
 	moneyPaybackInterests.xSetFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+		return model.xGet("interest") > 0;
+	});
 	receivedMessages.xSetFilter(function(model) {
 		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id && model.xGet("messageState") !== "closed");
 	});
