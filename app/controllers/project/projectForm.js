@@ -95,7 +95,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		
 		//创建项目时创建parentProject
 		var parentProject = Alloy.createModel("ParentProject", {
-			project : $.$model,
+			subProject : $.$model,
 			parentProject : $.$model.xGet("parentProject"),
 			ownerUser : Alloy.Models.User
 		}).xAddToSave($);
@@ -174,7 +174,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	} else {
 		if($.$model.hasChanged("parentProject")) {
 			var parentProject = Alloy.createModel("ParentProject").xFindInDb({
-				projectId : $.$model.xGet("id"),
+				subProjectId : $.$model.xGet("id"),
 				parentProjectId : $.$model.xPrevious("parentProjectId")
 			});
 			if (parentProject.id) {
@@ -182,7 +182,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				parentProject.xAddToSave($);
 			} else {
 				parentProject = Alloy.createModel("ParentProject", {
-					project : $.$model,
+					subProject : $.$model,
 					parentProject : $.$model.xGet("parentProject"),
 					ownerUser : Alloy.Models.User
 				}).xAddToSave($);
