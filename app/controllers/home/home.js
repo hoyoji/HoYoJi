@@ -123,7 +123,7 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("查找", function() {
 		Alloy.Globals.openWindow("money/transactionsSearch");
 	}));
-	menuSection.add($.createContextMenuItem("账务", function() {
+	menuSection.add($.createContextMenuItem("报表", function() {
 		var d = new Date();
 		Alloy.Globals.openWindow("money/report/transactionReport", {
 			queryOptions : {
