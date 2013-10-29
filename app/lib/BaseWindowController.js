@@ -52,9 +52,9 @@
 						var menuHeader = null;
 						if ($.mainWindow) {
 							title = "记一笔";
-							// menuHeader = [$.createContextMenuItem("设置", function() {
-							// Alloy.Globals.openWindow("setting/systemSetting");
-							// })];
+							menuHeader = [$.createContextMenuItem("设置", function() {
+							Alloy.Globals.openWindow("setting/systemSetting");
+							})];
 							menuFooter = [$.createContextMenuItem(title, function() {
 								Alloy.Globals.openWindow("money/moneyAddNew");
 							})];

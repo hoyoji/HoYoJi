@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.transactionsSearchTable.UIInit($, $.getCurrentWindow());
 
-var queryOptions = {}, queryController = null;
+var queryOptions = $.$attrs.queryOptions || {}, queryController = null;
 
 exports.doSearch = function() {
 	Alloy.Globals.openWindow("money/moneyQuery", {

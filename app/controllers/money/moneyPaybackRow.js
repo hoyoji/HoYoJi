@@ -8,7 +8,7 @@ $.makeContextMenu = function() {
 		Alloy.Globals.openWindow("money/moneyAddNew", {
 			selectedModel : $.$model
 		});
-	}, !$.$model.canEdit()));
+	}, !$.$model.canAddNew()));
 	// menuSection.add($.createContextMenuItem("发送给好友", function() {
 		// Alloy.Globals.openWindow("message/accountShare", {
 			// $model : "Message",

@@ -38,7 +38,7 @@ function onFooterbarTap(e) {
 				bottom : "0",
 				top : "0",
 				sortByField : "date",
-				sortReverse : true,
+				sortReverse : "true",
 				groupByField : "date",
 				pageSize : 10,
 				autoInit : "false",
