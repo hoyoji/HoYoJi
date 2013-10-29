@@ -116,10 +116,16 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		alert("请选择项目");
 		return;
 	}
+	$.exchangeRate.rightButton.setEnabled(false);
+	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
 		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
 		alert(e.__summary.msg);
 	});
 });

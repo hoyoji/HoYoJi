@@ -46,7 +46,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 	}
 
-	if ($.$model.isNew()) {
+	function createProject() {
 		if ($.autoAddCategory.getValue() === "Yes") {
 			var incomeCategoryNameCollection = ["工资", "加班费", "补贴", "奖金", "报销", "租金", "兼职", "礼金", "投资收入", "利息收入"];
 			for (var i = 0; i < incomeCategoryNameCollection.length; i++) {
@@ -92,7 +92,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			ownerUser : Alloy.Models.User
 		}).xAddToSave($);
 		$.$model.xSet("depositeExpenseCategory", depositeExpenseCategory);
-		
+
 		//创建项目时创建parentProject
 		var parentProject = Alloy.createModel("ParentProject", {
 			subProject : $.$model,
@@ -171,14 +171,51 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			projectShareMoneyReturnEdit : 1,
 			projectShareMoneyReturnDelete : 1
 		}).xAddToSave($);
+		activityWindow.close();
+		$.saveModel(saveEndCB, saveErrorCB);
+	}
+
+	if ($.$model.isNew()) {
+		var activityWindow = Alloy.createController("activityMask");
+		activityWindow.open("正在新增项目...");
+		function createExchange(successCB, errorCB) {
+			var activeCurrency = Alloy.Models.User.xGet("activeCurrency");
+			var exchange = Alloy.createModel("Exchange").xFindInDb({
+				localCurrencyId : $.$model.xGet("currency").xGet("id"),
+				foreignCurrencyId : activeCurrency.xGet("id")
+			});
+			if (!exchange.id) {
+				Alloy.Globals.Server.getExchangeRate($.$model.xGet("currency").xGet("id"), activeCurrency.xGet("id"), function(rate) {
+					exchange = Alloy.createModel("Exchange", {
+						localCurrencyId : $.$model.xGet("currency").xGet("id"),
+						foreignCurrencyId : activeCurrency.xGet("id"),
+						rate : rate
+					});
+					exchange.xSet("ownerUser", Alloy.Models.User);
+					exchange.xSet("ownerUserId", Alloy.Models.User.id);
+					exchange.save();
+					successCB();
+				}, function(e) {
+					errorCB(e);
+				});
+			} else {
+				successCB();
+			}
+		}
+
+		createExchange(createProject, function(e) {
+			activityWindow.close();
+			saveErrorCB("项目添加失败,请重试： " + e.__summary.msg);
+			return;
+		});
 	} else {
-		if($.$model.hasChanged("parentProject")) {
+		if ($.$model.hasChanged("parentProject")) {
 			var parentProject = Alloy.createModel("ParentProject").xFindInDb({
 				subProjectId : $.$model.xGet("id"),
 				parentProjectId : $.$model.xPrevious("parentProjectId")
 			});
 			if (parentProject.id) {
-				parentProject.xSet("parentProject" , $.$model.xGet("parentProject"));
+				parentProject.xSet("parentProject", $.$model.xGet("parentProject"));
 				parentProject.xAddToSave($);
 			} else {
 				parentProject = Alloy.createModel("ParentProject", {
@@ -188,10 +225,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}).xAddToSave($);
 			}
 		}
+		$.saveModel(saveEndCB, saveErrorCB);
 	}
-	
-	
-	$.saveModel(saveEndCB, saveErrorCB);
+
 };
 
 $.onWindowOpenDo(function() {
