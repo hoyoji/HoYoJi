@@ -203,11 +203,15 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			}
 		}
 
-		createExchange(createProject, function(e) {
+		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+			createExchange(createProject, function(e) {
+				activityWindow.close();
+				saveErrorCB("项目添加失败,请重试： " + e.__summary.msg);
+				return;
+			});
+		} else {
 			activityWindow.close();
-			saveErrorCB("项目添加失败,请重试： " + e.__summary.msg);
-			return;
-		});
+		}
 	} else {
 		if ($.$model.hasChanged("parentProject")) {
 			var parentProject = Alloy.createModel("ParentProject").xFindInDb({

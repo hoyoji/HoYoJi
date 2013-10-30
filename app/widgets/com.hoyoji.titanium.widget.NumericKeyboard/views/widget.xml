@@ -4,7 +4,7 @@
 		<View id="keyboard" layout="vertical" height="252" width="Ti.UI.FILL" bottom="-252" backgroundColor="#e9f3f0">
 			<View height="42">
 					<Label id="display" text="" height="Ti.UI.FILL" width="60%" left="10" color="blue" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
-					<Button onSingletap="backspace" onLongclick="clear" title="←" right="0" />
+					<Button onTouchstart="backspace" onLongclick="clear" title="←" right="0" />
 			</View>
 			<View layout="vertical" width="Ti.UI.FILL" height="Ti.UI.SIZE">
 				<View height="42" layout="horizontal" horizontalWrap="false">

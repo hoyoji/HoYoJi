@@ -68,7 +68,7 @@ $.transactionsTable.beforeFetchNextPage = function(offset, limit, orderBy, succe
 exports.doFilter = function(filter) {
 	if (filter) {
 		currentFilter = filter;
-		if(currentFilter.project){
+		if (currentFilter.project) {
 			currentFilter.projectId = currentFilter.project.xGet("id");
 		}
 	}
@@ -80,9 +80,13 @@ exports.doFilter = function(filter) {
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
-	setFilter(moneyReturnInterests);
+	moneyReturnInterests.xSetFilter(function(model) {
+		return model.xGet("interest") > 0;
+	});
 	setFilter(moneyPaybacks);
-	setFilter(moneyPaybackInterests);
+	moneyPaybackInterests.xSetFilter(function(model) {
+		return model.xGet("interest") > 0;
+	});
 	$.transactionsTable.fetchNextPage();
 };
 
@@ -101,13 +105,9 @@ var moneyTransferIns = Alloy.createCollection("MoneyTransfer");
 var moneyBorrows = Alloy.createCollection("MoneyBorrow");
 var moneyLends = Alloy.createCollection("MoneyLend");
 var moneyReturns = Alloy.createCollection("MoneyReturn");
-var moneyReturnInterests = Alloy.createCollection("MoneyReturn").xCreateFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+var moneyReturnInterests = Alloy.createCollection("MoneyReturn");
 var moneyPaybacks = Alloy.createCollection("MoneyPayback");
-var moneyPaybackInterests = Alloy.createCollection("MoneyPayback").xCreateFilter(function(model) {
-	return model.xGet("interest") > 0;
-});
+var moneyPaybackInterests = Alloy.createCollection("MoneyPayback");
 
 // exports.doFilter(timeFilter);
 

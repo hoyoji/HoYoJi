@@ -34,15 +34,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				successCB();
 			}
 		}
-		createExchange(function(e) {
+
+		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+			createExchange(function(e) {
+				activityWindow.close();
+				$.saveModel(saveEndCB, saveErrorCB);
+			}, function(e) {
+				activityWindow.close();
+				saveErrorCB("账户添加失败,请重试： " + e.__summary.msg);
+				return;
+			});
+		} else {
 			activityWindow.close();
-			$.saveModel(saveEndCB, saveErrorCB);
-		}, function(e) {
-			activityWindow.close();
-			saveErrorCB("账户添加失败,请重试： " + e.__summary.msg);
-			return;
-		});
-	}else {
+		}
+	} else {
 		if ($.$model.hasChanged("currentBalance")) {
 			// 这个主要用于同不时维护修改后的账户余额
 			Alloy.createModel("MoneyAccountBalanceAdjustment", {
