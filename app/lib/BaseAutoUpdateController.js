@@ -74,8 +74,10 @@
 						value = $.__bindAttributeIsModel.xGet ? $.__bindAttributeIsModel.xGet($.$attrs.bindAttributeIsModel) : $.__bindAttributeIsModel[$.$attrs.bindAttributeIsModel];
 					}
 				}
-				value = this.convertModelValue(value);
-				$.field.setValue(value || "");
+				value = this.convertModelValue(value) || "";
+				if(value !== $.field.getValue()){
+					$.field.setValue(value);
+				}
 			};
 
 			$.setEditable = function(editable) {
