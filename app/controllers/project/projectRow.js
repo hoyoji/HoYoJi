@@ -1,25 +1,28 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
-$.onRowTap = function(e){
-// if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
-// Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
-// return false;
-// }else{
-// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
-// return false;
-// }
+$.onRowTap = function(e) {
+	// if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+	// Alloy.Globals.openWindow("project/projectForm", {$model : $.$model});
+	// return false;
+	// }else{
+	// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {$model : $.$model.xGet("projectShareAuthorizations").at(0), saveableMode : "read"});
+	// return false;
+	// }
 
-// Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
+	// Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 	// selectedProject : $.$model
-// });
+	// });
 
-
-		Alloy.Globals.openWindow("money/moneyAll", {queryFilter : {project : $.$model}});
-return false;
+	Alloy.Globals.openWindow("money/moneyAll", {
+		queryFilter : {
+			project : $.$model
+		}
+	});
+	return false;
 };
 
-$.setSelected = function(selected){
-	if(selected){
+$.setSelected = function(selected) {
+	if (selected) {
 		$.projectName.$view.setColor("blue");
 	}
 };
@@ -54,29 +57,29 @@ $.makeContextMenu = function(e, isSelectMode) {
 		});
 	}));
 	// if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
-		menuSection.add($.createContextMenuItem("修改项目", function() {
-			Alloy.Globals.openWindow("project/projectForm", {
-				$model : $.$model
-			});
-		},$.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
+	menuSection.add($.createContextMenuItem("修改项目", function() {
+		Alloy.Globals.openWindow("project/projectForm", {
+			$model : $.$model
+		});
+	}, $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
 	// } else {
-		// menuSection.add($.createContextMenuItem("共享权限", function() {
-			// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {
-				// $model : $.$model.xGet("projectShareAuthorizations").at(0),
-				// saveableMode : "read"
-			// });
-		// }));
+	// menuSection.add($.createContextMenuItem("共享权限", function() {
+	// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {
+	// $model : $.$model.xGet("projectShareAuthorizations").at(0),
+	// saveableMode : "read"
+	// });
+	// }));
 	// }
 
 	menuSection.add($.createContextMenuItem("删除项目", function() {
 		$.deleteModel();
 	}, isSelectMode || projectIsSharedToMe));
-	
+
 	menuSection.add($.createContextMenuItem("备注名称", function() {
 		var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
 			projectId : $.$model.xGet("id")
 		});
-		if (projectRemark && projectRemark.id){
+		if (projectRemark && projectRemark.id) {
 			Alloy.Globals.openWindow("project/projectRemarkForm", {
 				$model : projectRemark
 			});
@@ -89,55 +92,55 @@ $.makeContextMenu = function(e, isSelectMode) {
 				}
 			});
 		}
-	})); 
-	
+	}));
+
 	menuSection.add($.createContextMenuItem("项目成员", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {
 			selectedProject : $.$model
 		});
-	})); 
+	}));
 
 	return menuSection;
 };
 
-if($.$model.xGet("ownerUserId") === Alloy.Models.User.id){
+if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
 	$.projectImage.setImage("/images/project/projectAll/myProjectsTableGreen@2x.png");
-}else{
+} else {
 	$.projectImage.setImage("/images/project/projectAll/sharedWithMeTableGreen@2x.png");
 }
 
 $.onWindowOpenDo(function() {
 	setActualTotalMoneyColor();
-	$.$model.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
-	$.$model.xGetDescendents("subProjects").on("sync",setActualTotalMoneyColor);
+	$.$model.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").on("sync", setActualTotalMoneyColor);
 	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
-		subProject.xGet("projectShareAuthorizations").on("sync",setActualTotalMoneyColor);
+		subProject.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
 	});
 	$.$model.on("xrefresh", setProjectRemark);
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
-	$.$model.xGetDescendents("subProjects").off("sync",setActualTotalMoneyColor);
+	$.$model.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
+	$.$model.xGetDescendents("subProjects").off("sync", setActualTotalMoneyColor);
 	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
-		subProject.xGet("projectShareAuthorizations").off("sync",setActualTotalMoneyColor);
+		subProject.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
 	});
-	$.$model.off("xrefresh",setProjectRemark);
+	$.$model.off("xrefresh", setProjectRemark);
 });
 
-function setActualTotalMoneyColor(){
+function setActualTotalMoneyColor() {
 	$.actualTotalMoney.refresh();
-	if($.$model.getActualTotalMoneyType(true)){
+	if ($.$model.getActualTotalMoneyType(true)) {
 		$.actualTotalMoney.label.setColor("#329600");
-	}else{
+	} else {
 		$.actualTotalMoney.label.setColor("#c80032");
 	}
-	if($.$model.xGet("parentProject")){
+	if ($.$model.xGet("parentProject")) {
 		$.$model.xGet("parentProject").xRefresh();
 	}
 }
 
-function setProjectRemark(){
+function setProjectRemark() {
 	$.projectName.refresh();
 }
 
