@@ -267,8 +267,11 @@
 					}
 				};
 				$.updateField = function() {
-					$.setValue(model.xGet ? model.xGet(attribute) : model[attribute]);
-
+					var value = model.xGet ? model.xGet(attribute) : model[attribute];
+					if(value !== $.getValue()){
+						$.setValue(value);
+					}
+					
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
 					}
