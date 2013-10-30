@@ -209,6 +209,9 @@ exports.definition = {
 						// patch : true
 						// });
 						moneyAccountIn.__syncCurrentBalance = moneyAccountIn.__syncCurrentBalance ? moneyAccountIn.__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
+					} else {
+						dbTrans.__syncData[record.transferInId] = dbTrans.__syncData[record.transferInId] || {};
+						dbTrans.__syncData[record.transferInId].__syncCurrentBalance = dbTrans.__syncData[record.transferInId].__syncCurrentBalance ? dbTrans.__syncData[record.transferInId].__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 					}
 
 					var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
@@ -220,6 +223,9 @@ exports.definition = {
 						// patch : true
 						// });
 						moneyAccountOut.__syncCurrentBalance = moneyAccountOut.__syncCurrentBalance ? moneyAccountOut.__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
+					} else {
+						dbTrans.__syncData[record.transferOutId] = dbTrans.__syncData[record.transferOutId] || {};
+						dbTrans.__syncData[record.transferOutId].__syncCurrentBalance = dbTrans.__syncData[record.transferOutId].__syncCurrentBalance ? dbTrans.__syncData[record.transferOutId].__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
 					}
 				}
 			},
@@ -254,6 +260,9 @@ exports.definition = {
 							// patch : true
 							// });
 							newMoneyAccountIn.__syncCurrentBalance = newMoneyAccountIn.__syncCurrentBalance ? newMoneyAccountIn.__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
+						} else {
+							dbTrans.__syncData[record.transferInId] = dbTrans.__syncData[record.transferInId] || {};
+							dbTrans.__syncData[record.transferInId].__syncCurrentBalance = dbTrans.__syncData[record.transferInId].__syncCurrentBalance ? dbTrans.__syncData[record.transferInId].__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 						}
 					}
 
@@ -286,6 +295,9 @@ exports.definition = {
 							// patch : true
 							// });
 							newMoneyAccountOut.__syncCurrentBalance = newMoneyAccountOut.__syncCurrentBalance ? newMoneyAccountOut.__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
+						} else {
+							dbTrans.__syncData[record.transferOutId] = dbTrans.__syncData[record.transferOutId] || {};
+							dbTrans.__syncData[record.transferOutId].__syncCurrentBalance = dbTrans.__syncData[record.transferOutId].__syncCurrentBalance ? dbTrans.__syncData[record.transferOutId].__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
 						}
 					}
 				}

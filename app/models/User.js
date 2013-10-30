@@ -222,7 +222,7 @@ exports.definition = {
 				if (friend.id) {
 					return friend.getDisplayName();
 				}
-				return this.getDisplayName();
+				return this.getUserDisplayName();
 			},
 			// _xSave : function(options){
 			// // this.xSet("password", Ti.Utils.sha1(this.xGet("password")));
