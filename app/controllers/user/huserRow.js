@@ -30,7 +30,7 @@ function sendAddFriendMessage(friendlength) {
 				$.$model.save();
 			}
 			
-			Alloy.Globals.Server.fetchUserImageIcon(function(picture){
+			Alloy.Globals.Server.fetchUserImageIcon(toUser.xGet("pictureId"), function(picture){
 				delete picture.id;
 				// add it as new record
 				picture.save();
