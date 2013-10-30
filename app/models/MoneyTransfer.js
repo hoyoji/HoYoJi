@@ -144,10 +144,32 @@ exports.definition = {
 				return "转入" + transferIn.xGet("name") + "(" + transferIn.xGet("currency").xGet("code") + ")";
 			},
 			getTransferOutAmount : function() {
-				return this.xGet("transferOut").xGet("currency").xGet("symbol") + this.xGet("transferOutAmount").toUserCurrency();
+				var exchange = null;
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var transferOutCurrency = this.xGet("transferOut").xGet("currency");
+					if (transferOutCurrency === userCurrency) {
+						exchange = 1;
+					}else{
+						var exchanges = transferOutCurrency.getExchanges(userCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+				return this.xGet("transferOut").xGet("currency").xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
 			},
 			getTransferInAmount : function() {
-				return this.xGet("transferIn").xGet("currency").xGet("symbol") + this.xGet("transferInAmount").toUserCurrency();
+				var exchange = null;
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var transferInCurrency = this.xGet("transferIn").xGet("currency");
+					if (transferInCurrency === userCurrency) {
+						exchange = 1;
+					}else{
+						var exchanges = transferInCurrency.getExchanges(userCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+				return this.xGet("transferIn").xGet("currency").xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");

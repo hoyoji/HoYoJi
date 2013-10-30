@@ -124,7 +124,11 @@ function createPage(currentImage){
 			image.setImage(filePath + fileName);
 		} else {
 			f = null;
-			image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
+			try {
+				image.setImage(filePath + currentImage.xGet("id") + "_icon." + currentImage.xGet("pictureType"));
+			} catch (ex){
+				
+			}
 			var style;
 			if (OS_IOS) {
 				style = Ti.UI.iPhone.ActivityIndicatorStyle.PLAIN;
