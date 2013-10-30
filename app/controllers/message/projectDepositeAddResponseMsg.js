@@ -138,7 +138,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageState" : "new",
 						"messageTitle" : "删除充值",
 						"date" : date,
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
+						"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "同意并删除了充值",
 						"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 						messageData : $.$model.xGet("messageData")
 					}, function() {
@@ -234,7 +234,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						"messageState" : "new",
 						"messageTitle" : "删除充值",
 						"date" : date,
-						"detail" : "用户" + Alloy.Models.User.xGet("userName") + "同意并删除了充值",
+						"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "同意并删除了充值",
 						"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 						messageData : $.$model.xGet("messageData")
 					}, function() {
@@ -279,7 +279,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageState" : "new",
 				"messageTitle" : "拒绝接受",
 				"date" : date,
-				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝接受充值",
+				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "拒绝接受充值",
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 				messageData : $.$model.xGet("messageData")
 			}, function() {
@@ -307,7 +307,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageState" : "new",
 				"messageTitle" : "拒绝删除",
 				"date" : date,
-				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "拒绝删除充值",
+				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "拒绝删除充值",
 				"messageBoxId" : $.$model.xGet("fromUser").xGet("messageBoxId"),
 				messageData : $.$model.xGet("messageData")
 			}, function() {

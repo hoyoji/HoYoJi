@@ -7,7 +7,7 @@ $.$model.xSet("fromUser", Alloy.Models.User);
 $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
 $.$model.xSet("type", "Account.Share.AddRequest");
 $.$model.xSet("messageState", "closed");
-$.$model.xSet("messageTitle", Alloy.Models.User.xGet("userName"));
+$.$model.xSet("messageTitle", Alloy.Models.User.getUserDisplayName());
 
 $.onWindowOpenDo(function() {
 	//windowOpen的时候打开动态创建账务的信息

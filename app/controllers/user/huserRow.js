@@ -38,7 +38,7 @@ function sendAddFriendMessage(friendlength) {
 				"messageState" : "new",
 				"messageTitle" : "好友请求",
 				"date" : date,
-				"detail" : "用户" + Alloy.Models.User.xGet("userName") + "添加您为好友",
+				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "添加您为好友",
 				"messageBoxId" : $.$model.xGet("messageBoxId")
 			}, function() {
 				//本地创建好友
@@ -69,7 +69,7 @@ function sendAddFriendMessage(friendlength) {
 				ownerUser : Alloy.Models.User
 			});
 			newMessage.xSet("toUser", $.$model);
-			newMessage.xSet("detail", "用户" + Alloy.Models.User.xGet("userName") + "请求将您添加为好友");
+			newMessage.xSet("detail", "用户" + Alloy.Models.User.getUserDisplayName() + "请求将您添加为好友");
 			Alloy.Globals.openWindow("message/friendAddRequestMsg", {
 				$model : newMessage
 			});

@@ -341,14 +341,8 @@
 				this._previousAttributes[attr] = collection;
 				return collection;
 			},
-			xGet : function(attr) {
-				var value = this.get(attr);
-				if (value !== undefined) {
-					return value;
-				} else if (this.config.hasMany && this.config.hasMany[attr]) {
-					return this.xGetHasMany(attr);
-				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
-					var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
+			xGetBelongsTo : function(attr){
+				var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 					console.info("xGet belongsTo " + fKey + " : " + fId);
 					if (!fId){
 						this.attributes[attr] = null;
@@ -379,6 +373,15 @@
 					// });
 					this._previousAttributes[attr] = m;
 					return m;
+			},
+			xGet : function(attr) {
+				var value = this.get(attr);
+				if (value !== undefined) {
+					return value;
+				} else if (this.config.hasMany && this.config.hasMany[attr]) {
+					return this.xGetHasMany(attr);
+				} else if (this.config.belongsTo && this.config.belongsTo[attr]) {
+					return this.xGetBelongsTo(attr);
 				}
 				return value;
 			},
