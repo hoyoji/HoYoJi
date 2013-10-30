@@ -229,6 +229,10 @@ $.takePicture.addEventListener("singletap", function() {
 
 $.setValue = function(value) {
 	if (value === $.__bindAttributeIsModel) {
+		if (firstTimeSetValue) {
+			firstTimeSetValue = false;
+			displayPictures();
+		}
 		return;
 	}
 	var previousModel = $.__bindAttributeIsModel = value;
