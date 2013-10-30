@@ -29,6 +29,22 @@ function sendAddFriendMessage(friendlength) {
 				// add it as new record
 				$.$model.save();
 			}
+			
+			Alloy.Globals.Server.fetchUserImageIcon(function(picture){
+				delete picture.id;
+				// add it as new record
+				picture.save();
+			
+				var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+				if (f.exists()) {
+					f.read();
+					var fnew = Ti.Filesystem.getFile(Alloy.Globals.applicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+					fnew.write();
+					fnew = null;
+				}
+				f = null;	
+			});
+			
 			var date = (new Date()).toISOString();
 			Alloy.Globals.Server.sendMsg({
 				id : guid(),
@@ -43,19 +59,19 @@ function sendAddFriendMessage(friendlength) {
 			}, function() {
 				//本地创建好友
 				// var friend = Alloy.createModel("Friend", {
-					// ownerUser : Alloy.Models.User,
-					// friendUser : $.$model,
-					// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+				// ownerUser : Alloy.Models.User,
+				// friendUser : $.$model,
+				// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
 				// });
 				// //吧本地创建的好友传上服务器
 				// Alloy.Globals.Server.postData([friend.toJSON()], function(data) {
-					// //保存之前创建的本地好友
-					// friend.xSave();
-					// alert("用户不需要验证,可以直接添加");
+				// //保存之前创建的本地好友
+				// friend.xSave();
+				// alert("用户不需要验证,可以直接添加");
 				// }, function(e) {
-					// alert(e.__summary.msg);
+				// alert(e.__summary.msg);
 				// });
-				Alloy.Globals.Server.loadData("Friend",[{
+				Alloy.Globals.Server.loadData("Friend", [{
 					ownerUserId : Alloy.Models.User.id,
 					friendUserId : $.$model.xGet("id")
 				}], function(collection) {
@@ -79,5 +95,4 @@ function sendAddFriendMessage(friendlength) {
 
 $.userName.UIInit($, $.getCurrentWindow());
 //$.picture.UIInit($, $.getCurrentWindow());
-
 

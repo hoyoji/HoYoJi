@@ -30,7 +30,22 @@
 		// transform.$model = model;
 		// return transform;
 		// }
-
+		exports.Utils.getTempDirectory = function(){
+			if (OS_IOS) {
+				return f = Ti.Filesystem.tempDirectory;
+			}
+			if (OS_ANDROID) {
+				return f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
+			}
+		};
+		exports.Utils.getApplicationDirectory = function(){
+			if (OS_IOS) {
+				return f = Ti.Filesystem.applicationDataDirectory;
+			}
+			if (OS_ANDROID) {
+				return f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
+			}
+		};
 		exports.Utils.resizeImage = function(media, width, height) {
 			var scaleFactor, ImageFactory = require('ti.imagefactory');
 			if (media.width > width || media.height > height) {

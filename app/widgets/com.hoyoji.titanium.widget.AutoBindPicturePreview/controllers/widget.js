@@ -56,13 +56,7 @@ $.onWindowOpenDo(function() {
 			$.showActivityIndicator();
 			Alloy.Globals.Server[$.$attrs.fetchRemoteImage](value, function(remotePicture){
 				picture = remotePicture;
-				var f;
-				if (OS_IOS) {
-					f = Ti.Filesystem.tempDirectory + picture.xGet("id") + "_icon." + picture.xGet("pictureType");
-				}
-				if (OS_ANDROID) {
-					f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/" + picture.xGet("id") + "_icon." + picture.xGet("pictureType");
-				}
+				var f = Alloy.Globals.getTempDirectory() + picture.xGet("id") + "_icon." + picture.xGet("pictureType");
 				$.$view.setBackgroundImage(f);
 				$.hideActivityIndicator();
 			}, function(){
@@ -78,14 +72,7 @@ $.onWindowOpenDo(function() {
 		
 		if (value && model.xGet("picture")) {
 			picture = model.xGet("picture");
-	
-			var f;
-			if (OS_IOS) {
-				f = Ti.Filesystem.applicationDataDirectory + value + "_icon." + model.xGet("picture").xGet("pictureType");
-			}
-			if (OS_ANDROID) {
-				f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/" + value + "_icon." + model.xGet("picture").xGet("pictureType");
-			}
+			var f = Alloy.Globals.getApplicationDirectory() + value + "_icon." + model.xGet("picture").xGet("pictureType");
 			$.$view.setBackgroundImage(f);
 		} else if ($.$attrs.defaultImage) {
 			$.$view.setBackgroundImage($.$attrs.defaultImage+".png");

@@ -803,12 +803,7 @@
 					if(data.length > 0){
 						data = data[0];
 						if(data.base64PictureIcon){
-							var filePath;
-							if (OS_ANDROID) {
-								filePath = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
-							} else {
-								filePath = Ti.Filesystem.tempDirectory;
-							}
+							var filePath = Alloy.Globals.getTempDirectory();
 							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
 							f1 = null;
