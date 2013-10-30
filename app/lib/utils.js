@@ -38,7 +38,7 @@
 				return f = Ti.Filesystem.getFile(Ti.Filesystem.tempDirectory).nativePath + "/";
 			}
 		};
-		exports.Utils.getApplicationDirectory = function(){
+		exports.Utils.getApplicationDataDirectory = function(){
 			if (OS_IOS) {
 				return f = Ti.Filesystem.applicationDataDirectory;
 			}

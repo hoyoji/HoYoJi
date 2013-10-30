@@ -46,6 +46,7 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 	}
 	Alloy.Globals.Server.findData([{
 		userName : searchCriteria,
+		nickName : searchCriteria,
 		__dataType : "User",
 		__offset : offset,
 		__limit : limit,
