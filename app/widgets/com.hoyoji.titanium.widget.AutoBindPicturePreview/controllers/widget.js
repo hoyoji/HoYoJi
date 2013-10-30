@@ -72,7 +72,7 @@ $.onWindowOpenDo(function() {
 		
 		if (value && model.xGet("picture")) {
 			picture = model.xGet("picture");
-			var f = Alloy.Globals.getApplicationDirectory() + value + "_icon." + model.xGet("picture").xGet("pictureType");
+			var f = Alloy.Globals.getApplicationDataDirectory() + value + "_icon." + model.xGet("picture").xGet("pictureType");
 			$.$view.setBackgroundImage(f);
 		} else if ($.$attrs.defaultImage) {
 			$.$view.setBackgroundImage($.$attrs.defaultImage+".png");

@@ -38,7 +38,7 @@ function sendAddFriendMessage(friendlength) {
 				var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
 				if (f.exists()) {
 					var img = f.read();
-					var fnew = Ti.Filesystem.getFile(Alloy.Globals.applicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+					var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
 					fnew.write(img);
 					img = null;
 					fnew = null;
