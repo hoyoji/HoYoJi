@@ -312,7 +312,17 @@
 						}
 					}
 				};
-				$.field.addEventListener("change", updateModel);
+				$.field.addEventListener("change", function(){
+					if(OS_IOS){
+						if($.$attrs.autoSave === "true"){
+							setTimeout(updateModel, 2);
+						} else {
+							updateModel();
+						}
+					} else {
+						updateModel();
+					}
+				});
 				if (model.xGet) {
 					model.on("error", handleError);
 					model.on("sync", $.updateField);
