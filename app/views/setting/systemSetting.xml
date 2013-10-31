@@ -14,7 +14,7 @@
 					bindAttribute="pictureId"/>
 					<Widget id="userName" src="com.hoyoji.titanium.widget.AutoBindLabel" left="76" autoInit="false"
 					bindModel="User"
-					bindAttribute="getUserDisplayName()"/>
+					bindAttribute="userName"/>
 					<Button id="logout" right="20" width="50" height="35" onSingletap="logout" borderRadius="5" backgroundImage="/images/exit.png" color="white">退出</Button>
 				</View>
 				<!-- <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="59" backgroundImage="/images/sectionBottomShadow.png" zIndex="0"/> -->
