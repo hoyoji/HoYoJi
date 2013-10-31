@@ -4,11 +4,44 @@ $.onWindowOpenDo(function() {
 	$.name.field.focus();
 });
 
+var oldParentProject = null;
+var parentProject = null;
+$.project = null;
+
 if ($.$model.isNew()) {
 	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
 	$.$model.xSet("autoApportion", 1);
 	$.$model.xGet("autoApportion");
+	
+	parentProject = $.$attrs.parentProject;
+} else {
+	parentProject = Alloy.createModel("ParentProject").xFindInDb({
+		subProjectId : $.$model.xGet("id")
+	});
+}
+
+if(parentProject){
+	oldParentProject = parentProject;
+	$.project = parentProject;
+	$.parentProject.setValue(parentProject.xGet("name"));
+}
+
+// 从projectAll中选取project
+function openProjectSelector() {
+	// $.friendUser.field.blur();
+	var attributes = {
+		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
+		selectorCallback : function(model) {
+			$.project = model;
+			$.parentProject.setValue($.project.xGet("name"));
+		}
+	};
+	attributes.title = "项目";
+	attributes.selectModelType = "Project";
+	attributes.selectModelCanBeNull = false;
+	attributes.selectedModel = $.project;
+	Alloy.Globals.openWindow("project/projectAll", attributes);
 }
 
 $.onSave = function(saveEndCB, saveErrorCB) {
@@ -94,9 +127,9 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		$.$model.xSet("depositeExpenseCategory", depositeExpenseCategory);
 
 		//创建项目时创建parentProject
-		var parentProject = Alloy.createModel("ParentProject", {
+		parentProject = Alloy.createModel("ParentProject", {
 			subProject : $.$model,
-			parentProject : $.$model.xGet("parentProject"),
+			parentProject : $.project,
 			ownerUser : Alloy.Models.User
 		}).xAddToSave($);
 
@@ -213,18 +246,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			activityWindow.close();
 		}
 	} else {
-		if ($.$model.hasChanged("parentProject")) {
-			var parentProject = Alloy.createModel("ParentProject").xFindInDb({
-				subProjectId : $.$model.xGet("id"),
-				parentProjectId : $.$model.xPrevious("parentProjectId")
-			});
+		if (oldParentProject !== $.project) {
 			if (parentProject.id) {
-				parentProject.xSet("parentProject", $.$model.xGet("parentProject"));
+				parentProject.xSet("parentProject", $.project);
 				parentProject.xAddToSave($);
 			} else {
 				parentProject = Alloy.createModel("ParentProject", {
 					subProject : $.$model,
-					parentProject : $.$model.xGet("parentProject"),
+					parentProject : $.project,
 					ownerUser : Alloy.Models.User
 				}).xAddToSave($);
 			}
