@@ -92,7 +92,7 @@ function createRowView(rowModel, collection) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
-			//className : collection.__rowView || rowModel.config.rowView,
+			className : collection.__rowView || rowModel.config.rowView,
 			collectionId : collection.id
 		});
 		// } else {
