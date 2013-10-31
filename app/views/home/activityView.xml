@@ -1,7 +1,7 @@
 <Alloy>
 	<View class="container" title="活动流水" >
 		<Widget src="com.hoyoji.titanium.widget.XTableView" id="transactionsTable" 
-			autoInit="false"
+			autoInit="false" refreshTableAfterServerSync="true"
 			groupByField="date" sortByField="date" sortReverse="true" pageSize="rowHeight:84" bottom="0" top="0"/>
 	</View>
 </Alloy>

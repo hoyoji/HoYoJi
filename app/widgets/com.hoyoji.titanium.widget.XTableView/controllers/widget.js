@@ -92,7 +92,7 @@ function createRowView(rowModel, collection) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
-			//className : collection.__rowView || rowModel.config.rowView,
+			className : collection.__rowView || rowModel.config.rowView,
 			collectionId : collection.id
 		});
 		// } else {
@@ -351,6 +351,12 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
+	if(OS_ANDROID){
+		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
+			return;			
+		}
+	}
+
 	function doAddRow() {
 		$.off("endchangingrow", doAddRow);
 		if ($.__changingRow) {
@@ -483,7 +489,7 @@ function collapseAllHasDetailSections() {
 
 var sortedArray_sortByField = sortByField, sortedArray_sortReverse = sortReverse, sortedArray_groupByField = groupByField, currentPageNumber = 0;
 exports.refreshTable = function() {
-
+	$.fetchFirstPage();
 };
 
 function clearTable() {
@@ -667,6 +673,12 @@ exports.clearAllCollections = function() {
 };
 
 function refreshCollectionOnChange(model) {
+	if(OS_ANDROID){
+		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
+			return;			
+		}
+	}
+
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true, null, null, showNoDataIndicator);
 		// showNoDataIndicator();
@@ -674,6 +686,12 @@ function refreshCollectionOnChange(model) {
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
+	if(OS_ANDROID){
+		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
+			return;			
+		}
+	}
+
 	if (pageSize > 0 && appendRows && appendRows.length > 0) {
 		// appendRows.forEach(function(item) {
 		// sortedArray.push({record : item, collection : collection});
@@ -703,6 +721,11 @@ $.onWindowCloseDo(function() {
 	if (OS_ANDROID) {
 		$.table.removeEventListener("postlayout", _showNoDataIndicator);
 	}
+	if(OS_ANDROID){
+		if($.$attrs.refreshTableAfterServerSync === "true"){
+			Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
+		}
+	}
 });
 
 exports.resetTable = function() {
@@ -717,6 +740,12 @@ exports.resetTable = function() {
 };
 
 var resetCollection = function(collection, options) {
+	if(OS_ANDROID){
+	if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
+		return;			
+	}
+	}
+
 	var data = $.table.data.slice(0);
 	options.previousModels.forEach(function(model) {
 		for (var i = 0; i < data.length; i++) {
@@ -1386,3 +1415,8 @@ exports.autoHideFooter = function(footer) {
 	}
 };
 
+if(OS_ANDROID){
+	if($.$attrs.refreshTableAfterServerSync === "true"){
+		Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
+	} 
+}

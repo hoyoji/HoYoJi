@@ -243,6 +243,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				return;
 			});
 		} else {
+			createProject();
 			activityWindow.close();
 		}
 	} else {

@@ -1,5 +1,4 @@
 ( function() {
-
 		Ti.include('suds.js');
 		exports.Server = {
 			dataUrl : Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/",
@@ -144,7 +143,7 @@
 			},
 			postData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
 				var dataLength, dataSendLength;
-				if(!_.isString(data)){
+				if (!_.isString(data)) {
 					data = JSON.stringify(data);
 				}
 				console.info(data);
@@ -238,10 +237,10 @@
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {
 				var self = this;
-				if (self.__isSyncing) {
+				if (Alloy.Globals.Server.__isSyncing) {
 					return;
 				}
-				self.__isSyncing = true;
+				Alloy.Globals.Server.__isSyncing = true;
 				var activityWindow = Alloy.createController("activityMask");
 				activityWindow.open("正在同步...", ["下载数据", "合并数据", "上传数据"]);
 
@@ -255,14 +254,18 @@
 						}
 						// activityWindow.close();
 						activityWindow.progressFinish("同步完成");
-						self.__isSyncing = false;
+						Alloy.Globals.Server.__isSyncing = false;
+
+						if (OS_ANDROID) {
+							Ti.App.fireEvent("ServerSyncFinished");
+						}
 					}, function(e) {
 						if (xErrorCallback) {
 							xErrorCallback(e);
 						}
 						// activityWindow.close();
 						activityWindow.showMsg("同步错误：" + e.__summary.msg);
-						self.__isSyncing = false;
+						Alloy.Globals.Server.__isSyncing = false;
 						//alert("sync error : " + e.__summary.msg);
 					}, activityWindow);
 					// }, 0);
@@ -272,7 +275,7 @@
 					}
 					// activityWindow.close();
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
-					self.__isSyncing = false;
+					Alloy.Globals.Server.__isSyncing = false;
 					//alert("sync error " + e.__summary.msg);
 				}, activityWindow);
 			},
@@ -768,10 +771,10 @@
 			fetchImage : function(id, successCB, errorCB, fetchImageTarget, filePath, progressCB) {
 				fetchImageTarget = fetchImageTarget || "fetchImage";
 				this.postData(id, function(data) {
-					if(data.length > 0){
+					if (data.length > 0) {
 						data = data[0];
-						if(data.base64Picture){
-							if(!filePath){
+						if (data.base64Picture) {
+							if (!filePath) {
 								if (OS_ANDROID) {
 									filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
 								} else {
@@ -783,32 +786,41 @@
 							f1 = null;
 							successCB();
 						} else {
-							errorCB({__summary : {msg : "图片无内容"}});
+							errorCB({
+								__summary : {
+									msg : "图片无内容"
+								}
+							});
 						}
 					} else {
-						errorCB({__summary : {msg : "图片不存在"}});
+						errorCB({
+							__summary : {
+								msg : "图片不存在"
+							}
+						});
 					}
 				}, errorCB, fetchImageTarget, progressCB);
 			},
 			// fetchUserImage : function(id, successCB, errorCB, progressCB) {
-				// this.postData(id, function(data) {
-					// if(data.length > 0){
-						// data = data[0];
-						// successCB(Ti.Utils.base64decode(data.base64Picture));
-					// }
-				// }, errorCB, "fetchUserImage", progressCB);
+			// this.postData(id, function(data) {
+			// if(data.length > 0){
+			// data = data[0];
+			// successCB(Ti.Utils.base64decode(data.base64Picture));
+			// }
+			// }, errorCB, "fetchUserImage", progressCB);
 			// },
 			fetchUserImageIcon : function(pid, successCB, errorCB, progressCB) {
 				this.postData(pid, function(data) {
-					if(data.length > 0){
+					if (data.length > 0) {
 						data = data[0];
-						if(data.base64PictureIcon){
+						if (data.base64PictureIcon) {
 							var filePath = Alloy.Globals.getTempDirectory();
 							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
 							f1 = null;
 							delete data.base64PictureIcon;
-							var id = data.id; // prevent it to be added to dataStore during object initialization
+							var id = data.id;
+							// prevent it to be added to dataStore during object initialization
 							delete data.id;
 							var picture = Alloy.createModel("Picture", data);
 							picture.attributes["id"] = id;
