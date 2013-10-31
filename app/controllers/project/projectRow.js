@@ -61,7 +61,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		Alloy.Globals.openWindow("project/projectForm", {
 			$model : $.$model
 		});
-	}, $.$model.xGet("ownerUserId") !== Alloy.Models.User.id));
+	}));
 	// } else {
 	// menuSection.add($.createContextMenuItem("共享权限", function() {
 	// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {
