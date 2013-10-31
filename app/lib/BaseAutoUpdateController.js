@@ -315,7 +315,7 @@
 				$.field.addEventListener("change", function(){
 					if(OS_IOS){
 						if($.$attrs.autoSave === "true"){
-							setTimeout(updateModel, 2);
+							setTimeout(updateModel, 10);
 						} else {
 							updateModel();
 						}
