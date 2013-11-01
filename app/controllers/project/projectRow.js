@@ -56,20 +56,19 @@ $.makeContextMenu = function(e, isSelectMode) {
 			selectedProject : $.$model
 		});
 	}));
-	// if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
-	menuSection.add($.createContextMenuItem("修改项目", function() {
-		Alloy.Globals.openWindow("project/projectForm", {
-			$model : $.$model
-		});
-	}));
-	// } else {
-	// menuSection.add($.createContextMenuItem("共享权限", function() {
-	// Alloy.Globals.openWindow("project/projectSharedWithMeAuthorizationForm", {
-	// $model : $.$model.xGet("projectShareAuthorizations").at(0),
-	// saveableMode : "read"
-	// });
-	// }));
-	// }
+	if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
+		menuSection.add($.createContextMenuItem("修改项目", function() {
+			Alloy.Globals.openWindow("project/projectForm", {
+				$model : $.$model
+			});
+		}));
+	} else {
+		menuSection.add($.createContextMenuItem("移动项目", function() {
+			Alloy.Globals.openWindow("project/projectEditForm", {
+				$model : $.$model,
+			});
+		}));
+	}
 
 	menuSection.add($.createContextMenuItem("删除项目", function() {
 		$.deleteModel();
@@ -135,9 +134,9 @@ function setActualTotalMoneyColor() {
 	} else {
 		$.actualTotalMoney.label.setColor("#c80032");
 	}
-	if ($.$model.xGet("parentProject")) {
-		$.$model.xGet("parentProject").xRefresh();
-	}
+	// if ($.$model.xGet("parentProject")) {
+		// $.$model.xGet("parentProject").xRefresh();
+	// }
 }
 
 function setProjectRemark() {

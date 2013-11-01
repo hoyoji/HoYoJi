@@ -4,7 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-			parentProjectId : "TEXT",
+			// parentProjectId : "TEXT",
 			currencyId : "TEXT NOT NULL",
 			autoApportion : "INTEGER",
 			defaultIncomeCategoryId : "TEXT",
@@ -23,10 +23,10 @@ exports.definition = {
 				type : "User",
 				attribute : "projects"
 			},
-			parentProject : {
-				type : "Project",
-				attribute : "subProjects"
-			},
+			// parentProject : {
+				// type : "Project",
+				// attribute : "subProjects"
+			// },
 			currency : {
 				type : "Currency",
 				attribute : null
@@ -67,11 +67,13 @@ exports.definition = {
 			},
 			parentProjectParentProjects : {
 				type : "ParentProject",
-				attribute : "subProject"
+				attribute : "subProject",
+				cascadeDelete : true
 			},
 			parentProjectSubProjects : {
 				type : "ParentProject",
-				attribute : "parentProject"
+				attribute : "parentProject",
+				cascadeDelete : true
 			},
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
@@ -141,16 +143,28 @@ exports.definition = {
 				}
 
 				if (attr === "subProjects") {
-					collection.xSetFilter(function(item) {
-						return self.xGet("parentProjectSubProjects").findWhere({
-							subProjectId : item.xGet("id")
-						}) !== undefined;
+					// collection.xSetFilter(function(item) {
+						// return self.xGet("parentProjectSubProjects").findWhere({
+							// subProjectId : item.xGet("id")
+						// }) !== undefined;
+					// });
+					this.xGet("parentProjectSubProjects").on("add", function(item){
+						collection.add(item.xGet("subProject"));
+					});
+					this.xGet("parentProjectSubProjects").on("remove", function(item){
+						collection.remove(item.xGet("subProject"));
 					});
 				} else if (attr === "parentProjects") {
-					collection.xSetFilter(function(item) {
-						return self.xGet("parentProjectParentProjects").findWhere({
-							parentProjectId : item.xGet("id")
-						}) !== undefined;
+					// collection.xSetFilter(function(item) {
+						// return self.xGet("parentProjectParentProjects").findWhere({
+							// parentProjectId : item.xGet("id")
+						// }) !== undefined;
+					// });
+					this.xGet("parentProjectParentProjects").on("add", function(item){
+						collection.add(item.xGet("parentProject"));
+					});
+					this.xGet("parentProjectParentProjects").on("remove", function(item){
+						collection.remove(item.xGet("parentProject"));
 					});
 				} else {
 					var filter = {};
@@ -272,7 +286,14 @@ exports.definition = {
 							actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
 						}
 					});
-
+					this.xGetDescendents("subProjects").forEach(function(subProject) {
+						subProject.xGet("projectShareAuthorizations").forEach(function(subProjectItem) {
+							if (subProjectItem.xGet("state") === "Accept") {
+								actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense");
+								actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome");
+							}
+						});
+					});
 					actualTotalMoney = actualTotalExpense - actualTotalIncome;
 				}
 				if (actualTotalMoney > 0) {
@@ -468,12 +489,12 @@ exports.definition = {
 				}
 			},
 			canEdit : function() {
-				if (this.isNew()) {
+				// if (this.isNew()) {
 					return true;
-				} else if (this.xGet("ownerUser") === Alloy.Models.User) {
-					return true;
-				}
-				return false;
+				// } else if (this.xGet("ownerUser") === Alloy.Models.User) {
+					// return true;
+				// }
+				// return false;
 			},
 			canDelete : function() {
 				return this.xGet("ownerUser") === Alloy.Models.User;

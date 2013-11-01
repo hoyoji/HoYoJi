@@ -1,0 +1,33 @@
+<Alloy>
+	<View class="container" saveableContainer="true"  width="100%" height="100%">
+		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
+		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
+		addModeTitle="移动共享项目" readModeTitle="移动共享项目" editModeTitle="移动共享项目"/>
+		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
+			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="上级项目" hintText="无上级项目"
+				id="parentProject" autoInit="false"
+				bindModel="$.$model"
+				bindAttribute="parentProject"
+				bindAttributeIsModel="name"
+				bindModelSelector="project/projectAll"
+				/> -->
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="parentProject" labelText="上级项目" hintText="请选择上级项目" hideKeyboard="true"
+				onSingletap="openProjectSelector" autoInit="false"
+				/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目名称" hintText="请输入项目名称"
+				id="name" autoInit="false"
+				editModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="name"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="结算币种" hintText="请选择结算币种"
+				id="currency" autoInit="false"
+				editModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="currency"
+				bindAttributeIsModel="name"
+				bindModelSelector="money/currency/currencyAll"/>
+			</ScrollView>
+		</View>
+	</View>
+</Alloy>
