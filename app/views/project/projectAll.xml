@@ -8,7 +8,7 @@
 			<Widget id="myProjectsTable" src="com.hoyoji.titanium.widget.XTableView" sortByField="name" bottom="0" top="0"/> -->
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" controlSlideDown="true" onSingletap="onFooterbarTap"
-		buttons="全部项目,共享给我,新增项目" imagesFolder="/images/project/projectAll"
+		buttons="全部项目,共享给我,新增项目" imagesFolder="/images/project/projectAll" autoInit="false"
 		ids="myProjectsTable,sharedWithMeTable,newProject"/>
 	</View>
 </Alloy>

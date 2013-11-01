@@ -3,11 +3,11 @@
 			<!-- backgroundImage="/images/com.hoyoji.titanium.widget.TitleBar/titleBarBackground.png" -->
 			<Label id="msg" width="Ti.UI.FILL" height="42" top="-42" zIndex="100" color="white" backgroundColor="#40000000" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"></Label>
 			<Widget src="com.hoyoji.titanium.widget.XButton" id="backButton"
-				left="5" height="Ti.UI.FILL" width="45" visible="false"
+				left="5" height="Ti.UI.FILL" width="45" visible="false"	autoInit="false"
 				image="/images/com.hoyoji.titanium.widget.TitleBar/backButton" />
 	
 			<Widget src="com.hoyoji.titanium.widget.XButton" id="tableNavButton" title="上一级"
-				left="5" height="Ti.UI.FILL" width="45" visible="false"	
+				left="5" height="Ti.UI.FILL" width="45" visible="false"	autoInit="false"
 				image="/images/com.hoyoji.titanium.widget.TitleBar/backButton" />
 				
 			<View layout="horizontal" width="Ti.UI.SIZE" height="Ti.UI.SIZE">
@@ -18,7 +18,7 @@
 			<Label id="childTableTitle" color="white" visible="false"></Label>
 	
 			<Widget src="com.hoyoji.titanium.widget.XButton" id="menuButton" 
-				right="15" height="Ti.UI.FILL" width="45"  visible="false"
+				right="15" height="Ti.UI.FILL" width="45"  visible="false"	autoInit="false"
 				image="/images/com.hoyoji.titanium.widget.TitleBar/menuButton"/>
 		</View>
 </Alloy>

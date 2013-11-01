@@ -362,17 +362,18 @@
 				$.rightButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					title : $.$attrs.rightButtonText,
 					borderRadius : 0,
-					height : Ti.UI.FILL,
+					height : 42,
 					width : 42,
 					right : 8,
 					// color : "black",
 					backgroundColor : "gray",
-					image : $.$attrs.rightButtonImage
+					image : $.$attrs.rightButtonImage,
+					autoInit : "false"
 				});
 				// $.rightButton.$view.setRight(0);
 				$.field.setRight(48);
 				$.rightButton.setParent($.$view);
-				
+				//$.rightButton.UIInit($,$.getCurrentWindow());
 			}
 
 			$.showRightButton = function() {

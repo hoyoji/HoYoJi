@@ -35,13 +35,13 @@ function createSubFooterBar(button, subButtons, subIds) {
 				height : 42,
 				width : width,
 				image : imgPath,
-				autoInit : $.$attrs.autoInit
+				autoInit : "false"
 			});
 			subButtonWidget.setParent($[subFooterBarId]);
 			$[subIds[i]] = subButtonWidget;
-			if($.$attrs.autoInit === "false"){
-				subButtonWidget.UIInit($,$.getCurrentWindow());
-			}
+			// if($.$attrs.autoInit === "false"){
+				// subButtonWidget.UIInit($,$.getCurrentWindow());
+			// }
 		}
 
 		$[subFooterBarId].addEventListener("singletap", function(e) {
@@ -77,12 +77,12 @@ if ($.$attrs.buttons) {
 				width : width,
 				height : Ti.UI.FILL,
 				image : imgPath,
-				autoInit : $.$attrs.autoInit
+				autoInit : "false"
 			});
 		$[buttonId] = buttonWidget;
-		if($.$attrs.autoInit === "false"){
-				buttonWidget.UIInit($,$.getCurrentWindow());
-		}
+		// if($.$attrs.autoInit === "false"){
+				// buttonWidget.UIInit($,$.getCurrentWindow());
+		// }
 		if (subButtons.length > 1) {
 			buttonWidget.$view.addEventListener("singletap", 
 				function(buttonWidget, subButtons, subIds, e){
