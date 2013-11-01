@@ -165,7 +165,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		password : Ti.Utils.sha1($.$model.xGet("password")),
 		// email : Alloy.Globals.alloyString.trim($.$model.xGet("email") || ""),
 		currencyId : $.currency ? $.currency.xGet("id") : Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale()),
-		currencySymbol : currencySymbol
+		currencySymbol : $.currency ? $.currency.xGet("symbol") : currencySymbol
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
 		// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);

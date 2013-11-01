@@ -1,3 +1,11 @@
 ".container": {
 	backgroundColor: "#e1e1e1"
 }
+
+"#nickName": {
+	color: "#6e6d6d",
+	font: {
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
