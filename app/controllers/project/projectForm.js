@@ -15,17 +15,25 @@ if ($.$model.isNew()) {
 	$.$model.xGet("autoApportion");
 	
 	parentProject = $.$attrs.parentProject;
+	if(parentProject){
+		oldParentProject = parentProject;
+		$.project = parentProject;
+		$.parentProject.setValue(parentProject.xGet("name"));
+	}
 } else {
 	parentProject = Alloy.createModel("ParentProject").xFindInDb({
 		subProjectId : $.$model.xGet("id")
 	});
+	if(parentProject.id){
+		parentProject = parentProject.xGet("parentProject");
+		oldParentProject = parentProject;
+		$.project = parentProject.xGet("parentProject");
+		$.parentProject.setValue(parentProject.xGet("name"));
+	} else {
+		parentProject = null;
+	}
 }
 
-if(parentProject){
-	oldParentProject = parentProject;
-	$.project = parentProject;
-	$.parentProject.setValue(parentProject.xGet("name"));
-}
 
 // 从projectAll中选取project
 function openProjectSelector() {
@@ -39,8 +47,9 @@ function openProjectSelector() {
 	};
 	attributes.title = "项目";
 	attributes.selectModelType = "Project";
-	attributes.selectModelCanBeNull = false;
+	attributes.selectModelCanBeNull = true;
 	attributes.selectedModel = $.project;
+	attributes.selectModelCanNotBeChild = true;
 	Alloy.Globals.openWindow("project/projectAll", attributes);
 }
 

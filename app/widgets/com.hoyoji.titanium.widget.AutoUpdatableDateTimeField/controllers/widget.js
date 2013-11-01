@@ -19,7 +19,7 @@ $.onWindowOpenDo(function(){
 			// inputType : "DateTimePicker"
 		// });
 		//$.getCurrentWindow().closeSoftKeyboard();
-		// $.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");	
+		// $.getCurrentWindow().dateƒTimePicker.open($, "DateTimePicker");	
 		
 		Alloy.Globals.openWindow("dateTimeSelector", {title : $.label.getText(), field : $, selectorCallback : function(value){
 			$.setValue(value);

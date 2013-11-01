@@ -21,15 +21,17 @@ $.close.addEventListener("singletap", close);
 
 $.getCurrentWindow().$view.addEventListener("open", function(){
 	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
-	setTimeout(function(){
-		$.textField.focus();
 		if(OS_ANDROID){
 			if($.textField.setSelection){
 				var len = $.textField.getValue().length;
 				$.textField.setSelection(len, len);
 			}
+			$.textField.focus();
+		} else {
+			setTimeout(function(){
+				$.textField.focus();
+			},500);
 		}
-	},10);
 });
 
 $.textField.addEventListener("longpress", function(e){

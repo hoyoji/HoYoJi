@@ -50,7 +50,7 @@
 					</View>
 				</View>
 				<View height="42">
-					<Label left="5" width="30%">结余</Label>
+					<Label left="5" width="30%">收支结余</Label>
 					<View id="balanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="balanceTotalCurrencySymbol" autoInit="false"

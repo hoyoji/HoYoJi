@@ -4,6 +4,6 @@
      <Label id="label" left="8" width="30%" height="42"/>
      <Label id="field" left="30%" right="0" height="42" backgroundColor="#f5f5f5"></Label>
      <Label id="hintText" />
-	 <View id="rowBottomImage" width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+	 <!-- <View id="rowBottomImage" width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/> -->
 	</View>
 </Alloy>

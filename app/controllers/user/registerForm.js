@@ -148,19 +148,24 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}
 
 	// if ($.$model.xGet("email")) {
-		// var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
-		// if (!emailValidation.test($.$model.xGet("email"))) {
-			// saveErrorCB("email不合法");
-			// return;
-		// }
+	// var emailValidation = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/;
+	// if (!emailValidation.test($.$model.xGet("email"))) {
+	// saveErrorCB("email不合法");
+	// return;
 	// }
-
+	// }
+	var currencySymbol;
+	try {
+		currencySymbol = Ti.Locale.getCurrencySymbol(currencyId);
+	} catch(e) {
+		currencySymbol = currencyId;
+	}
 	var data = {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
 		password : Ti.Utils.sha1($.$model.xGet("password")),
 		// email : Alloy.Globals.alloyString.trim($.$model.xGet("email") || ""),
 		currencyId : $.currency ? $.currency.xGet("id") : Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale()),
-		currencySymbol : Ti.Locale.getCurrencySymbol(currencyId)
+		currencySymbol : currencySymbol
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
 		// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);

@@ -6,6 +6,22 @@
 			// some control will raise change event when setting its value programmatically
 			$.__bindAttributeIsModel = null;
 
+			if($.$attrs.noBottomLine !== "true") {
+				//<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
+				//$.rowBottomImage.setVisible(false);
+				$.onWindowOpenDo(function(){
+					$.$view.add(Ti.UI.createView({
+						width : Ti.UI.FILL,
+						height : 1,
+						bottom : 0,
+						left : 10,
+						right : 10,
+						backgroundImage : "/images/formRowBottom.png",
+						backgroundImageRepeat : "true"
+					}));
+				});
+     		}
+
 			$.hide = function() {
 				var height = 0;
 				var animation = Titanium.UI.createAnimation();
