@@ -4,7 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-			parentProjectId : "TEXT",
+			// parentProjectId : "TEXT",
 			currencyId : "TEXT NOT NULL",
 			autoApportion : "INTEGER",
 			defaultIncomeCategoryId : "TEXT",
@@ -23,10 +23,10 @@ exports.definition = {
 				type : "User",
 				attribute : "projects"
 			},
-			parentProject : {
-				type : "Project",
-				attribute : "subProjects"
-			},
+			// parentProject : {
+				// type : "Project",
+				// attribute : "subProjects"
+			// },
 			currency : {
 				type : "Currency",
 				attribute : null
