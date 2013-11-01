@@ -14,23 +14,23 @@ if ($.$model.isNew()) {
 	$.$model.xSet("autoApportion", 1);
 	$.$model.xGet("autoApportion");
 	
-	parentProject = $.$attrs.parentProject;
-	if(parentProject){
-		oldParentProject = parentProject;
-		$.project = parentProject;
-		$.parentProject.setValue(parentProject.xGet("name"));
+	$.project = $.$attrs.parentProject;
+	oldParentProject = $.project;
+	if($.project){
+		$.parentProject.setValue($.project.xGet("name"));
 	}
 } else {
 	parentProject = Alloy.createModel("ParentProject").xFindInDb({
 		subProjectId : $.$model.xGet("id")
 	});
 	if(parentProject.id){
-		parentProject = parentProject.xGet("parentProject");
-		oldParentProject = parentProject;
 		$.project = parentProject.xGet("parentProject");
-		$.parentProject.setValue(parentProject.xGet("name"));
-	} else {
-		parentProject = null;
+		oldParentProject = $.project;
+		if($.project){
+			$.parentProject.setValue($.project.xGet("name"));
+		} else {
+			$.parentProject.setValue(null);
+		}
 	}
 }
 
@@ -42,7 +42,11 @@ function openProjectSelector() {
 		closeWithoutSave : $.getCurrentWindow().$attrs.closeWithoutSave,
 		selectorCallback : function(model) {
 			$.project = model;
-			$.parentProject.setValue($.project.xGet("name"));
+			if($.project){
+				$.parentProject.setValue($.project.xGet("name"));
+			} else {
+				$.parentProject.setValue(null);
+			}
 		}
 	};
 	attributes.title = "项目";

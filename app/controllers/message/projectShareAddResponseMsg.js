@@ -722,7 +722,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 													projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project) {
 														var subParentProject = Alloy.createModel("ParentProject", {
 															subProject : project,
-															parentProject : project.xGet("parentProject"),
+															parentProject : null,
 															ownerUser : Alloy.Models.User
 														}).xSave();
 														project.xRefresh();
