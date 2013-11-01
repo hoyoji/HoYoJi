@@ -109,24 +109,55 @@ if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
 }
 
 $.onWindowOpenDo(function() {
-	setActualTotalMoneyColor();
-	$.$model.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
-	$.$model.xGetDescendents("subProjects").on("sync", setActualTotalMoneyColor);
-	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
-		subProject.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
-	});
+	//setActualTotalMoneyColor();
+	// $.$model.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
+	// //$.$model.xGetDescendents("subProjects").on("sync", setActualTotalMoneyColor);
+	// $.$model.xGet("subProjects").on("add", addNewSubProject);
+	// $.$model.xGet("subProjects").on("remove", removeSubProject);
+	// $.$model.xGetDescendents("subProjects").forEach(function(subProject) {
+		// subProject.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
+		// subProject.xGet("subProjects").on("add", addNewSubProject);
+		// subProject.xGet("subProjects").on("remove", removeSubProject);
+	// });
+	addNewSubProject($.$model);
 	$.$model.on("xrefresh", setProjectRemark);
 });
 
 $.onWindowCloseDo(function() {
 	$.$model.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
-	$.$model.xGetDescendents("subProjects").off("sync", setActualTotalMoneyColor);
+	//$.$model.xGetDescendents("subProjects").off("sync", setActualTotalMoneyColor);
+	$.$model.xGet("subProjects").off("add", addNewSubProject);
+	$.$model.xGet("subProjects").off("remove", removeSubProject);
 	$.$model.xGetDescendents("subProjects").forEach(function(subProject) {
 		subProject.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
+		subProject.xGet("subProjects").off("add", addNewSubProject);
+		subProject.xGet("subProjects").off("remove", removeSubProject);
 	});
 	$.$model.off("xrefresh", setProjectRemark);
 });
 
+function addNewSubProject(project){
+	project.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
+	project.xGet("subProjects").on("add", addNewSubProject);
+	project.xGet("subProjects").on("remove", removeSubProject);
+	project.xGetDescendents("subProjects").forEach(function(subProject) {
+		subProject.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
+		subProject.xGet("subProjects").on("add", addNewSubProject);
+		subProject.xGet("subProjects").on("remove", removeSubProject);
+	});
+	setActualTotalMoneyColor();
+}
+function removeSubProject(project){
+	project.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
+	project.xGet("subProjects").off("add", addNewSubProject);
+	project.xGet("subProjects").off("remove", removeSubProject);
+	project.xGetDescendents("subProjects").forEach(function(subProject) {
+		subProject.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
+		subProject.xGet("subProjects").off("add", addNewSubProject);
+		subProject.xGet("subProjects").off("remove", removeSubProject);
+	});
+	setActualTotalMoneyColor();
+}
 function setActualTotalMoneyColor() {
 	$.actualTotalMoney.refresh();
 	if ($.$model.getActualTotalMoneyType(true)) {
