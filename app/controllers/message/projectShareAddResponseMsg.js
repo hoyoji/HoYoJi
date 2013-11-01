@@ -714,18 +714,23 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											$.saveModel(function(e) {
 												//把与项目相关的资料全部下载下来
 												Alloy.Globals.Server.loadSharedProjects(projectIds, function(collection) {
-													var parentProject = Alloy.createModel("ParentProject", {
-														subProject : projectShareAuthorization.xGet("project"),
-														parentProject : projectShareAuthorization.xGet("project").xGet("parentProject"),
-														ownerUser : Alloy.Models.User
-													}).xSave();
-													projectShareAuthorization.xGet("project").xGetDescendents("subProjects").forEach(function(project) {
-														var subParentProject = Alloy.createModel("ParentProject", {
-															subProject : project,
-															parentProject : null,
-															ownerUser : Alloy.Models.User
-														}).xSave();
-														project.xRefresh();
+													// var parentProject = Alloy.createModel("ParentProject", {
+														// subProject : projectShareAuthorization.xGet("project"),
+														// parentProject : projectShareAuthorization.xGet("project").xGet("parentProject"),
+														// ownerUser : Alloy.Models.User
+													// }).xSave();
+													projectIds.forEach(function(projectId){
+														var project = Alloy.createModel("Project").xFindInDb({
+															id : projectId
+														});
+														if(project.id) {
+															var subParentProject = Alloy.createModel("ParentProject", {
+																subProject : project,
+																parentProject : null,
+																ownerUser : Alloy.Models.User
+															}).xSave();
+															project.xRefresh();
+														}
 													});
 													activityWindow.close();
 													saveEndCB("接受成功");
