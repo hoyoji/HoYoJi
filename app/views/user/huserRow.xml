@@ -7,10 +7,15 @@
 					bindAttribute="pictureId"
 					fetchRemoteImage="fetchUserImageIcon"/>
 			
-			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" width="Ti.UI.SIZE" 
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="28" width="Ti.UI.SIZE" 
 				id="userName" autoInit="false"
 				bindModel = "$.$model"
-				bindAttribute = "getUserDisplayName()" 
+				bindAttribute = "userName" 
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" top="45" width="Ti.UI.SIZE" 
+				id="nickName" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "nickName" 
 			/>
 		</View>
 	</View>

@@ -2,10 +2,10 @@
 	backgroundColor: "#f5f5f5"
 }
 
-"#nickName": {
-	color: "#6e6d6d",
-	font: {
-		fontSize: 12,
-		fontWeight: 'normal'
-	}
-}
+// "#nickName": {
+	// color: "#6e6d6d",
+	// font: {
+		// fontSize: 12,
+		// fontWeight: 'normal'
+	// }
+// }
