@@ -256,9 +256,7 @@
 						activityWindow.progressFinish("同步完成");
 						Alloy.Globals.Server.__isSyncing = false;
 
-						if (OS_ANDROID) {
-							Ti.App.fireEvent("ServerSyncFinished");
-						}
+						Ti.App.fireEvent("ServerSyncFinished");
 					}, function(e) {
 						if (xErrorCallback) {
 							xErrorCallback(e);

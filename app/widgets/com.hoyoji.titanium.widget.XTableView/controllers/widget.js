@@ -351,11 +351,9 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-	if(OS_ANDROID){
 		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
 			return;			
 		}
-	}
 
 	function doAddRow() {
 		$.off("endchangingrow", doAddRow);
@@ -673,11 +671,9 @@ exports.clearAllCollections = function() {
 };
 
 function refreshCollectionOnChange(model) {
-	if(OS_ANDROID){
 		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
 			return;			
 		}
-	}
 
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true, null, null, showNoDataIndicator);
@@ -686,11 +682,9 @@ function refreshCollectionOnChange(model) {
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
-	if(OS_ANDROID){
 		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
 			return;			
 		}
-	}
 
 	if (pageSize > 0 && appendRows && appendRows.length > 0) {
 		// appendRows.forEach(function(item) {
@@ -721,11 +715,9 @@ $.onWindowCloseDo(function() {
 	if (OS_ANDROID) {
 		$.table.removeEventListener("postlayout", _showNoDataIndicator);
 	}
-	if(OS_ANDROID){
 		if($.$attrs.refreshTableAfterServerSync === "true"){
 			Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
 		}
-	}
 });
 
 exports.resetTable = function() {
@@ -740,10 +732,8 @@ exports.resetTable = function() {
 };
 
 var resetCollection = function(collection, options) {
-	if(OS_ANDROID){
 	if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
 		return;			
-	}
 	}
 
 	var data = $.table.data.slice(0);
@@ -1415,8 +1405,6 @@ exports.autoHideFooter = function(footer) {
 	}
 };
 
-if(OS_ANDROID){
 	if($.$attrs.refreshTableAfterServerSync === "true"){
 		Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
 	} 
-}
