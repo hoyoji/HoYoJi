@@ -1,7 +1,7 @@
 <Alloy>
-	<View class="tab-bar" width="Ti.UI.FILL" height="Ti.UI.SIZE" top="0" height="3" zIndex="103">
+	<View class="tab-bar" width="Ti.UI.FILL" height="3" top="0" height="3" zIndex="103" backgroundColor="black">
 
-		<View width="Ti.UI.FILL" height="Ti.UI.SIZE"  top="0" zIndex="1" backgroundColor="black">
+		<View width="Ti.UI.FILL" height="3"  top="0" zIndex="1" backgroundColor="black">
 			<Label id="hightlight" class="hightlight"  top="0" height="3" backgroundColor="cyan"></Label>
 		</View>
 		<!-- <View id="tabsContainer" width="Ti.UI.FILL" height="42" top="3" zIndex="0">

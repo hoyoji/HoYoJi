@@ -38,7 +38,7 @@
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<View id="localAmountContainer" height="0" backgroundColor="#f5f5f5">
-					<Label left="8" width="30%" height="Ti.UI.FILL" id="localAmountLabel">折算</Label>
+					<Label left="8" width="30%" height="42" id="localAmountLabel">折算</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" right="0" width="70%"
 					id="localAmount" autoInit="false"
 					hintText="请输入金额"
