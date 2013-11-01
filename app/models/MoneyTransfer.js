@@ -155,7 +155,7 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-				return tuserCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+				return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
 			},
 			getTransferInAmount : function() {
 				var exchange = null;
