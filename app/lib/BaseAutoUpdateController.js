@@ -23,7 +23,13 @@
 			}
 			$.showHintText = function(){
 				if ($.$attrs.hintText){
-					if(!$.field.focus) {
+					var isNotTextField;
+					if(OS_IOS){
+						isNotTextField = !$.field.focus;
+					} else {
+						isNotTextField = !$.field.setHintText;
+					}
+					if(isNotTextField) {
 						if (!$.hintText) {
 							$.hintText = Ti.UI.createLabel({
 								font : {
@@ -49,10 +55,20 @@
 				}
 			};
 			$.hideHintText = function(){
-				if ($.hintText){
-					$.hintText.setVisible(false);
-				} else if(!$.field.setHintText) {
-					$.field.setHintText("");
+				if ($.$attrs.hintText){
+					if ($.hintText){
+						$.hintText.setVisible(false);
+					} else {
+						var isTextField;
+						if(OS_IOS){
+							isTextField = $.field.focus;
+						} else {
+							isTextField = $.field.setHintText;
+						}
+						if(isTextField){
+							$.field.setHintText("");
+						}
+					}
 				}
 			};
 			$.hide = function() {
