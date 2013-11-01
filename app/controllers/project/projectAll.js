@@ -101,3 +101,4 @@ $.myProjectsTable.addCollection(myProjectsTableCollection);
 // $.sharedWithHerTable.addCollection(sharedWithHerTableCollection, "project/projectSharedWithHerRow");
 $.myProjectsTable.autoHideFooter($.footerBar);
 $.titleBar.UIInit($, $.getCurrentWindow());
+$.footerBar.UIInit($, $.getCurrentWindow());

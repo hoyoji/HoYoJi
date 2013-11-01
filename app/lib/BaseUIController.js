@@ -213,6 +213,21 @@
 					$.trigger("winclose", {
 						bubbles : false
 					});
+				},
+				closeSoftKeyboard : function() {
+					if (!$.__hiddenTextField) {
+						$.__hiddenTextField = Ti.UI.createTextField({
+							visible : false
+						});
+						if (OS_ANDROID) {
+							$.__hiddenTextField.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
+						}
+						$.$view.add($.__hiddenTextField);
+					}
+					$.__hiddenTextField.focus();
+					// if (OS_IOS) {
+					$.__hiddenTextField.blur();
+					// }
 				}
 			});
 			function registerWindowEvent(e) {
@@ -323,8 +338,7 @@
 					}
 				}
 				if (!e.source.focusable && e.source.toString().toLowerCase() !== "[object field]" && e.source.toString().toLowerCase() !== "[object textfield]") {
-					console.info("closing softkeyboard");
-					$.getCurrentWindow().closeSoftKeyboard();
+					$.closeSoftKeyboard();
 				}
 			});
 		};
