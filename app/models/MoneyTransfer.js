@@ -155,7 +155,7 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-				return this.xGet("transferOut").xGet("currency").xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+				return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
 			},
 			getTransferInAmount : function() {
 				var exchange = null;
@@ -169,7 +169,7 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-				return this.xGet("transferIn").xGet("currency").xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+				return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
