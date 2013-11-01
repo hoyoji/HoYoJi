@@ -24,7 +24,7 @@
 			bindModel = "$.$model"
 			bindAttribute = "getMoneySymbol()"
 			/>
-			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField"  hideFormRowBottom="true" leftSize="3"
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField"  noBottomLine="true" leftSize="3"
 				id="amount" autoInit="false"
 			bindModel = "$.$model"
 			bindAttribute = "amount"

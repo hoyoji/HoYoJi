@@ -6,10 +6,10 @@
 			// some control will raise change event when setting its value programmatically
 			$.__bindAttributeIsModel = null;
 
-			if($.$attrs.noBottomLine !== "true") {
+			if ($.$attrs.noBottomLine !== "true") {
 				//<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				//$.rowBottomImage.setVisible(false);
-				$.onWindowOpenDo(function(){
+				$.onWindowOpenDo(function() {
 					$.$view.add(Ti.UI.createView({
 						width : Ti.UI.FILL,
 						height : 1,
@@ -20,8 +20,41 @@
 						backgroundImageRepeat : "true"
 					}));
 				});
-     		}
-
+			}
+			$.showHintText = function(){
+				if ($.$attrs.hintText){
+					if(!$.field.focus) {
+						if (!$.hintText) {
+							$.hintText = Ti.UI.createLabel({
+								font : {
+									fontSize : 16,
+									fontWeight : 'normal'
+								},
+								width : "70%",
+								right : 0,
+								height : 42,
+								color : "gray",
+								text : $.$attrs.hintText
+							});
+							$.hintText.addEventListener("singletap", function() {
+						        $.field.fireEvent("singletap");
+						    });
+							$.$view.add($.hintText);
+						} else {
+							$.hintText.setVisible(true);
+						}
+					} else {
+						$.field.setHintText($.$attrs.hintText);
+					}
+				}
+			};
+			$.hideHintText = function(){
+				if ($.hintText){
+					$.hintText.setVisible(false);
+				} else if(!$.field.setHintText) {
+					$.field.setHintText("");
+				}
+			};
 			$.hide = function() {
 				var height = 0;
 				var animation = Titanium.UI.createAnimation();
@@ -79,7 +112,7 @@
 
 			$.setValue = function(value) {
 				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
-				if(value === $.__bindAttributeIsModel){
+				if (value === $.__bindAttributeIsModel) {
 					return;
 				}
 				$.__bindAttributeIsModel = value;
@@ -91,7 +124,7 @@
 					}
 				}
 				value = this.convertModelValue(value) || "";
-				if(value !== $.field.getValue()){
+				if (value !== $.field.getValue()) {
 					$.field.setValue(value);
 				}
 			};
@@ -149,20 +182,45 @@
 				}
 			};
 			$.showErrorMsg = function(msg) {
+				if (!$.error) {
+					$.error = Ti.UI.createLabel({
+						color : 'red',
+						font : {
+							fontSize : 16
+						},
+						top : 42,
+						width : "70%",
+						height : 42,
+						right : 0,
+						zIndex : 10,
+						backgroundColor : "#40000000",
+						visible : false
+					});
+					$.$view.add($.error);
+					$.error.addEventListener("singletap", function() {
+						$.hideErrorMsg();
+						if ($.field.focus) {
+							$.field.focus();
+						} else {
+							$.field.fireEvent("singletap");
+						}
+					});
+				}
+
 				$.error.setText(msg);
 				$.__errorShowing = true;
 				$.error.setVisible(true);
-				
+
 				var animation = Titanium.UI.createAnimation();
 				animation.top = "0";
 				animation.duration = 300;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
 				$.error.animate(animation);
-				
-				if(_.isFunction($.field.setHintText)){
+
+				if (_.isFunction($.field.setHintText)) {
 					$.field.setHintText("");
-				} 
-				if($.hintText){
+				}
+				if ($.hintText) {
 					$.hintText.setOpacity(0);
 				}
 				$.field.setOpacity(0.1);
@@ -174,30 +232,21 @@
 					animation.top = "100%";
 					animation.duration = 300;
 					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-					animation.addEventListener("complete", function(){
+					animation.addEventListener("complete", function() {
 						$.error.setVisible(false);
 					});
 					$.error.animate(animation);
-					
-					if(_.isFunction($.field.setHintText)){
+
+					if (_.isFunction($.field.setHintText)) {
 						$.field.setHintText($.$attrs.hintText);
-					} 
-					if($.hintText){
+					}
+					if ($.hintText) {
 						$.hintText.setOpacity(1);
 					}
 					$.field.setOpacity(1);
 				}
 			};
-			if($.error){
-				$.error.addEventListener("singletap", function(){
-					$.hideErrorMsg();
-					if($.field.focus){
-						$.field.focus();
-					} else {
-						$.field.fireEvent("singletap");
-					}
-				});
-			}
+
 			$.field && $.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
@@ -286,10 +335,10 @@
 				};
 				$.updateField = function() {
 					var value = model.xGet ? model.xGet(attribute) : model[attribute];
-					if(value !== $.getValue()){
+					if (value !== $.getValue()) {
 						$.setValue(value);
 					}
-					
+
 					if ($.__dirtyCount > 0) {
 						$.becameClean();
 					}
@@ -328,9 +377,9 @@
 						}
 					}
 				};
-				$.field.addEventListener("change", function(){
-					if(OS_IOS){
-						if($.$attrs.autoSave === "true"){
+				$.field.addEventListener("change", function() {
+					if (OS_IOS) {
+						if ($.$attrs.autoSave === "true") {
 							setTimeout(updateModel, 10);
 						} else {
 							updateModel();
@@ -368,13 +417,13 @@
 			if ($.$attrs.rightButtonText) {
 				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
 				// $.rightButton = Ti.UI.createButton({
-					// title : $.$attrs.rightButtonText,
-					// right : 8,
-					// width : 40,
-					// height : 38
+				// title : $.$attrs.rightButtonText,
+				// right : 8,
+				// width : 40,
+				// height : 38
 				// });
 				// $.$view.add($.rightButton);
-			
+
 				$.rightButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					title : $.$attrs.rightButtonText,
 					borderRadius : 0,

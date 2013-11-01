@@ -1,15 +1,15 @@
 Alloy.Globals.extendsBaseAutoUpdateController($, arguments[0]);
 
-$.hintText.setText($.$attrs.hintText || "");
+//$.hintText.setText($.$attrs.hintText || "");
 if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 }
 if ($.$attrs.fieldColor) {
 	$.field.setColor($.$attrs.fieldColor);
 }
-if ($.$attrs.hideFormRowBottom) {
-	$.formRowBottom.setHeight(0);
-}
+// if ($.$attrs.hideFormRowBottom) {
+// $.formRowBottom.setHeight(0);
+// }
 if ($.$attrs.leftSize) {
 	$.field.setLeft($.$attrs.leftSize);
 }
@@ -49,22 +49,22 @@ $.onWindowOpenDo(function() {
 
 		openKeyboard();
 	});
-	$.hintText.addEventListener("singletap", function(e) {
-		e.cancelBubble = true;
-		// $.field.fireEvent("singletap");
-		if ($.saveableMode === "read") {
-			return;
-		} else if ($.saveableMode === "edit") {
-			if ($.$attrs.editModeEditability === "noneditable") {
-				return;
-			}
-		} else if ($.saveableMode === "add") {
-			if ($.$attrs.addModeEditability === "noneditable") {
-				return;
-			}
-		}
-		openKeyboard();
-	});
+	// $.hintText.addEventListener("singletap", function(e) {
+	// e.cancelBubble = true;
+	// // $.field.fireEvent("singletap");
+	// if ($.saveableMode === "read") {
+	// return;
+	// } else if ($.saveableMode === "edit") {
+	// if ($.$attrs.editModeEditability === "noneditable") {
+	// return;
+	// }
+	// } else if ($.saveableMode === "add") {
+	// if ($.$attrs.addModeEditability === "noneditable") {
+	// return;
+	// }
+	// }
+	// openKeyboard();
+	// });
 
 });
 
@@ -80,10 +80,10 @@ $.setValue = function(value) {
 	value = this.convertModelValue(value);
 	if (value) {
 		// $.hintText.setHeight(0);
-		$.hintText.setVisible(false);
+		$.hideHintText(false);
 	} else {
 		// $.hintText.setHeight(42);
-		$.hintText.setVisible(true);
+		$.showHintText(false);
 	}
 	$.field.setText(value || "");
 };

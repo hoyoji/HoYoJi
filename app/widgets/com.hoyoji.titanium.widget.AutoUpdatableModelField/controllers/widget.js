@@ -7,13 +7,13 @@ if ($.$attrs.color) {
 // if ($.$attrs.noBottomLine === "true") {
 	// $.rowBottomImage.setVisible(false);
 // }
-if ($.$attrs.hintText) {
-	$.hintText.setText($.$attrs.hintText);
-}
-
-$.hintText.addEventListener("singletap", function(e) {
-	$.field.fireEvent("singletap");
-});
+// if ($.$attrs.hintText) {
+	// $.hintText.setText($.$attrs.hintText);
+// }
+// 
+// $.hintText.addEventListener("singletap", function(e) {
+	// $.field.fireEvent("singletap");
+// });
 
 // $.field.addEventListener("singletap", function(e) {
 // e.cancelBubble = true;
@@ -45,20 +45,20 @@ $.setValue = function(value) {
 	}
 	value = this.convertModelValue(value);
 	$.field.setText(value || "");
-	if (!value) {
-		$.hintText.setVisible(true);
-	} else {
-		$.hintText.setVisible(false);
-	}
+		if (!value) {
+			$.showHintText();
+		} else {
+			$.hideHintText(false);
+		}
 };
 
 $.setEditable = function(editable) {
-	if (editable === false) {
-		$.hintText.setVisible(false);
-		// $.field.addEventListener("singletap", function(e){e.cancelBubble = true});
-	} else {
-		$.hintText.setVisible(true);
-	}
+		if (editable === false) {
+			$.hideHintText(false);
+			// $.field.addEventListener("singletap", function(e){e.cancelBubble = true});
+		} else {
+			$.showHintText();
+		}
 };
 
 $.setSaveableMode($.saveableMode);
