@@ -338,7 +338,6 @@
 					}
 				}
 				if (!e.source.focusable && e.source.toString().toLowerCase() !== "[object field]" && e.source.toString().toLowerCase() !== "[object textfield]") {
-					console.info("closing softkeyboard");
 					$.closeSoftKeyboard();
 				}
 			});
