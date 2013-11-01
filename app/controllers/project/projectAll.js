@@ -72,14 +72,12 @@ function onFooterbarTap(e) {
 $.titleBar.bindXTable($.myProjectsTable);
 
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
-	return (model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined && model.xGet("ownerUserId") === Alloy.Models.User.id) 
-	|| (model.xGet("ownerUserId") !== Alloy.Models.User.id 
-							&& model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined 
-							&& model.xGet("projectShareAuthorizations").where({
+	return (model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined &&
+						model.xGet("projectShareAuthorizations").findWhere({
 								projectId : model.id,
 								friendUserId : Alloy.Models.User.id,
 								state : "Accept"
-							}).length > 0);
+							}) !== undefined);
 }, $);
 
 // var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
