@@ -154,18 +154,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// return;
 	// }
 	// }
-	var currencySymbol;
-	try {
-		currencySymbol = Ti.Locale.getCurrencySymbol(currencyId);
-	} catch(e) {
-		currencySymbol = currencyId;
-	}
 	var data = {
 		userName : Alloy.Globals.alloyString.trim($.$model.xGet("userName")),
 		password : Ti.Utils.sha1($.$model.xGet("password")),
 		// email : Alloy.Globals.alloyString.trim($.$model.xGet("email") || ""),
 		currencyId : $.currency ? $.currency.xGet("id") : Ti.Locale.getCurrencyCode(Ti.Locale.getCurrentLocale()),
-		currencySymbol : currencySymbol
+		currencySymbol : $.currency ? $.currency.xGet("symbol") : Ti.Locale.getCurrencySymbol(currencyId)
 	};
 	Alloy.Globals.Server.postData(data, function(returnedData) {
 		// $.$model.xSet("lastSyncTime", returnedData.lastSyncTime);
