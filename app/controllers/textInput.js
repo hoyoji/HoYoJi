@@ -16,14 +16,20 @@ $.close.addEventListener("singletap", close);
 	if($.getCurrentWindow().$attrs.title){
 		$.title.setText("请输入" + $.getCurrentWindow().$attrs.title);
 	}
-	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
 	// $.textField.addEventListener("singletap", confirm);
 // });
 
 $.getCurrentWindow().$view.addEventListener("open", function(){
+	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
 	setTimeout(function(){
 		$.textField.focus();
-	},500);
+		if(OS_ANDROID){
+			if($.textField.setSelection){
+				var len = $.textField.getValue().length;
+				$.textField.setSelection(len, len);
+			}
+		}
+	},10);
 });
 
 $.textField.addEventListener("longpress", function(e){
