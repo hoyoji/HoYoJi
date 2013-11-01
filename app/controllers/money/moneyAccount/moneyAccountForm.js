@@ -45,6 +45,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				return;
 			});
 		} else {
+			$.saveModel(saveEndCB, saveErrorCB);
 			activityWindow.close();
 		}
 	} else {
