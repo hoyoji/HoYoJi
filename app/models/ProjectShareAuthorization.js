@@ -208,7 +208,7 @@ exports.definition = {
 				if (friend.id) {
 					return friend.getDisplayName();
 				} else {
-					return this.xGet("friendUser").xGet("userName");
+					return this.xGet("friendUser").getUserDisplayName();
 				}
 			},
 			getActualTotalText : function() {
