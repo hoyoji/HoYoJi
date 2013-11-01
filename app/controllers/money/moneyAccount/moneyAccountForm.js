@@ -45,8 +45,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				return;
 			});
 		} else {
-			activityWindow.close();
 			$.saveModel(saveEndCB, saveErrorCB);
+			activityWindow.close();
 		}
 	} else {
 		if ($.$model.hasChanged("currentBalance")) {
