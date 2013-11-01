@@ -4,9 +4,9 @@ if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
-if ($.$attrs.noBottomImage === "true") {
-	$.rowBottomImage.setVisible(false);
-}
+// if ($.$attrs.noBottomLine === "true") {
+	// $.rowBottomImage.setVisible(false);
+// }
 if ($.$attrs.hintText) {
 	$.hintText.setText($.$attrs.hintText);
 }
