@@ -53,7 +53,7 @@ function openProjectSelector() {
 	attributes.selectModelType = "Project";
 	attributes.selectModelCanBeNull = true;
 	attributes.selectedModel = $.project;
-	attributes.selectModelCanNotBeChild = true;
+	attributes.selectModelCanNotBeChild = $.$model;
 	Alloy.Globals.openWindow("project/projectAll", attributes);
 }
 

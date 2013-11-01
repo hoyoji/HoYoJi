@@ -489,12 +489,12 @@ exports.definition = {
 				}
 			},
 			canEdit : function() {
-				if (this.isNew()) {
+				// if (this.isNew()) {
 					return true;
-				} else if (this.xGet("ownerUser") === Alloy.Models.User) {
-					return true;
-				}
-				return false;
+				// } else if (this.xGet("ownerUser") === Alloy.Models.User) {
+					// return true;
+				// }
+				// return false;
 			},
 			canDelete : function() {
 				return this.xGet("ownerUser") === Alloy.Models.User;
