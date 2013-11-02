@@ -39,6 +39,10 @@ function doSearch(e) {
 $.searchButton.addEventListener("singletap", doSearch);
 $.search.addEventListener("return", doSearch);
 
+$.onWindowOpenDo(function(){
+	$.search.focus();
+});
+
 $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, errorCB){
 	if(!searchCriteria){
 		errorCB();

@@ -197,6 +197,14 @@ $.onWindowCloseDo(function() {
 	// Alloy.Globals.DataStore.initStore();
 });
 
+$.userName.field.addEventListener("return", function(){
+	$.password.field.focus();
+});
+$.password.field.addEventListener("return", function(){
+	$.password2.field.focus();
+});
+$.password2.field.addEventListener("return", $.titleBar.save);
+
 $.userName.UIInit($, $.getCurrentWindow());
 $.password.UIInit($, $.getCurrentWindow());
 $.password2.UIInit($, $.getCurrentWindow());

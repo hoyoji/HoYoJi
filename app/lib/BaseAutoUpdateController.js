@@ -31,13 +31,14 @@
 					}
 					if(isNotTextField) {
 						if (!$.hintText) {
+							var right = $.rightButton ? 48 : 0;
 							$.hintText = Ti.UI.createLabel({
 								font : {
 									fontSize : 16,
 									fontWeight : 'normal'
 								},
-								width : "70%",
-								right : 0,
+								left : "30%",
+								right : right,
 								height : 42,
 								color : "gray",
 								text : $.$attrs.hintText

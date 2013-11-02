@@ -33,6 +33,11 @@ if($.$attrs.color){
 // if($.$attrs.noBottomLine === "true") {
 	// $.rowBottomImage.setVisible(false);
 // }
+
+if($.$attrs.returnKeyType){
+	$.field.setReturnKeyType($.$attrs.returnKeyType);
+}
+
 if (OS_IOS) {
 	$.field.setAutocapitalization(false);
 }
