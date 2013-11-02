@@ -2,7 +2,7 @@
 	<View class="container" title="关于好友记">
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="关于好友记" autoInit="false"/>
 		<!-- <View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1"> -->
-			<ScrollView id="body" top="50" bottom="10" left="10" right="10" layout="vertical" scrollType="vertical" disableBounce="true" id="table" backgroundColor="#e1e1e1" class="table-edit">
+			<ScrollView id="body" top="50" bottom="10" left="10" right="10" layout="vertical" scrollType="vertical" disableBounce="true" backgroundColor="#e1e1e1" class="table-edit">
 				<View height="120" left="2" top="0" backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
 					<ImageView id="hoyojiPicture" width="100" height="100" top="10" image="/appicon.png"/>
 				</View>
@@ -23,7 +23,7 @@
 					<Label id="sinaBlog" left="30" width="Ti.UI.SIZE" onClick="openSinaBlog">新浪微博</Label>
 					<Label id="qqBlog" right="30" width="Ti.UI.SIZE" onClick="openQqBlog">腾讯微博</Label>
 				</View>
-				<Label bottom="10">好友记@科技版权所有</Label>
+				<Label top="10">好友记@科技版权所有</Label>
 			</ScrollView>
 		<!-- </View> -->
 	</View>
