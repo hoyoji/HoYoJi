@@ -658,18 +658,23 @@ $.amount.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
-$.picture.UIInit($, $.getCurrentWindow());
-$.friendUser.UIInit($, $.getCurrentWindow());
-$.date.UIInit($, $.getCurrentWindow());
-$.amount.UIInit($, $.getCurrentWindow());
-$.projectAmount.UIInit($, $.getCurrentWindow());
-$.localAmount.UIInit($, $.getCurrentWindow());
-$.project.UIInit($, $.getCurrentWindow());
-$.moneyExpenseCategory.UIInit($, $.getCurrentWindow());
-$.moneyAccount.UIInit($, $.getCurrentWindow());
-$.exchangeRate.UIInit($, $.getCurrentWindow());
-$.friend.UIInit($, $.getCurrentWindow());
-$.friendAccount.UIInit($, $.getCurrentWindow());
-$.remark.UIInit($, $.getCurrentWindow());
-$.titleBar.UIInit($, $.getCurrentWindow());
+$.doUIInit = function(currentWindow){
+	$.picture.UIInit($, currentWindow);
+	$.friendUser.UIInit($, currentWindow);
+	$.date.UIInit($, currentWindow);
+	$.amount.UIInit($, currentWindow);
+	$.projectAmount.UIInit($, currentWindow);
+	$.localAmount.UIInit($, currentWindow);
+	$.project.UIInit($, currentWindow);
+	$.moneyExpenseCategory.UIInit($, currentWindow);
+	$.moneyAccount.UIInit($, currentWindow);
+	$.exchangeRate.UIInit($, currentWindow);
+	$.friend.UIInit($, currentWindow);
+	$.friendAccount.UIInit($, currentWindow);
+	$.remark.UIInit($, currentWindow);
+	$.titleBar.UIInit($, currentWindow);
+};
 
+if($.$attrs.autoInit === "false" && $.__currentWindow){
+	$.doUIInit($.getCurrentWindow());
+}

@@ -77,7 +77,7 @@
 				bindModelSelector="money/moneyExpenseCategoryAll"
 				bindModelSelectorParams="selectedProject:project"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="商家" hintText="无商家"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="收款方" hintText="无收款方"
 				id="friend" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendUser"
