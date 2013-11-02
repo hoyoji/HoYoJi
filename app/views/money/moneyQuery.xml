@@ -1,8 +1,8 @@
 <Alloy>
 	<View class="container" saveableContainer="true">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
-		<View height="30" top="5" left="10" right="10" backgroundImage="/images/doQueryBackground.png">
-			<Widget src="com.hoyoji.titanium.widget.XButton" left="10" width="60" id="close" image="/images/backButton"/>
+		<View height="30" top="0" height="42" backgroundColor="#2E8B57">
+			<Widget src="com.hoyoji.titanium.widget.XButton" left="7" width="60" id="close" image="/images/backButton"/>
 			<Label color="white">请输入查询条件</Label>
 			<Widget src="com.hoyoji.titanium.widget.XButton" right="10" width="60" id="doQuery" image="/images/money/moneyAll/transactionsSearchTable"/>
 		</View>

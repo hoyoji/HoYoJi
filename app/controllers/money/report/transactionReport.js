@@ -145,6 +145,14 @@ function calculateTotalBalance() {
 			// totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
 	// }
 	$.totalBalance.setText(totalBalance.toUserCurrency());
+	
+	var debitTotalBalance = 0;
+	debitTotalBalance = $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
+					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();
+	if(queryOptions.transactionDisplayType === "Personal"){ 
+			debitTotalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
+	}
+	$.totalDebitBalance.setText(debitTotalBalance.toUserCurrency());
 }
 
 $.incomeTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
@@ -154,6 +162,7 @@ $.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.debitBalanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.moneyExpenseApportionCurrencySymbol.UIInit($, $.getCurrentWindow());
