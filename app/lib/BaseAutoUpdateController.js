@@ -9,7 +9,7 @@
 			if ($.$attrs.noBottomLine !== "true") {
 				//<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				//$.rowBottomImage.setVisible(false);
-				$.onWindowOpenDo(function() {
+				// $.onWindowOpenDo(function() {
 					$.$view.add(Ti.UI.createView({
 						width : Ti.UI.FILL,
 						height : 1,
@@ -19,7 +19,7 @@
 						backgroundImage : "/images/formRowBottom.png",
 						backgroundImageRepeat : "true"
 					}));
-				});
+				// });
 			}
 			$.showHintText = function(){
 				if ($.$attrs.hintText){
