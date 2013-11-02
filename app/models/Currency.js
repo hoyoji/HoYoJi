@@ -112,6 +112,15 @@ exports.definition = {
 						record.symbol = record.code;
 					}
 				}
+			},
+			syncUpdate : function(record, dbTrans) {
+				if (!record.symbol) {
+					try {
+						record.symbol = Ti.Locale.getCurrencySymbol(record.code);
+					} catch (e) {
+						record.symbol = record.code;
+					}
+				}
 			}
 		});
 
