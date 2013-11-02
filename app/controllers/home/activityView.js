@@ -1,30 +1,30 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-$.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "流水类型"
-	});
-
-	menuSection.add($.createContextMenuItem("个人流水", function() {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Personal"
-		}, {
-			wait : true,
-			patch : true
-		});
-		exports.doFilter();
-	}));
-	menuSection.add($.createContextMenuItem("项目流水", function() {
-		Alloy.Models.User.save({
-			defaultTransactionDisplayType : "Project"
-		}, {
-			wait : true,
-			patch : true
-		});
-		exports.doFilter();
-	}));
-	return menuSection;
-};
+// $.makeContextMenu = function() {
+	// var menuSection = Ti.UI.createTableViewSection({
+		// headerTitle : "流水类型"
+	// });
+// 
+	// menuSection.add($.createContextMenuItem("个人流水", function() {
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Personal"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
+		// exports.doFilter();
+	// }));
+	// menuSection.add($.createContextMenuItem("项目流水", function() {
+		// Alloy.Models.User.save({
+			// defaultTransactionDisplayType : "Project"
+		// }, {
+			// wait : true,
+			// patch : true
+		// });
+		// exports.doFilter();
+	// }));
+	// return menuSection;
+// };
 
 // ========================================== summary view =========================
 var summaryView = Ti.UI.createView({

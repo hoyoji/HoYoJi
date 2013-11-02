@@ -118,8 +118,28 @@ function onFooterbarTap(e) {
 // }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({headerTitle : ""});
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "流水类型"
+	});
 
+	menuSection.add($.createContextMenuItem("个人流水", function() {
+		Alloy.Models.User.save({
+			defaultTransactionDisplayType : "Personal"
+		}, {
+			wait : true,
+			patch : true
+		});
+		$.activityTable.doFilter();
+	}));
+	menuSection.add($.createContextMenuItem("项目流水", function() {
+		Alloy.Models.User.save({
+			defaultTransactionDisplayType : "Project"
+		}, {
+			wait : true,
+			patch : true
+		});
+		$.activityTable.doFilter();
+	}));
 	menuSection.add($.createContextMenuItem("查找流水", function() {
 		Alloy.Globals.openWindow("money/transactionsSearch");
 	}));
