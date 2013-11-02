@@ -165,6 +165,12 @@ $.login = function(userName, password) {
 								friendUserId : Alloy.Models.User.xGet("id"),
 								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
 								__dataType : "ProjectShareAuthorization"
+							});	
+							belongsToes.push({
+								ownerUserId : Alloy.Models.User.xGet("id"),
+								parentProjectId : null,
+								subProjectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								__dataType : "ParentProject"
 							});
 							belongsToes.push({
 								// parentExpenseCategoryId : null,
@@ -194,8 +200,15 @@ $.login = function(userName, password) {
 							model.actualTotalExpense = 0;
 							model.apportionedTotalIncome = 0;
 							model.apportionedTotalExpense = 0;
-						}
-						if(modelType === "Picture" && model.base64PictureIcon){
+						} else if(modelType === "Currency"){
+							if(!model.symbol){
+								try {
+									model.symbol = Ti.Locale.getCurrencySymbol(model.code);
+								} catch(e) {
+									model.symbol = model.code;
+								}
+							}
+						} else if(modelType === "Picture" && model.base64PictureIcon){
 							var filePath;
 							if (OS_ANDROID) {
 								filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
@@ -254,6 +267,7 @@ function openMainWindow() {
 }
 
 function loginFail(msg) {
+	$.__saveCollection = [];
 	$.password.field.setValue("");
 	// $.$model.xSet("password", null);
 	// $.$model.xSet("ownerUser", null);

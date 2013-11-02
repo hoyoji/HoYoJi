@@ -91,7 +91,7 @@
 						}
 					}
 					if (!dbTrans) {
-								$.__discardSaveCollection();
+						$.__discardSaveCollection();
 						$.__saveCollection = [];
 						$.__deleteCollection = [];
 						myDbTrans.commit();

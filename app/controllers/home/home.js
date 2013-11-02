@@ -118,13 +118,13 @@ function onFooterbarTap(e) {
 // }
 
 $.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection();
+	var menuSection = Ti.UI.createTableViewSection({headerTitle : ""});
 
+	menuSection.add($.createContextMenuItem("查找流水", function() {
+		Alloy.Globals.openWindow("money/transactionsSearch");
+	}));
 	menuSection.add($.createContextMenuItem("消息", function() {
 		Alloy.Globals.openWindow("message/messageAll");
-	}));
-	menuSection.add($.createContextMenuItem("查找", function() {
-		Alloy.Globals.openWindow("money/transactionsSearch");
 	}));
 	// menuSection.add($.createContextMenuItem("报表", function() {
 		// var d = new Date();
