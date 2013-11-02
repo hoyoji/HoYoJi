@@ -31,7 +31,7 @@
 					id="nickName" autoInit="false" autoSave="true"
 					bindModel="User"
 					bindAttribute="nickName"/>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="电邮" hintText="请输入电邮" rightButtonText="验证"
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="邮箱" hintText="请输入邮箱" rightButtonText="验证"
 					id="email" autoInit="false" autoSave="true" keyboardType="Ti.UI.KEYBOARD_EMAIL"
 					bindModel="User"
 					bindAttribute="email"/>
