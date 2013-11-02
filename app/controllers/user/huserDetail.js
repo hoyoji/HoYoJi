@@ -16,9 +16,15 @@ function changePassword() {
 	});
 }
 
+$.email.rightButton.addEventListener("singletap", function(){
+	alert("很抱歉，验证功能尚未完成！");
+});
 $.changePassword.addEventListener("singletap", changePassword);
 
 $.picture.UIInit($, $.getCurrentWindow());
 $.nickName.UIInit($, $.getCurrentWindow());
+$.userName.UIInit($, $.getCurrentWindow());
+$.email.UIInit($, $.getCurrentWindow());
 $.changePassword.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
+

@@ -9,18 +9,26 @@
 				bindModel="User"
 				bindAttribute="picture"
 				bindAttributeIsModel="id"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="用户名"
+				id="userName" autoInit="false" editModeEditability="noneditable"
+				bindModel="User"
+				bindAttribute="userName"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="昵称" hintText="请输入昵称"
 				id="nickName" autoInit="false" autoSave="true"
 				bindModel="User"
 				bindAttribute="nickName"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="电邮" hintText="请输入电邮" rightButtonText="验证"
+				id="email" autoInit="false" autoSave="true" keyboardType="Ti.UI.KEYBOARD_EMAIL"
+				bindModel="User"
+				bindAttribute="email"/>
 				<Widget id="changePassword" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" top="10" color="#2E8B57"
 				backgroundColor="#e9f3f0"
 				autoInit="false"
 				title="修改密码"/>
-				<Widget id="verifyEmail" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" top="10" color="#2E8B57"
+				<!-- <Widget id="verifyEmail" src="com.hoyoji.titanium.widget.XButton" width="80%" height="42" top="10" color="#2E8B57"
 				backgroundColor="#e9f3f0"
 				autoInit="false"
-				title="验证邮箱"/>
+				title="验证邮箱"/> -->
 			</ScrollView>
 		</View>
 	</View>
