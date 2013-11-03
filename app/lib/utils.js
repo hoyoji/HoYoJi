@@ -223,9 +223,9 @@
 					view.addEventListener("touchstart", function(e) {
 						scView.fireEvent("touchstart", e);
 					});
-					// view.addEventListener("touchmove", function(e) {
-					// scView.fireEvent("touchmove", e);
-					// });
+					view.addEventListener("click", function(e) {
+						scView.fireEvent("click", e);
+					});
 					// view.addEventListener("touchend", function(e) {
 					// scView.fireEvent("touchend", e);
 					// });

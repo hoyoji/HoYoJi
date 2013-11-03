@@ -11,7 +11,19 @@ if($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
 	pageSize = 0;
 }
 
-$.$view.addEventListener("click", function(e) {
+if(OS_ANDROID){
+	//Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);
+	$.scrollableView.setScrollingEnabled(false);
+	// $.scrollableView.setCurrentPage(1);
+} else {
+	if($.$attrs.currentPage === 0){
+		$.scrollableView.setCurrentPage(0);
+	} else {
+		$.scrollableView.setScrollingEnabled(false);
+	}
+}
+
+$.contentView.addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
 	if (OS_ANDROID) {
@@ -776,33 +788,48 @@ exports.getCollections = function() {
 	return collections;
 };
 
-exports.close = function() {
-	var animation = Titanium.UI.createAnimation();
-	animation.top = "100%";
-	animation.duration = 500;
-	animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	animation.addEventListener("complete", function() {
+$.scrollableView.addEventListener("scrollend", function(e){
+	if(e.currentPage === 0){
+		$.$view.hide();
 		clearCollections();
+		$.$attrs.previousTable.detailsTable = null;
 		$.parent.remove($.$view);
-	});
-	$.$view.animate(animation);
+		$.parent.fireEvent("navigateup", {
+			bubbles : true,
+			childTableTitle : $.previousBackNavTitle
+		});		
+	}
+});
+
+exports.close = function() {
+	$.scrollableView.scrollToView(0);
+	// var animation = Titanium.UI.createAnimation();
+	// animation.top = "100%";
+	// animation.duration = 500;
+	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	// animation.addEventListener("complete", function() {
+		// clearCollections();
+		// $.parent.remove($.$view);
+	// });
+	// $.$view.animate(animation);
 };
 
 exports.open = function(top) {
-	if (top === undefined)
-		top = 0;
-	function animate() {
-		var animation = Titanium.UI.createAnimation();
-		animation.top = top;
-		animation.duration = 500;
-		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-
-		$.$view.animate(animation);
-	}
-
-
-	$.$view.setTop("99%");
-	animate();
+	$.scrollableView.scrollToView(1);
+	// if (top === undefined)
+		// top = 0;
+	// function animate() {
+		// var animation = Titanium.UI.createAnimation();
+		// animation.top = top;
+		// animation.duration = 500;
+		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+// 
+		// $.$view.animate(animation);
+	// }
+// 
+// 
+	// $.$view.setTop("99%");
+	// animate();
 };
 
 function getLastTable() {
@@ -818,30 +845,36 @@ exports.getLastTableTitle = function() {
 };
 
 exports.createChildTable = function(theBackNavTitle, collections) {
-	$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
-		top : "100%",
-		hasDetail : $.$attrs.hasDetail,
-		sortByField : sortByField,
-		groupByField : groupByField,
-		sortReverse : sortReverse,
-		autoInit : "false",
-		parentController : $.getParentController(),
-		currentWindow : $.getCurrentWindow()
-	});
-	$.detailsTable.setParent($.$view);
-	$.detailsTable.UIInit();
-	$.detailsTable.open();
-
-	$.$view.fireEvent("navigatedown", {
-		bubbles : true,
-		childTableTitle : theBackNavTitle
-	});
-
-	$.detailsTable.backNavTitle = theBackNavTitle;
-	$.detailsTable.previousBackNavTitle = $.backNavTitle;
-
-	for (var i = 0; i < collections.length; i++) {
-		$.detailsTable.addCollection(collections[i]);
+	if($.getParentController().createChildTable){
+		$.getParentController().createChildTable(theBackNavTitle, collections);
+	} else {
+		$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
+			//top : "100%",
+			hasDetail : $.$attrs.hasDetail,
+			sortByField : sortByField,
+			groupByField : groupByField,
+			sortReverse : sortReverse,
+			autoInit : "false",
+			parentController : $.getParentController(),
+			currentWindow : $.getCurrentWindow(),
+			currentPage : 0,
+			previousTable : $
+		});
+		$.detailsTable.setParent($.$view);
+		$.detailsTable.UIInit();
+		$.detailsTable.open();
+	
+		$.$view.fireEvent("navigatedown", {
+			bubbles : true,
+			childTableTitle : theBackNavTitle
+		});
+	
+		$.detailsTable.backNavTitle = theBackNavTitle;
+		$.detailsTable.previousBackNavTitle = $.backNavTitle;
+	
+		for (var i = 0; i < collections.length; i++) {
+			$.detailsTable.addCollection(collections[i]);
+		}		
 	}
 };
 
@@ -850,16 +883,15 @@ exports.navigateUp = function() {
 	while (lastTable.detailsTable) {
 		parentTable = lastTable;
 		lastTable = lastTable.detailsTable;
-		console.info("finding lastTable ...");
 	}
 	if (lastTable !== $) {
 		//lastTable.$view.hide();
 		// lastTable.parent.remove($.$view);
-		$.$view.fireEvent("navigateup", {
-			bubbles : true,
-			childTableTitle : lastTable.previousBackNavTitle
-		});
-		parentTable.detailsTable = null;
+		// $.$view.fireEvent("navigateup", {
+			// bubbles : true,
+			// childTableTitle : lastTable.previousBackNavTitle
+		// });
+		// parentTable.detailsTable = null;
 		lastTable.close();
 	}
 };
@@ -886,7 +918,7 @@ exports.setHeaderView = function(headerView) {
 	// $.headerView = headerView;
 	if (OS_ANDROID) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
-		$.$view.add(headerView);
+		$.contentView.add(headerView);
 		$.table.setTop(60);
 		// $.table.setBottom(50);
 		// var scrolling = false;
