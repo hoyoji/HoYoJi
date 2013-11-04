@@ -243,6 +243,7 @@ exports.definition = {
 				return m;
 			},
 			getActualTotalMoney : function() {
+				var self = this;
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
 				this.xGet("projectShareAuthorizations").forEach(function(item) {
@@ -254,8 +255,16 @@ exports.definition = {
 				this.xGetDescendents("subProjects").forEach(function(subProject) {
 					subProject.xGet("projectShareAuthorizations").forEach(function(subProjectItem) {
 						if (subProjectItem.xGet("state") === "Accept") {
-							actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense");
-							actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome");
+							var rate = 1;
+							var exchange = Alloy.createModel("Exchange").xFindInDb({
+								localCurrencyId : subProject.xGet("currency").xGet("id"),
+								foreignCurrencyId : self.xGet("currency").xGet("id")
+							});
+							if (exchange.id) {
+								rate = exchange.xGet("rate");
+							}
+							actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense") * rate;
+							actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome") * rate;
 						}
 					});
 				});
