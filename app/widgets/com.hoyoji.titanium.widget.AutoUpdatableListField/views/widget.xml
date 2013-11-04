@@ -1,0 +1,8 @@
+<Alloy>
+	<View class="container" height="210" width="Ti.UI.FILL" backgroundColor="#e9f3f0">
+		<View height="42" top="0"><Label id="label" left="8">上级项目</Label><Label id="field" right="8" width="42" height="42" color="white" backgroundColor="gray" text="添加" ></Label></View>
+		<Widget src="com.hoyoji.titanium.widget.XTableView" 
+				id="table" autoInit="false" deleteWithoutSave="true" 
+				height="168" top="42"/>
+	</View>
+</Alloy>

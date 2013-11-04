@@ -121,6 +121,7 @@ function createRowView(rowModel, collection) {
 			$model : rowModel,
 			$collection : collection,
 			hasDetail : $.$attrs.hasDetail,
+			deleteWithoutSave : $.$attrs.deleteWithoutSave,
 			containingTable : $,
 			autoInit : "false",
 			currentWindow : $.__currentWindow,
@@ -133,6 +134,7 @@ function createRowView(rowModel, collection) {
 			$model : rowModel,
 			$collection : collection,
 			hasDetail : $.$attrs.hasDetail,
+			deleteWithoutSave : $.$attrs.deleteWithoutSave,
 			containingTable : $
 		});
 		rowViewController.setParent(row);
@@ -1179,8 +1181,11 @@ $.onWindowOpenDo(function() {
 
 		titleLabel.addEventListener("singletap", function(e) {
 			e.cancelBubble = true;
-			$.getCurrentWindow().$attrs.selectorCallback(null);
-			$.getCurrentWindow().close();
+			function openSelector(){
+       			$.getCurrentWindow().$attrs.selectorCallback(null);
+	       		$.getCurrentWindow().close();
+			}
+			$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector) : openSelector();
 		});
 		var row = Ti.UI.createTableViewRow();
 		row.add(titleLabel);

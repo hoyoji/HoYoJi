@@ -350,7 +350,7 @@
 				// var dialogs = require('alloy/dialogs');
 				Alloy.Globals.confirm("确认删除", "你确定要删除选定的记录吗？", function() {
 					// var deleteFunc = $.$model.xDelete || $.$model._xDelete;
-					if ($.getCurrentWindow().$attrs.closeWithoutSave) {
+					if ($.getCurrentWindow().$attrs.closeWithoutSave || $.$attrs.deleteWithoutSave) {
 						$.$model.__xDeleted = true;
 						showDeletedMsg(true);
 						$.$model.trigger("xdelete", $.$model);
@@ -471,7 +471,7 @@
 				}
 
 				if ($.getCurrentWindow().$attrs.beforeSelectorCallback) {
-					$.getCurrentWindow().$attrs.beforeSelectorCallback($.$model, openSelector);
+					$.getCurrentWindow().$attrs.beforeSelectorCallback($.$model, openSelector, showErrorMsg);
 				} else {
 					openSelector();
 				}

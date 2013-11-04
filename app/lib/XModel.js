@@ -449,6 +449,20 @@
 				getDescendents(this.xGet(attribute));
 				return descendents;
 			},
+			xFindDescendents : function(attribute, target) {
+				function getDescendents(parents) {
+					if (!parents || parents.length === 0)
+						return;
+					for (var i = 0; i < parents.length; i++) {
+						if(parents.at(i) === target){
+							return parents.at(i);
+						}
+						return getDescendents(parents.at(i).xGet(attribute));
+					}
+				}
+
+				return getDescendents(this.xGet(attribute));
+			},
 			xGetAncestors : function(attribute) {
 				var ancestors = Alloy.createCollection(this.config.adapter.collection_name);
 

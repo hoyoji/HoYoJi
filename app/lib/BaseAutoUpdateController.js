@@ -263,7 +263,14 @@
 					$.field.setOpacity(1);
 				}
 			};
-
+			$.__makeOpenWindowAttributes = function(attributes){
+				if ($.$attrs.bindModel.config) {
+						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
+						attributes.selectModelCanNotBeChild = $.$attrs.bindModel.config.hasMany && $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute && $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? $.$attrs.bindModel : null;
+				} 
+				return attributes;
+			};
 			$.field && $.field.addEventListener("singletap", function(e) {
 				$.hideErrorMsg();
 				$.trigger("singletap");
@@ -308,20 +315,15 @@
 						if ($.$attrs.bindModelSelectorConvert2Model && $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]) {
 							selectedModel = $.getParentController()[$.$attrs.bindModelSelectorConvert2Model]($.__bindAttributeIsModel);
 						}
+						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType;
 						attributes.selectedModel = selectedModel;
 						attributes.selectModelCanBeNull = $.$attrs.bindModelSelectModelCanBeNull;
-						if ($.$attrs.bindModel.config) {
-							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
-							attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
-							attributes.selectModelCanNotBeChild = $.$attrs.bindModel.config.hasMany && $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute && $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? $.$attrs.bindModel : null;
-						} else {
-							attributes.selectModelType = $.$attrs.bindModelSelectorConvertType;
-						}
+						attributes = $.__makeOpenWindowAttributes(attributes);
 						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
 			});
-
+			
 			$.refresh = function() {
 				if ($.updateField) {
 					$.updateField();
