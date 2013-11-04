@@ -217,6 +217,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			projectShareMoneyReturnEdit : 1,
 			projectShareMoneyReturnDelete : 1
 		}).xAddToSave($);
+		$.parentProjects.xAddToSave($);
+		$.parentProjects.xAddToDelete($);
 		activityWindow.close();
 		$.saveModel(saveEndCB, saveErrorCB);
 	}
@@ -272,9 +274,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				}).xAddToSave($);
 			}
 		}
+		$.parentProjects.xAddToSave($);
+		$.parentProjects.xAddToDelete($);
 		$.saveModel(saveEndCB, saveErrorCB);
 	}
 
+};
+
+$.convertParentProject = function(model){
+	return Alloy.createModel("ParentProject", {
+			subProject : $.$model,
+			parentProject : model,
+			ownerUser : Alloy.Models.User
+	});
+};
+
+$.checkDuplicateParentProject = function(model, confirmCB, errorCB){
+	var ret = $.$model.xGet("parentProjectParentProjects").findWhere({parentProject : model }) === undefined;
+	if(!ret){
+		errorCB("该项目已经是上级项目");
+	} else if(model === $.$model){
+		errorCB("同一项目不能作为上级项目");
+	} else if(model.xFindDescendents("parentProjects", $.$model) !== undefined){
+		errorCB("该项目已经是上级项目");
+	} else {
+		confirmCB();
+	}
 };
 
 $.onWindowOpenDo(function() {
@@ -286,6 +311,7 @@ $.onWindowOpenDo(function() {
 });
 
 $.parentProject.UIInit($, $.getCurrentWindow());
+$.parentProjects.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
 $.autoAddCategory.UIInit($, $.getCurrentWindow());

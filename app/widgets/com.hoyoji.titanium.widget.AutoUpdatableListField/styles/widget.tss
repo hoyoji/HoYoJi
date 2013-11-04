@@ -1,0 +1,10 @@
+"Label": {
+	color: '#000'
+},
+
+"#label" : {
+	font: {
+	fontSize: 16,
+	fontWeight: 'bold'
+	}
+}

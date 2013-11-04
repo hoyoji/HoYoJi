@@ -72,7 +72,8 @@ function onFooterbarTap(e) {
 $.titleBar.bindXTable($.myProjectsTable);
 
 var myProjectsTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
-	return (model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined &&
+	return ((model.xGet("parentProjectParentProjects").length === 0 || 
+				model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined) &&
 						model.xGet("projectShareAuthorizations").findWhere({
 								projectId : model.id,
 								friendUserId : Alloy.Models.User.id,

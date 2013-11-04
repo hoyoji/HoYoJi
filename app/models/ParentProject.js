@@ -21,6 +21,27 @@ exports.definition = {
 	extendModel: function(Model) {
 		_.extend(Model.prototype, Alloy.Globals.XModel,  {
 			// extended functions and properties go here
+			getParentProjectName : function() {
+				if (!this.xGet("parentProject")) {
+					return "顶级项目";
+				}
+				
+				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+					projectId : this.xGet("parentProject").xGet("id")
+				});
+				if (projectRemark && projectRemark.id && projectRemark.xGet("remark")) {
+					return projectRemark.xGet("remark");
+				} else {
+					return this.xGet("parentProject").xGet("name");
+				}
+			},
+			getParentOwnerUserName : function() {
+				if (!this.xGet("parentProject") || this.xGet("parentProject").xGet("ownerUserId") === Alloy.Models.User.id) {
+					return null;
+				} else {
+					return this.xGet("ownerUser").getFriendDisplayName();
+				}
+			},
 			syncAddNew : function(record, dbTrans) {
 				var parentProject = Alloy.createModel("ParentProject").xFindInDb({
 					subProjectId : record.subProjectId,

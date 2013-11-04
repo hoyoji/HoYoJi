@@ -1,0 +1,18 @@
+".container": {
+	backgroundColor: "#f5f5f5"
+}
+
+".firstRow": {
+	color: "#6e6d6d",
+	font: {
+		fontSize: 12,
+		fontWeight: 'normal'
+	}
+}
+
+".secondRow": {
+	font: {
+	    fontSize: 16,
+		fontWeight: 'bold'
+	}
+}
