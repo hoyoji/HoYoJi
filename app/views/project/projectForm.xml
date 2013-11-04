@@ -3,8 +3,8 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
 		addModeTitle="新增项目" readModeTitle="项目资料" editModeTitle="修改项目"/>
-		<View id="body" top="50" bottom="10" left="10" right="10" backgroundColor="#e1e1e1">
-			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="table" class="table-edit" bottom="0" top="0">
+		<!-- <View id="body" top="50" bottom="10" left="10" right="10" backgroundColor="#e1e1e1"> -->
+			<ScrollView id="body" top="50" bottom="10" left="10" right="10" backgroundColor="#e1e1e1" layout="vertical" scrollType="vertical" disableBounce="true">
 				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="上级项目" hintText="无上级项目"
 				id="parentProject" autoInit="false"
 				bindModel="$.$model"
@@ -27,7 +27,7 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="money/currency/currencyAll"/>
 				<View id="autoApportionView" height="42" backgroundColor="#f5f5f5">
-					<Label left="8" width="30%" height="Ti.UI.FILL" >自动分摊</Label>
+					<Label left="8" width="30%" height="42" class="fieldLabel">自动分摊</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="70%"
 					id="autoApportion" autoInit="false"
 					hightLight="false"
@@ -38,7 +38,7 @@
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<View id="autoAddCategoryView" height="42" backgroundColor="#f5f5f5">
-					<Label left="8" width="50%" height="Ti.UI.FILL" >创建预设分类</Label>
+					<Label left="8" width="50%" height="42" class="fieldLabel">创建预设分类</Label>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="50%" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"
 					id="autoAddCategory" autoInit="false"
 					hightLight="false"
@@ -58,6 +58,6 @@
 				bindModelBeforeSelectorCallback="checkDuplicateParentProject"
 				/>				
 			</ScrollView>
-		</View>
+		<!-- </View> -->
 	</View>
 </Alloy>

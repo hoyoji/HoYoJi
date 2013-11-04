@@ -21,3 +21,11 @@
 		fontWeight: 'bold'
 	}
 }
+
+".fieldLabel" : {
+	color: '#000',
+	font: {
+	fontSize: 16,
+	fontWeight: 'bold'
+	}
+}

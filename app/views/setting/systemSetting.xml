@@ -7,7 +7,7 @@
 
 				<!-- <View height="69" backgroundColor="#d1d1d1" borderRadius="7"> -->
 				<!-- <View width="5" height="Ti.UI.FILL" top="0" left="0" backgroundImage="/images/rowLeftShadow.png" backgroundImageRepeat="true"  zIndex="1"/> -->
-				<View id="userView" layout="vertical" height="310" left="2" top="0" backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
+				<View id="userView" layout="vertical" height="270" left="2" top="0" backgroundColor="#f5f5f5" borderRadius="5">
 					<!-- <Widget id="userPicture" src="com.hoyoji.titanium.widget.AutoBindPicturePreview" autoInit="false"
 					width="56" height="56" left="10"
 					bindModel="User"
@@ -35,14 +35,17 @@
 					id="email" autoInit="false" autoSave="true" keyboardType="Ti.UI.KEYBOARD_EMAIL"
 					bindModel="User"
 					bindAttribute="email"/>
-					<Button id="changePassword" width="80%" height="35" top="10" borderWidth="0" borderColor="null" style="0" borderRadius="5" backgroundColor="#e9f3f0" color="black">修改密码</Button>
-					<Button id="logout" top="10" width="80%" height="35" onSingletap="logout" borderRadius="5" backgroundImage="/images/exit.png" color="white">退出</Button>
+					<View height="42" backgroundColor="#f5f5f5">
+						<Label left="8" width="30%" height="42" class="fieldLabel">密码</Label>
+						<Button id="changePassword" width="70%" height="35" right="8" borderWidth="0" borderColor="null" style="0" borderRadius="5" backgroundColor="#e9f3f0" color="black">修改密码</Button>
+						<!-- <View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/> -->
+					</View>
 				</View>
 				<!-- <View id="sectionFooter" width="Ti.UI.FILL" height="10" left="0" top="59" backgroundImage="/images/sectionBottomShadow.png" zIndex="0"/> -->
 				<!-- </View> -->
 
 				<!-- <View height="45" top="10" backgroundColor="#d1d1d1" borderRadius="7"> -->
-				<View height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
+				<View height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5">
 					<Label left="10">加我为好友时需要验证</Label>
 					<Widget id="friendAuthentication" src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoInit="false" autoSave="true"
 					right="10" width="50"
@@ -54,7 +57,7 @@
 				<!-- </View> -->
 
 				<!-- <View height="45" top="10" backgroundColor="#d1d1d1" borderRadius="7"> -->
-				<View id="currentVersion" height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5" zIndex="2">
+				<View id="currentVersion" height="43" left="2" top="10"  backgroundColor="#f5f5f5" borderRadius="5">
 					<Label left="10">关于好友记</Label>
 					<Label id="currentVersionNumber" right="10" width="Ti.UI.SIZE"></Label>
 					<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" hightLight="false" autoSave="true" right="10" width="50"
@@ -64,7 +67,7 @@
 					bindAttribute="newFriendAuthentication"/> -->
 				</View>
 				<!-- </View> -->
-
+				<Button id="logout" top="10" width="90%" height="35" onSingletap="logout" borderRadius="5" backgroundImage="/images/exit.png" color="white">退出当前用户</Button>
 			</ScrollView>
 		<!-- </View> -->
 	</View>
