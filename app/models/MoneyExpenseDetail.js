@@ -13,6 +13,9 @@ exports.definition = {
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
+		defaults : {
+			quantity : 1
+		},
 		belongsTo : {
 			moneyExpense : {
 				type : "MoneyExpense",
