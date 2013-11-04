@@ -12,9 +12,9 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="parentProject" labelText="上级项目" hintText="请选择上级项目" hideKeyboard="true"
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="parentProject" labelText="上级项目" hintText="请选择上级项目" hideKeyboard="true"
 				onSingletap="openProjectSelector" autoInit="false"
-				/>
+				/> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目名称" hintText="请输入项目名称"
 				id="name" autoInit="false"
 				editModeEditability="noneditable"
@@ -27,6 +27,18 @@
 				bindAttribute="currency"
 				bindAttributeIsModel="name"
 				bindModelSelector="money/currency/currencyAll"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableListField" labelText="上级项目"
+				id="parentProjects" autoInit="false"
+				rowView="project/selectParentProjectRow"
+				bindModel="$.$model"
+				bindAttribute="parentProjectParentProjects"
+				bindAttributeIsModel="parentProject"
+				bindModelSelector="project/projectAll"
+				bindModelSelectorConvertType="Project"
+				bindModelSelectorConvertSelectedModel="convertParentProject" 
+				bindModelSelectModelCanBeNull="true"
+				bindModelBeforeSelectorCallback="checkDuplicateParentProject"
+				/>
 			</ScrollView>
 		</View>
 	</View>

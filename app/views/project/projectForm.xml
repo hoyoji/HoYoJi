@@ -12,9 +12,9 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="project/projectAll"
 				/> -->
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="parentProject" labelText="上级项目" hintText="请选择上级项目" hideKeyboard="true"
+				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  id="parentProject" labelText="上级项目" hintText="请选择上级项目" hideKeyboard="true"
 				onSingletap="openProjectSelector" autoInit="false"
-				/>
+				/> -->
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="项目名称" hintText="请输入项目名称"
 				id="name" autoInit="false"
 				bindModel="$.$model"
