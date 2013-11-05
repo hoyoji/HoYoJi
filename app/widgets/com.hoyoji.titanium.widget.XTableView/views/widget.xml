@@ -1,9 +1,9 @@
 <Alloy>
 	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#40000000">
-		<ScrollableView id="scrollableView" showPagingControl="false" currentPage="1">
+		<ScrollableView platform="ios" id="scrollableView" showPagingControl="false" currentPage="1">
 			<View id="backView"></View>
 			<View id="contentView" backgroundColor="#e1e1e1">
-				<TableView id="table" platform="ios" top="0" left="0"
+				<TableView id="table" top="0" left="0"
 					 backgroundColor="#f5f5f5">
 					<FooterView>
 						<View height="50" width="Ti.UI.FILL" >
@@ -11,13 +11,13 @@
 						</View>
 					</FooterView>
 		        </TableView>
-		        <TableView id="table" platform="android" top="0" left="0" bottom="50"
-					 backgroundColor="#f5f5f5">
-		        </TableView>
-		        <View platform="android" height="50" width="Ti.UI.FILL" bottom="0" id="fetchNextPageFooter" zIndex="1">
-					<Label id="fetchNextPageButton" text="无内容" width="Ti.UI.FILL" height="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
-				</View>
 			</View>
 		</ScrollableView>
+        <TableView id="table" platform="android" top="0" left="0" bottom="50"
+			 backgroundColor="#f5f5f5">
+        </TableView>
+        <View platform="android" height="50" width="Ti.UI.FILL" bottom="0" id="fetchNextPageFooter" zIndex="1">
+			<Label id="fetchNextPageButton" text="无内容" width="Ti.UI.FILL" height="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
+		</View>
 	</View>
 </Alloy>

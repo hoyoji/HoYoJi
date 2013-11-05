@@ -305,9 +305,11 @@ if ($.saveableMode === "read") {
 										projectId : $.$model.xGet("project").xGet("id"),
 										friendUserId : $.$model.xGet("friendUser").xGet("id")
 									}], function(collection) {
-										$.saveModel(saveEndCB, saveErrorCB, {
-											syncFromServer : true
-										});
+										Alloy.Globals.Server.loadRecordPictures($.$model.xGet("depositeId"),function(){
+											$.saveModel(saveEndCB, saveErrorCB, {
+												syncFromServer : true
+											});
+										}, saveErrorCB);
 									}, saveErrorCB);
 								}, saveErrorCB);
 							}, function(e) {

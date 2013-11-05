@@ -256,7 +256,7 @@
 						activityWindow.progressFinish("同步完成");
 						Alloy.Globals.Server.__isSyncing = false;
 
-							Ti.App.fireEvent("ServerSyncFinished");
+						Ti.App.fireEvent("ServerSyncFinished");
 					}, function(e) {
 						if (xErrorCallback) {
 							xErrorCallback(e);
@@ -798,6 +798,37 @@
 						});
 					}
 				}, errorCB, fetchImageTarget, progressCB);
+			},
+			loadRecordPictures : function(id, successCB, errorCB) {
+				this.postData(id, function(dataCollection) {
+					dataCollection.forEach(function(data) {
+						if (data.base64PictureIcon) {
+							var filePath = Alloy.Globals.getApplicationDataDirectory();
+							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
+							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
+							f1 = null;
+							delete data.base64PictureIcon;
+						}
+
+						var modelData = data;
+						var id = modelData.id;
+						delete modelData.id;
+						var model = Alloy.createModel("Picture").xFindInDb({
+							id : id
+						});
+						if (!model.id) {
+							model.attributes.id = id;
+						}
+						model.xSet(modelData);
+						model.save(null, {
+							silent : true,
+							dbTrans : dbTrans,
+							syncFromServer : true
+						});
+
+						successCB(picture);
+					});
+				}, errorCB, "fetchRecordPictures", progressCB);
 			},
 			// fetchUserImage : function(id, successCB, errorCB, progressCB) {
 			// this.postData(id, function(data) {

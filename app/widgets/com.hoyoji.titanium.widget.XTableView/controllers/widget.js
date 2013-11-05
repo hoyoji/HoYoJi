@@ -13,9 +13,10 @@ if($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
 
 if(OS_ANDROID){
 	//Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);
-	$.scrollableView.setScrollingEnabled(false);
+	//$.scrollableView.setScrollingEnabled(false);
 	// $.scrollableView.setCurrentPage(1);
-} else {
+}
+if(OS_IOS) {
 	if($.$attrs.currentPage === 0){
 		$.scrollableView.setCurrentPage(0);
 	} else {
@@ -789,49 +790,55 @@ exports.removeCollection = function(collection) {
 exports.getCollections = function() {
 	return collections;
 };
-
-$.scrollableView.addEventListener("scrollend", function(e){
-	if(e.currentPage === 0){
-		$.$view.hide();
-		clearCollections();
-		$.$attrs.previousTable.detailsTable = null;
-		$.parent.remove($.$view);
-		$.parent.fireEvent("navigateup", {
-			bubbles : true,
-			childTableTitle : $.previousBackNavTitle
-		});		
-	}
-});
+if(OS_IOS){
+	$.scrollableView.addEventListener("scrollend", function(e){
+		if(e.currentPage === 0){
+			$.$view.hide();
+			clearCollections();
+			$.$attrs.previousTable.detailsTable = null;
+			$.parent.remove($.$view);
+			$.parent.fireEvent("navigateup", {
+				bubbles : true,
+				childTableTitle : $.previousBackNavTitle
+			});		
+		}
+	});
+}
 
 exports.close = function() {
-	$.scrollableView.scrollToView(0);
-	// var animation = Titanium.UI.createAnimation();
-	// animation.top = "100%";
-	// animation.duration = 500;
-	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// animation.addEventListener("complete", function() {
-		// clearCollections();
-		// $.parent.remove($.$view);
-	// });
-	// $.$view.animate(animation);
+	if(OS_IOS){
+		$.scrollableView.scrollToView(0);
+	} else {
+		var animation = Titanium.UI.createAnimation();
+		animation.top = "100%";
+		animation.duration = 500;
+		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		animation.addEventListener("complete", function() {
+			clearCollections();
+			$.parent.remove($.$view);
+		});
+		$.$view.animate(animation);
+	}
 };
 
 exports.open = function(top) {
-	$.scrollableView.scrollToView(1);
-	// if (top === undefined)
-		// top = 0;
-	// function animate() {
-		// var animation = Titanium.UI.createAnimation();
-		// animation.top = top;
-		// animation.duration = 500;
-		// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-// 
-		// $.$view.animate(animation);
-	// }
-// 
-// 
-	// $.$view.setTop("99%");
-	// animate();
+	if(OS_IOS){
+		$.scrollableView.scrollToView(1);
+	} else {
+		if (top === undefined)
+			top = 0;
+		function animate() {
+			var animation = Titanium.UI.createAnimation();
+			animation.top = top;
+			animation.duration = 500;
+			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+	
+			$.$view.animate(animation);
+		}
+	
+		$.$view.setTop("99%");
+		animate();
+	}
 };
 
 function getLastTable() {
@@ -850,8 +857,12 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 	if($.getParentController().createChildTable){
 		$.getParentController().createChildTable(theBackNavTitle, collections);
 	} else {
+		var top = 0;
+		if(OS_ANDROID){
+			top = "100%";
+		}
 		$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
-			//top : "100%",
+			top : top,
 			hasDetail : $.$attrs.hasDetail,
 			sortByField : sortByField,
 			groupByField : groupByField,
@@ -889,11 +900,13 @@ exports.navigateUp = function() {
 	if (lastTable !== $) {
 		//lastTable.$view.hide();
 		// lastTable.parent.remove($.$view);
-		// $.$view.fireEvent("navigateup", {
-			// bubbles : true,
-			// childTableTitle : lastTable.previousBackNavTitle
-		// });
-		// parentTable.detailsTable = null;
+		if(OS_ANDROID){
+			$.$view.fireEvent("navigateup", {
+				bubbles : true,
+				childTableTitle : lastTable.previousBackNavTitle
+			});
+			parentTable.detailsTable = null;
+		}
 		lastTable.close();
 	}
 };
