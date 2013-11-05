@@ -27,7 +27,7 @@ function searchData(collection, offset, limit, orderBy) {
 	} 
 	if (currentFilter.friendUserId && collection.config.adapter.collection_name !== "MoneyTransfer") {
 		searchString += searchString && " AND ";
-		searchString += "main.friendUserId".sqlEQ(currentFilter.friendUserId);
+		searchString += sqlOR("main.friendUserId".sqlEQ(currentFilter.friendUserId), "main.ownerUserId".sqlEQ(currentFilter.friendUserId));
 	}
 	if (currentFilter.friendUserId && collection.config.adapter.collection_name === "MoneyTransfer") {
 		return;
@@ -61,7 +61,8 @@ function setFilter(collection, extraFilter) {
 			}
 		}
 		if (currentFilter.friendUserId) {
-			result = result && model.xGet("friendUserId") === currentFilter.friendUserId;
+			result = result && (model.xGet("friendUserId") === currentFilter.friendUserId || 
+								model.xGet("ownerUserId") === currentFilter.friendUserId);
 		}	
 		return result;
 	});

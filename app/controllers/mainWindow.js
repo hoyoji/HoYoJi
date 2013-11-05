@@ -6,23 +6,25 @@ if(OS_ANDROID){
 	$.$view.addEventListener('androidback', $.__androidBackFunction);
 }
 
-function relogin(){
-	if(lastLoginDate === null){
-		lastLoginDate = new Date();	
-	} else if(lastLoginDate.getDate() !== (new Date()).getDate()){
-		$.$view.removeEventListener("focus", relogin);
-		if(OS_IOS){
-			Ti.App.removeEventListener("resume", relogin);
-		}
-		Alloy.Globals.relogin();
-	}
-}
-
-var lastLoginDate = null;
-$.$view.addEventListener("focus", relogin);
-if(OS_IOS){
-	Ti.App.addEventListener("resume", relogin);
-}
+// function relogin(){
+	// if(Alloy.Models.User){
+		// if(lastLoginDate === null){
+			// lastLoginDate = new Date();	
+		// } else if(lastLoginDate.getDate() !== (new Date()).getDate()){
+			// $.$view.removeEventListener("focus", relogin);
+			// if(OS_IOS){
+				// Ti.App.removeEventListener("resume", relogin);
+			// }
+			// Alloy.Globals.relogin();
+		// }
+	// }
+// }
+// 
+// var lastLoginDate = null;
+// $.$view.addEventListener("focus", relogin);
+// if(OS_IOS){
+	// Ti.App.addEventListener("resume", relogin);
+// }
 
 exports.close = function(e) {
 	$.closeSoftKeyboard();
