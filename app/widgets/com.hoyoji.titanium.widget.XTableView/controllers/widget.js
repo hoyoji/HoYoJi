@@ -24,7 +24,7 @@ if(OS_IOS) {
 	}
 }
 
-$.contentView.addEventListener("click", function(e) {
+($.contentView || $.$view).addEventListener("click", function(e) {
 	$.__changingRow = true;
 	e.cancelBubble = true;
 	if (OS_ANDROID) {
@@ -933,7 +933,7 @@ exports.setHeaderView = function(headerView) {
 	// $.headerView = headerView;
 	if (OS_ANDROID) {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
-		$.contentView.add(headerView);
+		$.$view.add(headerView);
 		$.table.setTop(60);
 		// $.table.setBottom(50);
 		// var scrolling = false;
