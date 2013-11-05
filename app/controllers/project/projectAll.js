@@ -51,12 +51,13 @@ function onFooterbarTap(e) {
 				
 				var sharedWithMeTableCollection = Alloy.Models.User.xGet("projects").xCreateFilter(function(model) {
 					return model.xGet("ownerUserId") !== Alloy.Models.User.id 
-							&& model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined 
-							&& model.xGet("projectShareAuthorizations").where({
+							&& (model.xGet("parentProjectParentProjects").length === 0 ||
+								model.xGet("parentProjectParentProjects").findWhere({parentProjectId : null}) !== undefined) 
+							&& model.xGet("projectShareAuthorizations").findWhere({
 								projectId : model.id,
 								friendUserId : Alloy.Models.User.id,
 								state : "Accept"
-							}).length > 0;
+							}) === undefined;
 				}, $);
 
 				$.sharedWithMeTable.addCollection(sharedWithMeTableCollection);

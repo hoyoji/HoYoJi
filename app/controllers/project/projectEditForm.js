@@ -77,7 +77,7 @@ $.checkDuplicateParentProject = function(model, confirmCB, errorCB){
 		errorCB("该项目已经是上级项目");
 	} else if(model === $.$model){
 		errorCB("同一项目不能作为上级项目");
-	} else if(model.xFindDescendents("parentProjects", $.$model) !== undefined){
+	} else if(model && model.xFindDescendents("parentProjects", $.$model) !== undefined){
 		errorCB("该项目已经是上级项目");
 	} else {
 		confirmCB();

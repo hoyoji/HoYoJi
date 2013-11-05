@@ -37,6 +37,7 @@
 				bindModelSelectorConvertType="Project"
 				bindModelSelectorConvertSelectedModel="convertParentProject" 
 				bindModelBeforeSelectorCallback="checkDuplicateParentProject"
+				bindModelSelectModelCanBeNull="true"
 				/>
 			</ScrollView>
 		</View>

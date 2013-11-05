@@ -1185,7 +1185,7 @@ $.onWindowOpenDo(function() {
        			$.getCurrentWindow().$attrs.selectorCallback(null);
 	       		$.getCurrentWindow().close();
 			}
-			$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector) : openSelector();
+			$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
 		});
 		var row = Ti.UI.createTableViewRow();
 		row.add(titleLabel);
