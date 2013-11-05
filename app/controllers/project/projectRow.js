@@ -57,13 +57,13 @@ $.makeContextMenu = function(e, isSelectMode) {
 		// });
 	// }));
 	if ($.$model.xGet("ownerUserId") === Alloy.Models.User.id) {
-		menuSection.add($.createContextMenuItem("修改项目", function() {
+		menuSection.add($.createContextMenuItem("项目资料", function() {
 			Alloy.Globals.openWindow("project/projectForm", {
 				$model : $.$model
 			});
 		}));
 	} else {
-		menuSection.add($.createContextMenuItem("移动项目", function() {
+		menuSection.add($.createContextMenuItem("项目资料", function() {
 			Alloy.Globals.openWindow("project/projectEditForm", {
 				$model : $.$model,
 			});
@@ -74,24 +74,24 @@ $.makeContextMenu = function(e, isSelectMode) {
 		$.deleteModel();
 	}, isSelectMode || projectIsSharedToMe));
 
-	menuSection.add($.createContextMenuItem("备注名称", function() {
-		var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
-			projectId : $.$model.xGet("id")
-		});
-		if (projectRemark && projectRemark.id) {
-			Alloy.Globals.openWindow("project/projectRemarkForm", {
-				$model : projectRemark
-			});
-		} else {
-			Alloy.Globals.openWindow("project/projectRemarkForm", {
-				$model : "ProjectRemark",
-				data : {
-					project : $.$model,
-					ownerUser : Alloy.Models.User
-				}
-			});
-		}
-	}));
+	// menuSection.add($.createContextMenuItem("备注名称", function() {
+		// var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+			// projectId : $.$model.xGet("id")
+		// });
+		// if (projectRemark && projectRemark.id) {
+			// Alloy.Globals.openWindow("project/projectRemarkForm", {
+				// $model : projectRemark
+			// });
+		// } else {
+			// Alloy.Globals.openWindow("project/projectRemarkForm", {
+				// $model : "ProjectRemark",
+				// data : {
+					// project : $.$model,
+					// ownerUser : Alloy.Models.User
+				// }
+			// });
+		// }
+	// }));
 
 	menuSection.add($.createContextMenuItem("项目成员", function() {
 		Alloy.Globals.openWindow("project/projectShareAuthorizationAll", {

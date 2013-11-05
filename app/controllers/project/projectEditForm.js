@@ -5,6 +5,14 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 // });
 
 $.parentProject = null;
+$.projectRemark = null;
+
+$.projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({
+	projectId : $.$model.xGet("id")
+});
+if ($.projectRemark && $.projectRemark.id) {
+	$.remark.setValue($.projectRemark.xGet("remark"));
+}
 // var oldParentProject = null;
 // var parentProject = null;
 // $.project = null;
@@ -57,6 +65,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			// }).xSave();
 		// }
 	// }
+	if($.projectRemark && $.projectRemark.id) {
+		if($.remark.getValue() !== $.projectRemark.xGet("remark")){
+			$.projectRemark.xSet("remark", $.remark.getValue());
+			$.projectRemark.xAddToSave($);
+		}
+	} else {
+		if($.remark.getValue()) {
+			$.projectRemark = Alloy.createModel("ProjectRemark", {
+				project : $.$model,
+				remark : $.remark.getValue(),
+				ownerUser : Alloy.Models.User
+			}).xAddToSave($);
+		}
+	}
 	$.parentProjects.xAddToSave($);
 	$.parentProjects.xAddToDelete($);
 	$.saveCollection(saveEndCB, saveErrorCB);
@@ -191,6 +213,7 @@ $.checkDuplicateParentProject = function(model, confirmCB, errorCB){
 // $.parentProject.UIInit($, $.getCurrentWindow());
 $.parentProjects.UIInit($, $.getCurrentWindow());
 $.name.UIInit($, $.getCurrentWindow());
+$.remark.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
 // $.autoAddCategory.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());

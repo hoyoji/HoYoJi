@@ -799,7 +799,7 @@
 					}
 				}, errorCB, fetchImageTarget, progressCB);
 			},
-			loadRecordPictures : function(id, successCB, errorCB) {
+			loadRecordPictures : function(id, successCB, errorCB, progressCB) {
 				this.postData(id, function(dataCollection) {
 					dataCollection.forEach(function(data) {
 						if (data.base64PictureIcon) {

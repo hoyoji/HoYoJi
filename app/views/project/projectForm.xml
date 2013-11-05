@@ -2,7 +2,7 @@
 	<View class="container" saveableContainer="true"  width="100%" height="100%">
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame" hasFooter="false"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" autoInit="false"
-		addModeTitle="新增项目" readModeTitle="项目资料" editModeTitle="修改项目"/>
+		addModeTitle="新增项目" readModeTitle="项目资料" editModeTitle="项目资料"/>
 		<!-- <View id="body" top="50" bottom="10" left="10" right="10" backgroundColor="#e1e1e1"> -->
 			<ScrollView id="body" top="50" bottom="10" left="10" right="10" backgroundColor="#e1e1e1" layout="vertical" scrollType="vertical" disableBounce="true">
 				<!-- <Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="上级项目" hintText="无上级项目"
