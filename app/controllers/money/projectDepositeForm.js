@@ -475,9 +475,12 @@ if ($.saveableMode === "read") {
 					account["moneyAccountId"] = $.$model.xGet("moneyAccount").xGet("id");
 					
 					var addData = [];
-					if($.$model.xGet("picture")){
-						addData.push($.$model.xGet("picture").toJSON());
-					}
+					// if($.$model.xGet("picture")){
+						// addData.push($.$model.xGet("picture").toJSON());
+					// }
+					$.picture.__newPictures.forEach(function(picture) {
+						addData.push(picture.toJSON());
+					});
 					Alloy.Globals.Server.postData(addData, function(data) {
 						//发送消息给好友
 						Alloy.Globals.Server.sendMsg({

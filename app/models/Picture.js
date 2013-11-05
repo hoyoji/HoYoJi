@@ -133,17 +133,33 @@ exports.definition = {
 				}
 				attributes.__dataType = this.config.adapter.collection_name;
 
-				var f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, attributes.id + "_icon." + attributes.pictureType);
-				if (f.exists()) {
-					var blob0 = f.read();
-					attributes.base64PictureIcon = Ti.Utils.base64encode(blob0).toString();
+				var imgDir;
+				if(this.isNew()){
+					imgDir = Alloy.Globals.getTempDirectory();
+				} else {
+					imgDir = Alloy.Globals.getApplicationDataDirectory();
 				}
-				f = null;
-				f = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, attributes.id + "." + attributes.pictureType);
+				var f = Ti.Filesystem.getFile(imgDir, attributes.id + "." + attributes.pictureType);
+				var blob1;
 				if (f.exists()) {
-					var blob1 = f.read();
+					blob1 = f.read();
 					attributes.base64Picture = Ti.Utils.base64encode(blob1).toString();
 				}
+				
+				var f1 = Ti.Filesystem.getFile(imgDir, attributes.id + "_icon." + attributes.pictureType);
+				var blob0;
+				if (f1.exists()) {
+					blob0 = f1.read();
+					attributes.base64PictureIcon = Ti.Utils.base64encode(blob0).toString();
+					blob0 = null;
+				} else if(blob1){
+					blob0 = Alloy.Globals.creatImageThumbnail(blob1, 56);;
+					attributes.base64PictureIcon = Ti.Utils.base64encode(blob0).toString();
+					blob0 = null;				
+				}
+				f1 = null;
+				blob1 = null;
+				f = null;
 				return attributes;
 			}
 		});
