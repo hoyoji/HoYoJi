@@ -412,18 +412,23 @@ $.checkDuplicateParentProject = function(model, confirmCB, errorCB){
 	} else if(model && model.xFindDescendents("parentProjects", $.$model) !== undefined){
 		errorCB("该项目已经是上级项目");
 	} else {
-		$.parentProject = model;
-		createParentProjectExchange(function() {
-			createSubProjectExchange(function() {
-				confirmCB();
+		if (model){
+			$.parentProject = model;
+			createParentProjectExchange(function() {
+				createSubProjectExchange(function() {
+					confirmCB();
+				}, function(e) {
+					errorCB("父项目添加失败,请重试");
+					return;
+				});
 			}, function(e) {
 				errorCB("父项目添加失败,请重试");
 				return;
 			});
-		}, function(e) {
-			errorCB("父项目添加失败,请重试");
-			return;
-		});
+		} else {
+			confirmCB();
+		}
+		
 	}
 };
 
