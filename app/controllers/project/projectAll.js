@@ -57,7 +57,7 @@ function onFooterbarTap(e) {
 								projectId : model.id,
 								friendUserId : Alloy.Models.User.id,
 								state : "Accept"
-							}) === undefined;
+							}) !== undefined;
 				}, $);
 
 				$.sharedWithMeTable.addCollection(sharedWithMeTableCollection);
