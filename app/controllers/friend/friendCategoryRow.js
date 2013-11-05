@@ -10,13 +10,13 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "好友分类操作"
 	});
 	
-	menuSection.add($.createContextMenuItem("修改好友分类", function() {
+	menuSection.add($.createContextMenuItem("分类资料", function() {
 		Alloy.Globals.openWindow("friend/friendCategoryForm", {
 			$model : $.$model
 		});
 	}));
 
-	menuSection.add($.createContextMenuItem("删除好友分类", function() {
+	menuSection.add($.createContextMenuItem("删除分类", function() {
 		$.deleteModel();
 	}, isSelectMode));
 

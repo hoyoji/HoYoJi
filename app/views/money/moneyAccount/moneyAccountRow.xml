@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="42" openForm="money/moneyAccount/moneyAccountForm">
+	<View class="container" height="42">
 			<View id="content" class="row-content" left="0" height="Ti.UI.FILL">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10"  width="Ti.UI.SIZE" height="42"
 			id="accountName" autoInit="false"

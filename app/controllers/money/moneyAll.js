@@ -43,9 +43,7 @@ $.footerBar.beforeOpenSubFooterBar = function(buttonWidget, callback) {
 };
 
 function onFooterbarTap(e) {
-	if (e.source.id === "moneyAccount") {
-		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
-	} else if (e.source.id === "report") {
+	if (e.source.id === "report") {
 		Alloy.Globals.openWindow("money/report/transactionReport", {
 			queryOptions : timeFilter
 		});
@@ -111,12 +109,6 @@ function onFooterbarTap(e) {
 		timeFilter.transactionDisplayType = "Personal";
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "projectTransactions") {
-		// Alloy.Models.User.save({
-			// defaultTransactionDisplayType : "Project"
-		// }, {
-			// wait : true,
-			// patch : true
-		// });
 		transactionDisplayType = "Project";
 		if($.$attrs.queryFilter){
 			timeFilter = _.extend(timeFilter, $.$attrs.queryFilter);
@@ -132,54 +124,12 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/transactionsSearch", {
 			queryOptions : _.extend($.$attrs.queryFilter, {transactionDisplayType : transactionDisplayType})
 		});
-		// $.titleBar.setTitle("查找流水");
-		// if(!$.transactionsSearchTable){
-		// $.transactionsSearchTable = Alloy.createController("money/transactionsSearch", {
-		// id: "transactionsSearchTable",
-		// autoInit: "false",
-		// parentController : $,
-		// currentWindow : $.__currentWindow
-		// });
-		// $.transactionsSearchTable.setParent($.__views.body);
-		// $.transactionsSearchTable.UIInit();
-		// $.transactionsSearchTable.transactionsSearchTable.autoHideFooter($.footerBar);
-		// }
-		// $.transactionsSearchTable.doSearch();
 	} else if (e.source.id === "transactionsTable") {
 		//transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
 		$.titleBar.setTitle(transactionDisplayType + e.source.getTitle());
 	}
 }
-
-//
-// var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-// id : "refreshkButton",
-// left : 5,
-// height : Ti.UI.FILL,
-// width : 45,
-// image : "/images/home/sync"
-// });
-//
-// refreshButton.addEventListener("singletap", function(e){
-// e.cancelBubble = true;
-// Alloy.Globals.Server.sync();
-// });
-//
-// $.titleBar.setBackButton(refreshButton);
-//
-// function refreshSyncCount(){
-// var syncCount = Alloy.Globals.getClientSyncCount();
-// refreshButton.setBubbleCount(syncCount);
-// }
-//
-// refreshSyncCount();
-//
-// Ti.App.addEventListener("updateSyncCount", refreshSyncCount);
-//
-// $.onWindowCloseDo(function(){
-// Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
-// });
 
 var transactionDisplayType = "Project";
 $.titleBar.setTitle("项目流水");

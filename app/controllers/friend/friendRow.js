@@ -8,10 +8,24 @@ $.setSelected = function(selected){
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection({headerTitle : "好友操作"});
+	menuSection.add($.createContextMenuItem("好友资料", function() {
+		Alloy.Globals.openWindow("friend/friendForm", {
+			$model : $.$model
+		});
+	}, isSelectMode));
 	menuSection.add($.createContextMenuItem("删除好友", function() {
 		$.deleteModel();
 	}, isSelectMode));
 	return menuSection;
+};
+
+$.onRowTap = function(){
+	Alloy.Globals.openWindow("money/moneyAll", {
+		queryFilter : {
+			friend : $.$model
+		}
+	});
+	return false;
 };
 
 $.getChildTitle = function() {

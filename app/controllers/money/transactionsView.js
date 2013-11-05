@@ -9,40 +9,61 @@ exports.setHeaderView = function(headerView) {
 };
 
 function searchData(collection, offset, limit, orderBy) {
+	var searchString = "";
 	if (currentFilter.transactionDisplayType === "Personal") {
-		if (currentFilter.projectId) {
-			searchString = sqlAND("main.projectId".sqlEQ(currentFilter.projectId), "main.ownerUserId".sqlEQ(Alloy.Models.User.id));
-		} else {
-			searchString = sqlAND("main.ownerUserId".sqlEQ(Alloy.Models.User.id));
-		}
-	} else {
-		if (currentFilter.projectId) {
-			searchString = sqlAND("main.projectId".sqlEQ(currentFilter.projectId));
-		} else {
-			searchString = "";
-		}
+		searchString += "main.ownerUserId".sqlEQ(Alloy.Models.User.id);
 	}
-	collection.xSearchInDb(sqlAND("main.projectId".sqlEQ(currentFilter.projectId)), {
+	if (currentFilter.projectId) {
+		searchString += searchString && " AND ";
+		searchString += "main.projectId".sqlEQ(currentFilter.projectId);
+	} 
+	if (currentFilter.moneyAccountId) {
+		searchString += searchString && " AND ";
+		if(collection.config.adapter.collection_name == "MoneyTransfer"){
+			searchString += sqlOR("main.transferInId".sqlEQ(currentFilter.moneyAccountId), "main.transferOutId".sqlEQ(currentFilter.moneyAccountId));
+		} else {
+			searchString += "main.moneyAccountId".sqlEQ(currentFilter.moneyAccountId);
+		}
+	} 
+	if (currentFilter.friendUserId && collection.config.adapter.collection_name !== "MoneyTransfer") {
+		searchString += searchString && " AND ";
+		searchString += "main.friendUserId".sqlEQ(currentFilter.friendUserId);
+	}
+	if (currentFilter.friendUserId && collection.config.adapter.collection_name === "MoneyTransfer") {
+		return;
+	}
+	collection.xSearchInDb(searchString, {
 		offset : offset,
 		limit : limit,
 		orderBy : orderBy
 	});
 }
 
-function setFilter(collection) {
+function setFilter(collection, extraFilter) {
 	collection.xSetFilter(function(model) {
+		var result = !extraFilter ? true : extraFilter(model);
 		if (currentFilter.transactionDisplayType === "Personal") {
 			if (currentFilter.projectId) {
-				return model.xGet("projectId") === currentFilter.projectId && model.xGet("ownerUser") === Alloy.Models.User;
+				result = result && model.xGet("ownerUser") === Alloy.Models.User;
 			} else {
-				return model.xGet("ownerUser") === Alloy.Models.User;
+				result = result && model.xGet("ownerUser") === Alloy.Models.User;
 			}
 		}
 		if (currentFilter.projectId) {
-			return model.xGet("projectId") === currentFilter.projectId;
-		} else {
-			return true;
+			result = result && model.xGet("projectId") === currentFilter.projectId;
 		}
+		if (currentFilter.moneyAccountId) {
+			if(collection.config.adapter.collection_name === "MoneyTransfer"){
+				result = result && (model.xGet("transferOutId") === currentFilter.moneyAccountId
+									|| model.xGet("transferInId") === currentFilter.moneyAccountId);
+			} else {
+				result = result && model.xGet("moneyAccountId") === currentFilter.moneyAccountId;
+			}
+		}
+		if (currentFilter.friendUserId) {
+			result = result && model.xGet("friendUserId") === currentFilter.friendUserId;
+		}	
+		return result;
 	});
 }
 
@@ -71,6 +92,12 @@ exports.doFilter = function(filter) {
 		if (currentFilter.project) {
 			currentFilter.projectId = currentFilter.project.xGet("id");
 		}
+		if (currentFilter.friend) {
+			currentFilter.friendUserId = currentFilter.friend.xGet("friendUserId");
+		}
+		if (currentFilter.moneyAccount) {
+			currentFilter.moneyAccountId = currentFilter.moneyAccount.xGet("id");
+		}
 	}
 	$.transactionsTable.resetTable();
 	setFilter(moneyIncomes);
@@ -80,11 +107,11 @@ exports.doFilter = function(filter) {
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
-	moneyReturnInterests.xSetFilter(function(model) {
+	setFilter(moneyReturnInterests, function(model) {
 		return model.xGet("interest") > 0;
 	});
 	setFilter(moneyPaybacks);
-	moneyPaybackInterests.xSetFilter(function(model) {
+	setFilter(moneyPaybackInterests, function(model) {
 		return model.xGet("interest") > 0;
 	});
 	$.transactionsTable.fetchNextPage();
