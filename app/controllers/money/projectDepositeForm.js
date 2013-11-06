@@ -465,11 +465,15 @@ if ($.saveableMode === "read") {
 				} else {
 					var date = (new Date()).toISOString();
 					var account = {};
+					var pictureId = null;
+					if($.$model.xGet("picture")) {
+						pictureId = $.$model.xGet("picture").xGet("id");
+					}
 					for (var attr in $.$model.config.columns) {
 						account[attr] = $.$model.xGet(attr);
 					}
 					//account还没有保存到数据库，所以要手动添加含id的字段.
-					account["pictureId"] = $.$model.xGet("picture").xGet("id");
+					account["pictureId"] = pictureId;
 					account["projectId"] = $.$model.xGet("project").xGet("id");
 					account["moneyExpenseCategoryId"] = $.$model.xGet("moneyExpenseCategory").xGet("id");
 					account["moneyAccountId"] = $.$model.xGet("moneyAccount").xGet("id");
