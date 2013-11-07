@@ -140,6 +140,25 @@ $.transferIn.$view.addEventListener("singletap", function() {
 	$.transferOut.hideErrorMsg();
 });
 
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
+		return selectedFriendModel.xGet("friendUser");
+	} else {
+		return null;
+	}
+};
+
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
+			return friend;
+		}
+	}
+	return userModel;
+};
 // $.transferOutOwnerUser.field.addEventListener("change", transferToFriend);
 // $.transferInOwnerUser.field.addEventListener("change", transferToFriend);
 //
@@ -310,6 +329,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 $.picture.UIInit($, $.getCurrentWindow());
 $.date.UIInit($, $.getCurrentWindow());
 $.amount.UIInit($, $.getCurrentWindow());
+$.transferOutUser.UIInit($, $.getCurrentWindow());
+$.transferInUser.UIInit($, $.getCurrentWindow());
 $.transferOut.UIInit($, $.getCurrentWindow());
 $.transferIn.UIInit($, $.getCurrentWindow());
 $.exchangeRate.UIInit($, $.getCurrentWindow());

@@ -31,7 +31,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 		$.exchangeRate.field.fireEvent("change");
 
 		if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
-			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / rate);
+			$.$model.xSet("amount", Number(((depositeAmount * depositeExchangeRate) / rate).toFixed(2)));
 			$.amount.refresh();
 		}
 		$.exchangeRate.rightButton.setEnabled(true);
@@ -90,7 +90,7 @@ $.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
 			successCallback();
 		}
 	} else {
-		$.$model.xSet("amount", depositeAmount * depositeExchangeRate);
+		$.$model.xSet("amount", Number((depositeAmount * depositeExchangeRate).toFixed(2)));
 		$.amount.refresh();
 		successCallback();
 	}
@@ -127,7 +127,7 @@ if ($.saveableMode === "read") {
 				if (!$.$model.xGet("exchangeRate")) {
 					alert("请更新汇率查看金额");
 				} else {
-					$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
+					$.$model.xSet("amount", Number(((depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate")).toFixed(2)));
 					$.amount.refresh();
 				}
 			}
@@ -163,7 +163,7 @@ if ($.saveableMode === "read") {
 	//汇率改变时，要重新计算充值金额
 	$.exchangeRate.field.addEventListener("change", function() {
 		if($.$model.xGet("exchangeRate")){
-			$.$model.xSet("amount", (depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate"));
+			$.$model.xSet("amount", Number(((depositeAmount * depositeExchangeRate) / $.$model.xGet("exchangeRate")).toFixed(2)));
 			$.amount.refresh();
 		}
 	});
@@ -214,7 +214,7 @@ if ($.saveableMode === "read") {
 			});
 			Alloy.Globals.Server.getData([{__dataType : "ProjectShareAuthorization",id : projectShareAuthorization.id}], function(data1) {
 				if(data1[0][0].actualTotalIncome === projectShareAuthorization.xGet("actualTotalIncome") && data1[0][0].actualTotalExpense === projectShareAuthorization.xGet("actualTotalExpense")){
-					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xGet("exchangeRate"));
+					projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + Number((newAmount * $.$model.xGet("exchangeRate")).toFixed(2)));
 					projectShareAuthorization.xAddToSave($);
 					editData.push(projectShareAuthorization.toJSON());
 					

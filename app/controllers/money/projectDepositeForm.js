@@ -361,8 +361,8 @@ if ($.saveableMode === "read") {
 								projectId : $.$model.xGet("project").xGet("id"),
 								friendUserId : Alloy.Models.User.id
 							});
-							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + newAmount * $.$model.xPrevious("exchangeRate"));
-							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + newAmount * $.$model.xPrevious("exchangeRate"));
+							projectShareAuthorization.xSet("actualTotalExpense", projectShareAuthorization.xGet("actualTotalExpense") + Number((newAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)));
+							projectShareAuthorization.xSet("actualTotalIncome", projectShareAuthorization.xGet("actualTotalIncome") + Number((newAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)));
 
 							editData.push(projectShareAuthorization.toJSON());
 							projectShareAuthorization.xAddToSave($);
@@ -410,7 +410,7 @@ if ($.saveableMode === "read") {
 
 							addData.push($.$model.toJSON());
 
-							var incomeMoney = (newAmount * $.$model.xGet("exchangeRate")) / $.depositeAccountExchangeRate.getValue();
+							var incomeMoney = Number(((newAmount * $.$model.xGet("exchangeRate")) / $.depositeAccountExchangeRate.getValue()).toFixed(2));
 							var depositeIncome = Alloy.createModel("MoneyIncome", {
 								date : $.$model.xGet("date"),
 								amount : incomeMoney,
@@ -465,11 +465,15 @@ if ($.saveableMode === "read") {
 				} else {
 					var date = (new Date()).toISOString();
 					var account = {};
+					var pictureId = null;
+					if($.$model.xGet("picture")) {
+						pictureId = $.$model.xGet("picture").xGet("id");
+					}
 					for (var attr in $.$model.config.columns) {
 						account[attr] = $.$model.xGet(attr);
 					}
 					//account还没有保存到数据库，所以要手动添加含id的字段.
-					account["pictureId"] = $.$model.xGet("picture").xGet("id");
+					account["pictureId"] = pictureId;
 					account["projectId"] = $.$model.xGet("project").xGet("id");
 					account["moneyExpenseCategoryId"] = $.$model.xGet("moneyExpenseCategory").xGet("id");
 					account["moneyAccountId"] = $.$model.xGet("moneyAccount").xGet("id");

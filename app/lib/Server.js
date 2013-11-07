@@ -799,7 +799,7 @@
 					}
 				}, errorCB, fetchImageTarget, progressCB);
 			},
-			loadRecordPictures : function(id, successCB, errorCB, progressCB) {
+			loadRecordPictures : function(id, successCB, errorCB) {
 				this.postData(id, function(dataCollection) {
 					dataCollection.forEach(function(data) {
 						if (data.base64PictureIcon) {
@@ -822,13 +822,13 @@
 						model.xSet(modelData);
 						model.save(null, {
 							silent : true,
-							// dbTrans : dbTrans,
+							dbTrans : dbTrans,
 							syncFromServer : true
 						});
 
 						successCB(picture);
 					});
-				}, errorCB, "fetchRecordPictures", progressCB);
+				}, errorCB, "fetchRecordPictures");
 			},
 			// fetchUserImage : function(id, successCB, errorCB, progressCB) {
 			// this.postData(id, function(data) {

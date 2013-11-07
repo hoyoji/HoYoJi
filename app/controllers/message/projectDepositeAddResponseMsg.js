@@ -328,7 +328,7 @@ function importToLocalOperate() {
 	//接受充值
 	if (accountShareData.accountType === "MoneyExpense") {
 		var depositeProject = Alloy.createModel("Project", accountShareData.depositeProject);
-		var amount = accountShareData.account.amount * accountShareData.account.exchangeRate;
+		var amount = Number((accountShareData.account.amount * accountShareData.account.exchangeRate).toFixed(2));
 		var account = Alloy.createModel("MoneyIncome", {
 			date : (new Date()).toISOString(),
 			remark : accountShareData.account.remark,
