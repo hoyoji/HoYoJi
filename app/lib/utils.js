@@ -154,42 +154,6 @@
 			return win;
 		};
 
-		exports.Utils.openLightWindow = function(baseWindow, windowName, options, loadOnly) {
-			var win = Alloy.Globals.openingWindow[windowName];
-			if (!win || loadOnly) {
-				win = Alloy.createController("lightWindow", {
-					autoInit : "false"
-				});
-				win.openWin(baseWindow, windowName, options, loadOnly);
-				win.UIInit();
-				if (!loadOnly) {
-					Alloy.Globals.openingWindow[windowName] = win;
-				}
-			}
-			return win;
-		};
-
-		exports.Utils.cacheWindow = function(baseWindow, windowName, options) {
-			if (!Alloy.Globals.openedWindow[windowName] || Alloy.Globals.openedWindow[windowName].closing === true) {
-				Alloy.Globals.openedWindow[windowName] = exports.Utils.openLightWindow(baseWindow, windowName, options, true);
-				function reCacheWindow(e) {
-					Alloy.Globals.openedWindow[windowName].$view.removeEventListener("close", reCacheWindow);
-					if (Alloy.Globals.openedWindow[windowName].$view === e.source) {
-						delete Alloy.Globals.openedWindow[windowName];
-						exports.Utils.cacheWindow(baseWindow, windowName);
-					}
-				}
-
-
-				Alloy.Globals.openedWindow[windowName].$view.addEventListener("close", reCacheWindow);
-			}
-		};
-
-		exports.Utils.openCachedWindow = function(baseWindow, windowName) {
-			exports.Utils.cacheWindow(baseWindow, windowName);
-			Alloy.Globals.openedWindow[windowName].openCachedWindow();
-		};
-
 		exports.Utils.getClientSyncCount = function() {
 			var config = Alloy.createModel("ClientSyncTable").config, Model = Alloy.M("ClientSyncTable", {
 				config : config
@@ -257,19 +221,8 @@
 					view.addEventListener("registerdirtycallback", function(e) {
 						scView.fireEvent("registerdirtycallback", e);
 					});
-					view.addEventListener("textfieldfocused", function(e) {
-						scView.fireEvent("textfieldfocused", e);
-					});
 				});
 			}
-			// else {
-			// scView.addEventListener("opencontextmenu", function(e) {
-			// if(!Alloy.Globals.contextMenuScrollableView){
-			// Alloy.Globals.contextMenuScrollableView = scView;
-			// Alloy.Globals.contextMenuScrollableViewPage = scView.currentPageAsFloat;
-			// }
-			// });
-			// }
 		};
 
 		String.prototype.contains = function(it) {

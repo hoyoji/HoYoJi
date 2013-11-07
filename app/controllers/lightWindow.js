@@ -1,19 +1,16 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
-
+var __baseWin = null, __loadOnly;
 function doClose() {
-	$.closing = true;
-	// if (OS_ANDROID) {
-	// $.$view.removeEventListener('androidback', $.__androidBackFunction);
-	// }
-	$.$view.setVisible(false);
-	// $.closeSoftKeyboard();
-	// setTimeout(function() {
-		$.$view.fireEvent("close");
-		$.$view.parent.remove($.$view);
-		// $.$view.close({
-		// animated : false
-		// });
-	// }, 500);
+	if(__loadOnly){
+		$.$view.setVisible(false);
+		$.$view.fireEvent("hide", {bubbles : false});
+	} else {
+		$.closing = true;
+		$.$view.setVisible(false);
+		setTimeout(function() {
+			$.$view.fireEvent("close", {bubbles : false});
+		}, 500);
+	}
 }
 
 function confirmClose() {
@@ -39,7 +36,7 @@ exports.close = function() {
 
 exports.openCachedWindow = function(contentController) {
 	$.$view.setVisible(true);
-	// setTimeout(function() {
+	__baseWin.__currentLightWindow = $;
 	function fireShowEvent() {
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 		$.$view.fireEvent("show");
@@ -47,54 +44,38 @@ exports.openCachedWindow = function(contentController) {
 			delete Alloy.Globals.openingWindow[contentController];
 		}
 	}
-
-
 	$.scrollableView.addEventListener("scrollend", fireShowEvent);
 	$.scrollableView.scrollToView(1);
-	// }, 100);
 };
 
-exports.open = function(baseWindow, contentController, loadOnly) {
+exports.open = function(contentController, loadOnly) {
+	if (OS_ANDROID) {
+		$.$view.addEventListener('androidback', $.__androidBackFunction);
+	}
 	if (loadOnly) {
 		$.$view.setVisible(false);
 	} else {
-		// if (OS_ANDROID) {
-			// $.$view.addEventListener('androidback', $.__androidBackFunction);
-		// }
+		$.$view.setVisible(true);
+		__baseWin.__currentLightWindow = $;
 	}
-	// setTimeout(function(){
-	baseWindow.$view.add($.$view);
+
 	$.$view.fireEvent("open");
 	// $.$view.open({
-	// animated : false
+		// animated : false
 	// });
-	// }, 1);
 
 	if (!loadOnly) {
 		exports.openCachedWindow(contentController);
 	}
-
-	//$.closeSoftKeyboard();
-	// if(OS_ANDROID){
-	// $.$view.focus();
-	// }
-
-	// var animation = Titanium.UI.createAnimation();
-	// animation.left = "0";
-	// animation.duration = 350;
-	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// if(contentController){
-	// animation.addEventListener("complete", function(){
-	// });
-	// }
-	// $.$view.animate(animation);
 };
 
-exports.openWin = function(baseWindow, contentController, options, loadOnly) {
+exports.openWin = function(baseWin, contentController, options, loadOnly) {
 	options = options || {};
 	options.autoInit = "false";
 	options.parentController = $;
 	options.currentWindow = $;
+	__baseWin = baseWin;
+	__loadOnly = loadOnly;
 
 	if (options.selectorCallback) {
 		_.extend(options, {
@@ -119,57 +100,39 @@ exports.openWin = function(baseWindow, contentController, options, loadOnly) {
 		}));
 	}
 
-	$.open(baseWindow, contentController, loadOnly);
+	$.open(contentController, loadOnly);
 
 	_.extend($.$attrs, options);
-
 	function loadContent() {
-		$.content = Alloy.createController(contentController, options);
+		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
+			// $.content = Alloy.Globals.moneyAddNewView;
+		// } else {
+			$.content = Alloy.createController(contentController, options);
+		// }
 		$.content.setParent($.contentView);
-		$.content.UIInit();
+		$.content.UIInit($, $);
 		$.$view.fireEvent("contentready");
 	}
 
-	if (!options.selectorCallback && !loadOnly) {
-		$.$view.addEventListener("show", function() {
+	if (!options.selectorCallback) {
+		function loadContent1() {
+			$.getCurrentWindow().$view.removeEventListener("show", loadContent1);
 			$.showActivityIndicator();
 			loadContent();
 			$.hideActivityIndicator();
-		});
+		}
+		$.getCurrentWindow().$view.addEventListener("show", loadContent1);
 	} else {
 		loadContent();
 	}
-	
-
-	// setTimeout(function(){
-	// $.content.setParent($.contentView);
-	// $.content.UIInit();
-	// }, 100);
-	// $.scrollableView.addView($.content.$view);
 };
-//
-// var touchend = false;
-// $.$view.addEventListener('touchend', function(e) {
-// touchend = true;
-// });
-//
-// $.$view.addEventListener('touchstart', function(e) {
-// touchend = false;
-// });
 
-// $.$view.addEventListener('swipe', function(e) {
-// e.cancelBubble = true;
-// if (e.direction === "right") {
-// $.close();
-// }
-// });
 var firstTimeOpen = true;
 $.scrollableView.addEventListener("scrollend", function(e) {
 	if (e.source !== $.scrollableView) {
 		return;
 	}
 	if (e.currentPage === 0) {
-		// delete Alloy.Globals.openedWindow["money/moneyAddNew"];
 		confirmClose();
 	} else if (e.currentPage === 1 && firstTimeOpen) {
 		firstTimeOpen = false;
@@ -177,22 +140,13 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 
 });
 
-// var scrollTimeoutId = 0;
 $.scrollableView.addEventListener("scroll", function(e) {
 	if (e.source !== $.scrollableView) {
 		return;
 	}
-	// clearTimeout(scrollTimeoutId);
-	// scrollTimeoutId = setTimeout(function() {
 		var color = Math.round(153 * e.currentPageAsFloat);
 		color = Math.max(color, 16);
 		color = Math.min(color, 153);
-		// console.info(color + " " + color.toString(16));
+		console.info(color + " " + color.toString(16));
 		$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
-		// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-		// $.$view.setBackgroundColor("transparent");
-		// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-		// $.$view.setBackgroundColor("#40000000");
-		// }
-	// }, 1);
 });

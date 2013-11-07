@@ -14,12 +14,8 @@ $.onWindowOpenDo(function(){
 		if ($.saveableMode === "read") {
 			return;
 		}
-		// $.field.fireEvent("textfieldfocused", {
-			// bubbles : true,
-			// inputType : "DateTimePicker"
-		// });
 		//$.getCurrentWindow().closeSoftKeyboard();
-		// $.getCurrentWindow().dateƒTimePicker.open($, "DateTimePicker");	
+		// $.getCurrentWindow().dateTimePicker.open($, "DateTimePicker");	
 		
 		Alloy.Globals.openWindow("dateTimeSelector", {title : $.label.getText(), field : $, selectorCallback : function(value){
 			$.setValue(value);

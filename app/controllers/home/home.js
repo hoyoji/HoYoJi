@@ -24,66 +24,19 @@ $.onWindowCloseDo(function() {
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
 
-// var settingButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-	// id : "settingButton",
-	// right : 15,
-	// height : Ti.UI.FILL,
-	// width : 45,
-	// image : "/images/home/setting"
-// });
-// settingButton.addEventListener("singletap", function() {
-	// Alloy.Globals.openWindow("setting/systemSetting");
-// });
-// $.titleBar.setMenuButton(settingButton);
-
-// var projectButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-// id : "projectButton",
-// left : 5,
-// height : Ti.UI.FILL,
-// width : 45,
-// image : "/images/home/projectAll",
-// parentController : $,
-// currentWindow : $.__currentWindow,
-// autoInit : "false"
-// });
-// projectButton.UIInit();
-// projectButton.addEventListener("singletap", function(e) {
-// e.cancelBubble = true;
-// $.getCurrentWindow().scrollableView.scrollToView(0);
-// });
-// $.titleBar.setBackButton(projectButton);
-//
-// var friendButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
-// id : "friendButton",
-// right : 15,
-// height : Ti.UI.FILL,
-// width : 45,
-// image : "/images/home/friendAll",
-// parentController : $,
-// currentWindow : $.__currentWindow,
-// autoInit : "false"
-// });
-// projectButton.UIInit();
-// friendButton.addEventListener("singletap", function() {
-// $.getCurrentWindow().scrollableView.scrollToView(2);
-// });
-// $.titleBar.setMenuButton(friendButton);
-
+var moneyAddNewWindow = null;
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		// Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
 		// Alloy.Globals.openLightWindow($.getCurrentWindow(), "money/moneyAddNew");
-		Alloy.Globals.openWindow("money/moneyAddNew");
-		// } else if (e.source.id === "sync") {
-		// Alloy.Globals.Server.sync();
-		// } else if (e.source.id === "setting") {
-		// Alloy.Globals.openWindow("setting/systemSetting");
-	} else if (e.source.id === "transactions") {
-		Alloy.Globals.openWindow("money/moneyAll");
-	} else if (e.source.id === "transactionsSearchTable") {
-		Alloy.Globals.openWindow("money/transactionsSearch");
-	} else if (e.source.id === "messageAll") {
-		Alloy.Globals.openWindow("message/messageAll");
+		if(moneyAddNewWindow){
+			moneyAddNewWindow.openCachedWindow();
+			console.info("hi");
+		} else {
+			moneyAddNewWindow = $.getCurrentWindow().openLightWindow("money/moneyAddNew", {}, true);
+			moneyAddNewWindow.openCachedWindow();
+			console.info("hi");
+		}
 		// } else if (e.source.id === "projectAll") {
 		// Alloy.Globals.openWindow("project/projectAll");
 		// } else if (e.source.id === "friendAll") {
@@ -92,30 +45,9 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
 		var d = new Date();
-		Alloy.Globals.openWindow("money/report/transactionReport", {
-			queryOptions : {
-				dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-				dateTo : d.getUTCTimeOfDateEnd().toISOString()
-			}
-		});
-	} else if(e.source.id === "currencies") {
-		Alloy.Globals.openWindow("money/currency/currencyAll");
-	} else if(e.source.id === "exchanges") {
-		Alloy.Globals.openWindow("money/currency/exchangeAll");
+		Alloy.Globals.openWindow("money/report/transactionReport");
 	}
 }
-
-// function onHeaderbarTap(e) {
-// if (e.source.id === "moneyAll") {
-// Alloy.Globals.openWindow("money/moneyAll");
-// } else if (e.source.id === "projectAll") {
-// Alloy.Globals.openWindow("project/projectAll");
-// } else if (e.source.id === "friendAll") {
-// Alloy.Globals.openWindow("friend/friendAll");
-// } else if (e.source.id === "messageAll") {
-// Alloy.Globals.openWindow("message/messageAll");
-// }
-// }
 
 $.makeContextMenu = function() {
 	var menuSection = Ti.UI.createTableViewSection({
@@ -146,24 +78,12 @@ $.makeContextMenu = function() {
 	menuSection.add($.createContextMenuItem("消息", function() {
 		Alloy.Globals.openWindow("message/messageAll");
 	}));
-	// menuSection.add($.createContextMenuItem("报表", function() {
-		// var d = new Date();
-		// Alloy.Globals.openWindow("money/report/transactionReport", {
-			// queryOptions : {
-				// dateFrom : d.getUTCTimeOfDateStart().toISOString(),
-				// dateTo : d.getUTCTimeOfDateEnd().toISOString()
-			// }
-		// });
-	// }));
 	menuSection.add($.createContextMenuItem("货币", function() {
 		Alloy.Globals.openWindow("money/currency/currencyAll");
 	}));
 	menuSection.add($.createContextMenuItem("汇率", function() {
 		Alloy.Globals.openWindow("money/currency/exchangeAll");
 	}));
-	// menuSection.add($.createContextMenuItem("新增借出", function() {
-	// Alloy.Globals.openWindow("money/moneyLendForm");
-	// }));
 	return menuSection;
 };
 
@@ -181,10 +101,3 @@ $.titleBar.UIInit($, $.getCurrentWindow());
 
 $.activityTable.transactionsTable.autoHideFooter($.footerBar);
 
-// // setTimeout(function(){
-// var footerBarWindow = Alloy.createController("footerBarWindow",{
-// autoInit : false
-// });
-// footerBarWindow.UIInit(footerBarWindow, footerBarWindow);
-// footerBarWindow.$view.open();
-// // }, 3000);

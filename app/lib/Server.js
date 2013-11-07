@@ -822,7 +822,7 @@
 						model.xSet(modelData);
 						model.save(null, {
 							silent : true,
-							dbTrans : dbTrans,
+							// dbTrans : dbTrans,
 							syncFromServer : true
 						});
 

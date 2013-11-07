@@ -23,17 +23,23 @@
 						}
 						var isSaveableContainer = $.$attrs.saveableContainer === "true" || $.$view.saveableContainer === "true";
 						if (isSaveableContainer) {
-							var closeWinOnSaveCB = function(e, win) {
-								if (win.__dirtyCount === 0) {
-									win.close();
+							var closeWinOnSaveCB = function(e) {
+								if ($.getCurrentWindow().__dirtyCount === 0) {
+									$.getCurrentWindow().$view.removeEventListener("becameclean", closeWinOnSaveCB);
+									$.getCurrentWindow().close();
 								}
 							};
-							$.$view.fireEvent("registerwindowevent", {
-								bubbles : true,
-								windowEvent : "becameclean",
-								windowPreListenCallback : closeWinOnSaveCB,
-								windowCallback : closeWinOnSaveCB
-							});
+							// $.$view.fireEvent("registerwindowevent", {
+								// bubbles : true,
+								// windowEvent : "becameclean",
+								// windowPreListenCallback : closeWinOnSaveCB,
+								// windowCallback : closeWinOnSaveCB
+							// });
+							if ($.getCurrentWindow().__dirtyCount === 0) {
+									$.getCurrentWindow().close();
+							} else {
+								$.getCurrentWindow().$view.addEventListener("becameclean", closeWinOnSaveCB);
+							}
 						}
 					}
 				},

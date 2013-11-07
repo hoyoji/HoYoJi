@@ -57,10 +57,6 @@ if (OS_IOS) {
 			// }
 		// }
 // 		
-		// // $.field.fireEvent("textfieldfocused", {
-			// // bubbles : true,
-			// // inputType : $.$attrs.inputType
-		// // });
 	// });
 // });
 

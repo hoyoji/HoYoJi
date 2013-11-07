@@ -1,7 +1,9 @@
 <Alloy>
-	<ScrollableView id="scrollableView" class="container" width="100%" height="100%" zIndex="10000" backgroundColor="#10000000" showPagingControl="false">
+	<View id="lightWindow" class="container" saveableContainer="true" width="100%" height="100%" top="0" zIndex="10000" backgroundColor="#10000000" visible="false">
+	<ScrollableView id="scrollableView" showPagingControl="false">
 		<View id="backView"></View>
 		<View id="contentView" backgroundColor="#e1e1e1">
 		</View>
 	</ScrollableView>
+	</View>
 </Alloy>

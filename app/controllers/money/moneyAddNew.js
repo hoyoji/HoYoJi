@@ -1,13 +1,15 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
-var currentForm, lastAmountValue;
+var currentForm, currentFormName, lastAmountValue, loadedForm = [];
 
 if ($.$attrs.selectedModel) {
 	var modelType = $.$attrs.selectedModel.config.adapter.collection_name;
 	modelType = "money" + modelType.slice(5) + "Form";
 	currentForm = $[modelType] = loadForm(modelType, $.$attrs.selectedModel);
+	currentFormName = modelType;
 } else {
 	currentForm = $.moneyExpenseForm = loadForm("moneyExpenseForm", null, true);
+	currentFormName = "moneyExpenseForm";
 }
 
 function loadForm(formName, model, autoInit) {
@@ -31,6 +33,7 @@ function loadForm(formName, model, autoInit) {
 		});
 	}
 	form.setParent($.$view);
+	loadedForm.push(formName);
 	return form;
 }
 
@@ -48,6 +51,7 @@ function onFooterbarTap(e) {
 	var previousForm = currentForm;
 	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
+	currentFormName = e.source.id;
 	currentForm.date.setValue((new Date()).toISOString());
 	if (previousForm.amount.getValue() !== null && !isNaN(previousForm.amount.getValue())) {
 		lastAmountValue = previousForm.amount.getValue();
@@ -70,12 +74,12 @@ function onFooterbarTap(e) {
 	previousForm.$view.hide();
 }
 
-$.onWindowOpenDo(function() {
+function initForm() {
 	//$.getCurrentWindow().$view.addEventListener("contentready", function() {
 	if (!$.$attrs.selectedModel) {
-		currentForm.date.setValue((new Date()).toISOString());
 		$.moneyExpenseForm.UIInit($, $.getCurrentWindow());
 		$.moneyExpenseForm.doUIInit($.getCurrentWindow());
+		// currentForm.date.setValue((new Date()).toISOString());
 	}
 	//});
 	setTimeout(function() {
@@ -95,10 +99,30 @@ $.onWindowOpenDo(function() {
 		// $.footerBar.UIInit($, $.getCurrentWindow());
 		$.footerBar.on("singletap", onFooterbarTap);
 	}, 10);
-});
+}
 
-$.onWindowCloseDo(function() {
-	Alloy.Globals.moneyAddNewView = Alloy.createController("money/moneyAddNew", {
-		autoInit : "false"
+$.onWindowOpenDo(function() {
+	initForm();
+	$.getCurrentWindow().$view.addEventListener("show", function() {
+		$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
+			currentForm.titleBar.save();
+		}, function() {
+		}, 42);
+	});
+	$.getCurrentWindow().$view.addEventListener("hide", function() {
+		setTimeout(function() {
+			$.getCurrentWindow().__dirtyCount = $.__dirtyCount = 0;
+			loadedForm.forEach(function(formName) {
+				$.$view.remove($[formName].$view);
+				$[formName] = null;
+				$[formName] = null;
+				delete $[formName];
+			});
+			loadedForm = [];
+			currentForm = $.moneyExpenseForm = loadForm("moneyExpenseForm", null, true);
+			currentFormName = "moneyExpenseForm";
+			$.moneyExpenseForm.UIInit($, $.getCurrentWindow());
+			$.moneyExpenseForm.doUIInit($.getCurrentWindow());
+		}, 500);
 	});
 });

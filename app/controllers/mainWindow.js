@@ -37,16 +37,12 @@ exports.close = function(e) {
 };
 
 $.onWindowCloseDo(function() {
-	if (Alloy.Globals.openedWindow["money/moneyAddNew"]) {
-		Alloy.Globals.openedWindow["money/moneyAddNew"].close();
-		delete Alloy.Globals.openedWindow["money/moneyAddNew"];
-	}
 	Alloy.Models.User = null;
 	Alloy.Globals.mainWindow = null;
 	Alloy.Globals.DataStore.initStore();
 	delete Alloy.Globals.currentUserDatabaseName;
 });
-// 
+
 $.home = Alloy.createController("home/home", {
 	currentWindow : $,
 	parentController : $,
@@ -58,7 +54,7 @@ $.home.UIInit();
 
 $.onWindowOpenDo(function() {
 	//Alloy.Globals.cacheWindow($, "money/moneyAddNew");
-	Alloy.Globals.moneyAddNewView = Alloy.createController("money/moneyAddNew", {autoInit : "false"});
+	//Alloy.Globals.moneyAddNewView = Alloy.createController("money/moneyAddNew", {autoInit : "false"});
 });
 
 // if (Alloy.Models.User.xGet("messageBox")) {

@@ -36,11 +36,6 @@ $.onWindowOpenDo(function() {
 				return;
 			}
 		}
-
-		// $.field.fireEvent("textfieldfocused", {
-		// bubbles : true,
-		// inputType : "NumericKeyboard"
-		// });
 		// $.getCurrentWindow().closeSoftKeyboard();
 		if ($.beforeOpenKeyboard) {
 			$.beforeOpenKeyboard(openKeyboard);
