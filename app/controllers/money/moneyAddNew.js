@@ -109,7 +109,7 @@ $.onWindowOpenDo(function() {
 				currentForm.titleBar.save();
 			}, function() {
 			}, 42);	
-		}, 300);
+		}, 200);
 	});
 	$.getCurrentWindow().$view.addEventListener("hide", function() {
 		if(OS_IOS){
