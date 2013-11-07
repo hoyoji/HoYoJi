@@ -5,8 +5,10 @@ exports.definition = {
 			date : "TEXT NOT NULL",
 			transferOutAmount : "REAL NOT NULL",
 			transferOutId : "TEXT NOT NULL",
+			transferOutUserId : "TEXT",
 			transferInAmount : "REAL NOT NULL",
 			transferInId : "TEXT NOT NULL",
+			transferInUserId : "TEXT",
 			exchangeRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
 			pictureId : "TEXT",
@@ -26,6 +28,14 @@ exports.definition = {
 			}
 		},
 		belongsTo : {
+			transferOutUser : {
+				type : "User",
+				attribute : null
+			},
+			transferInUser : {
+				type : "User",
+				attribute : null
+			},
 			transferOut : {
 				type : "MoneyAccount",
 				attribute : "moneyTransferOuts"
