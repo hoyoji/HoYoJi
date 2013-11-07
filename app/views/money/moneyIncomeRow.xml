@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" height="90" openForm="money/moneyIncomeForm">
-		<View width="Ti.UI.FILL" height="1" top="0" left="10" right="10" backgroundImage="/images/rowTopShadow.png" backgroundImageRepeat="true"/>
+		<!-- <View width="Ti.UI.FILL" height="1" top="0" left="10" right="10" backgroundImage="/images/rowTopShadow.png" backgroundImageRepeat="true"/> -->
 		<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
 				<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
 					id="picture" autoInit="false"
