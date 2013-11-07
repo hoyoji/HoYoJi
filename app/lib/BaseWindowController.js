@@ -97,7 +97,7 @@
 					e.cancelBubble = true;
 					if ($.contextMenu && $.contextMenu.widget.getVisible().toString() === "true") {
 						$.closeContextMenu();
-					} else if($.__currentLightWindow){
+					} else if($.__currentLightWindow && $.__currentLightWindow.$view.getVisible()){
 						$.__currentLightWindow.close();
 					} else {
 						$.close();
@@ -164,6 +164,7 @@
 						e.cancelBubble = true;
 						win.$view.removeEventListener("close", removeWin);
 						$.$view.removeEventListener("close", removeWin);
+						win.$view.fireEvent("close", {bubbles : false});
 						$.$view.remove(win.$view);
 					}
 					function openWin(e){

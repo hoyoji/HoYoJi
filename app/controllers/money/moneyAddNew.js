@@ -104,17 +104,19 @@ function initForm() {
 $.onWindowOpenDo(function() {
 	initForm();
 	$.getCurrentWindow().$view.addEventListener("show", function() {
-		$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
-			currentForm.titleBar.save();
-		}, function() {
-		}, 42);
+		setTimeout(function(){
+			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
+				currentForm.titleBar.save();
+			}, function() {
+			}, 42);	
+		}, 300);
 	});
 	$.getCurrentWindow().$view.addEventListener("hide", function() {
 		setTimeout(function() {
 			$.getCurrentWindow().__dirtyCount = $.__dirtyCount = 0;
 			loadedForm.forEach(function(formName) {
+				$[formName].remove();
 				$.$view.remove($[formName].$view);
-				$[formName] = null;
 				$[formName] = null;
 				delete $[formName];
 			});

@@ -126,7 +126,7 @@ exports.openWin = function(contentController, options, loadOnly) {
 		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
 			// $.content = Alloy.Globals.moneyAddNewView;
 		// } else {
-			$.content = Alloy.createController(contentController, options);
+			$.content = $.__views["content"] = Alloy.createController(contentController, options);
 		// }
 		$.content.setParent($.contentView);
 		$.content.UIInit($, $);

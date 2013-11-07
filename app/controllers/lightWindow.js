@@ -1,6 +1,9 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 var __baseWin = null, __loadOnly;
 function doClose() {
+	// if (OS_ANDROID) {
+		// $.$view.removeEventListener('androidback', $.__androidBackFunction);
+	// }
 	if(__loadOnly){
 		$.$view.setVisible(false);
 		$.$view.fireEvent("hide", {bubbles : false});
@@ -36,6 +39,9 @@ exports.close = function() {
 
 exports.openCachedWindow = function(contentController) {
 	$.$view.setVisible(true);
+	// if (OS_ANDROID) {
+		// $.$view.addEventListener('androidback', $.__androidBackFunction);
+	// }
 	__baseWin.__currentLightWindow = $;
 	function fireShowEvent() {
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
@@ -49,9 +55,6 @@ exports.openCachedWindow = function(contentController) {
 };
 
 exports.open = function(contentController, loadOnly) {
-	if (OS_ANDROID) {
-		$.$view.addEventListener('androidback', $.__androidBackFunction);
-	}
 	if (loadOnly) {
 		$.$view.setVisible(false);
 	} else {
@@ -107,7 +110,7 @@ exports.openWin = function(baseWin, contentController, options, loadOnly) {
 		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
 			// $.content = Alloy.Globals.moneyAddNewView;
 		// } else {
-			$.content = Alloy.createController(contentController, options);
+			$.content = $.__views["content"] = Alloy.createController(contentController, options);
 		// }
 		$.content.setParent($.contentView);
 		$.content.UIInit($, $);
