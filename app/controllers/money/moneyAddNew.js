@@ -104,14 +104,17 @@ function initForm() {
 $.onWindowOpenDo(function() {
 	initForm();
 	$.getCurrentWindow().$view.addEventListener("show", function() {
-		setTimeout(function(){
+		// setTimeout(function(){
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 				currentForm.titleBar.save();
 			}, function() {
 			}, 42);	
-		}, 300);
+		// }, 300);
 	});
 	$.getCurrentWindow().$view.addEventListener("hide", function() {
+		if(OS_IOS){
+			$.getCurrentWindow().closeNumericKeyboard();
+		}
 		setTimeout(function() {
 			$.getCurrentWindow().__dirtyCount = $.__dirtyCount = 0;
 			loadedForm.forEach(function(formName) {
