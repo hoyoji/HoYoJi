@@ -104,6 +104,9 @@ exports.open = function(menuSections, menuHeader, menuFooter) {
 		animation.addEventListener('complete', function() {
 			Alloy.Globals.openingMenu = false;
 		});
+		animation.addEventListener('cancel', function() {
+			Alloy.Globals.openingMenu = false;
+		});
 		$.menuWrapper.animate(animation);
 		
 		// var _menuSections = [];

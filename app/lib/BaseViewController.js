@@ -101,6 +101,9 @@
 					return false;
 				}
 				Alloy.Globals.openingMenu = true;
+				setTimeout(function(){
+					Alloy.Globals.openingMenu = false;
+				},2000);
 				var sourceModel;
 				if ($.$model) {
 					sourceModel = {
