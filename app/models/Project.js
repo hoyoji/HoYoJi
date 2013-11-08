@@ -24,8 +24,8 @@ exports.definition = {
 				attribute : "projects"
 			},
 			// parentProject : {
-				// type : "Project",
-				// attribute : "subProjects"
+			// type : "Project",
+			// attribute : "subProjects"
 			// },
 			currency : {
 				type : "Currency",
@@ -51,11 +51,13 @@ exports.definition = {
 		hasMany : {
 			moneyExpenseCategories : {
 				type : "MoneyExpenseCategory",
-				attribute : "project"
+				attribute : "project",
+				cascadeDelete : true
 			},
 			moneyIncomeCategories : {
 				type : "MoneyIncomeCategory",
-				attribute : "project"
+				attribute : "project",
+				cascadeDelete : true
 			},
 			subProjects : {
 				type : "Project",
@@ -77,7 +79,8 @@ exports.definition = {
 			},
 			projectShareAuthorizations : {
 				type : "ProjectShareAuthorization",
-				attribute : "project"
+				attribute : "project",
+				cascadeDelete : true
 			},
 			moneyExpenses : {
 				type : "MoneyExpense",
@@ -144,26 +147,26 @@ exports.definition = {
 
 				if (attr === "subProjects") {
 					// collection.xSetFilter(function(item) {
-						// return self.xGet("parentProjectSubProjects").findWhere({
-							// subProjectId : item.xGet("id")
-						// }) !== undefined;
+					// return self.xGet("parentProjectSubProjects").findWhere({
+					// subProjectId : item.xGet("id")
+					// }) !== undefined;
 					// });
-					this.xGet("parentProjectSubProjects").on("add", function(item){
+					this.xGet("parentProjectSubProjects").on("add", function(item) {
 						collection.add(item.xGet("subProject"));
 					});
-					this.xGet("parentProjectSubProjects").on("remove", function(item){
+					this.xGet("parentProjectSubProjects").on("remove", function(item) {
 						collection.remove(item.xGet("subProject"));
 					});
 				} else if (attr === "parentProjects") {
 					// collection.xSetFilter(function(item) {
-						// return self.xGet("parentProjectParentProjects").findWhere({
-							// parentProjectId : item.xGet("id")
-						// }) !== undefined;
+					// return self.xGet("parentProjectParentProjects").findWhere({
+					// parentProjectId : item.xGet("id")
+					// }) !== undefined;
 					// });
-					this.xGet("parentProjectParentProjects").on("add", function(item){
+					this.xGet("parentProjectParentProjects").on("add", function(item) {
 						collection.add(item.xGet("parentProject"));
 					});
-					this.xGet("parentProjectParentProjects").on("remove", function(item){
+					this.xGet("parentProjectParentProjects").on("remove", function(item) {
 						collection.remove(item.xGet("parentProject"));
 					});
 				} else {
@@ -203,13 +206,13 @@ exports.definition = {
 				return collection;
 			},
 			xGetBelongsTo : function(attr) {
-				if(attr === "parentProject"){
+				if (attr === "parentProject") {
 					var p = this.xGet("parentProjects").at(0);
 					this.attributes[attr] = p;
 					this._previousAttributes[attr] = p;
 					return p;
 				}
-				
+
 				var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
 				console.info("xGet belongsTo " + fKey + " : " + fId);
 				if (!fId) {
@@ -336,48 +339,49 @@ exports.definition = {
 					xFinishCallback({
 						msg : "不能删除当前激活的项目"
 					});
-				} else if (this.xGet("subProjects").length > 0) {
-					xFinishCallback({
-						msg : "项目中的子项目不为空，不能删除"
-					});
-				} else if (this.xGet("moneyExpenses").length > 0) {
-					xFinishCallback({
-						msg : "项目中的支出不为空，不能删除"
-					});
-				} else if (this.xGet("moneyIncomes").length > 0) {
-					xFinishCallback({
-						msg : "项目中的收入不为空，不能删除"
-					});
-				} else if (this.xGet("moneyTransfers").length > 0) {
-					xFinishCallback({
-						msg : "项目中的转账不为空，不能删除"
-					});
-				} else if (this.xGet("moneyBorrows").length > 0) {
-					xFinishCallback({
-						msg : "项目中的借出不为空，不能删除"
-					});
-				} else if (this.xGet("moneyReturns").length > 0) {
-					xFinishCallback({
-						msg : "项目中的还款不为空，不能删除"
-					});
-				} else if (this.xGet("moneyLends").length > 0) {
-					xFinishCallback({
-						msg : "项目中的借出不为空，不能删除"
-					});
-				} else if (this.xGet("moneyPaybacks").length > 0) {
-					xFinishCallback({
-						msg : "项目中的收款不为空，不能删除"
-					});
 				} 
+				//else if (this.xGet("subProjects").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的子项目不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyExpenses").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的支出不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyIncomes").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的收入不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyTransfers").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的转账不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyBorrows").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的借出不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyReturns").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的还款不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyLends").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的借出不为空，不能删除"
+					// });
+				// } else if (this.xGet("moneyPaybacks").length > 0) {
+					// xFinishCallback({
+						// msg : "项目中的收款不为空，不能删除"
+					// });
+				// }
 				// else if (this.xGet("moneyExpenseCategories").length > 1) {
-					// xFinishCallback({
-						// msg : "项目中的支出分类不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的支出分类不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyIncomeCategories").length > 1) {
-					// xFinishCallback({
-						// msg : "项目中的收入分类不为空，不能删除"
-					// });
-				// } 
+				// xFinishCallback({
+				// msg : "项目中的收入分类不为空，不能删除"
+				// });
+				// }
 				else {
 					var acceptProjectShareAuthorizations = Alloy.createCollection("ProjectShareAuthorization").xSearchInDb({
 						projectId : this.xGet("id"),
@@ -416,9 +420,7 @@ exports.definition = {
 									successCB();
 								} else {
 									errorCB({
-										__summary : {
 											msg : "删除子数据项目共享时出错"
-										}
 									});
 								}
 
@@ -426,7 +428,7 @@ exports.definition = {
 								successCB();
 							}
 						}
-						
+
 						function deleteParentProjects(successCB, errorCB) {
 							var parentProjects = self.xGet("parentProjects");
 							var parentProjectsCount = 0;
@@ -450,9 +452,7 @@ exports.definition = {
 									successCB();
 								} else {
 									errorCB({
-										__summary : {
 											msg : "删除出错"
-										}
 									});
 								}
 
@@ -460,68 +460,62 @@ exports.definition = {
 								successCB();
 							}
 						}
-						
+
 						function deleteMoneyExpenseCategories(successCB, errorCB) {
 							var moneyExpenseCategories = self.xGet("moneyExpenseCategories");
 							var moneyExpenseCategoriesCount = 0;
 							if (moneyExpenseCategories.length > 0) {
-								var delError = false;
+								var delError;
 								for (var i = 0; i < moneyExpenseCategories.length; i++) {
 									var moneyExpenseCategory = moneyExpenseCategories.at(i);
-									moneyExpenseCategory._xDelete(function(err) {
-										if (err) {
-											delError = true;
+									if (moneyExpenseCategory.xGet("parentExpenseCategoryId") === null) {
+										moneyExpenseCategory._xDelete(function(err) {
+											if (err) {
+												delError = err;
+											}
+										}, options);
+										if (delError) {
+											break;
 										}
-									}, options);
-									if (delError) {
-										break;
-									} else {
-										moneyExpenseCategoriesCount++;
 									}
+									moneyExpenseCategoriesCount++;
 								}
 								if (moneyExpenseCategoriesCount === moneyExpenseCategories.length) {
 									moneyExpenseCategories.reset();
 									successCB();
 								} else {
-									errorCB({
-										__summary : {
-											msg : "删除支出分类出错"
-										}
-									});
+									errorCB(delError);
 								}
 
 							} else {
 								successCB();
 							}
 						}
-						
+
 						function deleteMoneyIncomeCategories(successCB, errorCB) {
 							var moneyIncomeCategories = self.xGet("moneyIncomeCategories");
 							var moneyIncomeCategoriesCount = 0;
 							if (moneyIncomeCategories.length > 0) {
-								var delError = false;
+								var delError;
 								for (var i = 0; i < moneyIncomeCategories.length; i++) {
 									var moneyIncomeCategory = moneyIncomeCategories.at(i);
-									moneyIncomeCategory._xDelete(function(err) {
-										if (err) {
-											delError = true;
+									if (moneyIncomeCategory.xGet("parentIncomeCategoryId") === null) {
+										moneyIncomeCategory._xDelete(function(err) {
+											if (err) {
+												delError = err;
+											}
+										}, options);
+										if (delError) {
+											break;
 										}
-									}, options);
-									if (delError) {
-										break;
-									} else {
-										moneyIncomeCategoriesCount++;
 									}
+									moneyIncomeCategoriesCount++;
 								}
 								if (moneyIncomeCategoriesCount === moneyIncomeCategories.length) {
 									moneyIncomeCategories.reset();
 									successCB();
 								} else {
-									errorCB({
-										__summary : {
-											msg : "删除收入分类出错"
-										}
-									});
+									errorCB(delError);
 								}
 
 							} else {
@@ -529,47 +523,46 @@ exports.definition = {
 							}
 						}
 
-						deleteProjectShareAuthorization(function(e) {
-							deleteParentProjects(function(e) {
-								deleteMoneyExpenseCategories(function(e) {
-									deleteMoneyIncomeCategories(function(e) {
-										if (Alloy.Models.User.xGet("activeProjectId") === self.xGet("id")) {
-											Alloy.Models.User.xSet("activeProject", null);
-											Alloy.Models.User.save("activeProjectId", null, options);
-										}
-										// var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
-											// id : self.xGet("depositeExpenseCategoryId")
-										// });
-										// var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory").xFindInDb({
-											// id : self.xGet("depositeIncomeCategoryId")
-										// });
-										// self.xSet("depositeIncomeCategoryId", null);
-										// self.xSet("depositeExpenseCategoryId", null);
-										// self.save();
-			
-										// if (depositeExpenseCategory.id) {
-											// depositeExpenseCategory._xDelete(function() {
-											// }, options);
-										// }
-										// if (depositeIncomeCategory.id) {
-											// depositeIncomeCategory._xDelete(function() {
-											// }, options);
-										// }
-										// self.xGet("moneyExpenseCategories").remove(depositeExpenseCategory, {
-											// silent : true
-										// });
-										// self.xGet("moneyIncomeCategories").remove(depositeIncomeCategory, {
-											// silent : true
-										// });
-										self._xDelete(xFinishCallback, options);
-									}, function(e) {
-										xFinishCallback(e);
-										return;
-									});
-								}, function(e) {
-									xFinishCallback(e);
-									return;
-								});
+						// deleteParentProjects(function(e) {
+						deleteMoneyExpenseCategories(function(e) {
+							deleteMoneyIncomeCategories(function(e) {
+								// // var depositeExpenseCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
+								// // id : self.xGet("depositeExpenseCategoryId")
+								// // });
+								// // var depositeIncomeCategory = Alloy.createModel("MoneyIncomeCategory").xFindInDb({
+								// // id : self.xGet("depositeIncomeCategoryId")
+								// // });
+								// // self.xSet("depositeIncomeCategoryId", null);
+								// // self.xSet("depositeExpenseCategoryId", null);
+								// // self.save();
+								//
+								// // if (depositeExpenseCategory.id) {
+								// // depositeExpenseCategory._xDelete(function() {
+								// // }, options);
+								// // }
+								// // if (depositeIncomeCategory.id) {
+								// // depositeIncomeCategory._xDelete(function() {
+								// // }, options);
+								// // }
+								// // self.xGet("moneyExpenseCategories").remove(depositeExpenseCategory, {
+								// // silent : true
+								// // });
+								// // self.xGet("moneyIncomeCategories").remove(depositeIncomeCategory, {
+								// // silent : true
+								// // });
+								self._xDelete(function(error) {
+									// if (!error) {
+									// deleteProjectShareAuthorization(function(e) {
+									// xFinishCallback(e);
+									// }, function(e) {
+									// xFinishCallback(e);
+									// return;
+									// }, options);
+									//
+									// } else {
+									xFinishCallback(error);
+									// }
+								}, options);
 							}, function(e) {
 								xFinishCallback(e);
 								return;
@@ -578,6 +571,10 @@ exports.definition = {
 							xFinishCallback(e);
 							return;
 						});
+						// }, function(e) {
+						// xFinishCallback(e);
+						// return;
+						// });
 
 					}
 				}
@@ -622,9 +619,9 @@ exports.definition = {
 			},
 			canEdit : function() {
 				// if (this.isNew()) {
-					return true;
+				return true;
 				// } else if (this.xGet("ownerUser") === Alloy.Models.User) {
-					// return true;
+				// return true;
 				// }
 				// return false;
 			},

@@ -18,7 +18,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		menuSection.add($.createContextMenuItem("新增项目", function() {
 			Alloy.Globals.openWindow("project/projectForm", {
 				$model : "Project",
-				parentProject : sourceModel
+				project : sourceModel
 			});
 		}));
 	}

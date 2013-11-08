@@ -13,7 +13,8 @@ exports.definition = {
 		hasMany : {
 			subExpenseCategories : {
 				type : "MoneyExpenseCategory",
-				attribute : "parentExpenseCategory"
+				attribute : "parentExpenseCategory",
+				cascadeDelete : true
 			},
 			moneyExpenses : {
 				type : "MoneyExpense",

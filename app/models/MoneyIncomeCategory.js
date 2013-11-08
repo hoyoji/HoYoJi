@@ -13,7 +13,8 @@ exports.definition = {
 		hasMany : {
 			subIncomeCategories : {
 				type : "MoneyIncomeCategory",
-				attribute : "parentIncomeCategory"
+				attribute : "parentIncomeCategory",
+				cascadeDelete : true
 			},
 			moneyIncomes : {
 				type : "MoneyIncome",

@@ -15,6 +15,18 @@ if ($.$model.isNew()) {
 	$.$model.xSet("autoApportion", 1);
 	$.$model.xGet("autoApportion");
 	
+	if($.$attrs.project){
+		$.onWindowOpenDo(function(){
+			var parentProject = Alloy.createModel("ParentProject", {
+					subProject : $.$model,
+					parentProject : $.$attrs.project,
+					ownerUser : Alloy.Models.User
+			});
+			$.parentProjects.setValue(parentProject);
+		});
+	}
+	
+	
 	// $.project = $.$attrs.parentProject;
 	// oldParentProject = $.project;
 	// if($.project){
