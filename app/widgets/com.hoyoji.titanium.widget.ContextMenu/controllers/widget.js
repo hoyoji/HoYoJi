@@ -61,7 +61,11 @@ exports.close = function() {
 		Alloy.Globals.MenuSections = [];
 		Alloy.Globals.openingMenu = false;
 	});
-
+	animation.addEventListener('cancel', function() {
+		$.widget.hide();
+		Alloy.Globals.MenuSections = [];
+		Alloy.Globals.openingMenu = false;
+	});
 	$.menuWrapper.animate(animation);
 	
 	if(OS_ANDROID){
@@ -97,6 +101,9 @@ exports.open = function(menuSections, menuHeader, menuFooter) {
 		animation.left = "50%";
 		animation.duration = 500;
 		animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
+		animation.addEventListener('complete', function() {
+			Alloy.Globals.openingMenu = false;
+		});
 		$.menuWrapper.animate(animation);
 		
 		// var _menuSections = [];
