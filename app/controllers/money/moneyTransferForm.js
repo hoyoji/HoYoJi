@@ -16,6 +16,8 @@ if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyTransfer", {
 			date : (new Date()).toISOString(),
 			exchangeRate : templateModel.xGet("exchangeRate"),
+			transferOutUser : Alloy.Models.User,
+			transferInUser : Alloy.Models.User,
 			transferOut : templateModel.xGet("transferOut"),
 			transferIn : templateModel.xGet("transferIn"),
 			project : templateModel.xGet("project"),
@@ -25,6 +27,8 @@ if (!$.$model) {
 	} else {
 		$.$model = Alloy.createModel("MoneyTransfer", {
 			date : (new Date()).toISOString(),
+			transferOutUser : Alloy.Models.User,
+			transferInUser : Alloy.Models.User,
 			transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
 			transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
 			exchangeRate : 1,
@@ -140,6 +144,40 @@ $.transferIn.$view.addEventListener("singletap", function() {
 	$.transferOut.hideErrorMsg();
 });
 
+$.transferOutUser.rightButton.addEventListener("singletap", function(e) {
+	$.$model.xSet("transferOutUser", Alloy.Models.User);
+	$.transferOutUser.refresh();
+	$.transferOutUser.field.fireEvent("change");
+});
+
+$.transferInUser.rightButton.addEventListener("singletap", function(e) {
+	$.$model.xSet("transferInUser", Alloy.Models.User);
+	$.transferInUser.refresh();
+	$.transferInUser.field.fireEvent("change");
+});
+
+//改变转出人，如果转出人自己就显示转出帐户，不是自己就隐藏转出帐户
+$.transferOutUser.field.addEventListener("change", function() {
+	if ($.$model.xGet("transferOutUser").xGet("id") === Alloy.Models.User.id) {
+		$.transferOut.$view.setHeight(42);
+	} else {
+		$.transferOut.$view.setHeight(0);
+		$.$model.xSet("transferOut", null);
+		$.transferOut.refresh();
+	}
+});
+
+//改变转入人，如果转出人自己就显示转入帐户，不是自己就隐藏转入帐户
+$.transferInUser.field.addEventListener("change", function() {
+	if ($.$model.xGet("transferInUser").xGet("id") === Alloy.Models.User.id) {
+		$.transferIn.$view.setHeight(42);
+	} else {
+		$.transferIn.$view.setHeight(0);
+		$.$model.xSet("transferIn", null);
+		$.transferIn.refresh();
+	}
+});
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -212,6 +250,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		saveErrorCB("无法在共享来的项目新增转账，请切换项目");
 		return;
 	}
+
 
 	$.picture.xAddToSave($);
 
