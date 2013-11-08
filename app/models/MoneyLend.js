@@ -351,14 +351,14 @@ exports.definition = {
 				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
-				this.syncUpdate(record, dbTrans);
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
 				if (this.xGet("lastClientUpdateTime") < record.lastClientUpdateTime) {
+					this.syncUpdate(record, dbTrans);
 					delete record.id;
 					this._syncUpdate(record, dbTrans);
 
-					// var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
-					// dbTrans.db.execute(sql, [this.xGet("id")]);
+					var sql = "DELETE FROM ClientSyncTable WHERE recordId = ?";
+					dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
 					this._syncUpdate({
 						lastServerUpdateTime : record.lastServerUpdateTime,
