@@ -10,7 +10,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "账户操作"
 	});	
 	menuSection.add($.createContextMenuItem("账户资料", function() {
-		Alloy.Globals.openWindow("money/moneyAccount/moneyAccoutForm", {
+		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
 			$model : $.$model
 		});
 	}, isSelectMode));
