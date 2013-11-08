@@ -518,9 +518,11 @@ if ($.saveableMode === "read") {
 									account : account,
 									depositeProject : $.$model.xGet("project")
 								})
-							}).xSave();
+							})._xSave();
 							//不保存当前的account，等好友接受之后再保存
-							$.getCurrentWindow().$view.close();
+							$.__dirtyCount.becameClean();
+							$.getCurrentWindow().__dirtyCount = 0;
+							$.getCurrentWindow().close();
 							alert("充值成功，请等待回复");
 						}, function(e) {
 							alert(e.__summary.msg);
