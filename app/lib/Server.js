@@ -822,11 +822,11 @@
 						model.xSet(modelData);
 						model.save(null, {
 							silent : true,
-							dbTrans : dbTrans,
+							//dbTrans : dbTrans,
 							syncFromServer : true
 						});
 
-						successCB(picture);
+						successCB(model);
 					});
 				}, errorCB, "fetchRecordPictures");
 			},
@@ -854,10 +854,10 @@
 							var picture = Alloy.createModel("Picture", data);
 							picture.attributes["id"] = id;
 							successCB(picture);
-						} else {
+						} else if(errorCB){
 							errorCB();
 						}
-					} else {
+					} else if(errorCB){
 						errorCB();
 					}
 				}, errorCB, "fetchUserImageIcon", progressCB);

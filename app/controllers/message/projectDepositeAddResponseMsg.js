@@ -12,7 +12,7 @@ var onFooterbarTap = function(e) {
 			messageState : "closed"
 		}], function(data) {
 			if (data[0].length > 0) {
-				saveErrorCB("操作失败，消息已过期");
+				alert("操作失败，消息已过期");
 			} else {
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : accountShareData.account.projectId,
