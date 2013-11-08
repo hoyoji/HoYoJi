@@ -62,10 +62,12 @@ exports.definition = {
 			subProjects : {
 				type : "Project",
 				attribute : "parentProject"
+				// cascadeRemove : true
 			},
 			parentProjects : {
 				type : "Project",
 				attribute : "subProject"
+				// cascadeRemove : true
 			},
 			parentProjectParentProjects : {
 				type : "ParentProject",
@@ -486,7 +488,6 @@ exports.definition = {
 								} else {
 									errorCB(delError);
 								}
-
 							} else {
 								successCB();
 							}
