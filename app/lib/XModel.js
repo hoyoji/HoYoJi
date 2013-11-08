@@ -75,7 +75,7 @@
 				// keep the relations in sync
 				var storeCollection = Alloy.Collections[this.config.adapter.collection_name];
 				// Keep every model to its store collection
-				console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
+				// console.info("putting new model into its store collection 2 " + storeCollection.config.adapter.collection_name + " " + this.id + " " + this.cid);
 				if (this.collection !== storeCollection) {
 					this.collection = storeCollection;
 					options = options ? {syncFromServer : options.syncFromServer} : null;
@@ -124,7 +124,7 @@
 					}
 				}
 
-				console.info("xValidation done with no errors ");
+				// console.info("xValidation done with no errors ");
 				this.save(null, options);
 			},
 			xSave : function(options) {
@@ -137,13 +137,13 @@
 				
 				this.xValidate(function() {
 					if (self.__xValidationErrorCount > 0) {
-						console.info("xValidation done with errors " + self.__xValidationErrorCount);
+						// console.info("xValidation done with errors " + self.__xValidationErrorCount);
 						self.__xValidationError.__summary = {
 							msg : "验证错误"
 						};
-						for (var e in self.__xValidationError) {
-							console.info(e + " : " + self.__xValidationError[e].msg);
-						}
+						// for (var e in self.__xValidationError) {
+							// console.info(e + " : " + self.__xValidationError[e].msg);
+						// }
 						self.trigger("error", self, self.__xValidationError, options);
 					} else {
 						self._xSave(options);
@@ -162,7 +162,7 @@
 							self.__xValidationErrorCount++;
 							self.__xValidationError[key] = error;
 						}
-						console.info("xValidateAttribute : " + key + " " + self.__xValidateCount);
+						// console.info("xValidateAttribute : " + key + " " + self.__xValidateCount);
 						if (self.__xValidateCount === 0) {
 							xCallback();
 						}
@@ -184,7 +184,7 @@
 
 					var field = this.config.columns[column], fieldValue = this.xGet(column);
 
-					console.info("validating column : " + column + "  " + fieldValue);
+					// console.info("validating column : " + column + "  " + fieldValue);
 					if (typeof fieldValue === "string") {
 						fieldValue = Alloy.Globals.alloyString.trim(fieldValue);
 					}
@@ -192,7 +192,7 @@
 					if (field.contains("NOT NULL")) {
 						if (this.config.belongsTo && this.config.belongsTo[column.slice(0, -2)]) {
 							if (!this.xGet(column.slice(0, -2))) {
-								console.info("validating column  belongTo : " + column + "  " + this.xGet(column.slice(0, -2)));
+								// console.info("validating column  belongTo : " + column + "  " + this.xGet(column.slice(0, -2)));
 								this.__xValidationErrorCount++;
 								this.__xValidationError[column] = {
 									msg : "不能为空"
@@ -321,7 +321,7 @@
 				filter[key] = this;
 				collection.xSetFilter(filter);
 
-				console.info("xGet hasMany : " + type + collection.length);
+				// console.info("xGet hasMany : " + type + collection.length);
 				var idString;
 				if (this.get('id')) {
 					idString = " = '" + this.get('id') + "' ";
@@ -331,7 +331,7 @@
 				collection.xFetch({
 					query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 				});
-				console.info("xGet hasMany : " + key + collection.length);
+				// console.info("xGet hasMany : " + key + collection.length);
 
 				this.attributes[attr] = collection;
 				// this.set(attr, collection, {
@@ -343,7 +343,7 @@
 			},
 			xGetBelongsTo : function(attr){
 				var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
-					console.info("xGet belongsTo " + fKey + " : " + fId);
+					// console.info("xGet belongsTo " + fKey + " : " + fId);
 					if (!fId){
 						this.attributes[attr] = null;
 						this._previousAttributes[attr] = null;
@@ -353,7 +353,7 @@
 					var m = Alloy.Collections[table].get(fId);
 					if (!m) {
 						var idString = " = '" + fId + "' ";
-						console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+						// console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
 						m = Alloy.createCollection(table);
 						m.fetch({
 							query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString
@@ -484,11 +484,18 @@
 				options = options || {};
 				if(options.syncFromServer !== true){
 					for (var hasMany in this.config.hasMany) {
-						if (this.config.hasMany[hasMany]["cascadeDelete"] != true && this.xGet(hasMany).length > 0) {
+						if (this.config.hasMany[hasMany].cascadeDelete != true
+							&& this.config.hasMany[hasMany].cascadeRemove != true
+							&&  this.xGet(hasMany).length > 0) {
 							error = {
 								msg : "包含有相关联的子数据，删除失败"
 							};
 							break;
+						} else if (this.config.hasMany[hasMany].cascadeRemove === true) {
+							//	this.xGet(hasMany).xClearFilter();
+							//	this.xGet(hasMany).reset();
+							//	delete this.attributes[hasMany];
+							//	delete this._previousAttributes[hasMany];
 						} else {
 							cascadeDeletions.push(hasMany);
 						}

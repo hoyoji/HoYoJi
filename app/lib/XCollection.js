@@ -70,8 +70,8 @@
 
 					c.fetch(options);
 					if(this !== Alloy.Collections[this.config.adapter.collection_name]){
-						c.map(function(m) {
-							console.info("xFetch " + m.xGet("id"));
+						c.forEach(function(m) {
+							// console.info("xFetch " + m.xGet("id"));
 							if(!self.get(model)){
 								var model = Alloy.Collections[self.config.adapter.collection_name].get(m.xGet("id"));
 								xFetchMatchFilterAdded.push(model);
@@ -96,7 +96,7 @@
 			__addModel : function(model, collection, options) {
 				var ret = this.__compareFilter(model, options);
 				if (ret !== null && ret) {
-					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
+					// console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					if(!this.get(model)){
 						xFetchMatchFilterAdded.push(model);
 						this.add(model);
@@ -107,17 +107,17 @@
 				var ret = this.__compareFilter(model, options);
 				if (ret === null) return;
 				if (this.__compareFilter(model, options)) {
-					console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
+					// console.info(this.cid + " XCollection pick up model from store : " + this.config.adapter.collection_name);
 					this.add(model);
 				} else {
-					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
+					// console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
 			__removeModel : function(model, collection, options) {
 				var ret = this.__compareFilter(model, options);
 				if (ret !== null && !ret) {
-					console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
+					// console.info(this.cid + " XCollection remove model from store : " + this.config.adapter.collection_name);
 					this.remove(model);
 				}
 			},
@@ -129,7 +129,7 @@
 					this.__filterCollection = Alloy.Collections[this.config.adapter.collection_name];
 					this.__xSetFilterOnCollection(winController);
 				}
-				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
+				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.length);
 				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length - " + this.__filterCollection.length);
 				// self.map(function(m) {
 					// console.info(" --------- " + m.xGet("id"));
@@ -145,7 +145,7 @@
 							self.add(model);
 							filterAdded.push(model);
 						}
-						console.info("__filter match, adding model to collection ");
+						// console.info("__filter match, adding model to collection ");
 					} else {
 						if(self.get(model)){
 							filterRemoved.push(model);
@@ -155,7 +155,7 @@
 				});
 				this.isFiltering = false;
 				this.trigger("xSetFilterEnd", this, filterAdded, filterRemoved);
-				console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.models.length);
+				// console.info(this.__filterCollection.config.adapter.collection_name + " xSetFilter collection length " + self.models.length);
 				
 
 				// this.on("destroy", function(){
@@ -185,7 +185,7 @@
 						}
 					}
 
-					console.info(model.hasChanged(f) + " __compareFilter " + f + " :: " + modelValue + " " + filterValue);
+					// console.info(model.hasChanged(f) + " __compareFilter " + f + " :: " + modelValue + " " + filterValue);
 					// if (filterValue === "NOT NULL") {
 						// return modelValue !== null;
 					// } else 
@@ -219,7 +219,7 @@
 					}
 				}
 
-				console.info("xSearchInDb " + query + filterStr);
+				// console.info("xSearchInDb " + query + filterStr);
 				var limit = sqlOptions.limit ? " LIMIT " + sqlOptions.limit + " ": "";
 				var offset = sqlOptions.offset ? " OFFSET " + sqlOptions.offset + " " : "";
 				var orderBy = sqlOptions.orderBy ? " ORDER BY main." + sqlOptions.orderBy + " " : "";
