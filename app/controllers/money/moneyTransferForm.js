@@ -16,6 +16,8 @@ if (!$.$model) {
 		$.$model = Alloy.createModel("MoneyTransfer", {
 			date : (new Date()).toISOString(),
 			exchangeRate : templateModel.xGet("exchangeRate"),
+			transferOutUser : Alloy.Models.User,
+			transferInUser : Alloy.Models.User,
 			transferOut : templateModel.xGet("transferOut"),
 			transferIn : templateModel.xGet("transferIn"),
 			project : templateModel.xGet("project"),
@@ -25,6 +27,8 @@ if (!$.$model) {
 	} else {
 		$.$model = Alloy.createModel("MoneyTransfer", {
 			date : (new Date()).toISOString(),
+			transferOutUser : Alloy.Models.User,
+			transferInUser : Alloy.Models.User,
 			transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
 			transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
 			exchangeRate : 1,
@@ -140,6 +144,44 @@ $.transferIn.$view.addEventListener("singletap", function() {
 	$.transferOut.hideErrorMsg();
 });
 
+$.transferOutUser.rightButton.addEventListener("singletap", function(e) {
+	$.$model.xSet("transferOutUser", Alloy.Models.User);
+	$.$model.xSet("transferOut",  Alloy.Models.User.xGet("activeMoneyAccount"));
+	$.transferOutUser.refresh();
+	$.transferOut.refresh();
+	$.transferOutUser.field.fireEvent("change");
+});
+
+$.transferInUser.rightButton.addEventListener("singletap", function(e) {
+	$.$model.xSet("transferInUser", Alloy.Models.User);
+	$.$model.xSet("transferIn",  Alloy.Models.User.xGet("activeMoneyAccount"));
+	$.transferInUser.refresh();
+	$.transferIn.refresh();
+	$.transferInUser.field.fireEvent("change");
+});
+
+//改变转出人，如果转出人自己就显示转出帐户，不是自己就隐藏转出帐户
+$.$model.on("_xchange:transferOutUser", function() {
+	if ($.$model.xGet("transferOutUser") && $.$model.xGet("transferOutUser").xGet("id") === Alloy.Models.User.id) {
+		$.transferOut.$view.setHeight(42);
+	} else {
+		$.$model.xSet("transferOut", null);
+		$.transferOut.refresh();
+		$.transferOut.$view.setHeight(0);
+	}
+});
+
+//改变转入人，如果转出人自己就显示转入帐户，不是自己就隐藏转入帐户
+$.$model.on("_xchange:transferInUser", function() {
+	if ($.$model.xGet("transferInUser") && $.$model.xGet("transferInUser").xGet("id") === Alloy.Models.User.id) {
+		$.transferIn.$view.setHeight(42);
+	} else {
+		$.$model.xSet("transferIn", null);
+		$.transferIn.refresh();
+		$.transferIn.$view.setHeight(0);
+	}
+});
+
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
 		return selectedFriendModel.xGet("friendUser");
@@ -213,6 +255,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		return;
 	}
 
+
 	$.picture.xAddToSave($);
 
 	var newTransferOutAmount = $.$model.xGet("transferOutAmount");
@@ -264,8 +307,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	// }
 	// }
 	if ($.$model.isNew()) {
-		newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
-		newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+		if (newTransferOut) {
+			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+		}
+		if (newTransferIn) {
+			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+		}
 	} else {
 		if (oldTransferOut.xGet("id") === newTransferOut.xGet("id")) {
 			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
@@ -286,8 +333,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if (oldTransferIn) {
 		oldTransferIn.xAddToSave($);
 	}
-	newTransferOut.xAddToSave($);
-	newTransferIn.xAddToSave($);
+	if(newTransferOut) {
+		newTransferOut.xAddToSave($);
+	}
+	if(newTransferIn) {
+		newTransferIn.xAddToSave($);
+	}
 
 	var exchange;
 	if (createRate && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
@@ -320,8 +371,12 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		// if (exchange) {
 		// exchange.xAddToDelete($);
 		// }
-		newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
-		newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
+		if(newTransferOut) {
+			newTransferOut.xSet("currentBalance", newTransferOut.previous("currentBalance"));
+		}
+		if(newTransferIn) {
+			newTransferIn.xSet("currentBalance", newTransferIn.previous("currentBalance"));
+		}
 		saveErrorCB(e);
 	});
 };

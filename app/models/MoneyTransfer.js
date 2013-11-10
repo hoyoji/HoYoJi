@@ -4,10 +4,10 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			date : "TEXT NOT NULL",
 			transferOutAmount : "REAL NOT NULL",
-			transferOutId : "TEXT NOT NULL",
+			transferOutId : "TEXT",
 			transferOutUserId : "TEXT",
 			transferInAmount : "REAL NOT NULL",
-			transferInId : "TEXT NOT NULL",
+			transferInId : "TEXT",
 			transferInUserId : "TEXT",
 			exchangeRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -137,6 +137,24 @@ exports.definition = {
 					if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
 						error = {
 							msg : "转入账户和转出账户不能相同"
+						};
+					}
+					xValidateComplete(error);
+				},
+				transferOutUser : function(xValidateComplete) {
+					var error;
+					if ((this.xGet("transferOutUser") !== Alloy.Models.User) && (this.xGet("transferInUser") !== Alloy.Models.User)) {
+						error = {
+							msg : "转出人和转入人必须有一个是自己"
+						};
+					}
+					xValidateComplete(error);
+				},
+				transferInUser : function(xValidateComplete) {
+					var error;
+					if ((this.xGet("transferOutUser") !== Alloy.Models.User) && (this.xGet("transferInUser") !== Alloy.Models.User)) {
+						error = {
+							msg : "转出人和转入人必须有一个是自己"
 						};
 					}
 					xValidateComplete(error);

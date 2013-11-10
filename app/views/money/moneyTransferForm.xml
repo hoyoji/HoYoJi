@@ -18,7 +18,7 @@
 					id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferOutAmount"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="转出人" hintText="无转出人"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="转出人" hintText="无转出人" rightButtonText="自己"
 				id="transferOutUser" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferOutUser"
@@ -34,8 +34,9 @@
 				bindAttribute="transferOut"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				bindModelSelectModelCanBeNull="true"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="转入人" hintText="无转入人"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="转入人" hintText="无转入人" rightButtonText="自己"
 				id="transferInUser" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferInUser"
@@ -51,6 +52,7 @@
 				bindAttribute="transferIn"
 				bindAttributeIsModel="getAccountNameCurrency()"
 				bindModelSelector="money/moneyAccount/moneyAccountAll"
+				bindModelSelectModelCanBeNull="true"
 				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" height="0" labelText="汇率" hintText="请输入汇率" rightButtonText="更新"
 					id="exchangeRate" toFixed="4" autoInit="false"
