@@ -5,6 +5,7 @@ function doClose() {
 	// if (OS_ANDROID) {
 	// $.$view.removeEventListener('androidback', $.__androidBackFunction);
 	// }
+	$.$view.setBackgroundColor("#00000000");
 	$.$view.setVisible(false);
 	// $.closeSoftKeyboard();
 	setTimeout(function() {
@@ -44,6 +45,7 @@ exports.openCachedWindow = function(contentController) {
 		}
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 		if(e.currentPage === 1){
+			$.$view.setBackgroundColor("#99000000");
 			$.$view.fireEvent("show");
 		}
 		if (contentController) {
@@ -148,22 +150,22 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 
 });
 
-// var scrollTimeoutId = 0;
-$.scrollableView.addEventListener("scroll", function(e) {
-	if (e.source !== $.scrollableView) {
-		return;
-	}
-	// clearTimeout(scrollTimeoutId);
-	// scrollTimeoutId = setTimeout(function() {
-		var color = Math.round(153 * e.currentPageAsFloat);
-		color = Math.max(color, 16);
-		color = Math.min(color, 153);
-		console.info(color + " " + color.toString(16));
-		$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
-		// if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-		// $.$view.setBackgroundColor("transparent");
-		// } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-		// $.$view.setBackgroundColor("#40000000");
-		// }
-	// }, 1);
-});
+//// var scrollTimeoutId = 0;
+// $.scrollableView.addEventListener("scroll", function(e) {
+	// if (e.source !== $.scrollableView) {
+		// return;
+	// }
+	// // clearTimeout(scrollTimeoutId);
+	// // scrollTimeoutId = setTimeout(function() {
+		// var color = Math.round(153 * e.currentPageAsFloat);
+		// color = Math.max(color, 16);
+		// color = Math.min(color, 153);
+		// console.info(color + " " + color.toString(16));
+		// $.$view.setBackgroundColor("#" + color.toString(16) + "000000");
+		// // if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
+		// // $.$view.setBackgroundColor("transparent");
+		// // } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
+		// // $.$view.setBackgroundColor("#40000000");
+		// // }
+	// // }, 1);
+// });

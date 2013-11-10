@@ -2,17 +2,19 @@ Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 var __baseWin = null, __loadOnly;
 
 function doClose() {
-	// if (OS_ANDROID) {
-		// $.$view.removeEventListener('androidback', $.__androidBackFunction);
-	// }
-	if(__loadOnly){
+	$.$view.setBackgroundColor("#00000000");
+	if (__loadOnly) {
 		$.$view.setVisible(false);
-		$.$view.fireEvent("hide", {bubbles : false});
+		$.$view.fireEvent("hide", {
+			bubbles : false
+		});
 	} else {
 		$.closing = true;
 		$.$view.setVisible(false);
 		setTimeout(function() {
-			$.$view.fireEvent("close", {bubbles : false});
+			$.$view.fireEvent("close", {
+				bubbles : false
+			});
 		}, 500);
 	}
 }
@@ -40,12 +42,12 @@ exports.close = function() {
 
 exports.openCachedWindow = function(contentController, options) {
 	_.extend($.$attrs, options);
-	if($.content){
+	if ($.content) {
 		_.extend($.content.$attrs, options);
 	}
 	$.$view.setVisible(true);
 	// if (OS_ANDROID) {
-		// $.$view.addEventListener('androidback', $.__androidBackFunction);
+	// $.$view.addEventListener('androidback', $.__androidBackFunction);
 	// }
 	__baseWin.__currentLightWindow = $;
 	function fireShowEvent(e) {
@@ -53,13 +55,16 @@ exports.openCachedWindow = function(contentController, options) {
 			return;
 		}
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
-		if(e.currentPage === 1){
+		if (e.currentPage === 1) {
+			$.$view.setBackgroundColor("#99000000");
 			$.$view.fireEvent("show");
 		}
 		if (contentController) {
 			delete Alloy.Globals.openingWindow[contentController];
 		}
 	}
+
+
 	$.scrollableView.addEventListener("scrollend", fireShowEvent);
 	$.scrollableView.scrollToView(1);
 };
@@ -74,7 +79,7 @@ exports.open = function(contentController, loadOnly) {
 
 	$.$view.fireEvent("open");
 	// $.$view.open({
-		// animated : false
+	// animated : false
 	// });
 
 	if (!loadOnly) {
@@ -113,11 +118,11 @@ exports.openWin = function(baseWin, contentController, options, loadOnly) {
 
 	_.extend($.$attrs, options);
 	function loadContent() {
-		
+
 		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
-			// $.content = Alloy.Globals.moneyAddNewView;
+		// $.content = Alloy.Globals.moneyAddNewView;
 		// } else {
-			$.content = $.__views["content"] = Alloy.createController(contentController, options);
+		$.content = $.__views["content"] = Alloy.createController(contentController, options);
 		// }
 		$.content.setParent($.contentView);
 		$.content.UIInit($, $);
@@ -150,13 +155,13 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 
 });
 
-$.scrollableView.addEventListener("scroll", function(e) {
-	if (e.source !== $.scrollableView) {
-		return;
-	}
-		var color = Math.round(153 * e.currentPageAsFloat);
-		color = Math.max(color, 16);
-		color = Math.min(color, 153);
-		console.info(color + " " + color.toString(16));
-		$.$view.setBackgroundColor("#" + color.toString(16) + "000000");
-});
+// $.scrollableView.addEventListener("scroll", function(e) {
+	// if (e.source !== $.scrollableView) {
+		// return;
+	// }
+	// var color = Math.round(153 * e.currentPageAsFloat);
+	// color = Math.max(color, 16);
+	// color = Math.min(color, 153);
+	// console.info(color + " " + color.toString(16));
+	// $.$view.setBackgroundColor("#" + color.toString(16) + "000000");
+// });
