@@ -46,7 +46,7 @@ $.onWindowOpenDo(function() {
 		}, $);
 		$.moneyIncomeCategoriesTable.addCollection(collection);
 	});
-	$.getCurrentWindow().$view.addEventListener("show", function() {
+	$.getCurrentWindow().$view.addEventListener("hide", function() {
 		$.moneyExpenseCategoriesTable.closeSubTables();
 	});
 });
