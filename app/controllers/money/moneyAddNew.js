@@ -103,6 +103,7 @@ function initForm() {
 
 $.onWindowOpenDo(function() {
 	initForm();
+	$.getCurrentWindow().__dirtyCount = $.__dirtyCount = currentForm.__dirtyCount;
 	$.getCurrentWindow().$view.addEventListener("show", function() {
 		setTimeout(function(){
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {

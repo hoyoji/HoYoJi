@@ -26,19 +26,17 @@ exports.fireEvent = function(eventName, options) {
 
 exports.addEventListener = function(eventName, callback) {
 	$.$view.addEventListener(eventName, function(e) {
+		e.cancelBubble = true;
 		if (e.source === $.$view) {
 			if (enabled) {
 				callback(e);
 			}
-		} else {
-			e.cancelBubble = true;
-		}
+		} 
 	});
 };
 
-exports.setEnabled = function(b) {
+function showDisabledMask(b){
 	$.$view.setEnabled(b);
-	enabled = b;
 	if(!$.disabledMask){
 		$.disabledMask = Ti.UI.createView({
 			width : Ti.UI.FILL,
@@ -64,6 +62,12 @@ exports.setEnabled = function(b) {
 		$.disabledMask.setVisible(true);
 		$.$view.setBackgroundColor($.$attrs.backgroundColor);
 	}
+
+}
+
+exports.setEnabled = function(b) {
+	enabled = b;
+	showDisabledMask(b);
 };
 
 exports.setBubbleCount = function(count) {
@@ -101,16 +105,6 @@ if ($.$attrs.id) {
 	$.id = $.$attrs.id;
 }
 
-// if ($.$attrs.borderRadius) {
-// $.$view.setBorderRadius($.$attrs.borderRadius);
-// }
-// if ($.$attrs.width) {
-// $.$view.setWidth($.$attrs.width);
-// }
-// if ($.$attrs.height) {
-// $.$view.setHeight($.$attrs.height);
-// }
-
 if ($.$attrs.title) {
 	exports.setTitle($.$attrs.title);
 }
@@ -129,76 +123,49 @@ if($.$attrs.visible !== "false"){
 	exports.setVisible(true);
 }
 
-// var backgroundImage;
-// var backgroundImageShadow;
-// if (OS_IOS) {
-	// backgroundImage = WPATH("/images/buttonBackground@2x.png");
-	// backgroundImageShadow = WPATH("/images/buttonBackgroundShadow@2x.png");
-// } else {
-	// backgroundImage = WPATH("/images/buttonBackground.png");
-	// backgroundImageShadow = WPATH("/images/buttonBackgroundShadow.png");
-// }
-
-var hightLightTimeout = 0;
-
-$.$view.addEventListener("touchstart", function(e) {
-	if (!enabled) {
-		e.cancelBubble = true;
-	} else {
-		$.$view.setBackgroundColor("#006633");
-		clearTimeout(hightLightTimeout);
-		hightLightTimeout = setTimeout(function(){
-			$.$view.setBackgroundColor($.$attrs.backgroundColor);
-		}, 500);
-	}
-});
-$.$view.addEventListener("touchend", function(e) {
-	if (!enabled) {
-		e.cancelBubble = true;
-	} else {
-		clearTimeout(hightLightTimeout);
-		$.$view.setBackgroundColor($.$attrs.backgroundColor);
-	}
-});
-
 function redirectEvent(view) {
-	view.addEventListener("singletap", function(e) {
-		e.cancelBubble = true;
-		if (enabled) {
+	view.addEventListener("touchstart", function(e) {
+		if(e.source !== $.$view){
+			e.cancelBubble = true;
+		}
+		else if (enabled) {
+			$.$view.setEnabled(false);
+			$.$view.setBackgroundColor("#006633");
 			$.$view.fireEvent("singletap", {
 				source : $.$view,
 				bubbles : true
 			});
+			setTimeout(function(){
+				$.$view.setEnabled(true);
+				$.$view.setBackgroundColor($.$attrs.backgroundColor);
+			}, 500);
 		}
 	});
 }
-
-// $.$view.addEventListener("singletap", function(e) {
-	// if (!enabled) {
-		// e.cancelBubble = true;
-	// }
-	// if (OS_ANDROID) {
-		// e.cancelBubble = true;
-	// }
-	// $.trigger("singletap", {
-		// source : $
-	// });
-// });
-
-$.$view.addEventListener("longpress", function(e) {
-	e.cancelBubble = true;
-	$.$view.setBackgroundColor($.$attrs.backgroundColor);
-});
-//
-// $.$view.addEventListener("touchcancel", function(e){
-// $.$view.setBackgroundImage("none");
-// });
 
 $.$view.addEventListener("touchmove", function(e) {
 	$.$view.setBackgroundColor($.$attrs.backgroundColor);
 });
 
-redirectEvent($.imageView);
-redirectEvent($.bubbleCountContainer);
-redirectEvent($.title);
+$.$view.addEventListener("longpress", function(e) {
+	e.cancelBubble = true;
+});
 
+//redirectEvent($.imageView);
+//redirectEvent($.bubbleCountContainer);
+//redirectEvent($.title);
+//redirectEvent($.$view);
+	$.$view.addEventListener("touchstart", function(e) {
+		if (enabled) {
+			$.$view.setEnabled(false);
+			$.$view.setBackgroundColor("#006633");
+			$.$view.fireEvent("singletap", {
+				source : $.$view,
+				bubbles : true
+			});
+			setTimeout(function(){
+				$.$view.setEnabled(true);
+				$.$view.setBackgroundColor($.$attrs.backgroundColor);
+			}, 500);
+		}
+	});
