@@ -1201,6 +1201,11 @@ if (pageSize > 0) {
 }
 
 $.onWindowOpenDo(function() {
+	if(!$.$attrs.previousTable){
+		$.getCurrentWindow().$view.addEventListener("hide", function() {
+			$.closeSubTables();
+		});
+	}
 	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
 		// var model = Alloy.createModel($.getCurrentWindow().$attrs.selectModelType);
 		var titleLabel = Ti.UI.createLabel({
