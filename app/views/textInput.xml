@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container">
-		<View height="42" top="0" left="0" right="0" backgroundImage="/images/headerTitle_green.png">
+		<View height="42" top="0" left="0" right="0" backgroundColor="#2E8B57">
 			<Widget src="com.hoyoji.titanium.widget.XButton" left="5" width="60" id="close" image="/images/backButton"/>
 			<Label id="title" color="white">请输入文字</Label>
 			<Widget src="com.hoyoji.titanium.widget.XButton" right="5" width="60" id="confirm" image="/images/saveButton"/>
