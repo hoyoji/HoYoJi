@@ -890,7 +890,24 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 		}		
 	}
 };
+exports.closeSubTables = function(){
+	var lastTable = $, parentTable;
+	while (lastTable.detailsTable) {
+		parentTable = lastTable;
+		lastTable = lastTable.detailsTable;
+		if (lastTable !== $) {
+			if(OS_ANDROID){
+				$.$view.fireEvent("navigateup", {
+					bubbles : true,
+					childTableTitle : lastTable.previousBackNavTitle
+				});
+				parentTable.detailsTable = null;
+			}
+			lastTable.close();
+		}
+	}
 
+};
 exports.navigateUp = function() {
 	var lastTable = $, parentTable;
 	while (lastTable.detailsTable) {

@@ -24,27 +24,12 @@ $.onWindowCloseDo(function() {
 	Ti.App.removeEventListener("updateSyncCount", refreshSyncCount);
 });
 
-var moneyAddNewWindow = null;
 function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
-		// Alloy.Globals.openCachedWindow($.getCurrentWindow(), "money/moneyAddNew");
-		// Alloy.Globals.openLightWindow($.getCurrentWindow(), "money/moneyAddNew");
-		if(moneyAddNewWindow){
-			moneyAddNewWindow.openCachedWindow();
-			console.info("hi");
-		} else {
-			moneyAddNewWindow = $.getCurrentWindow().openLightWindow("money/moneyAddNew", {}, true);
-			moneyAddNewWindow.openCachedWindow();
-			console.info("hi");
-		}
-		// } else if (e.source.id === "projectAll") {
-		// Alloy.Globals.openWindow("project/projectAll");
-		// } else if (e.source.id === "friendAll") {
-		// Alloy.Globals.openWindow("friend/friendAll");
+		moneyAddNewWindow = $.getCurrentWindow().openLightWindow("money/moneyAddNew");
 	} else if (e.source.id === "moneyAccounts") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
 	} else if (e.source.id === "report") {
-		var d = new Date();
 		Alloy.Globals.openWindow("money/report/transactionReport");
 	}
 }

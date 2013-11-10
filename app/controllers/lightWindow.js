@@ -1,5 +1,6 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 var __baseWin = null, __loadOnly;
+
 function doClose() {
 	// if (OS_ANDROID) {
 		// $.$view.removeEventListener('androidback', $.__androidBackFunction);
@@ -37,15 +38,24 @@ exports.close = function() {
 	}
 };
 
-exports.openCachedWindow = function(contentController) {
+exports.openCachedWindow = function(contentController, options) {
+	_.extend($.$attrs, options);
+	if($.content){
+		_.extend($.content.$attrs, options);
+	}
 	$.$view.setVisible(true);
 	// if (OS_ANDROID) {
 		// $.$view.addEventListener('androidback', $.__androidBackFunction);
 	// }
 	__baseWin.__currentLightWindow = $;
-	function fireShowEvent() {
+	function fireShowEvent(e) {
+		if (e.source !== $.scrollableView) {
+			return;
+		}
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
-		$.$view.fireEvent("show");
+		if(e.currentPage === 1){
+			$.$view.fireEvent("show");
+		}
 		if (contentController) {
 			delete Alloy.Globals.openingWindow[contentController];
 		}
@@ -86,11 +96,7 @@ exports.openWin = function(baseWin, contentController, options, loadOnly) {
 			width : "90%",
 			borderRadius : 5
 		});
-		// $.$view.setBackgroundColor("#99000000");
-		//		<Label id="emptyTitleBar" width="Ti.UI.FILL" height="42" backgroundColor="#2E8B57" color="white" top="0" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
 		$.contentView.setBackgroundColor("transparent");
-
-		// $.showActivityIndicator();
 	} else {
 		$.contentView.add(Ti.UI.createLabel({
 			width : Ti.UI.FILL,
@@ -107,6 +113,7 @@ exports.openWin = function(baseWin, contentController, options, loadOnly) {
 
 	_.extend($.$attrs, options);
 	function loadContent() {
+		
 		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
 			// $.content = Alloy.Globals.moneyAddNewView;
 		// } else {

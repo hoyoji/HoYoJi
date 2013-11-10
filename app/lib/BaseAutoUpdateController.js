@@ -319,7 +319,8 @@
 						attributes.selectedModel = selectedModel;
 						attributes.selectModelCanBeNull = $.$attrs.bindModelSelectModelCanBeNull;
 						attributes = $.__makeOpenWindowAttributes(attributes);
-						Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
+						//Alloy.Globals.openWindow($.$attrs.bindModelSelector, attributes);
+						$.getCurrentWindow().openLightWindow($.$attrs.bindModelSelector, attributes);
 					}
 				}
 			});

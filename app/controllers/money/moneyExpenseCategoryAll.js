@@ -2,7 +2,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
 $.moneyExpenseCategoriesTable.UIInit($, $.getCurrentWindow());
 
-var selectedProject = $.$attrs.selectedProject;
+var selectedProject, collection;
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
@@ -19,18 +19,35 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 };
 
 $.titleBar.bindXTable($.moneyExpenseCategoriesTable);
-
-// var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter({parentExpenseCategory : null}, $);
-var collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter(function(model) {
+selectedProject = $.$attrs.selectedProject;
+if (!selectedProject.canExpenseCategoryAddNew()) {
+	$.footerBar.addExpenseCategory.setEnabled(false);
+}
+collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter(function(model) {
 	return model.xPrevious("parentExpenseCategory") === null && model.xGet("id") !== selectedProject.xGet("depositeExpenseCategoryId");
 }, $);
 $.moneyExpenseCategoriesTable.addCollection(collection);
 $.moneyExpenseCategoriesTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
-	if (!selectedProject.canExpenseCategoryAddNew()) {
-		$.footerBar.addExpenseCategory.setEnabled(false);
-	}
+	$.getCurrentWindow().$view.addEventListener("show", function() {
+		if(selectedProject === $.$attrs.selectedProject){
+			return;
+		}
+		$.moneyExpenseCategoriesTable.resetTable();
+		selectedProject = $.$attrs.selectedProject;
+		if (!selectedProject.canExpenseCategoryAddNew()) {
+			$.footerBar.addExpenseCategory.setEnabled(false);
+		}
+		collection.xClearFilter();
+		collection = selectedProject.xGet("moneyExpenseCategories").xCreateFilter(function(model) {
+			return model.xPrevious("parentExpenseCategory") === null && model.xGet("id") !== selectedProject.xGet("depositeExpenseCategoryId");
+		}, $);
+		$.moneyExpenseCategoriesTable.addCollection(collection);
+	});
+	$.getCurrentWindow().$view.addEventListener("show", function() {
+		$.moneyExpenseCategoriesTable.closeSubTables();
+	});
 });
 
 function onFooterbarTap(e) {

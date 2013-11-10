@@ -449,6 +449,11 @@
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 					$.setSelected(true);
 				}
+				$.getCurrentWindow().$view.addEventListener("show", function() {
+					if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
+						$.setSelected(true);
+					}
+				});
 			});
 
 			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);

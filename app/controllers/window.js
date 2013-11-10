@@ -38,9 +38,14 @@ exports.close = function() {
 exports.openCachedWindow = function(contentController) {
 	$.$view.setVisible(true);
 	// setTimeout(function() {
-	function fireShowEvent() {
+	function fireShowEvent(e) {
+		if (e.source !== $.scrollableView) {
+			return;
+		}
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
-		$.$view.fireEvent("show");
+		if(e.currentPage === 1){
+			$.$view.fireEvent("show");
+		}
 		if (contentController) {
 			delete Alloy.Globals.openingWindow[contentController];
 		}
@@ -68,21 +73,6 @@ exports.open = function(contentController, loadOnly) {
 	if (!loadOnly) {
 		exports.openCachedWindow(contentController);
 	}
-
-	//$.closeSoftKeyboard();
-	// if(OS_ANDROID){
-	// $.$view.focus();
-	// }
-
-	// var animation = Titanium.UI.createAnimation();
-	// animation.left = "0";
-	// animation.duration = 350;
-	// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	// if(contentController){
-	// animation.addEventListener("complete", function(){
-	// });
-	// }
-	// $.$view.animate(animation);
 };
 
 exports.openWin = function(contentController, options, loadOnly) {
@@ -142,29 +132,8 @@ exports.openWin = function(contentController, options, loadOnly) {
 	} else {
 		loadContent();
 	}
-
-	// setTimeout(function(){
-	// $.content.setParent($.contentView);
-	// $.content.UIInit();
-	// }, 100);
-	// $.scrollableView.addView($.content.$view);
 };
-//
-// var touchend = false;
-// $.$view.addEventListener('touchend', function(e) {
-// touchend = true;
-// });
-//
-// $.$view.addEventListener('touchstart', function(e) {
-// touchend = false;
-// });
 
-// $.$view.addEventListener('swipe', function(e) {
-// e.cancelBubble = true;
-// if (e.direction === "right") {
-// $.close();
-// }
-// });
 var firstTimeOpen = true;
 $.scrollableView.addEventListener("scrollend", function(e) {
 	if (e.source !== $.scrollableView) {

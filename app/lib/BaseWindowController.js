@@ -6,7 +6,8 @@
 			attrs.parentController = $;
 			attrs.currentWindow = $;
 			Alloy.Globals.extendsBaseViewController($, attrs);
-
+			$.lightWindows = {};
+			
 			if (OS_ANDROID) {
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			} else if($.$view.id !== "lightWindow"){
@@ -131,10 +132,6 @@
 				e.cancelBubble = true;
 				$.close();
 			});
-			// $.$view.addEventListener("open", function(e) {
-				// e.cancelBubble = true;
-				// Ti.App.fireEvent("winopen");
-			// });
 			Ti.App.addEventListener("relogin", function(e) {
 				e.cancelBubble = true;
 				if ($.index) {
@@ -152,35 +149,47 @@
 					}
 				}
 			});
-
-			$.openLightWindow = function(windowName, options, loadOnly) {
-				var win = Alloy.Globals.openingWindow[windowName];
-				if (!win || loadOnly) {
-					win = Alloy.createController("lightWindow", {
-						autoInit : "false"
-					});
-					win.setParent($.$view);
-					function removeWin(e){
-						e.cancelBubble = true;
-						win.$view.removeEventListener("close", removeWin);
-						$.$view.removeEventListener("close", removeWin);
-						win.$view.fireEvent("close", {bubbles : false});
-						$.$view.remove(win.$view);
+			$.openLightWindow = function(windowName, options) {
+				var loadOnly = true;
+				if($.parentWindow){
+					return $.parentWindow.openLightWindow(windowName, options, loadOnly);
+				} else {
+					if($.lightWindows[windowName]){
+						$.lightWindows[windowName].openCachedWindow(windowName, options);
+						return $.lightWindows[windowName];
 					}
-					function openWin(e){
-						e.cancelBubble = true;
-						win.$view.removeEventListener("open", openWin);
+					var win = Alloy.Globals.openingWindow[windowName];
+					if (!win || loadOnly) {
+						win = Alloy.createController("lightWindow", {
+							autoInit : "false"
+						});
+						$.lightWindows[windowName] = win;
+						win.setParent($.$view);
+						win.parentWindow = $;
+						function removeWin(e){
+							e.cancelBubble = true;
+							win.$view.removeEventListener("close", removeWin);
+							$.$view.removeEventListener("close", removeWin);
+							win.$view.fireEvent("close", {bubbles : false});
+							$.$view.remove(win.$view);
+							delete $.lightWindows[windowName];
+						}
+						function openWin(e){
+							e.cancelBubble = true;
+							win.$view.removeEventListener("open", openWin);
+						}
+						win.$view.addEventListener("close", removeWin);
+						win.$view.addEventListener("open", openWin);
+						$.$view.addEventListener("close", removeWin);
+						win.openWin($, windowName, options, loadOnly);
+						win.UIInit();
+						if (!loadOnly) {
+							Alloy.Globals.openingWindow[windowName] = win;
+						}
 					}
-					win.$view.addEventListener("close", removeWin);
-					win.$view.addEventListener("open", openWin);
-					$.$view.addEventListener("close", removeWin);
-					win.openWin($, windowName, options, loadOnly);
-					win.UIInit();
-					if (!loadOnly) {
-						Alloy.Globals.openingWindow[windowName] = win;
-					}
+					win.openCachedWindow(windowName, options);
+					return win;
 				}
-				return win;
 			};
 			$.$view.addEventListener("becamedirty", function(e) {
 					e.cancelBubble = true;

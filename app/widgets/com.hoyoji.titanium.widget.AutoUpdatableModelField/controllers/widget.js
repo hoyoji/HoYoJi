@@ -4,31 +4,6 @@ if ($.$attrs.color) {
 	$.label.setColor($.$attrs.color);
 	$.field.setColor($.$attrs.color);
 }
-// if ($.$attrs.noBottomLine === "true") {
-	// $.rowBottomImage.setVisible(false);
-// }
-// if ($.$attrs.hintText) {
-	// $.hintText.setText($.$attrs.hintText);
-// }
-// 
-// $.hintText.addEventListener("singletap", function(e) {
-	// $.field.fireEvent("singletap");
-// });
-
-// $.field.addEventListener("singletap", function(e) {
-// e.cancelBubble = true;
-//
-// if ($.saveableMode === "read") {
-// return;
-// }
-// if ($.$attrs.bindAttributeIsModel) {
-// $.field.blur();
-// if(OS_IOS){
-// $.field.fireEvent("singletap");
-// }
-// }
-//
-// });
 
 $.getValue = function() {
 	return $.__bindAttributeIsModel;
@@ -53,12 +28,12 @@ $.setValue = function(value) {
 };
 
 $.setEditable = function(editable) {
-		if (editable === false) {
-			$.hideHintText(false);
-			// $.field.addEventListener("singletap", function(e){e.cancelBubble = true});
-		} else {
-			$.showHintText();
-		}
+	if (editable === false) {
+		$.hideHintText(false);
+		// $.field.addEventListener("singletap", function(e){e.cancelBubble = true});
+	} else {
+		$.showHintText();
+	}
 };
 
 $.setSaveableMode($.saveableMode);
