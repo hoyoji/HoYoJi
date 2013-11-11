@@ -57,7 +57,7 @@ exports.openCachedWindow = function(contentController, options) {
 		$.scrollableView.removeEventListener("scrollend", fireShowEvent);
 		if (e.currentPage === 1) {
 			$.$view.setBackgroundColor("#99000000");
-			$.$view.fireEvent("show");
+			$.$view.fireEvent("show", {bubbles : false});
 		}
 		if (contentController) {
 			delete Alloy.Globals.openingWindow[contentController];
@@ -77,7 +77,7 @@ exports.open = function(contentController, loadOnly) {
 		__baseWin.__currentLightWindow = $;
 	}
 
-	$.$view.fireEvent("open");
+	$.$view.fireEvent("open", {bubbles : false});
 	// $.$view.open({
 	// animated : false
 	// });
@@ -126,7 +126,7 @@ exports.openWin = function(baseWin, contentController, options, loadOnly) {
 		// }
 		$.content.setParent($.contentView);
 		$.content.UIInit($, $);
-		$.$view.fireEvent("contentready");
+		$.$view.fireEvent("contentready", {bubbles : false});
 	}
 
 	if (!options.selectorCallback) {

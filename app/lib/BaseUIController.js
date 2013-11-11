@@ -257,23 +257,17 @@
 					parentWindowCallback : function(parentController) {
 						if (!$.__parentController) {
 							$.__parentController = parentController;
-							// if($.__currentWindow){
-							// $.$view.fireEvent("winopen", {bubbles : false});
-							// }
 						}
 					},
 					windowPreListenCallback : function(e, winController) {
-						//Ti.App.removeEventListener("winopen", detectWindow);
 						if (!$.__currentWindow) {
 							$.__currentWindow = winController;
-							// if($.__currentParent){
 							$.$view.fireEvent("winopen", {
 								bubbles : false
 							});
 							if ($.$attrs.autoInit !== "false") {
 								$.hideActivityIndicator();
 							}
-							// }
 
 							winController.$view.addEventListener("close", $.triggerWindowCloseEvent);
 						}
