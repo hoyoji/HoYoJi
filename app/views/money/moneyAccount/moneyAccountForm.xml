@@ -17,7 +17,7 @@
 				bindAttributeIsModel="name"
 				bindModelSelector="money/currency/currencyAll"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField" labelText="当前余额" hintText="请输入当前余额"
-				id="currentBalance" autoInit="false" editModeEditability="noneditable" addModeEditability="noneditable"
+				id="currentBalance" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="currentBalance"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"

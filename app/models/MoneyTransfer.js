@@ -250,12 +250,16 @@ exports.definition = {
 				var transferInAmount = this.xGet("transferInAmount");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				transferOut.save({
-					currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
-				}, saveOptions);
-				transferIn.save({
-					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
-				}, saveOptions);
+				if(transferOut) {
+					transferOut.save({
+						currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+					}, saveOptions);
+				}
+				if(transferIn) {
+					transferIn.save({
+						currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+					}, saveOptions);
+				}
 
 				this._xDelete(xFinishCallback, options);
 			},
