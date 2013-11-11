@@ -84,7 +84,7 @@ if ($.$attrs.buttons) {
 				// buttonWidget.UIInit($,$.getCurrentWindow());
 		// }
 		if (subButtons.length > 1) {
-			buttonWidget.$view.addEventListener("singletap", 
+			buttonWidget.$view.addEventListener("touchstart", 
 				function(buttonWidget, subButtons, subIds, e){
 					function ___openSubFooterBar(){
 							var tempCurrentSubFooterBar = currentSubFooterBar;
@@ -101,7 +101,7 @@ if ($.$attrs.buttons) {
 				}.bind(null, buttonWidget, subButtons, subIds)
 			);
 		} else {
-			buttonWidget.$view.addEventListener("singletap", 
+			buttonWidget.$view.addEventListener("touchstart", 
 				function(e){
 					hideSubFooterBar(currentSubFooterBar);
 				}
