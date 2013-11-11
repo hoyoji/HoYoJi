@@ -83,7 +83,7 @@ function updateFieldValue(){
 				datetime.setSeconds(time.getSeconds());
 			}
 			activeTextField.setValue(datetime);
-			activeTextField.field.fireEvent("change");
+			activeTextField.field.fireEvent("change", {bubbles : false});
 		}
 }
 $.datePicker.addEventListener("change", updateFieldValue);

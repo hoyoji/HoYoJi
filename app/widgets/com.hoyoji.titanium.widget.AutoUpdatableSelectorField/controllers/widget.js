@@ -22,7 +22,7 @@ $.$view.addEventListener("singletap", function(e) {
 		values : values,
 		selectorCallback : function(value){
 			$.setValue(value);
-			$.field.fireEvent("change");
+			$.field.fireEvent("change", {bubbles : false});
 	}});
 });
 

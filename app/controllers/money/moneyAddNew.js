@@ -65,7 +65,7 @@ function onFooterbarTap(e) {
 			}, 42);
 		} else {
 			currentForm.amount.setValue(lastAmountValue);
-			currentForm.amount.field.fireEvent("change");
+			currentForm.amount.field.fireEvent("change", {bubbles : false});
 		}
 		$.getCurrentWindow().__dirtyCount = $.__dirtyCount = currentForm.__dirtyCount;
 	}, 1);

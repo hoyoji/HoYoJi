@@ -40,7 +40,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {//汇率�
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -186,7 +186,7 @@ if ($.saveableMode === "edit") {//修改时项目不可点击，设成灰色
 
 function updateAmount() {//没输入支出金额时，新增明细金额的同时更新账务金额
 	$.amount.setValue($.$model.xGet("amount"));
-	$.amount.field.fireEvent("change");
+	$.amount.field.fireEvent("change", {bubbles : false});
 }
 
 /*//隐藏功能,使用明细金额作为收支金额
@@ -286,7 +286,7 @@ function setDefaultCategory(project, setToModel) {//新增时根据时间设置�
 		$.moneyExpenseCategory.refresh();
 	} else {
 		$.moneyExpenseCategory.setValue(defaultCategory);
-		$.moneyExpenseCategory.field.fireEvent("change");
+		$.moneyExpenseCategory.field.fireEvent("change", {bubbles : false});
 	}
 }
 
@@ -384,7 +384,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change");
+			$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		}
 	}
 
@@ -431,7 +431,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.friendAccount.$view.setHeight(0);
 			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
-			$.friendAccount.field.fireEvent("change");
+			$.friendAccount.field.fireEvent("change", {bubbles : false});
 		} else {
 			$.friendAccount.$view.setHeight(0);
 			$.friendAccount.setValue("");

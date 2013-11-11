@@ -41,7 +41,7 @@ $.field.addEventListener("singletap", function(e){
 	if($.$attrs.hightLight !== "false"){
 		    $.field.setBackgroundColor(backgroundColors[currentItemIndex]);
 	}	
-   	 $.field.fireEvent("change");
+   	 $.field.fireEvent("change", {bubbles : false});
 });
 
 $.getValue = function(e){

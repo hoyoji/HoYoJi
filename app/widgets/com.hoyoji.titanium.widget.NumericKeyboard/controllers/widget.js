@@ -287,7 +287,7 @@ function equalToValue() {
 	} else {
 		activeTextField.setValue($.display.getText());
 	}
-	activeTextField.field.fireEvent("change");
+	activeTextField.field.fireEvent("change", {bubbles : false});
 	if(confirmCB){
 		confirmCB(activeTextField.getValue());
 	}

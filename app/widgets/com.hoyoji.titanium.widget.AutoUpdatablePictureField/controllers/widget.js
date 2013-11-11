@@ -103,7 +103,7 @@ function getImage(event) {
 				$.__bindAttributeIsModel = null;
 				$.fieldContainer.removeEventListener("longpress", showOptionsDialog);
 				$.fieldContainer.removeEventListener("singletap", previewImage);
-				$.field.fireEvent("change");
+				$.field.fireEvent("change", {bubbles : false});
 			} else {
 				imageView.removeEventListener("longpress", showOptionsDialog);
 				imageView.removeEventListener("singletap", previewImage);
@@ -156,7 +156,7 @@ function getImage(event) {
 			$.__bindAttributeIsModel = newPicture;
 			$.fieldContainer.setImage(pictureIcon);
 			mainPicture = newPicture;
-			$.field.fireEvent("change");
+			$.field.fireEvent("change", {bubbles : false});
 			$.fieldContainer.addEventListener("longpress", showOptionsDialog);
 			$.fieldContainer.addEventListener("singletap", previewImage);
 		} else {
@@ -268,7 +268,7 @@ $.setValue = function(value) {
 			//$.field.setImage(WPATH("/images/noPicture.png"));
 			$.fieldContainer.setImage(WPATH("/images/noPicture.png"));
 			$.__bindAttributeIsModel = null;
-			$.field.fireEvent("change");
+			$.field.fireEvent("change", {bubbles : false});
 		}
 
 
@@ -416,7 +416,7 @@ function setAsMainIcon(picture) {
 	picture.trigger("xdestroy");
 
 	$.setValue(picture);
-	$.field.fireEvent("change");
+	$.field.fireEvent("change", {bubbles : false});
 
 	if (mainImage) {
 		if (mainImage.isNew()) {

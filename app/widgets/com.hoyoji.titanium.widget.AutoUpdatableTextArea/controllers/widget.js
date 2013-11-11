@@ -27,7 +27,7 @@ $.$view.addEventListener("singletap", function(e) {
 		field : $,
 		selectorCallback : function(value) {
 			$.setValue(value);
-			$.field.fireEvent("change");
+			$.field.fireEvent("change", {bubbles : false});
 		}
 	});
 });

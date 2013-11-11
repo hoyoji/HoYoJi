@@ -121,7 +121,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -196,7 +196,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change");
+			$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		}
 	}
 
@@ -206,7 +206,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.friendAccount.$view.setHeight(0);
 			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
-			$.friendAccount.field.fireEvent("change");
+			$.friendAccount.field.fireEvent("change", {bubbles : false});
 		} else {
 			$.friendAccount.$view.setHeight(0);
 			$.friendAccount.setValue("");

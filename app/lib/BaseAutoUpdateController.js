@@ -297,7 +297,7 @@
 									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model);
 								}
 								$.setValue(model);
-								$.field.fireEvent("change");
+								$.field.fireEvent("change", {bubbles : false});
 							}
 						};
 						if ($.$attrs.bindModelBeforeSelectorCallback) {

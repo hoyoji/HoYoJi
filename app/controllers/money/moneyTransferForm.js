@@ -72,7 +72,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("transferOut").xGet("currency").id, $.$model.xGet("transferIn").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -93,7 +93,7 @@ function updateExchangeRate() {
 		$.exchangeRate.$view.setHeight(0);
 		$.transferInAmount.$view.setHeight(0);
 		$.exchangeRate.setValue(1);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 	}
 	// }
 }
@@ -114,13 +114,13 @@ function setExchangeRate(transferOut, transferIn) {
 			createRate = true;
 			exchangeRateValue = null;
 			$.transferInAmount.setValue(null);
-			$.transferInAmount.field.fireEvent("change");
+			$.transferInAmount.field.fireEvent("change", {bubbles : false});
 		}
 		$.exchangeRate.$view.setHeight(42);
 		$.transferInAmount.$view.setHeight(42);
 	}
 	$.exchangeRate.setValue(exchangeRateValue);
-	$.exchangeRate.field.fireEvent("change");
+	$.exchangeRate.field.fireEvent("change", {bubbles : false});
 }
 
 $.amount.field.addEventListener("change", updateForeignCurrencyAmount);
@@ -132,7 +132,7 @@ function updateForeignCurrencyAmount() {
 	if ($.exchangeRate.getValue()) {
 		var foreignCurrencyAmount = transferOutAmount * $.exchangeRate.getValue();
 		$.transferInAmount.setValue(foreignCurrencyAmount);
-		$.transferInAmount.field.fireEvent("change");
+		$.transferInAmount.field.fireEvent("change", {bubbles : false});
 	}
 	// }
 }
@@ -149,7 +149,7 @@ $.transferOutUser.rightButton.addEventListener("singletap", function(e) {
 	$.$model.xSet("transferOut",  Alloy.Models.User.xGet("activeMoneyAccount"));
 	$.transferOutUser.refresh();
 	$.transferOut.refresh();
-	$.transferOutUser.field.fireEvent("change");
+	$.transferOutUser.field.fireEvent("change", {bubbles : false});
 });
 
 $.transferInUser.rightButton.addEventListener("singletap", function(e) {
@@ -157,7 +157,7 @@ $.transferInUser.rightButton.addEventListener("singletap", function(e) {
 	$.$model.xSet("transferIn",  Alloy.Models.User.xGet("activeMoneyAccount"));
 	$.transferInUser.refresh();
 	$.transferIn.refresh();
-	$.transferInUser.field.fireEvent("change");
+	$.transferInUser.field.fireEvent("change", {bubbles : false});
 });
 
 //改变转出人，如果转出人自己就显示转出帐户，不是自己就隐藏转出帐户

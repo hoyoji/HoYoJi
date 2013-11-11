@@ -42,7 +42,7 @@ $.field.addEventListener("singletap", function(e){
      currentItemIndex = _.indexOf(labels, e.source);
 	e.source.setBackgroundColor("cyan");
     
-	$.field.fireEvent("change");
+	$.field.fireEvent("change", {bubbles : false});
 });
 
 $.getValue = function(e){
