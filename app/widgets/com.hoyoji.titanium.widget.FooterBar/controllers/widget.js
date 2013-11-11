@@ -44,7 +44,7 @@ function createSubFooterBar(button, subButtons, subIds) {
 			// }
 		}
 
-		$[subFooterBarId].addEventListener("singletap", function(e) {
+		$[subFooterBarId].addEventListener("touchstart", function(e) {
 			hideSubFooterBar($[subFooterBarId]);
 		});
 	} else {
