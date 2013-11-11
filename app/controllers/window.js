@@ -149,23 +149,3 @@ $.scrollableView.addEventListener("scrollend", function(e) {
 	}
 
 });
-
-//// var scrollTimeoutId = 0;
-// $.scrollableView.addEventListener("scroll", function(e) {
-	// if (e.source !== $.scrollableView) {
-		// return;
-	// }
-	// // clearTimeout(scrollTimeoutId);
-	// // scrollTimeoutId = setTimeout(function() {
-		// var color = Math.round(153 * e.currentPageAsFloat);
-		// color = Math.max(color, 16);
-		// color = Math.min(color, 153);
-		// console.info(color + " " + color.toString(16));
-		// $.$view.setBackgroundColor("#" + color.toString(16) + "000000");
-		// // if (e.currentPageAsFloat < 0.3 && $.$view.getBackgroundColor() !== "transparent") {
-		// // $.$view.setBackgroundColor("transparent");
-		// // } else if (e.currentPageAsFloat >= 0.3 && $.$view.getBackgroundColor() === "transparent") {
-		// // $.$view.setBackgroundColor("#40000000");
-		// // }
-	// // }, 1);
-// });
