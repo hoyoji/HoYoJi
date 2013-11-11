@@ -141,19 +141,19 @@ function Sync(method, model, opts) {
 						if (_.indexOf(projectPermissionTables, table) > -1) {
 							if (table === "Project") {
 								// 检查上级项目的共享中有没有允许我添加子项目的权限
-							} else {
+							} else{
 								// if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory") {
 								// sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("project").xGet("id") + '" AND "' + model.xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShare' + table + 'AddNew = 1';
 								// } else
-								if (table === "MoneyIncomeDetail") {
+								if (table === "MoneyIncomeDetail" && !model.xGet("moneyIncome").xGet("project").isNew()) {
 									sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
-								} else if (table === "MoneyExpenseDetail") {
+								} else if (table === "MoneyExpenseDetail" && !model.xGet("moneyExpense").xGet("project").isNew()) {
 									sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
-								} else if (table === "MoneyIncomeApportion") {
+								} else if (table === "MoneyIncomeApportion" && !model.xGet("moneyIncome").xGet("project").isNew()) {
 									sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
-								} else if (table === "MoneyExpenseApportion") {
+								} else if (table === "MoneyExpenseApportion" && !model.xGet("moneyExpense").xGet("project").isNew()) {
 									sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
-								} else {
+								} else if(!model.xGet("project").isNew()){
 									sqlCheckPermission = 'SELECT p.id FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("project").xGet("id") + '" AND "' + model.xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShare' + table + 'AddNew = 1';
 								}
 							}
@@ -371,26 +371,26 @@ function Sync(method, model, opts) {
 						sqlCheckPermission = 'SELECT p.id FROM ' + table + ' p JOIN Project prj ON prj.id = p.projectId LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND joinedtable.friendUserId = "' + ownerUserId + '" AND prj.id = joinedtable.projectId ' + 'WHERE p.id = "' + model.id + '" ' + 'AND (p.ownerUserId = "' + ownerUserId + '" ' + ' AND (prj.ownerUserId = "' + ownerUserId + '" OR joinedtable.projectShare' + table + 'Edit = 1)) ';
 					}
 
-					if (model.hasChanged("projectId")) {
-						if (table === "Project") {
-							// 检查上级项目的共享中有没有允许我添加子项目的权限
-						} else {
-							// if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory") {
-							// sqlCheckPermission2 = "SELECT main.id FROM Project main LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND main.projectId = joinedtable.projectId AND main.id = '" + model.xGet("projectId") + "'";
-							// } else
-							if (table === "MoneyIncomeDetail") {
-								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
-							} else if (table === "MoneyExpenseDetail") {
-								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
-							} else if (table === "MoneyIncomeApportion") {
-								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
-							} else if (table === "MoneyExpenseApportion") {
-								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
-							} else {
-								sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("project").xGet("id") + '" AND "' + model.xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShare' + table + 'AddNew = 1';
-							}
-						}
-					}
+					// if (model.hasChanged("projectId")) {
+						// if (table === "Project") {
+							// // 检查上级项目的共享中有没有允许我添加子项目的权限
+						// } else {
+							// // if (table === "MoneyExpenseCategory" || table === "MoneyIncomeCategory") {
+							// // sqlCheckPermission2 = "SELECT main.id FROM Project main LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND main.projectId = joinedtable.projectId AND main.id = '" + model.xGet("projectId") + "'";
+							// // } else
+							// if (table === "MoneyIncomeDetail") {
+								// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
+							// } else if (table === "MoneyExpenseDetail") {
+								// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
+							// } else if (table === "MoneyIncomeApportion") {
+								// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyIncome").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyIncome").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyIncomeAddNew = 1';
+							// } else if (table === "MoneyExpenseApportion") {
+								// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("moneyExpense").xGet("project").xGet("id") + '" AND "' + model.xGet("moneyExpense").xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShareMoneyExpenseAddNew = 1';
+							// } else {
+								// sqlCheckPermission2 = 'SELECT p.* FROM Project p LEFT JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = "Accept" AND p.id = joinedtable.projectId AND joinedtable.friendUserId = "' + ownerUserId + '" ' + 'WHERE p.id = "' + model.xGet("project").xGet("id") + '" AND "' + model.xGet("ownerUser").xGet("id") + '" = "' + ownerUserId + '" AND joinedtable.projectShare' + table + 'AddNew = 1';
+							// }
+						// }
+					// }
 				} else if (table === "User") {
 
 				} else if (table === "ProjectShareAuthorization") {
