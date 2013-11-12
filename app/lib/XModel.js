@@ -23,23 +23,20 @@
 				    this._silent = {};
 				    this._pending = {};						
 				}, this);
-
+				
+				// need to clear all the hasMany filters on model destroy
+				this.on("destroy", function(){
+					for (var key in this.config.hasMany) {
+						if(this.get(key)){
+							this.get(key).xClearFilter();
+						}
+					}
+					this.hasDestroyed = true;
+				});
+					
 				if (this.isNew()) {
 					this.attributes.id = guid();
-					// if (Alloy.Models.User && !this.xGet("ownerUserId")) {
-						// this.xSet("ownerUser", Alloy.Models.User);
-					// }
- 					
-					// need to clear all the hasMany filters on model destroy
-					this.on("destroy", function(){
-						for (var key in this.config.hasMany) {
-							if(this.get(key)){
-								this.get(key).xClearFilter();
-							}
-						}
-					});
-					
-					this.on("sync fetch", this.__initializeExistingModel, this);
+ 					this.on("sync fetch", this.__initializeExistingModel, this);
 				} else {
 					this.__initializeExistingModel();
 				}

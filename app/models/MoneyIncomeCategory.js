@@ -52,8 +52,9 @@ exports.definition = {
 				var self = this;
 				this._xDelete(function(e){
 					if(!e){
-						if (self.xGet("project") && 
-							self.xGet("id") === self.xGet("project").xGet("defaultIncomeCategoryId")) {
+						if (self.xGet("project") 
+							&& !self.xGet("project").hasDestroyed
+							&& self.xGet("id") === self.xGet("project").xGet("defaultIncomeCategoryId")) {
 							var saveOptions = {wait : true};
 							saveOptions.patch = true;
 							self.xGet("project").save({
