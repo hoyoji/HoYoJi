@@ -99,22 +99,17 @@ function createRowView(rowModel, collection) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
 			className : collection.__rowView || rowModel.config.rowView,
-			collectionId : collection.id
+			collectionId : collection.id,
+			refreshTableAfterServerSync : $.$attrs.refreshTableAfterServerSync
 		});
 	} else {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
 			className : collection.__rowView || rowModel.config.rowView,
-			collectionId : collection.id
+			collectionId : collection.id,
+			refreshTableAfterServerSync : $.$attrs.refreshTableAfterServerSync
 		});
-		// } else {
-		// var row = Ti.UI.createTableViewRow({
-		// id : rowModel.xGet("id"),
-		// className : collection.__rowView || rowModel.config.rowView,
-		// collectionId : collection.id
-		// });
-		// }
 	}
 	var rowViewController;
 	if ($.__currentWindow && $.__parentController) {
