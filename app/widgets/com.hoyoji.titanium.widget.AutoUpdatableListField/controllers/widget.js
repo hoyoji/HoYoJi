@@ -7,7 +7,9 @@ $.onWindowOpenDo(function() {
 
 $.xAddToSave = function(controller) {
 	__newItems.forEach(function(item) {
-		item.xAddToSave(controller);
+		if (!item.__xDeleted) {
+			item.xAddToSave(controller);
+		}
 	});
 };
 

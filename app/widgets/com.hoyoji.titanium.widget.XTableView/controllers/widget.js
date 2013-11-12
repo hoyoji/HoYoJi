@@ -1043,9 +1043,9 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	}
 
 	if (sortByField) {
-		data.sort(function(a, b) {
-			a = findObject(a.id);
-			b = findObject(b.id);
+		data.sort(function(aRow, bRow) {
+			var a = findObject(aRow.id);
+			var b = findObject(bRow.id);
 			if (!a || !b) {
 				return -1;
 			}
@@ -1062,18 +1062,23 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	}
 	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
+			if(!item.id){
+				return "";
+			}
 			var model = findObject(item.id);
 			return model && getSectionNameOfRowModel(model.xDeepGet(groupByField));
 		});
 		data = [];
 		var sectionIndex = 0;
 		for (var sectionTitle in sectionData) {
-			var section = createSection(sectionTitle, sectionIndex);
-			sectionData[sectionTitle].forEach(function(row) {
-				section.add(row);
-			});
-			data.push(section);
-			sectionIndex++;
+			if(sectionTitle !== undefined){
+				var section = createSection(sectionTitle, sectionIndex);
+				sectionData[sectionTitle].forEach(function(row) {
+					section.add(row);
+				});
+				data.push(section);
+				sectionIndex++;
+			}
 		}
 	}
 	$.table.setData(data);

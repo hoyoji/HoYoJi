@@ -177,7 +177,7 @@ exports.definition = {
 					collection.xSetFilter(filter);
 				}
 
-				console.info("xGet hasMany : " + type + collection.length);
+				//console.info("xGet hasMany : " + type + collection.length);
 				var idString;
 				if (this.get('id')) {
 					idString = " = '" + this.get('id') + "' ";
@@ -197,7 +197,7 @@ exports.definition = {
 						query : "SELECT main.* FROM " + type + " main WHERE main." + key + "Id " + idString
 					});
 				}
-				console.info("xGet hasMany : " + key + collection.length);
+				//console.info("xGet hasMany : " + key + collection.length);
 
 				this.attributes[attr] = collection;
 				// this.set(attr, collection, {
@@ -216,7 +216,7 @@ exports.definition = {
 				}
 
 				var table = this.config.belongsTo[attr].type, fKey = attr + "Id", fId = this.get(fKey);
-				console.info("xGet belongsTo " + fKey + " : " + fId);
+				//console.info("xGet belongsTo " + fKey + " : " + fId);
 				if (!fId) {
 					this.attributes[attr] = null;
 					this._previousAttributes[attr] = null;
@@ -226,7 +226,7 @@ exports.definition = {
 				var m = Alloy.Collections[table].get(fId);
 				if (!m) {
 					var idString = " = '" + fId + "' ";
-					console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
+					//console.info("xGet fetch belongsTo from DB " + table + " : " + idString);
 					m = Alloy.createCollection(table);
 					m.fetch({
 						query : "SELECT main.* FROM " + table + " main WHERE main.id " + idString

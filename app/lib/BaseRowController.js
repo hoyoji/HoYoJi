@@ -379,14 +379,9 @@
 				showDeletedMsg(false);
 			}
 
-			// var rowHasRendered = false;
-			// $.$view.addEventListener("postlayout", function(){
-			// rowHasRendered = true;
-			// })
-			//
 			var isRemoving = false;
 			function removeRow(row, collection) {
-				if (collection.isFetching || collection.isFiltering) {
+				if (collection.isFetching || collection.isFiltering || Alloy.Globals.Server.__isSyncing) {
 					return;
 				}
 				if (row === $.$model) {
@@ -395,31 +390,15 @@
 						if ($.__currentWindow) {
 							$.getParentController().off("endchangingrow", doRemoveRow);
 							if ($.getParentController().__changingRow) {
-								console.info("row is changing, we waiting ");
 								$.getParentController().on("endchangingrow", doRemoveRow);
 							} else {
 								$.getParentController().__changingRow = true;
-
-								// var animation = Titanium.UI.createAnimation();
-								// animation.duration = 500;
-								// animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-
-								// if ($.$model.id) {
-								// animation.left = "-100%";
-								// } else {
-								// animation.opacity = "0.5";
-								// animation.height = 0;
-								// animation.width = 0;
-								// }
-								// animation.addEventListener('complete', function() {
 								$.$view.fireEvent("click", {
 									bubbles : true,
 									deleteRow : true,
 									sectionRowId : $.$model.xGet("id"),
 									rowHasRendered : true
 								});
-								// });
-								// $.$view.animate(animation);
 							}
 						} else {
 							$.$view.fireEvent("click", {
@@ -442,10 +421,7 @@
 			// }
 			// $.$model.on("change", shakeMe);
 			$.onWindowOpenDo(function() {
-				$.parent.addEventListener("rowremoved", function() {
-					// $.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
-					$.remove();
-				});
+				$.parent.addEventListener("rowremoved", $.remove);
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 					$.setSelected(true);
 				}
@@ -471,7 +447,7 @@
 
 			$.$view.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;
-				if (!$.__currentWindow || isRemoving) {
+				if (!$.__currentWindow || isRemoving || $.getParentController().__changingRow) {
 					return;
 				}
 
@@ -482,7 +458,6 @@
 				}
 				function openSelector() {
 					if ($.getCurrentWindow().$attrs.selectorCallback) {
-						console.info("selectModelType " + $.getCurrentWindow().$attrs.selectModelType + " " + $.$model.config.adapter.collection_name);
 						if ($.getCurrentWindow().$attrs.selectModelType === $.$model.config.adapter.collection_name) {
 							if ($.getCurrentWindow().$attrs.selectModelCanNotBeChild && $.getCurrentWindow().$attrs.selectModelCanNotBeChild === $.$model) {
 								showErrorMsg("该记录不能作为" + $.getCurrentWindow().$attrs.title);

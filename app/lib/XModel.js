@@ -365,7 +365,7 @@
 						// m = m.at(0);
 						// }
 						m = Alloy.Collections[table].get(fId);
-						console.info("--------" + m);
+						//console.info("--------" + m);
 					}
 					this.attributes[attr] = m;
 					// this.set(attr, m, {

@@ -297,7 +297,6 @@ function Sync(method, model, opts) {
 					sql2 = qs0 + " WHERE " + q;
 				}
 				sql += " UNION ALL " + sql2;
-				console.info(sql);
 			} else {
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
 				if (qs.length > 1) {
@@ -447,7 +446,7 @@ function Sync(method, model, opts) {
 				delete opts.wait;
 			} else {
 				if (!opts.syncFromServer) {
-					var r = db.execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
+					var r = Alloy.Globals.DataStore.getReadDb().execute("SELECT * FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
 					if (r.rowCount === 0) {
 						db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','update','" + ownerUserId + "','" + ownerUserId + "')");
 					}
@@ -508,11 +507,18 @@ function Sync(method, model, opts) {
 					if (r.rowCount > 0) {
 						db.execute("DELETE FROM ClientSyncTable WHERE recordId = '" + model.id + "'");
 					} else {
+						r.close();
+						r = null;
 						r = Alloy.Globals.DataStore.getReadDb().execute("SELECT * FROM ClientSyncTable WHERE operation = 'update' AND recordId = '" + model.id + "'");
 						if (r.rowCount > 0) {
 							db.execute("Update ClientSyncTable SET operation = 'delete' WHERE recordId = '" + model.id + "'");
 						} else {
-							db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+							r.close();
+							r = null;
+							r = Alloy.Globals.DataStore.getReadDb().execute("SELECT * FROM ClientSyncTable WHERE operation = 'delete' AND recordId = '" + model.id + "'");
+							if (r.rowCount === 0) {
+								db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + model.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
+							}
 						}
 					}
 					r.close();

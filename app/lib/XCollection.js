@@ -62,7 +62,7 @@
 				if (this.__filterCollection) {
 					this.__filterCollection.xFetch(options);
 				} else {
-					console.info("xFetch " + options.query);
+					//console.info("xFetch " + options.query);
 					var c = Alloy.createCollection(this.config.adapter.collection_name);
 					// self.map(function(m){
 					// console.info("xFetch before merged : " + m.xGet("id"));

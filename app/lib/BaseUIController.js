@@ -202,6 +202,7 @@
 					for (var view in views) {
 						if (views[view].__iamalloy) {
 							views[view].remove();
+							console.info("removing " + view);
 						}
 					}
 					if ($.__currentWindow) {

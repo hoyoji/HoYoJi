@@ -49,14 +49,19 @@ exports.definition = {
 				// }else if(this.xGet("subExpenseCategories").length > 0){
 				// xFinishCallback({ msg :"分类下下级分类不为空，不能删除"});
 				// }else{
-				if (this.xGet("id") === this.xGet("project").xGet("defaultExpenseCategoryId")) {
-					var saveOptions = _.extend({wait : true}, options);
-					saveOptions.patch = true;
-					this.xGet("project").save({
-						defaultExpenseCategoryId : null
-					}, saveOptions);
-				}
-				this._xDelete(xFinishCallback, options);
+				var self = this;
+				this._xDelete(function(e){
+					if(!e){
+						if (self.xGet("project") && self.xGet("id") === self.xGet("project").xGet("defaultExpenseCategoryId")) {
+							var saveOptions = {wait : true};
+							saveOptions.patch = true;
+							self.xGet("project").save({
+								defaultExpenseCategoryId : null
+							}, saveOptions);
+						}
+					}
+					xFinishCallback(e);
+				}, options);
 				// }
 			}
 		});
