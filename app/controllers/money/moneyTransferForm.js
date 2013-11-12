@@ -53,7 +53,9 @@ var oldTransferIn = $.$model.xGet("transferIn");
 // var oldTransferInOwnerUser = $.$model.xGet("transferInOwnerUser");
 
 $.onWindowOpenDo(function() {
-	setExchangeRate($.$model.xGet("transferOut"), $.$model.xGet("transferIn"));
+	if($.$model.xGet("transferOut") && $.$model.xGet("transferIn")){
+		setExchangeRate($.$model.xGet("transferOut"), $.$model.xGet("transferIn"));
+	}
 	updateForeignCurrencyAmount();
 	// firstOpenWindow();
 	// 检查当前账户的币种是不是与本币（该收入的币种）一样，如果不是，把汇率找出来，并设到model里

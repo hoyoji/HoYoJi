@@ -34,6 +34,44 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				successCB();
 			}
 		}
+		
+		if ($.$model.hasChanged("currentBalance")) {
+			// 这个主要用于同不时维护修改后的账户余额
+			Alloy.createModel("MoneyAccountBalanceAdjustment", {
+				moneyAccount : $.$model,
+				amount : $.$model.xGet("currentBalance"),
+				ownerUser : Alloy.Models.User
+			}).xAddToSave($);
+			
+			var moneyTransfer = null;
+			
+			if($.$model.xGet("currentBalance") > 0) {
+				moneyTransfer = Alloy.createModel("MoneyTransfer", {
+					date : (new Date()).toISOString(),
+					transferOutUser : Alloy.Models.User,
+					transferInUser : Alloy.Models.User,
+					transferIn : $.$model,
+					exchangeRate : 1,
+					transferInAmount : $.$model.xGet("currentBalance"),
+					transferOutAmount : $.$model.xGet("currentBalance"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					ownerUser : Alloy.Models.User
+				});
+			} else if($.$model.xGet("currentBalance") < 0) {
+				moneyTransfer = Alloy.createModel("MoneyTransfer", {
+					date : (new Date()).toISOString(),
+					transferOutUser : Alloy.Models.User,
+					transferInUser : Alloy.Models.User,
+					transferOut : $.$model,
+					exchangeRate : 1,
+					transferOutAmount : Math.abs($.$model.xGet("currentBalance")),
+					transferInAmount : Math.abs($.$model.xGet("currentBalance")),
+					project : Alloy.Models.User.xGet("activeProject"),
+					ownerUser : Alloy.Models.User
+				});
+			}
+			moneyTransfer.xAddToSave($);
+		}
 
 		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
 			createExchange(function(e) {
@@ -56,6 +94,35 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				amount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
 				ownerUser : Alloy.Models.User
 			}).xAddToSave($);
+			
+			var moneyTransfer = null;
+			
+			if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") > 0) {
+				moneyTransfer = Alloy.createModel("MoneyTransfer", {
+					date : (new Date()).toISOString(),
+					transferOutUser : Alloy.Models.User,
+					transferInUser : Alloy.Models.User,
+					transferIn : $.$model,
+					exchangeRate : 1,
+					transferInAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
+					transferOutAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					ownerUser : Alloy.Models.User
+				});
+			} else if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") < 0) {
+				moneyTransfer = Alloy.createModel("MoneyTransfer", {
+					date : (new Date()).toISOString(),
+					transferOutUser : Alloy.Models.User,
+					transferInUser : Alloy.Models.User,
+					transferOut : $.$model,
+					exchangeRate : 1,
+					transferOutAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
+					transferInAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
+					project : Alloy.Models.User.xGet("activeProject"),
+					ownerUser : Alloy.Models.User
+				});
+			}
+			moneyTransfer.xAddToSave($);
 		}
 		$.saveModel(saveEndCB, saveErrorCB);
 	}
