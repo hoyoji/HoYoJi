@@ -152,6 +152,7 @@ exports.definition = {
 						friendUserId : this.xGet("friendUser").xGet("id")
 					}, {
 						__dataType : "ProjectShareAuthorization",
+						friendUserId : Alloy.Models.User.id,
 						state : "Accept",
 						ownerUserId : self.xGet("friendUserId")
 					}], function(data) {

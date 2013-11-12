@@ -316,18 +316,32 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
 		}
 	} else {
-		if (oldTransferOut.xGet("id") === newTransferOut.xGet("id")) {
-			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
-		} else {
-			oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount);
+		if(oldTransferOut && !newTransferOut){
+			oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
+		}else if(!oldTransferOut && newTransferOut){
 			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+		}else if(oldTransferOut && newTransferOut){
+			if (oldTransferOut.xGet("id") === newTransferOut.xGet("id")) {
+				newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
+			} else {
+				oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount);
+				newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
+			}
 		}
-		if (oldTransferIn.xGet("id") === newTransferIn.xGet("id")) {
-			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") - oldTransferInAmount + newTransferInAmount);
-		} else {
-			oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount);
+		
+		if(oldTransferIn && !newTransferIn){
+			oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount + newTransferInAmount);
+		}else if(!oldTransferIn && newTransferIn){
 			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+		}else if(oldTransferIn && newTransferIn){
+			if (oldTransferIn.xGet("id") === newTransferIn.xGet("id")) {
+				newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") - oldTransferInAmount + newTransferInAmount);
+			} else {
+				oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount);
+				newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
+			}
 		}
+		
 	}
 	if (oldTransferOut) {
 		oldTransferOut.xAddToSave($);
