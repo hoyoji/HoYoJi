@@ -375,24 +375,32 @@
 								// 1. 如果该记录同時已被本地删除，那我们什么也不做，让其将服务器上的该记录也被删除
 								// 2. 如果该记录同時已被本地修改过，那我们也什么不做，让本地修改覆盖服务器上的记录
 								if (operation !== "delete") {
-									if (operation === "create") {
-										dbTrans.db.execute("UPDATE ClientSyncTable SET operation = 'update' WHERE recordId = ? AND operation = 'create'", [record.id]);
-									}
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
 									});
-									if (model.syncRollback) {
-										function syncRollbackConflict() {
-											dbTrans.off("rollback", syncRollbackConflict);
-											model.syncRollback();
+									if(model.isNew()){
+										dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE recordId = ?", [record.id]);
+										// 没有找到该记录
+										if (model.syncAddNew(record, dbTrans) !== false) {
+											model._syncAddNew(record, dbTrans);
 										}
-
-
-										dbTrans.on("rollback", syncRollbackConflict);
-									}
-									model.syncUpdateConflict(record, dbTrans);
-									if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
-										delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+									} else {
+										if (operation === "create") {
+											dbTrans.db.execute("UPDATE ClientSyncTable SET operation = 'update' WHERE recordId = ? AND operation = 'create'", [record.id]);
+										}
+										if (model.syncRollback) {
+											function syncRollbackConflict() {
+												dbTrans.off("rollback", syncRollbackConflict);
+												model.syncRollback();
+											}
+	
+	
+											dbTrans.on("rollback", syncRollbackConflict);
+										}
+										model.syncUpdateConflict(record, dbTrans);
+										if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
+											delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
+										}
 									}
 								}
 							} else {
@@ -419,7 +427,7 @@
 								}
 								if (belongsToDeleted) {
 									// 如果该model是新的，我们要通知服务器删除该记录
-									if (model.isNew() && record.id === Alloy.Models.User.id) {
+									if (model.isNew() && record.ownerUserId === Alloy.Models.User.id) {
 										dbTrans.db.execute("INSERT INTO ClientSyncTable(id, recordId, tableName, operation, ownerUserId, _creatorId) VALUES('" + guid() + "','" + record.id + "','" + model.config.adapter.collection_name + "','delete','" + Alloy.Models.User.xGet("id") + "','" + Alloy.Models.User.xGet("id") + "')");
 									}
 								} else {
@@ -434,8 +442,6 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
-
-
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新

@@ -163,18 +163,29 @@ exports.definition = {
 			getProjectName : function() {
 				return this.xGet("project").xGet("name");
 			},
-			getTransferOut : function() {
-				var transferOut = this.xGet("transferOut");
-				return transferOut.xGet("name") + "(" + transferOut.xGet("currency").xGet("code") + ")转出";
-			},
-			getTransferIn : function() {
-				var transferIn = this.xGet("transferIn");
-				return "转入" + transferIn.xGet("name") + "(" + transferIn.xGet("currency").xGet("code") + ")";
-			},
+			getTransferOut: function() {
+                if(this.xGet("transferOut")) {
+                	return this.xGet("transferOut").xGet("name") + "(" + this.xGet("transferOut").xGet("currency").xGet("code") + ")转出";
+                } else if(this.xGet("transferOutUser")) {
+                	return this.xGet("transferOutUser").getFriendDisplayName() + "转出";
+                } else{
+                	return "无转出人";
+                }
+            },
+            getTransferIn: function() {
+                if(this.xGet("transferIn")){
+                	return "转入" + this.xGet("transferIn").xGet("name") + "(" + this.xGet("transferIn").xGet("currency").xGet("code") + ")";
+                } else if(this.xGet("transferInUser")){
+                	return "转入" + this.xGet("transferInUser").getFriendDisplayName();
+                } else {
+                	return "无转入人";
+                }
+            },
 			getTransferOutAmount : function() {
 				var exchange = null;
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				var transferOutCurrency = this.xGet("transferOut").xGet("currency");
+				if(this.xGet("transferOut")) {
+					var transferOutCurrency = this.xGet("transferOut").xGet("currency");
 					if (transferOutCurrency === userCurrency) {
 						exchange = 1;
 					}else{
@@ -183,12 +194,25 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-				return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+					return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+				} else {
+					var transferInCurrency = this.xGet("transferIn").xGet("currency");
+						if (transferInCurrency === userCurrency) {
+							exchange = 1;
+						}else{
+							var exchanges = transferInCurrency.getExchanges(userCurrency);
+							if (exchanges.length) {
+								exchange = exchanges.at(0).xGet("rate");
+							}
+						}
+					return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+				}
 			},
 			getTransferInAmount : function() {
 				var exchange = null;
 				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
-				var transferInCurrency = this.xGet("transferIn").xGet("currency");
+				if(this.xGet("transferIn")) {
+					var transferInCurrency = this.xGet("transferIn").xGet("currency");
 					if (transferInCurrency === userCurrency) {
 						exchange = 1;
 					}else{
@@ -197,7 +221,20 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-				return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+					return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+				} else {
+					var transferOutCurrency = this.xGet("transferOut").xGet("currency");
+					if (transferOutCurrency === userCurrency) {
+						exchange = 1;
+					}else{
+						var exchanges = transferOutCurrency.getExchanges(userCurrency);
+						if (exchanges.length) {
+							exchange = exchanges.at(0).xGet("rate");
+						}
+					}
+					return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+				}
+				
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
@@ -213,12 +250,16 @@ exports.definition = {
 				var transferInAmount = this.xGet("transferInAmount");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				transferOut.save({
-					currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
-				}, saveOptions);
-				transferIn.save({
-					currentBalance : transferIn.xGet("currentBalance") - transferInAmount
-				}, saveOptions);
+				if(transferOut) {
+					transferOut.save({
+						currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
+					}, saveOptions);
+				}
+				if(transferIn) {
+					transferIn.save({
+						currentBalance : transferIn.xGet("currentBalance") - transferInAmount
+					}, saveOptions);
+				}
 
 				this._xDelete(xFinishCallback, options);
 			},

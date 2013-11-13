@@ -19,7 +19,8 @@ $.close.addEventListener("singletap", close);
 	// $.textField.addEventListener("singletap", confirm);
 // });
 
-$.getCurrentWindow().$view.addEventListener("open", function(){
+// $.getCurrentWindow().$view.addEventListener("open", function(){
+$.onWindowOpenDo(function(){
 	$.textField.setValue($.getCurrentWindow().$attrs.field.getValue());
 		if(OS_ANDROID){
 			if($.textField.setSelection){

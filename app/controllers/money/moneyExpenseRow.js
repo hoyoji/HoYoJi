@@ -144,8 +144,8 @@ $.onWindowOpenDo(function() {
 });
 
 $.onWindowCloseDo(function() {
-	$.$model.xGet("project").off("sync", projectRefresh);
-	$.$model.xGet("moneyExpenseCategory").off("sync", categoryRefresh);
+	$.$model.xGet("project") && $.$model.xGet("project").off("sync", projectRefresh);
+	$.$model.xGet("moneyExpenseCategory") && $.$model.xGet("moneyExpenseCategory").off("sync", categoryRefresh);
 });
 
 function projectRefresh() {

@@ -115,7 +115,8 @@ function _addMsgView(container, msg, closeCallback){
 		$.confirmButton = Ti.UI.createButton({
 			title : "确定"
 		});
-		$.confirmButton.addEventListener("singletap", function() {
+		$.confirmButton.addEventListener("singletap", function(e) {
+			e.cancelBubble = true;
 			if(closeCB){
 				closeCB();
 			}

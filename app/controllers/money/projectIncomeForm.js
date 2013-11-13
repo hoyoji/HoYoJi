@@ -28,7 +28,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 
 		if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 			$.$model.xSet("amount", Number(((depositeAmount * depositeExchangeRate) / rate).toFixed(2)));
@@ -192,7 +192,7 @@ if ($.saveableMode === "read") {
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
 			$.$model.xSet("exchangeRate", exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change");
+			$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		}
 	}
 

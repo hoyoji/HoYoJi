@@ -13,7 +13,7 @@ $.rate.rightButton.addEventListener("singletap", function(e) {
 	$.rate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("localCurrency").id, $.$model.xGet("foreignCurrency").id, function(rate) {
 		$.rate.setValue(rate);
-		$.rate.field.fireEvent("change");
+		$.rate.field.fireEvent("change", {bubbles : false});
 		$.rate.rightButton.setEnabled(true);
 		$.rate.rightButton.hideActivityIndicator();
 	}, function(e) {

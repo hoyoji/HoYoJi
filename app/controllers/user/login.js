@@ -233,6 +233,8 @@ $.login = function(userName, password) {
 					}, function(e) {
 						// 保存倒数据库时出错，登录失败
 						loginFail(e);
+					}, null, {
+						syncFromServer : true
 					});
 				}, function(e) {
 					// 无法连接服务器，登录失败

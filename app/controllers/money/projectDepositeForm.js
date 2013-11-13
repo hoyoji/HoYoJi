@@ -27,7 +27,7 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change");
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -55,7 +55,7 @@ $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function
 	$.depositeAccountExchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.depositeFriendAccount.xGet("currencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		$.depositeAccountExchangeRate.setValue(rate);
-		$.depositeAccountExchangeRate.field.fireEvent("change");
+		$.depositeAccountExchangeRate.field.fireEvent("change", {bubbles : false});
 		$.depositeAccountExchangeRate.rightButton.setEnabled(true);
 		$.depositeAccountExchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -261,7 +261,7 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change");
+			$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		}
 	}
 	
@@ -297,7 +297,7 @@ if ($.saveableMode === "read") {
 		// $.depositeAccountExchangeRate.refresh();
 		// } else {
 		$.depositeAccountExchangeRate.setValue(depositeExchangeRateValue);
-		$.depositeAccountExchangeRate.field.fireEvent("change");
+		$.depositeAccountExchangeRate.field.fireEvent("change", {bubbles : false});
 		// }
 	}
 	
@@ -307,7 +307,7 @@ if ($.saveableMode === "read") {
 			updateExchangeRate();
 			var depositeExpenseCategory = $.project.getValue().xGet("depositeExpenseCategory");
 			$.moneyExpenseCategory.setValue(depositeExpenseCategory);
-			$.moneyExpenseCategory.field.fireEvent("change");
+			$.moneyExpenseCategory.field.fireEvent("change", {bubbles : false});
 			if ($.depositeFriendAccount && $.depositeFriendAccount.xGet("id")) {
 
 			}
@@ -330,7 +330,7 @@ if ($.saveableMode === "read") {
 	// if ($.friend.getValue()) {
 	// $.friendAccount.$view.setHeight(42);
 	// $.friendAccount.setValue("");
-	// $.friendAccount.field.fireEvent("change");
+	// $.friendAccount.field.fireEvent("change", {bubbles : false});
 	// } else {
 	// $.friendAccount.$view.setHeight(0);
 	// $.friendAccount.setValue("");
