@@ -310,7 +310,7 @@ if ($.saveableMode === "read") {
 									}], function(collection) {
 										Alloy.Globals.Server.loadRecordPictures($.$model.xGet("depositeId"),function(){
 											$.saveModel(saveEndCB, saveErrorCB, {
-												syncFromServer : true
+												syncFromServer : tru
 											});
 										}, saveErrorCB);
 									}, saveErrorCB);
