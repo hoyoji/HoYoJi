@@ -3,8 +3,8 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的账户" autoInit="false"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
-			<Label left="8" width="30%" top="0" height="Ti.UI.FILL" id="accountBalanceAllLabel">账户余额汇总</Label>
-			<Label right="0" width="70%" top="0" height="Ti.UI.FILL" id="accountBalanceAll" name="0" />
+			<Label left="0" width="50%" top="50" height="Ti.UI.FILL" id="accountBalanceAllLabel">账户余额汇总</Label>
+			<Label right="0" width="50%" top="50" height="Ti.UI.FILL" id="accountBalanceAll" text="0"></Label>
 			<Widget src="com.hoyoji.titanium.widget.XTableView"
 			id="moneyAccountsTable" autoInit="false" groupByField="accountType"
 			sortByField="name" pageSize="10" bottom="0" top="42"/>
