@@ -19,6 +19,13 @@
 	}
 }
 
+"#transferOutAmount": {
+	font: {
+		fontSize: 16,
+		fontWeight: 'normal'
+	}
+}
+
 ".firstRow": {
 	color: "#6e6d6d",
 	font: {
