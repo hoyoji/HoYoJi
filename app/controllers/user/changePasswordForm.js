@@ -16,7 +16,7 @@ function updatePassword() {
 	
 	var newPassword = $.newPassword.field.getValue() || "";
 	if (!passwordValidation.test(newPassword)) {
-		$.newPassword.showErrorMsg("新密码长度不对");
+		$.newPassword.showErrorMsg("新密码长度不对);
 		return;
 	}else {
 		var repeat = true;
