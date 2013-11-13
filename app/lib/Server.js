@@ -832,8 +832,8 @@
 							syncFromServer : true
 						});
 
-						successCB(model);
 					});
+					successCB();
 				}, errorCB, "fetchRecordPictures");
 			},
 			// fetchUserImage : function(id, successCB, errorCB, progressCB) {
