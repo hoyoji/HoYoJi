@@ -1,6 +1,10 @@
 Alloy.Globals.extendsBaseWindowController($, arguments[0]);
 var __baseWin = null, __loadOnly;
 
+$.$view.addEventListener("postlayout", function(e){
+	e.cancelBubble = true;
+});
+
 function doClose() {
 	$.$view.setBackgroundColor("#00000000");
 	if (__loadOnly) {

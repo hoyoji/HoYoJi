@@ -1234,10 +1234,10 @@ $.onWindowOpenDo(function() {
 		}
 	}
 });
-
-if (OS_ANDROID) {
-	//$.table.addEventListener("postlayout", showNoDataIndicator);
-}
+// 
+// if (OS_ANDROID) {
+	// //$.table.addEventListener("postlayout", showNoDataIndicator);
+// }
 
 var __noDataIndicator;
 function _showNoDataIndicator() {
@@ -1477,6 +1477,6 @@ exports.autoHideFooter = function(footer) {
 	}
 };
 
-	if($.$attrs.refreshTableAfterServerSync === "true"){
-		Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
-	} 
+if($.$attrs.refreshTableAfterServerSync === "true"){
+	Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
+} 
