@@ -1,0 +1,96 @@
+<h1>Request</h1>
+<p><em>This documentation is not in sync with the Apple documentation</em></p>
+<h2>Reference</h2>
+<pre><code>var request = Social.createRequest({
+  type: Social.TWITTER
+});
+</code></pre>
+<h3>Special note for Facebook requests</h3>
+<p>When you make requests to the Facebook API, you have to create an AccountStore with the
+option to include the <code>Social.FACEBOOK_AUDIENCE</code> key. Example:</p>
+<pre><code>var options = {};
+options[Social.FACEBOOK_APP_ID] = 'api_id';
+options[Social.FACEBOOK_PERMISSIONS]= ['email', 'publish_stream'];
+options[Social.FACEBOOK_AUDIENCE] = Social.FACEBOOK_AUDIENCE_EVERYONE;
+
+var store = Social.createAccountStore({
+  type: Social.ACCOUNT_FACEBOOK,
+  options: options
+});
+
+// continue granting permissions
+</code></pre>
+<h2>Properties</h2>
+<h3>url</h3>
+<p>The URL to make the request. Ex: <code>http://api.twitter.com/1/statuses/public_timeline.json</code>.</p>
+<h3>method</h3>
+<p>On of the 3 request methods:</p>
+<ul>
+<li>Social.REQUEST_METHOD_GET</li>
+<li>Social.REQUEST_METHOD_POST</li>
+<li>Social.REQUEST_METHOD_DELETE</li>
+</ul>
+<h3>account (optional)</h3>
+<p>If you want to authenticate/sign the request, you must provide a valid 
+<a href="account.html">Account</a> object to this property, before you make the request.</p>
+<h2>Tasks</h2>
+<h3>perform()</h3>
+<p>Performs the request. Set the success/failure handlers before calling this method. The
+result will be delivered async.</p>
+<h3>addMultiPartData({...})</h3>
+<p>Adds a binary object to the request, like an image. It accepts the following 3 required keys:</p>
+<ul>
+<li>
+<p><em>name</em>: the name of the argument</p>
+</li>
+<li>
+<p><em>data</em>: a TiBlob with the data to add to the request</p>
+</li>
+<li>
+<p><em>filename</em>: the name of the file you're adding. If the Blob on the previous param
+  is not a file Blob, you need to pass this param to set the correct filename.</p>
+</li>
+<li>
+<p><em>type</em>: a mime type string</p>
+<p>var request = Social.createRequest({...})
+  var image = Ti.Filesystem.getFile(...);</p>
+<p>request.addMultiPartData({
+    name: 'media[]',
+    data: image.read(), // always a TiBlob
+    type: 'image/png'
+  });</p>
+<p>request.perform();</p>
+</li>
+</ul>
+<h2>Events</h2>
+<h3>success</h3>
+<p>Fired when the Request succeeds. The returned JSON response is
+deserialized on the <code>data</code> key on the event object.</p>
+<pre><code>var request = Social.createRequest({
+  type: Social.TWITTER,
+  url: 'http://api.twitter.com/1/statuses/public_timeline.jso',
+  method: Social.REQUEST_METHOD_GET
+});
+
+request.addEventListener('success', function(e) {
+  Ti.API.log(e.data);
+});
+
+request.perform();
+</code></pre>
+<h3>failure</h3>
+<p>Fired when the Request fails. An error explanation should be present on the
+<code>error</code> key.</p>
+<pre><code>var request = Social.createRequest({
+  url: 'http://api.twitter.com/1/statuses/public_timeline.jso',
+  method: Social.REQUEST_METHOD_GET,
+  type: Social.TWITTER
+});
+
+request.addEventListener('failure', function(e) {
+  Ti.API.log("STATUS CODE IS " + e.status);
+  Ti.API.log("ERROR: " + e.error);
+});
+
+request.perform();
+</code></pre>
