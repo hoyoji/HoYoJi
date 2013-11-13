@@ -14,12 +14,14 @@
 
 "#localAmountLabel": {
 	font: {
+		fontSize: 16,
 		fontWeight: 'normal'
 	}
 }
 
 "#interest": {
 	font: {
+		fontSize: 16,
 		fontWeight: 'normal'
 	}
 }
