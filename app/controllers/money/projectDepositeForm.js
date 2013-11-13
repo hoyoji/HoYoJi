@@ -408,7 +408,6 @@ if ($.saveableMode === "read") {
 								}
 							}
 
-							addData.push($.$model.toJSON());
 
 							var incomeMoney = Number(((newAmount * $.$model.xGet("exchangeRate")) / $.depositeAccountExchangeRate.getValue()).toFixed(2));
 							var depositeIncome = Alloy.createModel("MoneyIncome", {
@@ -432,7 +431,11 @@ if ($.saveableMode === "read") {
 							// $.depositeFriendAccount.xSet("currentBalance", $.depositeFriendAccount.xGet("currentBalance") + newAmount);
 							// $.depositeFriendAccount.xAddToSave($);
 							// editData.push($.depositeFriendAccount.toJSON());
-
+							
+							$.picture.__newPictures.forEach(function(picture) {
+								addData.push(picture.toJSON());
+							});
+							addData.push($.$model.toJSON());
 							Alloy.Globals.Server.postData(addData, function(data) {
 								Alloy.Globals.Server.putData(editData, function(data) {
 									$.saveModel(function(e) {
