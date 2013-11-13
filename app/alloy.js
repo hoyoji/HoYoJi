@@ -39,8 +39,24 @@ function isiOS7Plus()
 	}
 	return false;
 }
+function isiOS6Plus()
+{
+  // add iphone specific tests
+  if (Titanium.Platform.name == 'iPhone OS')
+  {
+    var version = Titanium.Platform.version.split(".");
+    var major = parseInt(version[0],10);
+
+    if (major >= 6)
+    {
+      return true;
+    }
+  }
+  return false;
+}  
 
 Alloy.Globals.iOS7 = isiOS7Plus();
+Alloy.Globals.iOS6 = isiOS6Plus();
 
 Alloy.Globals.MenuSections = [];
 Alloy.Globals.openingWindow = {};
