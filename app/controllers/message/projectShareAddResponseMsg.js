@@ -431,7 +431,7 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryAddNewAuthorizationLabel);
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryEditAuthorizationLabel);
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryDeleteAuthorizationLabel);
-
+	
 	$.projectShareAuthorizationDetails.add(authorizationDetailRow1);
 	$.projectShareAuthorizationDetails.add(authorizationDetailRow2);
 	// $.projectShareAuthorizationDetails.add(authorizationDetailRow3);
@@ -471,8 +471,10 @@ $.onWindowOpenDo(function() {
 			wait : true,
 			patch : true
 		});
+		$.body.setBottom(50);
 		$.footerBar.$view.show();
 	} else if ($.$model.xGet('messageState') === "read") {
+		$.body.setBottom(50);
 		$.footerBar.$view.show();
 	} else if ($.$model.xGet('messageState') === "unread") {
 		$.$model.save({
@@ -482,6 +484,7 @@ $.onWindowOpenDo(function() {
 			patch : true
 		});
 	}
+	$.showHideAuthorization.hide();
 });
 
 $.onWindowCloseDo(function() {
