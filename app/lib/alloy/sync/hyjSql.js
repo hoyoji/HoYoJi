@@ -702,6 +702,7 @@ module.exports.beforeModelCreate = function(config, name) {
 			return cache.config[name];
 		} else {
 			config.adapter.db_name = Alloy.Globals.currentUserDatabaseName;
+			cache.Model[name] = null;
 			delete cache.Model[name];
 		}
 	}

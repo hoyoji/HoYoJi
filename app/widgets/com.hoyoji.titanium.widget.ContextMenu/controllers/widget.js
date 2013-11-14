@@ -59,11 +59,13 @@ exports.close = function() {
 	animation.addEventListener('complete', function() {
 		$.widget.hide();
 		Alloy.Globals.MenuSections = [];
+		$.table.setData([]);
 		Alloy.Globals.openingMenu = false;
 	});
 	animation.addEventListener('cancel', function() {
 		$.widget.hide();
 		Alloy.Globals.MenuSections = [];
+		$.table.setData([]);
 		Alloy.Globals.openingMenu = false;
 	});
 	$.menuWrapper.animate(animation);

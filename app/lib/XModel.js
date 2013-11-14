@@ -52,6 +52,10 @@
 						}
 					}
 				});
+				
+				if(this.init){
+					this.init();
+				}
 			},
 			__initializeExistingModel : function(model, resp, options) {
 				if (this.isNew()) {
@@ -603,10 +607,13 @@
 						} else if (attributes[obj] === null) {
 							attributes[obj + "Id"] = null;
 						}
+						attributes[obj] = null;
 						delete attributes[obj];
 					} else if (this.config.hasMany && this.config.hasMany[obj]) {
+						attributes[obj] = null;
 						delete attributes[obj];
 					} else if (!this.config.columns[obj]) {
+						attributes[obj] = null;
 						delete attributes[obj];
 					}
 				}

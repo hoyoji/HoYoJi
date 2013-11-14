@@ -317,7 +317,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 	} else {
 		if(oldTransferOut && !newTransferOut){
-			oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount - newTransferOutAmount);
+			oldTransferOut.xSet("currentBalance", oldTransferOut.xGet("currentBalance") + oldTransferOutAmount);
 		}else if(!oldTransferOut && newTransferOut){
 			newTransferOut.xSet("currentBalance", newTransferOut.xGet("currentBalance") - newTransferOutAmount);
 		}else if(oldTransferOut && newTransferOut){
@@ -330,7 +330,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		}
 		
 		if(oldTransferIn && !newTransferIn){
-			oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount + newTransferInAmount);
+			oldTransferIn.xSet("currentBalance", oldTransferIn.xGet("currentBalance") - oldTransferInAmount);
 		}else if(!oldTransferIn && newTransferIn){
 			newTransferIn.xSet("currentBalance", newTransferIn.xGet("currentBalance") + newTransferInAmount);
 		}else if(oldTransferIn && newTransferIn){
