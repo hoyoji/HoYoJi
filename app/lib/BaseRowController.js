@@ -432,11 +432,14 @@
 				});
 			});
 
-			$.$attrs.$collection && $.$attrs.$collection.on("remove", removeRow);
-			$.onWindowCloseDo(function() {
-				$.$attrs.$collection && $.$attrs.$collection.off("remove", removeRow);
-				// $.$model.off("change", shakeMe);
-			});
+			if($.$attrs.$collection){
+				$.$attrs.$collection.on("remove", removeRow);
+				$.onWindowCloseDo(function() {
+					$.$attrs.$collection.off("remove", removeRow);
+					// $.$model.off("change", shakeMe);
+					console.info("removing row " + $.$view.id);
+				});
+			} 
 
 			$.$view.addEventListener("click", function(e) {
 				if (e.deleteRow || e.expandSection || e.collapseSection) {

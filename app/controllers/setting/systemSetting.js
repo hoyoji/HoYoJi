@@ -1,5 +1,21 @@
 Alloy.Globals.extendsBaseViewController($, arguments[0]);
 
+$.makeContextMenu = function() {
+	var menuSection = Ti.UI.createTableViewSection({
+		headerTitle : "用户操作"
+	});
+	menuSection.add($.createContextMenuItem("导入用户图片", function() {
+		$.picture.importPictureFromGallery();
+	}));
+	return menuSection;
+};
+
+function changePassword() {
+	Alloy.Globals.openWindow("user/changePasswordForm", {
+		currentUser : Alloy.Models.User
+	});
+}
+
 function logout() {
 	$.getCurrentWindow().close();
 	Alloy.Globals.mainWindow.$view.close();
@@ -26,33 +42,9 @@ $.logout.addEventListener("singletap", function(e) {
 	// }
 // });
 
-$.onWindowOpenDo(function() {
-	$.currentVersion.addEventListener("click", openAbout);
-});
-$.onWindowCloseDo(function() {
-	$.currentVersion.removeEventListener("click", openAbout);
-	// $.userView.removeEventListener("click", openUserForm);
-});
 
+$.currentVersion.addEventListener("click", openAbout);
 $.currentVersionNumber.setText(Ti.App.version);
-
-
-$.makeContextMenu = function() {
-	var menuSection = Ti.UI.createTableViewSection({
-		headerTitle : "用户操作"
-	});
-	menuSection.add($.createContextMenuItem("导入用户图片", function() {
-		$.picture.importPictureFromGallery();
-	}));
-	return menuSection;
-};
-
-function changePassword() {
-	Alloy.Globals.openWindow("user/changePasswordForm", {
-		currentUser : Alloy.Models.User
-	});
-}
-
 $.email.rightButton.addEventListener("singletap", function(){
 	alert("很抱歉，验证功能尚未完成！");
 });
@@ -63,24 +55,7 @@ $.nickName.UIInit($, $.getCurrentWindow());
 $.userName.UIInit($, $.getCurrentWindow());
 $.email.UIInit($, $.getCurrentWindow());
 // $.changePassword.UIInit($, $.getCurrentWindow());
-$.titleBar.UIInit($, $.getCurrentWindow());
-
 // $.userPicture.UIInit($, $.getCurrentWindow());
 // $.userName.UIInit($, $.getCurrentWindow());
 $.friendAuthentication.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());
-
-// function click () {
-// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
-// }
-
-// function openCurrency(){
-// Alloy.Globals.openWindow("money/currency/currencyAll");
-// }
-// function openExchange(){
-// Alloy.Globals.openWindow("money/currency/exchangeAll");
-// }
-// function openMoneyAccount(){
-// Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
-// }
-

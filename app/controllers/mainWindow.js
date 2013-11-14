@@ -38,6 +38,7 @@ exports.close = function(e) {
 
 $.onWindowCloseDo(function() {
 	Alloy.Models.User = null;
+	// Alloy.Globals.mainWindow.off("winclose");
 	Alloy.Globals.mainWindow = null;
 	Alloy.Globals.DataStore.initStore();
 	delete Alloy.Globals.currentUserDatabaseName;

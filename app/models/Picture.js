@@ -104,12 +104,14 @@ exports.definition = {
 					f0.write(Ti.Utils.base64decode(record.base64PictureIcon));
 					f0 = null;
 				}
+				record.base64PictureIcon = null;
 				delete record.base64PictureIcon;
 				if (record.base64Picture) {
 					var f1 = Ti.Filesystem.getFile(filePath, record.id + "." + record.pictureType);
 					f1.write(Ti.Utils.base64decode(record.base64Picture));
 					f1 = null;
 				}
+				record.base64Picture = null;
 				delete record.base64Picture;
 			},
 			toJSON : function(options) {
@@ -121,10 +123,13 @@ exports.definition = {
 						} else if (attributes[obj] === null) {
 							attributes[obj + "Id"] = null;
 						}
+						attributes[obj] = null;
 						delete attributes[obj];
 					} else if (this.config.hasMany && this.config.hasMany[obj]) {
+						attributes[obj] = null;
 						delete attributes[obj];
 					} else if (!this.config.columns[obj]) {
+						attributes[obj] = null;
 						delete attributes[obj];
 					}
 				}

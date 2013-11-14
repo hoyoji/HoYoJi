@@ -3,9 +3,15 @@
 		<!-- <Widget src="com.hoyoji.titanium.widget.HoYoJiUIFrame"/> -->
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="我的账户" autoInit="false"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
-			<Widget src="com.hoyoji.titanium.widget.XTableView" 
+			<View id="accountBalanceTotalView" backgroundColor="#f5f5f5" height="0" top="0">
+				<Label left="8" width="50%" id="accountBalanceTotalLabel">账户余额汇总</Label>
+				<Label right="0" width="50%" id="accountBalanceTotal" text="0"></Label>
+			</View>
+			<View id="moneyAccountsTableView" bottom="0" top="0">
+				<Widget src="com.hoyoji.titanium.widget.XTableView"
 				id="moneyAccountsTable" autoInit="false" groupByField="accountType"
 				sortByField="name" pageSize="10" bottom="0" top="0"/>
+			</View>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"
 		buttons="新增账户" imagesFolder="/images/moneyAccount/moneyAccountAll"

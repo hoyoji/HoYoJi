@@ -448,6 +448,7 @@
 										model.syncUpdate(record, dbTrans);
 										model._syncUpdate(record, dbTrans);
 										if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
+											dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id] = null;
 											delete dbTrans.__syncUpdateData[model.config.adapter.collection_name][model.id];
 										}
 									}
@@ -813,6 +814,7 @@
 							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
 							f1 = null;
+							data.base64PictureIcon = null;
 							delete data.base64PictureIcon;
 						}
 
@@ -853,6 +855,7 @@
 							var f1 = Ti.Filesystem.getFile(filePath, data.id + "_icon." + data.pictureType);
 							f1.write(Ti.Utils.base64decode(data.base64PictureIcon));
 							f1 = null;
+							data.base64PictureIcon = null;
 							delete data.base64PictureIcon;
 							var id = data.id;
 							// prevent it to be added to dataStore during object initialization

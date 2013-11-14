@@ -132,13 +132,18 @@
 				e.cancelBubble = true;
 				$.close();
 			});
-			Ti.App.addEventListener("relogin", function(e) {
+			$.$view.addEventListener("close", function(e) {
+				Ti.App.removeEventListener("relogin", reloginCB);
+			});
+			function reloginCB(e) {
 				e.cancelBubble = true;
 				if ($.index) {
 					var currentUserName = Alloy.Models.User.xGet("userName"), currentUserPassword = Alloy.Models.User.xGet("password");
-					Alloy.Globals.mainWindow.on("winclose", function() {
+					function relogin() {
+						Alloy.Globals.mainWindow.$view.removeEventListener("close", relogin);
 						$.login.login(currentUserName, currentUserPassword);
-					});
+					}
+					Alloy.Globals.mainWindow.$view.addEventListener("close", relogin);
 				} else {
 					if ($ === Alloy.Globals.mainWindow) {
 						setTimeout(function() {
@@ -148,7 +153,8 @@
 						$.$view.close();
 					}
 				}
-			});
+			}
+			Ti.App.addEventListener("relogin", reloginCB);
 			$.openLightWindow = function(windowName, options) {
 				var loadOnly = true;
 				if($.parentWindow){
@@ -172,6 +178,8 @@
 							$.$view.removeEventListener("close", removeWin);
 							win.$view.fireEvent("close", {bubbles : false});
 							$.$view.remove(win.$view);
+							win.$view = null;
+							$.lightWindows[windowName] = null;
 							delete $.lightWindows[windowName];
 						}
 						function openWin(e){

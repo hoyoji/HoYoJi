@@ -111,6 +111,20 @@ exports.definition = {
 					return this.xGet("currentBalance").toFixed(2);
 				}
 			},
+			getLocalCurrentBalance : function() {
+				var exchange = null;
+				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var accountCurrency = this.xGet("currency");
+				if (accountCurrency === userCurrency) {
+					exchange = 1;
+				} else {
+					var exchanges = accountCurrency.getExchanges(userCurrency);
+					if (exchanges.length) {
+						exchange = exchanges.at(0).xGet("rate");
+					}
+				}
+				return Number((this.xGet("currentBalance") * exchange).toFixed(2));
+			},
 			syncAddNew : function(record, dbTrans) {
 				var serverCurrentBalance = record.currentBalance;
 				if (!record.currentBalance) {
