@@ -4,7 +4,7 @@ var share_text = function() {
   Social.showActivityItems({
     activityItems: ["Text to share"]
   });
-}
+};
 
 var share_image = function() {
   var image = Ti.Filesystem.getFile('rails.png').read();
@@ -12,7 +12,7 @@ var share_image = function() {
     activityItems: [image],
     excludedActivityTypes: [Social.UIActivityTypePostToWeibo]
   });
-}
+};
 
 var share_text_image = function() {
   var image = Ti.Filesystem.getFile('rails.png').read();
@@ -26,7 +26,7 @@ var share_text_image = function() {
     },
     arrowDirection: Social.UIPopoverArrowDirectionLeft
   });
-}
+};
 
 var data = [
   { title:'Share text', callback:share_text },
