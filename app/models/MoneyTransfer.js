@@ -145,7 +145,7 @@ exports.definition = {
 					var error;
 					if ((this.xGet("transferOutUser") !== Alloy.Models.User) && (this.xGet("transferInUser") !== Alloy.Models.User)) {
 						error = {
-							msg : "转出人和转入人必须有一个是自己"
+							msg : "转出人和转入人必须有一个自己"
 						};
 					}
 					xValidateComplete(error);
@@ -154,7 +154,7 @@ exports.definition = {
 					var error;
 					if ((this.xGet("transferOutUser") !== Alloy.Models.User) && (this.xGet("transferInUser") !== Alloy.Models.User)) {
 						error = {
-							msg : "转出人和转入人必须有一个是自己"
+							msg : "转出人和转入人必须有一个自己"
 						};
 					}
 					xValidateComplete(error);

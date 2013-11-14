@@ -38,8 +38,8 @@
 					<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				</View>
 				<View id="autoAddCategoryView" height="42" backgroundColor="#f5f5f5">
-					<Label left="8" width="50%" height="42" class="fieldLabel">创建预设分类</Label>
-					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="50%" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"
+					<Label left="8" width="40%" height="42" class="fieldLabel">创建预设分类</Label>
+					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSwitcher" right="0" width="60%" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"
 					id="autoAddCategory" autoInit="false"
 					hightLight="false"
 					items="是,否"
