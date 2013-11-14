@@ -1202,8 +1202,9 @@ if (pageSize > 0) {
 
 $.onWindowOpenDo(function() {
 	if(!$.$attrs.previousTable){
-		$.getCurrentWindow().$view.addEventListener("hide", function() {
-			$.closeSubTables();
+		$.getCurrentWindow().$view.addEventListener("hide", $.closeSubTables);
+		$.onWindowCloseDo(function(){
+			$.getCurrentWindow().$view.removeEventListener("hide", $.closeSubTables);
 		});
 	}
 	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {

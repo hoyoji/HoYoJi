@@ -49,6 +49,7 @@ exports.openCachedWindow = function(contentController) {
 			$.$view.fireEvent("show", {bubbles : false});
 		}
 		if (contentController) {
+			Alloy.Globals.openingWindow[contentController] = null;
 			delete Alloy.Globals.openingWindow[contentController];
 		}
 	}
@@ -115,22 +116,26 @@ exports.openWin = function(contentController, options, loadOnly) {
 		// }
 	// }
 	function loadContent() {
-		// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
-			// $.content = Alloy.Globals.moneyAddNewView;
-		// } else {
-			$.content = $.__views["content"] = Alloy.createController(contentController, options);
-		// }
-		$.content.setParent($.contentView);
-		$.content.UIInit($, $);
+		if(contentController !== "empty"){
+			// if(contentController === "money/moneyAddNew" &&  Alloy.Globals.moneyAddNewView &&  !$.$attrs.selectedModel){
+				// $.content = Alloy.Globals.moneyAddNewView;
+			// } else {
+				$.content = $.__views["content"] = Alloy.createController(contentController, options);
+			// }
+			$.content.setParent($.contentView);
+			$.content.UIInit($, $);
+		}
 		$.$view.fireEvent("contentready", {bubbles : false});
 	}
 
 	if (!options.selectorCallback) {
-		$.getCurrentWindow().$view.addEventListener("show", function() {
+		function loadContent1() {
+			$.getCurrentWindow().$view.removeEventListener("show", loadContent1);
 			$.showActivityIndicator();
 			loadContent();
 			$.hideActivityIndicator();
-		});
+		}
+		$.getCurrentWindow().$view.addEventListener("show", loadContent1);
 	} else {
 		loadContent();
 	}

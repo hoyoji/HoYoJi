@@ -5,6 +5,7 @@ var refreshButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", nul
 	left : 5,
 	height : Ti.UI.FILL,
 	width : 45,
+	autoInit : "false",
 	image : "/images/home/sync"
 });
 refreshButton.addEventListener("singletap", function(e) {

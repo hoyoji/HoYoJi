@@ -122,16 +122,20 @@
 					windowPreListenCallback(e, $);
 				}
 				if (windowCallback) {
-					$.$view.addEventListener(e.windowEvent, function(cbE) {
+					function winCB(cbE) {
 						windowCallback(cbE, $);
+					}
+					$.$view.addEventListener(e.windowEvent, winCB);
+					$.$view.addEventListener("close", function(){
+						$.$view.removeEventListener(e.windowEvent, winCB);
 					});
 				}
 				return false;
 			});
-			$.$view.addEventListener("closewin", function(e) {
-				e.cancelBubble = true;
-				$.close();
-			});
+			// $.$view.addEventListener("closewin", function(e) {
+				// e.cancelBubble = true;
+				// $.close();
+			// });
 			$.$view.addEventListener("close", function(e) {
 				Ti.App.removeEventListener("relogin", reloginCB);
 			});

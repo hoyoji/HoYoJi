@@ -214,6 +214,8 @@
 					$.trigger("winclose", {
 						bubbles : false
 					});
+					$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
+					$.$view.removeEventListener("registerwindowevent", registerWindowEvent);
 				},
 				closeSoftKeyboard : function() {
 					if (!$.__hiddenTextField) {
@@ -274,6 +276,11 @@
 						}
 					}
 				});
+				// $.onWindowCloseDo(function(){
+					// if ($.__currentWindow) {
+						// $.__currentWindow.$view.removeEventListener("detectwindow", )
+					// }
+				// });
 			}
 
 			//Ti.App.addEventListener("winopen", detectWindow);

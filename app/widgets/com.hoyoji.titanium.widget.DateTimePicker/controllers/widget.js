@@ -90,15 +90,18 @@ $.datePicker.addEventListener("change", updateFieldValue);
 if(OS_ANDROID){
 	$.timePicker.addEventListener("change", updateFieldValue);
 }
-
+function closeOnTouchStart(e){
+	if(activeTextField){
+			exports.close();
+	}
+}
 $.onWindowOpenDo(function(){
 	$.$view.addEventListener("touchstart", function(e){
 		e.cancelBubble = true;
 	});
-	$.getCurrentWindow().$view.addEventListener("touchstart", function(e){
-		if(activeTextField){
-			exports.close();
-		}
-	});
+	$.getCurrentWindow().$view.addEventListener("touchstart", closeOnTouchStart);
 });
 
+$.onWindowCloseDo(function(){
+	$.getCurrentWindow().$view.removeEventListener("touchstart", closeOnTouchStart);
+});

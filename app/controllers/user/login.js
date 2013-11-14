@@ -281,7 +281,7 @@ function loginFail(msg) {
 }
 
 function openRegister(e) {
-	Alloy.Globals.openWindow("user/registerForm", {
+	Alloy.Globals.openWindow("empty", {
 		$model : "User",
 		noResetFormWhenClose : true
 	});

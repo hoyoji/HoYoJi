@@ -425,10 +425,14 @@
 				if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 					$.setSelected(true);
 				}
-				$.getCurrentWindow().$view.addEventListener("show", function() {
+				function setSelected() {
 					if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectedModel === $.$model) {
 						$.setSelected(true);
 					}
+				}
+				$.getCurrentWindow().$view.addEventListener("show", setSelected);
+				$.onWindowCloseDo(function(){
+					$.getCurrentWindow().$view.removeEventListener("show", setSelected);
 				});
 			});
 

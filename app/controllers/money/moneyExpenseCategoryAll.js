@@ -30,7 +30,7 @@ $.moneyExpenseCategoriesTable.addCollection(collection);
 $.moneyExpenseCategoriesTable.autoHideFooter($.footerBar);
 
 $.onWindowOpenDo(function() {
-	$.getCurrentWindow().$view.addEventListener("show", function() {
+	function onShow() {
 		if(selectedProject === $.$attrs.selectedProject){
 			return;
 		}
@@ -44,6 +44,10 @@ $.onWindowOpenDo(function() {
 			return model.xPrevious("parentExpenseCategory") === null && model.xGet("id") !== selectedProject.xGet("depositeExpenseCategoryId");
 		}, $);
 		$.moneyExpenseCategoriesTable.addCollection(collection);
+	}
+	$.getCurrentWindow().$view.addEventListener("show", onShow);
+	$.onWindowCloseDo(function(){
+		$.getCurrentWindow().$view.removeEventListener("show", onShow);
 	});
 });
 

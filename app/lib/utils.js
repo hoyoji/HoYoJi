@@ -199,9 +199,9 @@
 					view.addEventListener("becameclean", function(e) {
 						scView.fireEvent("becameclean", e);
 					});
-					view.addEventListener("closewin", function(e) {
-						scView.fireEvent("closewin", e);
-					});
+					// view.addEventListener("closewin", function(e) {
+						// scView.fireEvent("closewin", e);
+					// });
 					view.addEventListener("opencontextmenu", function(e) {
 						if (!e.firstScrollableView) {
 							e.firstScrollableView = scView;
