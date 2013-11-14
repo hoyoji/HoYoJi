@@ -29,7 +29,7 @@ function onFooterbarTap(e) {
 	if (e.source.id === "moneyAddNew") {
 		moneyAddNewWindow = $.getCurrentWindow().openLightWindow("money/moneyAddNew");
 	} else if (e.source.id === "moneyAccounts") {
-		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll");
+		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountAll",{showAccountBalanceTotal: true});
 	} else if (e.source.id === "report") {
 		Alloy.Globals.openWindow("money/report/transactionReport");
 	}

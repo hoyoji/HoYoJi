@@ -37,6 +37,32 @@ $.moneyAccountsTable.autoHideFooter($.footerBar);
 
 $.moneyAccountsTable.fetchNextPage();
 
+$.onWindowOpenDo(function() {
+	if ($.$attrs.showAccountBalanceTotal) {
+		$.accountBalanceTotalView.setHeight(42);
+		$.moneyAccountsTableView.setTop(42);
+		updateTotalBalance();
+		Alloy.Models.User.xGet("moneyAccounts").on("sync", updateTotalBalance);
+		Alloy.Models.User.xGet("moneyAccounts").on("add", updateTotalBalance);
+		Alloy.Models.User.xGet("moneyAccounts").on("remove", updateTotalBalance);
+	}
+});
+$.onWindowCloseDo(function() {
+	if ($.$attrs.showAccountBalanceTotal) {
+		Alloy.Models.User.xGet("moneyAccounts").off("sync", updateTotalBalance);
+		Alloy.Models.User.xGet("moneyAccounts").off("add", updateTotalBalance);
+		Alloy.Models.User.xGet("moneyAccounts").off("remove", updateTotalBalance);
+	}
+});
+
+function updateTotalBalance() {
+	var totalBalance = 0;
+	Alloy.Models.User.xGet("moneyAccounts").forEach(function(account) {
+		totalBalance = totalBalance + account.getLocalCurrentBalance();
+	});
+	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + totalBalance);
+}
+
 function onFooterbarTap(e) {
 	if (e.source.id === "addMoneyAccount") {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
@@ -50,4 +76,5 @@ function onFooterbarTap(e) {
 		});
 	}
 }
+
 $.titleBar.UIInit($, $.getCurrentWindow());
