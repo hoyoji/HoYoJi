@@ -55,7 +55,7 @@ function sendAddFriendMessage(friendlength) {
 				"messageState" : "new",
 				"messageTitle" : "好友请求",
 				"date" : date,
-				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "添加您为好友",
+				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "成功添加您为好友",
 				"messageBoxId" : $.$model.xGet("messageBoxId")
 			}, function() {
 				//本地创建好友
@@ -76,7 +76,7 @@ function sendAddFriendMessage(friendlength) {
 					ownerUserId : Alloy.Models.User.id,
 					friendUserId : $.$model.xGet("id")
 				}], function(collection) {
-					alert("用户不需要验证,可以直接添加");
+					alert("用户不需要验证,添加好友成功");
 				}, function(e) {
 					alert(e.__summary.msg);
 				});
