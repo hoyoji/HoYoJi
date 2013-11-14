@@ -7,6 +7,10 @@ if(OS_ANDROID){
 
 Alloy.Globals.indexWindow = $;
 
+$.onWindowCloseDo(function(){
+	Alloy.Globals.indexWindow = null;
+});
+
 // if(OS_IOS){
 	// var ptrCtrl = Alloy.createWidget('nl.fokkezb.pullToRefresh', null, {
 	    // table: $.tableUsers,
@@ -24,7 +28,7 @@ Alloy.Globals.indexWindow = $;
 	// }
 // }
 
-if (Ti.UI.Android){
+if (OS_ANDROID){
   $.$view.setWindowSoftInputMode(Ti.UI.Android.SOFT_INPUT_STATE_ALWAYS_HIDDEN | Ti.UI.Android.SOFT_INPUT_ADJUST_PAN);
 }
 

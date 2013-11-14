@@ -1479,4 +1479,7 @@ exports.autoHideFooter = function(footer) {
 
 if($.$attrs.refreshTableAfterServerSync === "true"){
 	Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
+	$.onWindowCloseDo(function(){
+		Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
+	});
 } 

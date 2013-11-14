@@ -299,7 +299,7 @@ function showTestLabel(){
 		}
 }
 
-$.getCurrentWindow().onWindowOpenDo(function() {
+$.onWindowOpenDo(function() {
 	if (Ti.App.Properties.getObject("userData")) {
 		var activityWindow = Alloy.createController("activityMask");
 		activityWindow.open("正在登录...");
