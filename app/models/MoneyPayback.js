@@ -289,14 +289,14 @@ exports.definition = {
 						moneyPaybackApportion = Alloy.createModel("MoneyPaybackApportion", {
 							moneyPayback : self,
 							friendUser : self.xGet("ownerUser"),
-							amount : Number(self.xGet("amount")) || 0,
+							amount : Number(self.xGet("amount") + self.xGet("interest")) || 0,
 							apportionType : "Average"
 						});
 						self.xGet("moneyPaybackApportions").add(moneyPaybackApportion);
 					} else {
 						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
 							if (projectShareAuthorization.xGet("state") === "Accept") {
-								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								amount = Number((((self.xGet("amount") + self.xGet("interest")) || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
 								moneyPaybackApportion = Alloy.createModel("MoneyPaybackApportion", {
 									moneyPayback : self,
 									friendUser : projectShareAuthorization.xGet("friendUser"),
@@ -307,8 +307,8 @@ exports.definition = {
 								amountTotal += amount;
 							}
 						});
-						if (amountTotal !== self.xGet("amount")) {
-							moneyPaybackApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						if (amountTotal !== (self.xGet("amount") + self.xGet("interest"))) {
+							moneyPaybackApportion.xSet("amount", amount + ((self.xGet("amount") + self.xGet("interest")) - amountTotal));
 						}
 					}
 					this.hasAddedApportions = true;

@@ -123,7 +123,7 @@ $.onWindowOpenDo(function() {
 					fixedTotal = fixedTotal + item.xGet("amount");
 				}
 			});
-			if ($.$model.xGet("amount") + fixedTotal > $.$model.xGet("moneyPayback").xGet("amount")) {
+			if ($.$model.xGet("amount") + fixedTotal > ($.$model.xGet("moneyPayback").xGet("amount") + $.$model.xGet("moneyPayback").xGet("interest"))) {
 				console.info("++amountValue++" + $.$model.xGet("amount") + "++++fixedTotal+++" + fixedTotal);
 				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyPayback").xGet("amount") + ")，请重新调整");
 			} else if ($.$model.xGet("amount") !== oldAmount) {
@@ -156,7 +156,7 @@ function updateAmount() {
 				averageApportions.push(item);
 			}
 		});
-		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > $.$model.xGet("moneyPayback").xGet("amount"))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
+		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > ($.$model.xGet("moneyPayback").xGet("amount") + $.$model.xGet("moneyPayback").xGet("interest")))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
 			alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyPayback").xGet("amount") + ")，请重新调整");
 		} else {
 			if (averageApportions.length > 0) {
@@ -168,7 +168,7 @@ function updateAmount() {
 				}
 
 				console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyPayback").xGet("amount") - averageTotal));
-				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyPayback").xGet("amount") - averageTotal - fixedTotal);
+				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyPayback").xGet("amount") + $.$model.xGet("moneyPayback").xGet("interest") - averageTotal - fixedTotal);
 
 			}
 		}
