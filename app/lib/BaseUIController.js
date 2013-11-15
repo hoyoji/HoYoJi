@@ -214,7 +214,9 @@
 					$.trigger("winclose", {
 						bubbles : false
 					});
-					$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
+					if($.__currentWindow.$view){
+						$.__currentWindow.$view.removeEventListener("close", $.triggerWindowCloseEvent);
+					}
 					$.$view.removeEventListener("registerwindowevent", registerWindowEvent);
 				},
 				closeSoftKeyboard : function() {

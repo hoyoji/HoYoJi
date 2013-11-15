@@ -12,7 +12,7 @@
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			} else if($.$view.id !== "lightWindow"){
 				$.$view.setTop(Alloy.Globals.iOS7 ? 20 : 0);
-				$.$view.setStatusBarStyle(Ti.UI.iPhone.StatusBar.LIGHT_CONTENT);
+				//$.$view.setStatusBarStyle(Ti.UI.iPhone.StatusBar.LIGHT_CONTENT);
 			}
 
 			_.extend($, {
