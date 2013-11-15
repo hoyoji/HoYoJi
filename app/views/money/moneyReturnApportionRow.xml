@@ -1,0 +1,47 @@
+<Alloy>
+	<View class="container" height="90">
+		<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
+			<Widget src="com.hoyoji.titanium.widget.AutoBindPicturePreview" width="56" height="56" left="5"
+				id="picture" autoInit="false"
+				bindModel = "$.$model"
+				bindAttribute = "friendUser"
+				bindAttributeIsModel = "pictureId"/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" top="10" right="20" height="Ti.UI.SIZE"
+				id="apportionType" autoInit="false"
+			hightLight="false"
+			bindModel="$.$model"
+			bindAttribute="getApportionType()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="66" 
+				id="name" autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "getFriendDisplayName()"
+			/>
+			<View id="amountView" layout="horizontal" horizontalWrap="false" right="15" height="Ti.UI.SIZE" width="30%">
+			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel"  width="Ti.UI.SIZE"
+			id="moneySymbol" autoInit="false"
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel = "$.$model"
+			bindAttribute = "getMoneySymbol()"
+			/>
+			<Widget src="com.hoyoji.titanium.widget.AutoUpdatableNumericField"  noBottomLine="true" leftSize="3"
+				id="amount" autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "amount"
+			/>
+			</View>
+			<Widget id="localAmount" src="com.hoyoji.titanium.widget.AutoBindLabel" right="15"  width="Ti.UI.SIZE"
+				autoInit="false"
+			editModeEditability="noneditable" addModeEditability="noneditable"
+			bindModel = "$.$model"
+			bindAttribute = "getAmount()"
+			/>
+			<Widget id="sharePercentage" src="com.hoyoji.titanium.widget.AutoBindLabel" top="59" left="66" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+				autoInit="false"
+			bindModel = "$.$model"
+			bindAttribute = "getSharePercentageRow()"
+			/>
+			<!-- <Label id="removeMember" right="0" height="90"  width="10%" backgroundColor="red">del<Label/> -->
+		</View>
+	</View>
+</Alloy>

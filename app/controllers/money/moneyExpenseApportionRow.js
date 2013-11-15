@@ -53,6 +53,7 @@ function deleteApportion() {
 
 function setToAverage() {
 	$.$model.xSet("apportionType", "Average");
+	$.apportionType.refresh();
 	updateAmount();
 }
 
@@ -111,7 +112,7 @@ $.onWindowOpenDo(function() {
 	// }
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.amount.getValue() && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.apportionFocus) {
+		if ($.$model.xGet("amount") && $.$model.xGet("moneyExpense").xGet("amount") && $.$model.apportionFocus) {
 			$.$model.apportionFocus = false;
 			if ($.$model.xGet("apportionType") === "Average") {
 				$.$model.xSet("apportionType", "Fixed");
@@ -122,10 +123,10 @@ $.onWindowOpenDo(function() {
 					fixedTotal = fixedTotal + item.xGet("amount");
 				}
 			});
-			if ($.amount.getValue() + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
-				console.info("++amountValue++" + $.amount.getValue() + "++++fixedTotal+++" + fixedTotal);
+			if ($.$model.xGet("amount") + fixedTotal > $.$model.xGet("moneyExpense").xGet("amount")) {
+				console.info("++amountValue++" + $.$model.xGet("amount") + "++++fixedTotal+++" + fixedTotal);
 				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyExpense").xGet("amount") + ")，请重新调整");
-			} else if ($.amount.getValue() !== oldAmount) {
+			} else if ($.$model.xGet("amount") !== oldAmount) {
 				updateAmount();
 			}
 		}

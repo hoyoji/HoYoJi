@@ -1,7 +1,7 @@
 Alloy.Globals.extendsBaseRowController($, arguments[0]);
 
 $.onWindowOpenDo(function() {
-	if ($.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User) {
+	if ($.$model.xGet("moneyReturn").xGet("ownerUser") !== Alloy.Models.User) {
 		$.amountView.setHeight(0);
 	}else {
 		$.localAmount.hide();
@@ -14,11 +14,11 @@ $.makeContextMenu = function() {
 	});
 	menuSection.add($.createContextMenuItem("移除成员", function() {
 		deleteApportion();
-	}, $.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User));
+	}, $.$model.xGet("moneyReturn").xGet("ownerUser") !== Alloy.Models.User));
 	menuSection.add($.createContextMenuItem("设为均摊", function() {
 		setToAverage();
-	}, $.$model.xGet("moneyIncome").xGet("ownerUser") !== Alloy.Models.User || $.$model.xGet("apportionType") === "Average"));
-
+	}, $.$model.xGet("moneyReturn").xGet("ownerUser") !== Alloy.Models.User || $.$model.xGet("apportionType") === "Average"));
+	
 	return menuSection;
 };
 
@@ -38,10 +38,10 @@ $.onWindowCloseDo(function() {
 });
 
 function deleteApportion() {
-	if ($.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
+	if ($.$model.xGet("moneyReturn").xGet("ownerUser") === Alloy.Models.User) {
 		if ($.$model.isNew()) {
 			$.$model.__xDeletedHidden = true;
-			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").remove($.$model);
+			$.$model.xGet("moneyReturn").xGet("moneyReturnApportions").remove($.$model);
 			updateAmount();
 		} else {
 			$.deleteModel();
@@ -66,7 +66,7 @@ function setToAverage() {
 // });
 
 $.$view.addEventListener("singletap", function(e) {
-	if ($.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
+	if ($.$model.xGet("moneyReturn").xGet("ownerUser") === Alloy.Models.User) {
 		// if (e.source !== $.amount.$view || e.source !== $.apportionType.$view) {
 		// if ($.$model.xGet("apportionType") === "Fixed") {
 		// $.$model.xSet("apportionType", "Average");
@@ -76,54 +76,56 @@ $.$view.addEventListener("singletap", function(e) {
 		// }
 		$.$model.apportionFocus = true;
 		$.getCurrentWindow().openNumericKeyboard($.amount);
+
 	} else {
 		alert("没有权限");
 	}
 });
 
 // function editApportionType() {
-	// if ($.$model.xGet("apportionType") === "Fixed") {
-		// $.amount.$attrs.editModeEditability = "editable";
-		// $.amount.$attrs.addModeEditability = "editable";
-	// } else {
-		// $.amount.$attrs.editModeEditability = "noneditable";
-		// $.amount.$attrs.addModeEditability = "noneditable";
-		// updateAmount();
-	// }
+// if ($.$model.xGet("apportionType") === "Fixed") {
+// $.amount.$attrs.editModeEditability = "editable";
+// $.amount.$attrs.addModeEditability = "editable";
+// } else {
+// $.amount.$attrs.editModeEditability = "noneditable";
+// $.amount.$attrs.addModeEditability = "noneditable";
+// updateAmount();
 // }
-// 
+// }
+//
 // $.$model.on("_xchange:apportionType", editApportionType);
 // $.onWindowCloseDo(function() {
-	// $.$model.off("_xchange:apportionType", editApportionType);
+// $.$model.off("_xchange:apportionType", editApportionType);
 // });
-// 
+
 // $.amount.field.addEventListener("singletap", function() {
-	// if ($.$model.xGet("apportionType") === "Fixed") {
-		// $.$model.apportionFocus = true;
-	// }
+// // if ($.$model.xGet("apportionType") === "Fixed") {
+// $.$model.apportionFocus = true;
+// // }
 // });
 
 var oldAmount;
 $.onWindowOpenDo(function() {
-	// if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {
-		// $.amount.$attrs.editModeEditability = "editable";
-		// $.amount.$attrs.addModeEditability = "editable";
+	// if ($.$model.xGet("apportionType") === "Fixed" && $.$model.xGet("moneyReturn").xGet("ownerUser") === Alloy.Models.User) {
+	// $.amount.$attrs.editModeEditability = "editable";
+	// $.amount.$attrs.addModeEditability = "editable";
 	// }
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.$model.xGet("amount") && $.$model.xGet("moneyIncome").xGet("amount") && $.$model.apportionFocus) {
+		if ($.$model.xGet("amount") && $.$model.xGet("moneyReturn").xGet("amount") && $.$model.apportionFocus) {
 			$.$model.apportionFocus = false;
 			if ($.$model.xGet("apportionType") === "Average") {
 				$.$model.xSet("apportionType", "Fixed");
 			}
 			var fixedTotal = 0;
-			$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
+			$.$model.xGet("moneyReturn").xGet("moneyReturnApportions").forEach(function(item) {
 				if (!item.__xDeletedHidden && !item.__xDeleted && item.xGet("apportionType") === "Fixed" && item !== $.$model) {
 					fixedTotal = fixedTotal + item.xGet("amount");
 				}
 			});
-			if ($.$model.xGet("amount") + fixedTotal > $.$model.xGet("moneyIncome").xGet("amount")) {
-				alert("分摊总额大于实际收入金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新调整");
+			if ($.$model.xGet("amount") + fixedTotal > $.$model.xGet("moneyReturn").xGet("amount")) {
+				console.info("++amountValue++" + $.$model.xGet("amount") + "++++fixedTotal+++" + fixedTotal);
+				alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyReturn").xGet("amount") + ")，请重新调整");
 			} else if ($.$model.xGet("amount") !== oldAmount) {
 				updateAmount();
 			}
@@ -136,35 +138,38 @@ if ($.$model.isNew()) {
 }
 
 function updateAmount() {
-	var moneyIncomeApportionsArray = [];
-	$.$model.xGet("moneyIncome").xGet("moneyIncomeApportions").forEach(function(item) {
+	var moneyReturnApportionsArray = [];
+	$.$model.xGet("moneyReturn").xGet("moneyReturnApportions").forEach(function(item) {
 		if (!item.__xDeletedHidden && !item.__xDeleted) {
-			moneyIncomeApportionsArray.push(item);
+			moneyReturnApportionsArray.push(item);
 		}
 	});
-	if (moneyIncomeApportionsArray.length > 0) {
-		var income = $.$model.xGet("moneyIncome");
-		var incomeAmount = income.xGet("amount") || 0;
+	if (moneyReturnApportionsArray.length > 0) {
+		var moneyReturn = $.$model.xGet("moneyReturn");
+		var returnAmount = moneyReturn.xGet("amount") || 0;
 		var averageApportions = [];
 		var fixedTotal = 0;
-		moneyIncomeApportionsArray.forEach(function(item) {
+		moneyReturnApportionsArray.forEach(function(item) {
 			if (item.xGet("apportionType") === "Fixed") {
 				fixedTotal = fixedTotal + item.xGet("amount");
 			} else {
 				averageApportions.push(item);
 			}
 		});
-		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > $.$model.xGet("moneyIncome").xGet("amount"))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
-			alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyIncome").xGet("amount") + ")，请重新调整");
+		if ($.$model.hasChanged("apportionType") && $.$model.xGet("apportionType") === "Average" && (fixedTotal > $.$model.xGet("moneyReturn").xGet("amount"))) {//若其他固定分摊总和大于收支总额，分摊从固定转成均摊不作操作
+			alert("分摊总额大于实际支出金额(" + $.$model.xGet("moneyReturn").xGet("amount") + ")，请重新调整");
 		} else {
 			if (averageApportions.length > 0) {
-				var average = Number(((incomeAmount - fixedTotal) / averageApportions.length).toFixed(2));
+				var average = Number(((returnAmount - fixedTotal) / averageApportions.length).toFixed(2));
 				var averageTotal = 0;
 				for (var i = 0; i < averageApportions.length - 1; i++) {
 					averageApportions[i].xSet("amount", average);
 					averageTotal += average;
 				}
-				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyIncome").xGet("amount") - averageTotal - fixedTotal);
+
+				console.info("++averageTotal++" + averageTotal + "+++averageApportionsLength+++" + averageApportions.length + "++++++" + ($.$model.xGet("moneyReturn").xGet("amount") - averageTotal));
+				averageApportions[averageApportions.length - 1].xSet("amount", $.$model.xGet("moneyReturn").xGet("amount") - averageTotal - fixedTotal);
+
 			}
 		}
 	}

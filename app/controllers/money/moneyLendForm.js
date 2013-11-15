@@ -71,8 +71,104 @@ $.beforeProjectSelectorCallback = function(project, successCallback) {
 	}
 };
 
+$.project.rightButton.addEventListener("singletap", function() {//未输入金额时，不打开分摊
+	if ($.amount.getValue()) {
+		Alloy.Globals.openWindow("money/moneyLendApportionAll", {
+			selectedLend : $.$model,
+			closeWithoutSave : true
+		});
+	} else {
+		alert("请先输入金额，再调整分摊");
+	}
+});
+
+$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if (!$.$model.xGet("moneyAccount")) {
+		alert("请选择账户");
+		return;
+	}
+	if (!$.$model.xGet("project")) {
+		alert("请选择项目");
+		return;
+	}
+	$.exchangeRate.rightButton.setEnabled(false);
+	$.exchangeRate.rightButton.showActivityIndicator();
+	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+		$.exchangeRate.setValue(rate);
+		$.exchangeRate.field.fireEvent("change", {
+			bubbles : false
+		});
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
+	}, function(e) {
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
+		alert(e.__summary.msg);
+	});
+});
+
+$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
+	if (!$.$model.xGet("moneyAccount")) {
+		alert("请选择账户");
+		return;
+	}
+	if (!$.$model.xGet("project")) {
+		alert("请选择项目");
+		return;
+	}
+	$.exchangeRate.rightButton.setEnabled(false);
+	$.exchangeRate.rightButton.showActivityIndicator();
+	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
+		$.exchangeRate.setValue(rate);
+		$.exchangeRate.field.fireEvent("change", {bubbles : false});
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
+	}, function(e) {
+		$.exchangeRate.rightButton.setEnabled(true);
+		$.exchangeRate.rightButton.hideActivityIndicator();
+		alert(e.__summary.msg);
+	});
+});
+
+
+function updateApportionAmount() {//amount改变，平均分摊也跟着改变
+	if ($.$model.xGet("moneyLendApportions").length > 0) {
+		var fixedTotal = 0;
+		var averageApportionsNotDelete = [];
+		$.$model.xGet("moneyLendApportions").forEach(function(item) {//获取当前固定分摊的总和，平均分摊的每个元素
+			if (item.__xDeletedHidden) {
+				// skip these
+			} else if (item.__xDeleted) {
+				item.xSet("amount", 0);
+			} else if (item.xGet("apportionType") === "Fixed") {
+				fixedTotal = fixedTotal + item.xGet("amount");
+			} else if (item.xGet("apportionType") === "Average") {
+				averageApportionsNotDelete.push(item);
+			}
+		});
+
+		if (averageApportionsNotDelete.length > 0) {//更新平均分摊的金额
+			var average = ($.amount.getValue() - fixedTotal ) / averageApportionsNotDelete.length;
+			average = Number(average.toFixed(2));
+			// 分摊取两位小数
+			var averageTotal = 0;
+			averageApportionsNotDelete.forEach(function(item) {
+				item.xSet("amount", average);
+				averageTotal += average;
+			});
+			// 把分不尽的加到最后一个人身上
+			if (averageTotal !== $.amount.getValue() - fixedTotal) {
+				averageApportionsNotDelete[averageApportionsNotDelete.length - 1].xSet("amount", average + ($.amount.getValue() - fixedTotal - averageTotal));
+			}
+		}
+	}
+}
+
+$.amount.field.addEventListener("change", updateApportionAmount);
+
 var oldAmount;
 var oldMoneyAccount;
+var oldApportions = [];
 
 if (!$.$model) {
 	if ($.$attrs.addNewAgant) {
@@ -108,29 +204,6 @@ if ($.saveableMode === "edit") {
 	$.project.field.setColor("#6e6d6d");
 }
 
-$.exchangeRate.rightButton.addEventListener("singletap", function(e) {
-	if (!$.$model.xGet("moneyAccount")) {
-		alert("请选择账户");
-		return;
-	}
-	if (!$.$model.xGet("project")) {
-		alert("请选择项目");
-		return;
-	}
-	$.exchangeRate.rightButton.setEnabled(false);
-	$.exchangeRate.rightButton.showActivityIndicator();
-	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
-		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change", {bubbles : false});
-		$.exchangeRate.rightButton.setEnabled(true);
-		$.exchangeRate.rightButton.hideActivityIndicator();
-	}, function(e) {
-		$.exchangeRate.rightButton.setEnabled(true);
-		$.exchangeRate.rightButton.hideActivityIndicator();
-		alert(e.__summary.msg);
-	});
-});
-
 function updateAccountBalance() {
 	$.moneyAccount.updateField();
 }
@@ -138,6 +211,58 @@ function updateAccountBalance() {
 $.$model.on("xchange:moneyAccount.currentBalance", updateAccountBalance);
 $.onWindowCloseDo(function() {
 	$.$model.off("xchange:moneyAccount.currentBalance", updateAccountBalance);
+});
+
+function deleteApportion(apportionModel) {//从form打开apportion进行删除，只是把该row设成xDeleted 在form保存时才进行真正的删除，删除后要重新计算平均分摊
+	var lendAmount = $.$model.xGet("amount");
+	var moneyLendApportions = $.$model.xGet("moneyLendApportions");
+	var averageApportions = [];
+	var fixedTotal = 0;
+	moneyLendApportions.forEach(function(item) {
+		if (!item.__xDeleted && !item.__xDeletedHidden) {
+			if (item.xGet("apportionType") === "Fixed") {
+				fixedTotal = fixedTotal + item.xGet("amount");
+			} else {
+				averageApportions.push(item);
+			}
+		} else {
+			item.xSet("amount", 0);
+		}
+	});
+	if (averageApportions.length > 0) {
+		var average = Number(((lendAmount - fixedTotal) / averageApportions.length).toFixed(2));
+		var averageTotal = 0;
+		for (var i = 0; i < averageApportions.length - 1; i++) {
+			averageApportions[i].xSet("amount", average);
+			averageTotal += average;
+		}
+		averageApportions[averageApportions.length - 1].xSet("amount", lendAmount - averageTotal - fixedTotal);
+	}
+}
+
+// $.onWindowOpenDo(function() {
+//如果是多人分摊则显示分摊button，反之隐藏
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+	$.project.hideRightButton();
+} else {
+	$.project.showRightButton();
+}
+// });
+
+var apportionsDirty = false;
+function updateApportions() {
+	if (!apportionsDirty) {
+		$.becameDirty();
+		apportionsDirty = true;
+	}
+}
+
+$.$model.xGet("moneyLendApportions").on("xdelete", deleteApportion);
+$.$model.xGet("moneyLendApportions").on("add _xchange xdelete", updateApportions);
+
+$.onWindowCloseDo(function() {
+	$.$model.xGet("moneyLendApportions").off("xdelete", deleteApportion);
+	$.$model.xGet("moneyLendApportions").off("add _xchange xdelete", updateApportions);
 });
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
@@ -149,6 +274,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 	$.ownerUser.setHeight(42);
 	$.amount.$view.setHeight(0);
+	$.moneyAccount.$view.setHeight(0);
 } else {
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {
@@ -174,9 +300,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
-
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
-	$.project.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
 		var exchangeRateValue;
@@ -206,10 +330,44 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	}
 
 
-	$.$model.on("xchange:exchangeRate", refreshExchangeRate);
-	$.onWindowCloseDo(function() {
-		$.$model.off("xchange:exchangeRate", refreshExchangeRate);
+var projectFirstChangeFlag;
+	var oldProject = $.$model.xGet("project");
+	$.project.field.addEventListener("change", function() {
+		if ($.project.getValue()) {
+			updateExchangeRate();
+			if ($.project.getValue().xGet("projectShareAuthorizations").length > 1) {
+				$.project.showRightButton();
+			} else {
+				$.project.hideRightButton();
+			}
+		}
+		if ($.$model.xGet("moneyLendApportions").length > 0) {
+			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
+				projectFirstChangeFlag = true;
+				$.$model.xGet("moneyLendApportions").forEach(function(item) {
+					if (item.isNew()) {
+						$.$model.xGet("moneyLendApportions").remove(item);
+					} else {
+						item.__xDeletedHidden = true;
+					}
+				});
+			}
+		}
+		if ($.project.getValue() === oldProject) {
+			$.$model.xGet("moneyLendApportions").forEach(function(item) {
+				if (item.isNew()) {
+					$.$model.xGet("moneyLendApportions").remove(item);
+				} else {
+					item.__xDeletedHidden = false;
+				}
+			});
+		}
 	});
+
+	// $.$model.on("xchange:exchangeRate", refreshExchangeRate);
+	// $.onWindowCloseDo(function() {
+		// $.$model.off("xchange:exchangeRate", refreshExchangeRate);
+	// });
 
 	$.friend.field.addEventListener("change", function() {
 		if ($.friend.getValue()) {
@@ -256,6 +414,109 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		}
 
+if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
+			if ($.$model.isNew()) {
+				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+						item.xSet("actualTotalLend", item.xGet("actualTotalLend") + $.$model.getProjectCurrencyAmount());
+						item.xAddToSave($);
+					}
+				});
+			} else {
+				if ($.$model.hasChanged("project")) {
+					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalLend", item.xGet("actualTotalLend") - Number((oldAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)));
+							item.xAddToSave($);
+						}
+					});
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalLend", item.xGet("actualTotalLend") + $.$model.getProjectCurrencyAmount());
+							item.xAddToSave($);
+						}
+					});
+				} else {
+					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+							item.xSet("actualTotalLend", item.xGet("actualTotalLend") - Number((oldAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)) + $.$model.getProjectCurrencyAmount());
+							item.xAddToSave($);
+						}
+					});
+				}
+			}
+			
+			if ($.$model.hasChanged("project") && !$.$model.isNew()) {
+			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
+			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+			$.$model.xGet("moneyLendApportions").forEach(function(item) {
+				if (item.__xDeletedHidden) {
+					item.xAddToDelete($);
+
+					oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalLend = projectShareAuthorization.xGet("apportionedTotalLend") || 0;
+							projectShareAuthorization.xSet("apportionedTotalLend", apportionedTotalLend - Number((item.xPrevious("amount") * item.xGet("moneyLend").xPrevious("exchangeRate")).toFixed(2)));
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				} else/*if (item.hasChanged())*/
+				{
+					item.xAddToSave($);
+
+					newProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalLend = projectShareAuthorization.xGet("apportionedTotalLend") || 0;
+							projectShareAuthorization.xSet("apportionedTotalLend", apportionedTotalLend + Number((item.xGet("amount") * item.xGet("moneyLend").xGet("exchangeRate")).toFixed(2)));
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				}
+			});
+		} else {
+			var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
+			$.$model.xGet("moneyLendApportions").forEach(function(item) {
+				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
+				if (item.__xDeleted) {
+					item.xAddToDelete($);
+
+					projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						console.info("++++++++++++aas++++" + (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")));
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							console.info("++++++++++++aasd++++");
+							var apportionedTotalLend = projectShareAuthorization.xGet("apportionedTotalLend") || 0;
+							console.info("+++++delete0++" + projectShareAuthorization.xGet("apportionedTotalLend"));
+							projectShareAuthorization.xSet("apportionedTotalLend", apportionedTotalLend - Number((item.xPrevious("amount") * item.xGet("moneyLend").xPrevious("exchangeRate")).toFixed(2)));
+							console.info("+++++delete1++" + projectShareAuthorization.xGet("apportionedTotalLend"));
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				} else/*if (item.hasChanged())*/
+				{
+					item.xAddToSave($);
+					projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+						if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
+							var apportionedTotalLend = projectShareAuthorization.xGet("apportionedTotalLend") || 0;
+							console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalLend"));
+							if (item.isNew() || $.$model.hasChanged("project")) {
+								console.info("+++++xPrevious0++" + projectShareAuthorization.xGet("apportionedTotalLend"));
+								projectShareAuthorization.xSet("apportionedTotalLend", apportionedTotalLend + Number((item.xGet("amount") * item.xGet("moneyLend").xGet("exchangeRate")).toFixed(2)));
+								console.info("+++++xPrevious1++" + projectShareAuthorization.xGet("apportionedTotalLend") + "__________" + item.xGet("amount"));
+							} else {
+								projectShareAuthorization.xSet("apportionedTotalLend", apportionedTotalLend - Number((item.xPrevious("amount") * item.xGet("moneyLend").xPrevious("exchangeRate")).toFixed(2)) + Number((item.xGet("amount") * item.xGet("moneyLend").xGet("exchangeRate")).toFixed(2)));
+								console.info("+++++xPrevious2++" + projectShareAuthorization.xGet("apportionedTotalLend") + "++++xPrevious++++" + item.xPrevious("amount") + "+++++++++++amount+++" + item.xGet("amount"));
+							}
+							projectShareAuthorization.xAddToSave($);
+						}
+					});
+				}
+			});
+		}
+
+			// 生成分摊
+			$.$model.generateLendApportions(true);
+		}
+
 		var modelIsNew = $.$model.isNew();
 		$.saveModel(function(e) {
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
@@ -271,14 +532,29 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					});
 				}
 			}
+			
+			if (apportionsDirty) {
+				$.becameClean();
+				apportionsDirty = false;
+			}
+			
 			saveEndCB(e);
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
+			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+				if (projectShareAuthorization.hasChanged("apportionedTotalLend")) {
+					projectShareAuthorization.xSet("apportionedTotalLend", projectShareAuthorization.previous("apportionedTotalLend"));
+				}
+				if (projectShareAuthorization.xGet("friendUser") === $.$model.xGet("ownerUser")) {
+					projectShareAuthorization.xSet("actualTotalLend", projectShareAuthorization.previous("actualTotalLend"));
+				}
+			});
 			// if (exchange) {
 			// exchange.xAddToDelete($);
 			// }
 			if ($.$model.isNew()) {
+				$.$model.xGet("moneyLendApportions").reset();
 				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
 				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
 			}

@@ -29,6 +29,11 @@ exports.definition = {
 			moneyPaybacks : {
 				type : "MoneyPayback",
 				attribute : "moneyLend"
+			},
+			moneyLendApportions : {
+				type : "MoneyLendApportion",
+				attribute : "moneyLend",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -235,6 +240,51 @@ exports.definition = {
 			},
 			getPaybackedAmount : function() {
 				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("paybackedAmount").toUserCurrency();
+			},
+			generateLendApportions : function(saveMode) {
+				var self = this;
+				var moneyLendApportionsArray = [];
+				this.xGet("moneyLendApportions").forEach(function(item) {
+					if (saveMode) {//分摊全删以后 保存时重新生成分摊
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyLendApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyLendApportionsArray.push(item);
+						}
+					}
+				});
+				if (moneyLendApportionsArray.length === 0) {// 生成分摊
+					var amountTotal = 0, moneyLendApportion, amount;
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1  || this.xGet("project").xGet("autoApportion") === 0) {
+						moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
+							moneyLend : self,
+							friendUser : self.xGet("ownerUser"),
+							amount : Number(self.xGet("amount")) || 0,
+							apportionType : "Average"
+						});
+						self.xGet("moneyLendApportions").add(moneyLendApportion);
+					} else {
+						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							if (projectShareAuthorization.xGet("state") === "Accept") {
+								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
+									moneyLend : self,
+									friendUser : projectShareAuthorization.xGet("friendUser"),
+									amount : amount,
+									apportionType : "Fixed"
+								});
+								self.xGet("moneyLendApportions").add(moneyLendApportion);
+								amountTotal += amount;
+							}
+						});
+						if (amountTotal !== self.xGet("amount")) {
+							moneyLendApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						}
+					}
+					this.hasAddedApportions = true;
+				}
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");

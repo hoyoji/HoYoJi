@@ -16,6 +16,60 @@ $.makeContextMenu = function() {
 	return menuSection;
 };
 
+$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
+		return selectedFriendModel.xGet("friendUser");
+	} else {
+		return null;
+	}
+};
+
+$.convertUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
+			return friend;
+		}
+	}
+	return userModel;
+};
+
+var loading;
+//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
+$.beforeProjectSelectorCallback = function(project, successCallback) {
+	var activityWindow = Alloy.createController("activityMask");
+	activityWindow.open("正在获取该项目的汇率...");
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+			loading = true;
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+				var exchange = Alloy.createModel("Exchange", {
+					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					foreignCurrencyId : project.xGet("currencyId"),
+					rate : rate
+				});
+				exchange.xSet("ownerUser", Alloy.Models.User);
+				exchange.xSet("ownerUserId", Alloy.Models.User.id);
+				exchange.save();
+				successCallback();
+				loading = false;
+				activityWindow.close();
+			}, function(e) {
+				activityWindow.close();
+				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
+			});
+		} else {
+			activityWindow.close();
+			successCallback();
+		}
+	} else {
+		activityWindow.close();
+		successCallback();
+	}
+};
+
 $.project.rightButton.addEventListener("singletap", function() {//未输入金额时，不打开分摊
 	if ($.amount.getValue()) {
 		Alloy.Globals.openWindow("money/moneyExpenseApportionAll", {
@@ -92,63 +146,9 @@ function updateApportionAmount() {//amount改变，平均分摊也跟着改变
 
 $.amount.field.addEventListener("change", updateApportionAmount);
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
-	if (selectedFriendModel) {
-		return selectedFriendModel.xGet("friendUser");
-	} else {
-		return null;
-	}
-};
-
-$.convertUser2FriendModel = function(userModel) {
-	if (userModel) {
-		var friend = Alloy.createModel("Friend").xFindInDb({
-			friendUserId : userModel.id
-		});
-		if (friend.id) {
-			return friend;
-		}
-	}
-	return userModel;
-};
-
-var loading;
-//防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
-$.beforeProjectSelectorCallback = function(project, successCallback) {
-	var activityWindow = Alloy.createController("activityMask");
-	activityWindow.open("正在获取该项目的汇率...");
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
-			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
-				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
-					foreignCurrencyId : project.xGet("currencyId"),
-					rate : rate
-				});
-				exchange.xSet("ownerUser", Alloy.Models.User);
-				exchange.xSet("ownerUserId", Alloy.Models.User.id);
-				exchange.save();
-				successCallback();
-				loading = false;
-				activityWindow.close();
-			}, function(e) {
-				activityWindow.close();
-				alert("无法获取该项目与用户本币的转换汇率，请手动增加该汇率");
-			});
-		} else {
-			activityWindow.close();
-			successCallback();
-		}
-	} else {
-		activityWindow.close();
-		successCallback();
-	}
-};
-
 var oldAmount;
 var oldMoneyAccount;
-var fistChangeFlag;
+// var fistChangeFlag;
 var oldApportions = [];
 
 if (!$.$model) {
@@ -422,7 +422,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					item.__xDeletedHidden = false;
 				}
 			});
-
 		}
 	});
 
@@ -536,7 +535,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
 				if (item.__xDeletedHidden) {
 					item.xAddToDelete($);
 

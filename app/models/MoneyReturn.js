@@ -25,6 +25,11 @@ exports.definition = {
 				type : "Picture",
 				attribute : "record",
 				cascadeDelete : true
+			},
+			moneyReturnApportions : {
+				type : "MoneyReturnApportion",
+				attribute : "moneyReturn",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -264,6 +269,51 @@ exports.definition = {
 					}
 				}
 				return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("interest") * this.xGet("exchangeRate") / exchange).toUserCurrency();
+			},
+			generateReturnApportions : function(saveMode) {
+				var self = this;
+				var moneyReturnApportionsArray = [];
+				this.xGet("moneyReturnApportions").forEach(function(item) {
+					if (saveMode) {//分摊全删以后 保存时重新生成分摊
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyReturnApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyReturnApportionsArray.push(item);
+						}
+					}
+				});
+				if (moneyReturnApportionsArray.length === 0) {// 生成分摊
+					var amountTotal = 0, moneyReturnApportion, amount;
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1  || this.xGet("project").xGet("autoApportion") === 0) {
+						moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
+							moneyReturn : self,
+							friendUser : self.xGet("ownerUser"),
+							amount : Number(self.xGet("amount")) || 0,
+							apportionType : "Average"
+						});
+						self.xGet("moneyReturnApportions").add(moneyReturnApportion);
+					} else {
+						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							if (projectShareAuthorization.xGet("state") === "Accept") {
+								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
+									moneyReturn : self,
+									friendUser : projectShareAuthorization.xGet("friendUser"),
+									amount : amount,
+									apportionType : "Fixed"
+								});
+								self.xGet("moneyReturnApportions").add(moneyReturnApportion);
+								amountTotal += amount;
+							}
+						});
+						if (amountTotal !== self.xGet("amount")) {
+							moneyReturnApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						}
+					}
+					this.hasAddedApportions = true;
+				}
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark");

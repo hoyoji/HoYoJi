@@ -198,8 +198,16 @@ $.login = function(userName, password) {
 						} else if (modelType === "ProjectShareAuthorization") {
 							model.actualTotalIncome = 0;
 							model.actualTotalExpense = 0;
+							model.actualTotalBorrow = 0;
+							model.actualTotalLend = 0;
+							model.actualTotalReturn = 0;
+							model.actualTotalPayback = 0;
 							model.apportionedTotalIncome = 0;
 							model.apportionedTotalExpense = 0;
+							model.apportionedTotalBorrow = 0;
+							model.apportionedTotalLend = 0;
+							model.apportionedTotalReturn = 0;
+							model.apportionedTotalPayback = 0;
 						} else if(modelType === "Currency"){
 							if(!model.symbol){
 								try {

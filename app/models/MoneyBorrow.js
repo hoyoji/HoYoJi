@@ -29,6 +29,11 @@ exports.definition = {
 			moneyReturns : {
 				type : "MoneyReturn",
 				attribute : "moneyBorrow"
+			},
+			moneyBorrowApportions : {
+				type : "MoneyBorrowApportion",
+				attribute : "moneyBorrow",
+				cascadeDelete : 1
 			}
 		},
 		belongsTo : {
@@ -236,6 +241,51 @@ exports.definition = {
 			getReturnedAmount : function() {
 				return this.xGet("project").xGet("currency").xGet("symbol") + this.xGet("returnedAmount").toUserCurrency();
 			},
+			generateBorrowApportions : function(saveMode) {
+				var self = this;
+				var moneyBorrowApportionsArray = [];
+				this.xGet("moneyBorrowApportions").forEach(function(item) {
+					if (saveMode) {//分摊全删以后 保存时重新生成分摊
+						if (!item.__xDeletedHidden && !item.__xDeleted) {
+							moneyBorrowApportionsArray.push(item);
+						}
+					} else {
+						if (!item.__xDeletedHidden) {
+							moneyBorrowApportionsArray.push(item);
+						}
+					}
+				});
+				if (moneyBorrowApportionsArray.length === 0) {// 生成分摊
+					var amountTotal = 0, moneyBorrowApportion, amount;
+					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1  || this.xGet("project").xGet("autoApportion") === 0) {
+						moneyBorrowApportion = Alloy.createModel("MoneyBorrowApportion", {
+							moneyBorrow : self,
+							friendUser : self.xGet("ownerUser"),
+							amount : Number(self.xGet("amount")) || 0,
+							apportionType : "Average"
+						});
+						self.xGet("moneyBorrowApportions").add(moneyBorrowApportion);
+					} else {
+						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							if (projectShareAuthorization.xGet("state") === "Accept") {
+								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								moneyBorrowApportion = Alloy.createModel("MoneyBorrowApportion", {
+									moneyBorrow : self,
+									friendUser : projectShareAuthorization.xGet("friendUser"),
+									amount : amount,
+									apportionType : "Fixed"
+								});
+								self.xGet("moneyBorrowApportions").add(moneyBorrowApportion);
+								amountTotal += amount;
+							}
+						});
+						if (amountTotal !== self.xGet("amount")) {
+							moneyBorrowApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						}
+					}
+					this.hasAddedApportions = true;
+				}
+			},
 			getRemark : function() {
 				var remark = this.xGet("remark");
 				if (!remark) {
@@ -263,7 +313,7 @@ exports.definition = {
 				if (this.xGet("project")) {
 					if (this.xGet("project").xGet("ownerUser") !== Alloy.Models.User) {
 						var projectShareAuthorization = this.xGet("project").xGet("projectShareAuthorizations").at(0);
-						if (this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyExpenseDetailAddNew")) {
+						if (this.xGet("ownerUser") === Alloy.Models.User && projectShareAuthorization.xGet("projectShareMoneyBorrowDetailAddNew")) {
 							return true;
 						} else {
 							return false;
