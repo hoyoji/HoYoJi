@@ -104,15 +104,15 @@ function initForm() {
 $.onWindowOpenDo(function() {
 	initForm();
 	$.getCurrentWindow().__dirtyCount = $.__dirtyCount = currentForm.__dirtyCount;
-	$.getCurrentWindow().$view.addEventListener("show", function() {
+	function onShow() {
 		setTimeout(function(){
 			$.getCurrentWindow().openNumericKeyboard(currentForm.amount, function() {
 				currentForm.titleBar.save();
 			}, function() {
 			}, 42);	
 		}, 200);
-	});
-	$.getCurrentWindow().$view.addEventListener("hide", function() {
+	}
+	function onHide() {
 		if(OS_IOS){
 			$.getCurrentWindow().closeNumericKeyboard();
 		}
@@ -130,5 +130,11 @@ $.onWindowOpenDo(function() {
 			$.moneyExpenseForm.UIInit($, $.getCurrentWindow());
 			$.moneyExpenseForm.doUIInit($.getCurrentWindow());
 		}, 500);
+	}
+	$.getCurrentWindow().$view.addEventListener("show", onShow);
+	$.getCurrentWindow().$view.addEventListener("hide", onHide);
+	$.onWindowCloseDo(function(){
+		$.getCurrentWindow().$view.removeEventListener("show", onShow);
+		$.getCurrentWindow().$view.removeEventListener("hide", onHide);
 	});
 });

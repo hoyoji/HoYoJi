@@ -12,8 +12,8 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 // }));
 // return menuSection;
 // }
-
-$.getCurrentWindow().$view.addEventListener("contentready", function() {
+function onContentReady() {
+	$.getCurrentWindow().$view.removeEventListener("contentready", onContentReady);
 	$.transactionsTable = Alloy.createController("money/transactionsView", {
 		id : "transactionsTable",
 		autoInit : "false",
@@ -24,7 +24,8 @@ $.getCurrentWindow().$view.addEventListener("contentready", function() {
 	$.transactionsTable.UIInit();
 	$.transactionsTable.transactionsTable.autoHideFooter($.footerBar);
 	$.transactionsTable.doFilter(timeFilter);
-});
+}
+$.getCurrentWindow().$view.addEventListener("contentready", onContentReady);
 
 var d = new Date(), sortReverse = true, timeFilter = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),

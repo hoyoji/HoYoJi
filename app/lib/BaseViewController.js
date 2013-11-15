@@ -25,7 +25,6 @@
 						if (isSaveableContainer) {
 							var closeWinOnSaveCB = function(e) {
 								if ($.getCurrentWindow().__dirtyCount === 0) {
-									$.getCurrentWindow().$view.removeEventListener("becameclean", closeWinOnSaveCB);
 									$.getCurrentWindow().close();
 								}
 							};
@@ -39,6 +38,9 @@
 									$.getCurrentWindow().close();
 							} else {
 								$.getCurrentWindow().$view.addEventListener("becameclean", closeWinOnSaveCB);
+								$.onWindowCloseDo(function(){
+									$.getCurrentWindow().$view.removeEventListener("becameclean", closeWinOnSaveCB);
+								});
 							}
 						}
 					}
@@ -57,7 +59,7 @@
 							title : title,
 							color : 'gray',
 							backgroundColor : "#e9f3f0",
-							height : Alloy.CFG.UI.DefaultRowHeight
+							height : 42
 							// backgroundImage : '/images/headerTitle_green.png'
 						});
 						row.addEventListener("click", function(e) {
@@ -85,7 +87,6 @@
 					}
 					var menuSection = $.makeContextMenu(e, $.getCurrentWindow().$attrs.selectorCallback, sourceModel);
 					Alloy.Globals.MenuSections.push(menuSection);
-					console.info("added context menu section ...........");
 				}
 			});
 

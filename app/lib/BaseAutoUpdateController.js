@@ -128,7 +128,6 @@
 			};
 
 			$.setValue = function(value) {
-				console.info(value + ' ========= setValue ============== ' + $.$attrs.bindAttributeIsModel);
 				if (value === $.__bindAttributeIsModel) {
 					return;
 				}
@@ -391,9 +390,7 @@
 						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
 							$.becameClean();
 						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
-							// if (bindAttributeIsModel && model.xGet("id") !== model.previous(attribute + "Id")) {
 							$.becameDirty();
-							// }
 						}
 					}
 				};
@@ -435,15 +432,6 @@
 			}
 
 			if ($.$attrs.rightButtonText) {
-				// <Button id="rightButton" right="0" title="打开明细" width="0" height="0"/>
-				// $.rightButton = Ti.UI.createButton({
-				// title : $.$attrs.rightButtonText,
-				// right : 8,
-				// width : 40,
-				// height : 38
-				// });
-				// $.$view.add($.rightButton);
-
 				$.rightButton = Alloy.createWidget("com.hoyoji.titanium.widget.XButton", null, {
 					title : $.$attrs.rightButtonText,
 					borderRadius : 0,
@@ -475,7 +463,6 @@
 				var model = $.$attrs.bindModel;
 				if (model && typeof model === "string") {
 					var resolveBindModelFromSaveable = function(saveableController) {
-						console.info("resolved bindModel from saveable " + model);
 						var path = model.split(".");
 						// if (path[0] === "$") {
 						model = saveableController;
