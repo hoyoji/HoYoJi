@@ -108,6 +108,7 @@ function getImage(event) {
 				imageView.removeEventListener("longpress", showOptionsDialog);
 				imageView.removeEventListener("singletap", previewImage);
 				$.picturesContainer.remove(imageView);
+				imageView = null;
 			}
 		}
 
@@ -350,6 +351,7 @@ function createImage(picture) {
 		imageView.removeEventListener("longpress", showOptionsDialog);
 		imageView.removeEventListener("singletap", previewImage);
 		$.picturesContainer.remove(imageView);
+		imageview = null;
 	}
 
 
@@ -393,6 +395,7 @@ function appendTempImageToEnd(newPicture) {
 		imageView.removeEventListener("longpress", showOptionsDialog);
 		imageView.removeEventListener("singletap", previewImage);
 		$.picturesContainer.remove(imageView);
+		imageView = null;
 	}
 
 
