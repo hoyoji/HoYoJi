@@ -20,6 +20,8 @@ exports.definition = {
 			useDetailsTotal : "INTEGER NOT NULL",
 			depositeId : "TEXT",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {

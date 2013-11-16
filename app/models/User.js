@@ -25,6 +25,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER",
 			pictureId : "TEXT",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {

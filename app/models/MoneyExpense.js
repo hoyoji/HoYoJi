@@ -19,6 +19,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER",
 			useDetailsTotal : "INTEGER NOT NULL",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {

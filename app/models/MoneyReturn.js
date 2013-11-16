@@ -18,6 +18,8 @@ exports.definition = {
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		hasMany : {
