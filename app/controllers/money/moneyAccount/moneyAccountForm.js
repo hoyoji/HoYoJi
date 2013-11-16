@@ -37,11 +37,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		
 		if ($.$model.hasChanged("currentBalance")) {
 			// 这个主要用于同不时维护修改后的账户余额
-			Alloy.createModel("MoneyAccountBalanceAdjustment", {
-				moneyAccount : $.$model,
-				amount : $.$model.xGet("currentBalance"),
-				ownerUser : Alloy.Models.User
-			}).xAddToSave($);
+			// Alloy.createModel("MoneyAccountBalanceAdjustment", {
+				// moneyAccount : $.$model,
+				// amount : $.$model.xGet("currentBalance"),
+				// ownerUser : Alloy.Models.User
+			// }).xAddToSave($);
 			
 			var moneyTransfer = null;
 			
@@ -89,11 +89,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	} else {
 		if ($.$model.hasChanged("currentBalance")) {
 			// 这个主要用于同不时维护修改后的账户余额
-			Alloy.createModel("MoneyAccountBalanceAdjustment", {
-				moneyAccount : $.$model,
-				amount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
-				ownerUser : Alloy.Models.User
-			}).xAddToSave($);
+			// Alloy.createModel("MoneyAccountBalanceAdjustment", {
+				// moneyAccount : $.$model,
+				// amount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
+				// ownerUser : Alloy.Models.User
+			// }).xAddToSave($);
 			
 			var moneyTransfer = null;
 			
