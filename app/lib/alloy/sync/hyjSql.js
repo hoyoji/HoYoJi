@@ -91,7 +91,7 @@ function Migrator(config, transactionDb) {
 	};
 }
 
-var projectPermissionTables = ["Project", "ProjectDeposit", "ProjectDepositeReturn", "MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyExpenseApportion", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "MoneyIncomeApportion", "MoneyLend", "MoneyLendApportion", "MoneyPayback", "MoneyPaybackApportion", "MoneyBorrow", "MoneyBorrowApportion", "MoneyReturn", "MoneyReturnApportion", "MoneyTransfer"];
+var projectPermissionTables = ["Project", "ProjectDeposit", "ProjectDepositeReturn", "MoneyExpense", "MoneyExpenseCategory", "MoneyExpenseDetail", "MoneyExpenseApportion", "MoneyIncome", "MoneyIncomeCategory", "MoneyIncomeDetail", "MoneyIncomeApportion", "MoneyLend", "MoneyLendApportion", "MoneyPayback", "MoneyPaybackApportion", "MoneyBorrow", "MoneyBorrowApportion", "MoneyReturn", "MoneyReturnApportion" /*, "MoneyTransfer"*/];
 
 function Sync(method, model, opts) {
 	var table = model.config.adapter.collection_name, columns = model.config.columns, dbName = model.config.adapter.db_name || ALLOY_DB_DEFAULT, resp = null, db;
