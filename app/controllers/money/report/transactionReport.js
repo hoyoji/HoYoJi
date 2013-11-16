@@ -160,6 +160,9 @@ function calculateTotalBalance() {
 	$.totalDebitBalance.setText(debitTotalBalance.toUserCurrency());
 }
 
+$.transferTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.transferInTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.transferOutTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.incomeTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.expenseTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.borrowTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
