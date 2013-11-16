@@ -5,7 +5,7 @@
 		<View id="body" top="50" bottom="50" left="10" right="10" backgroundColor="#e1e1e1">
 			<ScrollView layout="vertical" scrollType="vertical" disableBounce="true" id="contentScrollView" class="table-edit" bottom="0" top="0">
 				<View height="42" backgroundColor="#e9f3f0">
-					<Label left="0" width="30%">收支汇总</Label>
+					<Label left="0" width="30%" class="sectionHeader">收支汇总</Label>
 					<View id="balanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="balanceTotalCurrencySymbol" autoInit="false"
@@ -15,7 +15,7 @@
 						<Label id="totalBalance">0.00</Label>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总收入</Label>
 					<View id="incomeTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -26,7 +26,7 @@
 						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)" />
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总支出</Label>
 					<View id="expenseTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -37,7 +37,7 @@
 						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="main.amount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">利息支出</Label>
 					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -48,7 +48,7 @@
 						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" modelSubType="MoneyReturnInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">利息收入</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -60,7 +60,40 @@
 					</View>
 				</View>
 				<View height="42" backgroundColor="#e9f3f0">
-					<Label left="0" width="30%">负债汇总</Label>
+					<Label left="0" width="30%" class="sectionHeader">转账汇总</Label>
+					<View id="transferTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="transferTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Label id="transferBalance">0.00</Label>
+					</View>
+				</View>
+				<View height="42" backgroundColor="#f5f5f5">
+					<Label left="5" width="30%">总转入</Label>
+					<View id="transferInTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="transferInTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyTransferInTotal" src="money/report/moneyTotal" modelType="MoneyTransfer" modelSubType="transferIn" totalField="main.transferInAmount * main.exchangeRate / IFNULL(ex.rate, 1)" />
+					</View>
+				</View>
+				<View height="42" backgroundColor="#f5f5f5">
+					<Label left="5" width="30%">总转出</Label>
+					<View id="transferOutTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
+						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
+						id="transferOutTotalCurrencySymbol" autoInit="false"
+						bindModel = "User"
+						bindAttribute = "getLocalCurrencySymbol()"
+						/>
+						<Require id="moneyTransferOutTotal" src="money/report/moneyTotal" modelType="MoneyTransfer" modelSubType="transferOut" totalField="main.transferOutAmount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
+					</View>
+				</View>
+				<View height="42" backgroundColor="#e9f3f0">
+					<Label left="0" width="30%" class="sectionHeader">负债汇总</Label>
 					<View id="debitBalanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="debitBalanceTotalCurrencySymbol" autoInit="false"
@@ -70,7 +103,7 @@
 						<Label id="totalDebitBalance">0.00</Label>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总借入</Label>
 					<View id="borrowTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -81,7 +114,7 @@
 						<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总还款</Label>
 					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -92,7 +125,7 @@
 						<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总借出</Label>
 					<View id="lendTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -103,7 +136,7 @@
 						<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42">
+				<View height="42" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">总收款</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -114,7 +147,7 @@
 						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42" id="moneyExpenseApportionTotalContainer">
+				<View height="42" id="moneyExpenseApportionTotalContainer" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">分摊应支</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
@@ -125,7 +158,7 @@
 						<Require id="moneyExpenseApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedPayment" totalField="main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)"/>
 					</View>
 				</View>
-				<View height="42" id="moneyIncomeApportionTotalContainer">
+				<View height="42" id="moneyIncomeApportionTotalContainer" backgroundColor="#f5f5f5">
 					<Label left="5" width="30%">分摊应收</Label>
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"

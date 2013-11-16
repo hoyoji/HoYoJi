@@ -19,6 +19,8 @@ if ($.$attrs.modelType === "PersonalIncome") {
 	querySelect = "SELECT SUM(" + totalField + ") AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = mi.projectId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else if ($.$attrs.modelSubType === "MoneyReturnInterest" || $.$attrs.modelSubType === "MoneyPaybackInterest" ) {
 	querySelect = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.interest * IFNULL(exma.rate, 1) ELSE " + totalField + " END) AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.localCurrencyId = ma.currencyId AND exma.foreignCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
+} else if ($.$attrs.modelSubType === "transferIn" || $.$attrs.modelSubType === "transferOut" ) {
+	querySelect = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main."+$.$attrs.modelSubType+"Amount * IFNULL(exma.rate, 1) ELSE " + totalField + " END) AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main."+$.$attrs.modelSubType+"Id LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.localCurrencyId = ma.currencyId AND exma.foreignCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 } else {
 	querySelect = "SELECT SUM(CASE WHEN main.ownerUserId = '" + Alloy.Models.User.id + "' THEN main.amount * IFNULL(exma.rate, 1) ELSE " + totalField + " END) AS TOTAL FROM " + $.$attrs.modelType + " main JOIN Project prj1 ON prj1.id = main.projectId LEFT JOIN MoneyAccount ma ON ma.id = main.moneyAccountId LEFT JOIN Exchange ex ON ex.foreignCurrencyId = prj1.currencyId AND ex.localCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "' LEFT JOIN Exchange exma ON exma.localCurrencyId = ma.currencyId AND exma.foreignCurrencyId = '" + Alloy.Models.User.xGet("activeCurrencyId") + "'";
 }
@@ -61,9 +63,10 @@ exports.query = function(queryStr) {
 		} else if ($.$attrs.modelType === "PersonalExpense") {
 			//queryLend = querySelectLend + " WHERE " + queryStr;
 			queryReturnInterest = querySelectReturnInterest + " WHERE " + queryStr;
+		} else if ($.$attrs.modelSubType === "transferIn" || $.$attrs.modelSubType === "transferOut" ) {
+			query += " AND (main."+$.$attrs.modelSubType+"Id IS NOT NULL AND main."+$.$attrs.modelSubType+"UserId = '"+Alloy.Models.User.id+"')";
 		}
 	} else {
-		query = querySelect + " WHERE " + queryStr;
 		if ($.$attrs.modelType === "PersonalIncome") {
 			//queryBorrow = querySelectBorrow;
 			queryPaybackInterest = querySelectPaybackInterest;
@@ -72,9 +75,12 @@ exports.query = function(queryStr) {
 			queryReturnInterest = querySelectReturnInterest;
 		} else if ($.$attrs.modelType === "MoneyIncomeApportion" || $.$attrs.modelType === "MoneyExpenseApportion") {
 			queryStr += " AND main.friendUserId = '" + Alloy.Models.User.id + "' AND mi.ownerUserId <> '" + Alloy.Models.User.id + "'";
-		}else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
+		} else if ($.$attrs.modelType === "PersonalApportionedPayment" || $.$attrs.modelType === "PersonalApportionedIncome") {
 			queryApportion = querySelectApportion + " WHERE " + queryStr;
+		} else if ($.$attrs.modelSubType === "transferIn" || $.$attrs.modelSubType === "transferOut" ) {
+			queryStr += " AND (main."+$.$attrs.modelSubType+"Id IS NOT NULL AND main."+$.$attrs.modelSubType+"UserId = '"+Alloy.Models.User.id+"')";
 		}
+		query = querySelect + " WHERE " + queryStr;
 	}
 	exports.refresh();
 };

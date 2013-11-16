@@ -119,6 +119,8 @@ exports.refresh = function() {
 	$.moneyPaybackTotal.query(queryStr);
 	$.moneyReturnInterestTotal.query(queryStr);
 	$.moneyPaybackInterestTotal.query(queryStr);
+	$.moneyTransferInTotal.query(queryStr);
+	$.moneyTransferOutTotal.query(queryStr);
 	
 	if(queryOptions.transactionDisplayType === "Personal"){
 		$.moneyExpenseApportionTotalContainer.setHeight(42);
@@ -145,6 +147,9 @@ function calculateTotalBalance() {
 			// totalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
 	// }
 	$.totalBalance.setText(totalBalance.toUserCurrency());
+	var transferBalance = 0;
+	transferBalance = $.moneyTransferInTotal.getValue() - $.moneyTransferOutTotal.getValue();
+	$.transferBalance.setText(transferBalance.toUserCurrency());
 	
 	var debitTotalBalance = 0;
 	debitTotalBalance = $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
