@@ -371,10 +371,14 @@ exports.definition = {
 				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					var transferOut = this.xGet("transferOut");
 					var transferIn = this.xGet("transferIn");
-					var transferOutAmount = this.xGet("transferOutAmount") || 0;
-					var transferInAmount = this.xGet("transferInAmount") || 0;
-					transferOut.__syncCurrentBalance = transferOut.__syncCurrentBalance ? transferOut.__syncCurrentBalance + transferOutAmount : transferOutAmount;
-					transferIn.__syncCurrentBalance = transferIn.__syncCurrentBalance ? transferIn.__syncCurrentBalance - transferInAmount : -transferInAmount;
+					if(transferOut){
+						var transferOutAmount = this.xGet("transferOutAmount") || 0;
+						transferOut.__syncCurrentBalance = transferOut.__syncCurrentBalance ? transferOut.__syncCurrentBalance + transferOutAmount : transferOutAmount;
+					}
+					if(transferIn){
+						var transferInAmount = this.xGet("transferInAmount") || 0;
+						transferIn.__syncCurrentBalance = transferIn.__syncCurrentBalance ? transferIn.__syncCurrentBalance - transferInAmount : -transferInAmount;
+					}
 				}
 			},
 		});
