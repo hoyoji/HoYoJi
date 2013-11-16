@@ -6,6 +6,7 @@ exports.definition = {
 			amount : "REAL NOT NULL",
 			incomeType : "TEXT NOT NULL",
 			friendUserId : "TEXT",
+			localFriendId : "TEXT",
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -46,6 +47,10 @@ exports.definition = {
 		belongsTo : {
 			friendUser : {
 				type : "User",
+				attribute : null
+			},
+			localFriend : {
+				type : "Friend",
 				attribute : null
 			},
 			friendAccount : {

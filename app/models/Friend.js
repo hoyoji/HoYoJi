@@ -4,7 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			nickName : "TEXT",
 			remark : "TEXT",
-			friendUserId : "TEXT NOT NULL",
+			friendUserId : "TEXT",
 			friendCategoryId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
@@ -18,6 +18,10 @@ exports.definition = {
 			},
 			friendUser : {
 				type : "User",
+				attribute : null
+			},
+			localFriend : {
+				type : "Friend",
 				attribute : null
 			},
 			ownerUser : {
