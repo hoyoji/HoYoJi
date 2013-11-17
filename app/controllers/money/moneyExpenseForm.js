@@ -91,11 +91,20 @@ function updateApportionAmount() {//amount改变，平均分摊也跟着改变
 }
 
 $.amount.field.addEventListener("change", updateApportionAmount);
-
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
-		return selectedFriendModel.xGet("friendUser");
+		if(selectedFriendModel.xGet("friendUser")){
+			$.$model.xSet("friendUser", selectedFriendModel.xGet("friendUser"));
+			$.$model.xSet("localFriend", null);
+			return selectedFriendModel.xGet("friendUser");
+		} else {
+			$.$model.xSet("localFriend", selectedFriendModel);
+			$.$model.xSet("friendUser", null);
+			return selectedFriendModel;
+		}
 	} else {
+		$.$model.xSet("localFriend", null);
+		$.$model.xSet("friendUser", null);
 		return null;
 	}
 };
@@ -108,8 +117,19 @@ $.convertUser2FriendModel = function(userModel) {
 		if (friend.id) {
 			return friend;
 		}
+	} else if($.$model.xGet("localFriend")) {
+		return $.$model.xGet("localFriend");
 	}
-	return userModel;
+};
+
+$.friend.convertModelValue = function(value){
+	if($.$model.xGet("friendUser")) {
+		return $.$model.xGet("friendUser").getFriendDisplayName();
+	} else if($.$model.xGet("localFriend")) {
+		return $.$model.xGet("localFriend").getDisplayName();
+	} else {
+		return "";
+	}
 };
 
 var loading;
@@ -253,7 +273,6 @@ function setDefaultCategory(project, setToModel) {//新增时根据时间设置�
 	var date = new Date($.$model.xGet("date"));
 	var hours = date.getHours();
 	var defaultCategory;
-	console.info("++++++hours+++++" + hours);
 	if (hours > 6 && hours < 9) {
 		defaultCategory = Alloy.createModel("MoneyExpenseCategory").xFindInDb({
 			name : "早餐",
@@ -536,7 +555,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-				console.info("__xDeletedHidden+++++++" + item.__xDeletedHidden);
 				if (item.__xDeletedHidden) {
 					item.xAddToDelete($);
 

@@ -183,7 +183,7 @@
 							$.$view.removeEventListener("close", removeWin);
 							win.$view.fireEvent("close", {bubbles : false});
 							$.$view.remove(win.$view);
-							win.$view = null;
+							// win.$view = null;
 							$.lightWindows[windowName] = null;
 							delete $.lightWindows[windowName];
 						}

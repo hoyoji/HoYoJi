@@ -173,6 +173,13 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			// getFriendDisplayName : function() {
+				// if(this.xGet("friendUser")){
+					// return this.xGet("friendUser").getDisplayName();
+				// } else if(this.xGet("localFriend")){
+					// return this.xGet("localFriend").getDisplayName();
+				// }
+			// },
 			getLocalAmount : function() {
 				// var exchange;
 				// var projectCurrency = this.xGet("project").xGet("currency");

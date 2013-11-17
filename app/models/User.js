@@ -208,6 +208,13 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getDisplayName : function() {
+				if (!this.xGet("nickName")) {
+					return this.xGet("userName");
+				} else {
+					return this.xGet("nickName");
+				}
+			},
 			getUserDisplayName : function() {
 				if (!this.xGet("nickName")) {
 					return this.xGet("userName");
