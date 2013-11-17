@@ -16,8 +16,6 @@ exports.definition = {
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			isMerchant : "INTEGER NOT NULL",
-			// age : "INTEGER NOT NULL",
-			// birthday : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",

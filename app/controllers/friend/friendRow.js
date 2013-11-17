@@ -34,4 +34,7 @@ $.getChildTitle = function() {
 
 // $.userName.UIInit($, $.getCurrentWindow());
 $.nickName.UIInit($, $.getCurrentWindow());
-$.picture.UIInit($, $.getCurrentWindow());
+
+if($.$model.xGet("friendUser")){
+	$.picture.UIInit($, $.getCurrentWindow());	
+}

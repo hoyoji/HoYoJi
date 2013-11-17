@@ -9,7 +9,7 @@
 			sortByField="name" bottom="0" top="0"/> 
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
-        	buttons="添加好友" imagesFolder="/images/friend/friendAll"
-        	ids="addFriend"/>
+        	buttons="添加好友,新建好友" imagesFolder="/images/friend/friendAll"
+        	ids="addFriend,createFriend"/>
 	</View>
 </Alloy>
