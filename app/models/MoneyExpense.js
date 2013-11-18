@@ -6,6 +6,7 @@ exports.definition = {
 			amount : "REAL NOT NULL",
 			expenseType : "TEXT NOT NULL",
 			friendUserId : "TEXT",
+			localFriendId : "TEXT",
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -19,6 +20,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER",
 			useDetailsTotal : "INTEGER NOT NULL",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {
@@ -43,6 +46,10 @@ exports.definition = {
 		belongsTo : {
 			friendUser : {
 				type : "User",
+				attribute : null
+			},
+			localFriend : {
+				type : "Friend",
 				attribute : null
 			},
 			friendAccount : {
@@ -166,6 +173,13 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			// getFriendDisplayName : function() {
+				// if(this.xGet("friendUser")){
+					// return this.xGet("friendUser").getDisplayName();
+				// } else if(this.xGet("localFriend")){
+					// return this.xGet("localFriend").getDisplayName();
+				// }
+			// },
 			getLocalAmount : function() {
 				// var exchange;
 				// var projectCurrency = this.xGet("project").xGet("currency");

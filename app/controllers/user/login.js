@@ -307,20 +307,22 @@ function showTestLabel(){
 		}
 }
 
-$.onWindowOpenDo(function() {
-	if (Ti.App.Properties.getObject("userData")) {
+var userData = Ti.App.Properties.getObject("userData");
+if (userData) {
+	$.autoLogin.setValue("yes");
+	function autoLogin(){
+		$.getCurrentWindow().$view.removeEventListener("open", autoLogin);	
 		var activityWindow = Alloy.createController("activityMask");
 		activityWindow.open("正在登录...");
-		$.autoLogin.setValue("yes");
-		var userData = Ti.App.Properties.getObject("userData");
 		$.userName.field.setValue(userData["userName"]);
 		$.login(userData.userName, userData.password);
 		activityWindow.close();
-	} else {
-		$.autoLogin.setValue("no");
-		showTestLabel();		
 	}
-});
+	$.getCurrentWindow().$view.addEventListener("open", autoLogin);	
+} else {
+	$.autoLogin.setValue("no");
+}
+showTestLabel();		
 
 function findPassword(e) {
 	Alloy.Globals.openWindow("user/findPassword");

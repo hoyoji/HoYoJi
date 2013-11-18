@@ -12,7 +12,8 @@
 				$.$view.setSoftKeyboardOnFocus(Titanium.UI.Android.SOFT_KEYBOARD_HIDE_ON_FOCUS);
 			} else if($.$view.id !== "lightWindow"){
 				$.$view.setTop(Alloy.Globals.iOS7 ? 20 : 0);
-				//$.$view.setStatusBarStyle(Ti.UI.iPhone.StatusBar.LIGHT_CONTENT);
+				$.$view.setStatusBarStyle(Ti.UI.iPhone.StatusBar.LIGHT_CONTENT);
+				//Ti.UI.setBackgroundColor('#2E8B57');
 			}
 
 			_.extend($, {
@@ -182,7 +183,7 @@
 							$.$view.removeEventListener("close", removeWin);
 							win.$view.fireEvent("close", {bubbles : false});
 							$.$view.remove(win.$view);
-							win.$view = null;
+							// win.$view = null;
 							$.lightWindows[windowName] = null;
 							delete $.lightWindows[windowName];
 						}

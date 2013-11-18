@@ -50,12 +50,13 @@ exports.definition = {
 			moneyTransferIns : {
 				type : "MoneyTransfer",
 				attribute : "transferIn"
-			},
-			moneyAccountBalanceAdjustments : {
-				type : "MoneyAccountBalanceAdjustment",
-				attribute : "moneyAccount",
-				cascadeDelete : true
 			}
+			// ,
+			// moneyAccountBalanceAdjustments : {
+				// type : "MoneyAccountBalanceAdjustment",
+				// attribute : "moneyAccount",
+				// cascadeDelete : true
+			// }
 		},
 		belongsTo : {
 			currency : {
@@ -127,11 +128,11 @@ exports.definition = {
 			},
 			syncAddNew : function(record, dbTrans) {
 				var serverCurrentBalance = record.currentBalance;
-				if (!record.currentBalance) {
-					record.currentBalance = 0;
-				}
-				if (dbTrans.__syncData[record.id] && dbTrans.__syncData[record.id].__syncCurrentBalance) {
-					record.currentBalance = dbTrans.__syncData[record.id].__syncCurrentBalance + this.xGet("currentBalance");
+				//if (!record.currentBalance) {
+				record.currentBalance = 0;
+				//}
+				if (dbTrans.__syncData[record.id]) {
+					record.currentBalance = Number(((dbTrans.__syncData[record.id].__syncCurrentBalance || 0) + this.xGet("currentBalance")).toFixed(2));
 					delete this.__syncCurrentBalance;
 				}
 				if (serverCurrentBalance !== record.currentBalance) {
@@ -159,7 +160,7 @@ exports.definition = {
 			syncUpdate : function(record, dbTrans) {
 				// 我们不能将帐户余额同步下来, 但是其他帐户资料都可同步
 				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
-					record.currentBalance = (this.__syncCurrentBalance || 0) + this.xGet("currentBalance");
+					record.currentBalance = Number(((this.__syncCurrentBalance || 0) + this.xGet("currentBalance")).toFixed(2));
 					delete this.__syncCurrentBalance;
 				}
 			},

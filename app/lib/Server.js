@@ -247,6 +247,8 @@
 				activityWindow.progressStep(1);
 				this.syncPull(function() {
 					// setTimeout(function() {
+						Alloy.Globals.Server.__isSyncing = false;
+						Ti.App.fireEvent("ServerSyncFinished");
 					activityWindow.progressStep(3);
 					self.syncPush(function(data) {
 						if (xFinishedCallback) {
@@ -254,9 +256,6 @@
 						}
 						// activityWindow.close();
 						activityWindow.progressFinish("同步完成");
-						Alloy.Globals.Server.__isSyncing = false;
-
-						Ti.App.fireEvent("ServerSyncFinished");
 					}, function(e) {
 						if (xErrorCallback) {
 							xErrorCallback(e);

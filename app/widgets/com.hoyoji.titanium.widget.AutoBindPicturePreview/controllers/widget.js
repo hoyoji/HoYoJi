@@ -21,6 +21,14 @@ $.onWindowOpenDo(function() {
 			}
 		}
 	}
+	if(!model){
+		if ($.$attrs.defaultImage) {
+			$.$view.setBackgroundImage($.$attrs.defaultImage+".png");
+		} else {
+			$.$view.setBackgroundImage(WPATH("/images/noPicture.png"));
+		}
+		return;
+	}
 
 	function getAttributeValue(model, attributes) {
 		var path = attributes.split(".");

@@ -16,8 +16,6 @@ exports.definition = {
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
 			isMerchant : "INTEGER NOT NULL",
-			// age : "INTEGER NOT NULL",
-			// birthday : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
@@ -25,6 +23,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER",
 			pictureId : "TEXT",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {
@@ -208,6 +208,13 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
+			getDisplayName : function() {
+				if (!this.xGet("nickName")) {
+					return this.xGet("userName");
+				} else {
+					return this.xGet("nickName");
+				}
+			},
 			getUserDisplayName : function() {
 				if (!this.xGet("nickName")) {
 					return this.xGet("userName");
@@ -222,7 +229,7 @@ exports.definition = {
 				if (friend.id) {
 					return friend.getDisplayName();
 				}
-				return this.getUserDisplayName();
+				return this.getDisplayName();
 			},
 			// _xSave : function(options){
 			// // this.xSet("password", Ti.Utils.sha1(this.xGet("password")));

@@ -4,7 +4,7 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			nickName : "TEXT",
 			remark : "TEXT",
-			friendUserId : "TEXT NOT NULL",
+			friendUserId : "TEXT",
 			friendCategoryId : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
@@ -18,6 +18,10 @@ exports.definition = {
 			},
 			friendUser : {
 				type : "User",
+				attribute : null
+			},
+			localFriend : {
+				type : "Friend",
 				attribute : null
 			},
 			ownerUser : {
@@ -102,11 +106,11 @@ exports.definition = {
 				return this.__getSharedWithHerProjectsFilter;
 			},
 			getUserName : function() {
-				return this.xGet("friendUser").getUserDisplayName();
+				return this.xGet("friendUser") && this.xGet("friendUser").getDisplayName();
 			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {
-					return this.xGet("friendUser").getUserDisplayName();
+					return this.getUserName();
 				} else {
 					return this.xGet("nickName");
 					//return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";

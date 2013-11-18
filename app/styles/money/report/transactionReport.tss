@@ -1,3 +1,10 @@
 ".container": {
-	backgroundColor: "#f5f5f5"
+	backgroundColor: "#e1e1e1"
+},
+
+".sectionHeader": {
+	font : {
+		fontSize : 16,
+		fontWeight: 'bold'
+	}
 }

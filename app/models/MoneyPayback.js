@@ -5,6 +5,7 @@ exports.definition = {
 			date : "TEXT NOT NULL",
 			amount : "REAL NOT NULL",
 			friendUserId : "TEXT",
+			localFriendId : "TEXT",
 			friendAccountId : "TEXT",
 			moneyAccountId : "TEXT NOT NULL",
 			projectId : "TEXT NOT NULL",
@@ -18,6 +19,8 @@ exports.definition = {
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
 			location : "TEXT",
+			geoLon : "TEXT",
+			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		hasMany : {
@@ -35,6 +38,10 @@ exports.definition = {
 		belongsTo : {
 			friendUser : {
 				type : "User",
+				attribute : null
+			},
+			localFriend : {
+				type : "Friend",
 				attribute : null
 			},
 			friendAccount : {
