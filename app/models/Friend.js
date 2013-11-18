@@ -106,11 +106,11 @@ exports.definition = {
 				return this.__getSharedWithHerProjectsFilter;
 			},
 			getUserName : function() {
-				return this.xGet("friendUser").getUserDisplayName();
+				return this.xGet("friendUser") && this.xGet("friendUser").getDisplayName();
 			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {
-					return this.xGet("friendUser").getUserDisplayName();
+					return this.getUserName();
 				} else {
 					return this.xGet("nickName");
 					//return this.xGet("nickName") + "(" + this.xGet("friendUser").xGet("userName") + ")";
