@@ -623,6 +623,9 @@
 				attributes.__dataType = this.config.adapter.collection_name;
 				return attributes;
 			},
+			getRowViewData : function(){
+				return {};
+			},
 			canEdit : function() {
 				if (this.isNew()) {
 					return true;

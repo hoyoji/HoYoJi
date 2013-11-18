@@ -1,0 +1,7 @@
+<Alloy>
+	<View class="container" height="Ti.UI.FILL" width="Ti.UI.FILL" backgroundColor="#e1e1e1">
+        <View height="50" width="Ti.UI.FILL" bottom="0" id="fetchNextPageFooter" zIndex="1">
+			<Label id="fetchNextPageButton" text="无内容" width="Ti.UI.FILL" height="Ti.UI.FILL" textAlign="Ti.UI.TEXT_ALIGNMENT_CENTER"/>
+		</View>
+	</View>
+</Alloy>
