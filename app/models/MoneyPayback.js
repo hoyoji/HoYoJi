@@ -229,7 +229,7 @@ exports.definition = {
 				return this.xGet("project").xGet("currency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2);
 			},
 			getProjectCurrencyAmount : function() {
-				return this.xGet("amount") * this.xGet("exchangeRate");
+				return Number(((this.xGet("amount") + this.xGet("interest")) * this.xGet("exchangeRate")).toFixed(2));
 			},
 			getFriendUser : function() {
 				var ownerUserSymbol;
@@ -335,6 +335,7 @@ exports.definition = {
 				var interest = this.xGet("interest");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
+				saveOptions.wait = true;
 
 				var moneyAccount = this.xGet("moneyAccount");
 				moneyAccount.save({
@@ -348,7 +349,25 @@ exports.definition = {
 						paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
 					}, saveOptions);
 				}
-				this._xDelete(xFinishCallback, options);
+				
+				var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
+					var myProjectShareAuthorization;
+					projectShareAuthorizations.forEach(function(item) {
+						if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+							var actualTotalPayback = item.xGet("actualTotalPayback") - self.getProjectCurrencyAmount();
+							item.xSet("actualTotalPayback", actualTotalPayback);
+							myProjectShareAuthorization = item;
+							item.save({
+							actualTotalPayback : actualTotalPayback
+							}, saveOptions);
+						}
+					});
+					this._xDelete(function(e) {
+						if (e) {
+							myProjectShareAuthorization.xSet("actualTotalPayback", myProjectShareAuthorization.xPrevious("actualTotalPayback"));
+						}
+						xFinishCallback(e);
+					}, options);
 			},
 			canAddNew : function() {
 				if (this.xGet("project")) {
@@ -378,6 +397,9 @@ exports.definition = {
 						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount + record.interest : record.amount + record.interest;
+					} else {
+						dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+						dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 					}
 				}
 				if (record.moneyLendId) {
@@ -392,6 +414,13 @@ exports.definition = {
 						// });
 						moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 					}
+				}
+				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+					projectId : record.projectId,
+					friendUserId : record.ownerUserId
+				});
+				if (projectShareAuthorization.id) {
+					projectShareAuthorization.__syncActualTotalPayback = projectShareAuthorization.__syncActualTotalPayback ? projectShareAuthorization.__syncActualTotalPayback + Number(((record.amount + record.interest) * record.exchangeRate).toFixed(2)) : Number(((record.amount + record.interest) * record.exchangeRate).toFixed(2));
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
@@ -425,7 +454,17 @@ exports.definition = {
 							// patch : true
 							// });
 							newMoneyAccount.__syncCurrentBalance = newMoneyAccount.__syncCurrentBalance ? newMoneyAccount.__syncCurrentBalance + record.amount + record.interest : +record.amount + record.interest;
+						}else {
+							dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
+							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 						}
+					}
+					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
+						projectId : record.projectId,
+						friendUserId : record.ownerUserId
+					});
+					if (projectShareAuthorization.id) {
+						projectShareAuthorization.__syncActualTotalPayback = projectShareAuthorization.__syncActualTotalPayback ? projectShareAuthorization.__syncActualTotalPayback + Number(((record.amount + record.interest) * record.exchangeRate).toFixed(2)) - Number(((this.xGet("amount") + this.xGet("interest")) * this.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 					}
 				}
 				if (record.moneyLendId) {
@@ -478,6 +517,17 @@ exports.definition = {
 					// }, saveOptions);
 					moneyLend.__syncPaybackedAmount = moneyLend.__syncPaybackedAmount ? moneyLend.__syncPaybackedAmount - Number((amount * paybackRate).toFixed(2)) : -Number((amount * paybackRate).toFixed(2));
 				}
+				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
+						// var actualTotalPayback = item.xGet("actualTotalPayback") - self.getProjectCurrencyAmount();
+						// item.save({
+						// actualTotalPayback : actualTotalPayback
+						// }, saveOptions);
+						item.__syncActualTotalPayback = item.__syncActualTotalPayback ? item.__syncActualTotalPayback - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
+						;
+
+					}
+				});
 			},
 		});
 		return Model;

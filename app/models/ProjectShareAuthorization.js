@@ -431,6 +431,18 @@ exports.definition = {
 
 					record.actualTotalExpense = (this.__syncActualTotalExpense || 0) + (this.xGet("actualTotalExpense") || 0);
 					delete this.__syncActualTotalExpense;
+					
+					record.actualTotalBorrow = (this.__syncActualTotalBorrow || 0) + (this.xGet("actualTotalBorrow") || 0);
+					delete this.__syncActualTotalBorrow;
+					
+					record.actualTotalLend = (this.__syncActualTotalLend || 0) + (this.xGet("actualTotalLend") || 0);
+					delete this.__syncActualTotalLend;
+					
+					record.actualTotalReturn = (this.__syncActualTotalReturn || 0) + (this.xGet("actualTotalReturn") || 0);
+					delete this.__syncActualTotalReturn;
+					
+					record.actualTotalPayback = (this.__syncActualTotalPayback || 0) + (this.xGet("actualTotalPayback") || 0);
+					delete this.__syncActualTotalPayback;
 				}
 
 				record.apportionedTotalIncome = (this.__syncApportionedTotalIncome || 0) + (this.xGet("apportionedTotalIncome") || 0);
@@ -438,6 +450,18 @@ exports.definition = {
 
 				record.apportionedTotalExpense = (this.__syncApportionedTotalExpense || 0) + (this.xGet("apportionedTotalExpense") || 0);
 				delete this.__syncApportionedTotalExpense;
+				
+				record.apportionedTotalBorrow = (this.__syncApportionedTotalBorrow || 0) + (this.xGet("apportionedTotalBorrow") || 0);
+				delete this.__syncApportionedTotalBorrow;
+				
+				record.apportionedTotalLend = (this.__syncApportionedTotalLend || 0) + (this.xGet("apportionedTotalLend") || 0);
+				delete this.__syncApportionedTotalLend;
+				
+				record.apportionedTotalReturn = (this.__syncApportionedTotalReturn || 0) + (this.xGet("apportionedTotalReturn") || 0);
+				delete this.__syncApportionedTotalReturn;
+				
+				record.apportionedTotalPayback = (this.__syncApportionedTotalPayback || 0) + (this.xGet("apportionedTotalPayback") || 0);
+				delete this.__syncApportionedTotalPayback;
 
 				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
 					function refreshProject() {
@@ -491,6 +515,38 @@ exports.definition = {
 										syncFromServer : true
 									});
 								});
+							}else if (table === "MoneyBorrow") {
+								item.xGet("moneyBorrowApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+							}else if (table === "MoneyLend") {
+								item.xGet("moneyLendApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+							}else if (table === "MoneyReturn") {
+								item.xGet("moneyReturnApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
+							}else if (table === "MoneyPayback") {
+								item.xGet("moneyPaybackApportions").forEach(function(apportion) {
+									apportion.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
+									});
+								});
 							}
 							item.destroy({
 								dbTrans : dbTrans,
@@ -529,7 +585,8 @@ exports.definition = {
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
 				var localUpdated = false;
-				localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined;
+				localUpdated = this.__syncActualTotalIncome !== undefined || this.__syncActualTotalExpense !== undefined || this.__syncActualTotalBorrow !== undefined || this.__syncActualTotalLend !== undefined || this.__syncActualTotalReturn !== undefined || this.__syncActualTotalPayback !== undefined 
+				|| this.__syncApportionedTotalIncome !== undefined || this.__syncApportionedTotalExpense !== undefined || this.__syncApportionedTotalBorrow !== undefined || this.__syncApportionedTotalLend !== undefined || this.__syncApportionedTotalReturn !== undefined || this.__syncApportionedTotalPayback !== undefined;
 				if (localUpdated) {
 					this.syncUpdate(record, dbTrans);
 				}
@@ -542,8 +599,16 @@ exports.definition = {
 					if (localUpdated) {
 						updates.actualTotalIncome = record.actualTotalIncome;
 						updates.actualTotalExpense = record.actualTotalExpense;
+						updates.actualTotalBorrow = record.actualTotalBorrow;
+						updates.actualTotalLend = record.actualTotalLend;
+						updates.actualTotalReturn = record.actualTotalReturn;
+						updates.actualTotalPayback = record.actualTotalPayback;
 						updates.apportionedTotalIncome = record.apportionedTotalIncome;
 						updates.apportionedTotalExpense = record.apportionedTotalExpense;
+						updates.apportionedTotalBorrow = record.apportionedTotalBorrow;
+						updates.apportionedTotalLend = record.apportionedTotalLend;
+						updates.apportionedTotalReturn = record.apportionedTotalReturn;
+						updates.apportionedTotalPayback = record.apportionedTotalPayback;
 					}
 					if (record.sharePercentage !== this.xGet("sharePercentage")) {
 						updates.sharePercentage = record.sharePercentage;
@@ -563,8 +628,16 @@ exports.definition = {
 			syncRollback : function() {
 				delete this.__syncActualTotalIncome;
 				delete this.__syncActualTotalExpense;
+				delete this.__syncActualTotalBorrow;
+				delete this.__syncActualTotalLend;
+				delete this.__syncActualTotalReturn;
+				delete this.__syncActualTotalPayback;
 				delete this.__syncApportionedTotalIncome;
 				delete this.__syncApportionedTotalExpense;
+				delete this.__syncApportionedTotalBorrow;
+				delete this.__syncApportionedTotalLend;
+				delete this.__syncApportionedTotalReturn;
+				delete this.__syncApportionedTotalPayback;
 			}
 		});
 		return Model;

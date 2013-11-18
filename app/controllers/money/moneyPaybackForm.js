@@ -144,6 +144,7 @@ function updateApportionAmount() {//amount改变，平均分摊也跟着改变
 $.amount.field.addEventListener("change", updateApportionAmount);
 
 var oldAmount;
+var oldInterest;
 var oldMoneyAccount;
 var oldApportions = [];
 
@@ -283,7 +284,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	} else {
 		oldAmount = $.$model.xGet("amount");
 	}
-	var oldInterest = $.$model.xGet("interest") || 0;
+	oldInterest = $.$model.xGet("interest") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -417,7 +418,7 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 				if ($.$model.hasChanged("project")) {
 					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalPayback", item.xGet("actualTotalPayback") - Number((oldAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)));
+							item.xSet("actualTotalPayback", item.xGet("actualTotalPayback") - Number(((oldAmount + oldInterest) * $.$model.xPrevious("exchangeRate")).toFixed(2)));
 							item.xAddToSave($);
 						}
 					});
@@ -430,7 +431,7 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 				} else {
 					$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
-							item.xSet("actualTotalPayback", item.xGet("actualTotalPayback") - Number((oldAmount * $.$model.xPrevious("exchangeRate")).toFixed(2)) + $.$model.getProjectCurrencyAmount());
+							item.xSet("actualTotalPayback", item.xGet("actualTotalPayback") - Number(((oldAmount + oldInterest) * $.$model.xPrevious("exchangeRate")).toFixed(2)) + $.$model.getProjectCurrencyAmount());
 							item.xAddToSave($);
 						}
 					});

@@ -251,10 +251,18 @@ exports.definition = {
 				var self = this;
 				var actualTotalExpense = 0;
 				var actualTotalIncome = 0;
+				var actualTotalBorrow = 0;
+				var actualTotalLend = 0;
+				var actualTotalReturn = 0;
+				var actualTotalPayback = 0;
 				this.xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("state") === "Accept") {
 						actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
 						actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+						actualTotalBorrow = actualTotalBorrow + item.xGet("actualTotalBorrow");
+						actualTotalLend = actualTotalLend + item.xGet("actualTotalLend");
+						actualTotalReturn = actualTotalReturn + item.xGet("actualTotalReturn");
+						actualTotalPayback = actualTotalPayback + item.xGet("actualTotalPayback");
 					}
 				});
 				this.xGetDescendents("subProjects").forEach(function(subProject) {
@@ -270,11 +278,15 @@ exports.definition = {
 							}
 							actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense") * rate;
 							actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome") * rate;
+							actualTotalBorrow = actualTotalBorrow + subProjectItem.xGet("actualTotalBorrow") * rate;
+							actualTotalLend = actualTotalLend + subProjectItem.xGet("actualTotalLend") * rate;
+							actualTotalReturn = actualTotalReturn + subProjectItem.xGet("actualTotalReturn") * rate;
+							actualTotalPayback = actualTotalPayback + subProjectItem.xGet("actualTotalPayback") * rate;
 						}
 					});
 				});
 
-				this._actualTotalMoney = actualTotalExpense - actualTotalIncome;
+				this._actualTotalMoney = actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
 
 				// var projectCurrency = this.xGet("currency");
@@ -294,10 +306,18 @@ exports.definition = {
 				} else {
 					var actualTotalExpense = 0;
 					var actualTotalIncome = 0;
+					var actualTotalBorrow = 0;
+					var actualTotalLend = 0;
+					var actualTotalReturn = 0;
+					var actualTotalPayback = 0;
 					this.xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("state") === "Accept") {
 							actualTotalExpense = actualTotalExpense + item.xGet("actualTotalExpense");
 							actualTotalIncome = actualTotalIncome + item.xGet("actualTotalIncome");
+							actualTotalBorrow = actualTotalBorrow + item.xGet("actualTotalBorrow");
+							actualTotalLend = actualTotalLend + item.xGet("actualTotalLend");
+							actualTotalReturn = actualTotalReturn + item.xGet("actualTotalReturn");
+							actualTotalPayback = actualTotalPayback + item.xGet("actualTotalPayback");
 						}
 					});
 					this.xGetDescendents("subProjects").forEach(function(subProject) {
@@ -305,10 +325,14 @@ exports.definition = {
 							if (subProjectItem.xGet("state") === "Accept") {
 								actualTotalExpense = actualTotalExpense + subProjectItem.xGet("actualTotalExpense");
 								actualTotalIncome = actualTotalIncome + subProjectItem.xGet("actualTotalIncome");
+								actualTotalBorrow = actualTotalBorrow + subProjectItem.xGet("actualTotalBorrow");
+								actualTotalLend = actualTotalLend + subProjectItem.xGet("actualTotalLend");
+								actualTotalReturn = actualTotalReturn + subProjectItem.xGet("actualTotalReturn");
+								actualTotalPayback = actualTotalPayback + subProjectItem.xGet("actualTotalPayback");
 							}
 						});
 					});
-					actualTotalMoney = actualTotalExpense - actualTotalIncome;
+					actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				}
 				if (actualTotalMoney > 0) {
 					return false;
@@ -341,39 +365,39 @@ exports.definition = {
 					xFinishCallback({
 						msg : "不能删除当前激活的项目"
 					});
-				} 
-				//else if (this.xGet("subProjects").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的子项目不为空，不能删除"
-					// });
+				}
+				// else if (this.xGet("subProjects").length > 0) {
+				// xFinishCallback({
+				// msg : "项目中的子项目不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyExpenses").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的支出不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的支出不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyIncomes").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的收入不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的收入不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyTransfers").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的转账不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的转账不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyBorrows").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的借出不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的借出不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyReturns").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的还款不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的还款不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyLends").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的借出不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的借出不为空，不能删除"
+				// });
 				// } else if (this.xGet("moneyPaybacks").length > 0) {
-					// xFinishCallback({
-						// msg : "项目中的收款不为空，不能删除"
-					// });
+				// xFinishCallback({
+				// msg : "项目中的收款不为空，不能删除"
+				// });
 				// }
 				// else if (this.xGet("moneyExpenseCategories").length > 1) {
 				// xFinishCallback({
@@ -422,7 +446,7 @@ exports.definition = {
 									successCB();
 								} else {
 									errorCB({
-											msg : "删除子数据项目共享时出错"
+										msg : "删除子数据项目共享时出错"
 									});
 								}
 
@@ -454,7 +478,7 @@ exports.definition = {
 									successCB();
 								} else {
 									errorCB({
-											msg : "删除出错"
+										msg : "删除出错"
 									});
 								}
 
