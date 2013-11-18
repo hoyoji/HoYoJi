@@ -13,7 +13,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}));
 	menuSection.add($.createContextMenuItem("新建好友", function() {
-		Alloy.Globals.openWindow("friend/localFriendForm",{$model : "Friend", data : { friendCategory : sourceModel }});
+		Alloy.Globals.openWindow("friend/friendForm",{$model : "Friend", data : { friendCategory : sourceModel, friendUser : null }});
 	}));
 	return menuSection;
 };
@@ -26,7 +26,7 @@ function onFooterbarTap(e){
 	if(e.source.id === "addFriend"){
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	} else if(e.source.id === "createFriend"){
-		Alloy.Globals.openWindow("friend/localFriendForm",{$model : "Friend", data : { friendCategory : Alloy.Models.User.xGet("defaultFriendCategory") }});
+		Alloy.Globals.openWindow("friend/friendForm",{$model : "Friend", data : { friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"), friendUser : null }});
 	}
 }
 
