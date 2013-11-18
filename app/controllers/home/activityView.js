@@ -303,3 +303,65 @@ $.transactionsTable.addCollection(moneyPaybackInterests, "money/moneyPaybackInte
 $.transactionsTable.addCollection(receivedMessages);
 
 exports.doFilter();
+
+
+
+// $.transactionsTable.addRowTemplate("moneyExpenseRowTemplate", {
+	// properties: {            // Sets the image view  properties
+                // width: 'Ti.UI.FILL', height: '90dp'
+   // },
+    // childTemplates: [
+        // {                            // Image justified left
+            // type: 'Ti.UI.ImageView', // Use an image view for the image
+            // bindId: 'pic',           // Maps to a custom pic property of the item data
+            // properties: {            // Sets the image view  properties
+                // width: '56dp', height: '56dp', left: 5
+            // }
+        // },
+        // {                            // Title 
+            // type: 'Ti.UI.Label',     // Use a label for the title 
+            // bindId: 'categoryName',          // Maps to a custom info property of the item data
+            // properties: {            // Sets the label properties
+                // color: 'black',
+                // font: { fontSize: '16dp', fontWeight:'bold' },
+                // left: '66dp',
+            // }
+        // },
+        // {                            // Title 
+            // type: 'Ti.UI.Label',     // Use a label for the title 
+            // bindId: 'amount',          // Maps to a custom info property of the item data
+            // properties: {            // Sets the label properties
+                // color: 'black',
+                // font: { fontSize: '16dp', fontWeight:'bold' },
+                // right: '5dp',
+            // }
+        // },
+        // {                            // Subtitle
+            // type: 'Ti.UI.Label',     // Use a label for the subtitle
+            // bindId: 'projectName',       // Maps to a custom es_info property of the item data
+            // properties: {            // Sets the label properties
+                // color: 'gray',
+                // font: { fontSize: '12dp' },
+                // left: '66dp', top: '16dp',
+            // }
+        // },
+        // {                            // Subtitle
+            // type: 'Ti.UI.Label',     // Use a label for the subtitle
+            // bindId: 'dateTime',       // Maps to a custom es_info property of the item data
+            // properties: {            // Sets the label properties
+                // color: 'gray',
+                // font: { fontSize: '12dp' },
+                // right: '5', top: '16dp',
+            // }
+        // },
+        // {                            // Subtitle
+            // type: 'Ti.UI.Label',     // Use a label for the subtitle
+            // bindId: 'remark',       // Maps to a custom es_info property of the item data
+            // properties: {            // Sets the label properties
+                // color: 'gray',
+                // font: { fontFamily:'Arial', fontSize: '12dp' },
+                // left: '66', bottom: '16dp',
+            // }
+        // }
+    // ]
+// });

@@ -616,7 +616,6 @@ exports.getRowsCount = function() {
 };
 
 exports.addCollection = function(collection, rowView) {
-
 	if (rowView) {
 		collection.__rowView = rowView;
 	}

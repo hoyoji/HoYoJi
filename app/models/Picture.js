@@ -166,6 +166,24 @@ exports.definition = {
 				blob1 = null;
 				f = null;
 				return attributes;
+			},
+			getPicturePath : function(){
+				var imgDir;
+				if(this.isNew()){
+					imgDir = Alloy.Globals.getTempDirectory();
+				} else {
+					imgDir = Alloy.Globals.getApplicationDataDirectory();
+				}
+				return imgDir + this.xGet("id") + "." + this.xGet("pictureType");
+			},
+			getIconPath : function(){
+				var imgDir;
+				if(this.isNew()){
+					imgDir = Alloy.Globals.getTempDirectory();
+				} else {
+					imgDir = Alloy.Globals.getApplicationDataDirectory();
+				}
+				return imgDir + this.xGet("id") + "_icon." + this.xGet("pictureType");
 			}
 		});
 

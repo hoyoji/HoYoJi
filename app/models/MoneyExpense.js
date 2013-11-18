@@ -576,6 +576,28 @@ exports.definition = {
 						rs.close();
 					});
 				}
+			},
+			getRowViewData : function(){
+				return {
+					categoryName : { 
+						text : this.xGet("moneyExpenseCategory").xGet("name")
+					}, 
+					projectName : {
+						text : this.xGet("project").xGet("name")
+					}, 
+					amount : {
+						text : this.getLocalAmount()
+					}, 
+					dateTime : {
+						text : this.xGet("date")
+					}, 
+					remark : {
+						text : this.getRemark()
+					}, 
+					pic : {
+						image : this.xGet("picture") ? this.xGet("picture").getIconPath() : "/images/noPicture.png"
+					}
+				};
 			}
 		});
 
