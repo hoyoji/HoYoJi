@@ -285,7 +285,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	} else {
 		oldAmount = $.$model.xGet("amount");
 	}
-    oldInterest = $.$model.xGet("interest") || 0;
+	oldInterest = $.$model.xGet("interest") || 0;
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {
@@ -413,7 +413,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		}
 
-if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			if ($.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
@@ -444,8 +444,11 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 					});
 				}
 			}
-			
-			if ($.$model.hasChanged("project") && !$.$model.isNew()) {
+			// 生成分摊
+			$.$model.generateReturnApportions(true);
+		}
+
+		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 			$.$model.xGet("moneyReturnApportions").forEach(function(item) {
@@ -512,10 +515,6 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			});
 		}
 
-			// 生成分摊
-			$.$model.generateReturnApportions(true);
-		}
-
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
 		if (moneyBorrow) {
@@ -570,7 +569,7 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 					});
 				}
 			}
-			
+
 			if (apportionsDirty) {
 				$.becameClean();
 				apportionsDirty = false;

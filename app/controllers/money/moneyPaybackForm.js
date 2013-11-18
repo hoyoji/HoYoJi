@@ -98,7 +98,9 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change", {bubbles : false});
+		$.exchangeRate.field.fireEvent("change", {
+			bubbles : false
+		});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -249,6 +251,7 @@ function updateApportions() {
 	}
 }
 
+
 $.$model.xGet("moneyPaybackApportions").on("xdelete", deleteApportion);
 $.$model.xGet("moneyPaybackApportions").on("add _xchange xdelete", updateApportions);
 
@@ -292,6 +295,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 	}
 
+
 	$.moneyAccount.field.addEventListener("change", updateExchangeRate);
 
 	function setExchangeRate(moneyAccount, project, setToModel) {
@@ -313,11 +317,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change", {bubbles : false});
+			$.exchangeRate.field.fireEvent("change", {
+				bubbles : false
+			});
 		}
 	}
 
-var projectFirstChangeFlag;
+	var projectFirstChangeFlag;
 	var oldProject = $.$model.xGet("project");
 	$.project.field.addEventListener("change", function() {
 		if ($.project.getValue()) {
@@ -356,7 +362,9 @@ var projectFirstChangeFlag;
 			$.friendAccount.$view.setHeight(0);
 			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
-			$.friendAccount.field.fireEvent("change", {bubbles : false});
+			$.friendAccount.field.fireEvent("change", {
+				bubbles : false
+			});
 		} else {
 			$.friendAccount.$view.setHeight(0);
 			$.friendAccount.setValue("");
@@ -396,7 +404,7 @@ var projectFirstChangeFlag;
 		if ($.$model.xGet("moneyAccount").xGet("currency") !== $.$model.xGet("project").xGet("currency")) {
 			var rates = $.$model.xGet("moneyAccount").xGet("currency").getExchanges($.$model.xGet("project").xGet("currency"));
 			if (!rates.length && $.$model.xGet("exchangeRate")) {//若汇率不存在 ，保存时自动新建一条
-			   var exchange = Alloy.createModel("Exchange", {
+				var exchange = Alloy.createModel("Exchange", {
 					localCurrency : $.$model.xGet("moneyAccount").xGet("currency"),
 					foreignCurrency : $.$model.xGet("project").xGet("currency"),
 					rate : $.$model.xGet("exchangeRate"),
@@ -406,7 +414,7 @@ var projectFirstChangeFlag;
 			}
 		}
 
-if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
+		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			if ($.$model.isNew()) {
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
@@ -437,8 +445,11 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 					});
 				}
 			}
-			
-			if ($.$model.hasChanged("project") && !$.$model.isNew()) {
+			// 生成分摊
+			$.$model.generatePaybackApportions(true);
+		}
+
+		if ($.$model.hasChanged("project") && !$.$model.isNew()) {
 			var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 			var newProjectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
 			$.$model.xGet("moneyPaybackApportions").forEach(function(item) {
@@ -505,10 +516,6 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 			});
 		}
 
-			// 生成分摊
-			$.$model.generatePaybackApportions(true);
-		}
-
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");
 		if (moneyLend) {
@@ -563,12 +570,12 @@ if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
 					});
 				}
 			}
-			
+
 			if (apportionsDirty) {
 				$.becameClean();
 				apportionsDirty = false;
 			}
-			
+
 			saveEndCB(e);
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
