@@ -48,26 +48,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if($.$model.xGet("currentBalance") > 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
-					transferOutUser : Alloy.Models.User,
+					transferOutUser : null,
 					transferInUser : Alloy.Models.User,
 					transferIn : $.$model,
 					exchangeRate : 1,
 					transferInAmount : $.$model.xGet("currentBalance"),
 					transferOutAmount : $.$model.xGet("currentBalance"),
 					project : Alloy.Models.User.xGet("activeProject"),
-					ownerUser : Alloy.Models.User
+					ownerUser : Alloy.Models.User,
+					remark : "［修改账户余额］"
 				});
 			} else if($.$model.xGet("currentBalance") < 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : Alloy.Models.User,
-					transferInUser : Alloy.Models.User,
+					transferInUser : null,
 					transferOut : $.$model,
 					exchangeRate : 1,
 					transferOutAmount : Math.abs($.$model.xGet("currentBalance")),
 					transferInAmount : Math.abs($.$model.xGet("currentBalance")),
 					project : Alloy.Models.User.xGet("activeProject"),
-					ownerUser : Alloy.Models.User
+					ownerUser : Alloy.Models.User,
+					remark : "［修改账户余额］"
 				});
 			}
 			moneyTransfer.xAddToSave($);
@@ -100,26 +102,28 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") > 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
-					transferOutUser : Alloy.Models.User,
+					transferOutUser : null,
 					transferInUser : Alloy.Models.User,
 					transferIn : $.$model,
 					exchangeRate : 1,
 					transferInAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
 					transferOutAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
 					project : Alloy.Models.User.xGet("activeProject"),
-					ownerUser : Alloy.Models.User
+					ownerUser : Alloy.Models.User,
+					remark : "［修改账户余额］"
 				});
 			} else if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") < 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : Alloy.Models.User,
-					transferInUser : Alloy.Models.User,
+					transferInUser : null,
 					transferOut : $.$model,
 					exchangeRate : 1,
 					transferOutAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
 					transferInAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
 					project : Alloy.Models.User.xGet("activeProject"),
-					ownerUser : Alloy.Models.User
+					ownerUser : Alloy.Models.User,
+					remark : "［修改账户余额］"
 				});
 			}
 			moneyTransfer.xAddToSave($);

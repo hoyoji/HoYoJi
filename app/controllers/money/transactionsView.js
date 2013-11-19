@@ -49,7 +49,10 @@ function searchData(collection, offset, limit, orderBy) {
 
 function setFilter(collection, extraFilter) {
 	collection.xSetFilter(function(model) {
-		var result = !extraFilter ? true : extraFilter(model);
+		if(extraFilter && !extraFilter(model)){
+			return false;
+		}
+		var result = true;
 		if (currentFilter.transactionDisplayType === "Personal") {
 			if (currentFilter.projectId) {
 				result = result && model.xGet("ownerUser") === Alloy.Models.User;
@@ -127,8 +130,12 @@ exports.doFilter = function(filter) {
 	$.transactionsTable.resetTable();
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
-	setFilter(moneyTransferOuts);
-	setFilter(moneyTransferIns);
+	setFilter(moneyTransferOuts, function(model) {
+		return model.xGet("transferOutId");
+	});
+	setFilter(moneyTransferIns, function(model) {
+		return model.xGet("transferInId");
+	});
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);

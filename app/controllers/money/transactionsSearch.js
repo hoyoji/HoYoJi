@@ -13,8 +13,12 @@ exports.doSearch = function() {
 
 var searchMoneyExpenses = Alloy.createCollection("MoneyExpense");
 var searchMoneyIncomes = Alloy.createCollection("MoneyIncome");
-var searchMoneyTransferOuts = Alloy.createCollection("MoneyTransfer");
-var searchMoneyTransferIns = Alloy.createCollection("MoneyTransfer");
+var searchMoneyTransferOuts = Alloy.createCollection("MoneyTransfer").xCreateFilter(function(model) {
+	return model.xGet("transferOutId");
+});
+var searchMoneyTransferIns = Alloy.createCollection("MoneyTransfer").xCreateFilter(function(model) {
+	return model.xGet("transferInId");
+});;
 var searchMoneyBorrows = Alloy.createCollection("MoneyBorrow");
 var searchMoneyLends = Alloy.createCollection("MoneyLend");
 var searchMoneyReturns = Alloy.createCollection("MoneyReturn");

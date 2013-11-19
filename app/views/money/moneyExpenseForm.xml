@@ -87,7 +87,7 @@
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
 				/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="商家账户" hintText="无商家账户"
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" height="0" labelText="收款账户" hintText="无收款账户"
 				id="friendAccount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendAccount"

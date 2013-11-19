@@ -249,7 +249,12 @@ exports.definition = {
 				
 			},
 			getRemark : function() {
-				var remark = this.xGet("remark");
+				var remark = this.xGet("remark") || "";
+				if(!this.xGet("transferOutId") && (this.xGet("transferOutUserId") || this.xGet("transferOutLocalFriendId"))){
+					remark = remark + "［从"+(this.xGet("transferOutUser") || this.xGet("transferOutLocalFriend")).getDisplayName()+"转出］"+ remark;
+				} else if (!this.xGet("transferInId") && (this.xGet("transferInUserId") || this.xGet("transferLocalInFriendId"))){
+					remark = remark + "［转入到"+(this.xGet("transferInUser") || this.xGet("transferInLocalFriend")).getDisplayName()+"］"+ remark;
+				} 
 				if (!remark) {
 					remark = "无备注";
 				}

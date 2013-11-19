@@ -18,6 +18,13 @@
 					id="amount" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="transferOutAmount"/>
+				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
+					id="project" autoInit="false" editModeEditability="noneditable"
+				bindModel="$.$model"
+				bindAttribute="project"
+				bindAttributeIsModel="name"
+				bindModelSelector="project/projectAll"
+				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField"  labelText="转出人" hintText="无转出人" rightButtonText="自己"
 				id="transferOutUser" autoInit="false"
 				bindModel="$.$model"
@@ -63,13 +70,6 @@
 				editModeEditability="noneditable" addModeEditability="noneditable"
 				bindModel="$.$model"
 				bindAttribute="transferInAmount"/>
-				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableModelField" labelText="项目" hintText="请选择项目"
-					id="project" autoInit="false" editModeEditability="noneditable"
-				bindModel="$.$model"
-				bindAttribute="project"
-				bindAttributeIsModel="name"
-				bindModelSelector="project/projectAll"
-				/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextArea" labelText="备注" hintText="添加备注"
 					id="remark" autoInit="false"
 				bindModel="$.$model"

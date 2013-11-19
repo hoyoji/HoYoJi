@@ -202,13 +202,19 @@ function searchData(collection, offset, limit, orderBy) {
 	});
 }
 
-function setFilter(collection) {
+function setFilter(collection, extraFilter) {
 	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
 		collection.xSetFilter(function(model) {
+			if(extraFilter && !extraFilter(model)){
+				return false;
+			}
 			return model.xGet("ownerUserId") === Alloy.Models.User.id;
 		});
 	} else {
 		collection.xSetFilter(function(model) {
+			if(extraFilter && !extraFilter(model)){
+				return false;
+			}
 			return true;
 		});
 	}
@@ -246,19 +252,23 @@ exports.doFilter = function() {
 
 	setFilter(moneyIncomes);
 	setFilter(moneyExpenses);
-	setFilter(moneyTransferOuts);
-	setFilter(moneyTransferIns);
+	setFilter(moneyTransferOuts, function(model){
+		return model.xGet("transferOutId");
+	});
+	setFilter(moneyTransferIns, function(model){
+		return model.xGet("transferInId");
+	});
 	setFilter(moneyBorrows);
 	setFilter(moneyLends);
 	setFilter(moneyReturns);
-	moneyReturnInterests.xSetFilter(function(model) {
+	setFilter(moneyReturnInterests, function(model) {
 		return model.xGet("interest") > 0;
 	});
 	setFilter(moneyPaybacks);
-	moneyPaybackInterests.xSetFilter(function(model) {
+	setFilter(moneyPaybackInterests, function(model) {
 		return model.xGet("interest") > 0;
 	});
-	receivedMessages.xSetFilter(function(model) {
+	setFilter(receivedMessages, function(model) {
 		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id && model.xGet("messageState") !== "closed");
 	});
 	$.transactionsTable.fetchNextPage();
