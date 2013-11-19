@@ -25,12 +25,20 @@ function searchData(collection, offset, limit, orderBy) {
 			searchString += "main.moneyAccountId".sqlEQ(currentFilter.moneyAccountId);
 		}
 	} 
-	if (currentFilter.friendUserId && collection.config.adapter.collection_name !== "MoneyTransfer") {
+	if (currentFilter.friendUserId){
 		searchString += searchString && " AND ";
-		searchString += sqlOR("main.friendUserId".sqlEQ(currentFilter.friendUserId), "main.ownerUserId".sqlEQ(currentFilter.friendUserId));
-	}
-	if (currentFilter.friendUserId && collection.config.adapter.collection_name === "MoneyTransfer") {
-		return;
+		if(collection.config.adapter.collection_name === "MoneyTransfer") {
+				searchString += sqlOR("main.transferInUserId".sqlEQ(currentFilter.friendUserId), "main.transferOutUserId".sqlEQ(currentFilter.friendUserId), "main.ownerUserId".sqlEQ(currentFilter.friendUserId));
+		} else {
+				searchString += sqlOR("main.friendUserId".sqlEQ(currentFilter.friendUserId), "main.ownerUserId".sqlEQ(currentFilter.friendUserId));
+		}
+	} else if (currentFilter.localFriendId){
+		searchString += searchString && " AND ";
+		if(collection.config.adapter.collection_name === "MoneyTransfer") {
+			searchString += sqlOR("main.transferInLocalFriendId".sqlEQ(currentFilter.localFriendId), "main.transferOutLocalFriendId".sqlEQ(currentFilter.localFriendId));
+		} else {
+			searchString += sqlOR("main.localFriendId".sqlEQ(currentFilter.localFriendId));
+		}
 	}
 	collection.xSearchInDb(searchString, {
 		offset : offset,
@@ -61,9 +69,22 @@ function setFilter(collection, extraFilter) {
 			}
 		}
 		if (currentFilter.friendUserId) {
-			result = result && (model.xGet("friendUserId") === currentFilter.friendUserId || 
-								model.xGet("ownerUserId") === currentFilter.friendUserId);
-		}	
+			if(collection.config.adapter.collection_name === "MoneyTransfer"){
+				result = result && (model.xGet("transferOutUserId") === currentFilter.friendUserId
+									|| model.xGet("transferInUserId") === currentFilter.friendUserId 
+									|| model.xGet("ownerUserId") === currentFilter.friendUserId);
+			} else {
+				result = result && (model.xGet("friendUserId") === currentFilter.friendUserId || 
+						model.xGet("ownerUserId") === currentFilter.friendUserId);
+			}
+		} else if (currentFilter.localFriendId) {
+			if(collection.config.adapter.collection_name === "MoneyTransfer"){
+				result = result && (model.xGet("transferOutLocalFriendId") === currentFilter.localFriendId
+									|| model.xGet("transferInLocalFriendId") === currentFilter.localFriendId);
+			} else {
+				result = result && (model.xGet("localFriendId") === currentFilter.localFriendId);
+			}
+		} 	
 		return result;
 	});
 }
@@ -95,6 +116,9 @@ exports.doFilter = function(filter) {
 		}
 		if (currentFilter.friend) {
 			currentFilter.friendUserId = currentFilter.friend.xGet("friendUserId");
+			if(!currentFilter.friendUserId){
+				currentFilter.localFriendId = currentFilter.friend.xGet("id");
+			}
 		}
 		if (currentFilter.moneyAccount) {
 			currentFilter.moneyAccountId = currentFilter.moneyAccount.xGet("id");

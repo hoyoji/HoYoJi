@@ -47,7 +47,7 @@ exports.getQueryString = function(table) {
 				filterStr += "main.projectId = '" + value.id + "' ";
 			} else if (f === "main.moneyAccount") {
 				if(table==="MoneyTransfer"){
-					filterStr += " (main.moneyTransferInId = '" + value.id + "' OR main.moneyTransferOutId = '" + value.id + "') ";
+					filterStr += " (main.transferInId = '" + value.id + "' OR main.transferOutId = '" + value.id + "') ";
 				} else {
 					filterStr += "main.moneyAccountId = '" + value.id + "' ";
 				}
