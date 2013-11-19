@@ -55,9 +55,9 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			getDisplayName : function() {
-				return this.xGet("friendUser").getUserDisplayName();
-			},
+			// getDisplayName : function() {
+				// return this.xGet("friendUser").getUserDisplayName();
+			// },
 			getFriendDisplayName : function() {
 				var friend = Alloy.createModel("Friend").xFindInDb({
 					friendUserId : this.xGet("friendUser").id
@@ -65,7 +65,7 @@ exports.definition = {
 				if (friend.id) {
 					return friend.getDisplayName();
 				}
-				return this.getDisplayName();
+				return this.xGet("friendUser").xGet("userName");
 			},
 			getAmount : function() {
 				if (this.xGet("moneyLend").xGet("ownerUser") === Alloy.Models.User) {
