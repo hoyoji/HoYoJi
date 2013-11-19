@@ -83,16 +83,6 @@ $.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy,
 		limit : limit,
 		orderBy : orderBy
 	});
-	searchMoneyTransferOuts.xSearchInDb(queryString, {
-		offset : offset,
-		limit : limit,
-		orderBy : orderBy
-	});
-	searchMoneyTransferIns.xSearchInDb(queryString, {
-		offset : offset,
-		limit : limit,
-		orderBy : orderBy
-	});
 	searchMoneyBorrows.xSearchInDb(queryString, {
 		offset : offset,
 		limit : limit,
@@ -124,6 +114,18 @@ $.transactionsSearchTable.beforeFetchNextPage = function(offset, limit, orderBy,
 		orderBy : orderBy
 	});
 
+	queryString = queryController.getQueryString("MoneyTransfer");
+	searchMoneyTransferOuts.xSearchInDb(queryString, {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	searchMoneyTransferIns.xSearchInDb(queryString, {
+		offset : offset,
+		limit : limit,
+		orderBy : orderBy
+	});
+	
 	successCB();
 };
 
