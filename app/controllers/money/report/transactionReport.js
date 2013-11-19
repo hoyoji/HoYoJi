@@ -68,7 +68,7 @@ function monthTransactions() {
 	exports.refresh();
 }
 
-exports.getQueryString = function(prefix, notPersonalData) {
+exports.getQueryString = function(prefix, notPersonalData, table) {
 	var filterStr = "";
 	prefix = prefix || "main";
 	for (var f in queryOptions) {
@@ -95,6 +95,26 @@ exports.getQueryString = function(prefix, notPersonalData) {
 				filterStr += prefix + ".date <= '" + value + "' ";
 			} else if (f === prefix + ".project") {
 				filterStr += prefix + ".projectId = '" + value.id + "' ";
+			} else if (f === prefix + ".moneyAccount") {
+				if(table==="MoneyTransfer"){
+					filterStr += " (" + prefix + ".transferInId = '" + value.id + "' OR " + prefix + ".transferOutId = '" + value.id + "') ";
+				} else {
+					filterStr += prefix + ".moneyAccountId = '" + value.id + "' ";
+				}
+			} else if (f === prefix + ".friend") {
+				if(value.xGet("friendUserId")) {
+					if(table === "MoneyTransfer") {
+						filterStr += "(" + prefix + ".transferOutUserId = '" + value.xGet("friendUserId") + "' OR " + prefix + ".transferInUserId = '" + value.xGet("friendUserId") + "' OR " + prefix + ".ownerUserId = '" + value.xGet("friendUserId") + "')";
+					} else {
+						filterStr += "(" + prefix + ".friendUserId = '" + value.xGet("friendUserId") + "' OR " + prefix + ".ownerUserId = '" + value.xGet("friendUserId") + "')";
+					}
+				} else {
+					if(table === "MoneyTransfer") {
+						filterStr += "(" + prefix + ".transferOutUserId = '" + value.xGet("id") + "' OR " + prefix + ".transferInUserId = '" + value.xGet("id") + "')";
+					} else {
+						filterStr += prefix + ".localFriendId = '" + value.xGet("id") + "' ";
+					}
+				}
 			} else {
 				filterStr += f + " = '" + value + "' ";
 			}
@@ -119,6 +139,8 @@ exports.refresh = function() {
 	$.moneyPaybackTotal.query(queryStr);
 	$.moneyReturnInterestTotal.query(queryStr);
 	$.moneyPaybackInterestTotal.query(queryStr);
+	
+	queryStr = exports.getQueryString(null,null,"MoneyTransfer");
 	$.moneyTransferInTotal.query(queryStr);
 	$.moneyTransferOutTotal.query(queryStr);
 	
