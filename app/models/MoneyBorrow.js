@@ -310,6 +310,7 @@ exports.definition = {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 					saveOptions.wait = true;
+					
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
