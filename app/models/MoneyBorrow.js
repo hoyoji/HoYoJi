@@ -472,16 +472,15 @@ exports.definition = {
 					// }, saveOptions);
 					moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance - this.xGet("amount") : -this.xGet("amount");
 				}
-				self.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
+				var self = this;
+				this.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === self.xGet("ownerUser")) {
 						// var actualTotalBorrow = item.xGet("actualTotalBorrow") - self.getProjectCurrencyAmount();
 						// item.save({
 						// actualTotalBorrow : actualTotalBorrow
 						// }, saveOptions);
 						item.__syncActualTotalBorrow = item.__syncActualTotalBorrow ? item.__syncActualTotalBorrow - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
-						;
-
-					}
+				}
 				});
 			},
 			syncRollback : function() {
