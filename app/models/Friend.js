@@ -71,6 +71,15 @@ exports.definition = {
 						};
 					}
 					xValidateComplete(error);
+				},
+				nickName : function(xValidateComplete) {
+					var error;
+					if (!this.xGet("friendUser") && !this.xGet("nickName")) {
+						error = {
+							msg : "新增本地好友备注名不能为空"
+						};
+					}
+					xValidateComplete(error);
 				}
 			},
 			getSharedWithHerProjects : function() {
