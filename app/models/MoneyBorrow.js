@@ -323,9 +323,9 @@ exports.definition = {
 							var actualTotalBorrow = item.xGet("actualTotalBorrow") - self.getProjectCurrencyAmount();
 							item.xSet("actualTotalBorrow", actualTotalBorrow);
 							myProjectShareAuthorization = item;
-							item.save({
-							actualTotalBorrow : actualTotalBorrow
-							}, saveOptions);
+							// item.save({
+							// actualTotalBorrow : actualTotalBorrow
+							// }, saveOptions);
 						}
 					});
 					this._xDelete(function(e) {

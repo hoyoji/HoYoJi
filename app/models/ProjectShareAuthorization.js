@@ -259,7 +259,7 @@ exports.definition = {
 				var actualTotalLend = this.xGet("actualTotalLend") || 0;
 				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
 				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
-				var actualTotalMoney = actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome - actualTotalBorrow + actualTotalLend + actualTotalReturn - actualTotalPayback;
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
@@ -318,7 +318,7 @@ exports.definition = {
 				var apportionedTotalLend = this.xGet("apportionedTotalLend") || 0;
 				var apportionedTotalReturn = this.xGet("apportionedTotalReturn") || 0;
 				var apportionedTotalPayback = this.xGet("apportionedTotalPayback") || 0;
-				return apportionedTotalExpense + apportionedTotalBorrow + apportionedTotalPayback - apportionedTotalIncome - apportionedTotalLend - apportionedTotalReturn;
+				return apportionedTotalExpense - apportionedTotalBorrow - apportionedTotalPayback - apportionedTotalIncome + apportionedTotalLend + apportionedTotalReturn;
 			},
 			getApportionedTotalMoneyToShow : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
