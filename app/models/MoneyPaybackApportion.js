@@ -127,11 +127,11 @@ exports.definition = {
 				var projectShareAuthorizations = self.xGet("moneyPayback").xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
-						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-						// projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
-						console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
+						var apportionedTotalPayback = projectShareAuthorization.xGet("apportionedTotalPayback") || 0;
+						// projectShareAuthorization.xSet("apportionedTotalPayback", apportionedTotalPayback - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
+						console.info("apportionedTotalPayback++++++++++" + apportionedTotalPayback - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
 						projectShareAuthorization.save({
-							apportionedTotalExpense : apportionedTotalExpense - Number((self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2))
+							apportionedTotalPayback : apportionedTotalPayback - Number((self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2))
 						}, saveOptions);
 					}
 				});
@@ -153,7 +153,7 @@ exports.definition = {
 					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalPayback = projectShareAuthorization.__syncApportionedTotalPayback ? projectShareAuthorization.__syncApportionedTotalPayback + Number((record.amount * record.exchangeRate).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2));
 				}
 				delete record.projectId;
 				delete record.exchangeRate;
@@ -168,7 +168,7 @@ exports.definition = {
 					friendUserId : record.friendUserId
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? projectShareAuthorization.__syncApportionedTotalExpense + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyPayback.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyPayback.xGet("exchangeRate")).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalPayback = projectShareAuthorization.__syncApportionedTotalPayback ? projectShareAuthorization.__syncApportionedTotalPayback + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyPayback.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * moneyPayback.xGet("exchangeRate")).toFixed(2));
 				}
 				// }
 				delete record.projectId;
@@ -180,18 +180,18 @@ exports.definition = {
 				// var projectShareAuthorizations = self.xGet("moneyPayback").xGet("project").xGet("projectShareAuthorizations");
 				// projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 				// if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
-				// var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
-				// projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
-				// console.info("apportionedTotalExpense++++++++++" + apportionedTotalExpense - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
+				// var apportionedTotalPayback = projectShareAuthorization.xGet("apportionedTotalPayback") || 0;
+				// projectShareAuthorization.xSet("apportionedTotalPayback", apportionedTotalPayback - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
+				// console.info("apportionedTotalPayback++++++++++" + apportionedTotalPayback - self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate"));
 				// projectShareAuthorization.save({
-				// apportionedTotalExpense : apportionedTotalExpense - Number((self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2))
+				// apportionedTotalPayback : apportionedTotalPayback - Number((self.xGet("amount") * self.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2))
 				// }, saveOptions);
 				var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 					projectId : this.xGet("moneyPayback").xGet("projectId"),
 					friendUserId : this.xGet("friendUserId")
 				});
 				if (projectShareAuthorization.id) {
-					projectShareAuthorization.__syncApportionedTotalExpense = projectShareAuthorization.__syncApportionedTotalExpense ? projectShareAuthorization.__syncApportionedTotalExpense - Number((this.xGet("amount") * this.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2)) : -Number((this.xGet("amount") * this.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2));
+					projectShareAuthorization.__syncApportionedTotalPayback = projectShareAuthorization.__syncApportionedTotalPayback ? projectShareAuthorization.__syncApportionedTotalPayback - Number((this.xGet("amount") * this.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2)) : -Number((this.xGet("amount") * this.xGet("moneyPayback").xGet("exchangeRate")).toFixed(2));
 				}
 				// }
 				// });

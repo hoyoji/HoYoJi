@@ -19,7 +19,7 @@ $.onWindowOpenDo(function() {
 	}
 });
 
-exports.getQueryString = function() {
+exports.getQueryString = function(table) {
 	var filterStr = "";
 	for (var f in $.queryOptions) {
 		var value = $.queryOptions[f];
@@ -45,6 +45,18 @@ exports.getQueryString = function() {
 				filterStr += "main.date <= '" + value + "' ";
 			} else if (f === "main.project") {
 				filterStr += "main.projectId = '" + value.id + "' ";
+			} else if (f === "main.moneyAccount") {
+				if(table==="MoneyTransfer"){
+					filterStr += " (main.transferInId = '" + value.id + "' OR main.transferOutId = '" + value.id + "') ";
+				} else {
+					filterStr += "main.moneyAccountId = '" + value.id + "' ";
+				}
+			} else if (f === "main.friend") {
+				if(value.xGet("friendUserId")){
+					filterStr += "main.friendUserId = '" + value.xGet("friendUserId") + "' ";
+				} else {
+					filterStr += "main.localFriendId = '" + value.xGet("localFriendId") + "' ";
+				}
 			} else {
 				filterStr += f + " = '" + value + "' ";
 			}

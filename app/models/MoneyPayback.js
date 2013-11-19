@@ -357,9 +357,9 @@ exports.definition = {
 							var actualTotalPayback = item.xGet("actualTotalPayback") - self.getProjectCurrencyAmount();
 							item.xSet("actualTotalPayback", actualTotalPayback);
 							myProjectShareAuthorization = item;
-							item.save({
-							actualTotalPayback : actualTotalPayback
-							}, saveOptions);
+							// item.save({
+							// actualTotalPayback : actualTotalPayback
+							// }, saveOptions);
 						}
 					});
 					this._xDelete(function(e) {

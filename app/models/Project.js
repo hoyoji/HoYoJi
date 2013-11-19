@@ -286,7 +286,7 @@ exports.definition = {
 					});
 				});
 
-				this._actualTotalMoney = actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
+				this._actualTotalMoney = actualTotalExpense - actualTotalIncome - actualTotalBorrow + actualTotalLend + actualTotalReturn - actualTotalPayback;
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
 
 				// var projectCurrency = this.xGet("currency");

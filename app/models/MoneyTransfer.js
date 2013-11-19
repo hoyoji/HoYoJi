@@ -6,9 +6,11 @@ exports.definition = {
 			transferOutAmount : "REAL NOT NULL",
 			transferOutId : "TEXT",
 			transferOutUserId : "TEXT",
+			transferOutLocalFriendId : "TEXT",
 			transferInAmount : "REAL NOT NULL",
 			transferInId : "TEXT",
 			transferInUserId : "TEXT",
+			transferInLocalFriendId : "TEXT",
 			exchangeRate : "REAL NOT NULL",
 			projectId : "TEXT NOT NULL",
 			pictureId : "TEXT",
@@ -36,6 +38,14 @@ exports.definition = {
 			},
 			transferInUser : {
 				type : "User",
+				attribute : null
+			},
+			transferOutLocalFriend : {
+				type : "Friend",
+				attribute : null
+			},
+			transferInLocalFriend : {
+				type : "Firend",
 				attribute : null
 			},
 			transferOut : {
