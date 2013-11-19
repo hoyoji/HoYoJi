@@ -358,9 +358,9 @@ exports.definition = {
 						var actualTotalReturn = item.xGet("actualTotalReturn") - self.getProjectCurrencyAmount();
 						item.xSet("actualTotalReturn", actualTotalReturn);
 						myProjectShareAuthorization = item;
-						item.save({
-							actualTotalReturn : actualTotalReturn
-						}, saveOptions);
+						// item.save({
+							// actualTotalReturn : actualTotalReturn
+						// }, saveOptions);
 					}
 				});
 				this._xDelete(function(e) {
