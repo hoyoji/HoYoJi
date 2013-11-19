@@ -52,10 +52,18 @@ exports.getQueryString = function(table) {
 					filterStr += "main.moneyAccountId = '" + value.id + "' ";
 				}
 			} else if (f === "main.friend") {
-				if(value.xGet("friendUserId")){
-					filterStr += "main.friendUserId = '" + value.xGet("friendUserId") + "' ";
+				if(value.xGet("friendUserId")) {
+					if(table === "MoneyTransfer") {
+						filterStr += "(main.transferOutUserId = '" + value.xGet("friendUserId") + "' OR main.transferInUserId = '" + value.xGet("friendUserId") + "' OR main.ownerUserId = '" + value.xGet("friendUserId") + "')";
+					} else {
+						filterStr += "(main.friendUserId = '" + value.xGet("friendUserId") + "' OR main.ownerUserId = '" + value.xGet("friendUserId") + "')";
+					}
 				} else {
-					filterStr += "main.localFriendId = '" + value.xGet("localFriendId") + "' ";
+					if(table === "MoneyTransfer") {
+						filterStr += "(main.transferOutUserId = '" + value.xGet("id") + "' OR main.transferInUserId = '" + value.xGet("id") + "')";
+					} else {
+						filterStr += "main.localFriendId = '" + value.xGet("id") + "' ";
+					}
 				}
 			} else {
 				filterStr += f + " = '" + value + "' ";
@@ -86,4 +94,6 @@ $.close.addEventListener("singletap", close);
 $.dateFrom.UIInit($, $.getCurrentWindow());
 $.dateTo.UIInit($, $.getCurrentWindow());
 $.project.UIInit($, $.getCurrentWindow());
+$.moneyAccount.UIInit($, $.getCurrentWindow());
+$.friend.UIInit($, $.getCurrentWindow());
 $.transactionDisplayType.UIInit($, $.getCurrentWindow());
