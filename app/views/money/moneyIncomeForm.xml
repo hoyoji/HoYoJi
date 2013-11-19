@@ -80,9 +80,8 @@
 				id="friend" autoInit="false"
 				bindModel="$.$model"
 				bindAttribute="friendUser"
-				bindAttributeIsModel="getFriendDisplayName()"
+				bindAttributeIsModel="getDisplayName()"
 				bindModelSelector="friend/friendAll"
-
 				bindModelSelectorConvertType="Friend"
 				bindModelSelectorConvert2Model="convertUser2FriendModel"
 				bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"

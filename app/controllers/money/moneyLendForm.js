@@ -19,8 +19,18 @@ $.makeContextMenu = function() {
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
-		return selectedFriendModel.xGet("friendUser");
+		if(selectedFriendModel.xGet("friendUser")){
+			$.$model.xSet("friendUser", selectedFriendModel.xGet("friendUser"));
+			$.$model.xSet("localFriend", null);
+			return selectedFriendModel.xGet("friendUser");
+		} else {
+			$.$model.xSet("localFriend", selectedFriendModel);
+			$.$model.xSet("friendUser", null);
+			return selectedFriendModel;
+		}
 	} else {
+		$.$model.xSet("localFriend", null);
+		$.$model.xSet("friendUser", null);
 		return null;
 	}
 };
@@ -33,8 +43,19 @@ $.convertUser2FriendModel = function(userModel) {
 		if (friend.id) {
 			return friend;
 		}
+	} else if($.$model.xGet("localFriend")) {
+		return $.$model.xGet("localFriend");
 	}
-	return userModel;
+};
+
+$.friend.convertModelValue = function(value){
+	if($.$model.xGet("friendUser")) {
+		return $.$model.xGet("friendUser").getFriendDisplayName();
+	} else if($.$model.xGet("localFriend")) {
+		return $.$model.xGet("localFriend").getDisplayName();
+	} else {
+		return "";
+	}
 };
 
 var loading;
