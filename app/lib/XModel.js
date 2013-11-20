@@ -427,10 +427,18 @@
 				function xGetRecursive(object, path) {
 					if (path.length > 1) {
 						var p = path.shift();
-						object = object.xGet ? object.xGet(p) : object[p];
+						if(p.endsWith("()")){
+							object = object[p.slice(0,-2)]();
+						} else {
+							object = object.xGet ? object.xGet(p) : object[p];
+						}
 						return xGetRecursive(object, path);
 					}
-					return object.xGet ? object.xGet(path[0]) : object[path[0]];
+					if(path[0].endsWith("()")){
+						return object[path[0].slice(0,-2)]();
+					} else {
+						return object.xGet ? object.xGet(path[0]) : object[path[0]];
+					}
 				}
 
 				return xGetRecursive(this, fields.split("."));

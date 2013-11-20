@@ -3,21 +3,21 @@ Alloy.Globals.extendsBaseUIController($, arguments[0]);
 var collections = [], hasDetailSections = {};
 var sortByField = $.$attrs.sortByField, groupByField = $.$attrs.groupByField, sortReverse = $.$attrs.sortReverse === "true", pageSize;
 
-if($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
+if ($.$attrs.pageSize && $.$attrs.pageSize.toString().startsWith("rowHeight:")) {
 	pageSize = Math.floor((Ti.Platform.displayCaps.platformHeight - 45) / Number($.$attrs.pageSize.slice(10)));
-} else if($.$attrs.pageSize){
+} else if ($.$attrs.pageSize) {
 	pageSize = Number($.$attrs.pageSize);
 } else {
 	pageSize = 0;
 }
 
-if(OS_ANDROID){
+if (OS_ANDROID) {
 	//Alloy.Globals.patchScrollableViewOnAndroid($.scrollableView);
 	//$.scrollableView.setScrollingEnabled(false);
 	// $.scrollableView.setCurrentPage(1);
 }
-if(OS_IOS) {
-	if($.$attrs.currentPage === 0){
+if (OS_IOS) {
+	if ($.$attrs.currentPage === 0) {
 		$.scrollableView.setCurrentPage(0);
 	} else {
 		$.scrollableView.setScrollingEnabled(false);
@@ -33,6 +33,8 @@ if(OS_IOS) {
 			$.__changingRow = false;
 			$.trigger("endchangingrow");
 		}
+
+
 		$.table.addEventListener("postlayout", deleteRowPostLayout);
 	}
 	if (e.deleteRow === true) {
@@ -361,9 +363,9 @@ function addRowToSection(rowModel, collection, index) {
 }
 
 function addRow(rowModel, collection) {
-		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
-			return;			
-		}
+	if ($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing) {
+		return;
+	}
 
 	function doAddRow() {
 		$.off("endchangingrow", doAddRow);
@@ -540,7 +542,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 	} else {
 		tableRowsCount = tableRowsCount || exports.getRowsCount();
 	}
-	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull){
+	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
 		tableRowsCount--;
 	}
 	function doFetchNextPage() {
@@ -569,8 +571,8 @@ exports.fetchNextPage = function(tableRowsCount) {
 			});
 		}
 
-		var newRows = [], moreRowsLength = 0 ;
-		if(tableRowsCount < pageSize){
+		var newRows = [], moreRowsLength = 0;
+		if (tableRowsCount < pageSize) {
 			moreRowsLength = pageSize - tableRowsCount;
 		} else {
 			moreRowsLength = tableRowsCount % pageSize || pageSize;
@@ -580,7 +582,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 		});
 
 		if (newRows.length > 0) {
-			$.sort(null, null, null, true, newRows, null, null, function(){
+			$.sort(null, null, null, true, newRows, null, null, function() {
 				//$.table.scrollToIndex(tableRowsCount-1);
 				_showNoDataIndicator();
 			});
@@ -682,9 +684,9 @@ exports.clearAllCollections = function() {
 };
 
 function refreshCollectionOnChange(model) {
-		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
-			return;			
-		}
+	if ($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing) {
+		return;
+	}
 
 	if (this.__compareFilter(model)) {
 		$.sort(null, null, null, true, null, null, showNoDataIndicator);
@@ -693,9 +695,9 @@ function refreshCollectionOnChange(model) {
 }
 
 function refreshCollection(collection, appendRows, removedRows) {
-		if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
-			return;			
-		}
+	if ($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing) {
+		return;
+	}
 
 	if (pageSize > 0 && appendRows && appendRows.length > 0) {
 		// appendRows.forEach(function(item) {
@@ -726,9 +728,9 @@ $.onWindowCloseDo(function() {
 	if (OS_ANDROID) {
 		$.table.removeEventListener("postlayout", _showNoDataIndicator);
 	}
-		if($.$attrs.refreshTableAfterServerSync === "true"){
-			Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
-		}
+	if ($.$attrs.refreshTableAfterServerSync === "true") {
+		Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
+	}
 });
 
 exports.resetTable = function() {
@@ -743,8 +745,8 @@ exports.resetTable = function() {
 };
 
 var resetCollection = function(collection, options) {
-	if($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing){
-		return;			
+	if ($.$attrs.refreshTableAfterServerSync === "true" && Alloy.Globals.Server.__isSyncing) {
+		return;
 	}
 
 	var data = $.table.data.slice(0);
@@ -786,9 +788,9 @@ exports.removeCollection = function(collection) {
 exports.getCollections = function() {
 	return collections;
 };
-if(OS_IOS){
-	$.scrollableView.addEventListener("scrollend", function(e){
-		if(e.currentPage === 0){
+if (OS_IOS) {
+	$.scrollableView.addEventListener("scrollend", function(e) {
+		if (e.currentPage === 0) {
 			$.$view.hide();
 			clearCollections();
 			$.$attrs.previousTable.detailsTable = null;
@@ -796,13 +798,13 @@ if(OS_IOS){
 			$.parent.fireEvent("navigateup", {
 				bubbles : true,
 				childTableTitle : $.previousBackNavTitle
-			});		
+			});
 		}
 	});
 }
 
 exports.close = function() {
-	if(OS_IOS){
+	if (OS_IOS) {
 		$.scrollableView.scrollToView(0);
 	} else {
 		var animation = Titanium.UI.createAnimation();
@@ -818,7 +820,7 @@ exports.close = function() {
 };
 
 exports.open = function(top) {
-	if(OS_IOS){
+	if (OS_IOS) {
 		$.scrollableView.scrollToView(1);
 	} else {
 		if (top === undefined)
@@ -828,10 +830,11 @@ exports.open = function(top) {
 			animation.top = top;
 			animation.duration = 500;
 			animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_OUT;
-	
+
 			$.$view.animate(animation);
 		}
-	
+
+
 		$.$view.setTop("99%");
 		animate();
 	}
@@ -850,11 +853,11 @@ exports.getLastTableTitle = function() {
 };
 
 exports.createChildTable = function(theBackNavTitle, collections) {
-	if($.getParentController().createChildTable){
+	if ($.getParentController().createChildTable) {
 		$.getParentController().createChildTable(theBackNavTitle, collections);
 	} else {
 		var top = 0;
-		if(OS_ANDROID){
+		if (OS_ANDROID) {
 			top = "100%";
 		}
 		$.detailsTable = Alloy.createWidget("com.hoyoji.titanium.widget.XTableView", "widget", {
@@ -872,27 +875,27 @@ exports.createChildTable = function(theBackNavTitle, collections) {
 		$.detailsTable.setParent($.$view);
 		$.detailsTable.UIInit();
 		$.detailsTable.open();
-	
+
 		$.$view.fireEvent("navigatedown", {
 			bubbles : true,
 			childTableTitle : theBackNavTitle
 		});
-	
+
 		$.detailsTable.backNavTitle = theBackNavTitle;
 		$.detailsTable.previousBackNavTitle = $.backNavTitle;
-	
+
 		for (var i = 0; i < collections.length; i++) {
 			$.detailsTable.addCollection(collections[i]);
-		}		
+		}
 	}
 };
-exports.closeSubTables = function(){
+exports.closeSubTables = function() {
 	var lastTable = $, parentTable;
 	while (lastTable.detailsTable) {
 		parentTable = lastTable;
 		lastTable = lastTable.detailsTable;
 		if (lastTable !== $) {
-			if(OS_ANDROID){
+			if (OS_ANDROID) {
 				$.$view.fireEvent("navigateup", {
 					bubbles : true,
 					childTableTitle : lastTable.previousBackNavTitle
@@ -913,7 +916,7 @@ exports.navigateUp = function() {
 	if (lastTable !== $) {
 		//lastTable.$view.hide();
 		// lastTable.parent.remove($.$view);
-		if(OS_ANDROID){
+		if (OS_ANDROID) {
 			$.$view.fireEvent("navigateup", {
 				bubbles : true,
 				childTableTitle : lastTable.previousBackNavTitle
@@ -1058,8 +1061,8 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	}
 	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
-			if(!item.id){
-				return "无标题";
+			if (!item.id) {
+				return " ";
 			}
 			var model = findObject(item.id);
 			return model && getSectionNameOfRowModel(model.xDeepGet(groupByField));
@@ -1068,19 +1071,19 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		var sectionIndex = 0;
 		for (var sectionTitle in sectionData) {
 			//if(sectionTitle !== undefined){
-				var section = createSection(sectionTitle, sectionIndex);
-				sectionData[sectionTitle].forEach(function(row) {
-					section.add(row);
-				});
-				data.push(section);
-				sectionIndex++;
+			var section = createSection(sectionTitle, sectionIndex);
+			sectionData[sectionTitle].forEach(function(row) {
+				section.add(row);
+			});
+			data.push(section);
+			sectionIndex++;
 			//}
 		}
 	}
 	$.table.setData(data);
 	// showNoDataIndicator(data.length);
 	$.hideActivityIndicator();
-	if(finishCB){
+	if (finishCB) {
 		finishCB();
 	}
 };
@@ -1202,50 +1205,67 @@ if (pageSize > 0) {
 }
 
 $.onWindowOpenDo(function() {
-	if(!$.$attrs.previousTable){
+	if (!$.$attrs.previousTable) {
 		$.getCurrentWindow().$view.addEventListener("hide", $.closeSubTables);
-		$.onWindowCloseDo(function(){
+		$.onWindowCloseDo(function() {
 			$.getCurrentWindow().$view.removeEventListener("hide", $.closeSubTables);
 		});
 	}
-	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
-		// var model = Alloy.createModel($.getCurrentWindow().$attrs.selectModelType);
-		var titleLabel = Ti.UI.createLabel({
-			text : "无" + $.getCurrentWindow().$attrs.title,
-			height : 42,
-			width : Ti.UI.FILL
-		});
+	function addNullRow() {
+		if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
+			if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
+				return;
+			} 
+			var titleLabel = Ti.UI.createLabel({
+				text : $.getCurrentWindow().$attrs.nullRowTitle || ("无" + $.getCurrentWindow().$attrs.title),
+				height : 42,
+				width : Ti.UI.FILL
+			});
 
-		titleLabel.addEventListener("singletap", function(e) {
-			e.cancelBubble = true;
-			function openSelector(){
-       			$.getCurrentWindow().$attrs.selectorCallback(null);
-	       		$.getCurrentWindow().close();
+			titleLabel.addEventListener("singletap", function(e) {
+				e.cancelBubble = true;
+				function openSelector() {
+					$.getCurrentWindow().$attrs.selectorCallback(null);
+					$.getCurrentWindow().close();
+				}
+
+
+				$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
+			});
+			var row = Ti.UI.createTableViewRow({
+				rowType : "NullRow"
+			});
+			row.add(titleLabel);
+			if (!$.getCurrentWindow().$attrs.selectedModel) {
+				titleLabel.setColor("blue");
 			}
-			$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
-		});
-		var row = Ti.UI.createTableViewRow();
-		row.add(titleLabel);
-		if (!$.getCurrentWindow().$attrs.selectedModel) {
-			titleLabel.setColor("blue");
-		}
-		if ($.getRowsCount() > 0) {
-			$.table.insertRowBefore(0, row);
-		} else {
-			$.table.appendRow(row);
-		}
+			if ($.getRowsCount() > 0) {
+				$.table.insertRowBefore(0, row);
+			} else {
+				$.table.appendRow(row);
+			}
+		} else if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
+				$.table.deleteRow($.table.data[0].rows[0]);
+				return;
+			}
 	}
+
+
+	$.getCurrentWindow().$view.addEventListener("show", addNullRow);
+	$.onWindowCloseDo(function() {
+		$.getCurrentWindow().$view.removeEventListener("show", addNullRow);
+	});
 });
-// 
+//
 // if (OS_ANDROID) {
-	// //$.table.addEventListener("postlayout", showNoDataIndicator);
+// //$.table.addEventListener("postlayout", showNoDataIndicator);
 // }
 
 var __noDataIndicator;
 function _showNoDataIndicator() {
 	var dataCount = $.getDataCount();
 	if (dataCount > 0) {
-		if(OS_ANDROID){
+		if (OS_ANDROID) {
 			$.fetchNextPageFooter.setTop(null);
 			$.fetchNextPageFooter.setBottom(0);
 		}
@@ -1255,7 +1275,7 @@ function _showNoDataIndicator() {
 			$.fetchNextPageButton.setText("无更多内容");
 		}
 	} else {
-		if(OS_ANDROID){
+		if (OS_ANDROID) {
 			$.fetchNextPageFooter.setBottom(null);
 			$.fetchNextPageFooter.setTop(60);
 		}
@@ -1266,7 +1286,7 @@ function _showNoDataIndicator() {
 
 function showNoDataIndicator() {
 	//if (OS_IOS) {
-		_showNoDataIndicator();
+	_showNoDataIndicator();
 	//}
 }
 
@@ -1303,21 +1323,21 @@ function cancelBubble(e) {
 // }
 // });
 // }
-exports.autoFetchNextPage = function(){
+exports.autoFetchNextPage = function() {
 	var autoHideAnimationId = 0;
 	if (OS_ANDROID) {
 		var lastFirstVisibleItem = 0, fetching = false;
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
+				if (e.firstVisibleItem > lastFirstVisibleItem && !fetching) {
 					fetching = true;
 					$.fetchNextPage();
-				} else if(fetching === true){
+				} else if (fetching === true) {
 					fetching = false;
 				}
 			}
-			lastFirstVisibleItem = e.firstVisibleItem; 
+			lastFirstVisibleItem = e.firstVisibleItem;
 		});
 	}
 
@@ -1334,13 +1354,13 @@ exports.autoFetchNextPage = function(){
 				lastDirection = true;
 			} else if ((direction > 0 && lastDirection === true && distance > 0) || offset < 0) {
 				lastDirection = false;
-			} else if(distance < 0 && direction > 0 && lastDirection === true){
-				if(!fetching){
+			} else if (distance < 0 && direction > 0 && lastDirection === true) {
+				if (!fetching) {
 					$.fetchNextPage();
-					fetching = true;				
+					fetching = true;
 				}
 			}
-			if(fetching && distance >= 0){
+			if (fetching && distance >= 0) {
 				fetching = false;
 			}
 			direction = distance - lastDistance;
@@ -1360,15 +1380,15 @@ exports.autoHideFooter = function(footer) {
 		$.table.addEventListener("scroll", function(e) {
 			e.cancelBubble = true;
 			if (e.firstVisibleItem + e.visibleItemCount >= e.totalItemCount) {
-				if(e.firstVisibleItem > lastFirstVisibleItem && !fetching){
+				if (e.firstVisibleItem > lastFirstVisibleItem && !fetching) {
 					fetching = true;
 					$.fetchNextPage();
-				} else if(fetching === true){
+				} else if (fetching === true) {
 					fetching = false;
-					
+
 				}
 			}
-			lastFirstVisibleItem = e.firstVisibleItem; 
+			lastFirstVisibleItem = e.firstVisibleItem;
 		});
 		$.table.addEventListener("touchend", function(e) {
 			lastY = undefined;
@@ -1395,7 +1415,7 @@ exports.autoHideFooter = function(footer) {
 							// }
 							// autoHideAnimationId = setTimeout(function() {
 							footer.slideDown();
-							
+
 							// }, 1);
 							lastY = e.y + 5;
 						} else if (delta > 0) {
@@ -1459,13 +1479,13 @@ exports.autoHideFooter = function(footer) {
 					footer.slideUp();
 				}, 50);
 				lastDirection = false;
-			} else if(distance < 0 && direction > 0 && lastDirection === true){
-				if(!fetching){
+			} else if (distance < 0 && direction > 0 && lastDirection === true) {
+				if (!fetching) {
 					$.fetchNextPage();
-					fetching = true;				
+					fetching = true;
 				}
 			}
-			if(fetching && distance >= 0){
+			if (fetching && distance >= 0) {
 				fetching = false;
 			}
 			direction = distance - lastDistance;
@@ -1479,9 +1499,9 @@ exports.autoHideFooter = function(footer) {
 	}
 };
 
-if($.$attrs.refreshTableAfterServerSync === "true"){
+if ($.$attrs.refreshTableAfterServerSync === "true") {
 	Ti.App.addEventListener("ServerSyncFinished", exports.refreshTable);
-	$.onWindowCloseDo(function(){
+	$.onWindowCloseDo(function() {
 		Ti.App.removeEventListener("ServerSyncFinished", exports.refreshTable);
 	});
-} 
+}
