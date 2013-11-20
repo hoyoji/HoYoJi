@@ -60,7 +60,7 @@ function updateTotalBalance() {
 	Alloy.Models.User.xGet("moneyAccounts").forEach(function(account) {
 		totalBalance = totalBalance + account.getLocalCurrentBalance();
 	});
-	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + totalBalance);
+	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + totalBalance.toFixed(2));
 }
 
 function onFooterbarTap(e) {
