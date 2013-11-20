@@ -542,9 +542,7 @@ exports.fetchNextPage = function(tableRowsCount) {
 	} else {
 		tableRowsCount = tableRowsCount || exports.getRowsCount();
 	}
-	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
-		tableRowsCount--;
-	}
+	
 	function doFetchNextPage() {
 		sortedArray = [];
 		for (var i = 0; i < collections.length; i++) {
@@ -1206,6 +1204,41 @@ if (pageSize > 0) {
 		exports.fetchNextPage();
 	});
 }
+var __nullRowLabel;
+function showNullRow(title) {
+	if (!__nullRowLabel) {
+		__nullRowLabel = Ti.UI.createLabel({
+			color : "black",
+			left : 0,
+			height : 42,
+			top : 0,
+			width : Ti.UI.FILL,
+			backgroundColor : "#f5f5f5"
+		});
+		__nullRowLabel.addEventListener("singletap", function(e) {
+			e.cancelBubble = true;
+			function openSelector() {
+				$.getCurrentWindow().$attrs.selectorCallback(null);
+				$.getCurrentWindow().close();
+			}
+			$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
+		});
+		if(OS_IOS){
+			$.contentView.add(__nullRowLabel);
+		} else {
+			$.$view.add(__nullRowLabel);
+		}
+	}
+	__nullRowLabel.setText(title);
+	__nullRowLabel.show();
+	$.table.setTop(42);
+}
+function hideNullRow(){
+	if(__nullRowLabel){
+		__nullRowLabel.hide();
+		$.table.setTop(0);
+	}
+}
 
 $.onWindowOpenDo(function() {
 	if (!$.$attrs.previousTable) {
@@ -1216,56 +1249,14 @@ $.onWindowOpenDo(function() {
 	}
 	function addNullRow() {
 		if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull) {
-			if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
-				return;
-			} 
-			
-			var titleLabel = Ti.UI.createLabel({
-				text : $.getCurrentWindow().$attrs.nullRowTitle || ("无" + $.getCurrentWindow().$attrs.title),
-				height : 42,
-				top : 0,
-				width : Ti.UI.FILL
-			});
+			showNullRow($.getCurrentWindow().$attrs.nullRowTitle || ("无" + $.getCurrentWindow().$attrs.title));
 			if (!$.getCurrentWindow().$attrs.selectedModel) {
-				titleLabel.setColor("blue");
+				__nullRowLabel.setColor("blue");
+			} else {
+				__nullRowLabel.setColor("black");
 			}
-			
-			titleLabel.addEventListener("singletap", function(e) {
-				e.cancelBubble = true;
-				function openSelector() {
-					$.getCurrentWindow().$attrs.selectorCallback(null);
-					$.getCurrentWindow().close();
-				}
-				$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
-			});
-			var row = Ti.UI.createTableViewRow({
-				rowType : "NullRow",
-				width : Ti.UI.FILL
-			});
-			row.add(titleLabel);
-			// if(_.isFunction($.table.insertSectionBefore)){
-				// var section = createSection(" ", 0);
-				// section.add(row);
-				// if ($.getRowsCount() > 0) {
-					// $.table.insertSectionBefore(0, section);
-				// } else {
-					// $.table.appendSection(section);
-				// }
-				// $.table.setData($.table.data);
-			// } else {
-				if ($.getRowsCount() > 0) {
-					$.table.insertRowBefore(0, row);
-				} else {
-					$.table.appendRow(row);
-				}
-			// }
-		} else if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
-			// if(_.isFunction($.table.insertSectionBefore)){
-				// $.table.deleteSection(0);
-			// } else {
-				$.table.deleteRow(0);
-			// }
-			return;
+		} else {
+			hideNullRow();
 		}
 	}
 
