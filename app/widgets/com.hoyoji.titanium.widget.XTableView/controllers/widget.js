@@ -1065,14 +1065,14 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		data = [];
 		var sectionIndex = 0;
 		for (var sectionTitle in sectionData) {
-			if(sectionTitle !== undefined){
-				var section = createSection(sectionTitle, sectionIndex);
+			//if(sectionTitle !== undefined){
+				var section = createSection(sectionTitle || "无标题", sectionIndex);
 				sectionData[sectionTitle].forEach(function(row) {
 					section.add(row);
 				});
 				data.push(section);
 				sectionIndex++;
-			}
+			//}
 		}
 	}
 	$.table.setData(data);
