@@ -1045,8 +1045,11 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		data.sort(function(aRow, bRow) {
 			var a = findObject(aRow.id);
 			var b = findObject(bRow.id);
-			if (!a || !b) {
+			if (!a) {
 				return -1;
+			}
+			if (!b) {
+				return 1;
 			}
 
 			a = a.xDeepGet(sortByField);
@@ -1216,38 +1219,54 @@ $.onWindowOpenDo(function() {
 			if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
 				return;
 			} 
+			
 			var titleLabel = Ti.UI.createLabel({
 				text : $.getCurrentWindow().$attrs.nullRowTitle || ("无" + $.getCurrentWindow().$attrs.title),
 				height : 42,
+				top : 0,
 				width : Ti.UI.FILL
 			});
-
+			if (!$.getCurrentWindow().$attrs.selectedModel) {
+				titleLabel.setColor("blue");
+			}
+			
 			titleLabel.addEventListener("singletap", function(e) {
 				e.cancelBubble = true;
 				function openSelector() {
 					$.getCurrentWindow().$attrs.selectorCallback(null);
 					$.getCurrentWindow().close();
 				}
-
-
 				$.getCurrentWindow().$attrs.beforeSelectorCallback ? $.getCurrentWindow().$attrs.beforeSelectorCallback(null, openSelector, Alloy.Globals.alert) : openSelector();
 			});
 			var row = Ti.UI.createTableViewRow({
-				rowType : "NullRow"
+				rowType : "NullRow",
+				width : Ti.UI.FILL
 			});
 			row.add(titleLabel);
-			if (!$.getCurrentWindow().$attrs.selectedModel) {
-				titleLabel.setColor("blue");
-			}
-			if ($.getRowsCount() > 0) {
-				$.table.insertRowBefore(0, row);
-			} else {
-				$.table.appendRow(row);
-			}
+			// if(_.isFunction($.table.insertSectionBefore)){
+				// var section = createSection(" ", 0);
+				// section.add(row);
+				// if ($.getRowsCount() > 0) {
+					// $.table.insertSectionBefore(0, section);
+				// } else {
+					// $.table.appendSection(section);
+				// }
+				// $.table.setData($.table.data);
+			// } else {
+				if ($.getRowsCount() > 0) {
+					$.table.insertRowBefore(0, row);
+				} else {
+					$.table.appendRow(row);
+				}
+			// }
 		} else if($.table.data[0] && $.table.data[0].rows[0] && $.table.data[0].rows[0].rowType === "NullRow"){
-				$.table.deleteRow($.table.data[0].rows[0]);
-				return;
-			}
+			// if(_.isFunction($.table.insertSectionBefore)){
+				// $.table.deleteSection(0);
+			// } else {
+				$.table.deleteRow(0);
+			// }
+			return;
+		}
 	}
 
 
