@@ -152,10 +152,14 @@
 				} else {
 					if ($ === Alloy.Globals.mainWindow) {
 						setTimeout(function() {
-							$.$view.close();
+							if($.$view){
+								$.$view.close();
+							}
 						}, 100);
 					} else {
-						$.$view.close();
+						if($.$view){
+							$.$view.close();
+						}
 					}
 				}
 			}
@@ -205,7 +209,7 @@
 				}
 			};
 			$.$view.addEventListener("becamedirty", function(e) {
-					e.cancelBubble = true;
+				e.cancelBubble = true;
 			});
 
 			$.$view.addEventListener("becameclean", function(e) {
