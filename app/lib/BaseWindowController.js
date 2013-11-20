@@ -145,17 +145,21 @@
 				if ($.index) {
 					var currentUserName = Alloy.Models.User.xGet("userName"), currentUserPassword = Alloy.Models.User.xGet("password");
 					function relogin() {
-						Alloy.Globals.mainWindow.$view.removeEventListener("close", relogin);
+						//Alloy.Globals.mainWindow.$view.removeEventListener("close", relogin);
 						$.login.login(currentUserName, currentUserPassword);
 					}
 					Alloy.Globals.mainWindow.$view.addEventListener("close", relogin);
 				} else {
 					if ($ === Alloy.Globals.mainWindow) {
 						setTimeout(function() {
-							$.$view.close();
+							if($.$view){
+								$.$view.close();
+							}
 						}, 100);
 					} else {
-						$.$view.close();
+						if($.$view){
+							$.$view.close();
+						}
 					}
 				}
 			}
@@ -205,7 +209,7 @@
 				}
 			};
 			$.$view.addEventListener("becamedirty", function(e) {
-					e.cancelBubble = true;
+				e.cancelBubble = true;
 			});
 
 			$.$view.addEventListener("becameclean", function(e) {

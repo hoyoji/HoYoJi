@@ -93,20 +93,23 @@ $.onRowTap = function() {
 					});
 					exchange.xSet("ownerUser", Alloy.Models.User);
 					exchange.xSet("ownerUserId", Alloy.Models.User.id);
+					$.$model.xSet("ownerUser", Alloy.Models.User);
+					$.$model.xSet("ownerUserId", Alloy.Models.User.id);
+					$.$model.save();
 					exchange.save();
 					successCB();
 				}, function(e) {
 					errorCB(e);
 				});
 			} else {
+				$.$model.xSet("ownerUser", Alloy.Models.User);
+				$.$model.xSet("ownerUserId", Alloy.Models.User.id);
+				$.$model.save();
 				successCB();
 			}
 		}
 
 		createExchange(function(e) {
-			$.$model.xSet("ownerUser", Alloy.Models.User);
-			$.$model.xSet("ownerUserId", Alloy.Models.User.id);
-			$.$model.save();
 			activityWindow.showMsg("币种添加成功");
 			$.getCurrentWindow().close();
 		}, function(e) {
