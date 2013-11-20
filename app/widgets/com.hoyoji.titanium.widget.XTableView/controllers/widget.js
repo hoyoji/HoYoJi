@@ -540,7 +540,9 @@ exports.fetchNextPage = function(tableRowsCount) {
 	} else {
 		tableRowsCount = tableRowsCount || exports.getRowsCount();
 	}
-
+	if ($.getCurrentWindow().$attrs.selectorCallback && $.getCurrentWindow().$attrs.selectModelCanBeNull){
+		tableRowsCount--;
+	}
 	function doFetchNextPage() {
 		sortedArray = [];
 		for (var i = 0; i < collections.length; i++) {
@@ -1016,7 +1018,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	if (removedRows && removedRows.length > 0) {
 		data = _.filter(data, function(row) {
 			for (var i = 0; i < removedRows.length; i++) {
-				if (row.id === removedRows[i].id) {
+				if (row.id && row.id === removedRows[i].id) {
 					if (collectionId) {
 						if (row.collectionId === collectionId) {
 							row.fireEvent("rowremoved", {
@@ -1057,7 +1059,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 	if (groupByField) {
 		var sectionData = _.groupBy(data, function(item) {
 			if(!item.id){
-				return "";
+				return "无标题";
 			}
 			var model = findObject(item.id);
 			return model && getSectionNameOfRowModel(model.xDeepGet(groupByField));
@@ -1066,7 +1068,7 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 		var sectionIndex = 0;
 		for (var sectionTitle in sectionData) {
 			//if(sectionTitle !== undefined){
-				var section = createSection(sectionTitle || "无标题", sectionIndex);
+				var section = createSection(sectionTitle, sectionIndex);
 				sectionData[sectionTitle].forEach(function(row) {
 					section.add(row);
 				});

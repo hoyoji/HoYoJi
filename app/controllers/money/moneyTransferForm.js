@@ -184,15 +184,45 @@ $.$model.on("_xchange:transferInUser", function() {
 	}
 });
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+// $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+	// if (selectedFriendModel) {
+		// return selectedFriendModel.xGet("friendUser");
+	// } else {
+		// return null;
+	// }
+// };
+// 
+// $.convertUser2FriendModel = function(userModel) {
+	// if (userModel) {
+		// var friend = Alloy.createModel("Friend").xFindInDb({
+			// friendUserId : userModel.id
+		// });
+		// if (friend.id) {
+			// return friend;
+		// }
+	// }
+	// return userModel;
+// };
+
+$.convertSelectedFriend2TransferOutUserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
-		return selectedFriendModel.xGet("friendUser");
+		if(selectedFriendModel.xGet("friendUser")){
+			$.$model.xSet("transferOutUser", selectedFriendModel.xGet("friendUser"));
+			$.$model.xSet("transferOutLocalFriend", null);
+			return selectedFriendModel.xGet("friendUser");
+		} else {
+			$.$model.xSet("transferOutLocalFriend", selectedFriendModel);
+			$.$model.xSet("transferOutUser", null);
+			return selectedFriendModel;
+		}
 	} else {
+		$.$model.xSet("transferOutLocalFriend", null);
+		$.$model.xSet("transferOutUser", null);
 		return null;
 	}
 };
 
-$.convertUser2FriendModel = function(userModel) {
+$.convertTransferOutUser2FriendModel = function(userModel) {
 	if (userModel) {
 		var friend = Alloy.createModel("Friend").xFindInDb({
 			friendUserId : userModel.id
@@ -200,8 +230,60 @@ $.convertUser2FriendModel = function(userModel) {
 		if (friend.id) {
 			return friend;
 		}
+	} else if($.$model.xGet("transferOutLocalFriend")) {
+		return $.$model.xGet("transferOutLocalFriend");
 	}
-	return userModel;
+};
+
+$.transferOutUser.convertModelValue = function(value){
+	if($.$model.xGet("transferOutUser")) {
+		return $.$model.xGet("transferOutUser").getFriendDisplayName();
+	} else if($.$model.xGet("transferOutLocalFriend")) {
+		return $.$model.xGet("transferOutLocalFriend").getDisplayName();
+	} else {
+		return "";
+	}
+};
+
+$.convertSelectedFriend2TransferInUserModel = function(selectedFriendModel) {
+	if (selectedFriendModel) {
+		if(selectedFriendModel.xGet("friendUser")){
+			$.$model.xSet("transferInUser", selectedFriendModel.xGet("friendUser"));
+			$.$model.xSet("transferInLocalFriend", null);
+			return selectedFriendModel.xGet("friendUser");
+		} else {
+			$.$model.xSet("transferInLocalFriend", selectedFriendModel);
+			$.$model.xSet("transferInUser", null);
+			return selectedFriendModel;
+		}
+	} else {
+		$.$model.xSet("transferInLocalFriend", null);
+		$.$model.xSet("transferInUser", null);
+		return null;
+	}
+};
+
+$.convertTransferInUser2FriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
+			return friend;
+		}
+	} else if($.$model.xGet("transferInLocalFriend")) {
+		return $.$model.xGet("transferInLocalFriend");
+	}
+};
+
+$.transferInUser.convertModelValue = function(value){
+	if($.$model.xGet("transferInUser")) {
+		return $.$model.xGet("transferInUser").getFriendDisplayName();
+	} else if($.$model.xGet("transferInLocalFriend")) {
+		return $.$model.xGet("transferInLocalFriend").getDisplayName();
+	} else {
+		return "";
+	}
 };
 // $.transferOutOwnerUser.field.addEventListener("change", transferToFriend);
 // $.transferInOwnerUser.field.addEventListener("change", transferToFriend);

@@ -251,6 +251,14 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 	}
 }
 
+$.beforeFriendSelectorCallback = function(friend, successCallback) {
+	if (!friend.xGet("friendUserId")) {
+		alert("不能选取本地好友");
+	} else {
+		successCallback();
+	}
+};
+
 if ($.$model.isNew()) {
 	addSharePercentage($.$model);
 } else {
