@@ -1206,6 +1206,7 @@ if (pageSize > 0) {
 }
 var __nullRowLabel;
 function showNullRow(title) {
+	$.table.setTop(42);
 	if (!__nullRowLabel) {
 		__nullRowLabel = Ti.UI.createLabel({
 			color : "black",
@@ -1231,12 +1232,11 @@ function showNullRow(title) {
 	}
 	__nullRowLabel.setText(title);
 	__nullRowLabel.show();
-	$.table.setTop(42);
 }
 function hideNullRow(){
 	if(__nullRowLabel){
-		__nullRowLabel.hide();
 		$.table.setTop(0);
+		__nullRowLabel.hide();
 	}
 }
 
