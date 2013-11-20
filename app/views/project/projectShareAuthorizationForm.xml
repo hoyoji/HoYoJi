@@ -21,6 +21,7 @@
 					bindModelSelectorConvertType="Friend"
 					bindModelSelectorConvert2Model="convertUser2FriendModel"
 					bindModelSelectorConvertSelectedModel="convertSelectedFriend2UserModel"
+					bindModelBeforeSelectorCallback="beforeFriendSelectorCallback"
 				/>
 				<View height="42" width="Ti.UI.SIZE" layout="horizontal">
 					<Label left="0" width="20%">占股(%)</Label>
