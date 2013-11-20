@@ -300,10 +300,11 @@ exports.definition = {
 				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
 				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
+				var loanTotal = actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) > (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
-					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
+					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() + loanTotal;
 				} else {
-					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
+					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney() - loanTotal;
 				};
 				if (settlementMoney > 0) {
 					return "应该支出";
@@ -318,7 +319,7 @@ exports.definition = {
 				var apportionedTotalLend = this.xGet("apportionedTotalLend") || 0;
 				var apportionedTotalReturn = this.xGet("apportionedTotalReturn") || 0;
 				var apportionedTotalPayback = this.xGet("apportionedTotalPayback") || 0;
-				return apportionedTotalExpense - apportionedTotalBorrow - apportionedTotalPayback - apportionedTotalIncome + apportionedTotalLend + apportionedTotalReturn;
+				return apportionedTotalExpense + apportionedTotalBorrow + apportionedTotalPayback - apportionedTotalIncome - apportionedTotalLend - apportionedTotalReturn;
 			},
 			getApportionedTotalMoneyToShow : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
@@ -338,10 +339,11 @@ exports.definition = {
 				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
 				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
+				var loanTotal = actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) > (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
-					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
+					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() + loanTotal;
 				} else {
-					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
+					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney() - loanTotal;
 				}
 
 				if (settlementMoney < 0) {
