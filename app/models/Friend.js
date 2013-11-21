@@ -153,7 +153,7 @@ exports.definition = {
 				// }else if(this.xGet("moneyPayback").length > 0){
 					// xFinishCallback({ msg :"您与好友有收款关联，不能删除"});
 				// }else {
-					if(!this.xGet("friendUserId")) {
+					if(!this.xGet("friendUserId") || this.xGet("friendUserId") === Alloy.Models.User.id) {
 						this._xDelete(xFinishCallback, options);
 					} else {
 						var self = this;
