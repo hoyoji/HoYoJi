@@ -237,7 +237,7 @@ exports.definition = {
 			},
 			getActualTotalText : function() {
 				var getActualTotal = 0;
-				if (this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") + this.xGet("actualTotalBorrow") - this.xGet("actualTotalReturn") - this.xGet("actualTotalLend") + this.xGet("actualTotalPayback") <= 0) {
+				if (this.xGet("actualTotalIncome") - this.xGet("actualTotalExpense") + this.xGet("actualTotalBorrow") - this.xGet("actualTotalLend") - this.xGet("actualTotalReturn") + this.xGet("actualTotalPayback")<= 0) {
 					return "已经支出";
 				} else {
 					return "已经收入";
@@ -255,15 +255,18 @@ exports.definition = {
 				// }
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
-				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
-				var actualTotalLend = this.xGet("actualTotalLend") || 0;
-				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
-				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
-				var actualTotalMoney = actualTotalExpense - actualTotalIncome - actualTotalBorrow + actualTotalLend + actualTotalReturn - actualTotalPayback;
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome + this.getLoanActualTotalMoney();
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
 				return actualTotalMoney;
+			},
+			getLoanActualTotalMoney : function() {
+				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
+				var actualTotalLend = this.xGet("actualTotalLend") || 0;
+				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
+				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
+				return actualTotalLend + actualTotalPayback - actualTotalBorrow - actualTotalReturn;
 			},
 			getActualTotalMoneyToShow : function() {//界面转成本币显示
 				var projectCurrency = this.xGet("project").xGet("currency");
@@ -295,16 +298,11 @@ exports.definition = {
 				// return "应该支出 : "
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
-				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
-				var actualTotalLend = this.xGet("actualTotalLend") || 0;
-				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
-				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
-				var loanTotal = actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
-				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) > (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
-					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() + loanTotal;
+				if ((actualTotalExpense) > (actualTotalIncome)) {
+					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() ;
 				} else {
-					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney() - loanTotal;
+					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
 				};
 				if (settlementMoney > 0) {
 					return "应该支出";
@@ -315,11 +313,14 @@ exports.definition = {
 			getApportionedTotalMoney : function() {
 				var apportionedTotalIncome = this.xGet("apportionedTotalIncome") || 0;
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
+				return apportionedTotalExpense - apportionedTotalIncome;
+			},
+			getLoanApportionedTotalMoney : function() {
 				var apportionedTotalBorrow = this.xGet("apportionedTotalBorrow") || 0;
 				var apportionedTotalLend = this.xGet("apportionedTotalLend") || 0;
 				var apportionedTotalReturn = this.xGet("apportionedTotalReturn") || 0;
 				var apportionedTotalPayback = this.xGet("apportionedTotalPayback") || 0;
-				return apportionedTotalExpense + apportionedTotalBorrow + apportionedTotalPayback - apportionedTotalIncome - apportionedTotalLend - apportionedTotalReturn;
+				return apportionedTotalLend - apportionedTotalBorrow + apportionedTotalPayback - apportionedTotalReturn;
 			},
 			getApportionedTotalMoneyToShow : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
@@ -334,16 +335,11 @@ exports.definition = {
 			getSettlementMoney : function() {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
-				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
-				var actualTotalLend = this.xGet("actualTotalLend") || 0;
-				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
-				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
-				var loanTotal = actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
-				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) > (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
-					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() + loanTotal;
+				if ((actualTotalExpense) > (actualTotalIncome)) {
+					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
 				} else {
-					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney() - loanTotal;
+					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
 				}
 
 				if (settlementMoney < 0) {
