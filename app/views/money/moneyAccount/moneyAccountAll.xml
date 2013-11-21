@@ -10,7 +10,7 @@
 			<View id="moneyAccountsTableView" bottom="0" top="0">
 				<Widget src="com.hoyoji.titanium.widget.XTableView"
 				id="moneyAccountsTable" autoInit="false" groupByField="getAccountType()"
-				sortByField="name" pageSize="10" bottom="0" top="0"/>
+				sortByField="getSectionSortName()" pageSize="10" bottom="0" top="0"/>
 			</View>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap"

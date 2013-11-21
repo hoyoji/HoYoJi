@@ -112,6 +112,18 @@ exports.definition = {
 					default : return this.xGet("accountType");
 				}
 			},
+			getSectionSortName : function(){
+				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
+				// values="Cash,Deposit,Credit,Online,Loan"
+				switch(this.xGet("accountType")){
+					case "Cash" : return "1" + this.xGet("name");
+					case "Deposit" : return "2" ;
+					case "Credit" : return "3" + this.xGet("name");
+					case "Online" : return "4" + this.xGet("name");
+					case "Loan" : return "5" + this.xGet("name");
+					default : return "6" + this.xGet("name");
+				}
+			},
 			getAccountNameCurrency : function() {
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
 					return this.xGet("name") + " (" + this.xGet("currency").xGet("symbol") + this.xGet("currentBalance").toUserCurrency() + ")";
