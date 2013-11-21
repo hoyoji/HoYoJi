@@ -338,7 +338,13 @@
 			}
 			return str + ")";
 		};
-
+		
+		// 重写系统原生的localeCompare
+		String.prototype.localeCompare = function (param) {
+			if(this === param) return 0;
+		　　return this > param ? 1 : -1;
+		};
+		
 		String.prototype.sqlNE = function(value) {
 			if (value === null || value === undefined) {
 				return this + " IS NOT NULL";
