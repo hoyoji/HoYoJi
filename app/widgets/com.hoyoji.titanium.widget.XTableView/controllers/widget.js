@@ -227,7 +227,7 @@ function findSortPos(model) {
 				continue;
 			}
 			var rowModel = findObject($.table.data[s].rows[r].id);
-			if(rowModel){
+			if(!rowModel){
 				continue;
 			}
 			var rowValue = rowModel.xDeepGet(sortByField);
