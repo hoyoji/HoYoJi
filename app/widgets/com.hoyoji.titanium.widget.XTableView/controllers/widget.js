@@ -227,18 +227,18 @@ function findSortPos(model) {
 				continue;
 			}
 			var rowModel = findObject($.table.data[s].rows[r].id);
-			if(rowModel){
+			if(!rowModel){
 				continue;
 			}
 			var rowValue = rowModel.xDeepGet(sortByField);
 			if (sortReverse) {
 				// 4,3,2,1
-				if (value > rowValue) {
+				if (value.localeCompare(rowValue) === 1) {
 					return findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize);
 				}
 			} else {
 				// 1,2,3,4:6,7,8
-				if (value < rowValue) {
+				if (value.localeCompare(rowValue) === -1) {
 					return findInsertPosInSection(rowModel, sectionNameOfModel, pos, s, r, previousHasDetailSize);
 				}
 			}
@@ -563,9 +563,10 @@ exports.fetchNextPage = function(tableRowsCount) {
 			sortedArray.sort(function(a, b) {
 				var va = a.record.xDeepGet(sortByField);
 				var vb = b.record.xDeepGet(sortByField);
-				if (va < vb) {
+				var c = va.localeCompare(vb);
+				if (c === -1) {
 					return sortedArray_sortReverse ? 1 : -1;
-				} else if (va > vb) {
+				} else if (c === 1) {
 					return sortedArray_sortReverse ? -1 : 1;
 				}
 				return 0;
@@ -1055,9 +1056,10 @@ exports.sort = function(fieldName, reverse, groupField, refresh, appendRows, rem
 
 			a = a.xDeepGet(sortByField);
 			b = b.xDeepGet(sortByField);
-			if (a < b) {
+			var c = a.localeCompare(b);
+			if (c === -1) {
 				return sortReverse ? 1 : -1;
-			} else if (a > b) {
+			} else if (c === 1) {
 				return sortReverse ? -1 : 1;
 			}
 			return 0;
