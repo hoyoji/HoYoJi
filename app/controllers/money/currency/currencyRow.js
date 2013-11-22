@@ -65,8 +65,8 @@ $.makeContextMenu = function(e, isSelectMode) {
 			}
 
 			getAllExchanges(function(e) {
-				Alloy.Models.User.xSet("activeCurrency", $.$model);
-				Alloy.Models.User.save({
+				Alloy.Models.User.xGet("userData").xSet("activeCurrency", $.$model);
+				Alloy.Models.User.xGet("userData").save({
 					activeCurrencyId : $.$model.xGet("id")
 				}, {
 					wait : true,

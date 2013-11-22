@@ -578,10 +578,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				moneyBorrow.trigger("xchange:moneyAccount.currentBalance", moneyBorrow);
 			}
 			if (modelIsNew) {//记住当前账户为下次打开时的默认账户
-				Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-				Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+				Alloy.Models.User.xGet("userData").xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+				Alloy.Models.User.xGet("userData").xSet("activeProject", $.$model.xGet("project"));
 				if (Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("userData").xGet("activeProject") !== $.$model.xGet("project")) {
-					Alloy.Models.User.save({
+					Alloy.Models.User.xGet("userData").save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")
 					}, {
@@ -615,8 +615,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 			if ($.$model.isNew()) {
 				$.$model.xGet("moneyReturnApportions").reset();
-				Alloy.Models.User.xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
-				Alloy.Models.User.xSet("activeProject", Alloy.Models.User.previous("activeProject"));
+				Alloy.Models.User.xGet("userData").xSet("activeMoneyAccount", Alloy.Models.User.previous("moneyAccount"));
+				Alloy.Models.User.xGet("userData").xSet("activeProject", Alloy.Models.User.previous("activeProject"));
 			}
 			saveErrorCB(e);
 		});

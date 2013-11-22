@@ -6,7 +6,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 	// });
 // 
 	// menuSection.add($.createContextMenuItem("个人流水", function() {
-		// Alloy.Models.User.save({
+		// Alloy.Models.User.xGet("userData").save({
 			// defaultTransactionDisplayType : "Personal"
 		// }, {
 			// wait : true,
@@ -15,7 +15,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 		// exports.doFilter();
 	// }));
 	// menuSection.add($.createContextMenuItem("项目流水", function() {
-		// Alloy.Models.User.save({
+		// Alloy.Models.User.xGet("userData").save({
 			// defaultTransactionDisplayType : "Project"
 		// }, {
 			// wait : true,

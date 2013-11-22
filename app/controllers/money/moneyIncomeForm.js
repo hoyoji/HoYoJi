@@ -606,11 +606,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				$.$model.xGet("project").setDefaultIncomeCategory($.$model.xGet("moneyIncomeCategory"));
 
 				//记住当前账户为下次打开时的默认账户
-				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
-				// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
+				// Alloy.Models.User.xGet("userData").xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
+				// Alloy.Models.User.xGet("userData").xSet("activeProject", $.$model.xGet("project"));
 				//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
 				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
-					Alloy.Models.User.save({
+					Alloy.Models.User.xGet("userData").save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")
 					}, {

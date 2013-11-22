@@ -95,7 +95,7 @@ function onFooterbarTap(e) {
 		timeFilter.transactionDisplayType = "Personal";
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
-		// Alloy.Models.User.save({
+		// Alloy.Models.User.xGet("userData").save({
 			// defaultTransactionDisplayType : "Personal"
 		// }, {
 			// wait : true,

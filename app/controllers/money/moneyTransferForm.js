@@ -451,7 +451,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	var modelIsNew = $.$model.isNew();
 	$.saveModel(function(e) {
 		if (modelIsNew) {//记住project为下次打开时project
-			Alloy.Models.User.save({
+			Alloy.Models.User.xGet("userData").save({
 				activeProjectId : $.$model.xGet("project").xGet("id")
 			}, {
 				patch : true,
