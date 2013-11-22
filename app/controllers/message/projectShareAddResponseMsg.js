@@ -544,7 +544,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							if (errorCount > 0) {
 								return;
 							}
-							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
+							if (currencyId === Alloy.Models.User.xGet("userData").xGet("activeCurrencyId")) {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
@@ -601,7 +601,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							if (errorCount > 0) {
 								return;
 							}
-							if (currencyId === Alloy.Models.User.xGet("activeCurrencyId")) {
+							if (currencyId === Alloy.Models.User.xGet("userData").xGet("activeCurrencyId")) {
 								projectCurrencyIdsCount++;
 								if (projectCurrencyIdsCount === projectCurrencyIdsTotal) {
 									successCB();
@@ -611,14 +611,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							}
 							if (fetchingExchanges[currencyId] !== true) {
 								var exchange = Alloy.createModel("Exchange").xFindInDb({
-									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 									foreignCurrencyId : currencyId
 								});
 								if (!exchange.id) {
 									fetchingExchanges[currencyId] = true;
-									Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
+									Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"), currencyId, function(rate) {
 										exchange = Alloy.createModel("Exchange", {
-											localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+											localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 											foreignCurrencyId : currencyId,
 											rate : rate
 										});

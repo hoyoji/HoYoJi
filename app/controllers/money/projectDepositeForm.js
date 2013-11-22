@@ -88,12 +88,12 @@ $.convertUser2FriendModel = function(userModel) {
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeProjectSelectorCallback = function(project, successCallback) {
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("userData").xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
 			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), project.xGet("currencyId"), function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"), project.xGet("currencyId"), function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 					foreignCurrencyId : project.xGet("currencyId"),
 					rate : rate
 				});
@@ -167,9 +167,9 @@ if (!$.$model) {
 		date : (new Date()).toISOString(),
 		exchangeRate : 1,
 		expenseType : "Ordinary",
-		moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-		project : Alloy.Models.User.xGet("activeProject"),
-		moneyExpenseCategory : Alloy.Models.User.xGet("activeProject").xGet("depositeExpenseCategory"),
+		moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+		project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+		moneyExpenseCategory : Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("depositeExpenseCategory"),
 		ownerUser : Alloy.Models.User,
 		expenseType : "Deposite"
 	});
@@ -515,7 +515,7 @@ if ($.saveableMode === "read") {
 								messageTitle : "充值请求",
 								date : date,
 								detail : "好友在项目" + $.$model.xGet("project").xGet("name") + "给您账户充值" + $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol") + $.$model.xGet("amount"),
-								messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
+								messageBoxId : Alloy.Models.User.xGet("userData").xGet("messageBoxId"),
 								messageData : JSON.stringify({
 									accountType : "MoneyExpense",
 									account : account,

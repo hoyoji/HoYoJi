@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
 			$model : "MoneyAccount",
 			data : {
-				currency : Alloy.Models.User.xGet("activeCurrency"),
+				currency : Alloy.Models.User.xGet("userData").xGet("activeCurrency"),
 				currentBalance : 0,
 				sharingType : "Private",
 				accountType : "Cash"
@@ -60,7 +60,7 @@ function updateTotalBalance() {
 	Alloy.Models.User.xGet("moneyAccounts").forEach(function(account) {
 		totalBalance = totalBalance + account.getLocalCurrentBalance();
 	});
-	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + totalBalance.toFixed(2));
+	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + totalBalance.toFixed(2));
 }
 
 function onFooterbarTap(e) {
@@ -68,7 +68,7 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/moneyAccount/moneyAccountForm", {
 			$model : "MoneyAccount",
 			data : {
-				currency : Alloy.Models.User.xGet("activeCurrency"),
+				currency : Alloy.Models.User.xGet("userData").xGet("activeCurrency"),
 				currentBalance : 0,
 				sharingType : "Private",
 				accountType : "Cash"

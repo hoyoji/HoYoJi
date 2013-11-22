@@ -10,7 +10,7 @@ if (!$.getCurrentWindow().$attrs.queryOptions["dateFrom"]) {
 }
 
 if(!$.queryOptions.transactionDisplayType){
-	$.queryOptions.transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType");
+	$.queryOptions.transactionDisplayType = Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType");
 }
 
 $.onWindowOpenDo(function() {

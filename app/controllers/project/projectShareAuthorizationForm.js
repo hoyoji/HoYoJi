@@ -281,17 +281,17 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					activityWindow.open("正在发送...");
 					
 				function getExchange(successCB, errorCB) {
-					if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("activeCurrencyId")) {
+					if ($.$model.xGet("project").xGet("currencyId") === Alloy.Models.User.xGet("userData").xGet("activeCurrencyId")) {
 						successCB();
 					}else{
 						var exchange = Alloy.createModel("Exchange").xFindInDb({
-							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 						});
 						if (!exchange.id) {
-							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 								exchange = Alloy.createModel("Exchange", {
-									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 									foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
 									rate : rate
 								});
@@ -428,7 +428,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 												messageTitle : "共享请求",
 												date : date,
 												detail : "用户" + Alloy.Models.User.getUserDisplayName() + "给您共享项目:" + $.$model.xGet("project").xGet("name"),
-												messageBox : Alloy.Models.User.xGet("messageBox"),
+												messageBox : Alloy.Models.User.xGet("userData").xGet("messageBox"),
 												messageData : JSON.stringify({
 													shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 													projectShareAuthorizationId : $.$model.xGet("id"),

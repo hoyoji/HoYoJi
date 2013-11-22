@@ -266,7 +266,7 @@ exports.definition = {
 				var actualTotalLend = this.xGet("actualTotalLend") || 0;
 				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
 				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
-				return actualTotalLend + actualTotalPayback - actualTotalBorrow - actualTotalReturn;
+				return actualTotalLend - actualTotalPayback - actualTotalBorrow + actualTotalReturn;
 			},
 			getActualTotalMoneyToShow : function() {//界面转成本币显示
 				var projectCurrency = this.xGet("project").xGet("currency");

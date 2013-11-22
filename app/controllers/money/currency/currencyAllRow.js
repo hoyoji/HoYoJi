@@ -79,7 +79,7 @@ $.onRowTap = function() {
 		// return;
 		// });
 		function createExchange(successCB, errorCB) {
-			var activeCurrency = Alloy.Models.User.xGet("activeCurrency");
+			var activeCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 			var exchange = Alloy.createModel("Exchange").xFindInDb({
 				localCurrencyId : $.$model.xGet("id"),
 				foreignCurrencyId : activeCurrency.xGet("id")

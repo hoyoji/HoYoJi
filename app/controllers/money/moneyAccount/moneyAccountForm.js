@@ -11,7 +11,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		var activityWindow = Alloy.createController("activityMask");
 		activityWindow.open("正在新增账户...");
 		function createExchange(successCB, errorCB) {
-			var activeCurrency = Alloy.Models.User.xGet("activeCurrency");
+			var activeCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 			var exchange = Alloy.createModel("Exchange").xFindInDb({
 				localCurrencyId : $.$model.xGet("currency").xGet("id"),
 				foreignCurrencyId : activeCurrency.xGet("id")
@@ -54,7 +54,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					exchangeRate : 1,
 					transferInAmount : $.$model.xGet("currentBalance"),
 					transferOutAmount : $.$model.xGet("currentBalance"),
-					project : Alloy.Models.User.xGet("activeProject"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});
@@ -67,7 +67,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					exchangeRate : 1,
 					transferOutAmount : Math.abs($.$model.xGet("currentBalance")),
 					transferInAmount : Math.abs($.$model.xGet("currentBalance")),
-					project : Alloy.Models.User.xGet("activeProject"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});
@@ -75,7 +75,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			moneyTransfer.xAddToSave($);
 		}
 
-		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 			createExchange(function(e) {
 				activityWindow.close();
 				$.saveModel(saveEndCB, saveErrorCB);
@@ -108,7 +108,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					exchangeRate : 1,
 					transferInAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
 					transferOutAmount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
-					project : Alloy.Models.User.xGet("activeProject"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});
@@ -121,7 +121,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					exchangeRate : 1,
 					transferOutAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
 					transferInAmount : $.$model.xPrevious("currentBalance") - $.$model.xGet("currentBalance"),
-					project : Alloy.Models.User.xGet("activeProject"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});

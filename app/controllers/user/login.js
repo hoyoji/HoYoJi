@@ -113,7 +113,7 @@ $.login = function(userName, password) {
 					password : password
 				}, function(data) {
 					// 服务器验证改密码正确，我们将其保存到本地供下次使用
-					Alloy.Models.User.save({
+					Alloy.Models.User.xGet("userData").save({
 						"password" : password
 					}, {
 						patch : true,

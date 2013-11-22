@@ -49,7 +49,7 @@ function onFooterbarTap(e) {
 			queryOptions : timeFilter
 		});
 	} else if (e.source.id === "dateTransactions") {
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		transactionDisplayType = Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		$.titleBar.setTitle(transactionDisplayType + "日流水");
 		$.footerBar.transactionsTable.setTitle("日流水");
 		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/dateTransactions");
@@ -64,7 +64,7 @@ function onFooterbarTap(e) {
 		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "weekTransactions") {
-		transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		transactionDisplayType = Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		$.titleBar.setTitle(transactionDisplayType + e.source.getTitle());
 		$.footerBar.transactionsTable.setTitle("周流水");
 		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/weekTransactions");
@@ -79,7 +79,7 @@ function onFooterbarTap(e) {
 		}
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "monthTransactions") {
-		//transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		//transactionDisplayType = Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		$.titleBar.setTitle(transactionDisplayType + "月流水");
 		$.footerBar.transactionsTable.setTitle("月流水");
 		$.footerBar.transactionsTable.setImage("/images/money/moneyAll/monthTransactions");
@@ -95,7 +95,7 @@ function onFooterbarTap(e) {
 		timeFilter.transactionDisplayType = "Personal";
 		$.transactionsTable.doFilter(timeFilter);
 	} else if (e.source.id === "personalTransactions") {
-		// Alloy.Models.User.save({
+		// Alloy.Models.User.xGet("userData").save({
 			// defaultTransactionDisplayType : "Personal"
 		// }, {
 			// wait : true,

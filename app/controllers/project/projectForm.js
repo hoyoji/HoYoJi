@@ -10,7 +10,7 @@ $.onWindowOpenDo(function() {
 $.parentProject = null;
 
 if ($.$model.isNew()) {
-	$.$model.xSet("currencyId", Alloy.Models.User.xGet("activeCurrencyId"));
+	$.$model.xSet("currencyId", Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"));
 	$.$model.xGet("currency");
 	$.$model.xSet("autoApportion", 1);
 	$.$model.xGet("autoApportion");
@@ -241,8 +241,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	if ($.$model.isNew()) {
 		activityWindow.open("正在新增项目...");
 		function createExchange(successCB, errorCB) {
-			if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-				var activeCurrency = Alloy.Models.User.xGet("activeCurrency");
+			if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
+				var activeCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				var exchange = Alloy.createModel("Exchange").xFindInDb({
 					localCurrencyId : $.$model.xGet("currency").xGet("id"),
 					foreignCurrencyId : activeCurrency.xGet("id")
@@ -281,7 +281,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			// return;
 		// });
 
-		// if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+		// if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 			createExchange(createProject, function(e) {
 				activityWindow.close();
 				saveErrorCB("项目添加失败,请重试： " + e.__summary.msg);
