@@ -319,6 +319,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}
 };
 
+var loading;
 function createParentProjectExchange(successCB, errorCB) {
 	// if($.project && $.project.xGet("currency") !== $.$model.xGet("currency")) {
 		// var parentProjectCurrency = $.project.xGet("currency");
@@ -326,7 +327,8 @@ function createParentProjectExchange(successCB, errorCB) {
 			localCurrencyId : $.$model.xGet("currency").xGet("id"),
 			foreignCurrencyId : $.parentProject.xGet("currency").xGet("id")
 		});
-		if (!parentProjectexchange.id) {
+		if (!parentProjectexchange.id && !loading) {
+			loading = true;
 			Alloy.Globals.Server.getExchangeRate($.$model.xGet("currency").xGet("id"), $.parentProject.xGet("currency").xGet("id"), function(rate) {
 				exchange = Alloy.createModel("Exchange", {
 					localCurrencyId : $.$model.xGet("currency").xGet("id"),
@@ -336,6 +338,7 @@ function createParentProjectExchange(successCB, errorCB) {
 				exchange.xSet("ownerUser", Alloy.Models.User);
 				exchange.xSet("ownerUserId", Alloy.Models.User.id);
 				exchange.save();
+				loading = false;
 				successCB();
 			}, function(e) {
 				errorCB(e);
@@ -415,6 +418,7 @@ $.convertParentProject = function(model){
 	});
 };
 
+var doing;
 $.checkDuplicateParentProject = function(model, confirmCB, errorCB){
 	var ret = $.$model.xGet("parentProjectParentProjects").findWhere({parentProject : model }) === undefined;
 	if(!ret){
@@ -424,16 +428,20 @@ $.checkDuplicateParentProject = function(model, confirmCB, errorCB){
 	} else if(model && model.xFindDescendents("parentProjects", $.$model) !== undefined){
 		errorCB("该项目已经是上级项目");
 	} else {
-		if (model){
+		if (model && !doing){
+			doing = true;
 			$.parentProject = model;
 			createParentProjectExchange(function() {
 				createSubProjectExchange(function() {
+					doing = false;
 					confirmCB();
 				}, function(e) {
+					doing = false;
 					errorCB("父项目添加失败,请重试");
 					return;
 				});
 			}, function(e) {
+				doing = false;
 				errorCB("父项目添加失败,请重试");
 				return;
 			});
