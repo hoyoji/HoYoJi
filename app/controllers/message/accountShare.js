@@ -4,7 +4,7 @@ var selectedAccount = $.$attrs.selectedAccount;
 var datetime = new Date(selectedAccount.xGet("date"));
 
 $.$model.xSet("fromUser", Alloy.Models.User);
-$.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
+$.$model.xSet("messageBox", Alloy.Models.User.xGet("userData").xGet("messageBox"));
 $.$model.xSet("type", "Account.Share.AddRequest");
 $.$model.xSet("messageState", "closed");
 $.$model.xSet("messageTitle", Alloy.Models.User.getUserDisplayName());

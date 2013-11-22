@@ -562,7 +562,7 @@ $.onWindowOpenDo(function() {
 function importToLocalOperate() {
 	//导入账务
 	var currencyId = accountShareData.currencyCode;
-	if (currencyId === Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")) {
+	if (currencyId === Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id")) {
 		var rate = 1;
 		importToLocal(accountShareData.account.amount , rate);
 	}else{
@@ -593,14 +593,14 @@ function importToLocalOperate() {
 				
 				var exchange = Alloy.createModel("Exchange").xFindInDb({
 					localCurrencyId : currencyId,
-					foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")
+					foreignCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id")
 				});
 				if (!exchange.id) {
-					Alloy.Globals.Server.getExchangeRate(currency.xGet("id") , Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
+					Alloy.Globals.Server.getExchangeRate(currency.xGet("id") , Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
 	
 						exchange = Alloy.createModel("Exchange", {
 							localCurrencyId : currencyId,
-							foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"),
+							foreignCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id"),
 							rate : rate
 						});
 						exchange.xSet("ownerUser", Alloy.Models.User);
@@ -623,14 +623,14 @@ function importToLocalOperate() {
 		} else {
 			var exchange = Alloy.createModel("Exchange").xFindInDb({
 				localCurrencyId : currencyId,
-				foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id")
+				foreignCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id")
 			});
 			if (!exchange.id) {
-				Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
+				Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id"), function(rate) {
 	
 					exchange = Alloy.createModel("Exchange", {
 						localCurrencyId : currencyId,
-						foreignCurrencyId : Alloy.Models.User.xGet("activeMoneyAccount").xGet("currency").xGet("id"),
+						foreignCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount").xGet("currency").xGet("id"),
 						rate : rate
 					});
 					exchange.xSet("ownerUser", Alloy.Models.User);
@@ -661,9 +661,9 @@ function importToLocalOperate() {
 					ownerUser : Alloy.Models.User,
 					exchangeRate : exchangeRate,
 					incomeType : accountShareData.account.expenseType,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+					moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+					moneyIncomeCategory : Alloy.Models.User.xGet("userData").xGet("activeProject") ? Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("defaultIncomeCategory") : null,
 					friendUser : $.$model.xGet("fromUser")
 				});
 	
@@ -695,9 +695,9 @@ function importToLocalOperate() {
 					ownerUser : Alloy.Models.User,
 					exchangeRate : exchangeRate,
 					expenseType : accountShareData.account.expenseType,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null
+					moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+					moneyExpenseCategory : Alloy.Models.User.xGet("userData").xGet("activeProject") ? Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("defaultExpenseCategory") : null
 				});
 	
 				var moneyExpenseDetails = [];
@@ -732,9 +732,9 @@ function importToLocalOperate() {
 					ownerUser : Alloy.Models.User,
 					exchangeRate : exchangeRate,
 					expenseType : accountShareData.account.incomeType,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyExpenseCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultExpenseCategory") : null,
+					moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+					moneyExpenseCategory : Alloy.Models.User.xGet("userData").xGet("activeProject") ? Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("defaultExpenseCategory") : null,
 					friendUser : $.$model.xGet("fromUser")
 				});
 	
@@ -766,9 +766,9 @@ function importToLocalOperate() {
 					localAmount : 0,
 					exchangeRate : exchangeRate,
 					incomeType : accountShareData.account.incomeType,
-					moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-					project : Alloy.Models.User.xGet("activeProject"),
-					moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null
+					moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+					project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+					moneyIncomeCategory : Alloy.Models.User.xGet("userData").xGet("activeProject") ? Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("defaultIncomeCategory") : null
 				});
 	
 				var moneyIncomeDetails = [];
@@ -803,8 +803,8 @@ function importToLocalOperate() {
 						paybackDate : accountShareData.account.returnDate,
 						exchangeRate : exchangeRate,
 						paybackedAmount : 0,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						friendUser : $.$model.xGet("fromUser")
 					}
 				});
@@ -821,8 +821,8 @@ function importToLocalOperate() {
 						returnDate : accountShareData.account.returnDate,
 						exchangeRate : exchangeRate,
 						returnedAmount : 0,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject")
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject")
 					}
 				});
 				accountShareMsgController.$view.addEventListener("contentready", function() {
@@ -842,8 +842,8 @@ function importToLocalOperate() {
 						returnDate : accountShareData.account.paybackDate,
 						exchangeRate : exchangeRate,
 						returnedAmount : 0,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						friendUser : $.$model.xGet("fromUser")
 					}
 				});
@@ -860,8 +860,8 @@ function importToLocalOperate() {
 						paybackDate : accountShareData.account.paybackDate,
 						exchangeRate : exchangeRate,
 						paybackedAmount : 0,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject")
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject")
 					}
 				});
 				accountShareMsgController.$view.addEventListener("contentready", function() {
@@ -879,8 +879,8 @@ function importToLocalOperate() {
 						amount : amount,
 						remark : accountShareData.account.remark,
 						exchangeRate : exchangeRate,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						moneyBorrow : null,
 						interest : 0,
 						friendUser : $.$model.xGet("fromUser")
@@ -897,8 +897,8 @@ function importToLocalOperate() {
 						amount : amount,
 						remark : accountShareData.account.remark,
 						exchangeRate : exchangeRate,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						moneyLend : null,
 						interest : 0
 					}
@@ -918,8 +918,8 @@ function importToLocalOperate() {
 						amount : amount,
 						remark : accountShareData.account.remark,
 						exchangeRate : exchangeRate,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						moneyLend : null,
 						interest : 0,
 						friendUser : $.$model.xGet("fromUser")
@@ -936,8 +936,8 @@ function importToLocalOperate() {
 						amount : amount,
 						remark : accountShareData.account.remark,
 						exchangeRate : exchangeRate,
-						moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-						project : Alloy.Models.User.xGet("activeProject"),
+						moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+						project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 						moneyBorrow : null,
 						interest : 0
 					}

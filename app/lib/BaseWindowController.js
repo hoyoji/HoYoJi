@@ -143,7 +143,7 @@
 			function reloginCB(e) {
 				e.cancelBubble = true;
 				if ($.index) {
-					var currentUserName = Alloy.Models.User.xGet("userName"), currentUserPassword = Alloy.Models.User.xGet("password");
+					var currentUserName = Alloy.Models.User.xGet("userName"), currentUserPassword = Alloy.Models.User.xGet("userData").xGet("password");
 					function relogin() {
 						//Alloy.Globals.mainWindow.$view.removeEventListener("close", relogin);
 						$.login.login(currentUserName, currentUserPassword);

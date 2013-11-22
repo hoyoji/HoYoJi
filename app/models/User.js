@@ -5,35 +5,18 @@ exports.definition = {
 			userDataId : "TEXT NOT NULL",
 			userName : "TEXT NOT NULL",
 			nickName : "TEXT",
-			password : "TEXT NOT NULL",
-			email : "TEXT",
-			emailVerified : "INTEGER NOT NULL",
-			phone : "TEXT",
-			phoneVerified : "INTEGER NOT NULL",
-			activeProjectId : "TEXT",
-			activeCurrencyId : "TEXT NOT NULL",
-			activeMoneyAccountId : "TEXT NOT NULL",
-			newFriendAuthentication : "TEXT NOT NULL",
-			defaultFriendCategoryId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL",
 			isMerchant : "INTEGER NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
-			defaultTransactionDisplayType : "TEXT NOT NULL",
 			lastClientUpdateTime : "INTEGER",
-			pictureId : "TEXT",
 			location : "TEXT",
 			geoLon : "TEXT",
 			geoLat : "TEXT",
 			address : "TEXT"
 		},
 		defaults : {
-			newFriendAuthentication : "required",
-			defaultTransactionDisplayType : "Project",
-			isMerchant : 0,
-			emailVerified : 0,
-			phoneVerified : 0
+			isMerchant : 0
 		},
 		hasMany : {
 			pictures : {
@@ -110,26 +93,6 @@ exports.definition = {
 			},
 			picture : {
 				type : "Picture",
-				attribute : null
-			},
-			activeProject : {
-				type : "Project",
-				attribute : null
-			},
-			activeCurrency : {
-				type : "Currency",
-				attribute : null
-			},
-			activeMoneyAccount : {
-				type : "MoneyAccount",
-				attribute : null
-			},
-			defaultFriendCategory : {
-				type : "FriendCategory",
-				attribute : null
-			},
-			messageBox : {
-				type : "MessageBox",
 				attribute : null
 			}
 		},
@@ -313,9 +276,6 @@ exports.definition = {
 					}, dbTrans);
 				}
 			},
-			getLocalCurrencySymbol : function() {
-				return this.xGet("activeCurrency").xGet("symbol");
-			}, 
 			canEdit : function(){
 				return this === Alloy.Models.User || !Alloy.Models.User;
 			}

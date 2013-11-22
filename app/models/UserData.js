@@ -32,7 +32,6 @@ exports.definition = {
 		defaults : {
 			newFriendAuthentication : "required",
 			defaultTransactionDisplayType : "Project",
-			//isMerchant : 0,
 			emailVerified : 0,
 			phoneVerified : 0
 		},

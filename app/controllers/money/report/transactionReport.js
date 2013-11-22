@@ -177,7 +177,7 @@ function calculateTotalBalance() {
 	debitTotalBalance = $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
 					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();
 	if(queryOptions.transactionDisplayType === "Personal"){ 
-			debitTotalBalance += $.moneyIncomeApportionTotal.getValue() - $.moneyExpenseApportionTotal.getValue();
+			debitTotalBalance += $.moneyExpenseApportionTotal.getValue() - $.moneyIncomeApportionTotal.getValue();
 	}
 	$.totalDebitBalance.setText(debitTotalBalance.toUserCurrency());
 }

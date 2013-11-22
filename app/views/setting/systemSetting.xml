@@ -33,7 +33,7 @@
 					bindAttribute="nickName"/>
 					<Widget src="com.hoyoji.titanium.widget.AutoUpdatableTextField" labelText="邮箱" hintText="请输入邮箱" rightButtonText="验证"
 					id="email" autoInit="false" autoSave="true" keyboardType="Ti.UI.KEYBOARD_EMAIL"
-					bindModel="User"
+					bindModel="User.userData"
 					bindAttribute="email"/>
 					<View height="42" backgroundColor="#f5f5f5">
 						<Label left="8" width="30%" height="42" class="fieldLabel">密码</Label>
@@ -51,7 +51,7 @@
 					right="10" width="50"
 					values="required,none"
 					items="是,否"
-					bindModel="User"
+					bindModel="User.userData"
 					bindAttribute="newFriendAuthentication"/>
 				</View>
 				<!-- </View> -->
