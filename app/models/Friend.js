@@ -6,7 +6,7 @@ exports.definition = {
 			remark : "TEXT",
 			friendUserId : "TEXT",
 			friendCategoryId : "TEXT NOT NULL",
-			moneyDebtAccountId : "TEXT"
+			moneyDebtAccountId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
