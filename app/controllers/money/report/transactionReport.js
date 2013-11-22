@@ -173,13 +173,13 @@ function calculateTotalBalance() {
 	transferBalance = $.moneyTransferInTotal.getValue() - $.moneyTransferOutTotal.getValue();
 	$.transferBalance.setText(transferBalance.toUserCurrency());
 	
-	var debitTotalBalance = 0;
-	debitTotalBalance = $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
+	var debtTotalBalance = 0;
+	debtTotalBalance = $.moneyBorrowTotal.getValue() - $.moneyReturnTotal.getValue() - 
 					$.moneyLendTotal.getValue() + $.moneyPaybackTotal.getValue();
 	if(queryOptions.transactionDisplayType === "Personal"){ 
-			debitTotalBalance += $.moneyExpenseApportionTotal.getValue() - $.moneyIncomeApportionTotal.getValue();
+			debtTotalBalance += $.moneyExpenseApportionTotal.getValue() - $.moneyIncomeApportionTotal.getValue();
 	}
-	$.totalDebitBalance.setText(debitTotalBalance.toUserCurrency());
+	$.totalDebtBalance.setText(debtTotalBalance.toUserCurrency());
 }
 
 $.transferTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
@@ -192,7 +192,7 @@ $.returnTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.lendTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.balanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
-$.debitBalanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
+$.debtBalanceTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.paybackInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.returnInterestTotalCurrencySymbol.UIInit($, $.getCurrentWindow());
 $.moneyExpenseApportionCurrencySymbol.UIInit($, $.getCurrentWindow());
