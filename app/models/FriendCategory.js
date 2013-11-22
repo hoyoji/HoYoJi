@@ -30,7 +30,7 @@ exports.definition = {
 			validators : {
 				// parentFriendCategory : function(xValidateComplete) {
 					// var error;
-					// if (!this.isNew() && this.xGet("id") === Alloy.Models.User.xGet("defaultFriendCategoryId")) {
+					// if (!this.isNew() && this.xGet("id") === Alloy.Models.User.xGet("userData").xGet("defaultFriendCategoryId")) {
 						// error = {
 							// msg : "默认好友分类不能有上级分类"
 						// };
@@ -40,7 +40,7 @@ exports.definition = {
 			},
 			xDelete : function(xFinishCallback, options) {
 				if(options.syncFromServer !== true 
-					&& Alloy.Models.User.xGet("defaultFriendCategoryId") === this.xGet("id")){
+					&& Alloy.Models.User.xGet("userData").xGet("defaultFriendCategoryId") === this.xGet("id")){
 					xFinishCallback({ msg :"不能删除系统默认好友分类"});
 				}
 				// else if(this.xGet("friends").length > 0){

@@ -23,7 +23,7 @@ exports.definition = {
 			},
 			processNewMessages : function(){
 				var newMessages = Alloy.createCollection("Message").xSearchInDb({
-					messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
+					messageBoxId : Alloy.Models.User.xGet("userData").xGet("messageBoxId"),
 					toUserId : Alloy.Models.User.id,
 					messageState : "new"
 				})
@@ -45,7 +45,7 @@ exports.definition = {
 						    		var friend = Alloy.createModel("Friend", {
 										ownerUser :　Alloy.Models.User,
 										friendUser : msg.xGet("fromUser"),
-										friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+										friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory")
 									});
 									
 									Alloy.Globals.Server.postData(
@@ -73,7 +73,7 @@ exports.definition = {
 								var friend = Alloy.createModel("Friend", {
 									ownerUser :　Alloy.Models.User,
 									friendUser : msg.xGet("fromUser"),
-									friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+									friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory")
 								});
 								
 								Alloy.Globals.Server.postData(

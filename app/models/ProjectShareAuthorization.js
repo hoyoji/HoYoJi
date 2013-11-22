@@ -270,7 +270,7 @@ exports.definition = {
 			},
 			getActualTotalMoneyToShow : function() {//界面转成本币显示
 				var projectCurrency = this.xGet("project").xGet("currency");
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				var exchanges = userCurrency.getExchanges(projectCurrency);
 				var exchange = 1;
 				if (exchanges.length) {
@@ -279,7 +279,7 @@ exports.definition = {
 				return (this.getActualTotalMoney() / exchange).toFixed(2);
 			},
 			getCurrencyActualTotalMoney : function() {
-				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
+				// return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + this.getActualTotalMoneyToShow();
 				return this.xGet("project").xGet("currency").xGet("symbol") + this.getActualTotalMoney().toFixed(2);
 			},
 			getSettlementText : function() {
@@ -324,7 +324,7 @@ exports.definition = {
 			},
 			getApportionedTotalMoneyToShow : function() {
 				var projectCurrency = this.xGet("project").xGet("currency");
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				var exchanges = userCurrency.getExchanges(projectCurrency);
 				var exchange = 1;
 				if (exchanges.length) {
@@ -346,7 +346,7 @@ exports.definition = {
 					settlementMoney = -settlementMoney;
 				}
 				// var projectCurrency = this.xGet("project").xGet("currency");
-				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				// var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				// var exchanges = userCurrency.getExchanges(projectCurrency);
 				// var exchange = 1;
 				// if (exchanges.length) {
@@ -356,7 +356,7 @@ exports.definition = {
 				return settlementMoney.toFixed(2);
 			},
 			getCurrencySettlementMoney : function() {
-				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();
+				// return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + this.getSettlementMoney();
 				return this.xGet("project").xGet("currency").xGet("symbol") + this.getSettlementMoney();
 			},
 			getSharePercentage : function() {

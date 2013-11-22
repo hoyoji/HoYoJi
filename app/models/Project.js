@@ -290,13 +290,13 @@ exports.definition = {
 				var actualTotalMoney = Math.abs(this._actualTotalMoney);
 
 				// var projectCurrency = this.xGet("currency");
-				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				// var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				// var exchanges = userCurrency.getExchanges(projectCurrency);
 				// var exchange = 1;
 				// if (exchanges.length) {
 				// exchange = exchanges.at(0).xGet("rate");
 				// }
-				// return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
+				// return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (actualTotalMoney / exchange).toFixed(2);
 				return this.xGet("currency").xGet("symbol") + actualTotalMoney.toFixed(2);
 			},
 			getActualTotalMoneyType : function(cached) {
@@ -361,7 +361,7 @@ exports.definition = {
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
-				if (Alloy.Models.User.xGet("activeProjectId") === this.xGet("id")) {
+				if (Alloy.Models.User.xGet("userData").xGet("activeProjectId") === this.xGet("id")) {
 					xFinishCallback({
 						msg : "不能删除当前激活的项目"
 					});
@@ -676,7 +676,7 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			syncAddNew : function(record, dbTrans) {
-				if (record.currencyId !== Alloy.Models.User.xGet("activeCurrencyId")) {
+				if (record.currencyId !== Alloy.Models.User.xGet("userData").xGet("activeCurrencyId")) {
 					dbTrans.xCommitStart();
 					if (!dbTrans.newCurrenciesFromServer[record.currencyId]) {
 						var currency = Alloy.createModel("Currency").xFindInDb({
@@ -716,18 +716,18 @@ exports.definition = {
 					}
 
 					function fetchExchange(currencyId) {
-						if (dbTrans.newExchangesFromServer[Alloy.Models.User.xGet("activeCurrencyId") + "_" + currencyId]) {
+						if (dbTrans.newExchangesFromServer[Alloy.Models.User.xGet("userData").xGet("activeCurrencyId") + "_" + currencyId]) {
 							dbTrans.xCommitEnd();
 							return;
 						}
 						var exchange = Alloy.createModel("Exchange").xFindInDb({
-							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 							foreignCurrencyId : currencyId
 						});
 						if (!exchange.id) {
-							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), currencyId, function(rate) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"), currencyId, function(rate) {
 								exchange = Alloy.createModel("Exchange", {
-									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 									foreignCurrencyId : currencyId,
 									rate : rate
 								});

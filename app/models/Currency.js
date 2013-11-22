@@ -68,7 +68,7 @@ exports.definition = {
 			// // foreignCurrency : this
 			// // });
 			// if(options.syncFromServer !== true
-			// && Alloy.Models.User.xGet("activeCurrency") === this){
+			// && Alloy.Models.User.xGet("userData").xGet("activeCurrency") === this){
 			// error = { msg : "删除本币失败。请先将其它币种设置成本币，再删除"};
 			//  }
 			// else if(options.syncFromServer !== true
