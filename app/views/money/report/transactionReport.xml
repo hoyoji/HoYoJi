@@ -9,7 +9,7 @@
 					<View id="balanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="balanceTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Label id="totalBalance">0.00</Label>
@@ -20,7 +20,7 @@
 					<View id="incomeTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="incomeTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyIncomeTotal" src="money/report/moneyTotal" modelType="MoneyIncome" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)" />
@@ -31,7 +31,7 @@
 					<View id="expenseTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="expenseTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyExpenseTotal" src="money/report/moneyTotal" modelType="MoneyExpense" totalField="main.amount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
@@ -42,7 +42,7 @@
 					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="returnInterestTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyReturnInterestTotal" src="money/report/moneyTotal" modelType="MoneyReturn" modelSubType="MoneyReturnInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
@@ -53,7 +53,7 @@
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="paybackTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyPaybackInterestTotal" src="money/report/moneyTotal" modelType="MoneyPayback" modelSubType="MoneyPaybackInterest" totalField="main.interest * IFNULL(main.exchangeRate, 1) / IFNULL(ex.rate, 1)"/>
@@ -64,7 +64,7 @@
 					<View id="transferTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="transferTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Label id="transferBalance">0.00</Label>
@@ -75,7 +75,7 @@
 					<View id="transferInTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="transferInTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyTransferInTotal" src="money/report/moneyTotal" modelType="MoneyTransfer" modelSubType="transferIn" totalField="main.transferInAmount * main.exchangeRate / IFNULL(ex.rate, 1)" />
@@ -86,7 +86,7 @@
 					<View id="transferOutTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="transferOutTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyTransferOutTotal" src="money/report/moneyTotal" modelType="MoneyTransfer" modelSubType="transferOut" totalField="main.transferOutAmount * main.exchangeRate/ IFNULL(ex.rate, 1)"/>
@@ -97,7 +97,7 @@
 					<View id="debitBalanceTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="debitBalanceTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Label id="totalDebitBalance">0.00</Label>
@@ -108,7 +108,7 @@
 					<View id="borrowTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="borrowTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyBorrowTotal" src="money/report/moneyTotal" modelType="MoneyBorrow" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
@@ -119,7 +119,7 @@
 					<View id="returnTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="returnTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyReturnTotal" src="money/report/moneyTotal" modelType="MoneyReturn" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
@@ -130,7 +130,7 @@
 					<View id="lendTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="lendTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyLendTotal" src="money/report/moneyTotal" modelType="MoneyLend" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
@@ -141,7 +141,7 @@
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="paybackInterestTotalCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyPaybackTotal" src="money/report/moneyTotal" modelType="MoneyPayback" totalField="main.amount * main.exchangeRate / IFNULL(ex.rate, 1)"/>
@@ -152,7 +152,7 @@
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="moneyExpenseApportionCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyExpenseApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedPayment" totalField="main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)"/>
@@ -163,7 +163,7 @@
 					<View id="paybackTotal" layout="horizontal" horizontalWrap="false" right="5" width="Ti.UI.SIZE">
 						<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" width="Ti.UI.SIZE" height="Ti.UI.SIZE"
 						id="moneyIncomeApportionCurrencySymbol" autoInit="false"
-						bindModel = "User"
+						bindModel = "User.userData"
 						bindAttribute = "getLocalCurrencySymbol()"
 						/>
 						<Require id="moneyIncomeApportionTotal" src="money/report/moneyTotal" modelType="PersonalApportionedIncome" totalField="main.amount * mi.exchangeRate / IFNULL(ex.rate, 1)"/>
