@@ -195,7 +195,7 @@ exports.definition = {
             },
 			getTransferOutAmount : function() {
 				var exchange = null;
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				if(this.xGet("transferOut")) {
 					var transferOutCurrency = this.xGet("transferOut").xGet("currency");
 					if (transferOutCurrency === userCurrency) {
@@ -222,7 +222,7 @@ exports.definition = {
 			},
 			getTransferInAmount : function() {
 				var exchange = null;
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				if(this.xGet("transferIn")) {
 					var transferInCurrency = this.xGet("transferIn").xGet("currency");
 					if (transferInCurrency === userCurrency) {

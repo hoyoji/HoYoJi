@@ -173,7 +173,7 @@ exports.definition = {
 			getLocalAmount : function() {
 				// var exchange;
 				// var projectCurrency = this.xGet("project").xGet("currency");
-				// var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				// var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				// if (projectCurrency === userCurrency) {
 				// exchange = 1;
 				// } else {
@@ -185,7 +185,7 @@ exports.definition = {
 				// }
 				// }
 				var exchange = null;
-				var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				if (this.xGet("ownerUser") === Alloy.Models.User) {
 					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
 					if (accountCurrency === userCurrency) {
@@ -196,7 +196,7 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {
@@ -207,7 +207,7 @@ exports.definition = {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
 				}
 			},
 			getProjectName : function() {
@@ -220,7 +220,7 @@ exports.definition = {
 				var currencySymbol = null;
 				if (this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					var accountCurrency = this.xGet("moneyAccount").xGet("currency");
-					var localCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var localCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 					if (accountCurrency === localCurrency) {
 						currencySymbol = null;
 					} else {

@@ -72,13 +72,13 @@ exports.definition = {
 					return this.xGet("moneyLend").xGet("moneyAccount").xGet("currency").xGet("symbol") + this.xGet("amount").toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("moneyLend").xGet("project").xGet("currency");
-					var userCurrency = Alloy.Models.User.xGet("activeCurrency");
+					var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 					var exchanges = userCurrency.getExchanges(projectCurrency);
 					var exchange = 1;
 					if (exchanges.length) {
 						exchange = exchanges.at(0).xGet("rate");
 					}
-					return Alloy.Models.User.xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyLend").xGet("exchangeRate") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("moneyLend").xGet("exchangeRate") / exchange).toUserCurrency();
 				}
 			},
 			getSharePercentage : function() {
