@@ -226,7 +226,7 @@
 				xhr.setRequestHeader('Accept-Encoding', 'gzip');
 				xhr.open("POST", url);
 				if (Alloy.Models.User) {
-					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("password"));
+					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userData").xGet("password"));
 					if (OS_IOS) {
 						xhr.setRequestHeader("Cookie", "authentication=" + Ti.Utils.base64encode(auth).toString().replace("\r\n", "").replace(/=/g, "%$09"));
 					} else {
@@ -468,7 +468,7 @@
 						delete dbTrans.newExchangesFromServer;
 						delete dbTrans.newCurrenciesFromServer;
 						delete dbTrans.__syncUpdateData;
-						Alloy.Models.User.xGet("messageBox").processNewMessages();
+						Alloy.Models.User.xGet("userData").xGet("messageBox").processNewMessages();
 						xFinishedCallback();
 					} else {
 						function postCommit() {
@@ -477,7 +477,7 @@
 							delete dbTrans.newCurrenciesFromServer;
 							delete dbTrans.__syncUpdateData;
 							dbTrans.off("commit", postCommit);
-							Alloy.Models.User.xGet("messageBox").processNewMessages();
+							Alloy.Models.User.xGet("userData").xGet("messageBox").processNewMessages();
 							xFinishedCallback();
 						}
 

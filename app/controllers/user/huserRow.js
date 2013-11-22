@@ -22,7 +22,7 @@ function sendAddFriendMessage(friendlength) {
 			Alloy.Globals.confirm("添加好友", "确定添加自己为好友？", function(){
 				var friend = Alloy.createModel("Friend", {
 					friendUser : Alloy.Models.User,
-					friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"),
+					friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory"),
 					ownerUser : Alloy.Models.User
 				});
 				friend.xSave();
@@ -77,7 +77,7 @@ function sendAddFriendMessage(friendlength) {
 					// var friend = Alloy.createModel("Friend", {
 					// ownerUser : Alloy.Models.User,
 					// friendUser : $.$model,
-					// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory")
+					// friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory")
 					// });
 					// //吧本地创建的好友传上服务器
 					// Alloy.Globals.Server.postData([friend.toJSON()], function(data) {

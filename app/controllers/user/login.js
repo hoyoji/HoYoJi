@@ -70,13 +70,13 @@ $.login = function(userName, password) {
 			password : password
 		}, function(data) {
 			userDatabase.set({
-				id : data.id,
+				id : data.user.id,
 				"userName" : userName
 			}, {
 				patch : true
 			});
 			userDatabase.save();
-			Alloy.Globals.currentUserDatabaseName = data.id;
+			Alloy.Globals.currentUserDatabaseName = data.user.id;
 
 			loginUser(data);
 
@@ -100,14 +100,14 @@ $.login = function(userName, password) {
 		if (Alloy.Models.User.id) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
-			if (Alloy.Models.User.xGet("password") === password) {
+			if (Alloy.Models.User.xGet("userData").xGet("password") === password) {
 				if($.autoLogin.getValue() === "yes"){
 					setValueToProperties(userName, password);
 				}
 				openMainWindow();
 			} else {
 				// 密码不对，到服务器上验证密码
-				// 这里最好是用户连续输错三次密码才到服务器上验证，并且要征求用户意见
+				// 这里 最好 是用户连续输错三次密码才到服务器上验证，并且要征求用户意见
 				Alloy.Globals.Server.postData({
 					userName : userName,
 					password : password
@@ -145,41 +145,48 @@ $.login = function(userName, password) {
 			function createUser(data) {
 				// 密码验证通过，将该用户的资料保存到本地数据库
 				// 由于服务器不会反回密码，我们将用户输入的正确密码保存
-				data.password = password;
-				delete data.lastSyncTime;
-				Alloy.Models.User.set(data);
+				data.user.password = password;
+				delete data.user.lastSyncTime;
+				Alloy.Models.User.set(data.user);
 				delete Alloy.Models.User.id;
 				// 将用户id删除，我们才能将该用户资料当成新的记录保存到数据库
 				Alloy.Models.User.xAddToSave($);
 
+				var userData = Alloy.createModel("UserData", data.userData);
+				Alloy.Models.User.xSet("userData", userData);
+				delete userData.id;
+				userData.xAddToSave($);
+
 				// 下载一些用户必须的资料
 				var belongsToes = [];
-				for (var belongsTo in Alloy.Models.User.config.belongsTo) {
-					if (Alloy.Models.User.xGet(belongsTo + "Id")) {
+				for (var belongsTo in userData.config.belongsTo) {
+					if(belongsTo === "user"){
+						continue;
+					} else if (userData.xGet(belongsTo + "Id")) {
 						belongsToes.push({
-							id : Alloy.Models.User.xGet(belongsTo + "Id"),
-							__dataType : Alloy.Models.User.config.belongsTo[belongsTo].type
+							id : userData.xGet(belongsTo + "Id"),
+							__dataType : userData.config.belongsTo[belongsTo].type
 						});
 						if (belongsTo === "activeProject") {
 							belongsToes.push({
 								friendUserId : Alloy.Models.User.xGet("id"),
-								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								projectId : userData.xGet(belongsTo + "Id"),
 								__dataType : "ProjectShareAuthorization"
 							});	
 							belongsToes.push({
 								ownerUserId : Alloy.Models.User.xGet("id"),
 								parentProjectId : null,
-								subProjectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								subProjectId : userData.xGet(belongsTo + "Id"),
 								__dataType : "ParentProject"
 							});
 							belongsToes.push({
 								// parentExpenseCategoryId : null,
-								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								projectId : userData.xGet(belongsTo + "Id"),
 								__dataType : "MoneyExpenseCategory"
 							});
 							belongsToes.push({
 								// parentIncomeCategoryId : null,
-								projectId : Alloy.Models.User.xGet(belongsTo + "Id"),
+								projectId : userData.xGet(belongsTo + "Id"),
 								__dataType : "MoneyIncomeCategory"
 							});
 						}

@@ -76,7 +76,7 @@ var __alloyId76 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel",
 	},
 	color : "#329600",
 	width : Ti.UI.SIZE,
-	bindModel : "User",
+	bindModel : "User.userData",
 	bindAttribute : "getLocalCurrencySymbol()",
 	id : "__alloyId76",
 	__parentSymbol : __alloyId75,
@@ -145,7 +145,7 @@ var __alloyId80 = Alloy.createWidget("com.hoyoji.titanium.widget.AutoBindLabel",
 	},
 	color : "#c80032",
 	width : Ti.UI.SIZE,
-	bindModel : "User",
+	bindModel : "User.userData",
 	bindAttribute : "getLocalCurrencySymbol()",
 	id : "__alloyId80",
 	__parentSymbol : __alloyId79,
@@ -192,7 +192,7 @@ $.transactionsTable.UIInit($, $.__currentWindow);
 
 function searchData(collection, offset, limit, orderBy) {
 	var searchCriteria = {};
-	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+	if (Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Personal") {
 		searchCriteria.ownerUserId = Alloy.Models.User.id;
 	}
 	collection.xSearchInDb(searchCriteria, {
@@ -203,7 +203,7 @@ function searchData(collection, offset, limit, orderBy) {
 }
 
 function setFilter(collection, extraFilter) {
-	if (Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Personal") {
+	if (Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Personal") {
 		collection.xSetFilter(function(model) {
 			if(extraFilter && !extraFilter(model)){
 				return false;
@@ -269,7 +269,7 @@ exports.doFilter = function() {
 		return model.xGet("interest") > 0;
 	});
 	setFilter(receivedMessages, function(model) {
-		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id && model.xGet("messageState") !== "closed");
+		return (model.xGet("messageBoxId") === Alloy.Models.User.xGet("userData").xGet("messageBoxId") && model.xGet("toUserId") === Alloy.Models.User.id && model.xGet("messageState") !== "closed");
 	});
 	$.transactionsTable.fetchNextPage();
 };

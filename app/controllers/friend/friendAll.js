@@ -26,7 +26,7 @@ function onFooterbarTap(e){
 	if(e.source.id === "addFriend"){
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	} else if(e.source.id === "createFriend"){
-		Alloy.Globals.openWindow("friend/friendForm",{$model : "Friend", data : { friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"), friendUser : null }});
+		Alloy.Globals.openWindow("friend/friendForm",{$model : "Friend", data : { friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory"), friendUser : null }});
 	}
 }
 

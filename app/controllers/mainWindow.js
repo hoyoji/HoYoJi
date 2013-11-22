@@ -58,8 +58,8 @@ $.onWindowOpenDo(function() {
 	//Alloy.Globals.moneyAddNewView = Alloy.createController("money/moneyAddNew", {autoInit : "false"});
 });
 
-// if (Alloy.Models.User.xGet("messageBox")) {
-	// Alloy.Models.User.xGet("messageBox").processNewMessages();
+// if (Alloy.Models.User.xGet("userData").xGet("messageBox")) {
+	// Alloy.Models.User.xGet("userData").xGet("messageBox").processNewMessages();
 // }
 
 var page1Loaded = false, page3Loaded = false;
