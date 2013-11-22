@@ -66,12 +66,12 @@ $.convertUser2FriendModel = function(userModel) {
 var loading;
 //防止多次点击row后多次执行$.beforeProjectSelectorCallback生成多条汇率
 $.beforeMoneyAccountSelectorCallback = function(moneyAccount, successCallback) {
-	if (moneyAccount.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(moneyAccount.xGet("currency")).length === 0 && !loading) {
+	if (moneyAccount.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("userData").xGet("activeCurrency").getExchanges(moneyAccount.xGet("currency")).length === 0 && !loading) {
 			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, moneyAccount.xGet("currency").id, function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrency").id, moneyAccount.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 					foreignCurrencyId : moneyAccount.xGet("currencyId"),
 					rate : rate
 				});
@@ -252,16 +252,16 @@ if ($.saveableMode === "read") {
 						}
 					}
 					//新增项目于本币的汇率，以免添加成功之后主页金额显示错误
-					if (Alloy.Models.User.xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")) {
+					if (Alloy.Models.User.xGet("userData").xGet("activeCurrencyId") !== $.$model.xGet("moneyAccount").xGet("currencyId")) {
 						var activeToProjectExchange = Alloy.createModel("Exchange").xFindInDb({
-							localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+							localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 							foreignCurrencyId : $.$model.xGet("project").xGet("currencyId")
 						});
 						if (!activeToProjectExchange.id) {
-							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
+							Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"), $.$model.xGet("project").xGet("currencyId"), function(rate) {
 		
 								activeToProjectExchange = Alloy.createModel("Exchange", {
-									localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+									localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 									foreignCurrencyId : $.$model.xGet("project").xGet("currencyId"),
 									rate : rate
 								});

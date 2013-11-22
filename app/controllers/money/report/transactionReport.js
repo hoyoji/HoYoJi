@@ -3,7 +3,7 @@ Alloy.Globals.extendsBaseViewController($, arguments[0]);
 var title="收支汇总",interval="日",intervalQuery, d = new Date(), queryOptions = {
 	dateFrom : d.getUTCTimeOfDateStart().toISOString(),
 	dateTo : d.getUTCTimeOfDateEnd().toISOString(),
-	transactionDisplayType : Alloy.Models.User.xGet("defaultTransactionDisplayType")
+	transactionDisplayType : Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType")
 };
 
 function setTitle(){

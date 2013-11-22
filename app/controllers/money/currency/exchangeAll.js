@@ -8,7 +8,7 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 		Alloy.Globals.openWindow("money/currency/exchangeForm", {
 			$model : "Exchange",
 			data : {
-				localCurrency : Alloy.Models.User.xGet("activeCurrency")
+				localCurrency : Alloy.Models.User.xGet("userData").xGet("activeCurrency")
 			}
 		});
 	}));
@@ -34,7 +34,7 @@ function onFooterbarTap(e) {
 		Alloy.Globals.openWindow("money/currency/exchangeForm", {
 			$model : "Exchange",
 			data : {
-				localCurrency : Alloy.Models.User.xGet("activeCurrency")
+				localCurrency : Alloy.Models.User.xGet("userData").xGet("activeCurrency")
 			}
 		});
 	} else if (e.source.id === "updateAllExchanges") {

@@ -142,12 +142,12 @@ var loading;
 $.beforeProjectSelectorCallback = function(project, successCallback) {
 	var activityWindow = Alloy.createController("activityMask");
 	activityWindow.open("正在获取该项目的汇率...");
-	if (project.xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
-		if (Alloy.Models.User.xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
+	if (project.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
+		if (Alloy.Models.User.xGet("userData").xGet("activeCurrency").getExchanges(project.xGet("currency")).length === 0 && !loading) {
 			loading = true;
-			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
+			Alloy.Globals.Server.getExchangeRate(Alloy.Models.User.xGet("userData").xGet("activeCurrency").id, project.xGet("currency").id, function(rate) {
 				var exchange = Alloy.createModel("Exchange", {
-					localCurrencyId : Alloy.Models.User.xGet("activeCurrencyId"),
+					localCurrencyId : Alloy.Models.User.xGet("userData").xGet("activeCurrencyId"),
 					foreignCurrencyId : project.xGet("currencyId"),
 					rate : rate
 				});
@@ -195,9 +195,9 @@ if (!$.$model) {
 			date : (new Date()).toISOString(),
 			exchangeRate : 1,
 			incomeType : "Ordinary",
-			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
-			project : Alloy.Models.User.xGet("activeProject"),
-			moneyIncomeCategory : Alloy.Models.User.xGet("activeProject") ? Alloy.Models.User.xGet("activeProject").xGet("defaultIncomeCategory") : null,
+			moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+			project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
+			moneyIncomeCategory : Alloy.Models.User.xGet("userData").xGet("activeProject") ? Alloy.Models.User.xGet("userData").xGet("activeProject").xGet("defaultIncomeCategory") : null,
 			ownerUser : Alloy.Models.User
 		});
 	}
@@ -290,7 +290,7 @@ $.onWindowCloseDo(function() {
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	$.projectAmountContainer.setHeight(42);
-	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 		$.localAmountContainer.setHeight(42);
 	}
 	$.ownerUser.setHeight(42);
@@ -609,7 +609,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				// Alloy.Models.User.xSet("activeMoneyAccount", $.$model.xGet("moneyAccount"));
 				// Alloy.Models.User.xSet("activeProject", $.$model.xGet("project"));
 				//直接把activeMoneyAccountId保存到数据库，不经过validation，注意用 {patch : true, wait : true}
-				if (Alloy.Models.User.xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("activeProject") !== $.$model.xGet("project")) {
+				if (Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount") !== $.$model.xGet("moneyAccount") || Alloy.Models.User.xGet("userData").xGet("activeProject") !== $.$model.xGet("project")) {
 					Alloy.Models.User.save({
 						activeMoneyAccountId : $.$model.xGet("moneyAccount").xGet("id"),
 						activeProjectId : $.$model.xGet("project").xGet("id")

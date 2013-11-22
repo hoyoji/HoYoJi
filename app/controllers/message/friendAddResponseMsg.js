@@ -151,7 +151,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 			//创建好友
 			// var friend = Alloy.createModel("Friend", {
 			// friendUser : friendUser,
-			// friendCategory : Alloy.Models.User.xGet("defaultFriendCategory"),
+			// friendCategory : Alloy.Models.User.xGet("userData").xGet("defaultFriendCategory"),
 			// ownerUser : Alloy.Models.User
 			// });
 			// friend.xAddToSave($);

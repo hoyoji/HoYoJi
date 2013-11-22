@@ -29,11 +29,11 @@ if (!$.$model) {
 			date : (new Date()).toISOString(),
 			transferOutUser : Alloy.Models.User,
 			transferInUser : Alloy.Models.User,
-			transferOut : Alloy.Models.User.xGet("activeMoneyAccount"),
-			transferIn : Alloy.Models.User.xGet("activeMoneyAccount"),
+			transferOut : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
+			transferIn : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
 			exchangeRate : 1,
 			transferInAmount : 0,
-			project : Alloy.Models.User.xGet("activeProject"),
+			project : Alloy.Models.User.xGet("userData").xGet("activeProject"),
 			ownerUser : Alloy.Models.User
 		});
 	}
@@ -148,7 +148,7 @@ $.transferIn.$view.addEventListener("singletap", function() {
 
 $.transferOutUser.rightButton.addEventListener("singletap", function(e) {
 	$.$model.xSet("transferOutUser", Alloy.Models.User);
-	$.$model.xSet("transferOut",  Alloy.Models.User.xGet("activeMoneyAccount"));
+	$.$model.xSet("transferOut",  Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"));
 	$.transferOutUser.refresh();
 	$.transferOut.refresh();
 	$.transferOutUser.field.fireEvent("change", {bubbles : false});
@@ -156,7 +156,7 @@ $.transferOutUser.rightButton.addEventListener("singletap", function(e) {
 
 $.transferInUser.rightButton.addEventListener("singletap", function(e) {
 	$.$model.xSet("transferInUser", Alloy.Models.User);
-	$.$model.xSet("transferIn",  Alloy.Models.User.xGet("activeMoneyAccount"));
+	$.$model.xSet("transferIn",  Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"));
 	$.transferInUser.refresh();
 	$.transferIn.refresh();
 	$.transferInUser.field.fireEvent("change", {bubbles : false});
@@ -298,7 +298,7 @@ $.transferInUser.convertModelValue = function(value){
 // $.transferOut.setValue(null);
 // $.transferOut.field.fireEvent("change");
 // } else {
-// $.transferOut.setValue(Alloy.Models.User.xGet("activeMoneyAccount"));
+// $.transferOut.setValue(Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"));
 // $.transferOut.field.fireEvent("change");
 // $.amount.show();
 // }
@@ -308,7 +308,7 @@ $.transferInUser.convertModelValue = function(value){
 // $.transferIn.setValue(null);
 // $.transferIn.field.fireEvent("change");
 // } else {
-// $.transferIn.setValue(Alloy.Models.User.xGet("activeMoneyAccount"));
+// $.transferIn.setValue(Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"));
 // $.transferIn.field.fireEvent("change");
 // $.transferInAmount.show();
 // }

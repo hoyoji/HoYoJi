@@ -334,7 +334,7 @@ function importToLocalOperate() {
 			remark : accountShareData.account.remark,
 			ownerUser : Alloy.Models.User,
 			incomeType : accountShareData.account.expenseType,
-			moneyAccount : Alloy.Models.User.xGet("activeMoneyAccount"),
+			moneyAccount : Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount"),
 			project : depositeProject,
 			moneyIncomeCategory : depositeProject.xGet("depositeIncomeCategory"),
 			friendUser : $.$model.xGet("fromUser"),

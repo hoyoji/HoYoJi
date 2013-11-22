@@ -5,7 +5,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 		headerTitle : "币种设置操作"
 	});
 	menuSection.add($.createContextMenuItem("设为本币", function() {
-		if ($.$model !== Alloy.Models.User.xGet("activeCurrency")) {
+		if ($.$model !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 			var activityWindow = Alloy.createController("activityMask");
 			activityWindow.open("正在切换...");
 			function getAllExchanges(successCB, errorCB) {
@@ -86,7 +86,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 };
 
 function setActiveCurrency() {
-	if (Alloy.Models.User.xGet("activeCurrency") === $.$model) {
+	if (Alloy.Models.User.xGet("userData").xGet("activeCurrency") === $.$model) {
 		$.check.setVisible(true);
 	} else {
 		$.check.setVisible(false);
