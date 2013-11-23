@@ -16,6 +16,7 @@ exports.definition = {
 			newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
+			moneyDebtAccountId : "TEXT NOT NULL",
 			//isMerchant : "INTEGER NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
