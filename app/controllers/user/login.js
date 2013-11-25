@@ -25,7 +25,7 @@ function doLogin(e) {
 	}
 
 	if (userName === "hyjtest") {
-		if(Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/"){
+		if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
 			Ti.App.Properties.setString("serverUrl", "http://3.money.app100697798.twsapp.com/");
 			Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
 			alert("已切换到用户数据库");
@@ -37,7 +37,7 @@ function doLogin(e) {
 		showTestLabel();
 		return;
 	}
-	
+
 	var password = $.password.field.getValue() || "";
 	if (password.length === 0) {
 		$.password.showErrorMsg("请输入密码");
@@ -55,9 +55,9 @@ function doLogin(e) {
 $.login = function(userName, password) {
 	delete Alloy.Models.User;
 	delete Alloy.Globals.currentUserDatabaseName;
-	
+
 	Alloy.Globals.Server.dataUrl = Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/";
-		
+
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
 		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName + "'"
@@ -101,7 +101,7 @@ $.login = function(userName, password) {
 			// $.$model.xSet("ownerUser", Alloy.Models.User);
 			// $.saveModel();
 			if (Alloy.Models.User.xGet("userData").xGet("password") === password) {
-				if($.autoLogin.getValue() === "yes"){
+				if ($.autoLogin.getValue() === "yes") {
 					setValueToProperties(userName, password);
 				}
 				openMainWindow();
@@ -119,7 +119,7 @@ $.login = function(userName, password) {
 						patch : true,
 						wait : true
 					});
-					if($.autoLogin.getValue() === "yes"){
+					if ($.autoLogin.getValue() === "yes") {
 						setValueToProperties(userName, password);
 					}
 					openMainWindow();
@@ -159,8 +159,12 @@ $.login = function(userName, password) {
 
 				// 下载一些用户必须的资料
 				var belongsToes = [];
+				belongsToes.push({
+					id : Alloy.Models.User.xGet("messageBoxId"),
+					__dataType : "MessageBox"
+				});
 				for (var belongsTo in userData.config.belongsTo) {
-					if(belongsTo === "user"){
+					if (belongsTo === "user") {
 						continue;
 					} else if (userData.xGet(belongsTo + "Id")) {
 						belongsToes.push({
@@ -172,7 +176,7 @@ $.login = function(userName, password) {
 								friendUserId : Alloy.Models.User.xGet("id"),
 								projectId : userData.xGet(belongsTo + "Id"),
 								__dataType : "ProjectShareAuthorization"
-							});	
+							});
 							belongsToes.push({
 								ownerUserId : Alloy.Models.User.xGet("id"),
 								parentProjectId : null,
@@ -215,15 +219,15 @@ $.login = function(userName, password) {
 							model.apportionedTotalLend = 0;
 							model.apportionedTotalReturn = 0;
 							model.apportionedTotalPayback = 0;
-						} else if(modelType === "Currency"){
-							if(!model.symbol){
+						} else if (modelType === "Currency") {
+							if (!model.symbol) {
 								try {
 									model.symbol = Ti.Locale.getCurrencySymbol(model.code);
 								} catch(e) {
 									model.symbol = model.code;
 								}
 							}
-						} else if(modelType === "Picture" && model.base64PictureIcon){
+						} else if (modelType === "Picture" && model.base64PictureIcon) {
 							var filePath;
 							if (OS_ANDROID) {
 								filePath = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory).nativePath + "/";
@@ -241,7 +245,7 @@ $.login = function(userName, password) {
 						model.xAddToSave($);
 					});
 					$.saveCollection(function() {
-						if($.autoLogin.getValue() === "yes"){
+						if ($.autoLogin.getValue() === "yes") {
 							setValueToProperties(userName, password);
 						}
 						openMainWindow();
@@ -259,7 +263,8 @@ $.login = function(userName, password) {
 
 		}
 	}
-}; 
+
+};
 
 function setValueToProperties(userName, password) {
 	var userData = {};
@@ -301,35 +306,38 @@ function openRegister(e) {
 		noResetFormWhenClose : true
 	});
 }
+
 var testLabel;
-function showTestLabel(){
-		if(Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/"){
-			testLabel = Ti.UI.createLabel({
-				color : "red",
-				text : "将登录到测试数据库"
-			});
-			$.$view.add(testLabel);
-		} else if(testLabel){
-			$.$view.remove(testLabel);
-		}
+function showTestLabel() {
+	if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
+		testLabel = Ti.UI.createLabel({
+			color : "red",
+			text : "将登录到测试数据库"
+		});
+		$.$view.add(testLabel);
+	} else if (testLabel) {
+		$.$view.remove(testLabel);
+	}
 }
 
 var userData = Ti.App.Properties.getObject("userData");
 if (userData) {
 	$.autoLogin.setValue("yes");
-	function autoLogin(){
-		$.getCurrentWindow().$view.removeEventListener("open", autoLogin);	
+	function autoLogin() {
+		$.getCurrentWindow().$view.removeEventListener("open", autoLogin);
 		var activityWindow = Alloy.createController("activityMask");
 		activityWindow.open("正在登录...");
 		$.userName.field.setValue(userData["userName"]);
 		$.login(userData.userName, userData.password);
 		activityWindow.close();
 	}
-	$.getCurrentWindow().$view.addEventListener("open", autoLogin);	
+
+
+	$.getCurrentWindow().$view.addEventListener("open", autoLogin);
 } else {
 	$.autoLogin.setValue("no");
 }
-showTestLabel();		
+showTestLabel();
 
 function findPassword(e) {
 	Alloy.Globals.openWindow("user/findPassword");
@@ -338,7 +346,7 @@ function findPassword(e) {
 $.loginButton.addEventListener("singletap", doLogin);
 $.registerButton.addEventListener("singletap", openRegister);
 
-$.userName.field.addEventListener("return", function(){
+$.userName.field.addEventListener("return", function() {
 	$.password.field.focus();
 });
 $.password.field.addEventListener("return", doLogin);
