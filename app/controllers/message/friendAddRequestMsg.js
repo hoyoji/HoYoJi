@@ -3,7 +3,7 @@ Alloy.Globals.extendsBaseFormController($, arguments[0]);
 $.onWindowOpenDo(function() {
 	if ($.$model.isNew()) {
 		$.$model.xSet("fromUser", Alloy.Models.User);
-	    $.$model.xSet("messageBox", Alloy.Models.User.xGet("userData").xGet("messageBox"));
+	    $.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
 	    $.$model.xSet("type", "System.Friend.AddRequest");
 	    $.$model.xSet("messageState", "closed");
 	    $.$model.xSet("messageTitle", "好友请求");
@@ -51,7 +51,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageTitle" : "好友请求",
 				"date" : date,
 				"detail" : $.$model.xGet("detail"),
-				"messageBoxId" : $.$model.xGet("toUser").xGet("userData").xGet("messageBoxId")
+				"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")
 			},function(){
 		        $.saveModel(saveEndCB, saveErrorCB);
 		    	alert("发送成功，请等待回复");         

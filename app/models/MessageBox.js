@@ -23,7 +23,7 @@ exports.definition = {
 			},
 			processNewMessages : function(){
 				var newMessages = Alloy.createCollection("Message").xSearchInDb({
-					messageBoxId : Alloy.Models.User.xGet("userData").xGet("messageBoxId"),
+					messageBoxId : Alloy.Models.User.xGet("messageBoxId"),
 					toUserId : Alloy.Models.User.id,
 					messageState : "new"
 				})

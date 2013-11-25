@@ -169,7 +169,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 					"messageTitle" : "好友回复",
 					"date" : date,
 					"detail" : "用户" + $.$model.xGet("toUser").getUserDisplayName() + "同意您的好友请求",
-					"messageBoxId" : friendUser.xGet("userData").xGet("messageBoxId")
+					"messageBoxId" : friendUser.xGet("messageBoxId")
 				}, function() {
 					// setOtherRequestMsgToRead();
 					//在服务器上添加好友，再加载到本地
@@ -206,7 +206,7 @@ function addFriend(saveEndCB, saveErrorCB) {
 				"messageTitle" : "系统消息",
 				"date" : date,
 				"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "拒绝您的好友请求",
-				"messageBoxId" : friendUser.xGet("userData").xGet("messageBoxId")
+				"messageBoxId" : friendUser.xGet("messageBoxId")
 			}, function() {
 				$.$model.xSet('messageState', "closed");
 				Alloy.Globals.Server.putData([$.$model.toJSON()], function(data) {

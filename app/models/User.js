@@ -6,6 +6,7 @@ exports.definition = {
 			userName : "TEXT NOT NULL",
 			nickName : "TEXT",
 			isMerchant : "INTEGER NOT NULL",
+			messageBoxId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
@@ -94,6 +95,10 @@ exports.definition = {
 			},
 			picture : {
 				type : "Picture",
+				attribute : null
+			},
+			messageBox : {
+				type : "MessageBox",
 				attribute : null
 			}
 		},

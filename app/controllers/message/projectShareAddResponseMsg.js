@@ -711,7 +711,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 											"messageTitle" : "共享回复",
 											"date" : date,
 											"detail" : "用户" + $.$model.xGet("toUser").getUserDisplayName() + "接受了您共享的项目:" + projectName,
-											"messageBoxId" : fromUser.xGet("userData").xGet("messageBoxId"),
+											"messageBoxId" : fromUser.xGet("messageBoxId"),
 											"messageData" : $.$model.xGet("messageData")
 										}, function() {
 											$.saveModel(function(e) {
@@ -817,7 +817,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 									"messageTitle" : "共享回复",
 									"date" : date,
 									"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "拒绝了您共享的项目:" + projectName,
-									"messageBoxId" : fromUser.xGet("userData").xGet("messageBoxId"),
+									"messageBoxId" : fromUser.xGet("messageBoxId"),
 									"messageData" : $.$model.xGet("messageData")
 								}, function() {
 									saveEndCB("您拒绝了" + fromUser.getUserDisplayName() + "共享的项目");

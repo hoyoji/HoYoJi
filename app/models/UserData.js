@@ -15,7 +15,7 @@ exports.definition = {
 			activeMoneyAccountId : "TEXT NOT NULL",
 			newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
-			messageBoxId : "TEXT NOT NULL",
+			// messageBoxId : "TEXT NOT NULL",
 			moneyDebtAccountId : "TEXT",
 			//isMerchant : "INTEGER NOT NULL",
 			serverRecordHash : "TEXT",
@@ -55,10 +55,6 @@ exports.definition = {
 			},
 			defaultFriendCategory : {
 				type : "FriendCategory",
-				attribute : null
-			},
-			messageBox : {
-				type : "MessageBox",
 				attribute : null
 			}
 		},

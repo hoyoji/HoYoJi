@@ -468,7 +468,7 @@
 						delete dbTrans.newExchangesFromServer;
 						delete dbTrans.newCurrenciesFromServer;
 						delete dbTrans.__syncUpdateData;
-						Alloy.Models.User.xGet("userData").xGet("messageBox").processNewMessages();
+						Alloy.Models.User.xGet("messageBox").processNewMessages();
 						xFinishedCallback();
 					} else {
 						function postCommit() {
@@ -477,7 +477,7 @@
 							delete dbTrans.newCurrenciesFromServer;
 							delete dbTrans.__syncUpdateData;
 							dbTrans.off("commit", postCommit);
-							Alloy.Models.User.xGet("userData").xGet("messageBox").processNewMessages();
+							Alloy.Models.User.xGet("messageBox").processNewMessages();
 							xFinishedCallback();
 						}
 

@@ -388,7 +388,7 @@ exports.definition = {
 			// "messageTitle" : "移除共享",
 			// "date" : (new Date()).toISOString(),
 			// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "不再共享项目" + self.xGet("project").xGet("name") + "及子项目给您",
-			// "messageBoxId" : self.xGet("friendUser").xGet("userData").xGet("messageBoxId"),
+			// "messageBoxId" : self.xGet("friendUser").xGet("messageBoxId"),
 			// "messageData" : JSON.stringify({
 			// shareAllSubProjects : this.xGet("shareAllSubProjects"),
 			// projectShareAuthorizationId : this.xGet("id"),

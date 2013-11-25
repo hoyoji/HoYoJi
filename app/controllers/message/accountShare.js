@@ -4,7 +4,7 @@ var selectedAccount = $.$attrs.selectedAccount;
 var datetime = new Date(selectedAccount.xGet("date"));
 
 $.$model.xSet("fromUser", Alloy.Models.User);
-$.$model.xSet("messageBox", Alloy.Models.User.xGet("userData").xGet("messageBox"));
+$.$model.xSet("messageBox", Alloy.Models.User.xGet("messageBox"));
 $.$model.xSet("type", "Account.Share.AddRequest");
 $.$model.xSet("messageState", "closed");
 $.$model.xSet("messageTitle", Alloy.Models.User.getUserDisplayName());
@@ -597,7 +597,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			"messageTitle" : "充值请求",
 			"date" : date,
 			"detail" : $.$model.xGet("detail"),
-			"messageBoxId" : $.$model.xGet("toUser").xGet("userData").xGet("messageBoxId"),
+			"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId"),
 			messageData : $.$model.xGet("messageData")
 		}, function() {
 			$.saveModel(saveEndCB, saveErrorCB);
