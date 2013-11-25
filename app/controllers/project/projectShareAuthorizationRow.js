@@ -105,7 +105,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 									// "messageTitle" : "移除共享",
 									// "date" : (new Date()).toISOString(),
 									// "detail" : "用户" + Alloy.Models.User.xGet("userName") + "已经将您移除出共享项目：" + $.$model.xGet("project").xGet("name"),
-									// "messageBoxId" : $.$model.xGet("friendUser").xGet("messageBoxId"),
+									// "messageBoxId" : $.$model.xGet("friendUser").xGet("userData").xGet("messageBoxId"),
 									// "messageData" : JSON.stringify({
 										// shareAllSubProjects : $.$model.xGet("shareAllSubProjects"),
 										// projectShareAuthorizationId : $.$model.xGet("id"),

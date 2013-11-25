@@ -597,7 +597,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			"messageTitle" : "充值请求",
 			"date" : date,
 			"detail" : $.$model.xGet("detail"),
-			"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId"),
+			"messageBoxId" : $.$model.xGet("toUser").xGet("userData").xGet("messageBoxId"),
 			messageData : $.$model.xGet("messageData")
 		}, function() {
 			$.saveModel(saveEndCB, saveErrorCB);

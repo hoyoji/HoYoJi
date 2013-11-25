@@ -71,7 +71,7 @@ function sendAddFriendMessage(friendlength) {
 					"messageTitle" : "好友请求",
 					"date" : date,
 					"detail" : "用户" + Alloy.Models.User.getUserDisplayName() + "成功添加您为好友",
-					"messageBoxId" : $.$model.xGet("messageBoxId")
+					"messageBoxId" : $.$model.xGet("userData").xGet("messageBoxId")
 				}, function() {
 					//本地创建好友
 					// var friend = Alloy.createModel("Friend", {

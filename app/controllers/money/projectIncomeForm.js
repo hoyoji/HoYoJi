@@ -287,7 +287,7 @@ if ($.saveableMode === "read") {
 						"messageTitle" : "充值回复",
 						"date" : date,
 						"detail" : "好友" + Alloy.Models.User.xGet("userName") + "接受了您的充值",
-						"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("messageBoxId"),
+						"messageBoxId" : selectedDepositeMsg.xGet("fromUser").xGet("userData").xGet("messageBoxId"),
 						messageData : selectedDepositeMsg.xGet("messageData")
 					}, function() {
 						selectedDepositeMsg.xSet("messageState", "closed");

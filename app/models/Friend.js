@@ -196,7 +196,7 @@ exports.definition = {
 									"messageTitle" : "删除好友",
 									"date" : (new Date()).toISOString(),
 									"detail" : "用户" + Alloy.Models.User.xGet("userName") + "把您移除出好友列表",
-									"messageBoxId" : self.xGet("friendUser").xGet("messageBoxId")
+									"messageBoxId" : self.xGet("friendUser").xGet("userData").xGet("messageBoxId")
 								}, function() {
 									//在服务器上删除该好友
 									Alloy.Globals.Server.deleteData([{

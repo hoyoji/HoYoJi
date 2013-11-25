@@ -51,7 +51,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				"messageTitle" : "好友请求",
 				"date" : date,
 				"detail" : $.$model.xGet("detail"),
-				"messageBoxId" : $.$model.xGet("toUser").xGet("messageBoxId")
+				"messageBoxId" : $.$model.xGet("toUser").xGet("userData").xGet("messageBoxId")
 			},function(){
 		        $.saveModel(saveEndCB, saveErrorCB);
 		    	alert("发送成功，请等待回复");         
