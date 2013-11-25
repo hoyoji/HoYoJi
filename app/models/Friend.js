@@ -6,12 +6,17 @@ exports.definition = {
 			remark : "TEXT",
 			friendUserId : "TEXT",
 			friendCategoryId : "TEXT NOT NULL",
+			moneyDebtAccountId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
+			moneyDebtAccount : {
+				type : "MoneyAccount",
+				attribute : null
+			},
 			friendCategory : {
 				type : "FriendCategory",
 				attribute : "friends"
@@ -30,30 +35,30 @@ exports.definition = {
 			}
 		},
 		hasMany : {
-			// moneyExpenses : {
-				// type : "MoneyExpense",
-				// attribute : "friend"
-			// },
-			// moneyIncomes : {
-				// type : "MoneyIncome",
-				// attribute : "friend"
-			// },
-			// moneyBorrows : {
-				// type : "MoneyBorrow",
-				// attribute : "friend"
-			// },
-			// moneyLends : {
-				// type : "MoneyLend",
-				// attribute : "friend"
-			// },
-			// moneyPayback : {
-				// type : "MoneyPayback",
-				// attribute : "friend"
-			// },
-			// moneyReturns : {
-				// type : "MoneyReturn",
-				// attribute : "friend"
-			// }
+			moneyExpenses : {
+				type : "MoneyExpense",
+				attribute : "localFriend"
+			},
+			moneyIncomes : {
+				type : "MoneyIncome",
+				attribute : "localFriend"
+			},
+			moneyBorrows : {
+				type : "MoneyBorrow",
+				attribute : "localFriend"
+			},
+			moneyLends : {
+				type : "MoneyLend",
+				attribute : "localFriend"
+			},
+			moneyPayback : {
+				type : "MoneyPayback",
+				attribute : "localFriend"
+			},
+			moneyReturns : {
+				type : "MoneyReturn",
+				attribute : "localFriend"
+			}
 		},
 		rowView : "friend/friendRow",
 		adapter : {
