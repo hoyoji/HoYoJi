@@ -10,6 +10,7 @@ exports.definition = {
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
+			pictureId : "TEXT",
 			location : "TEXT",
 			geoLon : "TEXT",
 			geoLat : "TEXT",

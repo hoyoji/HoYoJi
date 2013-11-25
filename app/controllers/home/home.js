@@ -41,7 +41,7 @@ $.makeContextMenu = function() {
 	});
 
 	menuSection.add($.createContextMenuItem("个人流水", function() {
-		Alloy.Models.User.save({
+		Alloy.Models.User.xGet("userData").save({
 			defaultTransactionDisplayType : "Personal"
 		}, {
 			wait : true,
