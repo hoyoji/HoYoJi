@@ -38,7 +38,7 @@ function loadForm(formName, model, autoInit) {
 }
 
 function onFooterbarTap(e) {
-	if (e.source.id === "moneyLoan") {
+	if (e.source.id === "moneyDebt") {
 		$.getCurrentWindow().closeNumericKeyboard();
 		return;
 	}
@@ -93,7 +93,7 @@ function initForm() {
 			// parentController : $.getParentController(),
 			buttons : "支出,收入,转账,借贷;借入;借出;还款;收款,项目充值",
 			imagesFolder : "/images/money/moneyAddNew",
-			ids : ids = "moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyLoan;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"
+			ids : ids = "moneyExpenseForm,moneyIncomeForm,moneyTransferForm,moneyDebt;moneyBorrowForm;moneyLendForm;moneyReturnForm;moneyPaybackForm,projectDepositeForm"
 		});
 		$.footerBar.setParent($.$view);
 		// $.footerBar.UIInit($, $.getCurrentWindow());

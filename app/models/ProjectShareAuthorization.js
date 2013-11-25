@@ -255,13 +255,13 @@ exports.definition = {
 				// }
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
-				var actualTotalMoney = actualTotalExpense - actualTotalIncome + this.getLoanActualTotalMoney();
+				var actualTotalMoney = actualTotalExpense - actualTotalIncome + this.getDebtActualTotalMoney();
 				if (actualTotalMoney < 0) {
 					actualTotalMoney = -actualTotalMoney;
 				}
 				return actualTotalMoney;
 			},
-			getLoanActualTotalMoney : function() {
+			getDebtActualTotalMoney : function() {
 				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
 				var actualTotalLend = this.xGet("actualTotalLend") || 0;
 				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
@@ -315,7 +315,7 @@ exports.definition = {
 				var apportionedTotalExpense = this.xGet("apportionedTotalExpense") || 0;
 				return apportionedTotalExpense - apportionedTotalIncome;
 			},
-			getLoanApportionedTotalMoney : function() {
+			getDebtApportionedTotalMoney : function() {
 				var apportionedTotalBorrow = this.xGet("apportionedTotalBorrow") || 0;
 				var apportionedTotalLend = this.xGet("apportionedTotalLend") || 0;
 				var apportionedTotalReturn = this.xGet("apportionedTotalReturn") || 0;
