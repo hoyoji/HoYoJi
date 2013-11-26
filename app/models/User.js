@@ -7,6 +7,7 @@ exports.definition = {
 			nickName : "TEXT",
 			isMerchant : "INTEGER NOT NULL",
 			messageBoxId : "TEXT NOT NULL",
+			newFriendAuthentication : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastSyncTime : "TEXT",
@@ -18,6 +19,7 @@ exports.definition = {
 			address : "TEXT"
 		},
 		defaults : {
+			newFriendAuthentication : "required",
 			isMerchant : 0
 		},
 		hasMany : {
