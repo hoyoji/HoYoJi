@@ -1,6 +1,6 @@
 <Alloy>
 	<View class="container" height="42"><!-- hasDetail="getSharedWithHerFriends()" -->
-		 <View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
+		 <View id="content" class="row-content" left="0" height="42" backgroundColor="#f5f5f5">
 	 		<ImageView id="projectImage" left="5" width="28" height="28"/>
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" class="secondRow"
 			id="projectName" autoInit="false" top="3"

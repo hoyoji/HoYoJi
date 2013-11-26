@@ -306,7 +306,7 @@
 				var animation = Titanium.UI.createAnimation();
 				animation.duration = 300;
 				animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-				animation.top = 0;
+				animation.top = "0";
 				$.content.setOpacity("0.3");
 				errorLabel.animate(animation);
 			}
@@ -316,11 +316,10 @@
 					text : "已被移除",
 					height : Ti.UI.FILL,
 					width : Ti.UI.FILL,
-					top : 0,
+					top : "-100%",
 					color : "red",
 					backgroundColor : "#40000000",
-					textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-					zIndex : 1000
+					textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER
 				});
 				$.$view.add(msgLabel);
 
@@ -338,7 +337,7 @@
 					var animation = Titanium.UI.createAnimation();
 					animation.duration = 300;
 					animation.curve = Titanium.UI.ANIMATION_CURVE_EASE_IN;
-					animation.top = 0;
+					animation.top = "0";
 					msgLabel.animate(animation);
 				} else {
 					msgLabel.setTop(0);
