@@ -6,6 +6,18 @@ if ($.$model.isNew()) {
 	});
 }
 
+if ($.$model.xGet("accountType") === "Debt") {
+	$.setSaveableMode("read");
+}
+
+$.accountType.field.addEventListener("change", function() {
+	if ($.$model.xGet("accountType") === "Debt") {
+		$.accountType.showErrorMsg("借贷账户由系统自动创建，无需手动新增");
+	} else {
+		$.accountType.hideErrorMsg();
+	}
+});
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	if ($.$model.isNew()) {
 		var activityWindow = Alloy.createController("activityMask");
@@ -34,18 +46,18 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				successCB();
 			}
 		}
-		
+
 		if ($.$model.hasChanged("currentBalance")) {
 			// 这个主要用于同不时维护修改后的账户余额
 			// Alloy.createModel("MoneyAccountBalanceAdjustment", {
-				// moneyAccount : $.$model,
-				// amount : $.$model.xGet("currentBalance"),
-				// ownerUser : Alloy.Models.User
+			// moneyAccount : $.$model,
+			// amount : $.$model.xGet("currentBalance"),
+			// ownerUser : Alloy.Models.User
 			// }).xAddToSave($);
-			
+
 			var moneyTransfer = null;
-			
-			if($.$model.xGet("currentBalance") > 0) {
+
+			if ($.$model.xGet("currentBalance") > 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : null,
@@ -58,7 +70,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});
-			} else if($.$model.xGet("currentBalance") < 0) {
+			} else if ($.$model.xGet("currentBalance") < 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : Alloy.Models.User,
@@ -75,7 +87,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			moneyTransfer.xAddToSave($);
 		}
 
-		if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
+		if ($.$model.xGet("accountType") === "Debt") {
+			activityWindow.close();
+			saveErrorCB("借贷账户由系统自动创建，请选择其他账户类型");	
+			alert("借贷账户由系统自动创建，请选择其他账户类型");
+		} else if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 			createExchange(function(e) {
 				activityWindow.close();
 				$.saveModel(saveEndCB, saveErrorCB);
@@ -92,14 +108,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 		if ($.$model.hasChanged("currentBalance")) {
 			// 这个主要用于同不时维护修改后的账户余额
 			// Alloy.createModel("MoneyAccountBalanceAdjustment", {
-				// moneyAccount : $.$model,
-				// amount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
-				// ownerUser : Alloy.Models.User
+			// moneyAccount : $.$model,
+			// amount : $.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance"),
+			// ownerUser : Alloy.Models.User
 			// }).xAddToSave($);
-			
+
 			var moneyTransfer = null;
-			
-			if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") > 0) {
+
+			if ($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") > 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : null,
@@ -112,7 +128,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 					ownerUser : Alloy.Models.User,
 					remark : "［修改账户余额］"
 				});
-			} else if($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") < 0) {
+			} else if ($.$model.xGet("currentBalance") - $.$model.xPrevious("currentBalance") < 0) {
 				moneyTransfer = Alloy.createModel("MoneyTransfer", {
 					date : (new Date()).toISOString(),
 					transferOutUser : Alloy.Models.User,

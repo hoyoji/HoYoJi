@@ -285,7 +285,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	});
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount").xAddToSave($);
-	oldFriend = $.convertUser2FriendModel($.$model.xGet("friendUser"));
+	if (!$.$model.xGet("localFriend")) {
+		oldFriend = $.convertUser2FriendModel($.$model.xGet("friendUser"));
+	} else {
+		oldFriend = $.$model.xGet("localFriend");
+	}
+
 	if ($.saveableMode === "add") {
 		oldAmount = 0;
 	} else {
@@ -406,7 +411,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		/*更新借贷账户*/
-		var newFriend = $.convertUser2FriendModel($.$model.xGet("friendUser"));
+		var newFriend;
+		if (!$.$model.xGet("localFriend")) {
+			newFriend = $.convertUser2FriendModel($.$model.xGet("friendUser"));
+		} else {
+			newFriend = $.$model.xGet("localFriend");
+		}
 		var oldDebtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
 			accountType : "Debt",
 			currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
@@ -420,7 +430,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			friendId : newFriend ? newFriend.xGet("id") : null,
 			ownerUserId : Alloy.Models.User.xGet("id")
 		});
-		var oldDebtAccount = oldDebtAccounts.at(0),newDebtAccount = newDebtAccounts.at(0);
+		var oldDebtAccount = oldDebtAccounts.at(0), newDebtAccount = newDebtAccounts.at(0);
 		if (oldDebtAccount && newDebtAccount) {
 			if (newDebtAccount.xGet("id") === oldDebtAccount.xGet("id")) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") + oldAmount - newAmount);
@@ -570,10 +580,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if(oldDebtAccount) {
+			if (oldDebtAccount) {
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.previous("currentBalance"));
 			}
-			if(newDebtAccount) {
+			if (newDebtAccount) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.previous("currentBalance"));
 			}
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
