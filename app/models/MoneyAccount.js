@@ -9,6 +9,7 @@ exports.definition = {
 			sharingType : "TEXT NOT NULL",
 			accountType : "TEXT NOT NULL",
 			accountNumber : "TEXT",
+			friendId : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
@@ -66,6 +67,10 @@ exports.definition = {
 			ownerUser : {
 				type : "User",
 				attribute : "moneyAccounts"
+			},
+			friend : {
+				type : "Friend",
+				attribute : null
 			}
 		},
 		rowView : "money/moneyAccount/moneyAccountRow",
@@ -102,25 +107,25 @@ exports.definition = {
 			},
 			getAccountType : function(){
 				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
-				// values="Cash,Deposit,Credit,Online,Loan"
+				// values="Cash,Deposit,Credit,Online,Debt"
 				switch(this.xGet("accountType")){
 					case "Cash" : return "现金账户";
 					case "Deposit" : return "金融账户";
 					case "Credit" : return "信用卡账户";
 					case "Online" : return "虚拟账户";
-					case "Loan" : return "借贷账户";
+					case "Debt" : return "借贷账户";
 					default : return this.xGet("accountType");
 				}
 			},
 			getSectionSortName : function(){
 				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
-				// values="Cash,Deposit,Credit,Online,Loan"
+				// values="Cash,Deposit,Credit,Online,Debt"
 				switch(this.xGet("accountType")){
 					case "Cash" : return "1" + this.xGet("name");
 					case "Deposit" : return "2" ;
 					case "Credit" : return "3" + this.xGet("name");
 					case "Online" : return "4" + this.xGet("name");
-					case "Loan" : return "5" + this.xGet("name");
+					case "Debt" : return "5" + this.xGet("name");
 					default : return "6" + this.xGet("name");
 				}
 			},
