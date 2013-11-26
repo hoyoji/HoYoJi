@@ -51,7 +51,7 @@
 					right="10" width="50"
 					values="required,none"
 					items="是,否"
-					bindModel="User.userData"
+					bindModel="User"
 					bindAttribute="newFriendAuthentication"/>
 				</View>
 				<!-- </View> -->

@@ -13,7 +13,7 @@ exports.definition = {
 			activeProjectId : "TEXT",
 			activeCurrencyId : "TEXT NOT NULL",
 			activeMoneyAccountId : "TEXT NOT NULL",
-			newFriendAuthentication : "TEXT NOT NULL",
+			//newFriendAuthentication : "TEXT NOT NULL",
 			defaultFriendCategoryId : "TEXT NOT NULL",
 			// messageBoxId : "TEXT NOT NULL",
 			moneyDebtAccountId : "TEXT",
@@ -31,7 +31,7 @@ exports.definition = {
 			ownerUserId : "TEXT NOT NULL"
 		},
 		defaults : {
-			newFriendAuthentication : "required",
+			//newFriendAuthentication : "required",
 			defaultTransactionDisplayType : "Project",
 			emailVerified : 0,
 			phoneVerified : 0
