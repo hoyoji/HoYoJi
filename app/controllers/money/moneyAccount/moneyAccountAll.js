@@ -30,7 +30,13 @@ if ($.$attrs.selectedFriendUser) {
 	}
 	$.moneyAccountsTable.addCollection(collection);
 } else {
-	collection = Alloy.Models.User.xGet("moneyAccounts");
+	if ($.$attrs.showAccountBalanceTotal) {
+		collection = Alloy.Models.User.xGet("moneyAccounts");
+	} else {
+        collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter(function(model){
+        	return model.xGet("accountType") !== "Debt";
+        });
+	}
 	$.moneyAccountsTable.addCollection(collection);
 }
 $.moneyAccountsTable.autoHideFooter($.footerBar);
