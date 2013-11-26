@@ -9,6 +9,7 @@ exports.definition = {
 			sharingType : "TEXT NOT NULL",
 			accountType : "TEXT NOT NULL",
 			accountNumber : "TEXT",
+			friendId : "TEXT",
 			bankAddress : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
@@ -66,6 +67,10 @@ exports.definition = {
 			ownerUser : {
 				type : "User",
 				attribute : "moneyAccounts"
+			},
+			friend : {
+				type : "Friend",
+				attribute : null
 			}
 		},
 		rowView : "money/moneyAccount/moneyAccountRow",

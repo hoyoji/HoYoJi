@@ -300,6 +300,18 @@ exports.definition = {
 				}
 				return remark;
 			},
+			getFriend : function(userModel) {
+				if (userModel) {
+					var friend = Alloy.createModel("Friend").xFindInDb({
+						friendUserId : userModel.id
+					});
+					if (friend.id) {
+						return friend;
+					}
+				} else if (this.xGet("localFriend")) {
+					return this.xGet("localFriend");
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				if (this.xGet("moneyReturns").length > 0) {
 					xFinishCallback({
@@ -310,13 +322,26 @@ exports.definition = {
 					var saveOptions = _.extend({}, options);
 					saveOptions.patch = true;
 					saveOptions.wait = true;
-					
+
 					var moneyAccount = this.xGet("moneyAccount");
 					var amount = this.xGet("amount");
 					moneyAccount.save({
 						currentBalance : moneyAccount.xGet("currentBalance") - amount
 					}, saveOptions);
 
+					var friend = this.getFriend(this.xGet("friendUser"));
+					var debtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
+						accountType : "Debt",
+						currencyId : moneyAccount.xGet("currency").xGet("id"),
+						friendId : friend ? friend.xGet("id") : null,
+						ownerUserId : Alloy.Models.User.xGet("id")
+					});
+					if (debtAccounts.at(0)) {
+						debtAccounts.at(0).save({
+							currentBalance : debtAccounts.at(0).xGet("currentBalance") + amount
+						}, saveOptions);
+					}
+					
 					var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
 					var myProjectShareAuthorization;
 					projectShareAuthorizations.forEach(function(item) {
@@ -376,7 +401,7 @@ exports.definition = {
 						// patch : true
 						// });
 						moneyAccount.__syncCurrentBalance = moneyAccount.__syncCurrentBalance ? moneyAccount.__syncCurrentBalance + record.amount : record.amount;
-					}else {
+					} else {
 						dbTrans.__syncData[record.moneyAccountId] = dbTrans.__syncData[record.moneyAccountId] || {};
 						dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 					}
@@ -480,7 +505,7 @@ exports.definition = {
 						// actualTotalBorrow : actualTotalBorrow
 						// }, saveOptions);
 						item.__syncActualTotalBorrow = item.__syncActualTotalBorrow ? item.__syncActualTotalBorrow - self.getProjectCurrencyAmount() : -self.getProjectCurrencyAmount();
-				}
+					}
 				});
 			},
 			syncRollback : function() {
@@ -492,14 +517,14 @@ exports.definition = {
 						var sql = "SELECT * FROM ClientSyncTable WHERE recordId = ? AND operation = 'create'";
 						rs = Alloy.Globals.DataStore.getReadDb().execute(sql, [item.id]);
 						if (rs.rowCount > 0) {
-							if(hasMany === "moneyBorrowApportions"){
+							if (hasMany === "moneyBorrowApportions") {
 								var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 									projectId : item.xGet("moneyBorrow").xGet("projectId"),
 									friendUserId : item.xGet("friendUserId")
 								});
 								// if(projectShareAuthorization.id){
-									dbTrans.__syncUpdateData["ProjectShareAuthorization"] = dbTrans.__syncUpdateData["ProjectShareAuthorization"] || {};
-									dbTrans.__syncUpdateData["ProjectShareAuthorization"][projectShareAuthorization.id] = projectShareAuthorization;
+								dbTrans.__syncUpdateData["ProjectShareAuthorization"] = dbTrans.__syncUpdateData["ProjectShareAuthorization"] || {};
+								dbTrans.__syncUpdateData["ProjectShareAuthorization"][projectShareAuthorization.id] = projectShareAuthorization;
 								// }
 							}
 							item.syncDelete(record, dbTrans);

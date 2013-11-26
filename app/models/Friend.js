@@ -6,17 +6,12 @@ exports.definition = {
 			remark : "TEXT",
 			friendUserId : "TEXT",
 			friendCategoryId : "TEXT NOT NULL",
-			moneyDebtAccountId : "TEXT",
 			ownerUserId : "TEXT NOT NULL",
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER"
 		},
 		belongsTo : {
-			moneyDebtAccount : {
-				type : "MoneyAccount",
-				attribute : null
-			},
 			friendCategory : {
 				type : "FriendCategory",
 				attribute : "friends"
@@ -58,6 +53,10 @@ exports.definition = {
 			moneyReturns : {
 				type : "MoneyReturn",
 				attribute : "localFriend"
+			},
+			moneyDebtAccounts : {
+				type : "MoneyAccount",
+				attribute : "friend"
 			}
 		},
 		rowView : "friend/friendRow",
