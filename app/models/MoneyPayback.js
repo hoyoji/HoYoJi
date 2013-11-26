@@ -328,6 +328,18 @@ exports.definition = {
 				}
 				return remark;
 			},
+			getFriend : function(userModel) {
+				if (userModel) {
+					var friend = Alloy.createModel("Friend").xFindInDb({
+						friendUserId : userModel.id
+					});
+					if (friend.id) {
+						return friend;
+					}
+				} else if (this.xGet("localFriend")) {
+					return this.xGet("localFriend");
+				}
+			},
 			xDelete : function(xFinishCallback, options) {
 				var self = this;
 				var amount = this.xGet("amount");
@@ -349,6 +361,19 @@ exports.definition = {
 						paybackedAmount : moneyLend.xGet("paybackedAmount") - Number((amount * paybackRate).toFixed(2))
 					}, saveOptions);
 				}
+				
+				var friend = this.getFriend(this.xGet("friendUser"));
+					var debtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
+						accountType : "Debt",
+						currencyId : moneyAccount.xGet("currency").xGet("id"),
+						friendId : friend ? friend.xGet("id") : null,
+						ownerUserId : Alloy.Models.User.xGet("id")
+					});
+					if (debtAccounts.at(0)) {
+						debtAccounts.at(0).save({
+							currentBalance : debtAccounts.at(0).xGet("currentBalance") + amount
+						}, saveOptions);
+					}
 				
 				var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
 					var myProjectShareAuthorization;
