@@ -341,7 +341,7 @@ exports.definition = {
 				}
 			},
 			getProjectNameCurrency : function() {
-				return this.xGet("name") + "(" + this.xGet("currency").xGet("code") + ")";
+				return this.getProjectName() + "(" + this.xGet("currency").xGet("code") + ")";
 			},
 			getProjectName : function() {
 				var projectRemark = Alloy.createModel("ProjectRemark").xFindInDb({

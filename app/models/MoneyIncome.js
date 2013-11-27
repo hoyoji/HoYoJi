@@ -211,7 +211,7 @@ exports.definition = {
 				}
 			},
 			getProjectName : function() {
-				return this.xGet("project").xGet("name");
+				return this.xGet("project").getProjectName();
 			},
 			getMoneyIncomeCategoryName : function() {
 				return this.xGet("moneyIncomeCategory").xGet("name");
