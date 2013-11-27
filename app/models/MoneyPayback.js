@@ -322,7 +322,13 @@ exports.definition = {
 				}
 			},
 			getRemark : function() {
-				var remark = this.xGet("remark");
+				var remark = this.xGet("remark") || "";
+				if (this.xGet("localFriendId")) {
+					remark = "[向" + this.xGet("localFriend").getDisplayName() + "收款]" + remark;
+				} else if (this.xGet("friendUserId")) {
+				    remark = "[向" + this.xGet("friendUser").getFriendDisplayName() + "收款]" + remark;
+				}
+
 				if (!remark) {
 					remark = "无备注";
 				}

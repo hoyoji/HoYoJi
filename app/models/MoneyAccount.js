@@ -54,9 +54,9 @@ exports.definition = {
 			}
 			// ,
 			// moneyAccountBalanceAdjustments : {
-				// type : "MoneyAccountBalanceAdjustment",
-				// attribute : "moneyAccount",
-				// cascadeDelete : true
+			// type : "MoneyAccountBalanceAdjustment",
+			// attribute : "moneyAccount",
+			// cascadeDelete : true
 			// }
 		},
 		belongsTo : {
@@ -92,41 +92,52 @@ exports.definition = {
 					xValidateComplete(error);
 				}
 			},
-			xDelete : function(xFinishCallback, options) {
-				var error;
-				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除
-				if (Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount") === this) {
-					error = {
-						msg : "默认账户不能删除"
-					};
-				} else {
-					this._xDelete(xFinishCallback, options);
-					return;
-				}
-				xFinishCallback(error);
-			},
-			getAccountType : function(){
-				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
-				// values="Cash,Deposit,Credit,Online,Debt"
-				switch(this.xGet("accountType")){
-					case "Cash" : return "现金账户";
-					case "Deposit" : return "金融账户";
-					case "Credit" : return "信用卡账户";
-					case "Online" : return "虚拟账户";
-					case "Debt" : return "借贷账户";
-					default : return this.xGet("accountType");
+			getAccountName : function() {
+				if (this.xGet("accountType") === "Debt" && this.xGet("name") !== "匿名借贷账户") {
+					var friend = Alloy.createModel("Friend").xFindInDb({
+						id : this.xGet("name")
+					});
+					if(friend.id){
+						return friend.getDisplayName();
+					}
+				}else{
+					return this.xGet("name");
 				}
 			},
-			getSectionSortName : function(){
+			getAccountType : function() {
 				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
 				// values="Cash,Deposit,Credit,Online,Debt"
-				switch(this.xGet("accountType")){
-					case "Cash" : return "1" + this.xGet("name");
-					case "Deposit" : return "2" ;
-					case "Credit" : return "3" + this.xGet("name");
-					case "Online" : return "4" + this.xGet("name");
-					case "Debt" : return "5" + this.xGet("name");
-					default : return "6" + this.xGet("name");
+				switch(this.xGet("accountType")) {
+					case "Cash" :
+						return "现金账户";
+					case "Deposit" :
+						return "金融账户";
+					case "Credit" :
+						return "信用卡账户";
+					case "Online" :
+						return "虚拟账户";
+					case "Debt" :
+						return "借贷账户";
+					default :
+						return this.xGet("accountType");
+				}
+			},
+			getSectionSortName : function() {
+				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
+				// values="Cash,Deposit,Credit,Online,Debt"
+				switch(this.xGet("accountType")) {
+					case "Cash" :
+						return "1" + this.xGet("name");
+					case "Deposit" :
+						return "2";
+					case "Credit" :
+						return "3" + this.xGet("name");
+					case "Online" :
+						return "4" + this.xGet("name");
+					case "Debt" :
+						return "5" + this.xGet("name");
+					default :
+						return "6" + this.xGet("name");
 				}
 			},
 			getAccountNameCurrency : function() {
@@ -154,6 +165,19 @@ exports.definition = {
 					}
 				}
 				return Number((this.xGet("currentBalance") * exchange).toFixed(2));
+			},
+			xDelete : function(xFinishCallback, options) {
+				var error;
+				// 如果 onSyncUpdate !== true 表示这个删除是服务器同步的删除，这时我们连默认账户也删除
+				if (Alloy.Models.User.xGet("userData").xGet("activeMoneyAccount") === this) {
+					error = {
+						msg : "默认账户不能删除"
+					};
+				} else {
+					this._xDelete(xFinishCallback, options);
+					return;
+				}
+				xFinishCallback(error);
 			},
 			syncAddNew : function(record, dbTrans) {
 				var serverCurrentBalance = record.currentBalance;

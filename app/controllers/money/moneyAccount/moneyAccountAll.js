@@ -33,9 +33,9 @@ if ($.$attrs.selectedFriendUser) {
 	if ($.$attrs.showAccountBalanceTotal) {
 		collection = Alloy.Models.User.xGet("moneyAccounts");
 	} else {
-        collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter(function(model){
-        	return model.xGet("accountType") !== "Debt";
-        });
+		collection = Alloy.Models.User.xGet("moneyAccounts").xCreateFilter(function(model) {
+			return model.xGet("accountType") !== "Debt";
+		});
 	}
 	$.moneyAccountsTable.addCollection(collection);
 }
@@ -45,28 +45,37 @@ $.moneyAccountsTable.fetchNextPage();
 
 $.onWindowOpenDo(function() {
 	if ($.$attrs.showAccountBalanceTotal) {
+		$.accountNetAssetView.setHeight(42);
 		$.accountBalanceTotalView.setHeight(42);
-		$.moneyAccountsTableView.setTop(42);
-		updateTotalBalance();
-		Alloy.Models.User.xGet("moneyAccounts").on("sync", updateTotalBalance);
-		Alloy.Models.User.xGet("moneyAccounts").on("add", updateTotalBalance);
-		Alloy.Models.User.xGet("moneyAccounts").on("remove", updateTotalBalance);
+		$.accountDebtTotalView.setHeight(42);
+		$.moneyAccountsTableView.setTop(126);
+
+		updateBalanceTotal();
+		Alloy.Models.User.xGet("moneyAccounts").on("sync", updateBalanceTotal);
+		Alloy.Models.User.xGet("moneyAccounts").on("add", updateBalanceTotal);
+		Alloy.Models.User.xGet("moneyAccounts").on("remove", updateBalanceTotal);
 	}
 });
 $.onWindowCloseDo(function() {
 	if ($.$attrs.showAccountBalanceTotal) {
-		Alloy.Models.User.xGet("moneyAccounts").off("sync", updateTotalBalance);
-		Alloy.Models.User.xGet("moneyAccounts").off("add", updateTotalBalance);
-		Alloy.Models.User.xGet("moneyAccounts").off("remove", updateTotalBalance);
+		Alloy.Models.User.xGet("moneyAccounts").off("sync", updateBalanceTotal);
+		Alloy.Models.User.xGet("moneyAccounts").off("add", updateBalanceTotal);
+		Alloy.Models.User.xGet("moneyAccounts").off("remove", updateBalanceTotal);
 	}
 });
 
-function updateTotalBalance() {
-	var totalBalance = 0;
+function updateBalanceTotal() {
+	var balanceTotal = 0,debtTotal = 0;
 	Alloy.Models.User.xGet("moneyAccounts").forEach(function(account) {
-		totalBalance = totalBalance + account.getLocalCurrentBalance();
+		if (account.xGet("accountType") === "Debt") {
+			debtTotal = debtTotal + account.getLocalCurrentBalance();
+		}else{
+			balanceTotal = balanceTotal + account.getLocalCurrentBalance();
+		}
 	});
-	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + totalBalance.toFixed(2));
+	$.accountNetAsset.setText(Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (balanceTotal + debtTotal).toFixed(2));
+	$.accountBalanceTotal.setText(Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + balanceTotal.toFixed(2));
+	$.accountDebtTotal.setText(Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + debtTotal.toFixed(2));
 }
 
 function onFooterbarTap(e) {

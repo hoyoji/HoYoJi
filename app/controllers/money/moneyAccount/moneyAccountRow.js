@@ -19,7 +19,7 @@ $.makeContextMenu = function(e, isSelectMode) {
 			function() {
 				$.deleteModel();
 			}
-			,isSelectMode || $.$model.xGet("accountType") === "Debt"));
+			,isSelectMode));
 	
 	return menuSection;
 };

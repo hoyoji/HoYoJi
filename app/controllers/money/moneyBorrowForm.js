@@ -197,8 +197,8 @@ if (!$.$model) {
 }
 
 // if ($.saveableMode === "edit") {
-	// $.project.label.setColor("#6e6d6d");
-	// $.project.field.setColor("#6e6d6d");
+// $.project.label.setColor("#6e6d6d");
+// $.project.field.setColor("#6e6d6d");
 // }
 
 function updateAccountBalance() {
@@ -431,19 +431,35 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			ownerUserId : Alloy.Models.User.xGet("id")
 		});
 		var oldDebtAccount = oldDebtAccounts.at(0), newDebtAccount = newDebtAccounts.at(0);
-		if (oldDebtAccount && newDebtAccount) {
-			if (newDebtAccount.xGet("id") === oldDebtAccount.xGet("id")) {
+
+		if ($.$model.isNew()) {
+			if (newDebtAccount) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") + oldAmount - newAmount);
 				newDebtAccount.xAddToSave($);
 			} else {
+				var debAcount = Alloy.createModel("MoneyAccount", {
+					name :  newFriend ? newFriend.xGet("id") : "匿名借贷账户",
+					currency : $.$model.xGet("moneyAccount").xGet("currency"),
+					currentBalance : -newAmount,
+					sharingType : "Private",
+					accountType : "Debt",
+					friend : newFriend,
+					ownerUser : Alloy.Models.User
+				});
+				debAcount.xAddToSave($);
+			}
+		}else {
+			if(newDebtAccount) {
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") + oldAmount);
 				newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - newAmount);
 				oldDebtAccount.xAddToSave($);
 				newDebtAccount.xAddToSave($);
-			}
-		} else {
-			var debAcount = Alloy.createModel("MoneyAccount", {
-				name : newFriend ? newFriend.getDisplayName() : $.$model.xGet("moneyAccount").xGet("currency").xGet("name") + "(借贷)",
+			}else{
+				oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") + oldAmount);
+				oldDebtAccount.xAddToSave($);
+				
+				var debAcount = Alloy.createModel("MoneyAccount", {
+				name : newFriend ? newFriend.xGet("id") : "匿名借贷账户",
 				currency : $.$model.xGet("moneyAccount").xGet("currency"),
 				currentBalance : -newAmount,
 				sharingType : "Private",
@@ -452,6 +468,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				ownerUser : Alloy.Models.User
 			});
 			debAcount.xAddToSave($);
+			}
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {

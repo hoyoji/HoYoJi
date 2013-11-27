@@ -6,15 +6,14 @@ if ($.$model.isNew()) {
 	});
 }
 
-if ($.$model.xGet("accountType") === "Debt") {
-	$.setSaveableMode("read");
-}
-
-$.accountType.field.addEventListener("change", function() {
+$.onWindowOpenDo(function() {
 	if ($.$model.xGet("accountType") === "Debt") {
-		$.accountType.showErrorMsg("借贷账户由系统自动创建，无需手动新增");
-	} else {
-		$.accountType.hideErrorMsg();
+		$.setSaveableMode("read");
+		$.name.$view.setHeight(0);
+		$.accountNameView.setHeight(42);
+		$.accountNumber.$view.setHeight(0);
+		$.bankAddress.$view.setHeight(0);
+		$.remark.$view.setHeight(0);
 	}
 });
 
@@ -89,7 +88,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 
 		if ($.$model.xGet("accountType") === "Debt") {
 			activityWindow.close();
-			saveErrorCB("借贷账户由系统自动创建，请选择其他账户类型");	
+			saveErrorCB("借贷账户由系统自动创建，请选择其他账户类型");
 			alert("借贷账户由系统自动创建，请选择其他账户类型");
 		} else if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 			createExchange(function(e) {
@@ -149,6 +148,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 };
 
 $.name.UIInit($, $.getCurrentWindow());
+$.accountName.UIInit($, $.getCurrentWindow());
 $.currency.UIInit($, $.getCurrentWindow());
 $.currentBalance.UIInit($, $.getCurrentWindow());
 $.accountType.UIInit($, $.getCurrentWindow());

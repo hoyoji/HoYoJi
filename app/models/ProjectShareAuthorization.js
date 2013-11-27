@@ -299,7 +299,7 @@ exports.definition = {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
 				var settlementMoney = 0;
-				if ((actualTotalExpense) > (actualTotalIncome)) {
+				if ((actualTotalExpense) >= (actualTotalIncome)) {
 					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() ;
 				} else {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();

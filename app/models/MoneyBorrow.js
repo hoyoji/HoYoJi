@@ -294,7 +294,13 @@ exports.definition = {
 				}
 			},
 			getRemark : function() {
-				var remark = this.xGet("remark");
+				var remark = this.xGet("remark") || "";
+				if (this.xGet("localFriendId")) {
+					remark = "[从" + this.xGet("localFriend").getDisplayName() + "借入]" + remark;
+				} else if (this.xGet("friendUserId")) {
+				    remark = "[从" + this.xGet("friendUser").getFriendDisplayName() + "借入]" + remark;
+				}
+
 				if (!remark) {
 					remark = "无备注";
 				}
@@ -341,7 +347,7 @@ exports.definition = {
 							currentBalance : debtAccounts.at(0).xGet("currentBalance") + amount
 						}, saveOptions);
 					}
-					
+
 					var projectShareAuthorizations = self.xGet("project").xGet("projectShareAuthorizations");
 					var myProjectShareAuthorization;
 					projectShareAuthorizations.forEach(function(item) {
