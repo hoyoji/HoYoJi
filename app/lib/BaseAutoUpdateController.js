@@ -10,26 +10,26 @@
 				//<View width="Ti.UI.FILL" height="1" bottom="0" left="10" right="10" backgroundImage="/images/formRowBottom.png" backgroundImageRepeat="true"/>
 				//$.rowBottomImage.setVisible(false);
 				// $.onWindowOpenDo(function() {
-					$.$view.add(Ti.UI.createView({
-						width : Ti.UI.FILL,
-						height : 1,
-						bottom : 0,
-						left : 10,
-						right : 10,
-						backgroundImage : "/images/formRowBottom.png",
-						backgroundImageRepeat : "true"
-					}));
+				$.$view.add(Ti.UI.createView({
+					width : Ti.UI.FILL,
+					height : 1,
+					bottom : 0,
+					left : 10,
+					right : 10,
+					backgroundImage : "/images/formRowBottom.png",
+					backgroundImageRepeat : "true"
+				}));
 				// });
 			}
-			$.showHintText = function(){
-				if ($.$attrs.hintText){
+			$.showHintText = function() {
+				if ($.$attrs.hintText) {
 					var isNotTextField;
-					if(OS_IOS){
+					if (OS_IOS) {
 						isNotTextField = !$.field.focus;
 					} else {
 						isNotTextField = !$.field.setHintText;
 					}
-					if(isNotTextField) {
+					if (isNotTextField) {
 						if (!$.hintText) {
 							var right = $.rightButton ? 48 : 0;
 							$.hintText = Ti.UI.createLabel({
@@ -44,8 +44,8 @@
 								text : $.$attrs.hintText
 							});
 							$.hintText.addEventListener("singletap", function() {
-						        $.field.fireEvent("singletap");
-						    });
+								$.field.fireEvent("singletap");
+							});
 							$.$view.add($.hintText);
 						} else {
 							$.hintText.setVisible(true);
@@ -55,18 +55,18 @@
 					}
 				}
 			};
-			$.hideHintText = function(){
-				if ($.$attrs.hintText){
-					if ($.hintText){
+			$.hideHintText = function() {
+				if ($.$attrs.hintText) {
+					if ($.hintText) {
 						$.hintText.setVisible(false);
 					} else {
 						var isTextField;
-						if(OS_IOS){
+						if (OS_IOS) {
 							isTextField = $.field.focus;
 						} else {
 							isTextField = $.field.setHintText;
 						}
-						if(isTextField){
+						if (isTextField) {
 							$.field.setHintText("");
 						}
 					}
@@ -146,6 +146,23 @@
 			};
 
 			$.setEditable = function(editable) {
+				if (editable === false) {
+					$.field.addEventListener("singletap", function(e) {
+						e.cancelBubble = true;
+						$.closeSoftKeyboard();
+					});
+					$.field.setColor("gray");
+					if($.label){
+						$.label.setColor("gray");
+					}
+				} 
+				// else {
+					// $.field.setColor("black");
+					// if($.label){
+						// $.label.setColor("black");
+					// }
+				// }
+
 				if ($.$attrs.bindAttributeIsModel) {
 					$.field.setEnabled(false);
 				} else {
@@ -262,12 +279,12 @@
 					$.field.setOpacity(1);
 				}
 			};
-			$.__makeOpenWindowAttributes = function(attributes){
+			$.__makeOpenWindowAttributes = function(attributes) {
 				if ($.$attrs.bindModel.config) {
-						attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
-						attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
-						attributes.selectModelCanNotBeChild = $.$attrs.bindModel.config.hasMany && $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute && $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? $.$attrs.bindModel : null;
-				} 
+					attributes.selectModelType = $.$attrs.bindModelSelectorConvertType || $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].type;
+					attributes.selectModelCanBeNull = !$.$attrs.bindModel.config.columns[$.$attrs.bindAttribute + "Id"].contains("NOT NULL");
+					attributes.selectModelCanNotBeChild = $.$attrs.bindModel.config.hasMany && $.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute && $.$attrs.bindModel.config.hasMany[$.$attrs.bindModel.config.belongsTo[$.$attrs.bindAttribute].attribute] ? $.$attrs.bindModel : null;
+				}
 				return attributes;
 			};
 			$.field && $.field.addEventListener("singletap", function(e) {
@@ -296,7 +313,9 @@
 									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model);
 								}
 								$.setValue(model);
-								$.field.fireEvent("change", {bubbles : false});
+								$.field.fireEvent("change", {
+									bubbles : false
+								});
 							}
 						};
 						if ($.$attrs.bindModelBeforeSelectorCallback) {
@@ -323,7 +342,7 @@
 					}
 				}
 			});
-			
+
 			$.refresh = function() {
 				if ($.updateField) {
 					$.updateField();

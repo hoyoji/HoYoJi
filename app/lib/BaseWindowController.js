@@ -18,16 +18,16 @@
 
 			_.extend($, {
 				close : function() {
-					//$.closeSoftKeyboard();
+					$.closeSoftKeyboard();
 					$.$view.close({
 						animated : false
 					});
 				},
 				open : function() {
+					$.closeSoftKeyboard();
 					$.$view.open({
 						animated : false
 					});
-					//$.closeSoftKeyboard();
 				},
 				openNumericKeyboard : function(textField, saveCallback, confirmCallback, bottom) {
 					if (!$.numericKeyboard) {

@@ -75,6 +75,14 @@ $.currenciesTable.beforeFetchNextPage = function(offset, limit, orderBy, success
 	}, "findCurrency");
 };
 
+$.search.addEventListener("focus", function(){
+	Alloy.Globals.currentlyFocusedTextField = $.search;
+});
+
+$.search.addEventListener("blur", function(){
+	Alloy.Globals.currentlyFocusedTextField = null;
+});
+
 $.titleBar.UIInit($, $.getCurrentWindow());
 
 doSearch();

@@ -7,7 +7,7 @@ function doClose() {
 	// }
 	$.$view.setBackgroundColor("#00000000");
 	$.$view.setVisible(false);
-	// $.closeSoftKeyboard();
+	$.closeSoftKeyboard();
 	setTimeout(function() {
 		$.$view.close({
 			animated : false
@@ -37,6 +37,7 @@ exports.close = function() {
 };
 
 exports.openCachedWindow = function(contentController) {
+	$.closeSoftKeyboard();
 	$.$view.setVisible(true);
 	// setTimeout(function() {
 	function fireShowEvent(e) {

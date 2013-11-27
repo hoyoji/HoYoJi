@@ -200,10 +200,10 @@ if (!$.$model) {
 	$.setSaveableMode("add");
 }
 
-if ($.saveableMode === "edit") {//修改时项目不可点击，设成灰色
-	$.project.label.setColor("#6e6d6d");
-	$.project.field.setColor("#6e6d6d");
-}
+// if ($.saveableMode === "edit") {//修改时项目不可点击，设成灰色
+	// $.project.label.setColor("#6e6d6d");
+	// $.project.field.setColor("#6e6d6d");
+// }
 
 function updateAmount() {//没输入支出金额时，新增明细金额的同时更新账务金额
 	$.amount.setValue($.$model.xGet("amount"));

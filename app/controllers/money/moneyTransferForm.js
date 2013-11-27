@@ -40,10 +40,10 @@ if (!$.$model) {
 	$.setSaveableMode("add");
 }
 
-if ($.saveableMode === "edit") {
-	$.project.label.setColor("#6e6d6d");
-	$.project.field.setColor("#6e6d6d");
-}
+// if ($.saveableMode === "edit") {
+	// $.project.label.setColor("#6e6d6d");
+	// $.project.field.setColor("#6e6d6d");
+// }
 
 var oldTransferOutAmount = $.$model.xGet("transferOutAmount");
 var oldTransferInAmount = $.$model.xGet("transferInAmount");

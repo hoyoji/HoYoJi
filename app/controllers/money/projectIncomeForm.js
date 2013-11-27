@@ -115,10 +115,9 @@ if ($.saveableMode === "read") {
 		$.amount.$view.setHeight(0);
 		$.ownerUser.setHeight(42);
 	}
-
 } else {
-	$.project.label.setColor("#6e6d6d");
-	$.project.field.setColor("#6e6d6d");
+	// $.project.label.setColor("#6e6d6d");
+	// $.project.field.setColor("#6e6d6d");
 
 	$.onWindowOpenDo(function() {
 		if ($.$model.isNew()) {

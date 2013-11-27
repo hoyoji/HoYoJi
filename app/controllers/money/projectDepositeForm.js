@@ -37,10 +37,10 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
-if ($.saveableMode === "edit") {
-	$.project.label.setColor("#6e6d6d");
-	$.project.field.setColor("#6e6d6d");
-}
+// if ($.saveableMode === "edit") {
+	// $.project.label.setColor("#6e6d6d");
+	// $.project.field.setColor("#6e6d6d");
+// }
 // 从服务器上获取存入账户汇率
 $.depositeAccountExchangeRate.rightButton.addEventListener("singletap", function(e) {
 	if (!$.depositeFriendAccount) {

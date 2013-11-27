@@ -12,6 +12,14 @@ if ($.$attrs.hideKeyboard) {
 	}
 }
 
+$.field.addEventListener("focus", function(){
+	Alloy.Globals.currentlyFocusedTextField = $.field;
+});
+
+$.field.addEventListener("blur", function(){
+	Alloy.Globals.currentlyFocusedTextField = null;
+});
+
 $.field.addEventListener("longpress", function(e){
 	e.cancelBubble = true;
 	return false;
@@ -63,9 +71,18 @@ if (OS_IOS) {
 $.setEditable = function(editable) {
 	if (editable === false) {
 		$.field.setHintText("");
-		$.field.addEventListener("singletap", function(e){e.cancelBubble = true;});
+		$.field.addEventListener("singletap", function(e){
+			e.cancelBubble = true;
+			$.closeSoftKeyboard();
+		});
+		$.field.setEnabled(false);
+		$.field.setColor("gray");
+		$.label.setColor("gray");
 	} else {
 		$.field.setHintText($.$attrs.hintText);
+		$.field.setEnabled(true);
+		// $.field.setColor("black");
+		// $.label.setColor("black");
 	}
 
 	if (OS_ANDROID) {

@@ -81,4 +81,13 @@ $.usersTable.beforeFetchNextPage = function(offset, limit, orderBy, successCB, e
 	});
 };
 
+
+$.search.addEventListener("focus", function(){
+	Alloy.Globals.currentlyFocusedTextField = $.search;
+});
+
+$.search.addEventListener("blur", function(){
+	Alloy.Globals.currentlyFocusedTextField = null;
+});
+
 $.titleBar.UIInit($, $.getCurrentWindow());

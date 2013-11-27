@@ -74,6 +74,15 @@ function onFooterbarTap(e) {
 	}
 }
 
+
+$.localCurrencyAmount.addEventListener("focus", function(){
+	Alloy.Globals.currentlyFocusedTextField = $.localCurrencyAmount;
+});
+
+$.localCurrencyAmount.addEventListener("blur", function(){
+	Alloy.Globals.currentlyFocusedTextField = null;
+});
+
 // $.localCurrencySymbol.UIInit($, $.getCurrentWindow());
 // $.localCurrencyName.UIInit($, $.getCurrentWindow());
 $.titleBar.UIInit($, $.getCurrentWindow());

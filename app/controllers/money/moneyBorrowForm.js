@@ -196,10 +196,10 @@ if (!$.$model) {
 	$.returnedAmountView.setHeight(42);
 }
 
-if ($.saveableMode === "edit") {
-	$.project.label.setColor("#6e6d6d");
-	$.project.field.setColor("#6e6d6d");
-}
+// if ($.saveableMode === "edit") {
+	// $.project.label.setColor("#6e6d6d");
+	// $.project.field.setColor("#6e6d6d");
+// }
 
 function updateAccountBalance() {
 	$.moneyAccount.updateField();

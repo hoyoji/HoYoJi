@@ -31,8 +31,12 @@ $.setEditable = function(editable) {
 	if (editable === false) {
 		$.hideHintText(false);
 		// $.field.addEventListener("singletap", function(e){e.cancelBubble = true});
+		$.field.setColor("gray");
+		$.label.setColor("gray");
 	} else {
 		$.showHintText();
+		// $.field.setColor("black");
+		// $.label.setColor("black");
 	}
 };
 
