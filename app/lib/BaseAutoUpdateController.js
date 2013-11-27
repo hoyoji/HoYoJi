@@ -155,13 +155,12 @@
 					if($.label){
 						$.label.setColor("gray");
 					}
-				} 
-				// else {
-					// $.field.setColor("black");
-					// if($.label){
-						// $.label.setColor("black");
-					// }
-				// }
+				} else {
+					$.field.setColor($.$attrs.fieldColor || "black");
+					if($.label){
+						$.label.setColor($.$attrs.fieldColor || "black");
+					}
+				}
 
 				if ($.$attrs.bindAttributeIsModel) {
 					$.field.setEnabled(false);

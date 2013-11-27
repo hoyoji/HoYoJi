@@ -81,8 +81,8 @@ $.setEditable = function(editable) {
 	} else {
 		$.field.setHintText($.$attrs.hintText);
 		$.field.setEnabled(true);
-		// $.field.setColor("black");
-		// $.label.setColor("black");
+		$.field.setColor($.$attrs.fieldColor || "black");
+		$.label.setColor($.$attrs.fieldColor || "black");
 	}
 
 	if (OS_ANDROID) {

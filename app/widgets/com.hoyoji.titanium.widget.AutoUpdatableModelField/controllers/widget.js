@@ -35,8 +35,8 @@ $.setEditable = function(editable) {
 		$.label.setColor("gray");
 	} else {
 		$.showHintText();
-		// $.field.setColor("black");
-		// $.label.setColor("black");
+		$.field.setColor($.$attrs.fieldColor || "black");
+		$.label.setColor($.$attrs.fieldColor || "black");
 	}
 };
 
