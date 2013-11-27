@@ -23,21 +23,26 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 				delete $.$model.xGet("toUser").id;
 				$.$model.xGet("toUser").save();
 			}
-			Alloy.Globals.Server.fetchUserImageIcon($.$model.xGet("toUser").xGet("pictureId"),function(picture){
-				delete picture.id;
-				// add it as new record
-				picture.save();
-			
-				var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
-				if (f.exists()) {
-					var img = f.read();
-					var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
-					fnew.write(img);
-					img = null;
-					fnew = null;
-				}
-				f = null;	
+			var toUserPicture = Alloy.createModel("Picture").xFindInDb({
+				id : $.$model.xGet("toUser").xGet("pictureId")
 			});
+			if (!toUserPicture.id) {
+				Alloy.Globals.Server.fetchUserImageIcon($.$model.xGet("toUser").xGet("pictureId"),function(picture){
+					delete picture.id;
+					// add it as new record
+					picture.save();
+				
+					var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+					if (f.exists()) {
+						var img = f.read();
+						var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+						fnew.write(img);
+						img = null;
+						fnew = null;
+					}
+					f = null;	
+				});
+			}
 			
 			var date = (new Date()).toISOString();
 			$.$model.xSet("date", date);

@@ -207,7 +207,7 @@ exports.definition = {
 				}
 			},
 			getProjectName : function() {
-				return this.xGet("project").xGet("name");
+				return this.xGet("project").getProjectName();
 			},
 			getAccountCurrency : function() {
 				var currencySymbol = null;

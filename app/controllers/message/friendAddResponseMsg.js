@@ -127,22 +127,27 @@ function addFriend(saveEndCB, saveErrorCB) {
 	var friendUser = Alloy.createModel("User").xFindInDb({
 		id : $.$model.xGet("fromUserId")
 	});
-
-	Alloy.Globals.Server.fetchUserImageIcon(friendUser.xGet("pictureId"), function(picture) {
-		delete picture.id;
-		// add it as new record
-		picture.save();
-
-		var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
-		if (f.exists()) {
-			var img = f.read();
-			var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
-			fnew.write(img);
-			img = null;
-			fnew = null;
-		}
-		f = null;
+	
+	var friendUserPicture = Alloy.createModel("Picture").xFindInDb({
+		id : friendUser.xGet("pictureId")
 	});
+	if (!friendUserPicture.id) {
+		Alloy.Globals.Server.fetchUserImageIcon(friendUser.xGet("pictureId"), function(picture) {
+			delete picture.id;
+			// add it as new record
+			picture.save();
+	
+			var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+			if (f.exists()) {
+				var img = f.read();
+				var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+				fnew.write(img);
+				img = null;
+				fnew = null;
+			}
+			f = null;
+		});
+	}
 	// if (!friendUser.id) {
 	// delete userData.id;
 	// friendUser = Alloy.createModel("User", userData);
