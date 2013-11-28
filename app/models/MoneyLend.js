@@ -487,6 +487,7 @@ exports.definition = {
 				// 让本地修改覆盖服务器上的记录
 			},
 			syncDelete : function(record, dbTrans, xFinishedCallback) {
+				var self = this;
 				// var saveOptions = {dbTrans : dbTrans, patch : true, syncFromServer : true};
 				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					var moneyAccount = this.xGet("moneyAccount");

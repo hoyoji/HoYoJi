@@ -33,7 +33,7 @@
 			findData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData", progressCallback);
 			},
-			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
+			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback, options) {
 				// this.searchData("Project", projectIds, function(collection) {
 
 				// if (collection.length > 0) {
@@ -64,13 +64,25 @@
 								model.attributes.id = id;
 							}
 							model.xSet(modelData);
-							model.save(null, {
-								silent : true,
-								syncFromServer : true
-							});
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
+							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization") {
+								if(!options || options.saveProject !== false){
+									model.save(null, {
+										silent : true,
+										syncFromServer : true,
+										dbTrans : options && options.dbTrans
+									});
+								}
+							} else {
+								model.save(null, {
+										silent : true,
+										syncFromServer : true,
+										dbTrans : options && options.dbTrans
+									});
+							}
+							
 						}
 					});
 					if (xFinishedCallback) {

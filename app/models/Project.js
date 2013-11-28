@@ -331,8 +331,7 @@ exports.definition = {
 								actualTotalPayback = actualTotalPayback + subProjectItem.xGet("actualTotalPayback");
 							}
 						});
-					});
-					actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
+					}); actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				}
 				if (actualTotalMoney > 0) {
 					return false;
@@ -676,6 +675,14 @@ exports.definition = {
 				return this.xGet("ownerUser") === Alloy.Models.User;
 			},
 			syncAddNew : function(record, dbTrans) {
+				if (record.ownerUserId !== Alloy.Models.User.id) {
+					dbTrans.xCommitStart();
+					Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
+						dbTrans.xCommitEnd();
+					}, function(e) {
+						dbTrans.rollback("无法获取币种");
+					}, {dbTrans : dbTrans, saveProject : false});
+				}
 				if (record.currencyId !== Alloy.Models.User.xGet("userData").xGet("activeCurrencyId")) {
 					dbTrans.xCommitStart();
 					if (!dbTrans.newCurrenciesFromServer[record.currencyId]) {
