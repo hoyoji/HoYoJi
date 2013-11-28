@@ -35,7 +35,6 @@
 			},
 			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback, options) {
 				// this.searchData("Project", projectIds, function(collection) {
-
 				// if (collection.length > 0) {
 				// xFinishedCallback(collection);
 				// return;
@@ -444,6 +443,14 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
+										if (!lastSyncTime && record.ownerUserId !== Alloy.Models.User.id) {
+											dbTrans.xCommitStart();
+											Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
+												dbTrans.xCommitEnd();
+											}, function(e) {
+												dbTrans.rollback("无法获取币种");
+											}, {dbTrans : dbTrans, saveProject : false});
+										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
 											model._syncAddNew(record, dbTrans);
 										}
