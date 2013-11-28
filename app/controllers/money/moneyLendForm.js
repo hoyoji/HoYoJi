@@ -486,11 +486,16 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				debAcount.xAddToSave($);
 			}
 		}else {
-			if(newDebtAccount) {
-				oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") - oldAmount);
-				newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") + newAmount);
-				oldDebtAccount.xAddToSave($);
-				newDebtAccount.xAddToSave($);
+			if (newDebtAccount) {
+				if (oldDebtAccount === newDebtAccount) {
+					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - oldAmount + newAmount);
+					newDebtAccount.xAddToSave($);
+				} else {
+					oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") - oldAmount);
+					oldDebtAccount.xAddToSave($);
+					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") + newAmount);
+					newDebtAccount.xAddToSave($);
+				}
 			}else{
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") - oldAmount);
 				oldDebtAccount.xAddToSave($);
