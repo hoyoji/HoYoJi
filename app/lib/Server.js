@@ -288,6 +288,7 @@
 				}, activityWindow);
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback, activityWindow) {
+				var originalLastSyncTime = Alloy.Models.User.xGet("lastSyncTime");
 				this.getData(Number(Alloy.Models.User.xGet("lastSyncTime")), function(data) {
 					activityWindow.progressStep(2, "合并数据");
 					var lastSyncTime = data.lastSyncTime;
@@ -443,7 +444,7 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
-										if (!lastSyncTime && record.ownerUserId !== Alloy.Models.User.id) {
+										if (originalLastSyncTime && dataType === "Project" && record.ownerUserId !== Alloy.Models.User.id) {
 											dbTrans.xCommitStart();
 											Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
 												dbTrans.xCommitEnd();
