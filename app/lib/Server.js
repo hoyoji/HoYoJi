@@ -33,9 +33,8 @@
 			findData : function(data, xFinishedCallback, xErrorCallback, target, progressCallback) {
 				this.postData(data, xFinishedCallback, xErrorCallback, target || "findData", progressCallback);
 			},
-			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback) {
+			loadSharedProjects : function(projectIds, xFinishedCallback, xErrorCallback, options) {
 				// this.searchData("Project", projectIds, function(collection) {
-
 				// if (collection.length > 0) {
 				// xFinishedCallback(collection);
 				// return;
@@ -64,13 +63,25 @@
 								model.attributes.id = id;
 							}
 							model.xSet(modelData);
-							model.save(null, {
-								silent : true,
-								syncFromServer : true
-							});
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
+							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization") {
+								if(!options || options.saveProject !== false){
+									model.save(null, {
+										silent : true,
+										syncFromServer : true,
+										dbTrans : options && options.dbTrans
+									});
+								}
+							} else {
+								model.save(null, {
+										silent : true,
+										syncFromServer : true,
+										dbTrans : options && options.dbTrans
+									});
+							}
+							
 						}
 					});
 					if (xFinishedCallback) {
@@ -277,6 +288,7 @@
 				}, activityWindow);
 			},
 			syncPull : function(xFinishedCallback, xErrorCallback, activityWindow) {
+				var originalLastSyncTime = Alloy.Models.User.xGet("lastSyncTime");
 				this.getData(Number(Alloy.Models.User.xGet("lastSyncTime")), function(data) {
 					activityWindow.progressStep(2, "合并数据");
 					var lastSyncTime = data.lastSyncTime;
@@ -432,6 +444,14 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
+										if (originalLastSyncTime && dataType === "Project" && record.ownerUserId !== Alloy.Models.User.id) {
+											dbTrans.xCommitStart();
+											Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
+												dbTrans.xCommitEnd();
+											}, function(e) {
+												dbTrans.rollback("无法获取币种");
+											}, {dbTrans : dbTrans, saveProject : false});
+										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
 											model._syncAddNew(record, dbTrans);
 										}

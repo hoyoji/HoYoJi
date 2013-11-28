@@ -331,8 +331,7 @@ exports.definition = {
 								actualTotalPayback = actualTotalPayback + subProjectItem.xGet("actualTotalPayback");
 							}
 						});
-					});
-					actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
+					}); actualTotalExpense - actualTotalIncome + actualTotalBorrow - actualTotalLend - actualTotalReturn + actualTotalPayback;
 				}
 				if (actualTotalMoney > 0) {
 					return false;
