@@ -66,7 +66,9 @@
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization") {
+							if (modelData.__dataType === "Project" 
+								|| modelData.__dataType === "ProjectShareAuthorization"
+								|| modelData.__dataType === "User") {
 								if(!options || options.saveProject !== false){
 									model.save(null, {
 										silent : true,
@@ -449,7 +451,7 @@
 											Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
 												dbTrans.xCommitEnd();
 											}, function(e) {
-												dbTrans.rollback("无法获取币种");
+												dbTrans.rollback("获取新共享来的项目资料时出错");
 											}, {dbTrans : dbTrans, saveProject : false});
 										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
