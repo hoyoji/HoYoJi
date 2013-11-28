@@ -381,7 +381,7 @@
 
 			var isRemoving = false;
 			function removeRow(row, collection) {
-				if (collection.isFetching || collection.isFiltering || ($.$attrs.refreshTableAfterServerSync && Alloy.Globals.Server.__isSyncing)) {
+				if (collection.isFetching || collection.isFiltering || ($.getParentController().$attrs.refreshTableAfterServerSync && Alloy.Globals.Server.__isSyncing)) {
 					return;
 				}
 				if (row === $.$model) {

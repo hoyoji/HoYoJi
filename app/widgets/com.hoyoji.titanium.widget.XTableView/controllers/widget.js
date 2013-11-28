@@ -101,16 +101,14 @@ function createRowView(rowModel, collection) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
 			className : collection.__rowView || rowModel.config.rowView,
-			collectionId : collection.id,
-			refreshTableAfterServerSync : $.$attrs.refreshTableAfterServerSync
+			collectionId : collection.id
 		});
 	} else {
 		// if (Ti.Platform.Android.API_LEVEL < 11) {
 		var row = Ti.UI.createTableViewRow({
 			id : rowModel.xGet("id"),
 			className : collection.__rowView || rowModel.config.rowView,
-			collectionId : collection.id,
-			refreshTableAfterServerSync : $.$attrs.refreshTableAfterServerSync
+			collectionId : collection.id
 		});
 	}
 	var rowViewController;

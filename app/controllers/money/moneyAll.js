@@ -126,7 +126,7 @@ function onFooterbarTap(e) {
 			queryOptions : _.extend($.$attrs.queryFilter, {transactionDisplayType : transactionDisplayType})
 		});
 	} else if (e.source.id === "transactionsTable") {
-		//transactionDisplayType = Alloy.Models.User.xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
+		//transactionDisplayType = Alloy.Models.User.xGet("userData").xGet("defaultTransactionDisplayType") === "Project" ? "项目" : "个人";
 		var title = $.titleBar.getTitle();
 		$.titleBar.setTitle(transactionDisplayType + e.source.getTitle());
 	}
