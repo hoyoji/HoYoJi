@@ -316,6 +316,8 @@ exports.definition = {
 					}
 				} else if (this.xGet("localFriend")) {
 					return this.xGet("localFriend");
+				}else{
+					return null;
 				}
 			},
 			xDelete : function(xFinishCallback, options) {
