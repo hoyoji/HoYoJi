@@ -112,7 +112,7 @@ $.onWindowOpenDo(function() {
 	// }
 	oldAmount = $.$model.xGet("amount") || 0;
 	$.$model.on("_xchange:amount", function() {
-		if ($.$model.xGet("amount") && $.$model.xGet("moneyReturn").xGet("amount") && $.$model.apportionFocus) {
+		if (($.$model.xGet("amount") || $.$model.xGet("amount") === 0) && $.$model.xGet("moneyReturn").xGet("amount") && $.$model.apportionFocus) {
 			$.$model.apportionFocus = false;
 			if ($.$model.xGet("apportionType") === "Average") {
 				$.$model.xSet("apportionType", "Fixed");
