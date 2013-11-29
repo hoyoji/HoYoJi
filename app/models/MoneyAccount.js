@@ -17,7 +17,8 @@ exports.definition = {
 			lastClientUpdateTime : "INTEGER"
 		},
 		defaults : {
-			currentBalance : 0
+			currentBalance : 0,
+			friendId : null
 		},
 		hasMany : {
 			moneyExpenses : {

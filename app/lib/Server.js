@@ -538,6 +538,9 @@
 
 								moneyAccount.save({
 									"currentBalance" : Number((- borrowTotal + lendTotal - paybackTotal + returnTotal).toFixed(2))
+								}, {
+									wait : true,
+									patch : true
 								});
 							}
 						});
