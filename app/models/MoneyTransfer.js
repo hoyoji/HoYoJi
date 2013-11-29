@@ -137,7 +137,7 @@ exports.definition = {
 				},
 				transferOut : function(xValidateComplete) {
 					var error;
-					if(!this.xGet("transferOut") && !this.xGet("transferOut")){
+					if(!this.xGet("transferOut") && !this.xGet("transferIn)){
 						error = {
 							msg : "请输入转出账户"
 						};
@@ -151,7 +151,7 @@ exports.definition = {
 				},
 				transferIn : function(xValidateComplete) {
 					var error;
-					if(!this.xGet("transferOut") && !this.xGet("transferOut")){
+					if(!this.xGet("transferOut") && !this.xGet("transferIn")){
 						error = {
 							msg : "请输入转入账户"
 						};
