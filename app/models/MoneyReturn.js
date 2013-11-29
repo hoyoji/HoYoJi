@@ -494,6 +494,7 @@ exports.definition = {
 							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance - record.amount : -record.amount;
 						}
 					}
+				}
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 						projectId : record.projectId,
 						friendUserId : record.ownerUserId
@@ -501,7 +502,6 @@ exports.definition = {
 					if (projectShareAuthorization.id) {
 						projectShareAuthorization.__syncActualTotalReturn = projectShareAuthorization.__syncActualTotalReturn ? projectShareAuthorization.__syncActualTotalReturn + Number(((record.amount + record.interest) * record.exchangeRate).toFixed(2)) - Number(((this.xGet("amount") + this.xGet("interest")) * this.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 					}
-				}
 				if (record.moneyBorrowId) {
 					var moneyBorrow = Alloy.createModel("moneyBorrow").xFindInDb({
 						id : record.moneyBorrowId
