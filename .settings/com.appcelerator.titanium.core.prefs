@@ -5,3 +5,6 @@ provisioning_profiles/development/088B02C6-3EBF-4C5D-9DA6-347B056CA3AC/uuid=088B
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/appid=*
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/name=iOS Team Provisioning Profile\: *
 provisioning_profiles/development/EC99D4F0-4208-45AA-98C9-385FC6D5D50B/uuid=EC99D4F0-4208-45AA-98C9-385FC6D5D50B
+provisioning_profiles/distribution/55F9382E-59DD-4814-AFCA-40C2C00284AC/appid=com.hoyoji.hoyoji
+provisioning_profiles/distribution/55F9382E-59DD-4814-AFCA-40C2C00284AC/name=HoYoJi Distribution
+provisioning_profiles/distribution/55F9382E-59DD-4814-AFCA-40C2C00284AC/uuid=55F9382E-59DD-4814-AFCA-40C2C00284AC
