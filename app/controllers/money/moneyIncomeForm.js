@@ -388,35 +388,21 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("moneyIncomeApportions").length > 0) {
-			// collection = $.$model.xGet("moneyIncomeApportions");
-			// $.moneyIncomeApportionsTable.removeCollection(collection);
-			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
-				projectFirstChangeFlag = true;
+			if ($.$model.isNew()) {
+				$.$model.xGet("moneyIncomeApportions").reset();
+			} else {
 				$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
-					// oldApportions.push(item);
 					if (item.isNew()) {
 						$.$model.xGet("moneyIncomeApportions").remove(item);
 					} else {
-						item.__xDeletedHidden = true;
+						if ($.project.getValue() !== oldProject) {
+							item.__xDeletedHidden = true;
+						} else {
+							item.__xDeletedHidden = false;
+						}
 					}
 				});
 			}
-			// $.$model.xGet("moneyIncomeApportions").reset();
-			// console.info("reset++++++");
-		}
-		if ($.project.getValue() === oldProject) {
-			// console.info("oldApportions1++++++"+oldApportions.length);
-			// oldApportions.forEach(function(item) {
-			// $.$model.xGet("moneyIncomeApportions").add(item);
-			// });
-			$.$model.xGet("moneyIncomeApportions").forEach(function(item) {
-				if (item.isNew()) {
-					$.$model.xGet("moneyIncomeApportions").remove(item);
-				} else {
-					item.__xDeletedHidden = false;
-				}
-			});
-
 		}
 	});
 
