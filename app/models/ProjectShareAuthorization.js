@@ -298,8 +298,12 @@ exports.definition = {
 				// return "应该支出 : "
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
+				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
+				var actualTotalLend = this.xGet("actualTotalLend") || 0;
+				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
+				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
-				if ((actualTotalExpense) >= (actualTotalIncome)) {
+				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) >= (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
 					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney() ;
 				} else {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
@@ -335,8 +339,12 @@ exports.definition = {
 			getSettlementMoney : function() {
 				var actualTotalExpense = this.xGet("actualTotalExpense") || 0;
 				var actualTotalIncome = this.xGet("actualTotalIncome") || 0;
+				var actualTotalBorrow = this.xGet("actualTotalBorrow") || 0;
+				var actualTotalLend = this.xGet("actualTotalLend") || 0;
+				var actualTotalReturn = this.xGet("actualTotalReturn") || 0;
+				var actualTotalPayback = this.xGet("actualTotalPayback") || 0;
 				var settlementMoney = 0;
-				if ((actualTotalExpense) > (actualTotalIncome)) {
+				if ((actualTotalExpense + actualTotalLend + actualTotalReturn) >= (actualTotalIncome + actualTotalBorrow + actualTotalPayback)) {
 					settlementMoney = this.getApportionedTotalMoney() - this.getActualTotalMoney();
 				} else {
 					settlementMoney = this.getApportionedTotalMoney() + this.getActualTotalMoney();
