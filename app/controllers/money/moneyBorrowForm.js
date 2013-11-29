@@ -343,25 +343,21 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		}
 		if ($.$model.xGet("moneyBorrowApportions").length > 0) {
-			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
-				projectFirstChangeFlag = true;
+			if ($.$model.isNew()) {
+				$.$model.xGet("moneyBorrowApportions").reset();
+			} else {
 				$.$model.xGet("moneyBorrowApportions").forEach(function(item) {
 					if (item.isNew()) {
 						$.$model.xGet("moneyBorrowApportions").remove(item);
 					} else {
-						item.__xDeletedHidden = true;
+						if ($.project.getValue() !== oldProject) {
+							item.__xDeletedHidden = true;
+						} else {
+							item.__xDeletedHidden = false;
+						}
 					}
 				});
 			}
-		}
-		if ($.project.getValue() === oldProject) {
-			$.$model.xGet("moneyBorrowApportions").forEach(function(item) {
-				if (item.isNew()) {
-					$.$model.xGet("moneyBorrowApportions").remove(item);
-				} else {
-					item.__xDeletedHidden = false;
-				}
-			});
 		}
 	});
 

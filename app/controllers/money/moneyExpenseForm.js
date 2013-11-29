@@ -18,7 +18,7 @@ $.makeContextMenu = function() {
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
-		if(selectedFriendModel.xGet("friendUser")){
+		if (selectedFriendModel.xGet("friendUser")) {
 			$.$model.xSet("friendUser", selectedFriendModel.xGet("friendUser"));
 			$.$model.xSet("localFriend", null);
 			return selectedFriendModel.xGet("friendUser");
@@ -42,15 +42,15 @@ $.convertUser2FriendModel = function(userModel) {
 		if (friend.id) {
 			return friend;
 		}
-	} else if($.$model.xGet("localFriend")) {
+	} else if ($.$model.xGet("localFriend")) {
 		return $.$model.xGet("localFriend");
 	}
 };
 
-$.friend.convertModelValue = function(value){
-	if($.$model.xGet("friendUser")) {
+$.friend.convertModelValue = function(value) {
+	if ($.$model.xGet("friendUser")) {
 		return $.$model.xGet("friendUser").getFriendDisplayName();
-	} else if($.$model.xGet("localFriend")) {
+	} else if ($.$model.xGet("localFriend")) {
 		return $.$model.xGet("localFriend").getDisplayName();
 	} else {
 		return "";
@@ -115,7 +115,9 @@ $.exchangeRate.rightButton.addEventListener("singletap", function(e) {//汇率�
 	$.exchangeRate.rightButton.showActivityIndicator();
 	Alloy.Globals.Server.getExchangeRate($.$model.xGet("moneyAccount").xGet("currency").id, $.$model.xGet("project").xGet("currency").id, function(rate) {
 		$.exchangeRate.setValue(rate);
-		$.exchangeRate.field.fireEvent("change", {bubbles : false});
+		$.exchangeRate.field.fireEvent("change", {
+			bubbles : false
+		});
 		$.exchangeRate.rightButton.setEnabled(true);
 		$.exchangeRate.rightButton.hideActivityIndicator();
 	}, function(e) {
@@ -201,13 +203,15 @@ if (!$.$model) {
 }
 
 // if ($.saveableMode === "edit") {//修改时项目不可点击，设成灰色
-	// $.project.label.setColor("#6e6d6d");
-	// $.project.field.setColor("#6e6d6d");
+// $.project.label.setColor("#6e6d6d");
+// $.project.field.setColor("#6e6d6d");
 // }
 
 function updateAmount() {//没输入支出金额时，新增明细金额的同时更新账务金额
 	$.amount.setValue($.$model.xGet("amount"));
-	$.amount.field.fireEvent("change", {bubbles : false});
+	$.amount.field.fireEvent("change", {
+		bubbles : false
+	});
 }
 
 /*//隐藏功能,使用明细金额作为收支金额
@@ -306,7 +310,9 @@ function setDefaultCategory(project, setToModel) {//新增时根据时间设置�
 		$.moneyExpenseCategory.refresh();
 	} else {
 		$.moneyExpenseCategory.setValue(defaultCategory);
-		$.moneyExpenseCategory.field.fireEvent("change", {bubbles : false});
+		$.moneyExpenseCategory.field.fireEvent("change", {
+			bubbles : false
+		});
 	}
 }
 
@@ -404,7 +410,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.exchangeRate.refresh();
 		} else {
 			$.exchangeRate.setValue(exchangeRateValue);
-			$.exchangeRate.field.fireEvent("change", {bubbles : false});
+			$.exchangeRate.field.fireEvent("change", {
+				bubbles : false
+			});
 		}
 	}
 
@@ -423,25 +431,21 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
-			if ($.project.getValue() !== oldProject && !projectFirstChangeFlag) {
-				projectFirstChangeFlag = true;
+			if ($.$model.isNew()) {
+				$.$model.xGet("moneyExpenseApportions").reset();
+			} else {
 				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
 					if (item.isNew()) {
 						$.$model.xGet("moneyExpenseApportions").remove(item);
 					} else {
-						item.__xDeletedHidden = true;
+						if ($.project.getValue() !== oldProject) {
+							item.__xDeletedHidden = true;
+						} else {
+							item.__xDeletedHidden = false;
+						}
 					}
 				});
 			}
-		}
-		if ($.project.getValue() === oldProject) {
-			$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-				if (item.isNew()) {
-					$.$model.xGet("moneyExpenseApportions").remove(item);
-				} else {
-					item.__xDeletedHidden = false;
-				}
-			});
 		}
 	});
 
@@ -450,7 +454,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			$.friendAccount.$view.setHeight(0);
 			//暂时隐藏好友账户
 			$.friendAccount.setValue("");
-			$.friendAccount.field.fireEvent("change", {bubbles : false});
+			$.friendAccount.field.fireEvent("change", {
+				bubbles : false
+			});
 		} else {
 			$.friendAccount.$view.setHeight(0);
 			$.friendAccount.setValue("");
@@ -676,7 +682,7 @@ $.amount.rightButton.addEventListener("singletap", function(e) {
 	});
 });
 
-$.doUIInit = function(currentWindow){
+$.doUIInit = function(currentWindow) {
 	$.picture.UIInit($, currentWindow);
 	$.friendUser.UIInit($, currentWindow);
 	$.date.UIInit($, currentWindow);
@@ -693,6 +699,6 @@ $.doUIInit = function(currentWindow){
 	$.titleBar.UIInit($, currentWindow);
 };
 
-if($.$attrs.autoInit === "false" && $.__currentWindow){
+if ($.$attrs.autoInit === "false" && $.__currentWindow) {
 	$.doUIInit($.getCurrentWindow());
 }
