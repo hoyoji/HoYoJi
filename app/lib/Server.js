@@ -66,10 +66,8 @@
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-							if (modelData.__dataType === "Project" 
-								|| modelData.__dataType === "ProjectShareAuthorization"
-								|| modelData.__dataType === "User") {
-								if(!options || options.saveProject !== false){
+							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
+								if (!options || options.saveProject !== false) {
 									model.save(null, {
 										silent : true,
 										syncFromServer : true,
@@ -78,12 +76,12 @@
 								}
 							} else {
 								model.save(null, {
-										silent : true,
-										syncFromServer : true,
-										dbTrans : options && options.dbTrans
-									});
+									silent : true,
+									syncFromServer : true,
+									dbTrans : options && options.dbTrans
+								});
 							}
-							
+
 						}
 					});
 					if (xFinishedCallback) {
@@ -260,8 +258,8 @@
 				activityWindow.progressStep(1);
 				this.syncPull(function() {
 					// setTimeout(function() {
-						Alloy.Globals.Server.__isSyncing = false;
-						Ti.App.fireEvent("ServerSyncFinished");
+					Alloy.Globals.Server.__isSyncing = false;
+					Ti.App.fireEvent("ServerSyncFinished");
 					activityWindow.progressStep(3);
 					self.syncPush(function(data) {
 						if (xFinishedCallback) {
@@ -391,7 +389,7 @@
 									var model = Alloy.createModel(dataType).xFindInDb({
 										id : record.id
 									});
-									if(model.isNew()){
+									if (model.isNew()) {
 										dbTrans.db.execute("DELETE FROM ClientSyncTable WHERE recordId = ?", [record.id]);
 										// 没有找到该记录
 										if (model.syncAddNew(record, dbTrans) !== false) {
@@ -406,8 +404,8 @@
 												dbTrans.off("rollback", syncRollbackConflict);
 												model.syncRollback();
 											}
-	
-	
+
+
 											dbTrans.on("rollback", syncRollbackConflict);
 										}
 										model.syncUpdateConflict(record, dbTrans);
@@ -452,7 +450,10 @@
 												dbTrans.xCommitEnd();
 											}, function(e) {
 												dbTrans.rollback("获取新共享来的项目资料时出错");
-											}, {dbTrans : dbTrans, saveProject : false});
+											}, {
+												dbTrans : dbTrans,
+												saveProject : false
+											});
 										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
 											model._syncAddNew(record, dbTrans);
@@ -463,6 +464,8 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
+
+
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
@@ -491,6 +494,7 @@
 						delete dbTrans.newCurrenciesFromServer;
 						delete dbTrans.__syncUpdateData;
 						Alloy.Models.User.xGet("messageBox").processNewMessages();
+						updateDebtAccountBalances();
 						xFinishedCallback();
 					} else {
 						function postCommit() {
@@ -500,12 +504,45 @@
 							delete dbTrans.__syncUpdateData;
 							dbTrans.off("commit", postCommit);
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
+							updateDebtAccountBalances();
 							xFinishedCallback();
 						}
 
 
 						dbTrans.on("commit", postCommit);
 					}
+					function updateDebtAccountBalances() {
+						function getDebtTotal(tableName, moneyAccount){
+									var friendId = moneyAccount.xGet("friendId");
+									var friendIdStr = friendId ? "f.id = '" +friendId+"'" : "(main.friendUserId IS NULL AND main.localFriendId IS NULL)";
+									var currencyId = moneyAccount.xGet("currencyId");
+									var config = Alloy.createModel(tableName).config;
+									var Model = Alloy.M(tableName, {
+										config : config
+									});
+									var model = new Model({
+										TOTAL : 0
+									});
+									
+									model.fetch({
+										query : "SELECT SUM(amount) AS TOTAL FROM "+tableName+" main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE "+friendIdStr+" AND ma.currencyId = '"+currencyId+"' AND main.ownerUserId = '"+Alloy.Models.User.id+"'"
+									});
+									return model.get("TOTAL") || 0;
+						}
+						Alloy.Models.User.xGet("moneyAccounts").forEach(function(moneyAccount) {
+							if (moneyAccount.xGet("accountType") === "Debt") {
+								var borrowTotal = getDebtTotal("MoneyBorrow", moneyAccount);
+								var lendTotal = getDebtTotal("MoneyLend", moneyAccount);
+								var paybackTotal = getDebtTotal("MoneyPayback", moneyAccount);
+								var returnTotal = getDebtTotal("MoneyReturn", moneyAccount);
+
+								moneyAccount.save({
+									"currentBalance" : Number((borrowTotal - lendTotal + paybackTotal - returnTotal).toFixed(2))
+								});
+							}
+						});
+					}
+
 				}, function(e) {
 					activityWindow.showMsg("同步错误：" + e.__summary.msg);
 					xErrorCallback(e);
@@ -517,7 +554,6 @@
 								totalLen += " Bytes";
 							} else {
 								totalLen = (totalLen / 1024 / 1024).toFixed(2) + " MBytes";
-								;
 							}
 							totalLenStr = "共" + totalLen;
 						}
@@ -884,10 +920,10 @@
 							var picture = Alloy.createModel("Picture", data);
 							picture.attributes["id"] = id;
 							successCB(picture);
-						} else if(errorCB){
+						} else if (errorCB) {
 							errorCB();
 						}
-					} else if(errorCB){
+					} else if (errorCB) {
 						errorCB();
 					}
 				}, errorCB, "fetchUserImageIcon", progressCB);
