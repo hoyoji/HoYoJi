@@ -525,7 +525,7 @@
 									});
 									
 									model.fetch({
-										query : "SELECT SUM(amount) AS TOTAL FROM "+tableName+" main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE "+friendIdStr+" AND ma.currencyId = '"+currencyId+"' AND main.ownerUserId = '"+Alloy.Models.User.id+"'"
+										query : "SELECT SUM(amount) AS TOTAL FROM "+tableName+" main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id LEFT JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE "+friendIdStr+" AND ma.currencyId = '"+currencyId+"' AND main.ownerUserId = '"+Alloy.Models.User.id+"'"
 									});
 									return model.get("TOTAL") || 0;
 						}
