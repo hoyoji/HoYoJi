@@ -24,19 +24,19 @@ function doLogin(e) {
 		return;
 	}
 
-	if (userName === "hyjtest") {
-		if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
-			Ti.App.Properties.setString("serverUrl", "http://3.money.app100697798.twsapp.com/");
-			Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
-			alert("已切换到用户数据库");
-		} else {
-			Ti.App.Properties.setString("serverUrl", "http://2.money.app100697798.twsapp.com/");
-			Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
-			alert("已切换到测试数据库");
-		}
-		showTestLabel();
-		return;
-	}
+	// if (userName === "hyjtest") {
+		// if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
+			// Ti.App.Properties.setString("serverUrl", "http://3.money.app100697798.twsapp.com/");
+			// Alloy.Globals.Server.dataUrl = "http://3.money.app100697798.twsapp.com/";
+			// alert("已切换到用户数据库");
+		// } else {
+			// Ti.App.Properties.setString("serverUrl", "http://2.money.app100697798.twsapp.com/");
+			// Alloy.Globals.Server.dataUrl = "http://2.money.app100697798.twsapp.com/";
+			// alert("已切换到测试数据库");
+		// }
+		// showTestLabel();
+		// return;
+	// }
 
 	var password = $.password.field.getValue() || "";
 	if (password.length === 0) {
@@ -56,7 +56,7 @@ $.login = function(userName, password) {
 	delete Alloy.Models.User;
 	delete Alloy.Globals.currentUserDatabaseName;
 
-	Alloy.Globals.Server.dataUrl = Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/";
+	//Alloy.Globals.Server.dataUrl = Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/";
 
 	var userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
@@ -309,15 +309,17 @@ function openRegister(e) {
 
 var testLabel;
 function showTestLabel() {
-	if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
+	//if (Ti.App.Properties.getString("serverUrl") === "http://2.money.app100697798.twsapp.com/") {
+	if(!ENV_PROD){
 		testLabel = Ti.UI.createLabel({
 			color : "red",
 			text : "将登录到测试数据库"
 		});
 		$.$view.add(testLabel);
-	} else if (testLabel) {
-		$.$view.remove(testLabel);
 	}
+	 // else if (testLabel) {
+		// $.$view.remove(testLabel);
+	// }
 }
 
 var userData = Ti.App.Properties.getObject("userData");

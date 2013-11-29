@@ -1,7 +1,11 @@
 ( function() {
 		Ti.include('suds.js');
+		var serverUrl = "http://1.hoyoji.app1101080392.twsapp.com/";
+		if(!ENV_PROD){
+			serverUrl = "http://3.money.app100697798.twsapp.com/";
+		}
 		exports.Server = {
-			dataUrl : Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/",
+			dataUrl : serverUrl,
 			sendMsg : function(msgJSON, xFinishedCallback, xErrorCallback) {
 				//var msg = Alloy.createModel("Message");
 				msgJSON.ownerUserId = msgJSON.toUserId;
