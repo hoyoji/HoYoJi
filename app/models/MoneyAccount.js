@@ -70,7 +70,7 @@ exports.definition = {
 			},
 			friend : {
 				type : "Friend",
-				attribute : null
+				attribute : "moneyDebtAccounts"
 			}
 		},
 		rowView : "money/moneyAccount/moneyAccountRow",
