@@ -208,7 +208,7 @@ exports.definition = {
 				return null;
 			},
 			getFriendDisplayName : function() {
-				var friend = getFriend();
+				var friend = this.getFriend();
 				if (friend) {
 					return friend.getDisplayName();
 				}

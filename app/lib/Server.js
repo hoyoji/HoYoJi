@@ -537,7 +537,7 @@
 								var returnTotal = getDebtTotal("MoneyReturn", moneyAccount);
 
 								moneyAccount.save({
-									"currentBalance" : Number((borrowTotal - lendTotal + paybackTotal - returnTotal).toFixed(2))
+									"currentBalance" : Number((- borrowTotal + lendTotal - paybackTotal + returnTotal).toFixed(2))
 								});
 							}
 						});
