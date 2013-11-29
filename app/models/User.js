@@ -198,11 +198,18 @@ exports.definition = {
 					return this.xGet("nickName");
 				}
 			},
-			getFriendDisplayName : function() {
+			getFriend : function(){
 				var friend = Alloy.createModel("Friend").xFindInDb({
 					friendUserId : this.id
 				});
 				if (friend.id) {
+					return friend;
+				}
+				return null;
+			},
+			getFriendDisplayName : function() {
+				var friend = this.getFriend();
+				if (friend) {
 					return friend.getDisplayName();
 				}
 				return this.getDisplayName();

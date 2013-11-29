@@ -301,7 +301,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 			} else if (table === "MoneyAccount") {
-				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime");
+				qs[0] = qs[0].replace(/main\.\*/ig, "main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.friendId, main.accountNumber, main.accountType, main.bankAddress, main.currentBalance, main.remark, main._creatorId, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime");
 				q = "main.ownerUserId = '" + Alloy.Models.User.xGet("id") + "'";
 				if (qs.length > 1) {
 					sql = qs[0] + " WHERE (" + qs[1] + ") AND (" + q + ")";
@@ -309,7 +309,7 @@ function Sync(method, model, opts) {
 					sql = qs[0] + " WHERE " + q;
 				}
 
-				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.accountNumber, main.accountType, main.bankAddress, null, null, null, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime FROM MoneyAccount main ";
+				var sql2, qs0 = "SELECT main.id, main.name, main.currencyId, main.sharingType, main.ownerUserId, main.friendId, main.accountNumber, main.accountType, main.bankAddress, null, null, null, main.lastServerUpdateTime, main.serverRecordHash, main.lastClientUpdateTime FROM MoneyAccount main ";
 				q = "main.ownerUserId <> '" + Alloy.Models.User.xGet("id") + "' AND (main.sharingType = 'Public' OR (main.sharingType = 'Friend' AND EXISTS (SELECT id FROM Friend WHERE friendUserId = main.ownerUserId AND ownerUserId = '" + Alloy.Models.User.xGet("id") + "')))";
 				if (qs.length > 1) {
 					sql2 = qs0 + " WHERE (" + qs[1] + ") AND (" + q + ")";
