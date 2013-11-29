@@ -137,7 +137,12 @@ exports.definition = {
 				},
 				transferOut : function(xValidateComplete) {
 					var error;
-					if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
+					if(!this.xGet("transferOut") && !this.xGet("transferOut")){
+						error = {
+							msg : "请输入转出账户"
+						};
+					}
+					else if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
 						error = {
 							msg : "转出账户和转入账户不能相同"
 						};
@@ -146,7 +151,12 @@ exports.definition = {
 				},
 				transferIn : function(xValidateComplete) {
 					var error;
-					if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
+					if(!this.xGet("transferOut") && !this.xGet("transferOut")){
+						error = {
+							msg : "请输入转入账户"
+						};
+					}
+					else if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
 						error = {
 							msg : "转入账户和转出账户不能相同"
 						};
