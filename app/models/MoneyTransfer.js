@@ -137,7 +137,12 @@ exports.definition = {
 				},
 				transferOut : function(xValidateComplete) {
 					var error;
-					if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
+					if(!this.xGet("transferOut") && !this.xGet("transferIn")){
+						error = {
+							msg : "请输入转出账户"
+						};
+					}
+					else if (this.xGet("transferOut") && this.xGet("transferOut") === this.xGet("transferIn")) {
 						error = {
 							msg : "转出账户和转入账户不能相同"
 						};
@@ -146,7 +151,12 @@ exports.definition = {
 				},
 				transferIn : function(xValidateComplete) {
 					var error;
-					if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
+					if(!this.xGet("transferOut") && !this.xGet("transferIn")){
+						error = {
+							msg : "请输入转入账户"
+						};
+					}
+					else if (this.xGet("transferIn") && this.xGet("transferIn") === this.xGet("transferOut")) {
 						error = {
 							msg : "转入账户和转出账户不能相同"
 						};
@@ -175,86 +185,90 @@ exports.definition = {
 			getProjectName : function() {
 				return this.xGet("project").getProjectName();
 			},
-			getTransferOut: function() {
-                if(this.xGet("transferOut")) {
-                	return this.xGet("transferOut").xGet("name") + "(" + this.xGet("transferOut").xGet("currency").xGet("code") + ")转出";
-                } else if(this.xGet("transferOutUser")) {
-                	return this.xGet("transferOutUser").getFriendDisplayName() + "转出";
-                } else{
-                	return "无转出人";
-                }
-            },
-            getTransferIn: function() {
-                if(this.xGet("transferIn")){
-                	return "转入" + this.xGet("transferIn").xGet("name") + "(" + this.xGet("transferIn").xGet("currency").xGet("code") + ")";
-                } else if(this.xGet("transferInUser")){
-                	return "转入" + this.xGet("transferInUser").getFriendDisplayName();
-                } else {
-                	return "无转入人";
-                }
-            },
+			getTransferOut : function() {
+				if (this.xGet("transferOut")) {
+					return this.xGet("transferOut").xGet("name") + "(" + this.xGet("transferOut").xGet("currency").xGet("code") + ")转出";
+				} else if (this.xGet("transferOutUser")) {
+					return this.xGet("transferOutUser").getFriendDisplayName() + "转出";
+				} else {
+					return "无转出人";
+				}
+			},
+			getTransferIn : function() {
+				if (this.xGet("transferIn")) {
+					return "转入" + this.xGet("transferIn").xGet("name") + "(" + this.xGet("transferIn").xGet("currency").xGet("code") + ")";
+				} else if (this.xGet("transferInUser")) {
+					return "转入" + this.xGet("transferInUser").getFriendDisplayName();
+				} else {
+					return "无转入人";
+				}
+			},
 			getTransferOutAmount : function() {
 				var exchange = null;
 				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
-				if(this.xGet("transferOut")) {
+				if (this.xGet("transferOut")) {
 					var transferOutCurrency = this.xGet("transferOut").xGet("currency");
 					if (transferOutCurrency === userCurrency) {
 						exchange = 1;
-					}else{
+					} else {
 						var exchanges = transferOutCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
+					return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount") * exchange).toUserCurrency();
 				} else {
-					var transferInCurrency = this.xGet("transferIn").xGet("currency");
+					if (this.xGet("transferIn")) {
+						var transferInCurrency = this.xGet("transferIn").xGet("currency");
 						if (transferInCurrency === userCurrency) {
 							exchange = 1;
-						}else{
+						} else {
 							var exchanges = transferInCurrency.getExchanges(userCurrency);
 							if (exchanges.length) {
 								exchange = exchanges.at(0).xGet("rate");
 							}
 						}
-					return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+						return userCurrency.xGet("symbol") + (this.xGet("transferInAmount") * exchange).toUserCurrency();
+					}
 				}
 			},
 			getTransferInAmount : function() {
 				var exchange = null;
 				var userCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
-				if(this.xGet("transferIn")) {
+				if (this.xGet("transferIn")) {
 					var transferInCurrency = this.xGet("transferIn").xGet("currency");
 					if (transferInCurrency === userCurrency) {
 						exchange = 1;
-					}else{
+					} else {
 						var exchanges = transferInCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return userCurrency.xGet("symbol") + (this.xGet("transferInAmount")*exchange).toUserCurrency();
+					return userCurrency.xGet("symbol") + (this.xGet("transferInAmount") * exchange).toUserCurrency();
 				} else {
-					var transferOutCurrency = this.xGet("transferOut").xGet("currency");
-					if (transferOutCurrency === userCurrency) {
-						exchange = 1;
-					}else{
-						var exchanges = transferOutCurrency.getExchanges(userCurrency);
-						if (exchanges.length) {
-							exchange = exchanges.at(0).xGet("rate");
+					if (this.xGet("transferOut")) {
+						var transferOutCurrency = this.xGet("transferOut").xGet("currency");
+						if (transferOutCurrency === userCurrency) {
+							exchange = 1;
+						} else {
+							var exchanges = transferOutCurrency.getExchanges(userCurrency);
+							if (exchanges.length) {
+								exchange = exchanges.at(0).xGet("rate");
+							}
 						}
+						return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount") * exchange).toUserCurrency();
 					}
-					return userCurrency.xGet("symbol") + (this.xGet("transferOutAmount")*exchange).toUserCurrency();
 				}
-				
+
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark") || "";
-				if(!this.xGet("transferOutId") && (this.xGet("transferOutUserId") || this.xGet("transferOutLocalFriendId"))){
-					remark = remark + "［从"+(this.xGet("transferOutUser") || this.xGet("transferOutLocalFriend")).getDisplayName()+"转出］"+ remark;
-				} else if (!this.xGet("transferInId") && (this.xGet("transferInUserId") || this.xGet("transferLocalInFriendId"))){
-					remark = remark + "［转入到"+(this.xGet("transferInUser") || this.xGet("transferInLocalFriend")).getDisplayName()+"］"+ remark;
-				} 
+				if (!this.xGet("transferOutId") && (this.xGet("transferOutUserId") || this.xGet("transferOutLocalFriendId"))) {
+					remark = remark + "［从" + (this.xGet("transferOutUser") || this.xGet("transferOutLocalFriend")).getDisplayName() + "转出］" + remark;
+				} else if (!this.xGet("transferInId") && (this.xGet("transferInUserId") || this.xGet("transferLocalInFriendId"))) {
+					remark = remark + "［转入到" + (this.xGet("transferInUser") || this.xGet("transferInLocalFriend")).getDisplayName() + "］" + remark;
+				}
 				if (!remark) {
 					remark = "无备注";
 				}
@@ -267,12 +281,12 @@ exports.definition = {
 				var transferInAmount = this.xGet("transferInAmount");
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
-				if(transferOut) {
+				if (transferOut) {
 					transferOut.save({
 						currentBalance : transferOut.xGet("currentBalance") + transferOutAmount
 					}, saveOptions);
 				}
-				if(transferIn) {
+				if (transferIn) {
 					transferIn.save({
 						currentBalance : transferIn.xGet("currentBalance") - transferInAmount
 					}, saveOptions);
@@ -286,7 +300,7 @@ exports.definition = {
 				// 2. 账户已经存在
 
 				if (record.ownerUserId === Alloy.Models.User.id) {
-					if(record.transferInId){
+					if (record.transferInId) {
 						var moneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.transferInId
 						});
@@ -297,7 +311,7 @@ exports.definition = {
 							dbTrans.__syncData[record.transferInId].__syncCurrentBalance = dbTrans.__syncData[record.transferInId].__syncCurrentBalance ? dbTrans.__syncData[record.transferInId].__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 						}
 					}
-					if(record.transferOutId){
+					if (record.transferOutId) {
 						var moneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : record.transferOutId
 						});
@@ -307,13 +321,13 @@ exports.definition = {
 							dbTrans.__syncData[record.transferOutId] = dbTrans.__syncData[record.transferOutId] || {};
 							dbTrans.__syncData[record.transferOutId].__syncCurrentBalance = dbTrans.__syncData[record.transferOutId].__syncCurrentBalance ? dbTrans.__syncData[record.transferOutId].__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
 						}
-					}					
+					}
 				}
 			},
 			syncUpdate : function(record, dbTrans) {
 				if (record.ownerUserId === Alloy.Models.User.id) {
 					var oldMoneyAccountIn;
-					if(this.xGet("transferInId")){
+					if (this.xGet("transferInId")) {
 						oldMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : this.xGet("transferInId")
 						});
@@ -325,12 +339,12 @@ exports.definition = {
 							oldMoneyAccountIn.__syncCurrentBalance = oldMoneyAccountIn.__syncCurrentBalance ? oldMoneyAccountIn.__syncCurrentBalance - this.xGet("transferInAmount") : -this.xGet("transferInAmount");
 						}
 						var newMoneyAccountIn;
-						if(record.transferInId){
+						if (record.transferInId) {
 							newMoneyAccountIn = Alloy.createModel("MoneyAccount").xFindInDb({
 								id : record.transferInId
 							});
 						}
-						if(newMoneyAccountIn){
+						if (newMoneyAccountIn) {
 							if (newMoneyAccountIn.id) {
 								newMoneyAccountIn.__syncCurrentBalance = newMoneyAccountIn.__syncCurrentBalance ? newMoneyAccountIn.__syncCurrentBalance + record.transferInAmount : record.transferInAmount;
 							} else {
@@ -341,7 +355,7 @@ exports.definition = {
 					}
 
 					var oldMoneyAccountOut;
-					if(this.xGet("transferOutId")){
+					if (this.xGet("transferOutId")) {
 						oldMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
 							id : this.xGet("transferOutId")
 						});
@@ -353,12 +367,12 @@ exports.definition = {
 							oldMoneyAccountOut.__syncCurrentBalance = oldMoneyAccountOut.__syncCurrentBalance ? oldMoneyAccountOut.__syncCurrentBalance + this.xGet("transferOutAmount") : this.xGet("transferOutAmount");
 						}
 						var newMoneyAccountOut;
-						if(record.transferOutId){
+						if (record.transferOutId) {
 							newMoneyAccountOut = Alloy.createModel("MoneyAccount").xFindInDb({
 								id : record.transferOutId
 							});
 						}
-						if(newMoneyAccountOut){
+						if (newMoneyAccountOut) {
 							if (newMoneyAccountOut.id) {
 								newMoneyAccountOut.__syncCurrentBalance = newMoneyAccountOut.__syncCurrentBalance ? newMoneyAccountOut.__syncCurrentBalance - record.transferOutAmount : -record.transferOutAmount;
 							} else {
@@ -380,7 +394,9 @@ exports.definition = {
 					dbTrans.db.execute(sql, [this.xGet("id")]);
 				} else {
 					// 让本地修改覆盖服务器上的记录
-					this._syncUpdate({lastServerUpdateTime : record.lastServerUpdateTime}, dbTrans);
+					this._syncUpdate({
+						lastServerUpdateTime : record.lastServerUpdateTime
+					}, dbTrans);
 				}
 				// 让本地修改覆盖服务器上的记录
 			},
@@ -388,11 +404,11 @@ exports.definition = {
 				if (this.xGet("ownerUserId") === Alloy.Models.User.id) {
 					var transferOut = this.xGet("transferOut");
 					var transferIn = this.xGet("transferIn");
-					if(transferOut){
+					if (transferOut) {
 						var transferOutAmount = this.xGet("transferOutAmount") || 0;
 						transferOut.__syncCurrentBalance = transferOut.__syncCurrentBalance ? transferOut.__syncCurrentBalance + transferOutAmount : transferOutAmount;
 					}
-					if(transferIn){
+					if (transferIn) {
 						var transferInAmount = this.xGet("transferInAmount") || 0;
 						transferIn.__syncCurrentBalance = transferIn.__syncCurrentBalance ? transferIn.__syncCurrentBalance - transferInAmount : -transferInAmount;
 					}
