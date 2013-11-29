@@ -469,6 +469,7 @@ exports.definition = {
 							dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance = dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance ? dbTrans.__syncData[record.moneyAccountId].__syncCurrentBalance + record.amount : record.amount;
 						}
 					}
+				}
 					var projectShareAuthorization = Alloy.createModel("ProjectShareAuthorization").xFindInDb({
 						projectId : record.projectId,
 						friendUserId : record.ownerUserId
@@ -476,7 +477,6 @@ exports.definition = {
 					if (projectShareAuthorization.id) {
 						projectShareAuthorization.__syncActualTotalBorrow = projectShareAuthorization.__syncActualTotalBorrow ? projectShareAuthorization.__syncActualTotalBorrow + Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2)) : Number((record.amount * record.exchangeRate).toFixed(2)) - Number((this.xGet("amount") * this.xGet("exchangeRate")).toFixed(2));
 					}
-				}
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				// 如果该记录同時已被本地修改过，那我们比较两条记录在客户端的更新时间，取后更新的那一条
