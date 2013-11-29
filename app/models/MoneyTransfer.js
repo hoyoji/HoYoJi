@@ -137,7 +137,7 @@ exports.definition = {
 				},
 				transferOut : function(xValidateComplete) {
 					var error;
-					if(!this.xGet("transferOut") && !this.xGet("transferIn)){
+					if(!this.xGet("transferOut") && !this.xGet("transferIn")){
 						error = {
 							msg : "请输入转出账户"
 						};
