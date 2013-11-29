@@ -82,30 +82,30 @@ Alloy.Globals.DataStore = require("DataStore").DataStore;
 
 // 基本的UI元素
 //	- 使元素可设置高度，宽度
-Alloy.Globals.extendsBaseUIController = require("BaseUIController").extends;
+Alloy.Globals.extendsBaseUIController = require("BaseUIController").extendsMe;
 
 // 基本的可更新控件
 //	- 可自动绑定到 model 的字段
 //	- 自动更新 model 的字段到指定的 model, 或通知上级 Form 保存该字段
-Alloy.Globals.extendsBaseAutoUpdateController = require("BaseAutoUpdateController").extends;
+Alloy.Globals.extendsBaseAutoUpdateController = require("BaseAutoUpdateController").extendsMe;
 
 // 基本 View 控件
 //	- 能生成 contextMenu items
 //	- 可成为 saveableContainer
-Alloy.Globals.extendsBaseViewController = require("BaseViewController").extends;
+Alloy.Globals.extendsBaseViewController = require("BaseViewController").extendsMe;
 
 // 基本行控件 －
-Alloy.Globals.extendsBaseRowController = require("BaseRowController").extends;
+Alloy.Globals.extendsBaseRowController = require("BaseRowController").extendsMe;
 
 // 基本 表单
 //	－ 可保存
 //	－ 可包含 autoUpdatable widget，并将其自动内容保存到对应的 Model
-Alloy.Globals.extendsBaseFormController = require("BaseFormController").extends;
+Alloy.Globals.extendsBaseFormController = require("BaseFormController").extendsMe;
 
 // 基础的 Window
 //	- 可打开 contextMenu
 //	- 可被关闭
-Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extends;
+Alloy.Globals.extendsBaseWindowController = require("BaseWindowController").extendsMe;
 
 // if (OS_ANDROID) {
 	// Ti.Gesture.addEventListener('orientationchange', function(e) {

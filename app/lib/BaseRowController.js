@@ -1,5 +1,5 @@
 ( function() {
-		exports.extends = function($, attrs) {
+		exports.extendsMe = function($, attrs) {
 			Alloy.Globals.extendsBaseViewController($, attrs);
 			var errorLabel, childrenCollections, detailCollections, isExpanded = false;
 			var hasChild = $.$attrs.hasChild || $.$view.hasChild;

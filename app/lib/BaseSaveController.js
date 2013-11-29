@@ -1,5 +1,5 @@
 ( function() {
-		exports.extends = function($, attrs) {
+		exports.extendsMe = function($, attrs) {
 			Alloy.Globals.extendsBaseUIController($, attrs);
 
 			exports.dirtyCB = function() {

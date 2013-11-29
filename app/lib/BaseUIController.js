@@ -1,5 +1,5 @@
 ( function() {
-		exports.extends = function($, attrs) {
+		exports.extendsMe = function($, attrs) {
 			// keep a local reference as $model might get modified in outter closures
 			// so user $.$model instead of attrs.$model or $model
 			if ($.__IAMUI__) {

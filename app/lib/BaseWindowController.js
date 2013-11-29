@@ -1,5 +1,5 @@
 ( function() {
-		exports.extends = function($, attrs) {
+		exports.extendsMe = function($, attrs) {
 			attrs = attrs || {};
 			// a window is by default a saveableContainer
 			attrs.saveableContainer = "true";
