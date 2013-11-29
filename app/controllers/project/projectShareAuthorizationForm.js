@@ -182,7 +182,7 @@ function editSharePercentage(projectShareAuthorization, editSharePercentageAutho
 		var averageTotalPercentage = 100 - fixedSharePercentage;
 		var averagePercentage = Number((averageTotalPercentage / averageLength).toFixed(4));
 		var toFixedAveragePercentage = averagePercentage;
-		averageSharePercentageCollections.map(function(averageSharePercentageCollection) {
+		averageSharePercentageCollections.forEach(function(averageSharePercentageCollection) {
 			toFixedAveragePercentage = toFixedAveragePercentage + averagePercentage;
 			averageSharePercentageCollection.xSet("sharePercentage", averagePercentage);
 			editSharePercentageAuthorization.push(averageSharePercentageCollection.toJSON());
@@ -211,7 +211,7 @@ function deleteSharePercentage(projectShareAuthorization, editSharePercentageAut
 		projectId : projectShareAuthorization.xGet("project").xGet("id"),
 		state : "Accept"
 	});
-	acceptProjectShareAuthorizations.map(function(acceptProjectShareAuthorization) {
+	acceptProjectShareAuthorizations.forEach(function(acceptProjectShareAuthorization) {
 		if (acceptProjectShareAuthorization.xGet("friendUserId") === Alloy.Models.User.id) {
 			localProjectShareAuthorization = acceptProjectShareAuthorization;
 		}
