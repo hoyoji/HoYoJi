@@ -240,7 +240,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 				xhr.setRequestHeader('Accept-Encoding', 'gzip');
 				xhr.open("POST", url);
-				if (Alloy.Models.User) {
+				if (Alloy.Models.User && Alloy.Models.User.xGet("userData")) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userData").xGet("password"));
 					if (OS_IOS) {
 						xhr.setRequestHeader("Cookie", "authentication=" + Ti.Utils.base64encode(auth).toString().replace("\r\n", "").replace(/=/g, "%$09"));
