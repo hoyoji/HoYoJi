@@ -31,7 +31,7 @@
 				bindAttribute="currentBalance"/>
 				<Widget src="com.hoyoji.titanium.widget.AutoUpdatableSelectorField" labelText="账户类型" hintText="请选择账户类型"
 				id="accountType" autoInit="false"
-				items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
+				items="现金账户,金融账户,信用卡账户,虚拟账户,债权账户"
 				values="Cash,Deposit,Credit,Online,Debt"
 				bindModel="$.$model"
 				bindAttribute="accountType"/>

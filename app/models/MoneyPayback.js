@@ -371,15 +371,15 @@ exports.definition = {
 				}
 				
 				var friend = this.getFriend(this.xGet("friendUser"));
-					var debtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
+					var debtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						accountType : "Debt",
 						currencyId : moneyAccount.xGet("currency").xGet("id"),
 						friendId : friend ? friend.xGet("id") : null,
 						ownerUserId : Alloy.Models.User.xGet("id")
 					});
-					if (debtAccounts.at(0)) {
-						debtAccounts.at(0).save({
-							currentBalance : debtAccounts.at(0).xGet("currentBalance") + amount
+					if (debtAccount.id) {
+						debtAccount.save({
+							currentBalance : debtAccount.xGet("currentBalance") + amount
 						}, saveOptions);
 					}
 				
