@@ -313,7 +313,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	if ($.saveableMode === "add") {
 		oldAmount = 0;
 	} else {
-		oldAmount = $.$model.xGet("amount");
+		oldAmount = $.$model.xGet("amount") || 0;
 	}
 	oldInterest = $.$model.xGet("interest") || 0;
 
