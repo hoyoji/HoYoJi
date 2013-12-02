@@ -75,7 +75,7 @@ $.login = function(userName, password) {
 			}, {
 				patch : true
 			});
-			userDatabase.save();
+			userDatabase.xAddToSave($);
 			Alloy.Globals.currentUserDatabaseName = data.user.id;
 
 			loginUser(data);
