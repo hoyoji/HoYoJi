@@ -263,34 +263,34 @@ exports.definition = {
 					}
 				});
 				if (moneyLendApportionsArray.length === 0) {// 生成分摊
-					var amountTotal = 0, moneyLendApportion, amount;
-					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || this.xGet("project").xGet("autoApportion") === 0) {
-						moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
+					// var amountTotal = 0, moneyLendApportion, amount;
+					// if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || this.xGet("project").xGet("autoApportion") === 0) {
+						var moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
 							moneyLend : self,
 							friendUser : self.xGet("ownerUser"),
 							amount : Number(self.xGet("amount")) || 0,
 							apportionType : "Average"
 						});
 						self.xGet("moneyLendApportions").add(moneyLendApportion);
-					} else {
-						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-							if (projectShareAuthorization.xGet("state") === "Accept") {
-								amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
-								moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
-									moneyLend : self,
-									friendUser : projectShareAuthorization.xGet("friendUser"),
-									amount : amount,
-									apportionType : "Fixed"
-								});
-								self.xGet("moneyLendApportions").add(moneyLendApportion);
-								amountTotal += amount;
-							}
-						});
-						if (amountTotal !== self.xGet("amount")) {
-							moneyLendApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
-						}
-					}
-					this.hasAddedApportions = true;
+					// } else {
+						// this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							// if (projectShareAuthorization.xGet("state") === "Accept") {
+								// amount = Number(((self.xGet("amount") || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								// moneyLendApportion = Alloy.createModel("MoneyLendApportion", {
+									// moneyLend : self,
+									// friendUser : projectShareAuthorization.xGet("friendUser"),
+									// amount : amount,
+									// apportionType : "Fixed"
+								// });
+								// self.xGet("moneyLendApportions").add(moneyLendApportion);
+								// amountTotal += amount;
+							// }
+						// });
+						// if (amountTotal !== self.xGet("amount")) {
+							// moneyLendApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
+						// }
+					// }
+					// this.hasAddedApportions = true;
 				}
 			},
 			getRemark : function() {

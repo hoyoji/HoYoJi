@@ -292,34 +292,34 @@ exports.definition = {
 					}
 				});
 				if (moneyReturnApportionsArray.length === 0) {// 生成分摊
-					var amountTotal = 0, moneyReturnApportion, amount;
-					if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || this.xGet("project").xGet("autoApportion") === 0) {
-						moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
+					// var amountTotal = 0, moneyReturnApportion, amount;
+					// if (this.xGet("project").xGet("projectShareAuthorizations").length === 1 || this.xGet("project").xGet("autoApportion") === 0) {
+						var moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
 							moneyReturn : self,
 							friendUser : self.xGet("ownerUser"),
 							amount : Number(self.xGet("amount") + self.xGet("interest")) || 0,
 							apportionType : "Average"
 						});
 						self.xGet("moneyReturnApportions").add(moneyReturnApportion);
-					} else {
-						this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
-							if (projectShareAuthorization.xGet("state") === "Accept") {
-								amount = Number((((self.xGet("amount") + self.xGet("interest")) || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
-								moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
-									moneyReturn : self,
-									friendUser : projectShareAuthorization.xGet("friendUser"),
-									amount : amount,
-									apportionType : "Fixed"
-								});
-								self.xGet("moneyReturnApportions").add(moneyReturnApportion);
-								amountTotal += amount;
-							}
-						});
-						if (amountTotal !== (self.xGet("amount") + self.xGet("interest"))) {
-							moneyReturnApportion.xSet("amount", amount + ((self.xGet("amount") + self.xGet("interest")) - amountTotal));
-						}
-					}
-					this.hasAddedApportions = true;
+					// } else {
+						// this.xGet("project").xGet("projectShareAuthorizations").forEach(function(projectShareAuthorization) {
+							// if (projectShareAuthorization.xGet("state") === "Accept") {
+								// amount = Number((((self.xGet("amount") + self.xGet("interest")) || 0) * (projectShareAuthorization.xGet("sharePercentage") / 100)).toFixed(2));
+								// moneyReturnApportion = Alloy.createModel("MoneyReturnApportion", {
+									// moneyReturn : self,
+									// friendUser : projectShareAuthorization.xGet("friendUser"),
+									// amount : amount,
+									// apportionType : "Fixed"
+								// });
+								// self.xGet("moneyReturnApportions").add(moneyReturnApportion);
+								// amountTotal += amount;
+							// }
+						// });
+						// if (amountTotal !== (self.xGet("amount") + self.xGet("interest"))) {
+							// moneyReturnApportion.xSet("amount", amount + ((self.xGet("amount") + self.xGet("interest")) - amountTotal));
+						// }
+					// }
+					// this.hasAddedApportions = true;
 				}
 			},
 			getRemark : function() {
