@@ -445,13 +445,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		} else {
 			newFriend = $.$model.xGet("localFriend");
 		}
-		var oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
-			accountType : "Debt",
-			currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
-			friendId : oldFriend ? oldFriend.xGet("id") : null,
-			ownerUserId : Alloy.Models.User.xGet("id")
-		});
-
 		var newDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 			accountType : "Debt",
 			currencyId : $.$model.xGet("moneyAccount").xGet("currency").xGet("id"),
