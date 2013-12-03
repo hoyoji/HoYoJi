@@ -18,10 +18,11 @@ function onFooterbarTap(e) {
 			$.timePickerContainer.setZIndex(1);
 		}
 	} else if (e.source.id === "today") {
-		var today = new Date();
-		$.dateTimeField.setText(String.formatDate(today, "medium") + " " + String.formatTime(today, "medium"));
-		$.datePicker.setValue(today);
-		$.timePicker.setValue(today);
+		datetime = new Date();
+		
+		$.dateTimeField.setText(String.formatDate(datetime, "medium") + " " + String.formatTime(datetime, "medium"));
+		$.datePicker.setValue(datetime);
+		$.timePicker.setValue(datetime);
 	} else if (e.source.id === "submit") {
 		selectDate();
 	}
@@ -107,9 +108,6 @@ $.onWindowOpenDo(function() {
 	$.datePicker.addEventListener("change", updateDateValue);
 	$.timePicker.addEventListener("change", updateTimeValue);
 
-	// if(OS_ANDROID){
-	// $.timePicker.addEventListener("change", updateFieldValue);
-	// }
 	$.dateTimeField.addEventListener("singletap", selectDate);
 
 });
