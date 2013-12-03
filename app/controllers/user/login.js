@@ -313,6 +313,7 @@ function showTestLabel() {
 	if(!ENV_PROD){
 		testLabel = Ti.UI.createLabel({
 			color : "red",
+			wordWrap : false,
 			text : "将登录到测试数据库"
 		});
 		$.$view.add(testLabel);

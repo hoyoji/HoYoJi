@@ -9,12 +9,14 @@ function doClose() {
 	$.$view.setBackgroundColor("#00000000");
 	if (__loadOnly) {
 		$.$view.setVisible(false);
+		$.closeSoftKeyboard();
 		$.$view.fireEvent("hide", {
 			bubbles : false
 		});
 	} else {
 		$.closing = true;
 		$.$view.setVisible(false);
+		$.closeSoftKeyboard();
 		setTimeout(function() {
 			$.$view.fireEvent("close", {
 				bubbles : false
@@ -49,6 +51,7 @@ exports.openCachedWindow = function(contentController, options) {
 	if ($.content) {
 		_.extend($.content.$attrs, options);
 	}
+	$.closeSoftKeyboard();
 	$.$view.setVisible(true);
 	// if (OS_ANDROID) {
 	// $.$view.addEventListener('androidback', $.__androidBackFunction);
