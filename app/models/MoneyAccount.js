@@ -106,7 +106,7 @@ exports.definition = {
 				}
 			},
 			getAccountType : function() {
-				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
+				// items="现金账户,金融账户,信用卡账户,虚拟账户,债权债务"
 				// values="Cash,Deposit,Credit,Online,Debt"
 				switch(this.xGet("accountType")) {
 					case "Cash" :
@@ -118,13 +118,13 @@ exports.definition = {
 					case "Online" :
 						return "虚拟账户";
 					case "Debt" :
-						return "借贷账户";
+						return "债权债务";
 					default :
 						return this.xGet("accountType");
 				}
 			},
 			getSectionSortName : function() {
-				// items="现金账户,金融账户,信用卡账户,虚拟账户,借贷账户"
+				// items="现金账户,金融账户,信用卡账户,虚拟账户,债权债务"
 				// values="Cash,Deposit,Credit,Online,Debt"
 				switch(this.xGet("accountType")) {
 					case "Cash" :
