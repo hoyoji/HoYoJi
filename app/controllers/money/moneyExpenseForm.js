@@ -380,7 +380,11 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	};
 
 	oldMoneyAccount = $.$model.xGet("moneyAccount");
-	oldAmount = $.$model.xGet("amount") || 0;
+	if ($.saveableMode === "add") {
+		oldAmount = 0;
+	} else {
+		oldAmount = oldAmount = $.$model.xGet("amount") || 0;
+	}
 
 	function updateExchangeRate(e) {
 		if ($.moneyAccount.getValue() && $.project.getValue()) {

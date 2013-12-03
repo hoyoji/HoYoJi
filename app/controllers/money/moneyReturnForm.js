@@ -311,7 +311,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	if ($.saveableMode === "add") {
 		oldAmount = 0;
 	} else {
-		oldAmount = $.$model.xGet("amount");
+		oldAmount = $.$model.xGet("amount") || 0;
 	}
 	oldInterest = $.$model.xGet("interest") || 0;
 
@@ -444,22 +444,22 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		} else {
 			newFriend = $.$model.xGet("localFriend");
 		}
-		var oldDebtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
+		var oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 			accountType : "Debt",
 			currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
 			friendId : oldFriend ? oldFriend.xGet("id") : null,
 			ownerUserId : Alloy.Models.User.xGet("id")
 		});
 
-		var newDebtAccounts = Alloy.createCollection("MoneyAccount").xSearchInDb({
+		var newDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 			accountType : "Debt",
 			currencyId : $.$model.xGet("moneyAccount").xGet("currency").xGet("id"),
 			friendId : newFriend ? newFriend.xGet("id") : null,
 			ownerUserId : Alloy.Models.User.xGet("id")
 		});
-		var oldDebtAccount = oldDebtAccounts.at(0), newDebtAccount = newDebtAccounts.at(0);
+
 		if ($.$model.isNew()) {
-			if (newDebtAccount) {
+			if (newDebtAccount.id) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - oldAmount + newAmount);
 				newDebtAccount.xAddToSave($);
 			} else {
@@ -475,8 +475,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				debAcount.xAddToSave($);
 			}
 		} else {
-			if (newDebtAccount) {
-				if (oldDebtAccount === newDebtAccount) {
+			if (newDebtAccount.id) {
+				if (oldDebtAccount.id === newDebtAccount.id) {
 					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - oldAmount + newAmount);
 					newDebtAccount.xAddToSave($);
 				} else {
@@ -667,10 +667,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if (oldDebtAccount) {
+			if (oldDebtAccount.id) {
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.previous("currentBalance"));
 			}
-			if (newDebtAccount) {
+			if (newDebtAccount.id) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.previous("currentBalance"));
 			}
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {

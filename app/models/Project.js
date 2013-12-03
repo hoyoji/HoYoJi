@@ -66,8 +66,8 @@ exports.definition = {
 			},
 			parentProjects : {
 				type : "Project",
-				attribute : "subProject"
-				// cascadeRemove : true
+				attribute : "subProject",
+				cascadeRemove : true
 			},
 			parentProjectParentProjects : {
 				type : "ParentProject",

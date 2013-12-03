@@ -317,7 +317,7 @@ exports.definition = {
 							moneyIncomeApportion.xSet("amount", amount + (self.xGet("amount") - amountTotal));
 						}
 					}
-					this.hasAddedApportions = true;
+					// this.hasAddedApportions = true;
 				}
 			},
 			getRemark : function() {
