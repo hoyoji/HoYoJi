@@ -22,7 +22,7 @@ $.onWindowOpenDo(function() {
 
 $.convertSelectedFriend2UserModel = function(selectedFriendModel) {
 	if (selectedFriendModel) {
-		if(selectedFriendModel.xGet("friendUser")){
+		if (selectedFriendModel.xGet("friendUser")) {
 			$.$model.xSet("friendUser", selectedFriendModel.xGet("friendUser"));
 			$.$model.xSet("localFriend", null);
 			return selectedFriendModel.xGet("friendUser");
@@ -46,15 +46,15 @@ $.convertUser2FriendModel = function(userModel) {
 		if (friend.id) {
 			return friend;
 		}
-	} else if($.$model.xGet("localFriend")) {
+	} else if ($.$model.xGet("localFriend")) {
 		return $.$model.xGet("localFriend");
 	}
 };
 
-$.friend.convertModelValue = function(value){
-	if($.$model.xGet("friendUser")) {
+$.friend.convertModelValue = function(value) {
+	if ($.$model.xGet("friendUser")) {
 		return $.$model.xGet("friendUser").getFriendDisplayName();
-	} else if($.$model.xGet("localFriend")) {
+	} else if ($.$model.xGet("localFriend")) {
 		return $.$model.xGet("localFriend").getDisplayName();
 	} else {
 		return "";
@@ -215,8 +215,8 @@ if (!$.$model) {
 }
 
 // if ($.saveableMode === "edit") {
-	// $.project.label.setColor("#6e6d6d");
-	// $.project.field.setColor("#6e6d6d");
+// $.project.label.setColor("#6e6d6d");
+// $.project.field.setColor("#6e6d6d");
 // }
 
 function updateAccountBalance() {
@@ -309,7 +309,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	} else {
 		oldFriend = $.$model.xGet("localFriend");
 	}
-	
+
 	if ($.saveableMode === "add") {
 		oldAmount = 0;
 	} else {
@@ -437,7 +437,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				exchange.xAddToSave($);
 			}
 		}
-		
+
 		/*更新借贷账户*/
 		var newFriend;
 		if (!$.$model.xGet("localFriend")) {
@@ -465,7 +465,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				newDebtAccount.xAddToSave($);
 			} else {
 				var debAcount = Alloy.createModel("MoneyAccount", {
-					name :  newFriend ? newFriend.xGet("id") : "匿名借贷账户",
+					name : newFriend ? newFriend.xGet("id") : "匿名借贷账户",
 					currency : $.$model.xGet("moneyAccount").xGet("currency"),
 					currentBalance : -newAmount,
 					sharingType : "Private",
@@ -475,7 +475,13 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				});
 				debAcount.xAddToSave($);
 			}
-		}else {
+		} else {
+			var oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+				accountType : "Debt",
+				currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
+				friendId : oldFriend ? oldFriend.xGet("id") : null,
+				ownerUserId : Alloy.Models.User.xGet("id")
+			});
 			if (newDebtAccount.id) {
 				if (oldDebtAccount.id === newDebtAccount.id) {
 					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") + oldAmount - newAmount);
@@ -486,20 +492,20 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - newAmount);
 					newDebtAccount.xAddToSave($);
 				}
-			}else{
+			} else {
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") + oldAmount);
 				oldDebtAccount.xAddToSave($);
-				
+
 				var debAcount = Alloy.createModel("MoneyAccount", {
-				name : newFriend ? newFriend.xGet("id") : "匿名借贷账户",
-				currency : $.$model.xGet("moneyAccount").xGet("currency"),
-				currentBalance : -newAmount,
-				sharingType : "Private",
-				accountType : "Debt",
-				friend : newFriend,
-				ownerUser : Alloy.Models.User
-			});
-			debAcount.xAddToSave($);
+					name : newFriend ? newFriend.xGet("id") : "匿名借贷账户",
+					currency : $.$model.xGet("moneyAccount").xGet("currency"),
+					currentBalance : -newAmount,
+					sharingType : "Private",
+					accountType : "Debt",
+					friend : newFriend,
+					ownerUser : Alloy.Models.User
+				});
+				debAcount.xAddToSave($);
 			}
 		}
 
@@ -577,7 +583,6 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				});
 			}
 		});
-
 
 		var modelIsNew = $.$model.isNew();
 		var oldAccountHasChanged = oldMoneyAccount.hasChanged("currentBalance");

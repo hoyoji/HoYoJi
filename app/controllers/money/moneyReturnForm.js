@@ -475,6 +475,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				debAcount.xAddToSave($);
 			}
 		} else {
+			var oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+				accountType : "Debt",
+				currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
+				friendId : oldFriend ? oldFriend.xGet("id") : null,
+				ownerUserId : Alloy.Models.User.xGet("id")
+			});
 			if (newDebtAccount.id) {
 				if (oldDebtAccount.id === newDebtAccount.id) {
 					newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - oldAmount + newAmount);
