@@ -340,7 +340,7 @@ exports.definition = {
 						currentBalance : moneyAccount.xGet("currentBalance") + amount
 					}, saveOptions);
 
-					var friend = this.getFriend(this.xGet("friendUser"));
+					var friend = this.getFriend();
 					var debtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						accountType : "Debt",
 						currencyId : moneyAccount.xGet("currency").xGet("id"),
