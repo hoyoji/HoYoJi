@@ -126,6 +126,21 @@ exports.definition = {
 				saveOptions.patch = true;
 				saveOptions.wait = true;
 				var self = this;
+				
+				if (self.xGet("friendUser").xGet("id") !== Alloy.Models.User.xGet("id")) {
+					var debtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						accountType : "Debt",
+						currencyId : self.xGet("moneyIncome").xGet("moneyAccount").xGet("currency").xGet("id"),
+						friendId : self.xGet("friendUser").getFriend().id,
+						ownerUserId : Alloy.Models.User.xGet("id")
+					});
+					if (debtAccount.id) {
+						debtAccount.save({
+							currentBalance : debtAccount.xGet("currentBalance") + self.xGet("amount")
+						}, saveOptions);
+					}
+				}
+				
 				var projectShareAuthorizations = self.xGet("moneyIncome").xGet("project").xGet("projectShareAuthorizations");
 				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
 					if (projectShareAuthorization.xGet("friendUser") === self.xGet("friendUser")) {
