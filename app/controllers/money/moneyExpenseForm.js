@@ -250,14 +250,11 @@ function deleteApportion(apportionModel) {//从form打开apportion进行删除�
 	}
 }
 
-// $.onWindowOpenDo(function() {
-//如果是多人分摊则显示分摊button，反之隐藏
-if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {
+if ($.$model.xGet("project") && $.$model.xGet("project").xGet("projectShareAuthorizations").length === 1) {//如果是多人分摊则显示分摊button，反之隐藏
 	$.project.hideRightButton();
 } else {
 	$.project.showRightButton();
 }
-// });
 
 var detailsDirty = false, apportionsDirty = false;
 function updateDetails() {
@@ -434,14 +431,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 		}
 
-		if ($.$model.xGet("moneyExpenseApportions").length > 0) {
+		if ($.$model.xGet("moneyExpenseApportions").length > 0) {//切换项目后把原项目的apportion清空
 			if ($.$model.isNew()) {
 				$.$model.xGet("moneyExpenseApportions").reset();
 			} else {
 				$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-					if (item.isNew()) {
+					if (item.isNew()) {//如果apportion是刚新增的，直接移除
 						$.$model.xGet("moneyExpenseApportions").remove(item);
-					} else {
+					} else {//apportion已经保存在数据库的，先隐藏，保存expense成功后再删除；多次切换项目，又回到打开时的项目，把原项目隐藏的apportion再显示出来
 						if ($.project.getValue() !== oldProject) {
 							item.__xDeletedHidden = true;
 						} else {
@@ -526,14 +523,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}
 
 		if ($.$model.xGet("project").xGet("projectShareAuthorizations").length > 0) {
-			if ($.$model.isNew()) {
+			if ($.$model.isNew()) {//更新用户在项目的总支出
 				$.$model.xGet("project").xGet("projectShareAuthorizations").forEach(function(item) {
 					if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
 						item.xSet("actualTotalExpense", item.xGet("actualTotalExpense") + $.$model.getProjectCurrencyAmount());
 						item.xAddToSave($);
 					}
 				});
-			} else {
+			} else {//更新用户在项目的总支出
 				if ($.$model.hasChanged("project")) {
 					$.$model.xPrevious("project").xGet("projectShareAuthorizations").forEach(function(item) {
 						if (item.xGet("friendUser") === $.$model.xGet("ownerUser")) {
@@ -563,9 +560,9 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 
 		var oldProjectShareAuthorizations = $.$model.xPrevious("project").xGet("projectShareAuthorizations");
 		var projectShareAuthorizations = $.$model.xGet("project").xGet("projectShareAuthorizations");
-		var oldDebtAccount, newDebtAccount, debtAccountChanged = [];
+		var oldDebtAccount, newDebtAccount, debtAccountChanged = [];//debtAccountChanged用来存放修改过的借贷账户，保存出错后将所有修改的借贷账户还原数据
 		$.$model.xGet("moneyExpenseApportions").forEach(function(item) {
-			if (item.xGet("friendUser").xGet("id") !== Alloy.Models.User.xGet("id")) {
+			if (item.xGet("friendUser").xGet("id") !== Alloy.Models.User.xGet("id")) {//该分摊成员不是支出创建者才更新借贷账户
 				oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					accountType : "Debt",
 					currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
@@ -575,14 +572,14 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 			}
 			if (item.__xDeleted) {//删除
 				item.xAddToDelete($);
-				
+
 				if (oldDebtAccount && oldDebtAccount.id) {
 					oldDebtAccount.xSet("currentBalance", oldDebtAccount.xGet("currentBalance") - item.xPrevious("amount"));
 					oldDebtAccount.xAddToSave($);
 					debtAccountChanged.push(oldDebtAccount);
 				}
 
-				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {//删除时更新用户在该项目的总支出
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
 						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - Number((item.xPrevious("amount") * item.xGet("moneyExpense").xPrevious("exchangeRate")).toFixed(2)));
@@ -598,7 +595,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					debtAccountChanged.push(oldDebtAccount);
 				}
 
-				oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {
+				oldProjectShareAuthorizations.forEach(function(projectShareAuthorization) {//删除时更新用户在该项目的总支出
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
 						projectShareAuthorization.xSet("apportionedTotalExpense", apportionedTotalExpense - Number((item.xPrevious("amount") * item.xGet("moneyExpense").xPrevious("exchangeRate")).toFixed(2)));
@@ -607,8 +604,8 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				});
 			} else {
 				item.xAddToSave($);
-				
-				if (item.xGet("friendUser").xGet("id") !== Alloy.Models.User.xGet("id")) {
+
+				if (item.xGet("friendUser").xGet("id") !== Alloy.Models.User.xGet("id")) {//该分摊成员不是支出创建者才更新借贷账户
 					newDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						accountType : "Debt",
 						currencyId : $.$model.xGet("moneyAccount").xGet("currency").xGet("id"),
@@ -666,7 +663,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					}
 				}
 
-				projectShareAuthorizations.forEach(function(projectShareAuthorization) {
+				projectShareAuthorizations.forEach(function(projectShareAuthorization) {//更新用户的应该支出
 					if (projectShareAuthorization.xGet("friendUser") === item.xGet("friendUser")) {
 						var apportionedTotalExpense = projectShareAuthorization.xGet("apportionedTotalExpense") || 0;
 						if (item.isNew()) {
