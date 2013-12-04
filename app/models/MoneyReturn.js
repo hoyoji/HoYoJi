@@ -366,7 +366,7 @@ exports.definition = {
 				moneyAccount.save({
 					currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
 				}, saveOptions);
-
+ 
 				if (self.xGet("moneyBorrow")) {
 					var moneyBorrow = self.xGet("moneyBorrow");
 					var borrowRate = moneyBorrow.xGet("exchangeRate");
