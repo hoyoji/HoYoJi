@@ -52,7 +52,7 @@
 					};
 					requestData.push(filter);
 				});
-				Alloy.Globals.Server.getData(requestData, function(data) {
+				Alloy.Globals.Server.getData({lastSyncTime : options && options.lastSyncTime, projectIds : requestData}, function(data) {
 					var returnCollection = Alloy.createCollection("Project");
 					data = _.flatten(data);
 					data.forEach(function(record) {
@@ -70,7 +70,7 @@
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
+							//if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
 								if (!options || options.saveProject !== false) {
 									model.save(null, {
 										silent : true,
@@ -78,13 +78,13 @@
 										dbTrans : options && options.dbTrans
 									});
 								}
-							} else {
-								model.save(null, {
-									silent : true,
-									syncFromServer : true,
-									dbTrans : options && options.dbTrans
-								});
-							}
+							// } else {
+								// model.save(null, {
+									// silent : true,
+									// syncFromServer : true,
+									// dbTrans : options && options.dbTrans
+								// });
+							// }
 
 						}
 					});
@@ -456,7 +456,8 @@
 												dbTrans.rollback("获取新共享来的项目资料时出错");
 											}, {
 												dbTrans : dbTrans,
-												saveProject : false
+												saveProject : false,
+												lastSyncTime : originalLastSyncTime
 											});
 										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
