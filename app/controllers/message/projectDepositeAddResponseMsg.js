@@ -64,6 +64,17 @@ var onFooterbarTap = function(e) {
 	}
 };
 
+$.findFriendModel = function(userModel) {
+	if (userModel) {
+		var friend = Alloy.createModel("Friend").xFindInDb({
+			friendUserId : userModel.id
+		});
+		if (friend.id) {
+			return friend;
+		}
+	}
+};
+
 $.onSave = function(saveEndCB, saveErrorCB) {
 	var editData = [];
 	//删除充值
@@ -115,6 +126,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 						moneyIncome.xGet("moneyAccount").xAddToSave($);
 						moneyIncome._xDelete();
+						
+						var incomeFriend = $.findFriendModel(moneyIncome.xGet("friendUser"));
+					
+						var incomeDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+							accountType : "Debt",
+							currencyId : moneyIncome.xGet("moneyAccount").xGet("currency").xGet("id"),
+							friendId : incomeFriend ? incomeFriend.xGet("id") : null,
+							ownerUserId : Alloy.Models.User.xGet("id")
+						});
+				
+						if (incomeDebtAccount.id) {
+							incomeDebtAccount.xSet("currentBalance", incomeDebtAccount.xGet("currentBalance") + moneyIncome.xGet("amount"));
+							incomeDebtAccount.xAddToSave($);
+						}
 					}
 				} else {
 					if (moneyIncome && moneyIncome.id) {
@@ -210,6 +235,20 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 						moneyExpense.xGet("moneyAccount").xAddToSave($);
 						moneyExpense._xDelete();
+						
+						var expenseFriend = $.findFriendModel(moneyExpense.xGet("friendUser"));
+					
+						var expenseDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+							accountType : "Debt",
+							currencyId : moneyExpense.xGet("moneyAccount").xGet("currency").xGet("id"),
+							friendId : expenseFriend ? expenseFriend.xGet("id") : null,
+							ownerUserId : Alloy.Models.User.xGet("id")
+						});
+				
+						if (expenseDebtAccount.id) {
+							expenseDebtAccount.xSet("currentBalance", expenseDebtAccount.xGet("currentBalance") - moneyExpense.xGet("amount"));
+							expenseDebtAccount.xAddToSave($);
+						}
 					}
 				}else{
 					if (moneyExpense && moneyExpense.id) {

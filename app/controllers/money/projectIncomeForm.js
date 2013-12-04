@@ -194,6 +194,19 @@ if ($.saveableMode === "read") {
 			$.exchangeRate.field.fireEvent("change", {bubbles : false});
 		}
 	}
+	
+	$.findFriendModel = function(userModel) {
+		if (userModel) {
+			var friend = Alloy.createModel("Friend").xFindInDb({
+				friendUserId : userModel.id
+			});
+			if (friend.id) {
+				return friend;
+			}
+		} else if ($.$model.xGet("localFriend")) {
+			return $.$model.xGet("localFriend");
+		}
+	};
 
 	$.onSave = function(saveEndCB, saveErrorCB) {
 		$.picture.xAddToSave($);
@@ -274,6 +287,34 @@ if ($.saveableMode === "read") {
 		
 						}
 					}
+					
+					var newFriend = $.findFriendModel($.$model.xGet("friendUser"));
+					
+					var newDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+						accountType : "Debt",
+						currencyId : $.$model.xGet("moneyAccount").xGet("currency").xGet("id"),
+						friendId : newFriend ? newFriend.xGet("id") : null,
+						ownerUserId : Alloy.Models.User.xGet("id")
+					});
+			
+					if (newDebtAccount.id) {
+						newDebtAccount.xSet("currentBalance", newDebtAccount.xGet("currentBalance") - newAmount);
+						newDebtAccount.xAddToSave($);
+						editData.push(newDebtAccount.toJSON());
+					} else {
+						var debAcount = Alloy.createModel("MoneyAccount", {
+							name : newFriend ? newFriend.xGet("id") : "匿名借贷账户",
+							currency : $.$model.xGet("moneyAccount").xGet("currency"),
+							currentBalance : -newAmount,
+							sharingType : "Private",
+							accountType : "Debt",
+							friend : newFriend,
+							ownerUser : Alloy.Models.User
+						});
+						debAcount.xAddToSave($);
+						addData.push(debAcount.toJSON());
+					}
+					
 	
 				// if ($.$model.xGet("friendUser").xGet("id") !== Alloy.Models.User.id) {
 					var date = (new Date()).toISOString();
