@@ -71,13 +71,13 @@
 								returnCollection.push(model);
 							}
 							//if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
-								if (!options || options.saveProject !== false) {
+								//if (!options || options.saveProject !== false) {
 									model.save(null, {
 										silent : true,
 										syncFromServer : true,
 										dbTrans : options && options.dbTrans
 									});
-								}
+								//}
 							// } else {
 								// model.save(null, {
 									// silent : true,
@@ -304,7 +304,7 @@
 						delete dbTrans.__syncUpdateData;
 						xErrorCallback({
 							__summary : {
-								msg : "无法获取汇率"
+								msg : "同步出错"
 							}
 						});
 					}
