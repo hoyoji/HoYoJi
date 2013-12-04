@@ -208,14 +208,6 @@
 					},
 					onreadystatechange : function() {
 						if (progressCallback) {
-							// if(this.readyState === this.HEADERS_RECEIVED){
-							// if(dataLength === undefined){
-							// dataLength = this.getResponseHeader("Content-Length");
-							// }
-							// progressCallback(0, dataLength);
-							// } else if(this.readyState === this.LOADING){
-							// progressCallback(0.01, dataLength);
-							// } else
 							if (this.readyState === this.DONE) {
 								progressCallback(1, dataLength);
 								if (dataSendLength === undefined) {
@@ -227,13 +219,11 @@
 					},
 					onerror : function(e) {
 						console.info("Server.postData error : " + JSON.stringify(e));
-						//if(e.code === 1){
 						xErrorCallback({
 							__summary : {
 								msg : "连接服务器出错 " + e.code
 							}
 						});
-						//}
 					},
 					timeout : 300000 /* in milliseconds */
 				});
