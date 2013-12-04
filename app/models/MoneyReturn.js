@@ -361,7 +361,7 @@ exports.definition = {
 				var saveOptions = _.extend({}, options);
 				saveOptions.patch = true;
 				saveOptions.wait = true;
-
+ 
 				var moneyAccount = this.xGet("moneyAccount");
 				moneyAccount.save({
 					currentBalance : moneyAccount.xGet("currentBalance") + amount + interest
