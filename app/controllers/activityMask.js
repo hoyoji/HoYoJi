@@ -126,3 +126,5 @@ function _addMsgView(container, msg, closeCallback){
 	}
 	closeCB = closeCallback;
 }
+
+

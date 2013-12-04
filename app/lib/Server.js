@@ -52,7 +52,7 @@
 					};
 					requestData.push(filter);
 				});
-				Alloy.Globals.Server.getData(requestData, function(data) {
+				Alloy.Globals.Server.getData({lastSyncTime : options && options.lastSyncTime, projectIds : requestData}, function(data) {
 					var returnCollection = Alloy.createCollection("Project");
 					data = _.flatten(data);
 					data.forEach(function(record) {
@@ -70,7 +70,7 @@
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-							if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
+							//if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
 								if (!options || options.saveProject !== false) {
 									model.save(null, {
 										silent : true,
@@ -78,13 +78,13 @@
 										dbTrans : options && options.dbTrans
 									});
 								}
-							} else {
-								model.save(null, {
-									silent : true,
-									syncFromServer : true,
-									dbTrans : options && options.dbTrans
-								});
-							}
+							// } else {
+								// model.save(null, {
+									// silent : true,
+									// syncFromServer : true,
+									// dbTrans : options && options.dbTrans
+								// });
+							// }
 
 						}
 					});
@@ -208,14 +208,6 @@
 					},
 					onreadystatechange : function() {
 						if (progressCallback) {
-							// if(this.readyState === this.HEADERS_RECEIVED){
-							// if(dataLength === undefined){
-							// dataLength = this.getResponseHeader("Content-Length");
-							// }
-							// progressCallback(0, dataLength);
-							// } else if(this.readyState === this.LOADING){
-							// progressCallback(0.01, dataLength);
-							// } else
 							if (this.readyState === this.DONE) {
 								progressCallback(1, dataLength);
 								if (dataSendLength === undefined) {
@@ -227,13 +219,11 @@
 					},
 					onerror : function(e) {
 						console.info("Server.postData error : " + JSON.stringify(e));
-						//if(e.code === 1){
 						xErrorCallback({
 							__summary : {
 								msg : "连接服务器出错 " + e.code
 							}
 						});
-						//}
 					},
 					timeout : 300000 /* in milliseconds */
 				});
@@ -456,7 +446,8 @@
 												dbTrans.rollback("获取新共享来的项目资料时出错");
 											}, {
 												dbTrans : dbTrans,
-												saveProject : false
+												saveProject : false,
+												lastSyncTime : originalLastSyncTime
 											});
 										}
 										if (model.syncAddNew(record, dbTrans) !== false) {
