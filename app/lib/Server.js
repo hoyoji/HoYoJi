@@ -1,7 +1,7 @@
 ( function() {
 		Ti.include('suds.js');
 		var serverUrl = "http://1.hoyoji.app1101080392.twsapp.com/";
-		if(!ENV_PROD){
+		if (!ENV_PROD) {
 			serverUrl = "http://3.money.app100697798.twsapp.com/";
 		}
 		exports.Server = {
@@ -52,7 +52,10 @@
 					};
 					requestData.push(filter);
 				});
-				Alloy.Globals.Server.getData({lastSyncTime : options && options.lastSyncTime, projectIds : requestData}, function(data) {
+				Alloy.Globals.Server.getData({
+					lastSyncTime : options && options.lastSyncTime,
+					projectIds : requestData
+				}, function(data) {
 					var returnCollection = Alloy.createCollection("Project");
 					data = _.flatten(data);
 					data.forEach(function(record) {
@@ -71,19 +74,19 @@
 								returnCollection.push(model);
 							}
 							// if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
-								// if (!options || options.saveProject !== false) {
-									model.save(null, {
-										silent : true,
-										syncFromServer : true,
-										dbTrans : options && options.dbTrans
-									});
+							// if (!options || options.saveProject !== false) {
+							model.save(null, {
+								silent : true,
+								syncFromServer : true,
+								dbTrans : options && options.dbTrans
+							});
 							//	}
 							// } else {
-								// model.save(null, {
-									// silent : true,
-									// syncFromServer : true,
-									// dbTrans : options && options.dbTrans
-								// });
+							// model.save(null, {
+							// silent : true,
+							// syncFromServer : true,
+							// dbTrans : options && options.dbTrans
+							// });
 							// }
 						}
 					});
@@ -436,10 +439,7 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
-										if (originalLastSyncTime && dataType === "ProjectShareAuthorization"
-													&& record.state === "Accept" 
-													&& record.ownerUserId !== Alloy.Models.User.id
-													&& record.friendUserId === Alloy.Models.User.id) {
+										if (originalLastSyncTime && dataType === "ProjectShareAuthorization" && record.state === "Accept" && record.ownerUserId !== Alloy.Models.User.id && record.friendUserId === Alloy.Models.User.id) {
 											dbTrans.xCommitStart();
 											Alloy.Globals.Server.loadSharedProjects([record.projectId], function(collection) {
 												dbTrans.xCommitEnd();
@@ -460,13 +460,12 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
+
+
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
-										if (originalLastSyncTime && dataType === "ProjectShareAuthorization"
-													&& record.state === "Accept" && model.xGet("state") !== "Accept"
-													&& record.ownerUserId !== Alloy.Models.User.id
-													&& record.friendUserId === Alloy.Models.User.id) {
+										if (originalLastSyncTime && dataType === "ProjectShareAuthorization" && record.state === "Accept" && model.xGet("state") !== "Accept" && record.ownerUserId !== Alloy.Models.User.id && record.friendUserId === Alloy.Models.User.id) {
 											dbTrans.xCommitStart();
 											Alloy.Globals.Server.loadSharedProjects([record.projectId], function(collection) {
 												dbTrans.xCommitEnd();
@@ -521,38 +520,91 @@
 						dbTrans.on("commit", postCommit);
 					}
 					function updateDebtAccountBalances() {
-						function getDebtTotal(tableName, moneyAccount){
-									var friendId = moneyAccount.xGet("friendId");
-									var friendIdStr = friendId ? "f.id = '" +friendId+"'" : "(main.friendUserId IS NULL AND main.localFriendId IS NULL)";
-									var currencyId = moneyAccount.xGet("currencyId");
-									var config = Alloy.createModel(tableName).config;
-									var Model = Alloy.M(tableName, {
-										config : config
+						function updateDebtAccountOfTable(tableName, factor, owner, query) {
+							//var config = Alloy.createModel(tableName).config;
+							var Model = Alloy.M(tableName, {
+								config : {
+										adapter: {
+											type : "hyjSql"
+											// collection_name : tableName,
+											// db_name : Alloy.Globals.DataStore.getDbName()
+										}
+									}
+							});
+							var Collection = Alloy.C(tableName, { }, Model);
+							var results = new Collection();
+							if(tableName.endsWith("Apportion")){
+								if(owner){
+									results.fetch({
+										query : "SELECT f.id AS friendId, ma.currencyId  AS currencyId, SUM(main.amount) AS TOTAL FROM " + tableName + " main JOIN MoneyAccount ma ON mi.moneyAccountId = ma.id JOIN Project prj ON prj.id = mi.projectId LEFT JOIN Friend f ON main.friendUserId = f.friendUserId WHERE " + query + " qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + " GROUP BY friendId, currencyId"
 									});
-									var model = new Model({
-										TOTAL : 0
+								} else {
+									results.fetch({
+										query : "SELECT f.id AS friendId, prj.currencyId  AS currencyId, SUM(main.amount * mi.exchangeRate) AS TOTAL FROM " + tableName + " main JOIN Project prj ON prj.id = mi.projectId LEFT JOIN Friend f ON main.ownerUserId = f.friendUserId WHERE " + query + " qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + " GROUP BY friendId, currencyId"
 									});
-									
-									model.fetch({
-										query : "SELECT SUM(amount) AS TOTAL FROM "+tableName+" main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id LEFT JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE "+friendIdStr+" AND ma.currencyId = '"+currencyId+"' AND main.ownerUserId = '"+Alloy.Models.User.id+"'"
-									});
-									return model.get("TOTAL") || 0;
-						}
-						Alloy.Models.User.xGet("moneyAccounts").forEach(function(moneyAccount) {
-							if (moneyAccount.xGet("accountType") === "Debt") {
-								var borrowTotal = getDebtTotal("MoneyBorrow", moneyAccount);
-								var lendTotal = getDebtTotal("MoneyLend", moneyAccount);
-								var paybackTotal = getDebtTotal("MoneyPayback", moneyAccount);
-								var returnTotal = getDebtTotal("MoneyReturn", moneyAccount);
-
-								moneyAccount.save({
-									"currentBalance" : Number((- borrowTotal + lendTotal - paybackTotal + returnTotal).toFixed(2))
-								}, {
-									wait : true,
-									patch : true
+								}
+							} else {
+								results.fetch({
+									query : "SELECT f.id AS friendId, ma.currencyId AS currencyId, SUM(main.amount) AS TOTAL FROM " + tableName + " main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id LEFT JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE " + query + " qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + " GROUP BY friendId, currencyId"
 								});
 							}
+							
+							results.forEach(function(item) {
+								var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
+									accountType : "Debt",
+									friendId : item.get("friendId"),
+									currencyId : item.get("currencyId")
+								});
+								if (moneyAccount.id) {
+									var total = item.get("TOTAL") * factor;
+									total += moneyAccount.xGet("currentBalance");
+									moneyAccount.save({
+										currentBalance : total
+									}, {
+										wait : true,
+										patch : true
+									});
+								} else {
+									moneyAccount.xSet({
+										name : item.get("friendId") || "匿名借贷账户",
+										accountType : "Debt",
+										friendId : item.get("friendId"),
+										currencyId : item.get("currencyId"),
+										sharingType : "Private",
+										ownerUserId : Alloy.Models.User.id,
+										currentBalance : item.get("TOTAL") * factor
+									});
+									moneyAccount.save(null, {
+										wait : true,
+										patch : true
+									});
+								}
+							});
+						}
+						
+						Alloy.Models.User.xGet("moneyAccounts").forEach(function(moneyAccount){
+							moneyAccount.save({currentBalance : 0}, {
+								//wait : true,
+								patch : true
+							});
 						});
+						
+						// 1. 借出、借入、收款、还款
+						// 2. 充值收入、充值支出
+						// 3. (自己记的)支出分摊给别人的 --> 当作应收
+						// 4. (自己记的)收入分摊给别人的 --> 当作应付
+						// 3. (别人记的)支出分摊给自己的 --> 当作应付
+						// 4. (别人记的)收入分摊给自己的 --> 当作应收
+						updateDebtAccountOfTable("MoneyBorrow", -1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyLend", 1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyPayback", -1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyReturn", 1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyExpense", 1, true, "main.expenseType = 'Deposite' AND main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyIncome", -1, true, "main.incomeType = 'Deposite' AND main.ownerUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyExpenseApportion", 1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "' AND main.friendUserId <> '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyIncomeApportion", -1, true, "main.ownerUserId = '" + Alloy.Models.User.id + "' AND main.friendUserId <> '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyExpenseApportion", -1, false, "main.ownerUserId <> '" + Alloy.Models.User.id + "' AND main.friendUserId = '" + Alloy.Models.User.id + "'");
+						updateDebtAccountOfTable("MoneyIncomeApportion", 1, false, "main.ownerUserId <> '" + Alloy.Models.User.id + "' AND main.friendUserId = '" + Alloy.Models.User.id + "'");
 					}
 
 				}, function(e) {
