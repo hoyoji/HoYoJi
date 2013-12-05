@@ -70,14 +70,14 @@
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
 							}
-							//if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
-								//if (!options || options.saveProject !== false) {
+							// if (modelData.__dataType === "Project" || modelData.__dataType === "ProjectShareAuthorization" || modelData.__dataType === "User") {
+								// if (!options || options.saveProject !== false) {
 									model.save(null, {
 										silent : true,
 										syncFromServer : true,
 										dbTrans : options && options.dbTrans
 									});
-								//}
+							//	}
 							// } else {
 								// model.save(null, {
 									// silent : true,
@@ -85,14 +85,12 @@
 									// dbTrans : options && options.dbTrans
 								// });
 							// }
-
 						}
 					});
 					if (xFinishedCallback) {
 						xFinishedCallback(returnCollection);
 					}
 				}, xErrorCallback, "getSharedProjects");
-				// }, xErrorCallback);
 			},
 			loadData : function(modelName, filter, xFinishedCallback, xErrorCallback) {
 				// this.searchData(modelName, filter, function(collection) {
@@ -438,9 +436,12 @@
 								} else {
 									if (model.isNew()) {
 										// 没有找到该记录
-										if (originalLastSyncTime && dataType === "Project" && record.ownerUserId !== Alloy.Models.User.id) {
+										if (originalLastSyncTime && dataType === "ProjectShareAuthorization"
+													&& record.state === "Accept" 
+													&& record.ownerUserId !== Alloy.Models.User.id
+													&& record.friendUserId === Alloy.Models.User.id) {
 											dbTrans.xCommitStart();
-											Alloy.Globals.Server.loadSharedProjects([record.id], function(collection) {
+											Alloy.Globals.Server.loadSharedProjects([record.projectId], function(collection) {
 												dbTrans.xCommitEnd();
 											}, function(e) {
 												dbTrans.rollback("获取新共享来的项目资料时出错");
@@ -459,11 +460,24 @@
 												dbTrans.off("rollback", syncRollbackUpdate);
 												model.syncRollback();
 											}
-
-
 											dbTrans.on("rollback", syncRollbackUpdate);
 										}
 										// 该记录已存在本地，我们更新
+										if (originalLastSyncTime && dataType === "ProjectShareAuthorization"
+													&& record.state === "Accept" && model.xGet("state") !== "Accept"
+													&& record.ownerUserId !== Alloy.Models.User.id
+													&& record.friendUserId === Alloy.Models.User.id) {
+											dbTrans.xCommitStart();
+											Alloy.Globals.Server.loadSharedProjects([record.projectId], function(collection) {
+												dbTrans.xCommitEnd();
+											}, function(e) {
+												dbTrans.rollback("获取新共享来的项目资料时出错");
+											}, {
+												dbTrans : dbTrans,
+												saveProject : false,
+												lastSyncTime : originalLastSyncTime
+											});
+										}
 										model.syncUpdate(record, dbTrans);
 										model._syncUpdate(record, dbTrans);
 										if (dbTrans.__syncUpdateData[model.config.adapter.collection_name]) {
