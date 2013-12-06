@@ -187,12 +187,12 @@ exports.definition = {
 					if (accountCurrency === userCurrency) {
 						exchange = 1;
 					}else{
-						var exchanges = accountCurrency.getExchanges(userCurrency);
+						var exchanges = userCurrency.getExchanges(accountCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
 				} else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {

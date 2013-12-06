@@ -23,15 +23,15 @@ $.makeContextMenu = function(e, isSelectMode) {
 					}
 					if (fetchingExchanges[currency.xGet("id")] !== true) {
 						var exchange = Alloy.createModel("Exchange").xFindInDb({
-							localCurrencyId : currency.xGet("id"),
-							foreignCurrencyId : $.$model.xGet("id")
+							localCurrencyId : $.$model.xGet("id"),
+							foreignCurrencyId : currency.xGet("id")
 						});
 						if (!exchange.id) {
 							fetchingExchanges[currency.xGet("id")] = true;
-							Alloy.Globals.Server.getExchangeRate(currency.xGet("id"), $.$model.xGet("id"), function(rate) {
+							Alloy.Globals.Server.getExchangeRate($.$model.xGet("id"), currency.xGet("id"), function(rate) {
 								exchange = Alloy.createModel("Exchange", {
-									localCurrencyId : currency.xGet("id"),
-									foreignCurrencyId : $.$model.xGet("id"),
+									localCurrencyId : $.$model.xGet("id"),
+									foreignCurrencyId : currency.xGet("id"),
 									rate : rate
 								});
 								exchange.xSet("ownerUser", Alloy.Models.User);
