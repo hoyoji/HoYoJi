@@ -194,17 +194,17 @@ exports.definition = {
 						}
 					}
 					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
-				} else {
+				}  else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {
 						exchange = 1;
 					} else {
-						var exchanges = userCurrency.getExchanges(projectCurrency);
+						var exchanges = projectCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") * exchange).toUserCurrency();
 				}
 			},
 			getProjectName : function() {

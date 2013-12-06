@@ -212,12 +212,12 @@ exports.definition = {
 					if (projectCurrency === userCurrency) {
 						exchange = 1;
 					} else {
-						var exchanges = userCurrency.getExchanges(projectCurrency);
+						var exchanges = projectCurrency.getExchanges(userCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") / exchange).toUserCurrency();
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * this.xGet("exchangeRate") * exchange).toUserCurrency();
 				}
 			},
 			getProjectName : function() {
