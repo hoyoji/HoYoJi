@@ -69,6 +69,9 @@
 							if (!model.id) {
 								model.attributes.id = id;
 							}
+							if(modelData.__dataType === "User" && id === Alloy.Models.User.id){
+								delete modelData.lastSyncTime;
+							}
 							model.xSet(modelData);
 							if (modelData.__dataType === "Project") {
 								returnCollection.push(model);
