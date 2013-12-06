@@ -454,7 +454,7 @@
 											model._syncAddNew(record, dbTrans);
 										}
 										if (dataType === "User") {
-											userToFetchImge.push(model);
+											userToFetchImage.push(model);
 										}
 									} else {
 										if (model.syncRollback) {
