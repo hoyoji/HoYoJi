@@ -287,10 +287,9 @@
 				this.getData(Number(Alloy.Models.User.xGet("lastSyncTime")), function(data) {
 					activityWindow.progressStep(2, "合并数据");
 					var lastSyncTime = data.lastSyncTime;
-					data = _.flatten(data.data);
-
 					var dbTrans = Alloy.Globals.DataStore.createTransaction();
-
+					var userToFetchImage = [];
+					data = _.flatten(data.data);
 					dbTrans.newExchangesFromServer = {};
 					dbTrans.newCurrenciesFromServer = {};
 					dbTrans.__syncData = {};
@@ -454,6 +453,9 @@
 										if (model.syncAddNew(record, dbTrans) !== false) {
 											model._syncAddNew(record, dbTrans);
 										}
+										if (dataType === "User") {
+											userToFetchImge.push(model);
+										}
 									} else {
 										if (model.syncRollback) {
 											function syncRollbackUpdate() {
@@ -502,6 +504,7 @@
 						delete dbTrans.newCurrenciesFromServer;
 						delete dbTrans.__syncUpdateData;
 						Alloy.Models.User.xGet("messageBox").processNewMessages();
+						fetchUserImages();
 						updateDebtAccountBalances();
 						xFinishedCallback();
 					} else {
@@ -512,29 +515,51 @@
 							delete dbTrans.__syncUpdateData;
 							dbTrans.off("commit", postCommit);
 							Alloy.Models.User.xGet("messageBox").processNewMessages();
+							fetchUserImages();
 							updateDebtAccountBalances();
 							xFinishedCallback();
 						}
 
-
 						dbTrans.on("commit", postCommit);
 					}
+					function fetchUserImages() {
+						userToFetchImage.forEach(function(user) {
+							if (user.xGet("pictureId") && !user.xGet("picture")) {
+								Alloy.Globals.Server.fetchUserImageIcon(user.xGet("pictureId"), function(picture) {
+									delete picture.id;
+									// add it as new record
+									picture.save();
+
+									var f = Ti.Filesystem.getFile(Alloy.Globals.getTempDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+									if (f.exists()) {
+										var img = f.read();
+										var fnew = Ti.Filesystem.getFile(Alloy.Globals.getApplicationDataDirectory(), picture.xGet("id") + "_icon." + picture.xGet("pictureType"));
+										fnew.write(img);
+										img = null;
+										fnew = null;
+									}
+									f = null;
+								});
+							}
+						});
+					}
+
 					function updateDebtAccountBalances() {
 						function updateDebtAccountOfTable(tableName, factor, owner, query) {
 							//var config = Alloy.createModel(tableName).config;
 							var Model = Alloy.M(tableName, {
 								config : {
-										adapter: {
-											type : "hyjSql"
-											// collection_name : tableName,
-											// db_name : Alloy.Globals.DataStore.getDbName()
-										}
+									adapter : {
+										type : "hyjSql"
+										// collection_name : tableName,
+										// db_name : Alloy.Globals.DataStore.getDbName()
 									}
+								}
 							});
 							var Collection = Alloy.C(tableName, { }, Model);
 							var results = new Collection();
-							if(tableName.endsWith("Apportion")){
-								if(owner){
+							if (tableName.endsWith("Apportion")) {
+								if (owner) {
 									results.fetch({
 										query : "SELECT f.id AS friendId, ma.currencyId  AS currencyId, SUM(main.amount) AS TOTAL FROM " + tableName + " main JOIN MoneyAccount ma ON mi.moneyAccountId = ma.id JOIN Project prj ON prj.id = mi.projectId LEFT JOIN Friend f ON main.friendUserId = f.friendUserId WHERE " + query + " qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + " GROUP BY friendId, currencyId"
 									});
@@ -548,7 +573,7 @@
 									query : "SELECT f.id AS friendId, ma.currencyId AS currencyId, SUM(main.amount) AS TOTAL FROM " + tableName + " main JOIN MoneyAccount ma ON main.moneyAccountId = ma.id LEFT JOIN Friend f ON (main.friendUserId IS NOT NULL AND main.friendUserId = f.friendUserId) OR (main.localFriendId = f.id) WHERE " + query + " qjkdasfllascordsdacmkludafouewqojmklvcxuioqew1234ewrokfjl;jklJLKJlkjlkjKNJKy	JKLKAS" + " GROUP BY friendId, currencyId"
 								});
 							}
-							
+
 							results.forEach(function(item) {
 								var moneyAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 									accountType : "Debt",
@@ -561,7 +586,7 @@
 									moneyAccount.save({
 										currentBalance : total
 									}, {
-										wait : true,
+										// wait : true,
 										patch : true
 									});
 								} else {
@@ -575,20 +600,25 @@
 										currentBalance : item.get("TOTAL") * factor
 									});
 									moneyAccount.save(null, {
-										wait : true,
+										// wait : true,
 										patch : true
 									});
 								}
 							});
 						}
-						
-						Alloy.Models.User.xGet("moneyAccounts").forEach(function(moneyAccount){
-							moneyAccount.save({currentBalance : 0}, {
-								//wait : true,
-								patch : true
-							});
+
+
+						Alloy.Models.User.xGet("moneyAccounts").forEach(function(moneyAccount) {
+							if (moneyAccount.xGet("accountType") === "Debt") {
+								moneyAccount.save({
+									currentBalance : 0
+								}, {
+									//wait : true,
+									patch : true
+								});
+							}
 						});
-						
+
 						// 1. 借出、借入、收款、还款
 						// 2. 充值收入、充值支出
 						// 3. (自己记的)支出分摊给别人的 --> 当作应收
