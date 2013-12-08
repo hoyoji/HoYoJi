@@ -542,7 +542,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 				oldDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 					accountType : "Debt",
 					currencyId : oldMoneyAccount.xGet("currency").xGet("id"),
-					friendId : item.xGet("friendUser").getFriend().id,
+					friendId : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : null,
 					ownerUserId : Alloy.Models.User.xGet("id")
 				});
 			}
@@ -585,7 +585,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 					newDebtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						accountType : "Debt",
 						currencyId : $.$model.xGet("moneyAccount").xGet("currency").xGet("id"),
-						friendId : item.xGet("friendUser").getFriend().id,
+						friendId : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : null,
 						ownerUserId : Alloy.Models.User.xGet("id")
 					});
 
@@ -626,12 +626,12 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							debtAccountChanged.push(oldDebtAccount);
 
 							var debAcount = Alloy.createModel("MoneyAccount", {
-								name : item.xGet("friendUser").getFriend().id,
+								name : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : null,
 								currency : $.$model.xGet("moneyAccount").xGet("currency"),
 								currentBalance : -(item.xGet("amount")),
 								sharingType : "Private",
 								accountType : "Debt",
-								friend : item.xGet("friendUser").getFriend(),
+								friend : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend() : null,
 								ownerUser : Alloy.Models.User
 							});
 							debAcount.xAddToSave($);

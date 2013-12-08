@@ -191,13 +191,13 @@ exports.definition = {
 					if (accountCurrency === userCurrency) {
 						exchange = 1;
 					}else{
-						var exchanges = accountCurrency.getExchanges(userCurrency);
+						var exchanges = userCurrency.getExchanges(accountCurrency);
 						if (exchanges.length) {
 							exchange = exchanges.at(0).xGet("rate");
 						}
 					}
-					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") * exchange).toUserCurrency();
-				} else {
+					return Alloy.Models.User.xGet("userData").xGet("activeCurrency").xGet("symbol") + (this.xGet("amount") / exchange).toUserCurrency();
+				}  else {
 					var projectCurrency = this.xGet("project").xGet("currency");
 					if (projectCurrency === userCurrency) {
 						exchange = 1;
@@ -243,23 +243,27 @@ exports.definition = {
 				if (!this.xGet("ownerUserId") || this.xGet("ownerUserId") === Alloy.Models.User.xGet("id")) {
 					ownerUserSymbol = null;
 				} else {
-					if (!this.__friends) {
-						var friends = Alloy.createCollection("Friend");
-						friends.xSetFilter({
-							friendUser : this.xGet("ownerUser"),
-							ownerUser : Alloy.Models.User
-						});
-						friends.xSearchInDb({
-							friendUserId : this.xGet("ownerUser").xGet("id"),
-							ownerUserId : Alloy.Models.User.xGet("id")
-						});
-						this.__friends = friends;
-					}
-					var friend = this.__friends.at(0);
-					if (friend && friend.id) {
+					// if (!this.__friends) {
+						// var friends = Alloy.createCollection("Friend");
+						// friends.xSetFilter({
+							// friendUser : this.xGet("ownerUser"),
+							// ownerUser : Alloy.Models.User
+						// });
+						// friends.xSearchInDb({
+							// friendUserId : this.xGet("ownerUser").xGet("id"),
+							// ownerUserId : Alloy.Models.User.xGet("id")
+						// });
+						// this.__friends = friends;
+					// }
+					// var friend = this.__friends.at(0);
+					var friend = Alloy.createModel("Friend").xFindInDb({
+						friendUserId : this.xGet("ownerUser").xGet("id"),
+						ownerUserId : Alloy.Models.User.xGet("id")
+					});
+					if (friend.id) {
 						ownerUserSymbol = friend.getDisplayName();
 					} else {
-						ownerUserSymbol = this.xGet("ownerUser").xGet("userName");
+						ownerUserSymbol = this.xGet("ownerUser").getDisplayName();
 					}
 				}
 
