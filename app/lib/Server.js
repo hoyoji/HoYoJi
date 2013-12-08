@@ -231,8 +231,6 @@
 					},
 					timeout : 300000 /* in milliseconds */
 				});
-				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
-				xhr.setRequestHeader('Accept-Encoding', 'gzip');
 				xhr.open("POST", url);
 				if (Alloy.Models.User && Alloy.Models.User.xGet("userData")) {
 					var auth = Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userName")) + ":" + Ti.Network.encodeURIComponent(Alloy.Models.User.xGet("userData").xGet("password"));
@@ -242,6 +240,9 @@
 						xhr.setRequestHeader("Authorization", "BASIC " + Ti.Utils.base64encode(auth));
 					}
 				}
+				xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+				xhr.setRequestHeader('Accept-Encoding', 'gzip');
+				xhr.setRequestHeader("HyjApp-Version", Ti.App.version);
 				xhr.send(data);
 			},
 			sync : function(xFinishedCallback, xErrorCallback) {

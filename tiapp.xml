@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.hoyoji.hoyoji</id>
     <name>HoYoJi</name>
-    <version>1.0.0.0 Alpha</version>
+    <version>1.0.1</version>
     <publisher>HoYoJi.com</publisher>
     <url>http://www.hoyoji.com</url>
     <description>not specified</description>
