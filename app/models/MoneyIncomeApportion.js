@@ -131,7 +131,7 @@ exports.definition = {
 					var debtAccount = Alloy.createModel("MoneyAccount").xFindInDb({
 						accountType : "Debt",
 						currencyId : self.xGet("moneyIncome").xGet("moneyAccount").xGet("currency").xGet("id"),
-						friendId : self.xGet("friendUser").getFriend().id,
+						friendId : self.xGet("friendUser").getFriend() ? self.xGet("friendUser").getFriend().id : null,
 						ownerUserId : Alloy.Models.User.xGet("id")
 					});
 					if (debtAccount.id) {

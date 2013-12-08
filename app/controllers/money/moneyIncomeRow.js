@@ -107,6 +107,23 @@ $.makeContextMenu = function() {
 						depositeProject : $.$model.xGet("project")
 					})
 				}, function() {
+					var newSendMessage = Alloy.createModel("Message", {
+						toUser : $.$model.xGet("friendUser"),
+						fromUser : Alloy.Models.User,
+						type : "Project.Deposite.Delete",
+						messageState : "closed",
+						messageTitle : "删除充值",
+						date : date,
+						detail : "用户" + Alloy.Models.User.xGet("userName") + "请求删除充值("+"项目:" + $.$model.xGet("project").xGet("name") +",金额:" + $.$model.xGet("moneyAccount").xGet("currency").xGet("symbol") + ($.$model.xGet("amount")).toFixed(2) + ")",
+						messageBox : Alloy.Models.User.xGet("messageBox"),
+						messageData : JSON.stringify({
+							accountType : "MoneyIncome",
+							account : account,
+							depositeProject : $.$model.xGet("project")
+						}),
+						ownerUser : Alloy.Models.User
+					});
+					newSendMessage.xSave();
 					alert("删除成功，请等待回复");
 				}, function(e) {
 					alert(e.__summary.msg);
