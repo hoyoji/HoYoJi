@@ -125,7 +125,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						moneyIncome.xGet("moneyAccount").xSet("currentBalance", moneyIncome.xGet("moneyAccount").xGet("currentBalance") - moneyIncome.xGet("amount"));
 						editData.push(moneyIncome.xGet("moneyAccount").toJSON());
 						moneyIncome.xGet("moneyAccount").xAddToSave($);
-						moneyIncome._xDelete();
 						
 						var incomeFriend = $.findFriendModel(moneyIncome.xGet("friendUser"));
 					
@@ -140,6 +139,8 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							incomeDebtAccount.xSet("currentBalance", incomeDebtAccount.xGet("currentBalance") + moneyIncome.xGet("amount"));
 							incomeDebtAccount.xAddToSave($);
 						}
+						moneyIncome._xDelete();
+						
 					}
 				} else {
 					if (moneyIncome && moneyIncome.id) {
@@ -168,9 +169,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						messageData : $.$model.xGet("messageData")
 					}, function() {
 						//删除本地的充值收入和充值支出
-						moneyExpense._xDelete(null,{
-							syncFromServer : true
-						});
+						if(moneyExpense && moneyExpense.id) {
+							moneyExpense._xDelete(null,{
+								syncFromServer : true
+							});
+						}
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {
 							$.saveModel(saveEndCB, saveErrorCB, {
@@ -234,7 +237,6 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						moneyExpense.xGet("moneyAccount").xSet("currentBalance", moneyExpense.xGet("moneyAccount").xGet("currentBalance") + moneyExpense.xGet("amount"));
 						editData.push(moneyExpense.xGet("moneyAccount").toJSON());
 						moneyExpense.xGet("moneyAccount").xAddToSave($);
-						moneyExpense._xDelete();
 						
 						var expenseFriend = $.findFriendModel(moneyExpense.xGet("friendUser"));
 					
@@ -249,6 +251,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 							expenseDebtAccount.xSet("currentBalance", expenseDebtAccount.xGet("currentBalance") - moneyExpense.xGet("amount"));
 							expenseDebtAccount.xAddToSave($);
 						}
+						moneyExpense._xDelete();
 					}
 				}else{
 					if (moneyExpense && moneyExpense.id) {
@@ -278,9 +281,11 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 						messageData : $.$model.xGet("messageData")
 					}, function() {
 						//删除本地的充值收入和充值支出
-						moneyIncome._xDelete(null,{
-							syncFromServer : true
-						});
+						if(moneyIncome && moneyIncome.id) {
+							moneyIncome._xDelete(null,{
+								syncFromServer : true
+							});
+						}
 						
 						//服务器上修改的projectshareAuthorization更新到本地
 						Alloy.Globals.Server.loadData("ProjectShareAuthorization",loadProjectAuthorizationIds, function(collection) {

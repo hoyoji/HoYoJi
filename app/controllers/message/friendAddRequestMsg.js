@@ -20,6 +20,7 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 	}], function(data) {
 		if (data[0].length > 0) {
 			alert("好友已经添加成功，不需要再发送消息！");
+			$.getCurrentWindow().close();
 		} else {
 			//去本地数据库查找好友，如果不能找到，把要添加的用户user保存到本地
 			var toUser = Alloy.createModel("User").xFindInDb({
