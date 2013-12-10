@@ -244,14 +244,14 @@ $.onSave = function(saveEndCB, saveErrorCB) {
 			if ($.$model.xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 				var activeCurrency = Alloy.Models.User.xGet("userData").xGet("activeCurrency");
 				var exchange = Alloy.createModel("Exchange").xFindInDb({
-					localCurrencyId : $.$model.xGet("currency").xGet("id"),
-					foreignCurrencyId : activeCurrency.xGet("id")
+					localCurrencyId : activeCurrency.xGet("id"),
+					foreignCurrencyId : $.$model.xGet("currency").xGet("id")
 				});
 				if (!exchange.id) {
-					Alloy.Globals.Server.getExchangeRate($.$model.xGet("currency").xGet("id"), activeCurrency.xGet("id"), function(rate) {
+					Alloy.Globals.Server.getExchangeRate(activeCurrency.xGet("id"), $.$model.xGet("currency").xGet("id"), function(rate) {
 						exchange = Alloy.createModel("Exchange", {
-							localCurrencyId : $.$model.xGet("currency").xGet("id"),
-							foreignCurrencyId : activeCurrency.xGet("id"),
+							localCurrencyId : activeCurrency.xGet("id"),
+							foreignCurrencyId : $.$model.xGet("currency").xGet("id"),
 							rate : rate
 						});
 						exchange.xSet("ownerUser", Alloy.Models.User);
