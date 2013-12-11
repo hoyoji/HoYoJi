@@ -132,6 +132,8 @@ $.onWindowCloseDo(function() {
 		subProject.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
 		subProject.xGet("subProjects").off("add", addNewSubProject);
 		subProject.xGet("subProjects").off("remove", removeSubProject);
+		subProject.xGet("parentProjects").off("add", addNewSubProject);
+		subProject.xGet("parentProjects").off("remove", removeSubProject);
 	});
 	$.$model.off("xrefresh", setProjectRemark);
 });
@@ -144,6 +146,8 @@ function addNewSubProject(project){
 		subProject.xGet("projectShareAuthorizations").on("sync", setActualTotalMoneyColor);
 		subProject.xGet("subProjects").on("add", addNewSubProject);
 		subProject.xGet("subProjects").on("remove", removeSubProject);
+		subProject.xGet("parentProjects").off("add", addNewSubProject);
+		subProject.xGet("parentProjects").off("remove", removeSubProject);
 	});
 	setActualTotalMoneyColor();
 }
@@ -155,6 +159,8 @@ function removeSubProject(project){
 		subProject.xGet("projectShareAuthorizations").off("sync", setActualTotalMoneyColor);
 		subProject.xGet("subProjects").off("add", addNewSubProject);
 		subProject.xGet("subProjects").off("remove", removeSubProject);
+		subProject.xGet("parentProjects").off("add", addNewSubProject);
+		subProject.xGet("parentProjects").off("remove", removeSubProject);
 	});
 	setActualTotalMoneyColor();
 }

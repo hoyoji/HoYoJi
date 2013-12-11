@@ -20,7 +20,7 @@
 	color: '#042c37'
 }
 
-"#localAmountLabel": {
+"#localAmount": {
 	color: '#c80032'
 }
 
