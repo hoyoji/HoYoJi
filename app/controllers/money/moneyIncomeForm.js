@@ -296,7 +296,7 @@ $.onWindowCloseDo(function() {
 
 if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 	$.projectAmountContainer.setHeight(42);
-	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("activeCurrency")) {
+	if ($.$model.xGet("project").xGet("currency") !== Alloy.Models.User.xGet("userData").xGet("activeCurrency")) {
 		$.localAmountContainer.setHeight(42);
 	}
 	$.ownerUser.setHeight(42);
