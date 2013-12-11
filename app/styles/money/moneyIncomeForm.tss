@@ -30,8 +30,31 @@
 }
 
 "#localAmount": {
-	color: '#042c37',
-	fieldColor: "#329600"
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	color: "#329600"
+}
+
+"#localAmountContainer": {
+	color: '#042c37'
+}
+
+"#localAmountLabel": {
+	color: '#329600'
+}
+
+"#projectAmount": {
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	color: '#329600'
 }
 
 "#incomeTypeLabel": {

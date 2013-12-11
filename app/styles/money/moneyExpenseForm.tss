@@ -30,8 +30,31 @@
 }
 
 "#localAmount": {
-	color: '#042c37',
-	fieldColor: "#c80032"
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	color: "#c80032"
+}
+
+"#localAmountContainer": {
+	color: '#042c37'
+}
+
+"#localAmountLabel": {
+	color: '#c80032'
+}
+
+"#projectAmount": {
+	font: {
+		fontSize: 16,
+		fontWeight: 'bold'
+	},
+	height: Ti.UI.SIZE,
+	width: Ti.UI.SIZE,
+	color: '#c80032'
 }
 
 "#expenseTypeLabel": {
