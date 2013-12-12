@@ -43,10 +43,6 @@
 	color: '#042c37'
 }
 
-"#localAmountLabel": {
-	color: '#c80032'
-}
-
 "#projectAmount": {
 	font: {
 		fontSize: 16,
