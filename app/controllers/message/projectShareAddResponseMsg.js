@@ -71,38 +71,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyExpenseOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyExpenseOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyExpenseOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyExpenseOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyExpenseAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyExpenseEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyExpenseDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow1.add(projectShareMoneyExpenseAuthorizationLabel);
-	// authorizationDetailRow1.add(projectShareMoneyExpenseOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow1.add(projectShareMoneyExpenseOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow1.add(projectShareMoneyExpenseAddNewAuthorizationLabel);
 	authorizationDetailRow1.add(projectShareMoneyExpenseEditAuthorizationLabel);
 	authorizationDetailRow1.add(projectShareMoneyExpenseDeleteAuthorizationLabel);
@@ -117,38 +117,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyIncomeOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyIncomeOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyIncomeOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyIncomeOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyIncomeAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyIncomeEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyIncomeDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow2.add(projectShareMoneyIncomeAuthorizationLabel);
-	// authorizationDetailRow2.add(projectShareMoneyIncomeOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow2.add(projectShareMoneyIncomeOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow2.add(projectShareMoneyIncomeAddNewAuthorizationLabel);
 	authorizationDetailRow2.add(projectShareMoneyIncomeEditAuthorizationLabel);
 	authorizationDetailRow2.add(projectShareMoneyIncomeDeleteAuthorizationLabel);
@@ -163,38 +163,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyBorrowOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyBorrowOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyBorrowOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyBorrowOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyBorrowAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyBorrowAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyBorrowEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyBorrowEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyBorrowDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyBorrowDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow4.add(projectShareMoneyBorrowAuthorizationLabel);
-	// authorizationDetailRow4.add(projectShareMoneyBorrowOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow4.add(projectShareMoneyBorrowOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow4.add(projectShareMoneyBorrowAddNewAuthorizationLabel);
 	authorizationDetailRow4.add(projectShareMoneyBorrowEditAuthorizationLabel);
 	authorizationDetailRow4.add(projectShareMoneyBorrowDeleteAuthorizationLabel);
@@ -210,38 +210,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyLendOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyLendOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyLendOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyLendOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyLendAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyLendAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyLendEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyLendEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyLendDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyLendDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow5.add(projectShareMoneyLendAuthorizationLabel);
-	// authorizationDetailRow5.add(projectShareMoneyLendOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow5.add(projectShareMoneyLendOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow5.add(projectShareMoneyLendAddNewAuthorizationLabel);
 	authorizationDetailRow5.add(projectShareMoneyLendEditAuthorizationLabel);
 	authorizationDetailRow5.add(projectShareMoneyLendDeleteAuthorizationLabel);
@@ -256,38 +256,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyReturnOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyReturnOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyReturnOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyReturnOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyReturnAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyReturnAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyReturnEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyReturnEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyReturnDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyReturnDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow6.add(projectShareMoneyReturnAuthorizationLabel);
-	// authorizationDetailRow6.add(projectShareMoneyReturnOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow6.add(projectShareMoneyReturnOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow6.add(projectShareMoneyReturnAddNewAuthorizationLabel);
 	authorizationDetailRow6.add(projectShareMoneyReturnEditAuthorizationLabel);
 	authorizationDetailRow6.add(projectShareMoneyReturnDeleteAuthorizationLabel);
@@ -303,38 +303,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
-	// var projectShareMoneyPaybackOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyPaybackOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyPaybackOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyPaybackOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "20%"
+	});
 	var projectShareMoneyPaybackAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyPaybackAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyPaybackEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyPaybackEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyPaybackDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyPaybackDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow7.add(projectShareMoneyPaybackAuthorizationLabel);
-	// authorizationDetailRow7.add(projectShareMoneyPaybackOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow7.add(projectShareMoneyPaybackOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow7.add(projectShareMoneyPaybackAddNewAuthorizationLabel);
 	authorizationDetailRow7.add(projectShareMoneyPaybackEditAuthorizationLabel);
 	authorizationDetailRow7.add(projectShareMoneyPaybackDeleteAuthorizationLabel);
@@ -350,38 +350,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "30%"
 	});
-	// var projectShareMoneyExpenseCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyExpenseCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "10%"
+	});
 	var projectShareMoneyExpenseCategoryAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyExpenseCategoryEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyExpenseCategoryDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyExpenseCategoryDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow8.add(projectShareMoneyExpenseCategoryAuthorizationLabel);
-	// authorizationDetailRow8.add(projectShareMoneyExpenseCategoryOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow8.add(projectShareMoneyExpenseCategoryOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow8.add(projectShareMoneyExpenseCategoryAddNewAuthorizationLabel);
 	authorizationDetailRow8.add(projectShareMoneyExpenseCategoryEditAuthorizationLabel);
 	authorizationDetailRow8.add(projectShareMoneyExpenseCategoryDeleteAuthorizationLabel);
@@ -396,38 +396,38 @@ function createProjectShareAuthorizationDetails(projectShareAuthorization) {
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "30%"
 	});
-	// var projectShareMoneyIncomeCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
-	// text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryOwnerDataOnly") ? "√" : "",
-	// height : 42,
-	// color : "black",
-	// textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-	// width : "20%"
-	// });
+	var projectShareMoneyIncomeCategoryOwnerDataOnlyAuthorizationLabel = Ti.UI.createLabel({
+		text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryOwnerDataOnly") ? "√" : "",
+		height : 42,
+		color : "black",
+		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
+		width : "10%"
+	});
 	var projectShareMoneyIncomeCategoryAddNewAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryAddNew") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyIncomeCategoryEditAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryEdit") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	var projectShareMoneyIncomeCategoryDeleteAuthorizationLabel = Ti.UI.createLabel({
 		text : projectShareAuthorization.xGet("projectShareMoneyIncomeCategoryDelete") ? "√" : "",
 		height : 42,
 		color : "black",
 		textAlign : Ti.UI.TEXT_ALIGNMENT_CENTER,
-		width : "25%"
+		width : "20%"
 	});
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryAuthorizationLabel);
-	// authorizationDetailRow9.add(projectShareMoneyIncomeCategoryOwnerDataOnlyAuthorizationLabel);
+	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryOwnerDataOnlyAuthorizationLabel);
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryAddNewAuthorizationLabel);
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryEditAuthorizationLabel);
 	authorizationDetailRow9.add(projectShareMoneyIncomeCategoryDeleteAuthorizationLabel);

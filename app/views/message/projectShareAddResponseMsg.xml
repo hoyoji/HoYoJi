@@ -35,11 +35,11 @@
 						</View>
 						</View> -->
 						<View height="42" layout="horizontal">
-							<Label width="25%">权限</Label>
-							<!-- <Label width="20%">自己</Label> -->
-							<Label width="25%">增</Label>
-							<Label width="25%">改</Label>
-							<Label width="25%">删</Label>
+							<Label width="20%">权限</Label>
+							<Label width="20%">自己</Label>
+							<Label width="20%">增</Label>
+							<Label width="20%">改</Label>
+							<Label width="20%">删</Label>
 						</View>
 						<View layout="vertical" id="projectShareAuthorizationDetails">
 							<!-- <View height="42" layout="horizontal">
