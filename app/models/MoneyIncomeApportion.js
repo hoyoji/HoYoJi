@@ -65,7 +65,7 @@ exports.definition = {
 				if (friend.id) {
 					return friend.getDisplayName();
 				}
-				return this.xGet("friendUser").xGet("userName");
+				return this.xGet("friendUser").getUserDisplayName();
 			},
 			getAmount : function() {
 				if (this.xGet("moneyIncome").xGet("ownerUser") === Alloy.Models.User) {

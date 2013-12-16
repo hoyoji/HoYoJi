@@ -60,12 +60,12 @@ exports.definition = {
 			// },
 			getFriendDisplayName : function() {
 				var friend = Alloy.createModel("Friend").xFindInDb({
-					friendUserId : this.xGet("friendUser").id
+					friendUserId : this.xGet("friendUser") ? this.xGet("friendUser").xGet("id") : this.xGet("friendUserId")
 				});
 				if (friend.id) {
 					return friend.getDisplayName();
 				}
-				return this.xGet("friendUser").xGet("userName");
+				return this.xGet("friendUser").getUserDisplayName();
 			},
 			getAmount : function() {
 				if (this.xGet("moneyReturn").xGet("ownerUser") === Alloy.Models.User) {
