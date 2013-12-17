@@ -52,7 +52,8 @@ function onFooterbarTap(e) {
 	// currentForm.$view.hide();
 	currentForm = $[e.source.id];
 	currentFormName = e.source.id;
-	currentForm.date.setValue((new Date()).toISOString());
+	currentForm.date.setValue(previousForm.date.getValue());
+	currentForm.date.field.fireEvent("change", {bubbles : false});
 	if (previousForm.amount.getValue() !== null && !isNaN(previousForm.amount.getValue())) {
 		lastAmountValue = previousForm.amount.getValue();
 	}
