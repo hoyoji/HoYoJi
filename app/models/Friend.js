@@ -26,7 +26,7 @@ exports.definition = {
 			},
 			ownerUser : {
 				type : "User",
-				attribute : null
+				attribute : "friends"
 			}
 		},
 		hasMany : {
@@ -120,6 +120,9 @@ exports.definition = {
 			},
 			getUserName : function() {
 				return this.xGet("friendUser") && this.xGet("friendUser").getDisplayName();
+			},
+			getFriendCategoryName : function() {
+				return this.xGet("friendCategory").xGet("name");
 			},
 			getDisplayName : function() {
 				if (!this.xGet("nickName")) {

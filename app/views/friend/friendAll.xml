@@ -4,9 +4,12 @@
 		<Widget id="titleBar" src="com.hoyoji.titanium.widget.TitleBar" title="好友"  autoInit="false"
 			 image="/images/mainWindow/friendAll"/>
 		<View id="body" top="50" bottom="0" left="10" right="10" backgroundColor="#e1e1e1">
-		<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
-			autoInit="false"
-			sortByField="name" bottom="0" top="0"/> 
+			<!-- <Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
+				autoInit="false"
+				sortByField="name" bottom="0" top="0"/>  -->
+			<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
+			autoInit="false" 
+			groupByField="getFriendCategoryName()" sortByField="name" sortReverse="true" pageSize="rowHeight:84" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
         	buttons="添加好友,新建好友" imagesFolder="/images/friend/friendAll"

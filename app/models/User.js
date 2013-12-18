@@ -40,6 +40,10 @@ exports.definition = {
 				type : "FriendCategory",
 				attribute : "ownerUser"
 			},
+			friends : {
+				type : "Friend",
+				attribute : "ownerUser"
+			},
 			currencies : {
 				type : "Currency",
 				attribute : "ownerUser"

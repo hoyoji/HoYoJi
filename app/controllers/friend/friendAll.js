@@ -4,11 +4,11 @@ $.friendCategoriesTable.UIInit($, $.getCurrentWindow());
 
 $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 	var menuSection = Ti.UI.createTableViewSection();
-	if(!sourceModel || sourceModel.config.adapter.collection_name === "FriendCategory"){
+	// if(!sourceModel || sourceModel.config.adapter.collection_name === "FriendCategory"){
 		menuSection.add($.createContextMenuItem("新增好友分类", function() {
-		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory", data : { parentFriendCategory : sourceModel }});
+		Alloy.Globals.openWindow("friend/friendCategoryForm", {$model : "FriendCategory"});
 		}));
-	}
+	// }
 	menuSection.add($.createContextMenuItem("添加好友", function() {
 		Alloy.Globals.openWindow("friend/friendSearch",{$model : "User"});
 	}));
@@ -20,7 +20,9 @@ $.makeContextMenu = function(e, isSelectMode, sourceModel) {
 
 $.titleBar.bindXTable($.friendCategoriesTable);
 
-var collection = Alloy.Models.User.xGet("friendCategories").xCreateFilter({parentFriendCategory : null}, $);
+var collection = Alloy.Models.User.xGet("friends").xCreateFilter(function(model) {
+	return true;
+}, $);
 $.friendCategoriesTable.addCollection(collection);
 function onFooterbarTap(e){
 	if(e.source.id === "addFriend"){
@@ -31,5 +33,5 @@ function onFooterbarTap(e){
 }
 
 $.friendCategoriesTable.autoHideFooter($.footerBar);
-
+$.friendCategoriesTable.fetchFirstPage();
 $.titleBar.UIInit($, $.getCurrentWindow());
