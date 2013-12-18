@@ -15,6 +15,7 @@ if (!$.$model) {
 		var templateModel = $.$attrs.addNewAgant;
 		$.$model = Alloy.createModel("MoneyTransfer", {
 			date : (new Date()).toISOString(),
+			transferOutAmount : templateModel.xGet("transferOutAmount"),
 			exchangeRate : templateModel.xGet("exchangeRate"),
 			transferOutUser : Alloy.Models.User,
 			transferInUser : Alloy.Models.User,

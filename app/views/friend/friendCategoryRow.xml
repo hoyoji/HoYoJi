@@ -1,5 +1,5 @@
 <Alloy>
-	<View class="container" height="42" hasChild="subFriendCategories" hasDetail="friends">
+	<View class="container" height="42" hasDetail="friends">
 			<View id="content" class="row-content" left="0" height="Ti.UI.FILL" backgroundColor="#f5f5f5">
 			<Widget src="com.hoyoji.titanium.widget.AutoBindLabel" left="10"  width="Ti.UI.SIZE" height="42"
 				id="friendCategoryName" autoInit="false"

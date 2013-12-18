@@ -60,7 +60,7 @@ exports.definition = {
 			// },
 			getFriendDisplayName : function() {
 				var friend = Alloy.createModel("Friend").xFindInDb({
-					friendUserId : this.xGet("friendUser").xGet("id")
+					friendUserId : this.xGet("friendUser") ? this.xGet("friendUser").xGet("id") : this.xGet("friendUserId")
 				});
 				if (friend.id) {
 					return friend.getDisplayName();
