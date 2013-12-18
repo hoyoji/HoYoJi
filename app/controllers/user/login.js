@@ -51,14 +51,14 @@ function doLogin(e) {
 	$.login(userName, password);
 
 }
-
+var userDatabase = null;
 $.login = function(userName, password) {
 	delete Alloy.Models.User;
 	delete Alloy.Globals.currentUserDatabaseName;
 
 	//Alloy.Globals.Server.dataUrl = Ti.App.Properties.getString("serverUrl") || "http://3.money.app100697798.twsapp.com/";
 
-	var userDatabase = Alloy.createModel("UserDatabase");
+	userDatabase = Alloy.createModel("UserDatabase");
 	userDatabase.fetch({
 		query : "SELECT * FROM UserDatabase WHERE userName = '" + userName + "'"
 	});
@@ -75,7 +75,8 @@ $.login = function(userName, password) {
 			}, {
 				patch : true
 			});
-			userDatabase.xAddToSave($);
+			// userDatabase.xAddToSave($);
+			//userDatabase.save();
 			Alloy.Globals.currentUserDatabaseName = data.user.id;
 
 			loginUser(data);
@@ -248,6 +249,7 @@ $.login = function(userName, password) {
 						if ($.autoLogin.getValue() === "yes") {
 							setValueToProperties(userName, password);
 						}
+						userDatabase.save();
 						openMainWindow();
 					}, function(e) {
 						// 保存倒数据库时出错，登录失败
