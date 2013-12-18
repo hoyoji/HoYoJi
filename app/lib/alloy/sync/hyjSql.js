@@ -274,7 +274,7 @@ function Sync(method, model, opts) {
 					q = 'joinedtable.projectShareMoneyReturnOwnerDataOnly = 0 OR (joinedtable.projectShareMoneyReturnOwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
 				} else {
 					qs[0] += " JOIN ProjectShareAuthorization joinedtable ON joinedtable.state = 'Accept' AND joinedtable.friendUserId = '" + Alloy.Models.User.xGet("id") + "' AND main.projectId = joinedtable.projectId ";
-					q = 'joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '")';
+					q = 'joinedtable.projectShare' + table + 'OwnerDataOnly = 0 OR (joinedtable.projectShare' + table + 'OwnerDataOnly = 1 AND (main.ownerUserId = "' + Alloy.Models.User.xGet("id") + '" OR main.friendUserId = "' + Alloy.Models.User.xGet("id") + '"))';
 				}
 
 				sql = qs[0];
