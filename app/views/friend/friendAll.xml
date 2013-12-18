@@ -9,7 +9,7 @@
 				sortByField="name" bottom="0" top="0"/>  -->
 			<Widget src="com.hoyoji.titanium.widget.XTableView" id="friendCategoriesTable" 
 			autoInit="false" 
-			groupByField="getFriendCategoryName()" sortByField="name" sortReverse="true" pageSize="rowHeight:84" bottom="0" top="0"/>
+			groupByField="getFriendCategoryName()" sortByField="getDisplayName()" sortReverse="true" pageSize="rowHeight:84" bottom="0" top="0"/>
 		</View>
 		<Widget id="footerBar" src="com.hoyoji.titanium.widget.FooterBar" onSingletap="onFooterbarTap" 
         	buttons="添加好友,新建好友" imagesFolder="/images/friend/friendAll"
