@@ -468,7 +468,154 @@ exports.definition = {
 				
 				record.apportionedTotalPayback = (this.__syncApportionedTotalPayback || 0) + (this.xGet("apportionedTotalPayback") || 0);
 				delete this.__syncApportionedTotalPayback;
-
+			
+				// if (record.projectShareMoneyExpenseOwnerDataOnly === 0 && this.xGet("projectShareMoneyExpenseOwnerDataOnly") === 1) {
+					// dbTrans.xCommitStart();
+					// Alloy.Globals.Server.getData([{
+						// __dataType : "MoneyExpense",
+						// projectId : record.projectId
+					// }, {
+						// __dataType : "MoneyIncome",
+						// projectId : record.projectId
+					// }], function(data) {
+						// for (var i=0; i <  data[0].length; i++) {
+						    // var expenseData = data[0][i];
+						    // var id = expenseData.id;
+						    // delete expenseData.id;
+// 						    
+						    // var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
+								// id : id
+							// });
+// 							
+							// if(!moneyExpense.id){
+								// moneyExpense = Alloy.createModel("MoneyExpense", expenseData);
+								// moneyExpense.attributes["id"] = id;
+								// moneyExpense.save(null, {
+									// wait : true,
+									// dbTrans : dbTrans,
+									// syncFromServer : true
+								// });
+							// }
+						// }
+						// dbTrans.xCommitEnd();
+					// }, function(e) {
+						// dbTrans.rollback("连接服务器出错");
+					// }, "loadNotOwnerUserData");
+				// }
+				
+				var dataToBeDeleted = [ "MoneyExpense", "MoneyIncome", "MoneyLend", "MoneyBorrow", "MoneyReturn", "MoneyPayback"], dataToBeLoaded = [];
+				dataToBeDeleted.forEach(function(table) {
+					if (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0) {
+						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
+							if(item.xGet("friendUserId") !== Alloy.Models.User.id) {
+								if (table === "MoneyExpense") {
+									item.xGet("moneyExpenseDetails").forEach(function(detail) {
+										detail.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+									item.xGet("moneyExpenseApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								} else if (table === "MoneyIncome") {
+									item.xGet("moneyIncomeDetails").forEach(function(detail) {
+										detail.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+									item.xGet("moneyIncomeApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								}else if (table === "MoneyBorrow") {
+									item.xGet("moneyBorrowApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								}else if (table === "MoneyLend") {
+									item.xGet("moneyLendApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								}else if (table === "MoneyReturn") {
+									item.xGet("moneyReturnApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								}else if (table === "MoneyPayback") {
+									item.xGet("moneyPaybackApportions").forEach(function(apportion) {
+										apportion.destroy({
+											dbTrans : dbTrans,
+											wait : true,
+											syncFromServer : true
+										});
+									});
+								}
+								item.destroy({
+									dbTrans : dbTrans,
+									wait : true,
+									syncFromServer : true
+								});
+							}
+						});
+					} else if (record["projectShare" + table + "OwnerDataOnly"] === 0 && self.xGet("projectShare" + table + "OwnerDataOnly") === 1) {
+						dataToBeLoaded.push({
+							__dataType : table,
+							projectId : record.projectId
+						});
+					}
+				});
+				
+				if (dataToBeLoaded.length > 0) {
+					dbTrans.xCommitStart();
+					Alloy.Globals.Server.getData(dataToBeLoaded, function(data) {
+						for (var i=0; i <  data.length; i++){
+							for (var j=0; j <  data[i].length; j++) {
+							    var dataRecord = data[i][j];
+							    var id = dataRecord.id;
+							    delete dataRecord.id;
+							    
+							    var accountData = Alloy.createModel(dataRecord.__dataType).xFindInDb({
+									id : id
+								});
+								
+								if(!accountData.id){
+									accountData = Alloy.createModel(dataRecord.__dataType, dataRecord);
+									accountData.attributes["id"] = id;
+									accountData.save(null, {
+										wait : true,
+										dbTrans : dbTrans,
+										syncFromServer : true
+									});
+								}
+							}
+						}
+						dbTrans.xCommitEnd();
+					}, function(e) {
+						dbTrans.rollback("连接服务器出错");
+					}, "loadNotOwnerUserData");
+				}
+/*
 				if (record.state === "Delete" && this.xGet("state") !== "Delete") {
 					function refreshProject() {
 						dbTrans.off("rollback", rollback);
@@ -587,6 +734,7 @@ exports.definition = {
 					this.on("sync", commitLoadData);
 					dbTrans.on("rollback", rollbackLoadData);
 				}
+*/
 			},
 			syncUpdateConflict : function(record, dbTrans) {
 				delete record.id;
