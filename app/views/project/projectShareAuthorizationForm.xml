@@ -51,7 +51,7 @@
 					</View>
 				</View>
 				<View id="explainAuthorizationLabel" height="Ti.UI.SIZE" width="Ti.UI.SIZE" visible="false">
-				<Label width="100%" left="10" right="10" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n增--表示好友在这个项目下可以新增账务;\n改--表示好友在这个项目下可以修改自己创建的账务;\n删--表示好友在这个项目下可以删除自己创建的账务。</Label>
+				<Label width="100%" left="10" right="10" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n自己--表示好友在这个项目下只能访问与自己相关的账务;\n增--表示好友在这个项目下可以新增账务;\n改--表示好友在这个项目下可以修改自己创建的账务;\n删--表示好友在这个项目下可以删除自己创建的账务。</Label>
 				</View>
 				<View layout="vertical" height="Ti.UI.SIZE" id="shareAllProjectAuthorizationView" visible="false">
 					<View height="42" layout="horizontal">

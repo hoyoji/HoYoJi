@@ -38,7 +38,7 @@
 					</View>
 				</View>
 				<View height="Ti.UI.SIZE" width="Ti.UI.SIZE">
-				<Label width="100%" left="10" right="10" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
+				<Label width="100%" left="10" right="10" textAlign="TEXT_ALIGNMENT_LEFT" class="firstRow">权限说明：\n自己--表示只能访问与自己相关的账务;\n增--表示可以新增账务;\n改--表示可以修改自己创建的账务;\n删--表示可以删除自己创建的账务。</Label>
 				</View>
 				<View layout="vertical" height="Ti.UI.SIZE">
 					<View height="42" layout="horizontal">

@@ -468,40 +468,6 @@ exports.definition = {
 				
 				record.apportionedTotalPayback = (this.__syncApportionedTotalPayback || 0) + (this.xGet("apportionedTotalPayback") || 0);
 				delete this.__syncApportionedTotalPayback;
-			
-				// if (record.projectShareMoneyExpenseOwnerDataOnly === 0 && this.xGet("projectShareMoneyExpenseOwnerDataOnly") === 1) {
-					// dbTrans.xCommitStart();
-					// Alloy.Globals.Server.getData([{
-						// __dataType : "MoneyExpense",
-						// projectId : record.projectId
-					// }, {
-						// __dataType : "MoneyIncome",
-						// projectId : record.projectId
-					// }], function(data) {
-						// for (var i=0; i <  data[0].length; i++) {
-						    // var expenseData = data[0][i];
-						    // var id = expenseData.id;
-						    // delete expenseData.id;
-// 						    
-						    // var moneyExpense = Alloy.createModel("MoneyExpense").xFindInDb({
-								// id : id
-							// });
-// 							
-							// if(!moneyExpense.id){
-								// moneyExpense = Alloy.createModel("MoneyExpense", expenseData);
-								// moneyExpense.attributes["id"] = id;
-								// moneyExpense.save(null, {
-									// wait : true,
-									// dbTrans : dbTrans,
-									// syncFromServer : true
-								// });
-							// }
-						// }
-						// dbTrans.xCommitEnd();
-					// }, function(e) {
-						// dbTrans.rollback("连接服务器出错");
-					// }, "loadNotOwnerUserData");
-				// }
 				
 				var dataToBeDeleted = [ "MoneyExpense", "MoneyIncome", "MoneyLend", "MoneyBorrow", "MoneyReturn", "MoneyPayback"], dataToBeLoaded = [];
 				dataToBeDeleted.forEach(function(table) {
