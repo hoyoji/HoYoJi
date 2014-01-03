@@ -474,74 +474,96 @@ exports.definition = {
 					if (record["projectShare" + table + "OwnerDataOnly"] === 1 && self.xGet("projectShare" + table + "OwnerDataOnly") === 0) {
 						Alloy.createCollection(table).xSearchInDb(sqlAND("main.projectId".sqlLE(self.xGet("project").id), "main.ownerUserId".sqlNE(Alloy.Models.User.id))).forEach(function(item) {
 							if(item.xGet("friendUserId") !== Alloy.Models.User.id) {
+								var canDestroy = false;
 								if (table === "MoneyExpense") {
-									item.xGet("moneyExpenseDetails").forEach(function(detail) {
-										detail.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyExpenseApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyExpenseDetails").forEach(function(detail) {
+											detail.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
-									item.xGet("moneyExpenseApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+										item.xGet("moneyExpenseApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
+									}
+									
 								} else if (table === "MoneyIncome") {
-									item.xGet("moneyIncomeDetails").forEach(function(detail) {
-										detail.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyIncomeApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyIncomeDetails").forEach(function(detail) {
+											detail.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
-									item.xGet("moneyIncomeApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+										item.xGet("moneyIncomeApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
+									}
 								}else if (table === "MoneyBorrow") {
-									item.xGet("moneyBorrowApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyBorrowApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyBorrowApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
+									}
 								}else if (table === "MoneyLend") {
-									item.xGet("moneyLendApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyLendApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyLendApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
+									}
 								}else if (table === "MoneyReturn") {
-									item.xGet("moneyReturnApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyReturnApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyReturnApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
-									});
+									}
 								}else if (table === "MoneyPayback") {
-									item.xGet("moneyPaybackApportions").forEach(function(apportion) {
-										apportion.destroy({
-											dbTrans : dbTrans,
-											wait : true,
-											syncFromServer : true
+									if (item.xGet("moneyReturnApportions").findWhere({friendUserId : Alloy.Models.User.id}) === undefined) {
+										canDestroy = true;
+										item.xGet("moneyPaybackApportions").forEach(function(apportion) {
+											apportion.destroy({
+												dbTrans : dbTrans,
+												wait : true,
+												syncFromServer : true
+											});
 										});
+									}
+								}
+								if (canDestroy){
+									item.destroy({
+										dbTrans : dbTrans,
+										wait : true,
+										syncFromServer : true
 									});
 								}
-								item.destroy({
-									dbTrans : dbTrans,
-									wait : true,
-									syncFromServer : true
-								});
 							}
 						});
 					} else if (record["projectShare" + table + "OwnerDataOnly"] === 0 && self.xGet("projectShare" + table + "OwnerDataOnly") === 1) {
