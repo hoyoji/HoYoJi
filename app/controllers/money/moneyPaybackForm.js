@@ -198,6 +198,7 @@ if (!$.$model) {
 				interest : 0,
 				ownerUser : Alloy.Models.User
 			});
+			$.friend.setEditable(false);
 		} else {
 			$.$model = Alloy.createModel("MoneyPayback", {
 				date : (new Date()).toISOString(),

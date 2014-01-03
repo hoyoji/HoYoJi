@@ -74,7 +74,7 @@ function Migrator(config, transactionDb) {
 		}
 		if (!found && this.idAttribute === ALLOY_ID_DEFAULT) {
 			columns.push(this.idAttribute);
-			values.push(util.guid());
+			values.push(guid());
 			qs.push("?");
 		}
 		this.db.execute("INSERT INTO " + this.table + " (" + columns.join(",") + ") VALUES (" + qs.join(",") + ");", values);
@@ -111,7 +111,7 @@ function Sync(method, model, opts) {
 				var attrObj = {};
 				if (!model.id) {
 					if (model.idAttribute === ALLOY_ID_DEFAULT) {
-						model.id = util.guid();
+						model.id = guid();
 						attrObj[model.idAttribute] = model.id;
 						model.set(attrObj, {
 							silent : !0
@@ -736,7 +736,7 @@ function installDatabase(config) {
 	db.close();
 }
 
-var _ = require("alloy/underscore")._, util = require("alloy/sync/util"), ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
+var _ = require("alloy/underscore")._, ALLOY_DB_DEFAULT = "_alloy_", ALLOY_ID_DEFAULT = "alloy_id", cache = {
 	config : {},
 	Model : {}
 };
