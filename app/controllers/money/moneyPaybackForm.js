@@ -20,7 +20,8 @@ $.onWindowOpenDo(function() {
 	}
 });
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel) {
+$.convertSelectedFriend2UserModel = function(selectedFriendModel,willUpdateModel) {
+	willUpdateModel.value = true;
 	if (selectedFriendModel) {
 		if (selectedFriendModel.xGet("friendUser")) {
 			$.$model.xSet("friendUser", selectedFriendModel.xGet("friendUser"));
