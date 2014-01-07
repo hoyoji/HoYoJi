@@ -299,7 +299,7 @@ exports.definition = {
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark") || "";
-				if (this.xGet("localFriendId")) {
+				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("localFriendId")) {
 					remark = "[从" + this.xGet("localFriend").getDisplayName() + "借入]" + remark;
 				} else if (this.xGet("friendUserId")) {
 				    remark = "[从" + this.xGet("friendUser").getFriendDisplayName() + "借入]" + remark;
