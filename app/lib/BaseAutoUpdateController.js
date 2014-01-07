@@ -308,13 +308,18 @@
 						}
 						var attributes = {
 							selectorCallback : function(model) {
+								var willUpdateModel = { value : false};
 								if ($.$attrs.bindModelSelectorConvertSelectedModel && $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel]) {
-									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model);
+									model = $.getParentController()[$.$attrs.bindModelSelectorConvertSelectedModel](model, willUpdateModel);
 								}
 								$.setValue(model);
-								$.field.fireEvent("change", {
-									bubbles : false
-								});
+								if(willUpdateModel.value === false){
+									$.field.fireEvent("change", {
+										bubbles : false
+									});
+								} else {
+									$.toggleDirtyClean();
+								}
 							}
 						};
 						if ($.$attrs.bindModelBeforeSelectorCallback) {
@@ -411,6 +416,13 @@
 							$.becameDirty();
 						}
 					}
+				};
+				$.toggleDirtyClean = function(){
+						if (!model.hasChanged(attribute) && $.__dirtyCount > 0) {
+							$.becameClean();
+						} else if (model.hasChanged(attribute) && $.__dirtyCount === 0) {
+							$.becameDirty();
+						}
 				};
 				$.field.addEventListener("change", function() {
 					if (OS_IOS) {

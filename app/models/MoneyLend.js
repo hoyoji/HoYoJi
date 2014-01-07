@@ -298,7 +298,7 @@ exports.definition = {
 			},
 			getRemark : function() {
 				var remark = this.xGet("remark") || "";
-				if (this.xGet("localFriendId")) {
+				if (this.xGet("ownerUser") === Alloy.Models.User && this.xGet("localFriendId")) {
 					remark = "[借给" + this.xGet("localFriend").getDisplayName() + "]" + remark;
 				} else if (this.xGet("friendUserId")) {
 						remark = "[借给" + this.xGet("friendUser").getFriendDisplayName() + "]" + remark;

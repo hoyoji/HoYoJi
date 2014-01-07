@@ -2,7 +2,7 @@
 		Ti.include('suds.js');
 		var serverUrl = "http://1.hoyoji.app1101080392.twsapp.com/";
 		if (!ENV_PROD) {
-			serverUrl = "http://3.money.app100697798.twsapp.com/";
+		//	serverUrl = "http://3.money.app100697798.twsapp.com/";
 		}
 		exports.Server = {
 			dataUrl : serverUrl,
