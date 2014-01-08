@@ -20,7 +20,7 @@ $.onWindowOpenDo(function() {
 	}
 });
 
-$.convertSelectedFriend2UserModel = function(selectedFriendModel,willUpdateModel) {
+$.convertSelectedFriend2UserModel = function(selectedFriendModel, willUpdateModel) {
 	willUpdateModel.value = true;
 	if (selectedFriendModel) {
 		if (selectedFriendModel.xGet("friendUser")) {
@@ -189,17 +189,29 @@ if (!$.$model) {
 		});
 	} else {
 		if (selectedLend) {
-			$.$model = Alloy.createModel("MoneyPayback", {
-				date : (new Date()).toISOString(),
-				exchangeRate : 1,
-				moneyAccount : selectedLend.xGet("moneyAccount"),
-				moneyLend : selectedLend,
-				project : selectedLend.xGet("project"),
-				friendUser : selectedLend.xGet("friendUser"),
-				interest : 0,
-				ownerUser : Alloy.Models.User
-			});
-			$.friend.setEditable(false);
+			if (selectedLend.xGet("localFriend")) {
+				$.$model = Alloy.createModel("MoneyPayback", {
+					date : (new Date()).toISOString(),
+					exchangeRate : 1,
+					moneyAccount : selectedLend.xGet("moneyAccount"),
+					moneyLend : selectedLend,
+					project : selectedLend.xGet("project"),
+					localFriend : selectedLend.xGet("localFriend"),
+					interest : 0,
+					ownerUser : Alloy.Models.User
+				});
+			} else {
+				$.$model = Alloy.createModel("MoneyPayback", {
+					date : (new Date()).toISOString(),
+					exchangeRate : 1,
+					moneyAccount : selectedLend.xGet("moneyAccount"),
+					moneyLend : selectedLend,
+					project : selectedLend.xGet("project"),
+					friendUser : selectedLend.xGet("friendUser"),
+					interest : 0,
+					ownerUser : Alloy.Models.User
+				});
+			}
 		} else {
 			$.$model = Alloy.createModel("MoneyPayback", {
 				date : (new Date()).toISOString(),
