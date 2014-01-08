@@ -572,10 +572,10 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 		}, function(e) {
 			newMoneyAccount.xSet("currentBalance", newMoneyAccount.previous("currentBalance"));
 			oldMoneyAccount.xSet("currentBalance", oldMoneyAccount.previous("currentBalance"));
-			if (oldDebtAccount.id) {
+			if (oldDebtAccount && oldDebtAccount.id) {
 				oldDebtAccount.xSet("currentBalance", oldDebtAccount.previous("currentBalance"));
 			}
-			if (newDebtAccount.id) {
+			if (newDebtAccount && newDebtAccount.id) {
 				newDebtAccount.xSet("currentBalance", newDebtAccount.previous("currentBalance"));
 			}
 			projectShareAuthorizations.forEach(function(projectShareAuthorization) {
