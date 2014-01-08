@@ -597,7 +597,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							debtAccountChanged.push(newDebtAccount);
 						} else {
 							var debAcount = Alloy.createModel("MoneyAccount", {
-								name : item.xGet("friendUser").getFriend().id,
+								name : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : "匿名借贷账户",
 								currency : $.$model.xGet("moneyAccount").xGet("currency"),
 								currentBalance : -(item.xGet("amount")),
 								sharingType : "Private",
@@ -627,7 +627,7 @@ if ($.$model.xGet("ownerUser") !== Alloy.Models.User) {
 							debtAccountChanged.push(oldDebtAccount);
 
 							var debAcount = Alloy.createModel("MoneyAccount", {
-								name : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : null,
+								name : item.xGet("friendUser").getFriend() ? item.xGet("friendUser").getFriend().id : "匿名借贷账户",
 								currency : $.$model.xGet("moneyAccount").xGet("currency"),
 								currentBalance : -(item.xGet("amount")),
 								sharingType : "Private",
