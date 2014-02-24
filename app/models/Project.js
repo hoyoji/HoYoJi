@@ -4,7 +4,6 @@ exports.definition = {
 			id : "TEXT UNIQUE NOT NULL PRIMARY KEY",
 			name : "TEXT NOT NULL",
 			ownerUserId : "TEXT NOT NULL",
-			// parentProjectId : "TEXT",
 			currencyId : "TEXT NOT NULL",
 			autoApportion : "INTEGER",
 			defaultIncomeCategoryId : "TEXT",

@@ -12,6 +12,7 @@ exports.definition = {
 			serverRecordHash : "TEXT",
 			lastServerUpdateTime : "TEXT",
 			lastClientUpdateTime : "INTEGER",
+			
 			actualTotalIncome : "REAL NOT NULL",
 			actualTotalExpense : "REAL NOT NULL",
 			actualTotalBorrow : "REAL NOT NULL",
