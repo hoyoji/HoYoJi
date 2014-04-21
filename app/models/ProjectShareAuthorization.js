@@ -31,6 +31,7 @@ exports.definition = {
 			sharedTotalLend : "REAL NOT NULL",
 			sharedTotalReturn : "REAL NOT NULL",
 			sharedTotalPayback : "REAL NOT NULL",
+			
 			sharePercentage : "REAL NOT NULL",
 			sharePercentageType : "TEXT NOT NULL", // average, fixed
 
